@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # PC 케어 프로 v49
 
 PC 통합 점검·복구·보안 관리 프로그램입니다.
@@ -49,3 +50,5 @@ dotnet test .\tests\SmartPerformanceDoctor.Tests\SmartPerformanceDoctor.Tests.cs
 - 지식 DB: `%LOCALAPPDATA%\SmartPerformanceDoctor\data\knowledge.db`
 - Aegis Mirror: `%ProgramData%\AstraCare\AegisMirror\`
 - 보고서: `%USERPROFILE%\Desktop\AstraCare\`
+=======
+>>>>>>> fd754d9974b6c0b5657a8047e30fc12ac0ebb6e8
