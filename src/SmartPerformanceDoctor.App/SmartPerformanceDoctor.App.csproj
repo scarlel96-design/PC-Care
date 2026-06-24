@@ -1,0 +1,94 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.22000.0</TargetPlatformMinVersion>
+    <RootNamespace>SmartPerformanceDoctor.App</RootNamespace>
+    <AssemblyName>SmartPerformanceDoctor</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <UseWinUI>true</UseWinUI>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <WindowsPackageType>None</WindowsPackageType>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <ApplicationIcon>..\..\content\assets\SmartPerformanceDoctor.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="SmartPerformanceDoctor.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" />
+    <PackageReference Include="System.IO.Pipes.AccessControl" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" />
+    <PackageReference Include="System.Drawing.Common" />
+    <PackageReference Include="Konscious.Security.Cryptography.Argon2" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../SmartPerformanceDoctor.Aegis/SmartPerformanceDoctor.Aegis.csproj" />
+    <ProjectReference Include="../SmartPerformanceDoctor.Contracts/SmartPerformanceDoctor.Contracts.csproj" />
+    <ProjectReference Include="../SmartPerformanceDoctor.Data/SmartPerformanceDoctor.Data.csproj" />
+    <ProjectReference Include="../SmartPerformanceDoctor.AegisRecoveryHelper/SmartPerformanceDoctor.AegisRecoveryHelper.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="../SmartPerformanceDoctor.AegisRecoveryService/SmartPerformanceDoctor.AegisRecoveryService.csproj" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\content\rules\**\*.*" Link="content\rules\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\content\data\commercial\**\*.*" Link="content\data\commercial\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\content\assets\**\*.*" Link="content\assets\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <Target Name="CopyNativeEnginesIfBuilt" AfterTargets="Build">
+    <PropertyGroup>
+      <NativeReleaseDir>$(MSBuildProjectDirectory)\..\..\target\release</NativeReleaseDir>
+      <HelperReleaseDir>$(MSBuildProjectDirectory)\..\..\target\release</HelperReleaseDir>
+      <AegisHelperOutDir>$(MSBuildProjectDirectory)\..\SmartPerformanceDoctor.AegisRecoveryHelper\bin\$(Platform)\$(Configuration)\net10.0-windows</AegisHelperOutDir>
+      <AegisServiceOutDir>$(MSBuildProjectDirectory)\..\SmartPerformanceDoctor.AegisRecoveryService\bin\$(Platform)\$(Configuration)\net10.0-windows</AegisServiceOutDir>
+    </PropertyGroup>
+    <Copy SourceFiles="$(NativeReleaseDir)\smart_performance_doctor_core.exe"
+          DestinationFolder="$(OutDir)\engine"
+          SkipUnchangedFiles="true"
+          Condition="Exists('$(NativeReleaseDir)\smart_performance_doctor_core.exe')" />
+    <Copy SourceFiles="$(HelperReleaseDir)\smart_performance_doctor_repair_helper.exe"
+          DestinationFolder="$(OutDir)\engine"
+          SkipUnchangedFiles="true"
+          Condition="Exists('$(HelperReleaseDir)\smart_performance_doctor_repair_helper.exe')" />
+    <ItemGroup Condition="Exists('$(AegisHelperOutDir)\AegisRecoveryHelper.exe')">
+      <AegisHelperFiles Include="$(AegisHelperOutDir)\AegisRecoveryHelper.*" />
+      <AegisHelperFiles Include="$(AegisHelperOutDir)\SmartPerformanceDoctor.Aegis.dll" />
+      <AegisHelperFiles Include="$(AegisHelperOutDir)\SmartPerformanceDoctor.Contracts.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(AegisHelperFiles)"
+          DestinationFolder="$(OutDir)\engine"
+          SkipUnchangedFiles="true"
+          Condition="Exists('$(AegisHelperOutDir)\AegisRecoveryHelper.exe')" />
+    <ItemGroup Condition="Exists('$(AegisServiceOutDir)\AegisRecoveryService.exe')">
+      <AegisServiceFiles Include="$(AegisServiceOutDir)\**\*.*" Exclude="$(AegisServiceOutDir)\**\*.pdb" />
+    </ItemGroup>
+    <Copy SourceFiles="@(AegisServiceFiles)"
+          DestinationFolder="$(OutDir)\engine\%(RecursiveDir)"
+          SkipUnchangedFiles="true"
+          Condition="Exists('$(AegisServiceOutDir)\AegisRecoveryService.exe')" />
+    <Copy SourceFiles="$(OutDir)\SmartPerformanceDoctor.exe"
+          DestinationFiles="$(OutDir)\PCCare.exe"
+          SkipUnchangedFiles="false"
+          Condition="Exists('$(OutDir)\SmartPerformanceDoctor.exe')" />
+    <Copy SourceFiles="$(OutDir)\SmartPerformanceDoctor.deps.json"
+          DestinationFiles="$(OutDir)\PCCare.deps.json"
+          SkipUnchangedFiles="false"
+          Condition="Exists('$(OutDir)\SmartPerformanceDoctor.deps.json')" />
+    <Copy SourceFiles="$(OutDir)\SmartPerformanceDoctor.runtimeconfig.json"
+          DestinationFiles="$(OutDir)\PCCare.runtimeconfig.json"
+          SkipUnchangedFiles="false"
+          Condition="Exists('$(OutDir)\SmartPerformanceDoctor.runtimeconfig.json')" />
+    <Copy SourceFiles="$(OutDir)\SmartPerformanceDoctor.pri"
+          DestinationFiles="$(OutDir)\PCCare.pri"
+          SkipUnchangedFiles="false"
+          Condition="Exists('$(OutDir)\SmartPerformanceDoctor.pri')" />
+  </Target>
+</Project>

@@ -1,0 +1,16 @@
+{
+  "fromVersion": "45.0.0",
+  "toVersion": "45.0.1",
+  "releaseNotes": "Commercial Intelligence v45.0.1 — 창 UI 수정, 미반영 항목 1차 반영",
+  "changes": [
+    "Windows 기본 창 버튼 제거 — Mac 트래픽 라이트만 사용 (SetBorderAndTitleBar)",
+    "프로토콜 센터 — 119개 프로토콜 dry-run 미리보기",
+    "딥 스캔 설정 — Memory/Disk/Service/EventLog/Startup/WindowsUpdate 정밀 스캐너",
+    "원인 점수 엔진 (RootCauseScoring) — 인텔리전스 센터 연동",
+    "증거 탐색기 — evidence.json · timeline.json · report.expert.html 조회",
+    "Knowledge Pack Manager — rules/protocols checksum 검증",
+    "프로그램 보호 센터 — exe/dll/core 엔진 무결성 게이트",
+    "상용 보고서 번들 — evidence.json, timeline.json, report.expert.html 자동 생성",
+    "업데이트 적용 속도 개선 — 패키지 무결성 확인 후 파일별 해시 스킵"
+  ]
+}

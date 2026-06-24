@@ -1,0 +1,30 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.ReleaseStatusPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Padding="{StaticResource SpdMacPagePadding}" Spacing="18">
+        <TextBlock Text="릴리즈 상태" FontSize="34" FontWeight="SemiBold"/>
+        <TextBlock Text="배포 품질 점검과 필수 구성 요소 상태를 확인합니다."
+                   Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
+        <Border Style="{StaticResource MacWindowPanelStyle}">
+            <StackPanel Spacing="12">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Content="품질 게이트 재검사" Click="RefreshQualityGates"/>
+                    <Button Content="앱 폴더 열기" Click="OpenAppFolder"/>
+                </StackPanel>
+                <ListView x:Name="GateList" MinHeight="440">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Padding="8">
+                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding Status}" Foreground="{StaticResource SpdMutedTextBrush}"/>
+                                <TextBlock Text="{Binding Severity}" Foreground="{StaticResource SpdMutedTextBrush}"/>
+                                <TextBlock Text="{Binding Message}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</Page>

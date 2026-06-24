@@ -1,0 +1,6 @@
+[workspace]
+resolver = "3"
+members = [
+    "src/SmartPerformanceDoctor.Core",
+    "src/SmartPerformanceDoctor.RepairHelper"
+]

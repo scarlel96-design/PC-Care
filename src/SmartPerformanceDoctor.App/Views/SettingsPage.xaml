@@ -1,0 +1,39 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    RequestedTheme="Light">
+    <ScrollViewer>
+        <StackPanel Padding="{StaticResource SpdMacPagePadding}" MaxWidth="720" Style="{StaticResource MacPageRootStackStyle}">
+            <TextBlock Text="환경설정" Style="{StaticResource MacPageTitleStyle}"/>
+            <Border Style="{StaticResource PremiumHeroCardStyle}">
+                <StackPanel Spacing="14">
+                    <TextBlock Text="사용자 모드" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <ComboBox x:Name="UserModeBox" HorizontalAlignment="Stretch" SelectionChanged="UserModeChanged">
+                        <ComboBoxItem Content="Basic — 일반 사용자" Tag="Basic"/>
+                        <ComboBoxItem Content="Advanced — 고급 기능" Tag="Advanced"/>
+                        <ComboBoxItem Content="Developer — 개발·릴리즈 도구" Tag="Developer"/>
+                    </ComboBox>
+                    <TextBlock x:Name="ModeHint" Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="프로그램 보호" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <TextBlock Text="복구 미러 — 프로그램 손상 시 자동 복구 (사용자 데이터·보안 금고는 복제하지 않음)"
+                               Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
+                    <Button Content="복구 미러" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenProgramProtection"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="일반" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <Button Content="기능 관리" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenFeatureManagement"/>
+                    <Button Content="고급 도구" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenAdvancedCenter"/>
+                    <Button Content="업데이트" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenUpdate"/>
+                    <Button Content="처음 설정" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenFirstRun"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

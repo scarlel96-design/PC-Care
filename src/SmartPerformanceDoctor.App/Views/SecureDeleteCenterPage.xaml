@@ -1,0 +1,39 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.SecureDeleteCenterPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    RequestedTheme="Light">
+    <ScrollViewer>
+        <StackPanel Padding="{StaticResource SpdMacPagePadding}" Style="{StaticResource MacPageRootStackStyle}">
+            <TextBlock Text="보안 삭제" Style="{StaticResource MacPageTitleStyle}"/>
+            <TextBlock Text="베타 기능 — 최대 강도 삭제 체인 적용. 공인 복구 저항 등급은 저장장치·범위에 따라 별도 표기됩니다."
+                       Foreground="{StaticResource SpdAccentBrush}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+            <TextBlock Text="SSD 물리 한계·클라우드 동기화 등은 완전 제거를 보장하지 않습니다. 삭제 전 대상과 확인 문구를 반드시 검토하세요."
+                       Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="보안 등급" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <ComboBox x:Name="SecurityLevelBox" SelectedIndex="1" SelectionChanged="SecurityLevelChanged">
+                        <ComboBoxItem Content="표준 — HDD 1패스" Tag="Standard"/>
+                        <ComboBoxItem Content="전문 — HDD 3패스 (권장)" Tag="Professional"/>
+                        <ComboBoxItem Content="최대 — HDD 7패스" Tag="Maximum"/>
+                    </ComboBox>
+                    <Button Content="파일/폴더 선택" Style="{StaticResource MacToolbarButtonStyle}" Click="PickTargets"/>
+                    <TextBlock x:Name="PlanSummaryText" TextWrapping="Wrap"/>
+                    <ListView x:Name="TargetList" MinHeight="160" SelectionMode="None"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="삭제 실행" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <TextBlock Text="확인 문구: 보안 삭제에 동의합니다" Foreground="{StaticResource SpdMutedTextBrush}"/>
+                    <TextBox x:Name="ConfirmBox" PlaceholderText="확인 문구 입력"/>
+                    <ProgressBar x:Name="ProgressBar" Maximum="100"/>
+                    <TextBlock x:Name="StatusText" TextWrapping="Wrap"/>
+                    <Button Content="다시 미리보기" Click="RunDryRun"/>
+                    <Button Content="보안 삭제 실행" Click="ApplyDelete"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

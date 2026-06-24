@@ -1,0 +1,16 @@
+<UserControl
+    x:Class="SmartPerformanceDoctor.App.Controls.WindowsWindowControls"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Orientation="Horizontal" Spacing="4">
+        <Button x:Name="MinimizeButton" Content="─" Width="40" Height="32" Padding="0"
+                Style="{StaticResource PremiumWindowButtonStyle}"
+                ToolTipService.ToolTip="최소화" Click="OnMinimize"/>
+        <Button x:Name="MaximizeButton" Content="□" Width="40" Height="32" Padding="0"
+                Style="{StaticResource PremiumWindowButtonStyle}"
+                ToolTipService.ToolTip="최대화" Click="OnMaximize"/>
+        <Button x:Name="CloseButton" Content="✕" Width="40" Height="32" Padding="0"
+                Style="{StaticResource PremiumWindowCloseButtonStyle}"
+                ToolTipService.ToolTip="닫기" Click="OnClose"/>
+    </StackPanel>
+</UserControl>

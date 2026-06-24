@@ -1,0 +1,64 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.VerifiedRepairPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer>
+        <StackPanel Padding="{StaticResource SpdMacPagePadding}" Style="{StaticResource MacPageRootStackStyle}">
+            <StackPanel Spacing="4">
+                <TextBlock Text="검증형 복구" Style="{StaticResource MacPageTitleStyle}"/>
+                <TextBlock Text="드라이버, 오디오, 시스템 복구가 실제로 수행되었는지 실행 전·후 기록으로 확인합니다."
+                           Style="{StaticResource MacInlineStatusTextStyle}"/>
+            </StackPanel>
+
+            <Grid ColumnDefinitions="1.1*,1.3*" ColumnSpacing="16">
+                <Border Style="{StaticResource MacWindowPanelStyle}">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="복구 계획" FontSize="20" FontWeight="SemiBold"/>
+                        <ComboBox x:Name="PlanBox" ItemsSource="{Binding Plans}" DisplayMemberPath="PlanId" SelectionChanged="PlanChanged"/>
+                        <TextBox Header="대상 InstanceId" Text="{Binding Target, Mode=TwoWay}" PlaceholderText="선택 장치 재시작에서만 필요"/>
+                        <CheckBox Content="위험도와 대상 장치를 확인했습니다." IsChecked="{Binding RiskAccepted, Mode=TwoWay}"/>
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button Content="시뮬레이션 + 검증" Style="{StaticResource MacToolbarButtonStyle}" Click="RunDryVerify"/>
+                            <Button Content="Apply + 검증" Style="{StaticResource MacToolbarButtonStyle}" Click="RunApplyVerify"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Status}" Style="{StaticResource MacInlineStatusTextStyle}"/>
+                        <TextBlock Text="{Binding Summary}" Style="{StaticResource MacInlineStatusTextStyle}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource MacWindowPanelStyle}">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="검증 기록" FontSize="20" FontWeight="SemiBold"/>
+                        <ItemsControl ItemsSource="{Binding Evidence}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,0,0,8" Padding="10" CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource SpdMacSeparatorBrush}">
+                                        <StackPanel Spacing="3">
+                                            <TextBlock Text="{Binding Kind}" Style="{StaticResource MacListItemTitleStyle}"/>
+                                            <TextBlock Text="{Binding Verdict}" FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding Detail}" Style="{StaticResource MacListItemSubtitleStyle}"/>
+                                            <TextBlock Text="{Binding Source}" Style="{StaticResource MacListItemSubtitleStyle}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="다음 권장 조치" FontSize="20" FontWeight="SemiBold"/>
+                    <ItemsControl ItemsSource="{Binding NextActions}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" Margin="0,0,0,8" Style="{StaticResource MacInlineStatusTextStyle}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

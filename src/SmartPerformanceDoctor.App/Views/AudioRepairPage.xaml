@@ -1,0 +1,33 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.AudioRepairPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer>
+        <StackPanel Padding="{StaticResource SpdMacPagePadding}" Spacing="18">
+            <TextBlock Text="장치 복구" FontSize="34" FontWeight="SemiBold"/>
+            <TextBlock Text="오디오 서비스와 장치 상태를 점검하고, 안전 확인 후 단계별로 복구합니다."
+                       Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="작업 선택" FontSize="22" FontWeight="SemiBold"/>
+                    <ComboBox x:Name="ActionBox" DisplayMemberPath="Title" SelectionChanged="ActionChanged"/>
+                    <TextBlock x:Name="DescriptionText" Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
+                    <TextBox x:Name="TargetBox" Header="대상" PlaceholderText="대상이 필요한 작업에서만 입력"/>
+                    <TextBlock x:Name="TargetHintText" Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
+                    <CheckBox x:Name="RiskCheck" Content="위험도와 복구 정책을 확인했습니다."/>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Content="안전 확인" Click="RunDry"/>
+                        <Button Content="실제 복구" Click="RunApply"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="결과" FontSize="22" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="StatusText" Text="대기 중" Foreground="{StaticResource SpdMutedTextBrush}"/>
+                    <TextBlock x:Name="ResultText" Text="아직 결과가 없습니다." TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

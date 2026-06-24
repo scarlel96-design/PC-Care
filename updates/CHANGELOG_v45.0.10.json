@@ -1,0 +1,17 @@
+{
+  "fromVersion": "45.0.9",
+  "toVersion": "45.0.10",
+  "releaseNotes": "실행 파일 루트 배치 · content/engine 폴더 통합 · 프로젝트 구조 정리",
+  "highlights": [
+    "SmartPerformanceDoctor.exe가 메인 폴더(루트)에 바로 보임",
+    "rules·assets·data를 content/ 한곳으로 통합, 엔진은 engine/",
+    "installer/portable/archive/docs를 artifacts/로 통합"
+  ],
+  "changes": [
+    "[45.0.10] 배포: app/ 폴더 폐지 — exe·시작.bat은 프로젝트/설치 루트",
+    "[45.0.10] content/rules · content/assets · content/data/commercial 통합",
+    "[45.0.10] engine/ 하위 진단·복구 엔진 (레거시 루트 경로 호환)",
+    "[45.0.10] 보안 금고 ComboBox 수정(45.0.9) 유지",
+    "[45.0.10] 설치·업데이트 패키지 동일 구조 반영"
+  ]
+}

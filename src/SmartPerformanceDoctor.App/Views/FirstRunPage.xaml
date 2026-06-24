@@ -1,0 +1,27 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.FirstRunPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Padding="{StaticResource SpdMacPagePadding}" Spacing="18">
+        <TextBlock Text="초기 설정" FontSize="34" FontWeight="SemiBold"/>
+        <TextBlock Text="첫 실행에 필요한 폴더와 필수 구성 요소를 점검합니다."
+                   Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
+        <Border Style="{StaticResource MacWindowPanelStyle}">
+            <StackPanel Spacing="12">
+                <Button Content="초기 설정 실행" Click="RunFirstSetup"/>
+                <ListView x:Name="ResultList" MinHeight="420">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Padding="8">
+                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding Status}" Foreground="{StaticResource SpdMutedTextBrush}"/>
+                                <TextBlock Text="{Binding Message}" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding Path}" Foreground="{StaticResource SpdMutedTextBrush}" TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</Page>

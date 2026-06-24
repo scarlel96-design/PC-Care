@@ -1,0 +1,30 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.RepairLogPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Padding="{StaticResource SpdMacPagePadding}" Spacing="18">
+        <TextBlock Text="복구 로그" FontSize="34" FontWeight="SemiBold"/>
+        <Border Style="{StaticResource MacWindowPanelStyle}">
+            <StackPanel Spacing="12">
+                <TextBlock Text="최근 복구 도우미 로그" FontSize="22" FontWeight="SemiBold"/>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Content="새로 고침" Click="RefreshLogs"/>
+                    <Button Content="선택 로그 열기" Click="OpenSelectedLog"/>
+                    <Button Content="로그 폴더 열기" Click="OpenLogsFolder"/>
+                </StackPanel>
+                <ListView x:Name="LogList" MinHeight="380" SelectionMode="Single">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Padding="8">
+                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding CreatedAt}" Foreground="{StaticResource SpdMutedTextBrush}"/>
+                                <TextBlock Text="{Binding Preview}" TextWrapping="Wrap" Foreground="{StaticResource SpdMutedTextBrush}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <TextBlock x:Name="StatusText" Text="로그를 선택하세요." TextWrapping="Wrap" Foreground="{StaticResource SpdMutedTextBrush}"/>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</Page>

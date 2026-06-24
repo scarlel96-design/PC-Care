@@ -1,0 +1,29 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.CrashLogPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Padding="{StaticResource SpdMacPagePadding}" Spacing="18">
+        <TextBlock Text="크래시 로그" FontSize="34" FontWeight="SemiBold"/>
+        <TextBlock Text="앱 비정상 종료/Unhandled exception 로그를 확인합니다."
+                   Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
+        <Border Style="{StaticResource MacWindowPanelStyle}">
+            <StackPanel Spacing="12">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Content="새로 고침" Click="RefreshLogs"/>
+                    <Button Content="크래시 로그 폴더 열기" Click="OpenCrashFolder"/>
+                </StackPanel>
+                <ListView x:Name="CrashList" MinHeight="440">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Padding="8">
+                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding Message}" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding Path}" Foreground="{StaticResource SpdMutedTextBrush}" TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</Page>

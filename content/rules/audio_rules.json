@@ -1,0 +1,55 @@
+{
+  "service_stopped": {
+    "signals": [
+      "Audiosrv stopped",
+      "AudioEndpointBuilder stopped",
+      "ServiceRestartNeeded\":true",
+      "servicerestartneeded\":true"
+    ],
+    "action": "오디오 서비스 재구동 (문제 확인 후)"
+  },
+  "endpoint_missing": {
+    "signals": [
+      "no render endpoint",
+      "MMDevices missing",
+      "RenderEndpointCount\":0",
+      "DefaultRenderEndpoint\":\"missing",
+      "nosoundlikely\":true"
+    ],
+    "action": "기본 재생 장치 복구 및 드라이버 점검"
+  },
+  "device_disabled": {
+    "signals": [
+      "DisabledRenderCount",
+      "Status\":\"Error",
+      "Status\":\"Unknown",
+      "problemaudiodevices"
+    ],
+    "action": "비정상 오디오 장치 재시작"
+  },
+  "muted_or_zero_volume": {
+    "signals": [
+      "Muted\":true",
+      "MasterVolume\":0",
+      "VolumeHint\":0",
+      "mutedhint"
+    ],
+    "action": "음소거 해제 및 볼륨 확인 (사용자 확인 필요)"
+  },
+  "bluetooth_audio": {
+    "signals": [
+      "Bluetooth audio",
+      "A2DP",
+      "Hands-Free"
+    ],
+    "action": "Bluetooth 오디오 프로필/연결 상태 확인"
+  },
+  "repair_not_needed": {
+    "signals": [
+      "RepairNeeded\":false",
+      "no repair needed",
+      "playback path looks healthy"
+    ],
+    "action": "복구 불필요 — 현재 오디오 경로 정상"
+  }
+}

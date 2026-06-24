@@ -1,0 +1,26 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.EvidenceExplorerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    RequestedTheme="Light">
+    <ScrollViewer>
+        <StackPanel Padding="{StaticResource SpdMacPagePadding}" Style="{StaticResource MacPageRootStackStyle}">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Text="점검 기록" Style="{StaticResource MacPageTitleStyle}"/>
+                <Button Grid.Column="1" Content="새로 고침" Style="{StaticResource MacToolbarButtonStyle}" Click="Refresh"/>
+            </Grid>
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="보고서 번들" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <ListView x:Name="ReportList" MinHeight="180" SelectionChanged="OnReportSelected"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="evidence.json / timeline.json" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <TextBlock x:Name="EvidenceText" FontFamily="Consolas" FontSize="12" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

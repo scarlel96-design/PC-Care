@@ -1,0 +1,23 @@
+[package]
+name = "smart_performance_doctor_core"
+version = "44.0.0"
+edition = "2024"
+
+[dependencies]
+base64 = "0.22"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tracing = "0.1"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "process", "time", "io-util", "io-std", "sync"] }
+sha2 = "0.10"
+uuid = { version = "1", features = ["v4", "serde"] }
+windows = { version = "0.62", features = [
+  "Win32_Foundation",
+  "Win32_System_Diagnostics_Etw",
+  "Win32_System_EventLog",
+  "Win32_System_Services",
+  "Win32_Devices_DeviceAndDriverInstallation",
+  "Win32_Security_Cryptography",
+  "Win32_System_Threading"
+] }

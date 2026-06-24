@@ -1,0 +1,16 @@
+{
+  "low_disk": {
+    "threshold_free_percent": 12,
+    "action": "디스크 정리 및 Windows Update 캐시 점검"
+  },
+  "high_memory": {
+    "threshold_used_percent": 85,
+    "action": "상위 메모리 프로세스/시작 프로그램 확인"
+  },
+  "pending_reboot": {
+    "action": "재부팅 후 재진단"
+  },
+  "service_stopped": {
+    "action": "자동 시작 서비스 상태 점검 및 안전 재시작"
+  }
+}

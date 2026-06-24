@@ -1,0 +1,204 @@
+{
+  "product": "Smart Performance Doctor",
+  "productKorean": "스마트 성능 닥터",
+  "currentVersion": "45.0.10",
+  "channel": "stable",
+  "lastUpdated": "2026-06-22",
+  "purpose": "향후 .spdup 업데이트 패키지 제작용 누적 변경 기록",
+  "versionHistory": [
+    {
+      "version": "45.0.0",
+      "theme": "Premium macOS UI 리디자인",
+      "changes": [
+        "MainWindow 사이드바 272px · WindowsWindowControls 우측 배치",
+        "MacDesignTokens Premium 스타일 · MacDashboardPage",
+        "UserModeService · FeatureVisibilityService · RefreshNavigationVisibility",
+        "SettingsPage · AdvancedCenterPage 개편"
+      ]
+    },
+    {
+      "version": "45.0.1",
+      "theme": "설치·배포 정리",
+      "changes": [
+        "단일 설치 파일 SmartPerformanceDoctor_설치.exe (SPDPKG1 트레일러)",
+        "EmbeddedInstallerPayload.cs — 실행 시 임시 추출",
+        "self-contained publish 필수 (DLL 없는 exe 즉시 종료 방지)",
+        "build-modular-setup.ps1 · publish-final-installer.ps1 수정"
+      ]
+    },
+    {
+      "version": "45.0.2",
+      "theme": "설치 실행 불가 수정",
+      "changes": [
+        "108MB apphost 껍데기만 있던 문제 해결",
+        "dotnet publish self-contained single-file host + payload append",
+        "더블클릭·관리자 권한 실행 정상화"
+      ]
+    },
+    {
+      "version": "45.0.3",
+      "theme": "보안 검증·기준 버전",
+      "changes": [
+        "SecurityAttackSimulationTests 9/9 통과",
+        "SecureVaultPaths SPD_TEST_VAULT_ROOT 테스트 격리",
+        "SmartPerformanceDoctor_보안검증결과.txt"
+      ]
+    },
+    {
+      "version": "45.0.4",
+      "theme": "업데이트 테스트",
+      "changes": [
+        "동일 버전 패키지 적용 불가 규칙",
+        "같은 버전 선택 시 안내 문구 개선"
+      ]
+    },
+    {
+      "version": "45.0.5",
+      "theme": "업데이트 적용 버튼 수정",
+      "changes": [
+        "업데이트 적용 버튼 무반응 수정",
+        "적용 불가·오류 시 진행 로그·안내 표시",
+        "WinUI UI 스레드 디스패처 처리 보강"
+      ]
+    },
+    {
+      "version": "45.0.6",
+      "theme": "모듈형 설치 관리자",
+      "changes": [
+        "WPF 설치 마법사 9단계",
+        "Repair / Modify / Uninstall · Secure Vault typed confirmation",
+        "WiX 모듈형 Feature Tree MSI + Burn 번들",
+        "installed_features.json 기반 앱 메뉴 숨김",
+        "INSTALLER_MANIFEST.json · SHA256SUMS · UPDATE_CHANNEL"
+      ]
+    },
+    {
+      "version": "45.0.7",
+      "theme": "상용급 보안·케어·점검 복구 고도화",
+      "changes": [
+        "보안 금고 v3 (spd-vault-v3): KDF 600k · 12자+ 정책 · 복구키 · NTFS ACL · Rate Limiter · 감사 체인",
+        "보안 금고 UI: 자동 잠금 · 비밀번호 변경 · 복구키 잠금 해제 · 보안 패널",
+        "보안 삭제 v2: 다중 패스 · HMAC 감사 체인 · 콘텐츠 해시 · 저장장치 프로파일 · 보안 등급 선택",
+        "시스템 케어 v2: 건강 점수 · HMAC 감사 체인 · 격리 롤백 · 추가 스캔 항목",
+        "PC 점검·복구 v2: 세션 감사 로그 · 스냅샷 · 전 모듈 재검증 · 상용 보고서",
+        "PC 점검·복구 fix: 사이드바 진입 시 자동 시작 제거 — [시작] 버튼을 눌러야 점검 시작",
+        "PC 점검·복구 fix: 전체 점검에 드라이버·오디오 모듈 포함 · 범위별 정확한 진단",
+        "드라이버·오디오 단독 점검: 엔진 시간 제한·취소 시 프로세스 종료 · AI 추론까지 진행 보장",
+        "드라이버·오디오 단독 점검: 자동 시작 제거 — [시작] 버튼 필요",
+        "고급 도구: 복구 방법·자세한 점검·규칙 데이터·프로그램 보호·프로그램 상태 통합",
+        "UI: 창 제어 버튼(닫기·최대화·최소화) 상단 오른쪽 배치",
+        "설치 파일·layout·앱 어셈블리 45.0.7 통일 — 누락 업데이트 일괄 반영"
+      ]
+    },
+    {
+      "version": "45.0.8",
+      "theme": "진단 한글화 · 보안 금고 안정화 · 설치 동의 상세화",
+      "changes": [
+        "진단 진행 상태: 영어 단계 ID → 한글 설명(문제 장치 사전 점검 중… 등)",
+        "진단 엔진 Core stage_labels.rs + DiagnosticMessageLocalizer.cs",
+        "보안 금고: 화면 진입·재진입 시 RefreshFromNavigation · 미설치 기능 안내",
+        "설치 관리자: 사용권 계약 7개 조항 · 기능별 상세 동의(금고·영구삭제·시스템복구)",
+        "업데이트 패키지 45.0.8.spdup (설치 파일 제외) · 설치 파일 SmartPerformanceDoctor_설치.exe 별도 45.0.8"
+      ]
+    },
+    {
+      "version": "45.0.9",
+      "theme": "보안 금고 오류 수정 · 폴더 구조 정리",
+      "changes": [
+        "보안 금고: NumberBox.Value XAML 오류 → ComboBox 자동 잠금 분 선택",
+        "런타임 app/ 폴더 분리 · engine/ 하위 엔진 · 루트 DLL·xbf 자동 정리",
+        "시작.bat → app\\SmartPerformanceDoctor.exe 실행",
+        "RuntimePaths.ResolveEnginePath 레거시·신규 경로 호환"
+      ]
+    },
+    {
+      "version": "45.0.10",
+      "theme": "exe 루트 배치 · content/engine 통합 · 프로젝트 폴더 정리",
+      "changes": [
+        "SmartPerformanceDoctor.exe 메인 폴더(루트)에 배치 — app/ 폴더 폐지",
+        "content/rules · content/assets · content/data/commercial 통합",
+        "engine/ 하위 진단·복구 엔진",
+        "installer/portable/archive/docs → artifacts/ 통합",
+        "설치·업데이트 패키지 동일 구조"
+      ]
+    }
+  ],
+  "modules": {
+    "secureVault": {
+      "format": "spd-vault-v3",
+      "crypto": "PBKDF2-SHA512(600k) · HKDF · AES-256-GCM · DEK 이중 봉인 · 샤드 MAC · DPAPI · NTFS ACL",
+      "newFiles": [
+        "SecureVaultPasswordPolicy.cs",
+        "SecureVaultRateLimiter.cs",
+        "SecureVaultAclHelper.cs",
+        "SecureVaultAuditVerifier.cs"
+      ],
+      "features": [
+        "신규 금고 12자+ 비밀번호 정책 (기존 8자 금고 호환)",
+        "복구 키 256비트 · 비밀번호 변경 시 새 복구키",
+        "실패 5회 지수 백오프 잠금",
+        "감사 로그 HMAC 체인 (v3만 엄격 검증)",
+        "자동 잠금 1~60분",
+        "보내기 PathSafetyGuard"
+      ]
+    },
+    "secureDelete": {
+      "protocol": "secure-delete-v2",
+      "newFiles": [
+        "SecureDeleteAuditChain.cs",
+        "SecureDeleteStorageProfiler.cs"
+      ],
+      "features": [
+        "보안 등급: 표준/전문/최대",
+        "HDD 1·3·7 패스 덮어쓰기",
+        "SSD/NVMe best-effort + TRIM 힌트",
+        "삭제 전 SHA-256 콘텐츠 해시",
+        "HMAC-SHA256 감사 체인 (DPAPI 키)",
+        "저장장치 프로파일 (HDD/SSD/NVMe/USB)",
+        "폴더 재귀 보안 삭제"
+      ]
+    },
+    "systemCare": {
+      "protocol": "system-care-v2",
+      "newFiles": [
+        "CareAuditChain.cs",
+        "CareHealthScorer.cs",
+        "CareRollbackService.cs"
+      ],
+      "features": [
+        "건강 점수 0~100 (위험도 가중)",
+        "스캔·적용 HMAC 감사 체인",
+        "격리 폴더 롤백",
+        "추가 스캔: 휴지통 · Prefetch · Windows Update 캐시",
+        "감사 폴더 manifest.json"
+      ]
+    },
+    "unifiedCare": {
+      "protocol": "unified-care-v2",
+      "newFiles": [
+        "UnifiedCareAuditService.cs",
+        "UnifiedCareSnapshotService.cs"
+      ],
+      "features": [
+        "세션 ID · HMAC 감사 로그",
+        "복구 전/후 시스템 스냅샷",
+        "복구 후 전 모듈 재검증",
+        "점수 변화·건강 델타 보고",
+        "상용 HTML 세션 보고서",
+        "사이드바 진입 시 자동 시작 없음 — [시작] 버튼으로 수동 시작",
+        "전체 점검 범위: quick + system + driver + audio"
+      ]
+    }
+  },
+  "buildCommands": {
+    "app": "dotnet build src\\SmartPerformanceDoctor.App\\SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64",
+    "installer": ".\\scripts\\publish-final-installer.ps1 -Version \"45.0.10\"",
+    "installerNote": "2026-06-22 — 설치 파일·layout·앱 45.0.10 빌드",
+    "updatePackage": ".\\scripts\\create-update-package.ps1 -ChangesFile \".\\updates\\CHANGELOG_v45.0.10.json\""
+  },
+  "constraints": [
+    "실제 사용자 금고 %LOCALAPPDATA%\\SmartPerformanceDoctor\\secure_vault\\default\\ 삭제 금지",
+    "테스트는 SPD_TEST_VAULT_ROOT 격리",
+    "기존 v1/v2 금고 하위 호환 유지"
+  ]
+}

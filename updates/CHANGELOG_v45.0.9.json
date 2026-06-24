@@ -1,0 +1,28 @@
+{
+  "fromVersion": "45.0.8",
+  "toVersion": "45.0.9",
+  "releaseNotes": "보안 금고 화면 오류 수정 · 프로그램 폴더 구조 정리",
+  "highlights": [
+    "보안 금고 NumberBox XAML 오류 해결 — 자동 잠금 분 선택 ComboBox로 교체",
+    "실행 파일·DLL을 app/ 폴더로 분리 — 프로젝트 루트 정리",
+    "진단·복구 엔진을 app/engine/ 하위로 이동"
+  ],
+  "changes": [
+    "[45.0.9] 보안 금고: NumberBox.Value XAML 파싱 오류 수정 → ComboBox(1~60분)",
+    "[45.0.9] 폴더 구조: 런타임 파일 app/ · 엔진 app/engine/ · 시작.bat은 app 실행",
+    "[45.0.9] RuntimePaths.ResolveEnginePath — engine/·루트 레거시 경로 모두 지원",
+    "[45.0.9] deploy-to-root.ps1 → app/ 배포 + 루트 런타임 파일 자동 정리",
+    "[45.0.9] 45.0.8 한글 진단·설치 동의 문구 유지"
+  ],
+  "files": {
+    "secureVault": [
+      "Views/SecureVaultCenterPage.xaml",
+      "Views/SecureVaultCenterPage.xaml.cs"
+    ],
+    "layout": [
+      "Services/RuntimePaths.cs",
+      "scripts/deploy-to-root.ps1",
+      "scripts/copy-native-engines.ps1"
+    ]
+  }
+}

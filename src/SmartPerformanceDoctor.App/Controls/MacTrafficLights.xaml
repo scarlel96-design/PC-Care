@@ -1,0 +1,16 @@
+<UserControl
+    x:Class="SmartPerformanceDoctor.App.Controls.MacTrafficLights"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Orientation="Horizontal" Spacing="8">
+        <Button x:Name="CloseButton" Width="14" Height="14" Padding="0" CornerRadius="7"
+                Background="{StaticResource SpdMacRedBrush}" BorderThickness="0"
+                ToolTipService.ToolTip="닫기" Click="OnClose"/>
+        <Button x:Name="MinimizeButton" Width="14" Height="14" Padding="0" CornerRadius="7"
+                Background="{StaticResource SpdMacYellowBrush}" BorderThickness="0"
+                ToolTipService.ToolTip="최소화" Click="OnMinimize"/>
+        <Button x:Name="MaximizeButton" Width="14" Height="14" Padding="0" CornerRadius="7"
+                Background="{StaticResource SpdMacGreenBrush}" BorderThickness="0"
+                ToolTipService.ToolTip="전체 화면" Click="OnMaximize"/>
+    </StackPanel>
+</UserControl>

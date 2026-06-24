@@ -1,0 +1,71 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "AegisRecoveryHelper/50.0.0": {
+        "dependencies": {
+          "SmartPerformanceDoctor.Aegis": "50.0.0",
+          "SmartPerformanceDoctor.Contracts": "50.0.0"
+        },
+        "runtime": {
+          "AegisRecoveryHelper.dll": {}
+        }
+      },
+      "System.Security.Cryptography.ProtectedData/9.0.4": {
+        "runtime": {
+          "lib/net9.0/System.Security.Cryptography.ProtectedData.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.425.16305"
+          }
+        }
+      },
+      "SmartPerformanceDoctor.Aegis/50.0.0": {
+        "dependencies": {
+          "System.Security.Cryptography.ProtectedData": "9.0.4"
+        },
+        "runtime": {
+          "SmartPerformanceDoctor.Aegis.dll": {
+            "assemblyVersion": "50.0.0.0",
+            "fileVersion": "50.0.0.0"
+          }
+        }
+      },
+      "SmartPerformanceDoctor.Contracts/50.0.0": {
+        "runtime": {
+          "SmartPerformanceDoctor.Contracts.dll": {
+            "assemblyVersion": "50.0.0.0",
+            "fileVersion": "50.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "AegisRecoveryHelper/50.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.Security.Cryptography.ProtectedData/9.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-o94k2RKuAce3GeDMlUvIXlhVa1kWpJw95E6C9LwW0KlG0nj5+SgCiIxJ2Eroqb9sLtG1mEMbFttZIBZ13EJPvQ==",
+      "path": "system.security.cryptography.protecteddata/9.0.4",
+      "hashPath": "system.security.cryptography.protecteddata.9.0.4.nupkg.sha512"
+    },
+    "SmartPerformanceDoctor.Aegis/50.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SmartPerformanceDoctor.Contracts/50.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

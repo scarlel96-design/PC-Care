@@ -1,0 +1,29 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.ProtocolCenterPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    RequestedTheme="Light">
+    <ScrollViewer>
+        <StackPanel Padding="{StaticResource SpdMacPagePadding}" Style="{StaticResource MacPageRootStackStyle}">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="복구 방법" Style="{StaticResource MacPageTitleStyle}"/>
+                    <TextBlock x:Name="SummaryText" Style="{StaticResource MacInlineStatusTextStyle}"/>
+                </StackPanel>
+                <Button Grid.Column="1" Content="새로 고침" Style="{StaticResource MacToolbarButtonStyle}" Click="Refresh"/>
+            </Grid>
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="대응 프로토콜 목록" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <ListView x:Name="ProtocolList" MinHeight="220" SelectionChanged="OnProtocolSelected"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="적용 전 미리보기" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <TextBlock x:Name="DryRunText" TextWrapping="Wrap" Foreground="{StaticResource SpdMutedTextBrush}"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

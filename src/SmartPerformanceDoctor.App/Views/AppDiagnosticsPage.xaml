@@ -1,0 +1,30 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.AppDiagnosticsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Padding="{StaticResource SpdMacPagePadding}" Spacing="18">
+        <TextBlock Text="앱 실행 진단" FontSize="34" FontWeight="SemiBold"/>
+        <TextBlock Text="케어 엔진, 복구 도우미, 규칙·리소스, 보고서·로그 폴더 구성을 점검합니다."
+                   Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
+        <Border Style="{StaticResource MacWindowPanelStyle}">
+            <StackPanel Spacing="12">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Content="다시 검사" Click="RefreshDiagnostics"/>
+                    <Button Content="앱 폴더 열기" Click="OpenAppFolder"/>
+                </StackPanel>
+                <ListView x:Name="DiagnosticsList" MinHeight="420">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Padding="8">
+                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding Status}" Foreground="{StaticResource SpdMutedTextBrush}"/>
+                                <TextBlock Text="{Binding Message}" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding Path}" Foreground="{StaticResource SpdMutedTextBrush}" TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</Page>

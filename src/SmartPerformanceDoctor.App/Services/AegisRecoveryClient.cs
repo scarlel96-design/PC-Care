@@ -1,0 +1,144 @@
+using System.Diagnostics;
+using System.IO.Pipes;
+using System.Security.AccessControl;
+using System.Security.Principal;
+using System.Text;
+using System.Text.Json;
+using SmartPerformanceDoctor.Contracts;
+
+namespace SmartPerformanceDoctor.App.Services;
+
+public sealed class AegisRecoveryClient
+{
+    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
+    {
+        WriteIndented = false
+    };
+
+    public async Task<AegisRecoveryResponse> SendAsync(AegisRecoveryRequest request, CancellationToken cancellationToken)
+    {
+        var helperPath = ResolveHelperPath();
+        if (!File.Exists(helperPath))
+        {
+            return new AegisRecoveryResponse
+            {
+                Id = request.Id,
+                Status = "helper-not-found",
+                Message = $"복구 미러 도우미를 찾지 못했습니다: {helperPath}"
+            };
+        }
+
+        var pipeName = "aegis-recovery-" + Guid.NewGuid().ToString("N");
+        var nonce = Guid.NewGuid().ToString("N");
+        request = request with
+        {
+            Nonce = nonce,
+            InstallRoot = string.IsNullOrWhiteSpace(request.InstallRoot) ? RuntimePaths.InstallRoot : request.InstallRoot
+        };
+
+        using var server = CreatePipeServer(pipeName);
+        var startInfo = new ProcessStartInfo
+        {
+            FileName = helperPath,
+            Arguments = $"--pipe {pipeName}",
+            UseShellExecute = true,
+            Verb = "runas",
+            WindowStyle = ProcessWindowStyle.Hidden
+        };
+
+        try
+        {
+            Process.Start(startInfo);
+        }
+        catch (Exception ex)
+        {
+            return new AegisRecoveryResponse
+            {
+                Id = request.Id,
+                Status = "helper-launch-failed",
+                Message = $"복구 미러 도우미 실행 실패: {ex.Message}"
+            };
+        }
+
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        timeout.CancelAfter(TimeSpan.FromMinutes(5));
+
+        await server.WaitForConnectionAsync(timeout.Token);
+
+        var payload = JsonSerializer.Serialize(request, JsonOptions) + "\n";
+        var bytes = Encoding.UTF8.GetBytes(payload);
+        await server.WriteAsync(bytes, timeout.Token);
+        await server.FlushAsync(timeout.Token);
+
+        using var reader = new StreamReader(server, Encoding.UTF8, leaveOpen: true);
+        var line = await reader.ReadLineAsync(timeout.Token);
+        if (string.IsNullOrWhiteSpace(line))
+        {
+            return new AegisRecoveryResponse
+            {
+                Id = request.Id,
+                Status = "empty",
+                Message = "복구 미러 도우미 응답이 비어 있습니다."
+            };
+        }
+
+        var response = JsonSerializer.Deserialize<AegisRecoveryResponse>(line, JsonOptions)
+            ?? new AegisRecoveryResponse
+            {
+                Id = request.Id,
+                Status = "parse-failed",
+                Message = "복구 미러 도우미 응답 파싱에 실패했습니다."
+            };
+
+        if (!string.Equals(response.Nonce, nonce, StringComparison.Ordinal))
+        {
+            return response with
+            {
+                Status = "nonce-mismatch",
+                Message = "응답 nonce가 요청과 일치하지 않아 차단했습니다."
+            };
+        }
+
+        return response;
+    }
+
+    private static NamedPipeServerStream CreatePipeServer(string pipeName)
+    {
+        if (OperatingSystem.IsWindows())
+        {
+            var security = new PipeSecurity();
+            var currentUser = WindowsIdentity.GetCurrent().User;
+            if (currentUser is not null)
+            {
+                security.AddAccessRule(new PipeAccessRule(
+                    currentUser,
+                    PipeAccessRights.ReadWrite | PipeAccessRights.CreateNewInstance,
+                    AccessControlType.Allow));
+            }
+
+            security.AddAccessRule(new PipeAccessRule(
+                new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null),
+                PipeAccessRights.ReadWrite | PipeAccessRights.CreateNewInstance,
+                AccessControlType.Allow));
+
+            return NamedPipeServerStreamAcl.Create(
+                pipeName,
+                PipeDirection.InOut,
+                maxNumberOfServerInstances: 1,
+                PipeTransmissionMode.Byte,
+                PipeOptions.Asynchronous,
+                inBufferSize: 4096,
+                outBufferSize: 4096,
+                pipeSecurity: security);
+        }
+
+        return new NamedPipeServerStream(
+            pipeName,
+            PipeDirection.InOut,
+            maxNumberOfServerInstances: 1,
+            PipeTransmissionMode.Byte,
+            PipeOptions.Asynchronous);
+    }
+
+    private static string ResolveHelperPath() => RuntimePaths.ResolveAegisRecoveryHelperPath();
+}

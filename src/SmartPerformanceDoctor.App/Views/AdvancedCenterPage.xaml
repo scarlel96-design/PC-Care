@@ -1,0 +1,9 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.AdvancedCenterPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    RequestedTheme="Light">
+    <ScrollViewer>
+        <StackPanel x:Name="RootPanel" Padding="{StaticResource SpdMacPagePadding}" MaxWidth="980" Spacing="20"/>
+    </ScrollViewer>
+</Page>

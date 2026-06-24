@@ -1,0 +1,1 @@
+{"packFile":"protocols.pack.json","packVersion":"50.0.0","productVersion":"50.0.0","algorithm":"SHA-256","checksum":"0d230fe2ef024daf8680c60f441d8c052231f11f4907bbb4ed6b23d8c45862b8","signatureAlgorithm":"ECDSA-P256-SHA256","signature":"f3FSvF224xzL3RF61FySFP3+zx+0As1Rq/xaVUHNjtpwk698unV4oqsbol0LePF9n50TpWv28hcjk9KLAkqIbw==","signedAt":"2026-06-24T21:37:28.4486380+09:00"}

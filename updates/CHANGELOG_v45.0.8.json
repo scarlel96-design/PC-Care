@@ -1,0 +1,32 @@
+{
+  "fromVersion": "45.0.7",
+  "toVersion": "45.0.8",
+  "releaseNotes": "진단 진행 한글화 · 보안 금고 실행 수정 · 설치 동의 문구 상세화",
+  "highlights": [
+    "PC 점검·복구 진행 상태를 이용자가 이해하기 쉬운 한글 문구로 표시",
+    "보안 금고 메뉴 진입·화면 새로고침 안정화",
+    "설치 관리자 사용권·기능별 동의 문구 대폭 상세화"
+  ],
+  "changes": [
+    "[45.0.8] 진단 진행: 영어 단계 ID(device_preflight_snapshot 등) → 한글 설명(문제 장치 사전 점검 중… 등)으로 표시",
+    "[45.0.8] 진단 엔진: 드라이버·오디오·시스템·빠른 검사 전 단계 한글 라벨 적용",
+    "[45.0.8] 보안 금고: 사이드바 진입 시 화면 갱신·오류 시 생성 패널 표시 · 미설치 기능 안내",
+    "[45.0.8] 고급 도구·업데이트·설치 관리자(45.0.7-fix) 유지",
+    "[45.0.8] 설치 파일: 사용권 계약 7개 조항·기능별 상세 동의(금고·영구삭제·시스템복구) 문구 보강",
+    "[45.0.8] 업데이트 패키지 전용 — 설치 파일(.exe)은 별도 배포, .spdup으로 앱만 갱신"
+  ],
+  "files": {
+    "diagnostics": [
+      "Services/DiagnosticMessageLocalizer.cs",
+      "SmartPerformanceDoctor.Core/src/engine/stage_labels.rs"
+    ],
+    "secureVault": [
+      "Views/SecureVaultCenterPage.xaml.cs",
+      "Services/FeatureGateService.cs",
+      "Services/AppNavigationService.cs"
+    ],
+    "installer": [
+      "SmartPerformanceDoctor.Setup/MainWindow.xaml.cs"
+    ]
+  }
+}

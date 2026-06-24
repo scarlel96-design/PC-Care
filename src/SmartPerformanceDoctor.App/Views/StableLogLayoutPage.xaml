@@ -1,0 +1,46 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.StableLogLayoutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Padding="{StaticResource SpdMacPagePadding}" RowDefinitions="Auto,Auto,*" RowSpacing="16">
+        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+            <StackPanel Spacing="4">
+                <TextBlock Text="보존 실행 로그" Style="{StaticResource MacPageTitleStyle}"/>
+                <TextBlock Text="여러 번 진단해도 글자가 겹치지 않도록 안정 행 레이아웃으로 표시합니다."
+                           Style="{StaticResource MacInlineStatusTextStyle}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                <Button Content="새로 고침" Style="{StaticResource MacToolbarButtonStyle}" Click="RefreshLogs"/>
+                <Button Content="선택 로그 열기" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenSelected"/>
+            </StackPanel>
+        </Grid>
+
+        <Border Grid.Row="1" Style="{StaticResource MacWindowPanelStyle}">
+            <TextBlock Text="최근 출력 영역은 제거했습니다. 로그는 아래 목록에서만 안정적으로 확인하고, 긴 본문은 파일 열기로 분리합니다."
+                       Style="{StaticResource MacInlineStatusTextStyle}"/>
+        </Border>
+
+        <Border Grid.Row="2" Style="{StaticResource MacWindowPanelStyle}">
+            <ListView x:Name="LogList" Style="{StaticResource StableLogListViewStyle}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource StableLogItemPanelStyle}">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="{Binding Title}" Style="{StaticResource StableLogTitleTextStyle}"/>
+                                    <TextBlock Text="{Binding Preview}" Style="{StaticResource StableLogPreviewTextStyle}"/>
+                                    <TextBlock Text="{Binding Path}" Style="{StaticResource StableLogMetaTextStyle}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Right" Spacing="4">
+                                    <TextBlock Text="{Binding Category}" Style="{StaticResource StableLogMetaTextStyle}" HorizontalAlignment="Right"/>
+                                    <TextBlock Text="{Binding CreatedAt}" Style="{StaticResource StableLogMetaTextStyle}" HorizontalAlignment="Right"/>
+                                    <TextBlock Text="{Binding SizeBytes}" Style="{StaticResource StableLogMetaTextStyle}" HorizontalAlignment="Right"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
+    </Grid>
+</Page>

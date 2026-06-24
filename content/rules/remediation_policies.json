@@ -1,0 +1,19 @@
+{
+  "forbidden": [
+    "pnputil /delete-driver /force",
+    "pnputil /remove-device",
+    "disable defender",
+    "arbitrary powershell"
+  ],
+  "allowed": [
+    "pnputil /scan-devices",
+    "pnputil /restart-device",
+    "Restart-Service Audiosrv",
+    "Restart-Service AudioEndpointBuilder"
+  ],
+  "requires_approval": [
+    "DISM /RestoreHealth",
+    "sfc /scannow",
+    "driver reinstall"
+  ]
+}

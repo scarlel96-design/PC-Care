@@ -1,0 +1,95 @@
+<Window
+    x:Class="SmartPerformanceDoctor.App.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:SmartPerformanceDoctor.App.Controls">
+
+    <Grid Background="{StaticResource SpdPremiumWindowBrush}" RequestedTheme="Light" RowDefinitions="38,*">
+        <Grid x:Name="AppTitleBar"
+              Grid.Row="0"
+              ColumnDefinitions="272,*,Auto"
+              Background="{StaticResource SpdPremiumSidebarBrush}"
+              BorderBrush="{StaticResource SpdMacSeparatorBrush}"
+              BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal"
+                        Spacing="10"
+                        Margin="20,0,0,0"
+                        VerticalAlignment="Center">
+                <Border Width="22" Height="22" CornerRadius="6" Background="{StaticResource SpdMacAccentBrush}">
+                    <TextBlock Text="◆" FontSize="11" Foreground="White"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <TextBlock Text="PC 케어 프로"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource SpdMacTextBrush}"/>
+            </StackPanel>
+            <Border Grid.Column="1"
+                    Background="{StaticResource SpdPremiumWindowBrush}"
+                    BorderBrush="{StaticResource SpdMacSeparatorBrush}"
+                    BorderThickness="0,0,0,1">
+                <TextBlock x:Name="TitleStatusText"
+                           Text="준비됨"
+                           Margin="20,0,12,0"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           Foreground="{StaticResource SpdMacSecondaryTextBrush}"/>
+            </Border>
+            <Border Grid.Column="2"
+                    Background="{StaticResource SpdPremiumWindowBrush}"
+                    BorderBrush="{StaticResource SpdMacSeparatorBrush}"
+                    BorderThickness="0,0,0,1">
+                <controls:WindowsWindowControls x:Name="WindowControls"
+                                                Margin="0,0,0,0"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Right"/>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="1" ColumnDefinitions="272,*">
+            <Border Grid.Column="0"
+                    Background="{StaticResource SpdPremiumSidebarBrush}"
+                    BorderBrush="{StaticResource SpdMacSeparatorBrush}"
+                    BorderThickness="0,0,1,0">
+                <Grid RowDefinitions="Auto,Auto,*">
+                    <StackPanel Padding="20,14,20,10" Spacing="12">
+                        <TextBlock x:Name="VersionText"
+                                   Text="버전 …"
+                                   FontSize="11"
+                                   Foreground="{StaticResource SpdMacSecondaryTextBrush}"/>
+                        <TextBox x:Name="SearchBox"
+                                 PlaceholderText="메뉴 검색"
+                                 TextChanged="SearchChanged"
+                                 Style="{StaticResource MacSearchBoxStyle}"/>
+                    </StackPanel>
+
+                    <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource SpdMacSeparatorBrush}"/>
+
+                    <ScrollViewer Grid.Row="2">
+                        <StackPanel x:Name="NavPanel" Padding="14,8,14,20" Spacing="2">
+                            <TextBlock Text="주요 기능" Style="{StaticResource MacSectionTitleStyle}" Tag="section:primary"/>
+                            <controls:MacNavigationButton Title="홈" Symbol="◫" Click="OpenDashboard" Tag="nav:home"/>
+                            <controls:MacNavigationButton Title="통합 점검" Symbol="⌁" Click="OpenUnifiedCare" Tag="nav:pc-check"/>
+                            <controls:MacNavigationButton Title="시스템 케어" Symbol="◉" Click="OpenSystemCare" Tag="nav:system-care"/>
+                            <controls:MacNavigationButton Title="보안 금고" Symbol="⬢" Click="OpenSecureVault" Tag="nav:secure-vault"/>
+                            <controls:MacNavigationButton Title="보안 삭제" Symbol="⊗" Click="OpenSecureDelete" Tag="nav:secure-delete"/>
+
+                            <TextBlock Text="기록" Style="{StaticResource MacSectionTitleStyle}" Tag="section:history"/>
+                            <controls:MacNavigationButton Title="보고서" Symbol="□" Click="OpenReports" Tag="nav:reports"/>
+                            <controls:MacNavigationButton Title="작업 내역" Symbol="◇" Click="OpenActivity" Tag="nav:activity"/>
+
+                            <TextBlock Text="설정" Style="{StaticResource MacSectionTitleStyle}" Tag="section:settings"/>
+                            <controls:MacNavigationButton Title="환경설정" Symbol="⚙" Click="OpenSettings" Tag="nav:settings"/>
+                            <controls:MacNavigationButton Title="기능 관리" Symbol="☷" Click="OpenFeatureManagement" Tag="nav:feature-mgmt"/>
+                            <controls:MacNavigationButton Title="고급 도구" Symbol="◈" Click="OpenAdvancedCenter" Tag="nav:advanced-center"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+            <Frame x:Name="RootFrame"
+                   Grid.Column="1"
+                   Background="{StaticResource SpdPremiumWindowBrush}"/>
+        </Grid>
+    </Grid>
+</Window>

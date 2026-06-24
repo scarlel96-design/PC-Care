@@ -1,0 +1,33 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.DeepScanSetupPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    RequestedTheme="Light">
+    <ScrollViewer>
+        <StackPanel Padding="{StaticResource SpdMacPagePadding}" Style="{StaticResource MacPageRootStackStyle}">
+            <TextBlock Text="자세한 점검" Style="{StaticResource MacPageTitleStyle}"/>
+            <TextBlock Text="점검 범위를 고르고 세부 항목을 확인합니다. 변경은 확인 후에만 적용됩니다."
+                       Style="{StaticResource MacInlineStatusTextStyle}"/>
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="스캔 모드" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <ComboBox x:Name="ScanModeBox" SelectedIndex="1">
+                        <ComboBoxItem Content="빠른 스캔 (1~3분)"/>
+                        <ComboBoxItem Content="표준 스캔 (5~10분)"/>
+                        <ComboBoxItem Content="딥 스캔 (15~40분)"/>
+                        <ComboBoxItem Content="복구 준비 스캔"/>
+                        <ComboBoxItem Content="복구 후 검증 스캔"/>
+                    </ComboBox>
+                    <Button Content="점검 실행" Style="{StaticResource MacToolbarButtonStyle}" Click="RunPrecisionScan"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="스캐너 결과" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <TextBlock x:Name="ScanSummaryText" Style="{StaticResource MacEmphasisValueStyle}"/>
+                    <ListView x:Name="SignalList" MinHeight="240" SelectionMode="None"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

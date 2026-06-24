@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-app-debug-x64",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "${workspaceFolder}/src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj",
+        "-c",
+        "Debug",
+        "-p:Platform=x64"
+      ],
+      "group": "build",
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build-app-release-x64",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "${workspaceFolder}/src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj",
+        "-c",
+        "Release",
+        "-p:Platform=x64"
+      ],
+      "group": "build",
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "fromVersion": "45.0.3",
+  "toVersion": "45.0.7",
+  "releaseNotes": "상용급 보안 금고·보안 삭제·시스템 케어·PC 점검 복구 전면 고도화",
+  "highlights": [
+    "보안 금고 v3 — KDF 600k · 12자+ 정책 · 복구키 · NTFS ACL · 무차별 대입 방어 · 감사 체인",
+    "보안 삭제 v2 — 다중 패스 · HMAC 감사 · 콘텐츠 해시 · 저장장치별 프로토콜 · 보안 등급",
+    "시스템 케어 v2 — 건강 점수 · HMAC 감사 · 격리 롤백 · 휴지통·Prefetch·WU 캐시 스캔",
+    "PC 점검·복구 v2 — 세션 감사 · 스냅샷 · 전 모듈 재검증 · 점수 변화 보고"
+  ],
+  "changes": [
+    "[45.0.4] 업데이트 동일 버전 적용 불가 규칙 · 안내 문구 개선",
+    "[45.0.5] 업데이트 적용 버튼 무반응 수정 · 진행 로그·게이지 보강",
+    "[45.0.6] 모듈형 WiX 설치 관리자 · Repair/Modify/Uninstall · installed_features.json",
+    "[45.0.7] 보안 금고 v3 — KDF 600k · 12자+ 정책 · 복구키 · NTFS ACL · Rate Limiter · 감사 체인",
+    "[45.0.7] 보안 금고 UI — 자동 잠금 · 비밀번호 변경 · 복구키 잠금 해제 (기존 8자 금고 호환)",
+    "[45.0.7] 보안 삭제 v2 — 표준/전문/최대 등급 · 다중 패스 · HMAC 감사 · 콘텐츠 해시",
+    "[45.0.7] 시스템 케어 v2 — 건강 점수 0~100 · HMAC 감사 · 격리 롤백 · 휴지통·Prefetch·WU 캐시",
+    "[45.0.7] PC 점검·복구 v2 — 세션 감사 · 스냅샷 · 전 모듈 재검증 · HTML 보고서",
+    "[45.0.7-fix] PC 점검·복구: 사이드바 진입 시 자동 시작 제거 — [시작] 버튼을 눌러야 점검 시작",
+    "[45.0.7-fix] PC 점검·복구: 전체 점검에 드라이버·오디오 모듈 포함 · 범위별 정확한 진단",
+    "[45.0.7-fix] 드라이버·오디오 단독 점검: 엔진 시간 제한·취소 시 프로세스 종료 · AI 추론 단계까지 진행 보장",
+    "[45.0.7-fix] 드라이버·오디오 단독 점검: 자동 시작 제거 — 범위 선택 후 [시작] 필요",
+    "[45.0.7-fix] 고급 도구: 복구 방법·자세한 점검·규칙 데이터·프로그램 보호·프로그램 상태를 고급 도구로 통합",
+    "[45.0.7-fix] UI: 닫기·최대화·최소화 버튼을 상단 오른쪽으로 배치 (Windows 표준)",
+    "[45.0.7] 설치 파일·프로그램·layout 전체 45.0.7 버전 통일 — 누락 업데이트 일괄 반영"
+  ],
+  "files": {
+    "secureVault": [
+      "Services/Security/SecureVaultPasswordPolicy.cs",
+      "Services/Security/SecureVaultRateLimiter.cs",
+      "Services/Security/SecureVaultAclHelper.cs",
+      "Services/Security/SecureVaultAuditVerifier.cs"
+    ],
+    "secureDelete": [
+      "Services/Commercial/SecureDeleteAuditChain.cs",
+      "Services/Commercial/SecureDeleteStorageProfiler.cs"
+    ],
+    "systemCare": [
+      "Services/SystemCare/CareAuditChain.cs",
+      "Services/SystemCare/CareHealthScorer.cs",
+      "Services/SystemCare/CareRollbackService.cs"
+    ],
+    "unifiedCare": [
+      "Services/UnifiedCareAuditService.cs",
+      "Services/UnifiedCareSnapshotService.cs"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.RiskGatePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Padding="{StaticResource SpdMacPagePadding}" Spacing="18">
+        <TextBlock Text="위험 승인 게이트" FontSize="34" FontWeight="SemiBold"/>
+        <Border Style="{StaticResource MacWindowPanelStyle}">
+            <StackPanel Spacing="12">
+                <TextBlock Text="복구 작업 전 확인" FontSize="22" FontWeight="SemiBold"/>
+                <TextBlock Text="시스템 복구, 파일 검사, 드라이버 재시작, 오디오 서비스 재구동 같은 작업은 반드시 진단 결과와 위험도를 확인한 뒤 진행합니다."
+                           TextWrapping="Wrap"/>
+                <ComboBox x:Name="ActionBox" SelectedIndex="0">
+                    <ComboBoxItem Content="dism_checkhealth"/>
+                    <ComboBoxItem Content="sfc_verifyonly"/>
+                    <ComboBoxItem Content="pnputil_scan_devices"/>
+                    <ComboBoxItem Content="restart_audiosrv"/>
+                    <ComboBoxItem Content="restart_audioendpointbuilder"/>
+                </ComboBox>
+                <CheckBox x:Name="ConfirmCheck" Content="위험도와 복구 지점 정책을 확인했습니다."/>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Content="시뮬레이션 계획 생성" Click="GeneratePlan"/>
+                    <Button Content="승인 후 실행" Click="ApplyRepair"/>
+                </StackPanel>
+                <TextBlock x:Name="ResultText" Text="복구 도우미 응답이 여기에 표시됩니다." TextWrapping="Wrap"/>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</Page>

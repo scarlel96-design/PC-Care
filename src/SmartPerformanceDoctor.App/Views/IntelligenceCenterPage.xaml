@@ -1,0 +1,31 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.IntelligenceCenterPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    RequestedTheme="Light">
+    <ScrollViewer>
+        <StackPanel Padding="{StaticResource SpdMacPagePadding}" Style="{StaticResource MacPageRootStackStyle}">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="문제 분석" Style="{StaticResource MacPageTitleStyle}"/>
+                    <TextBlock x:Name="SummaryText" Style="{StaticResource MacInlineStatusTextStyle}"/>
+                </StackPanel>
+                <Button Grid.Column="1" Content="새로 고침" Style="{StaticResource MacToolbarButtonStyle}" Click="Refresh"/>
+            </Grid>
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="규칙·프로토콜 DB" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <TextBlock x:Name="RuleCountText" Style="{StaticResource MacEmphasisValueStyle}"/>
+                    <TextBlock x:Name="ProtocolCountText" Style="{StaticResource MacInlineStatusTextStyle}"/>
+                    <TextBlock Text="점검 결과를 규칙과 맞춰 보고, 복구 방법을 추천합니다." Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="분석 인사이트" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <ListView x:Name="InsightList" MinHeight="200" SelectionMode="None"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

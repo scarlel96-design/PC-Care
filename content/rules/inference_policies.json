@@ -1,0 +1,49 @@
+{
+  "version": "1.0",
+  "fusion": {
+    "min_confidence": 0.45,
+    "learning_weight_blend": 0.35,
+    "severity_penalties": {
+      "critical": 22,
+      "warning": 12,
+      "info": 4
+    }
+  },
+  "signal_clusters": [
+    {
+      "id": "service_down",
+      "keywords": ["state", "stopped", "not running", "서비스", "stopped"],
+      "title": "자동 시작 서비스 중단",
+      "recommendation": "audio_restart_stack",
+      "confidence": 0.72
+    },
+    {
+      "id": "storage_risk",
+      "keywords": ["disk", "storage", "healthstatus", "warning", "저장"],
+      "title": "저장소 상태 주의",
+      "recommendation": "dism_checkhealth",
+      "confidence": 0.68
+    },
+    {
+      "id": "driver_problem",
+      "keywords": ["pnp", "problem", "configmanager", "driver", "장치"],
+      "title": "드라이버/장치 문제 신호",
+      "recommendation": "driver_check_problem_devices",
+      "confidence": 0.75
+    },
+    {
+      "id": "reboot_pending",
+      "keywords": ["reboot", "pending", "재부팅"],
+      "title": "재부팅 대기 상태",
+      "recommendation": "dism_checkhealth",
+      "confidence": 0.6
+    }
+  ],
+  "repair_mapping": {
+    "system": ["dism_checkhealth", "driver_check_problem_devices", "audio_scan_devices"],
+    "driver": ["driver_check_problem_devices", "pnputil_scan_devices"],
+    "audio": ["audio_scan_devices", "audio_restart_stack"],
+    "quick": ["driver_check_problem_devices", "audio_scan_devices"],
+    "full": ["driver_check_problem_devices", "audio_scan_devices", "pnputil_scan_devices", "audio_restart_stack"]
+  }
+}

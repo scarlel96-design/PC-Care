@@ -1,0 +1,54 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.ReportPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    RequestedTheme="Light">
+    <StackPanel Padding="{StaticResource SpdMacPagePadding}" Spacing="18">
+        <Grid ColumnDefinitions="*,Auto">
+            <StackPanel Spacing="4">
+                <TextBlock Text="점검 보고서" Style="{StaticResource MacPageTitleStyle}"/>
+                <TextBlock Text="바탕화면\SmartPerformanceDoctor\Reports 폴더의 Core 진단 보고서입니다."
+                           Style="{StaticResource MacInlineStatusTextStyle}"/>
+            </StackPanel>
+            <Button Grid.Column="1" Content="새로 고침" Style="{StaticResource MacToolbarButtonStyle}" Click="RefreshReports"/>
+        </Grid>
+
+        <Border Style="{StaticResource MacWindowPanelStyle}">
+            <StackPanel Spacing="12">
+                <TextBlock Text="최근 보고서" Style="{StaticResource MacSectionHeaderStyle}"/>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Content="선택 보고서 열기" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenSelectedReport"/>
+                    <Button Content="보고서 폴더 열기" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenReportsFolder"/>
+                </StackPanel>
+
+                <ListView x:Name="ReportList" MinHeight="320" SelectionMode="Single" SelectionChanged="ReportSelectionChanged">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="*,Auto" Padding="8" ColumnSpacing="12">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="{Binding Title}" Style="{StaticResource MacListItemTitleStyle}" TextWrapping="Wrap"/>
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <TextBlock Text="{Binding Module}" Style="{StaticResource MacListItemSubtitleStyle}"/>
+                                        <TextBlock Text="·" Style="{StaticResource MacListItemSubtitleStyle}"/>
+                                        <TextBlock Text="{Binding CreatedAt}" Style="{StaticResource MacListItemSubtitleStyle}"/>
+                                        <TextBlock Text="·" Style="{StaticResource MacListItemSubtitleStyle}"/>
+                                        <TextBlock Text="{Binding ActionsTakenCount}" Style="{StaticResource MacListItemSubtitleStyle}"/>
+                                        <TextBlock Text="건 조치" Style="{StaticResource MacListItemSubtitleStyle}"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding SummaryText}" Style="{StaticResource MacListItemSubtitleStyle}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding StatusLabel}"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Center"
+                                           Foreground="{StaticResource SpdMacTextBrush}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <TextBlock x:Name="StatusText" Text="목록에서 보고서를 선택하세요. HTML 보고서가 우선 열립니다." TextWrapping="Wrap" Style="{StaticResource MacInlineStatusTextStyle}"/>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</Page>

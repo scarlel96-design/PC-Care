@@ -1,0 +1,111 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.UpdateStatusPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    RequestedTheme="Light">
+    <ScrollViewer>
+        <StackPanel Padding="{StaticResource SpdMacPagePadding}" Style="{StaticResource MacPageRootStackStyle}">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="업데이트" Style="{StaticResource MacPageTitleStyle}"/>
+                    <TextBlock Text="수정 사항이 담긴 .spdup 업데이트 파일을 선택하면 검증 후 적용됩니다."
+                               Style="{StaticResource MacInlineStatusTextStyle}"/>
+                </StackPanel>
+                <Button Grid.Column="1" Content="새로 고침" Style="{StaticResource MacToolbarButtonStyle}" Click="RefreshStatus"/>
+            </Grid>
+
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="현재 상태" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="현재 버전" Style="{StaticResource MacListItemSubtitleStyle}"/>
+                            <TextBlock Text="{Binding CurrentVersion}" Style="{StaticResource MacEmphasisValueStyle}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Spacing="4">
+                            <TextBlock Text="적용 예정 버전" Style="{StaticResource MacListItemSubtitleStyle}"/>
+                            <TextBlock Text="{Binding TargetVersion}" Style="{StaticResource MacEmphasisValueStyle}"/>
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock Text="{Binding StatusLine}" TextWrapping="Wrap" Style="{StaticResource MacInlineStatusTextStyle}"/>
+                    <TextBlock Text="{Binding VerifyLine}" TextWrapping="Wrap"
+                               Foreground="{StaticResource SpdMutedTextBrush}" Style="{StaticResource MacListItemSubtitleStyle}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="업데이트 파일" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Content="파일 선택 (.spdup)" Style="{StaticResource MacToolbarButtonStyle}" Click="PickUpdateFile"/>
+                        <Button Content="업데이트 적용" Style="{StaticResource MacToolbarButtonStyle}" Click="ApplyUpdate"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding SelectedPackagePath}" TextWrapping="Wrap" Style="{StaticResource MacListItemSubtitleStyle}"/>
+                    <TextBlock Text="앱 실행 중에는 exe/dll은 자동 보류 후 재시작 시 적용됩니다."
+                               Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="적용 진행" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress, Mode=OneWay}" Height="10" IsIndeterminate="{Binding IsBusy}"/>
+                    <TextBlock Text="{Binding StepLine}" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding ActionLine}" Foreground="{StaticResource SpdAccentBrush}"/>
+                    <TextBlock Text="{Binding FileLine}" Style="{StaticResource MacListItemSubtitleStyle}"/>
+                    <TextBlock Text="{Binding DetailLine}" TextWrapping="Wrap" Style="{StaticResource MacInlineStatusTextStyle}"/>
+                    <TextBlock Text="{Binding ElapsedLine}" Style="{StaticResource MacListItemSubtitleStyle}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="진행 로그" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <TextBlock Text="지금 수행 중인 작업이 시간순으로 표시됩니다."
+                               Foreground="{StaticResource SpdMutedTextBrush}"/>
+                    <ListView ItemsSource="{Binding ActivityLog}" MinHeight="220" MaxHeight="320" SelectionMode="None">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10" Padding="0,2">
+                                    <TextBlock Text="{Binding Time}" FontFamily="Consolas" FontSize="11"
+                                               Foreground="{StaticResource SpdMutedTextBrush}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Message}" TextWrapping="Wrap"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="수정 사항" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <ListView ItemsSource="{Binding Changes}" MinHeight="120" SelectionMode="None">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="적용 기록" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <ListView ItemsSource="{Binding History}" MinHeight="140" SelectionMode="None">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Spacing="3" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Summary}" Style="{StaticResource MacListItemTitleStyle}"/>
+                                    <TextBlock Text="{Binding PackageName}" Style="{StaticResource MacListItemSubtitleStyle}"/>
+                                    <TextBlock Text="{Binding Message}" TextWrapping="Wrap" Style="{StaticResource MacListItemSubtitleStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "PC 케어 프로 (Debug x64)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-app-debug-x64",
+      "program": "${workspaceFolder}/src/SmartPerformanceDoctor.App/bin/x64/Debug/net10.0-windows10.0.26100.0/PCCare.exe",
+      "cwd": "${workspaceFolder}/src/SmartPerformanceDoctor.App/bin/x64/Debug/net10.0-windows10.0.26100.0",
+      "stopAtEntry": false
+    },
+    {
+      "name": "PC 케어 프로 (Release x64)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-app-release-x64",
+      "program": "${workspaceFolder}/PCCare.exe",
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false
+    }
+  ]
+}

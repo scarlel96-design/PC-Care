@@ -1,0 +1,22 @@
+{
+  "28": {
+    "title": "드라이버 미설치",
+    "recommendation": "공식 제조사 드라이버 설치 또는 Windows Update 드라이버 확인",
+    "risk": "medium"
+  },
+  "31": {
+    "title": "드라이버 로딩 실패",
+    "recommendation": "장치 재시작/재스캔 후 반복 시 공식 드라이버 재설치",
+    "risk": "medium"
+  },
+  "39": {
+    "title": "드라이버 손상 가능성",
+    "recommendation": "드라이버 스택 이벤트 확인 후 복구 지점 기반 재설치",
+    "risk": "high"
+  },
+  "43": {
+    "title": "장치가 오류 보고",
+    "recommendation": "장치 재시작/펌웨어/공식 드라이버 확인",
+    "risk": "medium"
+  }
+}

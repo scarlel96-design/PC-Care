@@ -1,0 +1,8 @@
+{
+  "min_success_weight": 0.55,
+  "boost_on_repeat_success": 0.08,
+  "penalty_on_repeat_failure": 0.12,
+  "recommend_top_patterns": 5,
+  "retention_days": 365,
+  "notes": "복구 성공/실패 기록을 바탕으로 추천 우선순위를 조정합니다."
+}

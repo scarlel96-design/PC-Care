@@ -1,0 +1,1 @@
+C:\Users\scarl\Desktop\코딩\ 작업\SmartPerformanceDoctor_43.0\SmartPerformanceDoctor_v43_FinalRC2NoMoreWorkLock\target\release\smart_performance_doctor_repair_helper.exe: C:\Users\scarl\Desktop\코딩\ 작업\SmartPerformanceDoctor_43.0\SmartPerformanceDoctor_v43_FinalRC2NoMoreWorkLock\src\SmartPerformanceDoctor.RepairHelper\src\main.rs

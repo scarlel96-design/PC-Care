@@ -1,0 +1,13 @@
+{
+  "fromVersion": "45.0.3",
+  "toVersion": "45.0.6",
+  "releaseNotes": "모듈형 설치 관리자 완성 — WiX MSI/Burn, Repair/Modify/Uninstall, Secure Vault 보호, 코드 서명",
+  "highlights": [
+    "WPF 설치 마법사 9단계 (기능 선택·동의·환경 점검)",
+    "Repair / Modify / Uninstall 모드 및 Secure Vault typed confirmation",
+    "WiX 모듈형 Feature Tree MSI + Burn 번들",
+    "installed_features.json 기반 앱 메뉴 숨김",
+    "MacDesignTokens 공유 디자인 (SetupDesignTokens)",
+    "INSTALLER_MANIFEST.json, SHA256SUMS, UPDATE_CHANNEL, 설치 보고서"
+  ]
+}
