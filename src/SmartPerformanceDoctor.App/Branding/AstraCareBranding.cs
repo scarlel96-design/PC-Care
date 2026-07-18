@@ -12,18 +12,18 @@ public static class AstraCareBranding
     public const string TaglineKorean = "PC 통합 점검·복구·보안 관리 프로그램";
     public const string Description = TaglineKorean;
 
-    public const string Engine = "케어 엔진";
-    public const string EngineExe = "AstraCore.exe";
+    public const string Engine = "최신 진단 엔진";
+    public const string EngineExe = "smart_performance_doctor_core.exe";
     public const string RepairHelper = "케어 복구 도우미";
-    public const string RepairHelperExe = "AstraRepairHelper.exe";
+    public const string RepairHelperExe = "smart_performance_doctor_repair_helper.exe";
     public const string AegisRecoveryHelper = "복구 미러 도우미";
     public const string AegisRecoveryHelperExe = "AegisRecoveryHelper.exe";
     public const string AegisRecoveryService = "복구 미러 서비스";
     public const string AegisRecoveryServiceExe = "AegisRecoveryService.exe";
     public const string MainExe = "SmartPerformanceDoctor.exe";
     public const string BrandedExe = "AstraCare.exe";
-    public const string LegacyCoreExe = "smart_performance_doctor_core.exe";
-    public const string LegacyRepairHelperExe = "smart_performance_doctor_repair_helper.exe";
+    public const string LegacyCoreExe = "AstraCore.exe";
+    public const string LegacyRepairHelperExe = "AstraRepairHelper.exe";
     public const string LegacyAegisRecoveryHelperExe = "aegis_recovery_helper.exe";
 
     public const string BetaBadge = "Beta";
@@ -53,6 +53,8 @@ public static class AstraCareBranding
     public const string RecoveryCapsule = "오프라인 복구 캡슐";
 
     public const string ShredConfirmation = "보안 삭제에 동의합니다";
+    /// <summary>Commercial-grade irreversible confirm phrase (preferred for v4+).</summary>
+    public const string ShredIrreversibleConfirmation = "이 작업은 되돌릴 수 없습니다";
     public const string LegacyShredConfirmation = ShredConfirmation;
 
     public const string UserDataFolder = "PCCare";

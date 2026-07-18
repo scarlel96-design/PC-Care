@@ -42,7 +42,7 @@ public sealed class UpdateChannelService
             "",
             CurrentVersion,
             "IDLE",
-            "업데이트 파일(.spdup)을 선택하면 검증 후 적용할 수 있습니다.");
+            "업데이트 파일(.spdup)을 선택하거나 GitHub에서 확인·다운로드할 수 있습니다.");
     }
 
     public IReadOnlyList<UpdateHistoryEntry> LoadHistory() => _history.LoadRecent();

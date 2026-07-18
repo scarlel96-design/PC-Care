@@ -65,6 +65,10 @@ public sealed class SecureVaultOperationResult
     public string Message { get; init; } = "";
     public int ProcessedCount { get; init; }
     public string? RecoveryKey { get; init; }
+    /// <summary>One-time recovery codes (v4). Shown once; only hashes stored on disk.</summary>
+    public IReadOnlyList<string>? RecoveryCodes { get; init; }
+    public string VaultFormat { get; init; } = "";
+    public string KdfProfile { get; init; } = "";
 }
 
 public enum SecureVaultIntegrityIssueKind
@@ -122,6 +126,10 @@ public sealed class SecureVaultSecurityStatus
     public int KdfIterations { get; init; }
     public bool AclHardened { get; init; }
     public bool RecoveryKeyConfigured { get; init; }
+    /// <summary>Lab v5 one-time recovery codes still unused.</summary>
+    public int RecoveryCodesRemaining { get; init; }
+    /// <summary>KR line for recovery posture (slots remaining / exhausted / low).</summary>
+    public string RecoveryStatusLine { get; init; } = "";
     public bool AuditChainValid { get; init; }
     public int AuditEntryCount { get; init; }
     public int RateLimitFailures { get; init; }

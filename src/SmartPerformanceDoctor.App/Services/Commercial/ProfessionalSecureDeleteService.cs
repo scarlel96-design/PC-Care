@@ -3,6 +3,9 @@ using System.Text;
 using System.Text.Json;
 using SmartPerformanceDoctor.App.Branding;
 using SmartPerformanceDoctor.App.Models.Commercial;
+using SmartPerformanceDoctor.SecurityLab.Hardening;
+using SmartPerformanceDoctor.SecurityLab.ProductBridge;
+using SmartPerformanceDoctor.SecurityLab.ShredNext;
 
 namespace SmartPerformanceDoctor.App.Services.Commercial;
 
@@ -15,6 +18,7 @@ public sealed class ProfessionalSecureDeleteService
         var operationId = $"secure-delete-{DateTimeOffset.Now:yyyyMMdd-HHmmss}";
         var targets = new List<SecureDeleteTarget>();
         var blocked = new List<SecureDeleteTarget>();
+        var useLab = ProductFeatureFlags.ShredNextEnabled;
 
         foreach (var path in paths.Distinct(StringComparer.OrdinalIgnoreCase))
         {
@@ -24,10 +28,22 @@ public sealed class ProfessionalSecureDeleteService
             }
 
             var (allowed, reason) = PathSafetyGuard.Evaluate(path);
+            // 50.3.0: SecurityLab path policy (UNC / special roots) as additional gate
+            if (allowed && useLab)
+            {
+                var lab = LabSecurePath.Evaluate(path);
+                if (!lab.Allowed)
+                {
+                    allowed = false;
+                    reason = "Lab: " + lab.Reason;
+                }
+            }
             var storage = SecureDeleteStorageProfiler.Profile(path);
             var fs = DetectFileSystem(path);
             var size = File.Exists(path) ? new FileInfo(path).Length : EstimateDirectorySize(path);
-            var protocol = SecureDeleteStorageProfiler.SelectProtocol(storage, level);
+            var protocol = useLab && File.Exists(path)
+                ? "lab.shred-next.v1+" + SecureDeleteStorageProfiler.SelectProtocol(storage, level)
+                : SecureDeleteStorageProfiler.SelectProtocol(storage, level);
             var passes = SecureDeleteStorageProfiler.GetOverwritePasses(storage, level);
             var chain = ForensicSecureDeleteEngine.BuildChainSteps(storage, level);
 
@@ -68,6 +84,11 @@ public sealed class ProfessionalSecureDeleteService
         var chainSummary = targets.Count == 0
             ? ""
             : string.Join(" → ", ForensicSecureDeleteEngine.BuildChainSteps(targets[0].StorageType, level));
+        if (useLab)
+        {
+            chainSummary = "ShredNext(Lab) · " + chainSummary;
+        }
+
         var recoveryRisk = maxCertified >= 4 && level5Certified
             ? "very-low"
             : maxCertified >= 3
@@ -87,8 +108,12 @@ public sealed class ProfessionalSecureDeleteService
             ResistanceDisclaimer = disclaimer,
             ProfessionalRecoveryRisk = recoveryRisk,
             Limitations =
-                $"보안 삭제 풀체인: ADS 제거 · 저장장치별 다중 덮어쓰기 · SSD 난독화/TRIM/retrim · VSS 잔존 위험 고지 · 난수 파일명.\n" +
-                "섀도 복사본/복구 지점은 자동 삭제하지 않습니다.\n" +
+                "상용급 보안 삭제 원칙: (1) 경로 안전 검증 (2) dry-run (3) 확인 문구 " +
+                $"「{AstraCareBranding.ShredIrreversibleConfirmation}」 (4) 저장장치별 체인 " +
+                "(HDD 다중 패스 / SSD 랜덤+난독화+TRIM) (5) ADS 제거 (6) VSS 잔존 고지.\n" +
+                (useLab ? "50.3.0 ShredNext: Lab 경로 정책(UNC 차단 등) + 파일 Lab 덮어쓰기 엔진 병행.\n" : "") +
+                "금고 내부 데이터 삭제는 키 파기(crypto-shred)가 핵심입니다.\n" +
+                "섀도 복사본/복구 지점/클라우드 사본은 자동 삭제하지 않습니다.\n" +
                 (string.IsNullOrWhiteSpace(disclaimer) ? AstraCareBranding.ShredSsdLimitation : disclaimer),
             EstimatedDuration = TimeSpan.FromSeconds(Math.Max(
                 12,
@@ -108,10 +133,20 @@ public sealed class ProfessionalSecureDeleteService
         CancellationToken cancellationToken = default)
     {
         var confirm = typedConfirmation.Trim();
-        if (!string.Equals(confirm, AstraCareBranding.ShredConfirmation, StringComparison.Ordinal)
-            && !string.Equals(confirm, AstraCareBranding.LegacyShredConfirmation, StringComparison.Ordinal))
+        var phraseOk =
+            string.Equals(confirm, AstraCareBranding.ShredIrreversibleConfirmation, StringComparison.Ordinal)
+            || string.Equals(confirm, AstraCareBranding.ShredConfirmation, StringComparison.Ordinal)
+            || string.Equals(confirm, AstraCareBranding.LegacyShredConfirmation, StringComparison.Ordinal);
+        if (!phraseOk)
         {
-            throw new InvalidOperationException($"확인 문구가 일치하지 않습니다. ({AstraCareBranding.ShredConfirmation})");
+            throw new InvalidOperationException(
+                $"확인 문구가 일치하지 않습니다. 다음 중 하나를 정확히 입력하세요: " +
+                $"「{AstraCareBranding.ShredIrreversibleConfirmation}」 또는 「{AstraCareBranding.ShredConfirmation}」");
+        }
+
+        if (plan.Targets.Count == 0)
+        {
+            throw new InvalidOperationException("삭제 가능한 대상이 없습니다. dry-run 결과를 확인하세요.");
         }
 
         var auditDir = Path.Combine(
@@ -144,11 +179,32 @@ public sealed class ProfessionalSecureDeleteService
 
                 if (File.Exists(target.Path))
                 {
-                    await ForensicSecureDeleteEngine.SecureDeleteFileAsync(
-                        target.Path,
-                        target.StorageType,
-                        level,
-                        cancellationToken);
+                    if (ProductFeatureFlags.ShredNextEnabled)
+                    {
+                        // Lab shred-next for single files (2-pass random + rename)
+                        try
+                        {
+                            LabProductGate.EnsureEnabled("shred");
+                            LabShredEngine.CryptoShredFile(target.Path);
+                        }
+                        catch
+                        {
+                            await ForensicSecureDeleteEngine.SecureDeleteFileAsync(
+                                target.Path,
+                                target.StorageType,
+                                level,
+                                cancellationToken);
+                        }
+                    }
+                    else
+                    {
+                        await ForensicSecureDeleteEngine.SecureDeleteFileAsync(
+                            target.Path,
+                            target.StorageType,
+                            level,
+                            cancellationToken);
+                    }
+
                     deleted++;
                 }
                 else if (Directory.Exists(target.Path))
@@ -199,11 +255,62 @@ public sealed class ProfessionalSecureDeleteService
         foreach (var file in Directory.EnumerateFiles(directoryPath, "*", SearchOption.AllDirectories))
         {
             cancellationToken.ThrowIfCancellationRequested();
+            var (allowed, _) = PathSafetyGuard.Evaluate(file);
+            if (!allowed)
+            {
+                // Never follow a junction/symlink into a protected tree.
+                continue;
+            }
+
+            try
+            {
+                var attrs = File.GetAttributes(file);
+                if ((attrs & FileAttributes.ReparsePoint) != 0)
+                {
+                    continue;
+                }
+            }
+            catch
+            {
+                continue;
+            }
+
             var storage = SecureDeleteStorageProfiler.Profile(file);
             await ForensicSecureDeleteEngine.SecureDeleteFileAsync(file, storage, level, cancellationToken);
         }
 
-        Directory.Delete(directoryPath, true);
+        // Delete empty/remaining tree bottom-up without following reparse points.
+        foreach (var dir in Directory.EnumerateDirectories(directoryPath, "*", SearchOption.AllDirectories)
+                     .OrderByDescending(d => d.Length))
+        {
+            try
+            {
+                var attrs = File.GetAttributes(dir);
+                if ((attrs & FileAttributes.ReparsePoint) != 0)
+                {
+                    Directory.Delete(dir, false);
+                    continue;
+                }
+
+                if (!Directory.EnumerateFileSystemEntries(dir).Any())
+                {
+                    Directory.Delete(dir, false);
+                }
+            }
+            catch
+            {
+                // Best-effort tree cleanup.
+            }
+        }
+
+        try
+        {
+            Directory.Delete(directoryPath, true);
+        }
+        catch
+        {
+            try { Directory.Delete(directoryPath, false); } catch { /* remaining locked entries */ }
+        }
     }
 
     private static string ComputeTargetHash(string path)

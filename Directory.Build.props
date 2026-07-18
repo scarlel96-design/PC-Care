@@ -1,8 +1,8 @@
 <Project>
   <PropertyGroup>
-    <Version>50.0.0</Version>
-    <FileVersion>50.0.0</FileVersion>
-    <AssemblyVersion>50.0.0</AssemblyVersion>
+    <Version>50.5.0</Version>
+    <FileVersion>50.5.0</FileVersion>
+    <AssemblyVersion>50.5.0</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

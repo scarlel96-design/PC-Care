@@ -1,0 +1,19 @@
+{
+  "corpus": "av3-xchacha24-e12",
+  "phase": "E-12",
+  "classification": "TEST_ONLY",
+  "suite_id": 3,
+  "suite_name": "XChaCha20Poly1305Ietf24",
+  "nonce_size_bytes": 24,
+  "secrets_in_repo": false,
+  "generator": "Av3XChaCha24VectorFactory",
+  "vector_ids": [
+    "e12_activation_payload",
+    "e12_metadata_root",
+    "e12_empty_plaintext",
+    "e12_multi_segment"
+  ],
+  "golden_phase_c_d_unchanged": true,
+  "production_writer_authorized": false,
+  "xchacha24_implemented_flag": false
+}

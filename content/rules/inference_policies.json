@@ -37,6 +37,27 @@
       "title": "재부팅 대기 상태",
       "recommendation": "dism_checkhealth",
       "confidence": 0.6
+    },
+    {
+      "id": "bsod_recent",
+      "keywords": ["bugcheck", "bluescreen", "블루스크린", "bugcheck_30d", "stability risk"],
+      "title": "최근 블루스크린(BugCheck) 기록",
+      "recommendation": "dism_checkhealth",
+      "confidence": 0.82
+    },
+    {
+      "id": "whea_error",
+      "keywords": ["whea", "whea_error", "hardware error", "하드웨어 오류"],
+      "title": "WHEA 하드웨어 오류",
+      "recommendation": "dism_checkhealth",
+      "confidence": 0.78
+    },
+    {
+      "id": "unexpected_shutdown",
+      "keywords": ["unexpected_shutdown", "비정상 종료", "예기치 않은 종료"],
+      "title": "예기치 않은 시스템 종료",
+      "recommendation": "dism_checkhealth",
+      "confidence": 0.7
     }
   ],
   "repair_mapping": {

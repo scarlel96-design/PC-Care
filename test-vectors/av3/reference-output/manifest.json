@@ -1,0 +1,37 @@
+﻿{
+  "generator_version": "1.1.0-phase-d",
+  "generated_at": "2026-07-04T00:00:00Z",
+  "source_commit_or_worktree_marker": "phase-c-golden-lock",
+  "input_hash": "e7990614ea0fabf5efb41846715f460bf911cc718c522875d6f2caed75ebe62b",
+  "output_hashes": {
+    "activation-payload-aad.bin": "623607ed2a8ab641906ce6fcf11e4b43d543b46867c7a4d999d37f9ec687f0cf",
+    "activation-payload-ciphertext.bin": "9f1d1803ae1ecb5e5b1900147ba291f65210e3db91a97e0ecf27d2b7e39b1ec3",
+    "activation-payload-plaintext.bin": "2f569719fc93bd794c930cfa6fa75f6ae7593cebde725fcbe3f0be74115b7363",
+    "activation-payload-tag.bin": "e1764ea952fd16618b7987ee3a358b3cc0a0086b5c2345c82c0f6d6a2d4fc234",
+    "expected-errors.json": "8b237113aad25764dac698cc46d8691a4109efb01230501bef00b0e812ff9d71",
+    "header-copy-0.bin": "18875d3f81f699c87ba1add7faf629259f80a14624e7f6a8b795b9793db06a8d",
+    "header-copy-1.bin": "b9dea8a21b6da1b97ffec95acfed6a9f213f79d941c39a5c14036f0c963d5526",
+    "header-copy-2.bin": "bbfbc8f39dd1c9ca7da150e63d061a1b9e51427a88ad2a1858b4d1940be28107",
+    "locator.bin": "0dd66ba2fa73be8af8e1dac53ef6f40a3a386a82c305ff64c97e207cbadd6e33",
+    "metadata-root-aad.bin": "54591d59b94119465b95fc85df02ce54049dbefbaf12347a1c27a693a044f2d5",
+    "metadata-root-ciphertext.bin": "517c13319a0a36ec41a39b9f1fc30e646028bc64c9a5e835599e685a0b995c86",
+    "metadata-root-commitment-preimage.bin": "bc830ff6a494f7b2e7e8f9d0d5371b2bafa9c0d23966e571ed3d6cd690fd71a2",
+    "metadata-root-commitment.bin": "f6feb6ef1023fe2d5bbb1216b19596010f4404533fa250ce4ea2fe428edf9e4f",
+    "metadata-root-descriptor.bin": "794dece45b9f91c2066227402d4aadcfcf766bcc2a5e461dc17abf8cd6c13006",
+    "metadata-root-expected-result.json": "d6a5a1c7288c1ab65914e8a194ba1a2868d8cec1318e5275857839cf07f13860",
+    "metadata-root-plaintext.bin": "4b85a8141561c97bfd550dd630fd38269f68d86ccf260f3baf1f47f1ceab8ff9",
+    "metadata-root-tag.bin": "1f7634f915f81fd3382a3c2bd78b8aa3841425ff51e91703ecdf146267a3a07f",
+    "password-slot-aad.bin": "326584a71c3cb16d02a61c202103ea7629e71f5f571802243cf62b5c0c491348",
+    "password-slot-ciphertext.bin": "efd986bc80bbd3edf0e7cffa7520e4784461d97bf1807f173202772daac923e8",
+    "password-slot-tag.bin": "a77fa381647e6b477371c73df152813c6f9b0c7bb546a9537995713c05f0ff19",
+    "provenance.json": "4bbff6715a66408dad5413470f8fb2ddd4f9c5678759d83d12dc548476f5cab5",
+    "vmk-unwrap-aad.bin": "326584a71c3cb16d02a61c202103ea7629e71f5f571802243cf62b5c0c491348"
+  },
+  "crypto_dependency_versions": {
+    "argon2": "1.3.1",
+    "dotnet": "net10.0"
+  },
+  "vector_status": "LOCKED",
+  "pending_items": [],
+  "reviewer_notes_required": true
+}

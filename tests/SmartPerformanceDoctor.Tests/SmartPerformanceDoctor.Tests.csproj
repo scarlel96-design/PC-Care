@@ -17,9 +17,62 @@
 
   <ItemGroup>
     <None Include="TestAssets\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_TEST_EVIDENCE_SOURCE_OF_TRUTH.md" Link="security-docs\ASTRA_VAULT_TEST_EVIDENCE_SOURCE_OF_TRUTH.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_PRODUCTION_WRITER_REVIEW_PACKAGE.md" Link="security-docs\ASTRA_VAULT_PRODUCTION_WRITER_REVIEW_PACKAGE.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_EXTERNAL_REVIEW_EVIDENCE_INDEX.md" Link="security-docs\ASTRA_VAULT_EXTERNAL_REVIEW_EVIDENCE_INDEX.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_EXTERNAL_REVIEW_BRIEF.md" Link="security-docs\ASTRA_VAULT_EXTERNAL_REVIEW_BRIEF.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_WRITER_ENABLE_DECISION_RECORD.md" Link="security-docs\ASTRA_VAULT_WRITER_ENABLE_DECISION_RECORD.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_FORMAL_EXTERNAL_REVIEW_SIGNOFF.md" Link="security-docs\ASTRA_VAULT_FORMAL_EXTERNAL_REVIEW_SIGNOFF.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_NAMED_SIGNOFF_RECORD.md" Link="security-docs\ASTRA_VAULT_NAMED_SIGNOFF_RECORD.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E10_ENABLE_DECISION_GATE_CHECKLIST.md" Link="security-docs\ASTRA_VAULT_E10_ENABLE_DECISION_GATE_CHECKLIST.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E10_ENABLE_DECISION_GATE_REPORT.md" Link="security-docs\ASTRA_VAULT_E10_ENABLE_DECISION_GATE_REPORT.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E10_ENABLE_DECISION_RECORD.md" Link="security-docs\ASTRA_VAULT_E10_ENABLE_DECISION_RECORD.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E11_ANCHOR_CLOSURE_REPORT.md" Link="security-docs\ASTRA_VAULT_E11_ANCHOR_CLOSURE_REPORT.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E11_1_ANCHOR_SIGNOFF_REPORT.md" Link="security-docs\ASTRA_VAULT_E11_1_ANCHOR_SIGNOFF_REPORT.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E11_1_TRUSTED_ANCHOR_DECISION.md" Link="security-docs\ASTRA_VAULT_E11_1_TRUSTED_ANCHOR_DECISION.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E12_XCHACHA24_CLOSURE_REPORT.md" Link="security-docs\ASTRA_VAULT_E12_XCHACHA24_CLOSURE_REPORT.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E12_XCHACHA24_CLOSURE_PLAN.md" Link="security-docs\ASTRA_VAULT_E12_XCHACHA24_CLOSURE_PLAN.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E12_XCHACHA24_CRYPTO_CONTRACT.md" Link="security-docs\ASTRA_VAULT_E12_XCHACHA24_CRYPTO_CONTRACT.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E12_XCHACHA24_VECTOR_SPEC.md" Link="security-docs\ASTRA_VAULT_E12_XCHACHA24_VECTOR_SPEC.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E12_XCHACHA24_DOWNGRADE_MODEL.md" Link="security-docs\ASTRA_VAULT_E12_XCHACHA24_DOWNGRADE_MODEL.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E12_1_XCHACHA24_CRYPTO_SIGNOFF_REPORT.md" Link="security-docs\ASTRA_VAULT_E12_1_XCHACHA24_CRYPTO_SIGNOFF_REPORT.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E12_1_XCHACHA24_IMPLEMENTATION_DECISION.md" Link="security-docs\ASTRA_VAULT_E12_1_XCHACHA24_IMPLEMENTATION_DECISION.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E12_1_XCHACHA24_SIGNOFF_REPORT.md" Link="security-docs\ASTRA_VAULT_E12_1_XCHACHA24_SIGNOFF_REPORT.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E12_1_XCHACHA24_CRYPTO_DECISION.md" Link="security-docs\ASTRA_VAULT_E12_1_XCHACHA24_CRYPTO_DECISION.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E13_TRUSTED_ANCHOR_PROVIDER_PLAN.md" Link="security-docs\ASTRA_VAULT_E13_TRUSTED_ANCHOR_PROVIDER_PLAN.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E13_TRUSTED_ANCHOR_PROVIDER_CONTRACT.md" Link="security-docs\ASTRA_VAULT_E13_TRUSTED_ANCHOR_PROVIDER_CONTRACT.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E13_FULL_ROLLBACK_CLOSURE_MATRIX.md" Link="security-docs\ASTRA_VAULT_E13_FULL_ROLLBACK_CLOSURE_MATRIX.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E13_TRUSTED_ANCHOR_PRIVACY_MODEL.md" Link="security-docs\ASTRA_VAULT_E13_TRUSTED_ANCHOR_PRIVACY_MODEL.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E13_TRUSTED_ANCHOR_CLOSURE_REPORT.md" Link="security-docs\ASTRA_VAULT_E13_TRUSTED_ANCHOR_CLOSURE_REPORT.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E13_1_TRUSTED_ANCHOR_SIGNOFF_REPORT.md" Link="security-docs\ASTRA_VAULT_E13_1_TRUSTED_ANCHOR_SIGNOFF_REPORT.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E13_1_PRODUCTION_ANCHOR_DECISION.md" Link="security-docs\ASTRA_VAULT_E13_1_PRODUCTION_ANCHOR_DECISION.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E14_DISK_DURABILITY_REVIEW_PLAN.md" Link="security-docs\ASTRA_VAULT_E14_DISK_DURABILITY_REVIEW_PLAN.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E14_DISK_DURABILITY_THREAT_MODEL.md" Link="security-docs\ASTRA_VAULT_E14_DISK_DURABILITY_THREAT_MODEL.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E14_USER_MEDIA_POLICY.md" Link="security-docs\ASTRA_VAULT_E14_USER_MEDIA_POLICY.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E14_DURABLE_WRITE_POLICY.md" Link="security-docs\ASTRA_VAULT_E14_DURABLE_WRITE_POLICY.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E14_DURABILITY_FAILURE_MATRIX.md" Link="security-docs\ASTRA_VAULT_E14_DURABILITY_FAILURE_MATRIX.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\docs\security\ASTRA_VAULT_E14_DISK_DURABILITY_REVIEW_REPORT.md" Link="security-docs\ASTRA_VAULT_E14_DISK_DURABILITY_REVIEW_REPORT.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\test-vectors\av3\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="av3-vectors" />
   </ItemGroup>
 
+  <Target Name="CopyKillWorker" AfterTargets="Build">
+    <MSBuild Projects="$(MSBuildThisFileDirectory)..\SmartPerformanceDoctor.AstraVault.KillWorker\SmartPerformanceDoctor.AstraVault.KillWorker.csproj"
+             Targets="Build"
+             Properties="Configuration=$(Configuration);Platform=x64" />
+    <PropertyGroup>
+      <_KillWorkerOut>$(MSBuildThisFileDirectory)..\SmartPerformanceDoctor.AstraVault.KillWorker\bin\x64\$(Configuration)\net10.0\</_KillWorkerOut>
+    </PropertyGroup>
+    <MakeDir Directories="$(OutputPath)killworker" />
+    <ItemGroup>
+      <_KillWorkerDeploy Include="$(_KillWorkerOut)**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_KillWorkerDeploy)"
+          DestinationFiles="@(_KillWorkerDeploy->'$(OutputPath)killworker\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+  </Target>
+
   <ItemGroup>
+    <ProjectReference Include="..\..\src\SmartPerformanceDoctor.AstraVault\SmartPerformanceDoctor.AstraVault.csproj" />
     <ProjectReference Include="..\..\src\SmartPerformanceDoctor.Data\SmartPerformanceDoctor.Data.csproj" />
     <ProjectReference Include="..\..\src\SmartPerformanceDoctor.Contracts\SmartPerformanceDoctor.Contracts.csproj" />
     <ProjectReference Include="..\..\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj" />

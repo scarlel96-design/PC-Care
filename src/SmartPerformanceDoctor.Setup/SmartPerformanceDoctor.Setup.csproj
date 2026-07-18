@@ -9,6 +9,7 @@
     <RootNamespace>SmartPerformanceDoctor.Setup</RootNamespace>
 
     <ApplicationIcon>..\..\content\assets\SmartPerformanceDoctor.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x64</Platforms>
   </PropertyGroup>
   <ItemGroup>

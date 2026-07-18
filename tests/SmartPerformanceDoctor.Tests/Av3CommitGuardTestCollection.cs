@@ -1,0 +1,1 @@
+// E-9.1: Serial xUnit collection removed — harness commit guard uses per-root leases (Av3HarnessCommitGuardRegistry).

@@ -91,13 +91,9 @@ internal static class RuntimeAuthenticodeVerifier
     private static IEnumerable<string> EnumerateCriticalBinaries(string root)
     {
         yield return "PCCare.exe";
-        yield return "SmartPerformanceDoctor.exe";
-        yield return "AstraCare.exe";
         yield return "SmartPerformanceDoctor.dll";
         yield return Path.Combine("engine", "smart_performance_doctor_core.exe");
         yield return Path.Combine("engine", "smart_performance_doctor_repair_helper.exe");
-        yield return Path.Combine("engine", "AstraCore.exe");
-        yield return Path.Combine("engine", "AstraRepairHelper.exe");
         yield return Path.Combine("engine", "AegisRecoveryHelper.exe");
         yield return Path.Combine("engine", "AegisRecoveryService.exe");
     }

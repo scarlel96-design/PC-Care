@@ -7,10 +7,10 @@ public static class AegisProduct
     public const string ProgramDataFolder = "PCCare";
     public const string LegacyProgramDataFolder = "AstraCare";
     public const string LegacyProgramDataFolder2 = "SmartPerformanceDoctor";
-    public const string EngineExe = "AstraCore.exe";
-    public const string RepairHelperExe = "AstraRepairHelper.exe";
-    public const string LegacyCoreExe = "smart_performance_doctor_core.exe";
-    public const string LegacyRepairHelperExe = "smart_performance_doctor_repair_helper.exe";
+    public const string EngineExe = "smart_performance_doctor_core.exe";
+    public const string RepairHelperExe = "smart_performance_doctor_repair_helper.exe";
+    public const string LegacyCoreExe = "AstraCore.exe";
+    public const string LegacyRepairHelperExe = "AstraRepairHelper.exe";
     public const string MainExe = "SmartPerformanceDoctor.exe";
     public const string BrandedExe = "AstraCare.exe";
     public const string BrandedExePreferred = "PCCare.exe";

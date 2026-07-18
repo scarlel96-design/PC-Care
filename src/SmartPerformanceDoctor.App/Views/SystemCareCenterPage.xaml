@@ -6,74 +6,170 @@
     <ScrollViewer>
         <StackPanel Padding="{StaticResource SpdMacPagePadding}" Style="{StaticResource MacPageRootStackStyle}">
             <TextBlock Text="시스템 케어" Style="{StaticResource MacPageTitleStyle}"/>
-            <TextBlock Text="통합 점검과 별도로 동작합니다. 건강 점수 · HMAC 감사 체인 · 격리 롤백 지원."
+            <TextBlock Text="PC 상태를 검사하고, 필요한 항목만 한 번에 정리합니다."
                        Style="{StaticResource MacInlineStatusTextStyle}"/>
 
             <Border Style="{StaticResource MacWindowPanelStyle}">
-                <StackPanel Spacing="10">
-                    <TextBlock Text="검사 방식" Style="{StaticResource MacSectionHeaderStyle}"/>
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <RadioButton x:Name="SmartScanRadio" Content="스마트 검사" GroupName="CareScanMode" Checked="ScanModeChanged"/>
-                        <RadioButton x:Name="PrecisionScanRadio" Content="정밀 점검" GroupName="CareScanMode" Checked="ScanModeChanged"/>
+                <StackPanel Spacing="12">
+                    <TextBlock Text="검사" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <RadioButton x:Name="SmartScanRadio" Content="빠른 검사" GroupName="CareScanMode" Checked="ScanModeChanged"/>
+                        <RadioButton x:Name="PrecisionScanRadio" Content="전체 검사" GroupName="CareScanMode" Checked="ScanModeChanged"/>
                     </StackPanel>
                     <TextBlock Text="{Binding StatusLine}" TextWrapping="Wrap" Style="{StaticResource MacInlineStatusTextStyle}"/>
+
+                    <StackPanel x:Name="TaskChecklistPanel" Spacing="8" Visibility="Collapsed">
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                            <TextBlock Text="검사 항목" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <Button Grid.Column="1" Content="전체 선택" Style="{StaticResource MacToolbarButtonStyle}" Click="SelectAllTasks"/>
+                            <Button Grid.Column="2" Content="전체 해제" Style="{StaticResource MacToolbarButtonStyle}" Click="ClearAllTasks"/>
+                        </Grid>
+                        <ListView ItemsSource="{Binding ScanTasks}" MinHeight="180" MaxHeight="280" SelectionMode="None">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" Margin="0,4">
+                                        <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
+                                    </CheckBox>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+
+                    <!-- Single pre-check (merged from 3) -->
+                    <CheckBox Content="검사 후 안전한 항목을 자동으로 정리합니다"
+                              IsChecked="{Binding AutoApplyAfterScan, Mode=TwoWay}"/>
+
+                    <Button Content="검사 시작"
+                            Style="{StaticResource MacToolbarButtonStyle}"
+                            HorizontalAlignment="Left"
+                            MinWidth="140"
+                            Click="StartScan"/>
                 </StackPanel>
             </Border>
 
-            <Border x:Name="TaskChecklistPanel" Style="{StaticResource MacWindowPanelStyle}" Visibility="Collapsed">
-                <StackPanel Spacing="10">
-                    <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-                        <TextBlock Text="검사 항목 선택" Style="{StaticResource MacSectionHeaderStyle}"/>
-                        <Button Grid.Column="1" Content="전체 선택" Style="{StaticResource MacToolbarButtonStyle}" Click="SelectAllTasks"/>
-                        <Button Grid.Column="2" Content="전체 해제" Style="{StaticResource MacToolbarButtonStyle}" Click="ClearAllTasks"/>
+            <Border x:Name="ProgressPanel" Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="진행 상황" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16">
+                        <Border Width="88" Height="88" CornerRadius="44"
+                                Background="{StaticResource SpdAccentBrush}"
+                                VerticalAlignment="Center">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding HealthScoreText}"
+                                           FontSize="28" FontWeight="Bold"
+                                           Foreground="White" HorizontalAlignment="Center"/>
+                                <TextBlock Text="점" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <StackPanel Grid.Column="1" Spacing="8" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding ProgressPhaseTitle}" FontSize="18" FontWeight="SemiBold"/>
+                            <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}" Height="10"/>
+                            <TextBlock Text="{Binding ProgressLine}" Style="{StaticResource MacListItemSubtitleStyle}" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding ProgressDetailLine}"
+                                       Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
+                        </StackPanel>
                     </Grid>
-                    <TextBlock Text="체크한 항목만 검사합니다."
-                               Foreground="{StaticResource SpdMutedTextBrush}"/>
-                    <ListView ItemsSource="{Binding ScanTasks}" MinHeight="280" MaxHeight="420" SelectionMode="None">
+                </StackPanel>
+            </Border>
+
+            <Border x:Name="ResultsPanel" Style="{StaticResource MacWindowPanelStyle}" Visibility="Collapsed">
+                <StackPanel Spacing="12">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <StackPanel>
+                            <TextBlock Text="검사 결과" Style="{StaticResource MacSectionHeaderStyle}"/>
+                            <TextBlock Text="{Binding SummaryLine}" Style="{StaticResource MacEmphasisValueStyle}" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding HealthLine}"
+                                       Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
+                            <TextBlock Text="{Binding IssueCountText}" FontSize="22" FontWeight="Bold"
+                                       Foreground="{StaticResource SpdAccentBrush}" HorizontalAlignment="Right"/>
+                            <TextBlock Text="처리 권장" FontSize="12"
+                                       Foreground="{StaticResource SpdMutedTextBrush}" HorizontalAlignment="Right"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8" Margin="0,4,0,0">
+                        <Border Padding="10" CornerRadius="8" Background="{StaticResource SpdMacInspectorBrush}">
+                            <StackPanel Spacing="2">
+                                <TextBlock Text="정리 대상" Foreground="{StaticResource SpdMutedTextBrush}" FontSize="12"/>
+                                <TextBlock Text="{Binding ActionableCountText}" FontSize="22" FontWeight="Bold" Foreground="{StaticResource SpdAccentBrush}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="1" Padding="10" CornerRadius="8" Background="{StaticResource SpdMacInspectorBrush}">
+                            <StackPanel Spacing="2">
+                                <TextBlock Text="정상 항목" Foreground="{StaticResource SpdMutedTextBrush}" FontSize="12"/>
+                                <TextBlock Text="{Binding SafeCountText}" FontSize="22" FontWeight="Bold"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="2" Padding="10" CornerRadius="8" Background="{StaticResource SpdMacInspectorBrush}">
+                            <StackPanel Spacing="2">
+                                <TextBlock Text="검사 완료" Foreground="{StaticResource SpdMutedTextBrush}" FontSize="12"/>
+                                <TextBlock Text="{Binding CheckedCountText}" FontSize="22" FontWeight="Bold"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <ItemsControl ItemsSource="{Binding ResultGroups}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="4" Margin="0,2">
+                                    <TextBlock Text="{Binding Title}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource SpdMutedTextBrush}"/>
+                                    <TextBlock Text="{Binding Detail}" FontSize="12" Foreground="{StaticResource SpdMutedTextBrush}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <TextBlock Text="정리 목록" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <TextBlock Text="{Binding CleanupListHint}" Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
+
+                    <ListView ItemsSource="{Binding ActionItems}"
+                              MinHeight="160" MaxHeight="360"
+                              SelectionMode="None">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" Margin="0,4">
-                                    <StackPanel Spacing="2">
-                                        <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
-                                        <TextBlock Text="{Binding Description}"
-                                                   Foreground="{StaticResource SpdMutedTextBrush}"
-                                                   TextWrapping="Wrap"/>
-                                    </StackPanel>
-                                </CheckBox>
+                                <Border Padding="12,10" Margin="0,4"
+                                        CornerRadius="8"
+                                        BorderThickness="1"
+                                        BorderBrush="{StaticResource SpdMutedTextBrush}">
+                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                        <Border MinWidth="56" Padding="8,4" CornerRadius="6"
+                                                Background="{StaticResource SpdAccentBrush}"
+                                                VerticalAlignment="Center"
+                                                Opacity="{Binding RiskOpacity}">
+                                            <TextBlock Text="{Binding RiskLabel}"
+                                                       Foreground="White" FontWeight="SemiBold"
+                                                       FontSize="12" HorizontalAlignment="Center"/>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" Spacing="2">
+                                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding Detail}"
+                                                       Foreground="{StaticResource SpdMutedTextBrush}"
+                                                       TextWrapping="Wrap" FontSize="12"/>
+                                            <TextBlock Text="{Binding ActionHint}"
+                                                       Foreground="{StaticResource SpdAccentBrush}"
+                                                       FontSize="12"/>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="2"
+                                                   Text="{Binding FixLabel}"
+                                                   VerticalAlignment="Center"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{StaticResource SpdMutedTextBrush}"/>
+                                    </Grid>
+                                </Border>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                </StackPanel>
-            </Border>
 
-            <Border Style="{StaticResource MacWindowPanelStyle}">
-                <StackPanel Spacing="10">
-                    <TextBlock Text="검사 실행" Style="{StaticResource MacSectionHeaderStyle}"/>
-                    <Button Content="검사 시작" Style="{StaticResource MacToolbarButtonStyle}" Click="StartScan"/>
-                    <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}" Height="8"/>
-                    <TextBlock Text="{Binding ProgressLine}" Style="{StaticResource MacListItemSubtitleStyle}"/>
-                </StackPanel>
-            </Border>
-
-            <Border Style="{StaticResource MacWindowPanelStyle}">
-                <StackPanel Spacing="10">
-                    <TextBlock Text="검사 결과" Style="{StaticResource MacSectionHeaderStyle}"/>
-                    <TextBlock Text="{Binding SummaryLine}" Style="{StaticResource MacEmphasisValueStyle}"/>
-                    <TextBlock Text="{Binding HealthLine}" Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
-                    <ListView ItemsSource="{Binding FindingLines}" MinHeight="200" MaxHeight="320" SelectionMode="None"/>
-                </StackPanel>
-            </Border>
-
-            <Border Style="{StaticResource MacWindowPanelStyle}">
-                <StackPanel Spacing="10">
-                    <TextBlock Text="적용" Style="{StaticResource MacSectionHeaderStyle}"/>
-                    <TextBlock Text="안전한 항목만 기본 적용합니다. 삭제 전 격리 폴더에 옮깁니다."
-                               Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
-                    <CheckBox x:Name="IncludeReviewBox" Content="확인 필요 항목도 함께 적용"/>
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <Button Content="변경 전 확인" Style="{StaticResource MacToolbarButtonStyle}" Click="PreviewChanges"/>
-                        <Button Content="선택 항목 적용" Style="{StaticResource MacToolbarButtonStyle}" Click="ApplyChanges"/>
-                        <Button Content="격리 롤백" Style="{StaticResource MacToolbarButtonStyle}" Click="RollbackChanges"/>
+                        <Button Content="권장 항목 모두 정리"
+                                Style="{StaticResource MacToolbarButtonStyle}"
+                                Click="ApplyChanges"
+                                IsEnabled="{Binding CanApply}"/>
+                        <Button Content="이전으로 되돌리기"
+                                Style="{StaticResource MacToolbarButtonStyle}"
+                                Click="RollbackChanges"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

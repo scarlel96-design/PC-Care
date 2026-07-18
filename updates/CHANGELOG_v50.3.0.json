@@ -1,0 +1,15 @@
+{
+  "version": "50.3.0",
+  "fromVersion": "50.2.2",
+  "toVersion": "50.3.0",
+  "releaseNotes": "SecurityLab 금고 v4 · ShredNext 보안 삭제 제품 병합",
+  "changes": [
+    "보안 금고 v4 (spd-vault-v4-lab): 신규 금고 Argon2id Strong + 청크 AES-256-GCM + 객체 저장소",
+    "복구 코드 10개 일회용(해시만 저장) · 생성 시 안내 대화상자",
+    "기존 spd-vault-v3 금고 호환 유지 · v3→v4 재암호화 마이그레이션 UI",
+    "보안 삭제 ShredNext: Lab 경로 정책(UNC/특수 폴더 차단) + 파일 Lab 덮어쓰기 엔진",
+    "제품 플래그 ProductFeatureFlags 호스트 바인딩 (PCCARE_SECURITYLAB=0 으로 비활성)",
+    "세션 idle/max 잠금 · 감사 로그 해시 체인 · rule pack HMAC · 상수시간 비교",
+    "SecurityLab 라이브러리 App ProjectReference 병합 · 지시서 진행률 100%"
+  ]
+}

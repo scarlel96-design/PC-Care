@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using SmartPerformanceDoctor.App.Models.Security;
 using SmartPerformanceDoctor.App.Services.Commercial;
+using SmartPerformanceDoctor.SecurityLab.ProductBridge;
 
 namespace SmartPerformanceDoctor.App.Services.Security;
 
@@ -25,18 +26,109 @@ public sealed class SecureVaultService : IDisposable
     private VaultKdfParameters _kdfParameters = VaultKdfParameters.DefaultNewVault;
     private SecureVaultAuditVerificationResult? _lastAuditVerification;
     private SecureVaultAclStatus? _aclStatus;
+    private readonly SecureVaultLabBackend _lab = new();
 
-    public SecureVaultState State =>
-        !SecureVaultPaths.Exists()
-            ? SecureVaultState.NotCreated
-            : _vaultKey is null
-                ? SecureVaultState.Locked
-                : SecureVaultState.Unlocked;
+    /// <summary>True when on-disk vault is SecurityLab v4 (not legacy spd-vault-v3).</summary>
+    public bool IsLabVaultFormat => SecureVaultLabBackend.ExistsOnDisk() && !SecureVaultPaths.Exists();
+
+    public bool UsesLabEngine => IsLabVaultFormat || (_lab.IsUnlocked && !SecureVaultPaths.Exists());
+
+    /// <summary>Lab security state label for UI (design §10 subset).</summary>
+    public string GetLabSecurityStateLabel()
+    {
+        if (!IsLabVaultFormat)
+        {
+            return State.ToString();
+        }
+
+        return _lab.GetSecurityStateLabel();
+    }
+
+    /// <summary>Lab session idle/max countdown line (empty when locked or legacy).</summary>
+    public string GetLabSessionCountdownLine()
+    {
+        if (!IsLabVaultFormat || State != SecureVaultState.Unlocked)
+        {
+            return "";
+        }
+
+        return _lab.GetSessionCountdownLine();
+    }
+
+    public void ApplyLabAutoLockMinutes(int minutes)
+    {
+        if (IsLabVaultFormat || SecureVaultLabBackend.ExistsOnDisk())
+        {
+            _lab.ApplyProductAutoLockMinutes(minutes);
+        }
+    }
+
+    public void TouchLabActivity()
+    {
+        if (IsLabVaultFormat)
+        {
+            _lab.TouchActivity();
+        }
+    }
+
+    public string GetLabRecoveryStatusLine()
+    {
+        if (!IsLabVaultFormat && !SecureVaultLabBackend.ExistsOnDisk())
+        {
+            return "";
+        }
+
+        return _lab.GetRecoveryStatusLine();
+    }
+
+    public string GetLabContainerProbeSummary()
+    {
+        if (!IsLabVaultFormat && !SecureVaultLabBackend.ExistsOnDisk())
+        {
+            return "";
+        }
+
+        return _lab.GetContainerProbeSummary();
+    }
+
+    public string GetLabVaultHealthLine()
+    {
+        if (!IsLabVaultFormat && !SecureVaultLabBackend.ExistsOnDisk())
+        {
+            return "";
+        }
+
+        return _lab.GetVaultHealthLine();
+    }
+
+    public SecureVaultState State
+    {
+        get
+        {
+            if (SecureVaultLabBackend.ExistsOnDisk() && !SecureVaultPaths.Exists())
+            {
+                return _lab.State;
+            }
+
+            if (!SecureVaultPaths.Exists())
+            {
+                // Prefer not-created; if only lab partially exists handled above
+                return SecureVaultState.NotCreated;
+            }
+
+            return _vaultKey is null ? SecureVaultState.Locked : SecureVaultState.Unlocked;
+        }
+    }
 
     public IReadOnlyList<SecureVaultEntry> Entries
     {
         get
         {
+            if (IsLabVaultFormat)
+            {
+                return _lab.Entries;
+            }
+
             if (_manifest is null || _metadataKey is null)
             {
                 return Array.Empty<SecureVaultEntry>();
@@ -47,10 +139,21 @@ public sealed class SecureVaultService : IDisposable
     }
 
     public IReadOnlyList<SecureVaultBrowsableItem> GetBrowsableItems(string? bundleId, string relativePrefix) =>
-        SecureVaultTreeBuilder.Build(Entries, bundleId, relativePrefix);
+        IsLabVaultFormat
+            ? _lab.GetBrowsableItems(bundleId, relativePrefix)
+            : SecureVaultTreeBuilder.Build(Entries, bundleId, relativePrefix);
 
     public SecureVaultOperationResult CreateVault(string masterPassword, string? recoveryHint = null)
     {
+        // 50.3.0+: new vaults use SecurityLab v4 when product flags enable it and no v3 exists.
+        if (ProductFeatureFlags.VaultV4UiEnabled
+            && !SecureVaultPaths.Exists()
+            && !SecureVaultLabBackend.ExistsOnDisk())
+        {
+            return _lab.Create(masterPassword);
+        }
+
+        // PRODUCT STABLE PATH (spd-vault-v3) for existing installs / flag-off.
         var policy = SecureVaultPasswordPolicy.ValidateForNewVault(masterPassword);
         if (!policy.IsValid)
         {
@@ -106,7 +209,8 @@ public sealed class SecureVaultService : IDisposable
                 Success = true,
                 Message = "보안 금고가 생성되었습니다. 복구 키를 안전한 곳에 보관하세요.",
                 ProcessedCount = 1,
-                RecoveryKey = formattedRecoveryKey
+                RecoveryKey = formattedRecoveryKey,
+                VaultFormat = "spd-vault-v3"
             };
         }
         finally
@@ -118,6 +222,11 @@ public sealed class SecureVaultService : IDisposable
 
     public SecureVaultOperationResult Unlock(string masterPassword)
     {
+        if (IsLabVaultFormat || (ProductFeatureFlags.VaultV4UiEnabled && SecureVaultLabBackend.ExistsOnDisk() && !SecureVaultPaths.Exists()))
+        {
+            return _lab.Unlock(masterPassword);
+        }
+
         if (!SecureVaultPaths.Exists())
         {
             return Fail("금고가 없습니다. 먼저 금고를 만드세요.");
@@ -187,11 +296,34 @@ public sealed class SecureVaultService : IDisposable
         }
     }
 
+    /// <summary>Lab v5 read-only unlock (design §8).</summary>
+    public SecureVaultOperationResult UnlockReadOnlyLab(string masterPassword)
+    {
+        if (!IsLabVaultFormat && !(SecureVaultLabBackend.ExistsOnDisk() && !SecureVaultPaths.Exists()))
+        {
+            return Fail("읽기 전용 열기는 v5 Lab 금고에서만 지원됩니다.");
+        }
+
+        return _lab.UnlockReadOnly(masterPassword);
+    }
+
     public SecureVaultOperationResult UnlockWithRecoveryKey(string recoveryKeyInput)
     {
+        if (IsLabVaultFormat || (SecureVaultLabBackend.ExistsOnDisk() && !SecureVaultPaths.Exists()))
+        {
+            return _lab.ProveRecovery(recoveryKeyInput);
+        }
+
         if (!SecureVaultPaths.Exists())
         {
             return Fail("금고가 없습니다.");
+        }
+
+        // Recovery unlock must share the same anti-bruteforce gate as password unlock.
+        var rateStatus = SecureVaultRateLimiter.CheckLockout();
+        if (rateStatus.IsLockedOut)
+        {
+            return Fail(rateStatus.Message);
         }
 
         if (!SecureVaultPasswordPolicy.TryParseRecoveryKey(recoveryKeyInput, out var recoveryKey))
@@ -244,6 +376,12 @@ public sealed class SecureVaultService : IDisposable
 
     public SecureVaultOperationResult ChangeMasterPassword(string currentPassword, string newPassword)
     {
+        if (IsLabVaultFormat)
+        {
+            return _lab.ChangePassword(currentPassword, newPassword);
+        }
+
+
         EnsureUnlocked();
         var policy = SecureVaultPasswordPolicy.ValidateForNewVault(newPassword);
         if (!policy.IsValid)
@@ -304,6 +442,17 @@ public sealed class SecureVaultService : IDisposable
         {
             return Fail("현재 비밀번호가 올바르지 않습니다.");
         }
+    }
+
+    /// <summary>Lab v5: re-issue one-time recovery codes (invalidates previous). Requires password proof.</summary>
+    public SecureVaultOperationResult ReissueLabRecoveryCodes(string password)
+    {
+        if (!IsLabVaultFormat)
+        {
+            return Fail("복구 코드 재발급은 보안 금고 v5 Lab 경로에서만 지원됩니다.");
+        }
+
+        return _lab.ReissueRecoveryCodes(password);
     }
 
     public SecureVaultOperationResult MigrateKdfToArgon2(string masterPassword)
@@ -370,6 +519,11 @@ public sealed class SecureVaultService : IDisposable
     {
         get
         {
+            if (IsLabVaultFormat)
+            {
+                return false;
+            }
+
             if (!SecureVaultPaths.Exists())
             {
                 return false;
@@ -387,6 +541,11 @@ public sealed class SecureVaultService : IDisposable
 
     public SecureVaultSecurityStatus GetSecurityStatus()
     {
+        if (IsLabVaultFormat)
+        {
+            return _lab.GetSecurityStatus();
+        }
+
         var rateStatus = SecureVaultRateLimiter.CheckLockout();
         var kdfLine = _kdfParameters.DisplayName;
         return new SecureVaultSecurityStatus
@@ -403,8 +562,20 @@ public sealed class SecureVaultService : IDisposable
         };
     }
 
+    /// <summary>v3 → Lab v4 re-encrypt migration (source v3 preserved).</summary>
+    public SecureVaultOperationResult MigrateLegacyVaultToLabV4(string masterPassword)
+    {
+        if (!ProductFeatureFlags.MigrationUiEnabled)
+        {
+            return Fail("마이그레이션 기능이 비활성화되어 있습니다.");
+        }
+
+        return _lab.MigrateFromV3(masterPassword);
+    }
+
     public void Lock()
     {
+        _lab.Lock();
         SecureVaultCrypto.Zero(_vaultKey);
         SecureVaultCrypto.Zero(_metadataKey);
         SecureVaultCrypto.Zero(_macKey);
@@ -422,6 +593,11 @@ public sealed class SecureVaultService : IDisposable
         CancellationToken cancellationToken = default,
         IProgress<SecureVaultProgressReport>? progress = null)
     {
+        if (IsLabVaultFormat)
+        {
+            return await _lab.AddFileAsync(sourcePath, progress).ConfigureAwait(false);
+        }
+
         EnsureUnlocked();
         if (!File.Exists(sourcePath))
         {
@@ -480,6 +656,11 @@ public sealed class SecureVaultService : IDisposable
         CancellationToken cancellationToken = default,
         IProgress<SecureVaultProgressReport>? progress = null)
     {
+        if (IsLabVaultFormat)
+        {
+            return await _lab.AddFolderAsync(folderPath, progress).ConfigureAwait(false);
+        }
+
         EnsureUnlocked();
         if (!Directory.Exists(folderPath))
         {
@@ -672,8 +853,30 @@ public sealed class SecureVaultService : IDisposable
     public async Task<SecureVaultOperationResult> ExportEntryAsync(
         string entryId,
         string destinationDirectory,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        bool stepUpConfirmed = false)
     {
+        if (IsLabVaultFormat)
+        {
+            var first = await _lab.ExportEntryAsync(entryId, destinationDirectory, stepUpConfirmed: false)
+                .ConfigureAwait(false);
+            if (!first.Success
+                && first.Message.Contains("추가 확인", StringComparison.Ordinal)
+                && !stepUpConfirmed)
+            {
+                // product UI may call again with stepUpConfirmed; signal explicitly
+                return first;
+            }
+
+            if (!first.Success && stepUpConfirmed)
+            {
+                return await _lab.ExportEntryAsync(entryId, destinationDirectory, stepUpConfirmed: true)
+                    .ConfigureAwait(false);
+            }
+
+            return first;
+        }
+
         EnsureUnlocked();
         var entry = _manifest!.Entries.FirstOrDefault(e => e.EntryId == entryId);
         if (entry is null)
@@ -694,6 +897,11 @@ public sealed class SecureVaultService : IDisposable
         CancellationToken cancellationToken = default,
         IProgress<SecureVaultProgressReport>? progress = null)
     {
+        if (IsLabVaultFormat)
+        {
+            return Fail("v4 금고는 원본 경로 봉인을 사용하지 않습니다. 「내보내기」로 복구하세요.");
+        }
+
         EnsureUnlocked();
         var entry = _manifest!.Entries.FirstOrDefault(e => e.EntryId == entryId);
         if (entry is null)
@@ -771,6 +979,11 @@ public sealed class SecureVaultService : IDisposable
 
     public SecureVaultOperationResult RemoveFromVault(string entryId, bool unsealOrigin = true)
     {
+        if (IsLabVaultFormat)
+        {
+            return _lab.RemoveFromVault(entryId);
+        }
+
         EnsureUnlocked();
         var entry = _manifest!.Entries.FirstOrDefault(e => e.EntryId == entryId);
         if (entry is null)
@@ -938,9 +1151,33 @@ public sealed class SecureVaultService : IDisposable
         return invalid;
     }
 
-    public SecureVaultIntegrityResult VerifyIntegrity() => VerifyIntegrityInternal(repair: false);
+    public SecureVaultIntegrityResult VerifyIntegrity() =>
+        IsLabVaultFormat ? _lab.VerifyIntegrity() : VerifyIntegrityInternal(repair: false);
 
-    public SecureVaultIntegrityResult RepairIntegrity() => VerifyIntegrityInternal(repair: true);
+    public SecureVaultIntegrityResult RepairIntegrity() =>
+        IsLabVaultFormat ? _lab.VerifyIntegrity() : VerifyIntegrityInternal(repair: true);
+
+    /// <summary>Lab v5 pack GC (design §7). No-op message on legacy v3.</summary>
+    public SecureVaultOperationResult CompactLabPacks(bool userConfirmed = true)
+    {
+        if (!IsLabVaultFormat)
+        {
+            return Fail("Pack compact는 보안 금고 v5 Lab 경로에서만 지원됩니다.");
+        }
+
+        return _lab.CompactPacks(userConfirmed);
+    }
+
+    /// <summary>Lab v5: rewrite activation.commit from current digests (S-class repair).</summary>
+    public SecureVaultOperationResult RepairLabActivation()
+    {
+        if (!IsLabVaultFormat)
+        {
+            return Fail("Activation 복구는 보안 금고 v5 Lab 경로에서만 지원됩니다.");
+        }
+
+        return _lab.RepairActivation();
+    }
 
     private SecureVaultIntegrityResult VerifyIntegrityInternal(bool repair)
     {
@@ -1193,7 +1430,11 @@ public sealed class SecureVaultService : IDisposable
             + $" (디스크 {storage.ShardsOnDisk} · 목록 {storage.VisibleRootItems})";
     }
 
-    public void Dispose() => Lock();
+    public void Dispose()
+    {
+        Lock();
+        _lab.Dispose();
+    }
 
     private async Task<SecureVaultOperationResult> ExportBundleInternalAsync(
         string bundleId,
@@ -1401,7 +1642,7 @@ public sealed class SecureVaultService : IDisposable
     private async Task<byte[]> DecryptEntryPayloadAsync(SecureVaultManifestEntry entry, CancellationToken cancellationToken)
     {
         _ = cancellationToken;
-        var shardPath = Path.Combine(SecureVaultPaths.DataDirectory, entry.ShardName);
+        var shardPath = GetPrimaryShardPath(entry.ShardName);
         if (!File.Exists(shardPath))
         {
             throw new FileNotFoundException("암호화 데이터가 없습니다.");
@@ -1438,6 +1679,7 @@ public sealed class SecureVaultService : IDisposable
         bool persistManifest = true,
         bool writeAudit = true)
     {
+        // PRODUCT STABLE: layered AEAD shards under data/ (v3). Chunked objects/ is SecurityLab only.
         var entryId = Guid.NewGuid().ToString("N");
         var shardName = $"shard_{DateTimeOffset.Now:yyyyMMddHHmmssfff}_{entryId[..8]}.blob";
         var shardPath = Path.Combine(SecureVaultPaths.DataDirectory, shardName);
@@ -1519,7 +1761,8 @@ public sealed class SecureVaultService : IDisposable
         {
             Success = true,
             Message = $"금고에 넣었습니다: {label}",
-            ProcessedCount = 1
+            ProcessedCount = 1,
+            VaultFormat = _manifest.Format
         };
     }
 

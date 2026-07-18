@@ -13,7 +13,7 @@ public static class RuntimeIntegrityGuard
         var root = RuntimePaths.InstallRoot;
         var mainDll = Path.Combine(root, "SmartPerformanceDoctor.dll");
         var mainExe = SmartPerformanceDoctor.Aegis.AppExecutableResolver.ResolveMainExecutable(root);
-        var bootstrap = Path.Combine(root, "runtimes", "win-x64", "native", "Microsoft.WindowsAppRuntime.Bootstrap.dll");
+        var bootstrap = ResolveBootstrapPath(root);
 
         if (mainExe is null)
         {
@@ -25,9 +25,52 @@ public static class RuntimeIntegrityGuard
             return "프로그램 파일이 손상되었습니다. 설치를 복구하거나 scripts\\build.ps1 로 다시 배포하세요.";
         }
 
-        if (!File.Exists(bootstrap))
+        if (string.IsNullOrWhiteSpace(bootstrap))
         {
             return "Windows App SDK 런타임 파일이 누락되었습니다. 전체 설치 패키지로 복구하세요.";
+        }
+
+        foreach (var shellAsset in new[] { "App.xbf", "MainWindow.xbf" })
+        {
+            if (!File.Exists(Path.Combine(root, shellAsset)))
+            {
+                return $"WinUI 화면 리소스({shellAsset})가 설치 폴더에 없습니다. 설치 프로그램에서 복구(Repair) 또는 재설치하세요.";
+            }
+        }
+
+        foreach (var themeAsset in new[]
+                 {
+                     Path.Combine("Microsoft.UI.Xaml", "Themes", "themeresources.xbf"),
+                     Path.Combine("Microsoft.UI.Xaml", "Themes", "generic.xbf")
+                 })
+        {
+            if (!File.Exists(Path.Combine(root, themeAsset)))
+            {
+                return "WinUI Fluent 테마 리소스가 설치 폴더에 없습니다. 최신 PCCare_Setup로 재설치하거나 설치 프로그램 복구를 실행하세요.";
+            }
+        }
+
+        if (!File.Exists(Path.Combine(root, "coreclr.dll")) || !File.Exists(Path.Combine(root, "hostfxr.dll")))
+        {
+            return ".NET 런타임 파일이 설치 폴더에 없습니다. 별도 .NET 설치 없이 실행하려면 최신 설치 프로그램으로 복구(Repair)하거나 재설치하세요.";
+        }
+
+        return null;
+    }
+
+    private static string? ResolveBootstrapPath(string root)
+    {
+        foreach (var relative in new[]
+                 {
+                     Path.Combine("runtimes", "win-x64", "native", "Microsoft.WindowsAppRuntime.Bootstrap.dll"),
+                     "Microsoft.WindowsAppRuntime.Bootstrap.dll"
+                 })
+        {
+            var candidate = Path.Combine(root, relative);
+            if (File.Exists(candidate))
+            {
+                return candidate;
+            }
         }
 
         return null;

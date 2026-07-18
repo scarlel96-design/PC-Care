@@ -49,129 +49,129 @@ public sealed class EngineClient
 
         try
         {
-        RegisterActiveProcess(process);
+            RegisterActiveProcess(process);
 
-        await process.StandardInput.WriteLineAsync(JsonSerializer.Serialize(request, JsonOptions));
-        await process.StandardInput.FlushAsync();
-        process.StandardInput.Close();
+            await process.StandardInput.WriteLineAsync(JsonSerializer.Serialize(request, JsonOptions));
+            await process.StandardInput.FlushAsync();
+            process.StandardInput.Close();
 
-        using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        timeoutCts.CancelAfter(ResolveModuleTimeout(module));
-        using var killOnCancel = timeoutCts.Token.Register(KillActiveProcess);
+            using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            timeoutCts.CancelAfter(ResolveModuleTimeout(module));
+            using var killOnCancel = timeoutCts.Token.Register(KillActiveProcess);
 
-        _ = Task.Run(async () =>
-        {
-            try
-            {
-                while (!process.HasExited && !timeoutCts.Token.IsCancellationRequested)
-                {
-                    await process.StandardError.ReadLineAsync(timeoutCts.Token).ConfigureAwait(false);
-                }
-            }
-            catch
-            {
-                // stderr drain prevents pipe back-pressure; ignore read failures.
-            }
-        }, timeoutCts.Token);
-
-        var events = new List<EngineEvent>();
-        EngineResponse? finalResponse = null;
-
-        while (true)
-        {
-            var line = await process.StandardOutput.ReadLineAsync(timeoutCts.Token).ConfigureAwait(false);
-            if (line is null)
-            {
-                break;
-            }
-
-            if (string.IsNullOrWhiteSpace(line))
-            {
-                continue;
-            }
-
-            if (!line.TrimStart().StartsWith('{'))
-            {
-                continue;
-            }
-
-            EngineFrame? frame;
-            try
-            {
-                frame = JsonSerializer.Deserialize<EngineFrame>(line, JsonOptions);
-            }
-            catch
-            {
-                continue;
-            }
-
-            if (frame?.FrameType == "event" && frame.Event is not null)
-            {
-                events.Add(frame.Event);
-                var localized = frame.Event with
-                {
-                    Message = DiagnosticMessageLocalizer.Localize(frame.Event.Message)
-                };
-                onEvent?.Invoke(localized);
-                continue;
-            }
-
-            if (frame?.FrameType == "response" && frame.Response is not null)
-            {
-                finalResponse = frame.Response;
-                break;
-            }
-        }
-
-        try
-        {
-            await process.WaitForExitAsync(timeoutCts.Token);
-        }
-        catch
-        {
-            if (!process.HasExited)
+            _ = Task.Run(async () =>
             {
                 try
                 {
-                    process.Kill(entireProcessTree: true);
+                    while (!process.HasExited && !timeoutCts.Token.IsCancellationRequested)
+                    {
+                        await process.StandardError.ReadLineAsync(timeoutCts.Token).ConfigureAwait(false);
+                    }
                 }
                 catch
                 {
-                    // ignored
+                    // stderr drain prevents pipe back-pressure; ignore read failures.
+                }
+            }, timeoutCts.Token);
+
+            var events = new List<EngineEvent>();
+            EngineResponse? finalResponse = null;
+
+            while (true)
+            {
+                var line = await process.StandardOutput.ReadLineAsync(timeoutCts.Token).ConfigureAwait(false);
+                if (line is null)
+                {
+                    break;
+                }
+
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+
+                if (!line.TrimStart().StartsWith('{'))
+                {
+                    continue;
+                }
+
+                EngineFrame? frame;
+                try
+                {
+                    frame = JsonSerializer.Deserialize<EngineFrame>(line, JsonOptions);
+                }
+                catch
+                {
+                    continue;
+                }
+
+                if (frame?.FrameType == "event" && frame.Event is not null)
+                {
+                    events.Add(frame.Event);
+                    var localized = frame.Event with
+                    {
+                        Message = DiagnosticMessageLocalizer.Localize(frame.Event.Message)
+                    };
+                    onEvent?.Invoke(localized);
+                    continue;
+                }
+
+                if (frame?.FrameType == "response" && frame.Response is not null)
+                {
+                    finalResponse = frame.Response;
+                    break;
                 }
             }
-        }
 
-        if (finalResponse is not null)
-        {
-            var merged = finalResponse with { Events = events.Concat(finalResponse.Events).ToArray() };
-            RecordKnowledge(request, merged);
-            return merged;
-        }
+            try
+            {
+                await process.WaitForExitAsync(timeoutCts.Token);
+            }
+            catch
+            {
+                if (!process.HasExited)
+                {
+                    try
+                    {
+                        process.Kill(entireProcessTree: true);
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+            }
 
-        if (timeoutCts.IsCancellationRequested && !cancellationToken.IsCancellationRequested)
-        {
+            if (finalResponse is not null)
+            {
+                var merged = finalResponse with { Events = events.Concat(finalResponse.Events).ToArray() };
+                RecordKnowledge(request, merged);
+                return merged;
+            }
+
+            if (timeoutCts.IsCancellationRequested && !cancellationToken.IsCancellationRequested)
+            {
+                return new EngineResponse
+                {
+                    RequestId = request.Id,
+                    Status = "timeout",
+                    Message = $"{module} 모듈 점검이 시간 제한을 초과했습니다. 다음 단계로 계속합니다.",
+                    Events = events,
+                    Intelligence = BuildTimeoutIntelligence(module)
+                };
+            }
+
+            var stderr = await process.StandardError.ReadToEndAsync(CancellationToken.None);
             return new EngineResponse
             {
                 RequestId = request.Id,
-                Status = "timeout",
-                Message = $"{module} 모듈 점검이 시간 제한을 초과했습니다. 다음 단계로 계속합니다.",
+                Status = "no-final-response",
+                Message = string.IsNullOrWhiteSpace(stderr)
+                    ? "Core 최종 응답을 받지 못했습니다. 다음 단계로 계속합니다."
+                    : $"Core 최종 응답 없음 / STDERR: {stderr}",
                 Events = events,
                 Intelligence = BuildTimeoutIntelligence(module)
             };
-        }
-
-        var stderr = await process.StandardError.ReadToEndAsync(CancellationToken.None);
-        return new EngineResponse
-        {
-            RequestId = request.Id,
-            Status = "no-final-response",
-            Message = string.IsNullOrWhiteSpace(stderr)
-                ? "Core 최종 응답을 받지 못했습니다. 다음 단계로 계속합니다."
-                : $"Core 최종 응답 없음 / STDERR: {stderr}",
-            Events = events,
-            Intelligence = BuildTimeoutIntelligence(module)
-        };
         }
         finally
         {

@@ -33,7 +33,7 @@ public static class UserStrings
     public const string DryRun = "안전 확인";
     public const string Apply = "실제 적용";
     public const string DeviceId = "장치 ID";
-    public const string EngineSnapshot = "케어 엔진 상태";
+    public const string EngineSnapshot = "진단 엔진 상태";
     public const string LearningInsight = "학습 인사이트";
     public const string SearchPlaceholder = "메뉴 검색";
 

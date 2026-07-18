@@ -7,9 +7,16 @@
     <AssemblyName>SmartPerformanceDoctor</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <UseWinUI>true</UseWinUI>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>false</UseWPF>
+    <EnableDefaultWindowsFormsItems>false</EnableDefaultWindowsFormsItems>
+    <ImportWindowsDesktopTargets>false</ImportWindowsDesktopTargets>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <WindowsPackageType>None</WindowsPackageType>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <!-- CRITICAL: bootstrap module auto-init + self-contained 2.x causes native fail-fast (0xC0000602) on Window(). -->
+    <WindowsAppSdkBootstrapInitialize>false</WindowsAppSdkBootstrapInitialize>
     <Platforms>x64</Platforms>
     <PlatformTarget>x64</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
@@ -17,8 +24,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="SmartPerformanceDoctor.Tests" />
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App" />
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
   </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="SmartPerformanceDoctor.Tests" />
+    <RuntimeHostConfigurationOption Include="CSWINRT_USE_WINDOWS_UI_XAML_PROJECTIONS" Value="true" />
+  </ItemGroup>
+
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.WindowsAppSDK" />
@@ -30,9 +46,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../SmartPerformanceDoctor.AstraVault/SmartPerformanceDoctor.AstraVault.csproj" />
     <ProjectReference Include="../SmartPerformanceDoctor.Aegis/SmartPerformanceDoctor.Aegis.csproj" />
     <ProjectReference Include="../SmartPerformanceDoctor.Contracts/SmartPerformanceDoctor.Contracts.csproj" />
     <ProjectReference Include="../SmartPerformanceDoctor.Data/SmartPerformanceDoctor.Data.csproj" />
+    <!-- 50.3.0: SecurityLab vault v4 + shred-next merged into product -->
+    <ProjectReference Include="../../experimental/SecurityLab/SmartPerformanceDoctor.SecurityLab.csproj" />
     <ProjectReference Include="../SmartPerformanceDoctor.AegisRecoveryHelper/SmartPerformanceDoctor.AegisRecoveryHelper.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="../SmartPerformanceDoctor.AegisRecoveryService/SmartPerformanceDoctor.AegisRecoveryService.csproj" ReferenceOutputAssembly="false" />
   </ItemGroup>
@@ -41,6 +60,7 @@
     <Content Include="..\..\content\rules\**\*.*" Link="content\rules\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\content\data\commercial\**\*.*" Link="content\data\commercial\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\content\assets\**\*.*" Link="content\assets\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\content\local-ai\**\*.*" Link="content\local-ai\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <Target Name="CopyNativeEnginesIfBuilt" AfterTargets="Build">
@@ -90,5 +110,41 @@
           DestinationFiles="$(OutDir)\PCCare.pri"
           SkipUnchangedFiles="false"
           Condition="Exists('$(OutDir)\SmartPerformanceDoctor.pri')" />
+  </Target>
+
+  <Target Name="EnsureWinUiResourcePriAliases" AfterTargets="CopyFilesToOutputDirectory">
+    <Copy Condition="Exists('$(OutDir)Microsoft.UI.Xaml.Controls.pri') and !Exists('$(OutDir)Microsoft.UI.Xaml.pri')"
+          SourceFiles="$(OutDir)Microsoft.UI.Xaml.Controls.pri"
+          DestinationFiles="$(OutDir)Microsoft.UI.Xaml.pri"
+          SkipUnchangedFiles="false" />
+  </Target>
+
+  <!-- Remove legacy empty theme xaml shim; real Fluent theme ships as loose .xbf under Microsoft.UI.Xaml\Themes. -->
+  <Target Name="RemoveLegacyWinUiEmptyThemeShim" AfterTargets="CopyFilesToOutputDirectory">
+    <Delete Files="$(OutDir)WinUiShim\Microsoft.UI.Xaml\Themes\themeresources.xaml" ContinueOnError="true" />
+  </Target>
+
+  <Target Name="EnsureBootstrapNativeLayout" AfterTargets="Publish">
+    <PropertyGroup>
+      <_PubDir Condition="'$(PublishDir)' != ''">$([MSBuild]::EnsureTrailingSlash('$(PublishDir)'))</_PubDir>
+      <_PubDir Condition="'$(_PubDir)' == ''">$([MSBuild]::EnsureTrailingSlash('$(PublishUrl)'))</_PubDir>
+      <_BootstrapNative>$(_PubDir)runtimes\win-x64\native\</_BootstrapNative>
+    </PropertyGroup>
+    <MakeDir Directories="$(_BootstrapNative)" Condition="'$(_PubDir)' != ''" />
+    <Copy Condition="'$(_PubDir)' != '' and Exists('$(_PubDir)Microsoft.WindowsAppRuntime.Bootstrap.dll')"
+          SourceFiles="$(_PubDir)Microsoft.WindowsAppRuntime.Bootstrap.dll"
+          DestinationFiles="$(_BootstrapNative)Microsoft.WindowsAppRuntime.Bootstrap.dll"
+          SkipUnchangedFiles="false" />
+  </Target>
+
+  <Target Name="EnsureWinUiResourcePriAliasesPublish" AfterTargets="Publish">
+    <PropertyGroup>
+      <_PriPublishDir Condition="'$(PublishDir)' != ''">$([MSBuild]::EnsureTrailingSlash('$(PublishDir)'))</_PriPublishDir>
+      <_PriPublishDir Condition="'$(_PriPublishDir)' == ''">$([MSBuild]::EnsureTrailingSlash('$(PublishUrl)'))</_PriPublishDir>
+    </PropertyGroup>
+    <Copy Condition="'$(_PriPublishDir)' != '' and Exists('$(_PriPublishDir)Microsoft.UI.Xaml.Controls.pri') and !Exists('$(_PriPublishDir)Microsoft.UI.Xaml.pri')"
+          SourceFiles="$(_PriPublishDir)Microsoft.UI.Xaml.Controls.pri"
+          DestinationFiles="$(_PriPublishDir)Microsoft.UI.Xaml.pri"
+          SkipUnchangedFiles="false" />
   </Target>
 </Project>

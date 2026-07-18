@@ -14,6 +14,7 @@ public sealed partial class SecureVaultCenterPage : Page
 {
     private readonly SecureVaultViewModel _viewModel = new();
     private readonly DispatcherTimer _autoLockTimer;
+    private readonly DispatcherTimer _sessionCountdownTimer;
     private bool _operationInProgress;
 
     public SecureVaultCenterPage()
@@ -29,6 +30,8 @@ public sealed partial class SecureVaultCenterPage : Page
 
         _autoLockTimer = new DispatcherTimer();
         _autoLockTimer.Tick += OnAutoLockTick;
+        _sessionCountdownTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _sessionCountdownTimer.Tick += OnSessionCountdownTick;
         _viewModel.PropertyChanged += OnViewModelPropertyChanged;
         _viewModel.AutoLockRequested += OnAutoLockActivity;
         Loaded += OnPageLoaded;
@@ -76,6 +79,7 @@ public sealed partial class SecureVaultCenterPage : Page
     private void OnUnloaded(object sender, RoutedEventArgs e)
     {
         _autoLockTimer.Stop();
+        _sessionCountdownTimer.Stop();
         _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
         _viewModel.AutoLockRequested -= OnAutoLockActivity;
     }
@@ -85,12 +89,37 @@ public sealed partial class SecureVaultCenterPage : Page
         if (!_viewModel.IsUnlocked)
         {
             _autoLockTimer.Stop();
+            _sessionCountdownTimer.Stop();
             return;
         }
 
         _viewModel.Lock();
         _viewModel.SetStatus($"비활성 {_viewModel.AutoLockMinutes}분 경과 — 금고를 자동 잠갔습니다.");
         _autoLockTimer.Stop();
+        _sessionCountdownTimer.Stop();
+    }
+
+    private void OnSessionCountdownTick(object? sender, object e)
+    {
+        if (!_viewModel.IsUnlocked)
+        {
+            _sessionCountdownTimer.Stop();
+            SessionCountdownText.Text = "";
+            return;
+        }
+
+        _viewModel.RefreshSessionCountdown();
+        if (SessionCountdownText is not null)
+        {
+            SessionCountdownText.Text = string.IsNullOrWhiteSpace(_viewModel.SessionCountdownLine)
+                ? ""
+                : "세션: " + _viewModel.SessionCountdownLine;
+        }
+
+        if (SecurityStateText is not null && !string.IsNullOrWhiteSpace(_viewModel.SecurityStateLine))
+        {
+            SecurityStateText.Text = "보안 상태: " + _viewModel.SecurityStateLine;
+        }
     }
 
     private void OnAutoLockActivity(object? sender, EventArgs e) => ResetAutoLockTimer();
@@ -102,6 +131,16 @@ public sealed partial class SecureVaultCenterPage : Page
         {
             _autoLockTimer.Interval = TimeSpan.FromMinutes(_viewModel.AutoLockMinutes);
             _autoLockTimer.Start();
+            if (!_sessionCountdownTimer.IsEnabled)
+            {
+                _sessionCountdownTimer.Start();
+            }
+
+            _viewModel.RefreshSessionCountdown();
+        }
+        else
+        {
+            _sessionCountdownTimer.Stop();
         }
     }
 
@@ -111,19 +150,14 @@ public sealed partial class SecureVaultCenterPage : Page
             or nameof(SecureVaultViewModel.StatusLine)
             or nameof(SecureVaultViewModel.CryptoLine)
             or nameof(SecureVaultViewModel.SecurityLine)
+            or nameof(SecureVaultViewModel.SecurityStateLine)
+            or nameof(SecureVaultViewModel.SessionCountdownLine)
             or nameof(SecureVaultViewModel.Breadcrumb)
             or nameof(SecureVaultViewModel.VisibleItems)
             or null
             or "")
         {
             SyncBoundText();
-        }
-
-        if (e.PropertyName is nameof(SecureVaultViewModel.NeedsKdfMigration))
-        {
-            KdfMigrationPanel.Visibility = _viewModel.NeedsKdfMigration && _viewModel.IsUnlocked
-                ? Visibility.Visible
-                : Visibility.Collapsed;
         }
 
         if (e.PropertyName is nameof(SecureVaultViewModel.IsNotCreated)
@@ -138,6 +172,7 @@ public sealed partial class SecureVaultCenterPage : Page
             else
             {
                 _autoLockTimer.Stop();
+                _sessionCountdownTimer.Stop();
             }
         }
 
@@ -153,9 +188,6 @@ public sealed partial class SecureVaultCenterPage : Page
         UnlockPanel.Visibility = _viewModel.IsLocked ? Visibility.Visible : Visibility.Collapsed;
         UnlockedPanel.Visibility = _viewModel.IsUnlocked ? Visibility.Visible : Visibility.Collapsed;
         BackButton.Visibility = _viewModel.CanNavigateBack ? Visibility.Visible : Visibility.Collapsed;
-        KdfMigrationPanel.Visibility = _viewModel.NeedsKdfMigration && _viewModel.IsUnlocked
-            ? Visibility.Visible
-            : Visibility.Collapsed;
     }
 
     private void SyncBoundText()
@@ -164,6 +196,20 @@ public sealed partial class SecureVaultCenterPage : Page
         StatusLineText.Text = _viewModel.StatusLine;
         CryptoLineText.Text = _viewModel.CryptoLine;
         SecurityLineText.Text = _viewModel.SecurityLine;
+        if (SecurityStateText is not null)
+        {
+            SecurityStateText.Text = string.IsNullOrWhiteSpace(_viewModel.SecurityStateLine)
+                ? ""
+                : "보안 상태: " + _viewModel.SecurityStateLine;
+        }
+
+        if (SessionCountdownText is not null)
+        {
+            SessionCountdownText.Text = string.IsNullOrWhiteSpace(_viewModel.SessionCountdownLine)
+                ? ""
+                : "세션: " + _viewModel.SessionCountdownLine;
+        }
+
         BreadcrumbText.Text = _viewModel.Breadcrumb;
         RefreshEntryList();
     }
@@ -204,9 +250,20 @@ public sealed partial class SecureVaultCenterPage : Page
 
         var hint = string.IsNullOrWhiteSpace(RecoveryHintBox.Text) ? null : RecoveryHintBox.Text.Trim();
         var result = _viewModel.CreateVault(password, hint);
-        if (result.Success && !string.IsNullOrWhiteSpace(result.RecoveryKey))
+        if (result.Success)
         {
-            _ = ShowRecoveryKeyDialogAsync("금고 생성 완료", result.RecoveryKey);
+            if (result.RecoveryCodes is { Count: > 0 })
+            {
+                var codes = string.Join(Environment.NewLine, result.RecoveryCodes);
+                _ = ShowRecoveryKeyDialogAsync(
+                    "금고 v4 생성 완료 · 복구 코드",
+                    "아래 복구 코드 10개를 안전한 곳에 보관하세요. 각 코드는 일회용이며, 디스크에는 해시만 저장됩니다.\n" +
+                    "잠금 해제는 비밀번호로 하세요.\n\n" + codes);
+            }
+            else if (!string.IsNullOrWhiteSpace(result.RecoveryKey))
+            {
+                _ = ShowRecoveryKeyDialogAsync("금고 생성 완료", result.RecoveryKey);
+            }
         }
 
         ClearPasswordBoxes();
@@ -216,47 +273,6 @@ public sealed partial class SecureVaultCenterPage : Page
     {
         _viewModel.UnlockWithRecoveryKey(RecoveryKeyBox.Text);
         RecoveryKeyBox.Text = "";
-    }
-
-    private async void MigrateKdf(object sender, RoutedEventArgs e)
-    {
-        var passwordBox = new PasswordBox { PlaceholderText = "마스터 비밀번호" };
-        var dialog = new ContentDialog
-        {
-            Title = "Argon2id KDF 업그레이드",
-            Content = new StackPanel
-            {
-                Spacing = 8,
-                Children =
-                {
-                    new TextBlock
-                    {
-                        Text = "PBKDF2에서 Argon2id로 키 유도 방식을 업그레이드합니다. 새 복구 키가 발급되니 안전한 곳에 보관하세요.",
-                        TextWrapping = TextWrapping.Wrap
-                    },
-                    passwordBox
-                }
-            },
-            PrimaryButtonText = "업그레이드",
-            CloseButtonText = "취소",
-            DefaultButton = ContentDialogButton.Close,
-            XamlRoot = XamlRoot
-        };
-
-        if (await dialog.ShowAsync() != ContentDialogResult.Primary)
-        {
-            return;
-        }
-
-        var result = _viewModel.MigrateKdfToArgon2(passwordBox.Password);
-        if (result.Success && !string.IsNullOrWhiteSpace(result.RecoveryKey))
-        {
-            await ShowRecoveryKeyDialogAsync("KDF 업그레이드 완료", result.RecoveryKey);
-        }
-        else if (!result.Success)
-        {
-            await ShowOperationResultDialogAsync("KDF 업그레이드 실패", result);
-        }
     }
 
     private async void ChangePassword(object sender, RoutedEventArgs e)
@@ -291,9 +307,71 @@ public sealed partial class SecureVaultCenterPage : Page
         }
 
         var result = _viewModel.ChangeMasterPassword(currentBox.Password, newBox.Password);
-        if (result.Success && !string.IsNullOrWhiteSpace(result.RecoveryKey))
+        if (result.Success && result.RecoveryCodes is { Count: > 0 })
+        {
+            await ShowRecoveryKeyDialogAsync(
+                "비밀번호 변경 완료 · 새 복구 코드",
+                "비밀번호가 변경되었습니다. 이전 복구 코드는 모두 무효입니다.\n"
+                + "새 복구 코드 10개를 안전한 곳에 보관하세요.\n\n"
+                + string.Join(Environment.NewLine, result.RecoveryCodes));
+        }
+        else if (result.Success && !string.IsNullOrWhiteSpace(result.RecoveryKey))
         {
             await ShowRecoveryKeyDialogAsync("비밀번호 변경 완료", result.RecoveryKey);
+        }
+        else if (!result.Success)
+        {
+            _viewModel.SetStatus(result.Message);
+        }
+    }
+
+    private async void ReissueRecoveryCodes(object sender, RoutedEventArgs e)
+    {
+        if (!_viewModel.IsLabVaultFormat)
+        {
+            _viewModel.SetStatus("복구 코드 재발급은 v5 Lab 금고에서만 지원됩니다.");
+            return;
+        }
+
+        var passwordBox = new PasswordBox { PlaceholderText = "현재 마스터 비밀번호 확인" };
+        var dialog = new ContentDialog
+        {
+            Title = "복구 코드 재발급",
+            Content = new StackPanel
+            {
+                Spacing = 8,
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = "이전 일회용 복구 코드는 모두 무효가 됩니다. 새 코드 10개가 발급됩니다.",
+                        TextWrapping = TextWrapping.Wrap
+                    },
+                    passwordBox
+                }
+            },
+            PrimaryButtonText = "재발급",
+            CloseButtonText = "취소",
+            DefaultButton = ContentDialogButton.Close,
+            XamlRoot = XamlRoot
+        };
+
+        if (await dialog.ShowAsync() != ContentDialogResult.Primary)
+        {
+            return;
+        }
+
+        var result = _viewModel.ReissueRecoveryCodes(passwordBox.Password);
+        if (result.Success && result.RecoveryCodes is { Count: > 0 })
+        {
+            await ShowRecoveryKeyDialogAsync(
+                "복구 코드 재발급 완료",
+                "이전 코드는 모두 무효입니다. 새 복구 코드 10개를 보관하세요.\n\n"
+                + string.Join(Environment.NewLine, result.RecoveryCodes));
+        }
+        else
+        {
+            _viewModel.SetStatus(result.Message);
         }
     }
 
@@ -310,16 +388,25 @@ public sealed partial class SecureVaultCenterPage : Page
 
     private async Task ShowRecoveryKeyDialogAsync(string title, string recoveryKey)
     {
+        var body = recoveryKey.Contains("복구 코드", StringComparison.Ordinal)
+            || recoveryKey.Contains('\n')
+            ? recoveryKey
+            : $"아래 복구 키를 안전한 곳에 보관하세요. 분실 시 비밀번호 없이 금고를 열 수 없습니다.\n\n{recoveryKey}";
+
         var dialog = new ContentDialog
         {
             Title = title,
-            Content = new TextBlock
+            Content = new ScrollViewer
             {
-                Text = $"아래 복구 키를 안전한 곳에 보관하세요. 분실 시 비밀번호 없이 금고를 열 수 없습니다.\n\n{recoveryKey}",
-                TextWrapping = TextWrapping.Wrap,
-                IsTextSelectionEnabled = true
+                Content = new TextBlock
+                {
+                    Text = body,
+                    TextWrapping = TextWrapping.Wrap,
+                    IsTextSelectionEnabled = true
+                },
+                MaxHeight = 420
             },
-            PrimaryButtonText = "복사 완료",
+            PrimaryButtonText = "확인 · 보관 완료",
             CloseButtonText = "닫기",
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = XamlRoot
@@ -328,10 +415,50 @@ public sealed partial class SecureVaultCenterPage : Page
         await dialog.ShowAsync();
     }
 
+    private async void MigrateToLabV4(object sender, RoutedEventArgs e)
+    {
+        var passwordBox = new PasswordBox { PlaceholderText = "현재 금고 비밀번호" };
+        var panel = new StackPanel { Spacing = 8 };
+        panel.Children.Add(new TextBlock
+        {
+            Text = "기존 v3 금고를 재암호화해 Lab v4로 가져옵니다. 원본 v3는 삭제하지 않습니다. 결과는 secure_vault\\v4-migrated 경로에 생성됩니다.",
+            TextWrapping = TextWrapping.Wrap
+        });
+        panel.Children.Add(passwordBox);
+
+        var dialog = new ContentDialog
+        {
+            Title = "v3 → v4 마이그레이션",
+            Content = panel,
+            PrimaryButtonText = "마이그레이션 실행",
+            CloseButtonText = "취소",
+            DefaultButton = ContentDialogButton.Close,
+            XamlRoot = XamlRoot
+        };
+
+        if (await dialog.ShowAsync() != ContentDialogResult.Primary)
+        {
+            return;
+        }
+
+        var result = _viewModel.MigrateLegacyToLabV4(passwordBox.Password);
+        await ShowOperationResultDialogAsync("마이그레이션", result);
+    }
+
     private void UnlockVault(object sender, RoutedEventArgs e)
     {
         _viewModel.Unlock(UnlockPasswordBox.Password);
         UnlockPasswordBox.Password = "";
+    }
+
+    private void UnlockReadOnly(object sender, RoutedEventArgs e)
+    {
+        var result = _viewModel.UnlockReadOnly(UnlockPasswordBox.Password);
+        UnlockPasswordBox.Password = "";
+        if (!result.Success)
+        {
+            _viewModel.SetStatus(result.Message);
+        }
     }
 
     private void LockVault(object sender, RoutedEventArgs e) => _viewModel.Lock();
@@ -349,9 +476,10 @@ public sealed partial class SecureVaultCenterPage : Page
             return;
         }
 
+        var sealOrigin = SealOriginCheckBox.IsChecked == true;
         var result = await RunVaultOperationWithProgressAsync(
-            "파일 잠금 · 보관",
-            progress => _viewModel.AddFileAsync(path, progress));
+            sealOrigin ? "파일 암호화 보관 · 원본 잠금" : "파일 암호화 보관",
+            progress => _viewModel.AddFileAsync(path, progress, sealOrigin));
         await ShowOperationResultDialogAsync(result.Success ? "보관 완료" : "보관 실패", result);
         RefreshEntryList();
     }
@@ -369,9 +497,10 @@ public sealed partial class SecureVaultCenterPage : Page
             return;
         }
 
+        var sealOrigin = SealOriginCheckBox.IsChecked == true;
         var result = await RunVaultOperationWithProgressAsync(
-            "폴더 잠금 · 보관",
-            progress => _viewModel.AddFolderAsync(path, progress));
+            sealOrigin ? "폴더 암호화 보관 · 원본 잠금" : "폴더 암호화 보관",
+            progress => _viewModel.AddFolderAsync(path, progress, sealOrigin));
         await ShowOperationResultDialogAsync(result.Success ? "보관 완료" : "보관 실패", result);
         RefreshEntryList();
     }
@@ -416,7 +545,28 @@ public sealed partial class SecureVaultCenterPage : Page
             return;
         }
 
-        await _viewModel.ExportEntryAsync(item, destination);
+        var result = await _viewModel.ExportEntryAsync(item, destination, stepUpConfirmed: false);
+        if (!result.Success && result.Message.Contains("추가 확인", StringComparison.Ordinal))
+        {
+            var confirm = new ContentDialog
+            {
+                Title = "보안 게이트 · step-up",
+                Content = "금고 항목이 많아 추가 확인이 필요합니다. 내보내기를 계속할까요?",
+                PrimaryButtonText = "확인 후 내보내기",
+                CloseButtonText = "취소",
+                DefaultButton = ContentDialogButton.Close,
+                XamlRoot = XamlRoot
+            };
+            if (await confirm.ShowAsync() == ContentDialogResult.Primary)
+            {
+                result = await _viewModel.ExportEntryAsync(item, destination, stepUpConfirmed: true);
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(result.Message))
+        {
+            await ShowOperationResultDialogAsync("내보내기", result);
+        }
     }
 
     private async void RestoreToOrigin(object sender, RoutedEventArgs e)
@@ -511,6 +661,62 @@ public sealed partial class SecureVaultCenterPage : Page
         confirmCheck.Unchecked += (_, _) => dialog.IsPrimaryButtonEnabled = false;
 
         return await dialog.ShowAsync() == ContentDialogResult.Primary;
+    }
+
+    private async void CompactPacks(object sender, RoutedEventArgs e)
+    {
+        if (!_viewModel.IsUnlocked)
+        {
+            _viewModel.SetStatus("금고를 연 뒤 Pack 정리를 실행하세요.");
+            return;
+        }
+
+        var confirm = new ContentDialog
+        {
+            Title = "Pack 정리 (GC)",
+            Content =
+                "살아 있는 객체만 새 pack으로 재패킹하고 tombstone을 제거합니다.\n" +
+                "쓰기 세션이 필요하며, 완료 전 강제 종료 시 pack이 일시적으로 불완전할 수 있습니다.\n계속할까요?",
+            PrimaryButtonText = "정리 실행",
+            CloseButtonText = "취소",
+            DefaultButton = ContentDialogButton.Close,
+            XamlRoot = XamlRoot
+        };
+        if (await confirm.ShowAsync() != ContentDialogResult.Primary)
+        {
+            return;
+        }
+
+        var result = _viewModel.CompactPacks();
+        await ShowOperationResultDialogAsync("Pack 정리", result);
+    }
+
+    private async void RepairActivation(object sender, RoutedEventArgs e)
+    {
+        if (!_viewModel.IsUnlocked)
+        {
+            _viewModel.SetStatus("금고를 연 뒤 Activation 복구를 실행하세요.");
+            return;
+        }
+
+        var confirm = new ContentDialog
+        {
+            Title = "Activation commit 복구",
+            Content =
+                "현재 메타데이터·헤더 해시로 activation.commit 마커를 다시 씁니다.\n" +
+                "메타가 AEAD로 정상 복호화된 상태에서만 의미가 있습니다.\n계속할까요?",
+            PrimaryButtonText = "복구 실행",
+            CloseButtonText = "취소",
+            DefaultButton = ContentDialogButton.Close,
+            XamlRoot = XamlRoot
+        };
+        if (await confirm.ShowAsync() != ContentDialogResult.Primary)
+        {
+            return;
+        }
+
+        var result = _viewModel.RepairActivation();
+        await ShowOperationResultDialogAsync("Activation 복구", result);
     }
 
     private async void VerifyIntegrity(object sender, RoutedEventArgs e)

@@ -26,6 +26,18 @@ if (-not (Test-Path $PrivateKeyPath)) {
     return
 }
 
+$keyText = Get-Content $PrivateKeyPath -Raw -ErrorAction SilentlyContinue
+if ([string]::IsNullOrWhiteSpace($keyText) -or $keyText -notmatch 'BEGIN (?:EC )?PRIVATE KEY') {
+    $existingSigs = @("rules.pack.json.sig", "protocols.pack.json.sig") |
+        ForEach-Object { Join-Path $PackDir $_ } |
+        Where-Object { Test-Path $_ }
+    if ($existingSigs.Count -eq 2) {
+        Write-Host "[SKIP] Pack signing key is not a PEM file — keeping existing .sig files." -ForegroundColor Yellow
+        return
+    }
+    throw "Pack signing key is not a valid PEM file: $PrivateKeyPath"
+}
+
 Add-Type -AssemblyName System.Security
 if (-not ("PackCanonicalChecksum" -as [type])) {
     $jsonPath = $null

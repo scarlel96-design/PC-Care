@@ -19,7 +19,8 @@ public sealed class SystemCareService
         new() { Kind = CareModuleKind.Shortcut, Title = "바로가기 점검", Description = "깨진 바로가기를 찾습니다." },
         new() { Kind = CareModuleKind.Optimization, Title = "속도 개선", Description = "메모리·전원·시작 항목·백그라운드 부담을 확인합니다." },
         new() { Kind = CareModuleKind.Internet, Title = "인터넷 설정", Description = "DNS·네트워크 관련 상태를 확인합니다." },
-        new() { Kind = CareModuleKind.Vulnerability, Title = "보안 업데이트", Description = "Windows 업데이트 상태를 확인합니다." }
+        new() { Kind = CareModuleKind.Vulnerability, Title = "보안 업데이트", Description = "Windows 업데이트 상태를 확인합니다." },
+        new() { Kind = CareModuleKind.Stability, Title = "시스템 안정성", Description = "블루스크린·하드웨어 오류·비정상 종료 기록을 확인합니다." }
     ];
 
     public static IReadOnlyList<CareScanTaskDefinition> ScanTasks { get; } =
@@ -34,20 +35,27 @@ public sealed class SystemCareService
         new() { Id = "disk.temp.user", Module = CareModuleKind.Disk, Title = "사용자 임시 폴더", Description = "사용자 Temp 폴더 크기", IncludedInSmart = true },
         new() { Id = "disk.temp.win", Module = CareModuleKind.Disk, Title = "Windows 임시 폴더", Description = "Windows Temp 폴더 크기", IncludedInSmart = false },
         new() { Id = "disk.ssd_trim", Module = CareModuleKind.Disk, Title = "SSD TRIM 상태", Description = "SSD/NVMe TRIM·retrim 권장 안내", IncludedInSmart = true },
+        new() { Id = "disk.health", Module = CareModuleKind.Disk, Title = "저장장치 건강", Description = "PhysicalDisk HealthStatus / SMART 힌트", IncludedInSmart = true },
+        new() { Id = "disk.pending_reboot", Module = CareModuleKind.Disk, Title = "재부팅 대기", Description = "업데이트·구성 변경 재부팅 플래그", IncludedInSmart = true },
         new() { Id = "privacy.recent", Module = CareModuleKind.Privacy, Title = "최근 파일 바로가기", Description = "최근 항목 폴더 크기", IncludedInSmart = true },
         new() { Id = "privacy.thumbcache", Module = CareModuleKind.Privacy, Title = "미리보기 이미지 캐시", Description = "thumbcache 파일", IncludedInSmart = false },
+        new() { Id = "privacy.browser_data", Module = CareModuleKind.Privacy, Title = "브라우저 개인정보 흔적", Description = "Edge/Chrome의 방문·쿠키 저장소 존재 여부", IncludedInSmart = true },
         new() { Id = "junk.temp.user", Module = CareModuleKind.Junk, Title = "사용자 Temp 오래된 파일", Description = "7일 이상 임시 파일", IncludedInSmart = true },
         new() { Id = "junk.temp.local", Module = CareModuleKind.Junk, Title = "로컬 Temp 오래된 파일", Description = "LocalAppData Temp 정리 후보", IncludedInSmart = true },
         new() { Id = "shortcut", Module = CareModuleKind.Shortcut, Title = "깨진 바로가기", Description = "바탕화면·시작 메뉴 .lnk", IncludedInSmart = true },
         new() { Id = "opt.startup", Module = CareModuleKind.Optimization, Title = "시작 프로그램", Description = "시작 폴더 항목 수", IncludedInSmart = true },
+        new() { Id = "opt.service_anomaly", Module = CareModuleKind.Optimization, Title = "자동 서비스 이상", Description = "Auto 시작인데 중지된 서비스", IncludedInSmart = true },
         new() { Id = "opt.visual", Module = CareModuleKind.Optimization, Title = "시각 효과 안내", Description = "저사양 PC 화면 설정 안내", IncludedInSmart = false },
         new() { Id = "net.dns", Module = CareModuleKind.Internet, Title = "DNS 캐시", Description = "네트워크 DNS 상태 안내", IncludedInSmart = false },
+        new() { Id = "net.proxy", Module = CareModuleKind.Internet, Title = "프록시 설정", Description = "사용자 프록시 활성 여부", IncludedInSmart = true },
         new() { Id = "net.gateway", Module = CareModuleKind.Internet, Title = "기본 게이트웨이", Description = "게이트웨이 연결·지연 확인", IncludedInSmart = true },
         new() { Id = "net.adapter", Module = CareModuleKind.Internet, Title = "네트워크 어댑터", Description = "활성 어댑터·링크 속도", IncludedInSmart = true },
         new() { Id = "vuln.wuauserv", Module = CareModuleKind.Vulnerability, Title = "Windows 업데이트 서비스", Description = "wuauserv 실행 상태", IncludedInSmart = true },
         new() { Id = "vuln.firewall", Module = CareModuleKind.Vulnerability, Title = "Windows 방화벽", Description = "도메인/개인/공용 프로필 상태", IncludedInSmart = true },
         new() { Id = "vuln.defender", Module = CareModuleKind.Vulnerability, Title = "Defender 상태", Description = "실시간 보호·정의 업데이트", IncludedInSmart = true },
         new() { Id = "vuln.uac", Module = CareModuleKind.Vulnerability, Title = "UAC 수준", Description = "사용자 계정 컨트롤 설정", IncludedInSmart = true },
+        new() { Id = "vuln.smartscreen", Module = CareModuleKind.Vulnerability, Title = "SmartScreen 보호", Description = "의심스러운 앱·다운로드 차단 설정", IncludedInSmart = true },
+        new() { Id = "net.hosts", Module = CareModuleKind.Internet, Title = "HOSTS 리디렉션", Description = "비표준 HOSTS 항목 점검", IncludedInSmart = false },
         new() { Id = "junk.recycle", Module = CareModuleKind.Junk, Title = "휴지통", Description = "휴지통 용량·항목 수", IncludedInSmart = true },
         new() { Id = "junk.prefetch", Module = CareModuleKind.Junk, Title = "Prefetch 캐시", Description = "Windows Prefetch 폴더", IncludedInSmart = false },
         new() { Id = "junk.wu_cache", Module = CareModuleKind.Junk, Title = "Windows Update 캐시", Description = "SoftwareDistribution\\Download", IncludedInSmart = false },
@@ -56,14 +64,24 @@ public sealed class SystemCareService
         new() { Id = "opt.sysmain", Module = CareModuleKind.Optimization, Title = "SysMain(슈퍼페치)", Description = "SysMain 서비스 상태", IncludedInSmart = true },
         new() { Id = "opt.searchindex", Module = CareModuleKind.Optimization, Title = "Windows Search", Description = "인덱서 서비스 상태", IncludedInSmart = false },
         new() { Id = "opt.startup_reg", Module = CareModuleKind.Optimization, Title = "레지스트리 자동 실행", Description = "Run/RunOnce 항목 수", IncludedInSmart = true },
+        new() { Id = "opt.scheduled_tasks", Module = CareModuleKind.Optimization, Title = "예약 작업", Description = "작업 스케줄러 등록 수와 과다 등록 여부", IncludedInSmart = true },
         new() { Id = "opt.visual_anim", Module = CareModuleKind.Optimization, Title = "시각 효과·애니메이션", Description = "화면 효과 설정 확인", IncludedInSmart = true },
         new() { Id = "opt.gamebar", Module = CareModuleKind.Optimization, Title = "Xbox Game Bar", Description = "게임 DVR·녹화 설정", IncludedInSmart = false },
+        new() { Id = "opt.dns_flush", Module = CareModuleKind.Optimization, Title = "DNS 캐시 정리", Description = "느린 DNS 응답 시 캐시 비우기", IncludedInSmart = true },
+        new() { Id = "opt.standby_trim", Module = CareModuleKind.Optimization, Title = "대기 메모리 정리", Description = "RAM 사용률이 높을 때 작업 집합 정리", IncludedInSmart = true },
+        new() { Id = "opt.transparency", Module = CareModuleKind.Optimization, Title = "투명 효과", Description = "창·작업 표시줄 투명 효과", IncludedInSmart = true },
+        new() { Id = "opt.tcp_autotune", Module = CareModuleKind.Optimization, Title = "TCP 자동 조율", Description = "네트워크 스택 자동 조율 최적화", IncludedInSmart = false },
         new() { Id = "junk.browser_cache", Module = CareModuleKind.Junk, Title = "브라우저 캐시", Description = "Edge/Chrome 캐시 크기", IncludedInSmart = true },
         new() { Id = "junk.logs", Module = CareModuleKind.Junk, Title = "로그·진단 파일", Description = "CBS·Windows Logs 폴더", IncludedInSmart = false },
         new() { Id = "junk.delivery", Module = CareModuleKind.Junk, Title = "전달 최적화 캐시", Description = "Delivery Optimization 저장소", IncludedInSmart = true },
+        new() { Id = "junk.downloads", Module = CareModuleKind.Junk, Title = "다운로드 폴더", Description = "대용량 Downloads 폴더 안내", IncludedInSmart = true },
         new() { Id = "disk.pagefile", Module = CareModuleKind.Disk, Title = "페이지 파일", Description = "페이지 파일 설정 안내", IncludedInSmart = false },
         new() { Id = "disk.hiberfil", Module = CareModuleKind.Disk, Title = "최대 절전 파일", Description = "hiberfil.sys 크기", IncludedInSmart = false },
-        new() { Id = "net.dns_resolve", Module = CareModuleKind.Internet, Title = "DNS 응답 테스트", Description = "로컬 DNS 해석 지연", IncludedInSmart = true }
+        new() { Id = "net.dns_resolve", Module = CareModuleKind.Internet, Title = "DNS 응답 테스트", Description = "로컬 DNS 해석 지연", IncludedInSmart = true },
+        new() { Id = "stability.bsod", Module = CareModuleKind.Stability, Title = "블루스크린(BugCheck)", Description = "최근 30일 BugCheck 이벤트", IncludedInSmart = true },
+        new() { Id = "stability.whea", Module = CareModuleKind.Stability, Title = "하드웨어 오류(WHEA)", Description = "WHEA-Logger 오류", IncludedInSmart = true },
+        new() { Id = "stability.unexpected_shutdown", Module = CareModuleKind.Stability, Title = "예기치 않은 종료", Description = "비정상 시스템 종료 이벤트", IncludedInSmart = true },
+        new() { Id = "stability.minidump", Module = CareModuleKind.Stability, Title = "크래시 덤프", Description = "Minidump·CrashDumps 폴더", IncludedInSmart = false }
     ];
 
     public Task<CareScanResult> ScanByTasksAsync(
@@ -84,17 +102,68 @@ public sealed class SystemCareService
 
             var audit = CreateAuditFolder(mode);
             CareAuditChain.InitializeManifest(audit, mode, enabled);
-            CareAuditChain.Append(audit, "scan-start", $"{mode} · {enabled.Length}개 항목");
+            CareAuditChain.Append(audit, "scan-start", $"{mode} · {enabled.Length}개 항목 · 병렬 스캔");
             var findings = new List<CareFinding>();
-            for (var i = 0; i < enabled.Length; i++)
+
+            // Stability tasks share one event-log probe.
+            SystemStabilityProbe.SystemStabilityReport? stabilityReport = null;
+            var stabilityIds = enabled.Where(id => id.StartsWith("stability.", StringComparison.Ordinal)).ToArray();
+            var otherIds = enabled.Where(id => !id.StartsWith("stability.", StringComparison.Ordinal)).ToArray();
+
+            if (stabilityIds.Length > 0)
             {
-                cancellationToken.ThrowIfCancellationRequested();
-                var taskId = enabled[i];
-                var task = ScanTasks.First(t => t.Id == taskId);
-                var pct = 8 + (int)((i + 1) / (double)enabled.Length * 84);
-                progress?.Report((pct, $"{task.Title} 검사 중…"));
-                RunScanTask(taskId, findings, cancellationToken);
+                progress?.Report((8, "시스템 안정성 이벤트 조회…"));
+                stabilityReport = SystemStabilityProbe.Analyze(cancellationToken);
+                foreach (var taskId in stabilityIds)
+                {
+                    AppendStabilityFindings(findings, taskId, stabilityReport);
+                }
             }
+
+            // Parallel independent probes (thread-local finding bags merged under lock).
+            var bagLock = new object();
+            var completed = 0;
+            var degree = Math.Clamp(Environment.ProcessorCount, 2, 6);
+            Parallel.ForEach(
+                otherIds,
+                new ParallelOptions
+                {
+                    MaxDegreeOfParallelism = degree,
+                    CancellationToken = cancellationToken
+                },
+                taskId =>
+                {
+                    var task = ScanTasks.First(t => t.Id == taskId);
+                    var local = new List<CareFinding>();
+                    try
+                    {
+                        RunScanTask(taskId, local, cancellationToken);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        throw;
+                    }
+                    catch
+                    {
+                        local.Add(new CareFinding
+                        {
+                            Id = $"{taskId}.error",
+                            Title = $"{task.Title} 제한",
+                            Detail = "이 항목 검사 중 오류가 발생해 건너뛰었습니다.",
+                            RiskLabel = "확인 필요",
+                            RiskCode = "review",
+                            CanAutoApply = false
+                        });
+                    }
+
+                    lock (bagLock)
+                    {
+                        findings.AddRange(local);
+                        completed++;
+                        var pct = 10 + (int)(completed / (double)Math.Max(1, otherIds.Length) * 82);
+                        progress?.Report((pct, $"{task.Title} 완료 ({completed}/{otherIds.Length})"));
+                    }
+                });
 
             var title = mode == CareScanMode.Smart ? "스마트 검사" : "정밀 점검";
             var health = CareHealthScorer.Score(findings);
@@ -114,6 +183,7 @@ public sealed class SystemCareService
             };
 
             File.WriteAllText(Path.Combine(audit, "scan.json"), JsonSerializer.Serialize(result, JsonOptions), Encoding.UTF8);
+            CareReportWriter.WriteScanReports(audit, result);
             progress?.Report((100, "검사 완료"));
             return result;
         }, cancellationToken);
@@ -159,7 +229,7 @@ public sealed class SystemCareService
                 Encoding.UTF8);
 
             progress?.Report((100, "적용 완료"));
-            return new CareApplyResult
+            var applyResult = new CareApplyResult
             {
                 Success = true,
                 AppliedCount = applied,
@@ -169,6 +239,8 @@ public sealed class SystemCareService
                     ? $"적용 {applied}개 · 건너뜀 {skipped}개"
                     : "적용할 수 있는 항목이 없습니다."
             };
+            CareReportWriter.WriteApplyReport(scan.AuditFolder, applyResult, includeReviewItems);
+            return applyResult;
         }, cancellationToken);
 
     private static string BuildSummary(IReadOnlyList<CareFinding> findings)
@@ -186,24 +258,7 @@ public sealed class SystemCareService
         return $"총 {findings.Count}개 · 안전 {safe} · 확인 {review} · 주의 {caution} · 고위험 {highrisk} · 제외 {blocked}";
     }
 
-    private static string CreateAuditFolder(CareScanMode mode)
-    {
-        var label = mode == CareScanMode.Smart ? "smart" : "precision";
-        var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        var productRoot = new[]
-        {
-            Path.Combine(localAppData, "PCCare"),
-            Path.Combine(localAppData, "AstraCare"),
-            Path.Combine(localAppData, "SmartPerformanceDoctor")
-        }.FirstOrDefault(Directory.Exists) ?? Path.Combine(localAppData, "PCCare");
-        var root = Path.Combine(
-            productRoot,
-            "system_care",
-            label,
-            DateTimeOffset.Now.ToString("yyyyMMdd_HHmmss"));
-        Directory.CreateDirectory(root);
-        return root;
-    }
+    private static string CreateAuditFolder(CareScanMode mode) => CareAuditPaths.CreateSystemCareFolder(mode);
 
     private static void RunScanTask(string taskId, List<CareFinding> findings, CancellationToken ct)
     {
@@ -253,19 +308,28 @@ public sealed class SystemCareService
                 }
                 break;
             case "disk.temp.user":
-                AddFolderSizeFinding(findings, "사용자 임시 폴더", Path.GetTempPath(), "disk.temp.user", safeApply: true);
+                AddFolderSizeFinding(findings, "사용자 임시 폴더", Path.GetTempPath(), "disk.temp.user", safeApply: true, ct, tempFolder: true);
                 break;
             case "disk.temp.win":
-                AddFolderSizeFinding(findings, "Windows 임시 폴더", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Temp"), "disk.temp.win", safeApply: false);
+                AddFolderSizeFinding(findings, "Windows 임시 폴더", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Temp"), "disk.temp.win", safeApply: false, ct, tempFolder: true);
                 break;
             case "disk.ssd_trim":
                 AppendSsdTrimAdvisory(findings);
+                break;
+            case "disk.health":
+                CareSystemProbes.AppendPhysicalDiskHealth(findings);
+                break;
+            case "disk.pending_reboot":
+                CareSystemProbes.AppendPendingReboot(findings);
                 break;
             case "privacy.recent":
                 AddFolderSizeFinding(findings, "최근 파일 바로가기", Environment.GetFolderPath(Environment.SpecialFolder.Recent), "privacy.recent", safeApply: true);
                 break;
             case "privacy.thumbcache":
                 AppendThumbCacheFinding(findings);
+                break;
+            case "privacy.browser_data":
+                AppendBrowserPrivacyFinding(findings);
                 break;
             case "junk.temp.user":
                 AddOldTempFilesFinding(findings, Path.GetTempPath(), "junk.temp.user");
@@ -282,6 +346,9 @@ public sealed class SystemCareService
                 break;
             case "opt.startup":
                 AppendStartupFinding(findings);
+                break;
+            case "opt.service_anomaly":
+                CareSystemProbes.AppendAutoServiceAnomalies(findings);
                 break;
             case "opt.visual":
                 findings.Add(new CareFinding
@@ -302,8 +369,11 @@ public sealed class SystemCareService
                     Detail = "문제가 있을 때만 캐시 비우기를 권장합니다. DNS 서버 자동 변경은 수행하지 않습니다.",
                     RiskLabel = "안전",
                     RiskCode = "safe",
-                    CanAutoApply = false
+                    CanAutoApply = true
                 });
+                break;
+            case "net.proxy":
+                CareSystemProbes.AppendProxyFinding(findings);
                 break;
             case "net.gateway":
                 AppendGatewayFinding(findings);
@@ -331,6 +401,12 @@ public sealed class SystemCareService
                 break;
             case "vuln.uac":
                 AppendUacFinding(findings);
+                break;
+            case "vuln.smartscreen":
+                AppendSmartScreenFinding(findings);
+                break;
+            case "net.hosts":
+                AppendHostsFinding(findings);
                 break;
             case "junk.recycle":
                 AppendRecycleBinFinding(findings);
@@ -366,6 +442,9 @@ public sealed class SystemCareService
             case "opt.startup_reg":
                 AppendStartupRegistryFinding(findings);
                 break;
+            case "opt.scheduled_tasks":
+                AppendScheduledTaskFinding(findings);
+                break;
             case "opt.visual_anim":
                 AppendVisualEffectsFinding(findings);
                 break;
@@ -381,6 +460,9 @@ public sealed class SystemCareService
             case "junk.delivery":
                 AppendDeliveryCacheFinding(findings);
                 break;
+            case "junk.downloads":
+                CareSystemProbes.AppendDownloadsFolder(findings, ct);
+                break;
             case "disk.pagefile":
                 AppendPagefileFinding(findings);
                 break;
@@ -390,7 +472,116 @@ public sealed class SystemCareService
             case "net.dns_resolve":
                 AppendDnsResolveFinding(findings);
                 break;
+            case "opt.dns_flush":
+                AppendDnsFlushFinding(findings);
+                break;
+            case "opt.standby_trim":
+                AppendStandbyTrimFinding(findings);
+                break;
+            case "opt.transparency":
+                AppendTransparencyFinding(findings);
+                break;
+            case "opt.tcp_autotune":
+                AppendTcpAutotuneFinding(findings);
+                break;
         }
+    }
+
+    private static void AppendStabilityFindings(
+        List<CareFinding> findings,
+        string taskId,
+        SystemStabilityProbe.SystemStabilityReport report)
+    {
+        CareFinding finding = taskId switch
+        {
+            "stability.bsod" when report.BugCheckCount30d > 0 => new CareFinding
+            {
+                Id = "stability.bsod",
+                Title = "블루스크린(BugCheck) 기록",
+                Detail = $"최근 30일 {report.BugCheckCount30d}건"
+                    + (report.RecentBugCheckCodes.Count > 0
+                        ? $" · 코드: {string.Join(", ", report.RecentBugCheckCodes.Take(3))}"
+                        : "")
+                    + " · 드라이버·메모리 점검 권장",
+                RiskLabel = report.BugCheckCount30d >= 2 ? "주의" : "확인 필요",
+                RiskCode = report.BugCheckCount30d >= 2 ? "caution" : "review",
+                CanAutoApply = false
+            },
+            "stability.bsod" => new CareFinding
+            {
+                Id = "stability.bsod.clear",
+                Title = "블루스크린 기록",
+                Detail = "최근 30일 BugCheck 이벤트 없음",
+                RiskLabel = "안전",
+                RiskCode = "safe",
+                CanAutoApply = false
+            },
+            "stability.whea" when report.WheaErrorCount30d > 0 => new CareFinding
+            {
+                Id = "stability.whea",
+                Title = "하드웨어 오류(WHEA)",
+                Detail = $"최근 30일 {report.WheaErrorCount30d}건 · RAM·CPU·GPU·SSD 점검 권장",
+                RiskLabel = report.WheaErrorCount30d >= 3 ? "주의" : "확인 필요",
+                RiskCode = report.WheaErrorCount30d >= 3 ? "caution" : "review",
+                CanAutoApply = false
+            },
+            "stability.whea" => new CareFinding
+            {
+                Id = "stability.whea.clear",
+                Title = "WHEA 하드웨어 오류",
+                Detail = "최근 30일 WHEA 오류 없음",
+                RiskLabel = "안전",
+                RiskCode = "safe",
+                CanAutoApply = false
+            },
+            "stability.unexpected_shutdown" when report.UnexpectedShutdownCount30d > 0 => new CareFinding
+            {
+                Id = "stability.unexpected_shutdown",
+                Title = "예기치 않은 종료",
+                Detail = $"최근 30일 {report.UnexpectedShutdownCount30d}건 · 전원·과열·BSOD 확인",
+                RiskLabel = "확인 필요",
+                RiskCode = "review",
+                CanAutoApply = false
+            },
+            "stability.unexpected_shutdown" => new CareFinding
+            {
+                Id = "stability.unexpected_shutdown.clear",
+                Title = "예기치 않은 종료",
+                Detail = "최근 30일 비정상 종료 기록 없음",
+                RiskLabel = "안전",
+                RiskCode = "safe",
+                CanAutoApply = false
+            },
+            "stability.minidump" when report.MinidumpCount > 0 => new CareFinding
+            {
+                Id = "stability.minidump",
+                Title = "크래시 덤프 파일",
+                Detail = $"미니덤프 {report.MinidumpCount}개 · 이벤트 로그와 함께 분석 권장",
+                RiskLabel = "확인 필요",
+                RiskCode = "review",
+                CanAutoApply = false
+            },
+            "stability.minidump" => new CareFinding
+            {
+                Id = "stability.minidump.clear",
+                Title = "크래시 덤프",
+                Detail = "미니덤프 파일 없음",
+                RiskLabel = "안전",
+                RiskCode = "safe",
+                CanAutoApply = false
+            },
+            _ => new CareFinding
+            {
+                Id = "stability.unknown",
+                Title = "시스템 안정성",
+                Detail = "안정성 검사 완료",
+                RiskLabel = "안전",
+                RiskCode = "safe",
+                CanAutoApply = false
+            }
+        };
+
+        findings.Add(finding);
     }
 
     private static void AppendRecycleBinFinding(List<CareFinding> findings)
@@ -428,11 +619,11 @@ public sealed class SystemCareService
             findings.Add(new CareFinding
             {
                 Id = "junk.recycle",
-                Title = "휴지통 메타데이터",
-                Detail = $"항목 흔적 {count}개 · 약 {size / 1024} KB · 비우기 권장",
+                Title = "휴지통",
+                Detail = $"항목 흔적 {count}개 · 약 {size / 1024} KB · 안전 비우기 가능",
                 RiskLabel = "안전",
                 RiskCode = "safe",
-                CanAutoApply = false
+                CanAutoApply = true
             });
         }
         catch
@@ -483,6 +674,11 @@ public sealed class SystemCareService
             return CareModuleKind.Vulnerability;
         }
 
+        if (item.Id.StartsWith("stability.", StringComparison.Ordinal))
+        {
+            return CareModuleKind.Stability;
+        }
+
         return CareModuleKind.Registry;
     }
 
@@ -518,44 +714,44 @@ public sealed class SystemCareService
             Environment.GetFolderPath(Environment.SpecialFolder.Programs)
         };
 
-        foreach (var folder in folders.Distinct())
+        foreach (var lnk in CareShortcutScanner.Enumerate(folders, ct))
         {
-            if (!Directory.Exists(folder))
+            if (IsShortcutBroken(lnk))
             {
-                continue;
-            }
-
-            foreach (var lnk in Directory.EnumerateFiles(folder, "*.lnk", SearchOption.AllDirectories))
-            {
-                ct.ThrowIfCancellationRequested();
-                if (IsShortcutBroken(lnk))
+                findings.Add(new CareFinding
                 {
-                    findings.Add(new CareFinding
-                    {
-                        Id = $"shortcut.{Guid.NewGuid():N}",
-                        Title = "깨진 바로가기",
-                        Detail = lnk,
-                        RiskLabel = "안전",
-                        RiskCode = "safe",
-                        CanAutoApply = true,
-                        TargetPath = lnk
-                    });
-                }
+                    Id = $"shortcut.{Guid.NewGuid():N}",
+                    Title = "깨진 바로가기",
+                    Detail = lnk,
+                    RiskLabel = "안전",
+                    RiskCode = "safe",
+                    CanAutoApply = true,
+                    TargetPath = lnk
+                });
             }
         }
     }
 
     private static void AppendStartupFinding(List<CareFinding> findings)
     {
-        var startup = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
-        var count = Directory.Exists(startup)
-            ? Directory.GetFiles(startup).Length + Directory.GetDirectories(startup).Length
-            : 0;
+        var userStartup = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
+        var commonStartup = Environment.GetFolderPath(Environment.SpecialFolder.CommonStartup);
+        var count = 0;
+        if (Directory.Exists(userStartup))
+        {
+            count += Directory.GetFiles(userStartup).Length + Directory.GetDirectories(userStartup).Length;
+        }
+
+        if (Directory.Exists(commonStartup))
+        {
+            count += Directory.GetFiles(commonStartup).Length + Directory.GetDirectories(commonStartup).Length;
+        }
+
         findings.Add(new CareFinding
         {
             Id = "opt.startup",
             Title = "시작 프로그램",
-            Detail = $"시작 폴더 항목 {count}개",
+            Detail = $"시작 폴더(사용자+공용) 항목 {count}개",
             RiskLabel = count > 8 ? "확인 필요" : "안전",
             RiskCode = count > 8 ? "review" : "safe",
             CanAutoApply = false
@@ -761,29 +957,20 @@ public sealed class SystemCareService
             Environment.GetFolderPath(Environment.SpecialFolder.Programs)
         };
 
-        foreach (var folder in folders.Distinct())
+        foreach (var lnk in CareShortcutScanner.Enumerate(folders, ct))
         {
-            if (!Directory.Exists(folder))
+            if (IsShortcutBroken(lnk))
             {
-                continue;
-            }
-
-            foreach (var lnk in Directory.EnumerateFiles(folder, "*.lnk", SearchOption.AllDirectories))
-            {
-                ct.ThrowIfCancellationRequested();
-                if (IsShortcutBroken(lnk))
+                list.Add(new CareFinding
                 {
-                    list.Add(new CareFinding
-                    {
-                        Id = $"shortcut.{Guid.NewGuid():N}",
-                        Title = "깨진 바로가기",
-                        Detail = lnk,
-                        RiskLabel = "안전",
-                        RiskCode = "safe",
-                        CanAutoApply = true,
-                        TargetPath = lnk
-                    });
-                }
+                    Id = $"shortcut.{Guid.NewGuid():N}",
+                    Title = "깨진 바로가기",
+                    Detail = lnk,
+                    RiskLabel = "안전",
+                    RiskCode = "safe",
+                    CanAutoApply = true,
+                    TargetPath = lnk
+                });
             }
         }
 
@@ -868,6 +1055,28 @@ public sealed class SystemCareService
 
         try
         {
+            if (item.Id is "junk.recycle")
+            {
+                if (CareSystemProbes.EmptyRecycleBin(out var recycleDetail))
+                {
+                    CareAuditChain.Append(auditFolder, "apply-recycle", recycleDetail);
+                    return true;
+                }
+
+                return false;
+            }
+
+            if (item.Id is "net.dns" or "opt.dns_flush")
+            {
+                if (SystemOptimizationService.FlushDnsCache().Success)
+                {
+                    CareAuditChain.Append(auditFolder, "apply-dns", item.Id);
+                    return true;
+                }
+
+                return false;
+            }
+
             switch (module)
             {
                 case CareModuleKind.Junk:
@@ -888,6 +1097,14 @@ public sealed class SystemCareService
                         return true;
                     }
                     break;
+                case CareModuleKind.Optimization:
+                case CareModuleKind.Internet:
+                    if (SystemOptimizationService.TryApplyFinding(item))
+                    {
+                        CareAuditChain.Append(auditFolder, "apply-opt", item.Id);
+                        return true;
+                    }
+                    break;
             }
 
             if (item.Id.StartsWith("junk.", StringComparison.Ordinal))
@@ -903,42 +1120,44 @@ public sealed class SystemCareService
         return false;
     }
 
-    private static void AddFolderSizeFinding(List<CareFinding> list, string title, string path, string id, bool safeApply)
+    private static void AddFolderSizeFinding(
+        List<CareFinding> list,
+        string title,
+        string path,
+        string id,
+        bool safeApply,
+        CancellationToken cancellationToken = default,
+        bool tempFolder = false)
     {
         if (!Directory.Exists(path))
         {
             return;
         }
 
-        long size = 0;
-        var count = 0;
-        foreach (var file in Directory.EnumerateFiles(path, "*", SearchOption.AllDirectories))
-        {
-            try
-            {
-                size += new FileInfo(file).Length;
-                count++;
-                if (count > 5000)
-                {
-                    break;
-                }
-            }
-            catch
-            {
-                // Skip locked files.
-            }
-        }
+        var scan = CareFolderScanner.Measure(
+            path,
+            cancellationToken,
+            maxDepth: tempFolder ? 2 : 3,
+            maxFiles: tempFolder ? 1800 : CareFolderScanner.DefaultMaxFiles,
+            tempFolder: tempFolder,
+            topLevelOnly: false);
 
-        if (size < 10 * 1024 * 1024)
+        if (scan.TotalBytes < 10 * 1024 * 1024 && !scan.Estimated && scan.Note == "complete")
         {
             return;
         }
+
+        var suffix = scan.Estimated
+            ? " · 샘플 기반 추정"
+            : scan.Note == "file_cap"
+                ? " · 대용량 폴더(일부 샘플링)"
+                : "";
 
         list.Add(new CareFinding
         {
             Id = id,
             Title = title,
-            Detail = $"{path} · 약 {size / 1024 / 1024} MB",
+            Detail = $"{path} · 약 {scan.TotalBytes / 1024 / 1024} MB · 파일 {scan.FileCount}개{suffix}",
             RiskLabel = safeApply ? "안전" : "확인 필요",
             RiskCode = safeApply ? "safe" : "review",
             CanAutoApply = safeApply,
@@ -1343,47 +1562,23 @@ public sealed class SystemCareService
     {
         try
         {
-            var total = GC.GetGCMemoryInfo().TotalAvailableMemoryBytes;
-            var used = Process.GetProcesses()
-                .Select(p =>
-                {
-                    try
-                    {
-                        p.Refresh();
-                        return p.WorkingSet64;
-                    }
-                    catch
-                    {
-                        return 0L;
-                    }
-                })
-                .Sum();
-            var usedPct = total > 0 ? used * 100.0 / total : 0;
-            var top = Process.GetProcesses()
-                .Select(p =>
-                {
-                    try
-                    {
-                        p.Refresh();
-                        return (Name: p.ProcessName, Ws: p.WorkingSet64);
-                    }
-                    catch
-                    {
-                        return (Name: p.ProcessName, Ws: 0L);
-                    }
-                })
-                .OrderByDescending(x => x.Ws)
-                .Take(3)
-                .Select(x => $"{x.Name} {x.Ws / 1024 / 1024}MB")
-                .ToArray();
+            var memory = CareMemoryProbe.Capture();
+            if (memory.TotalMb <= 0)
+            {
+                return;
+            }
+
+            var top = memory.TopProcesses.Length > 0
+                ? $" · 상위: {string.Join(", ", memory.TopProcesses)}"
+                : "";
 
             findings.Add(new CareFinding
             {
                 Id = "opt.memory",
                 Title = "메모리 사용량",
-                Detail = $"추정 사용 {usedPct:F0}% · 상위: {string.Join(", ", top)}",
-                RiskLabel = usedPct > 85 ? "확인 필요" : "안전",
-                RiskCode = usedPct > 85 ? "review" : "safe",
+                Detail = $"사용 {memory.UsedPercent:F0}% · 여유 {memory.AvailMb:N0} MB / {memory.TotalMb:N0} MB{top}",
+                RiskLabel = memory.UsedPercent > 85 ? "확인 필요" : "안전",
+                RiskCode = memory.UsedPercent > 85 ? "review" : "safe",
                 CanAutoApply = false
             });
         }
@@ -1421,7 +1616,7 @@ public sealed class SystemCareService
                 Detail = output.Trim().Length > 0 ? output.Trim() : "확인 불가",
                 RiskLabel = saver ? "확인 필요" : "안전",
                 RiskCode = saver ? "review" : "safe",
-                CanAutoApply = false
+                CanAutoApply = saver
             });
         }
         catch
@@ -1484,7 +1679,7 @@ public sealed class SystemCareService
                     : "시각 효과가 성능 우선 또는 Windows 기본 설정",
                 RiskLabel = maxEffects ? "확인 필요" : "안전",
                 RiskCode = maxEffects ? "review" : "safe",
-                CanAutoApply = false
+                CanAutoApply = maxEffects
             });
         }
         catch
@@ -1507,7 +1702,7 @@ public sealed class SystemCareService
                 Detail = on ? "게임 DVR 활성 — 게임·저사양 PC에서 성능 저하 가능" : "게임 DVR 비활성",
                 RiskLabel = on ? "확인 필요" : "안전",
                 RiskCode = on ? "review" : "safe",
-                CanAutoApply = false
+                CanAutoApply = on
             });
         }
         catch
@@ -1516,6 +1711,151 @@ public sealed class SystemCareService
         }
     }
 
+    private static void AppendBrowserPrivacyFinding(List<CareFinding> findings)
+    {
+        var local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        var profiles = new[]
+        {
+            ("Edge", Path.Combine(local, @"Microsoft\Edge\User Data\Default")),
+            ("Chrome", Path.Combine(local, @"Google\Chrome\User Data\Default"))
+        };
+
+        var traces = new List<string>();
+        foreach (var (name, profile) in profiles)
+        {
+            if (!Directory.Exists(profile))
+            {
+                continue;
+            }
+
+            var present = new[] { "History", "Cookies", Path.Combine("Network", "Cookies") }
+                .Count(file => File.Exists(Path.Combine(profile, file)));
+            if (present > 0)
+            {
+                traces.Add($"{name} {present}개 저장소");
+            }
+        }
+
+        findings.Add(new CareFinding
+        {
+            Id = "privacy.browser_data",
+            Title = "브라우저 개인정보 흔적",
+            Detail = traces.Count == 0
+                ? "지원 브라우저의 기본 프로필 개인정보 저장소를 찾지 못했습니다."
+                : $"{string.Join(" · ", traces)} · 로그인 정보와 쿠키는 자동 삭제하지 않습니다.",
+            RiskLabel = traces.Count == 0 ? "안전" : "확인 필요",
+            RiskCode = traces.Count == 0 ? "safe" : "review",
+            CanAutoApply = false
+        });
+    }
+
+    private static void AppendScheduledTaskFinding(List<CareFinding> findings)
+    {
+        try
+        {
+            using var process = Process.Start(new ProcessStartInfo
+            {
+                FileName = "schtasks.exe",
+                Arguments = "/Query /FO CSV /NH",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            });
+            if (process is null)
+            {
+                return;
+            }
+
+            if (!process.WaitForExit(5000))
+            {
+                try { process.Kill(entireProcessTree: true); } catch { }
+                findings.Add(new CareFinding
+                {
+                    Id = "opt.scheduled_tasks",
+                    Title = "예약 작업",
+                    Detail = "작업 스케줄러 조회 시간이 초과되었습니다.",
+                    RiskLabel = "확인 필요",
+                    RiskCode = "review",
+                    CanAutoApply = false
+                });
+                return;
+            }
+
+            var count = process.StandardOutput.ReadToEnd()
+                .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                .Length;
+            findings.Add(new CareFinding
+            {
+                Id = "opt.scheduled_tasks",
+                Title = "예약 작업",
+                Detail = $"등록된 작업 {count}개 · 불필요한 자동 실행 작업은 검토 후 비활성화하세요.",
+                RiskLabel = count > 120 ? "확인 필요" : "안전",
+                RiskCode = count > 120 ? "review" : "safe",
+                CanAutoApply = false
+            });
+        }
+        catch
+        {
+            // The task scheduler may be unavailable on reduced Windows images.
+        }
+    }
+
+    private static void AppendSmartScreenFinding(List<CareFinding> findings)
+    {
+        try
+        {
+            using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer");
+            var value = key?.GetValue("SmartScreenEnabled")?.ToString();
+            var enabled = !string.Equals(value, "Off", StringComparison.OrdinalIgnoreCase);
+            findings.Add(new CareFinding
+            {
+                Id = "vuln.smartscreen",
+                Title = "Microsoft Defender SmartScreen",
+                Detail = enabled ? "SmartScreen 보호 활성 또는 Windows 기본 정책 적용" : "SmartScreen 보호가 꺼져 있습니다.",
+                RiskLabel = enabled ? "안전" : "주의",
+                RiskCode = enabled ? "safe" : "caution",
+                CanAutoApply = false
+            });
+        }
+        catch
+        {
+            // Skip when policy access is unavailable.
+        }
+    }
+
+    private static void AppendHostsFinding(List<CareFinding> findings)
+    {
+        try
+        {
+            var hosts = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), @"drivers\etc\hosts");
+            if (!File.Exists(hosts))
+            {
+                return;
+            }
+
+            var entries = File.ReadLines(hosts)
+                .Select(line => line.Trim())
+                .Where(line => line.Length > 0 && !line.StartsWith('#'))
+                .Where(line => !line.StartsWith("127.0.0.1", StringComparison.Ordinal) && !line.StartsWith("::1", StringComparison.Ordinal))
+                .Take(20)
+                .ToArray();
+            findings.Add(new CareFinding
+            {
+                Id = "net.hosts",
+                Title = "HOSTS 리디렉션",
+                Detail = entries.Length == 0
+                    ? "비표준 HOSTS 리디렉션 없음"
+                    : $"비표준 HOSTS 항목 {entries.Length}개 · 원치 않는 도메인 차단/변조 여부를 확인하세요.",
+                RiskLabel = entries.Length == 0 ? "안전" : "확인 필요",
+                RiskCode = entries.Length == 0 ? "safe" : "review",
+                CanAutoApply = false
+            });
+        }
+        catch
+        {
+            // Skip inaccessible hosts files.
+        }
+    }
     private static void AppendBrowserCacheFindings(List<CareFinding> findings)
     {
         var local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -1619,6 +1959,7 @@ public sealed class SystemCareService
             var host = System.Net.Dns.GetHostEntry("www.microsoft.com");
             sw.Stop();
             var ok = host.AddressList.Length > 0;
+            var slow = ok && sw.ElapsedMilliseconds > 120;
             findings.Add(new CareFinding
             {
                 Id = "net.dns_resolve",
@@ -1626,9 +1967,9 @@ public sealed class SystemCareService
                 Detail = ok
                     ? $"www.microsoft.com 해석 {sw.ElapsedMilliseconds}ms"
                     : "DNS 해석 실패",
-                RiskLabel = ok && sw.ElapsedMilliseconds <= 120 ? "안전" : "확인 필요",
-                RiskCode = ok && sw.ElapsedMilliseconds <= 120 ? "safe" : "review",
-                CanAutoApply = false
+                RiskLabel = ok && !slow ? "안전" : "확인 필요",
+                RiskCode = ok && !slow ? "safe" : "review",
+                CanAutoApply = slow || !ok
             });
         }
         catch
@@ -1640,8 +1981,85 @@ public sealed class SystemCareService
                 Detail = "DNS 해석 실패 — 어댑터·프록시 확인",
                 RiskLabel = "확인 필요",
                 RiskCode = "review",
-                CanAutoApply = false
+                CanAutoApply = true
             });
         }
+    }
+
+    private static void AppendDnsFlushFinding(List<CareFinding> findings)
+    {
+        findings.Add(new CareFinding
+        {
+            Id = "opt.dns_flush",
+            Title = "DNS 캐시 정리",
+            Detail = "네트워크 지연·DNS 오류 시 ipconfig /flushdns 로 캐시를 비울 수 있습니다.",
+            RiskLabel = "안전",
+            RiskCode = "safe",
+            CanAutoApply = true
+        });
+    }
+
+    private static void AppendStandbyTrimFinding(List<CareFinding> findings)
+    {
+        try
+        {
+            var memory = CareMemoryProbe.Capture(includeTopProcesses: false);
+            if (memory.TotalMb <= 0)
+            {
+                return;
+            }
+
+            findings.Add(new CareFinding
+            {
+                Id = "opt.standby_trim",
+                Title = "대기 메모리 정리",
+                Detail = memory.UsedPercent > 80
+                    ? $"메모리 사용 {memory.UsedPercent:F0}% — 작업 집합 정리로 여유 RAM 확보 가능"
+                    : "메모리 사용이 양호합니다. 필요 시에만 정리하세요.",
+                RiskLabel = memory.UsedPercent > 80 ? "확인 필요" : "안전",
+                RiskCode = memory.UsedPercent > 80 ? "review" : "safe",
+                CanAutoApply = memory.UsedPercent > 80
+            });
+        }
+        catch
+        {
+            // Skip.
+        }
+    }
+
+    private static void AppendTransparencyFinding(List<CareFinding> findings)
+    {
+        try
+        {
+            using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
+            var enabled = key?.GetValue("EnableTransparency") as int? ?? 1;
+            var on = enabled != 0;
+            findings.Add(new CareFinding
+            {
+                Id = "opt.transparency",
+                Title = "투명 효과",
+                Detail = on ? "투명 효과 활성 — 저사양 PC에서 비활성 권장" : "투명 효과 비활성",
+                RiskLabel = on ? "확인 필요" : "안전",
+                RiskCode = on ? "review" : "safe",
+                CanAutoApply = on
+            });
+        }
+        catch
+        {
+            // Skip.
+        }
+    }
+
+    private static void AppendTcpAutotuneFinding(List<CareFinding> findings)
+    {
+        findings.Add(new CareFinding
+        {
+            Id = "opt.tcp_autotune",
+            Title = "TCP 자동 조율",
+            Detail = "netsh int tcp set global autotuninglevel=normal 로 네트워크 스택을 정상화할 수 있습니다.",
+            RiskLabel = "안전",
+            RiskCode = "safe",
+            CanAutoApply = true
+        });
     }
 }

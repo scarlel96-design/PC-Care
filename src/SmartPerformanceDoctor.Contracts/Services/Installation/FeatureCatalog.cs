@@ -51,6 +51,7 @@ public static class FeatureCatalog
             InstallMode = mode switch
             {
                 InstallMode.Recommended => "recommended",
+                InstallMode.Full => "full",
                 InstallMode.Minimal => "minimal",
                 _ => "custom"
             },
@@ -60,6 +61,7 @@ public static class FeatureCatalog
         foreach (var feature in All)
         {
             var enabled = feature.IsRequired
+                || mode == InstallMode.Full
                 || (mode == InstallMode.Recommended && feature.IncludedInRecommended)
                 || (mode == InstallMode.Minimal && feature.IncludedInMinimal)
                 || selected.Contains(feature.Id);
@@ -70,7 +72,7 @@ public static class FeatureCatalog
     }
 
     public static InstalledFeaturesManifest CreateAllEnabled(string version) =>
-        CreateManifest(InstallMode.Custom, version, InstallFeatureIds.Optional);
+        CreateManifest(InstallMode.Full, version, []);
 
     public static InstalledFeaturesManifest CreateMinimalRuntimeDefault(string version) =>
         CreateManifest(InstallMode.Minimal, version, []);

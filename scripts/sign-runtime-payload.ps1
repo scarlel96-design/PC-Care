@@ -24,6 +24,11 @@ if (-not $env:SPD_SIGN_CERT_PASSWORD) {
     $env:SPD_SIGN_CERT_PASSWORD = "SmartPerformanceDoctor-Dev-2026"
 }
 
+if (-not (Test-Path $env:SPD_SIGN_CERT_PATH)) {
+    Write-Host "[INFO] Dev signing certificate not found. Creating one..." -ForegroundColor Yellow
+    & (Join-Path $PSScriptRoot "create-dev-signing-cert.ps1") -OutputPath $env:SPD_SIGN_CERT_PATH
+}
+
 function Find-SignTool {
     $cmd = Get-Command signtool -ErrorAction SilentlyContinue
     if ($cmd) { return $cmd.Source }
@@ -38,12 +43,23 @@ function Find-SignTool {
 
 $signtool = Find-SignTool
 $certPath = $env:SPD_SIGN_CERT_PATH
-if (-not $signtool -or -not (Test-Path $certPath)) {
+if (-not (Test-Path $certPath)) {
     if ($SkipIfNoCert) {
-        Write-Host "[SKIP] signtool or certificate not available for runtime payload." -ForegroundColor Yellow
+        Write-Host "[SKIP] signing certificate not available for runtime payload." -ForegroundColor Yellow
         return
     }
-    throw "Runtime signing prerequisites missing."
+    throw "Runtime signing certificate missing: $certPath"
+}
+
+function Import-SigningCertificate {
+    param([string]$Path, [string]$Password)
+    $secure = ConvertTo-SecureString $Password -AsPlainText -Force
+    return Import-PfxCertificate -FilePath $Path -Password $secure -CertStoreLocation Cert:\CurrentUser\My -Exportable
+}
+
+$signingCert = Import-SigningCertificate -Path $certPath -Password $env:SPD_SIGN_CERT_PASSWORD
+if (-not $signtool) {
+    Write-Host "[WARN] signtool not found. Falling back to Set-AuthenticodeSignature." -ForegroundColor Yellow
 }
 
 $timestampUrl = if ($env:SPD_TIMESTAMP_URL) { $env:SPD_TIMESTAMP_URL } else { "http://timestamp.digicert.com" }
@@ -86,8 +102,21 @@ $signed = 0
 $failed = 0
 foreach ($target in $targets) {
     Write-Host "Signing $($target.FullName.Substring($PayloadDir.Length).TrimStart('\'))" -ForegroundColor Gray
-    & $signtool sign /fd SHA256 /f $certPath /p $env:SPD_SIGN_CERT_PASSWORD /tr $timestampUrl /td SHA256 $target.FullName
-    if ($LASTEXITCODE -ne 0) {
+    $ok = $false
+    if ($signtool) {
+        & $signtool sign /fd SHA256 /f $certPath /p $env:SPD_SIGN_CERT_PASSWORD /tr $timestampUrl /td SHA256 $target.FullName
+        $ok = $LASTEXITCODE -eq 0
+    }
+    if (-not $ok) {
+        try {
+            $sig = Set-AuthenticodeSignature -FilePath $target.FullName -Certificate $signingCert -HashAlgorithm SHA256 -TimestampServer $timestampUrl
+            $ok = $sig.Status -eq "Valid"
+        }
+        catch {
+            $ok = $false
+        }
+    }
+    if (-not $ok) {
         $failed++
         if ($RequireSigned) {
             throw "Failed to sign: $($target.FullName)"

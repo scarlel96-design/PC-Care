@@ -1,5 +1,6 @@
 param(
-    [string]$RuntimeDir = ""
+    [string]$RuntimeDir = "",
+    [switch]$SkipSignatureCheck
 )
 
 [Console]::InputEncoding = [System.Text.UTF8Encoding]::new()
@@ -20,6 +21,9 @@ $required = @(
     "PCCare.runtimeconfig.json",
     "SmartPerformanceDoctor.exe",
     "SmartPerformanceDoctor.dll",
+    "coreclr.dll",
+    "hostfxr.dll",
+    "hostpolicy.dll",
     "Microsoft.WinUI.dll",
     "engine\smart_performance_doctor_core.exe",
     "engine\smart_performance_doctor_repair_helper.exe",
@@ -27,8 +31,7 @@ $required = @(
     "engine\AegisRecoveryService.exe",
     "engine\Microsoft.Extensions.Hosting.dll",
     "content\rules",
-    "runtimes\win-x64\native\Microsoft.WindowsAppRuntime.Bootstrap.dll",
-    "runtimes\win\lib\net9.0\System.ServiceProcess.ServiceController.dll"
+    "System.ServiceProcess.ServiceController.dll"
 )
 
 Write-Host "== Verify runtime layout ==" -ForegroundColor Cyan
@@ -44,7 +47,11 @@ if ($missing.Count -gt 0) {
     throw "런타임 검증 실패 — 누락: $($missing -join ', ')"
 }
 
-$appOut = Join-Path $ProjectRoot "src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0"
+if (-not (Resolve-WindowsAppBootstrapPath $RuntimeDir)) {
+    throw "런타임 검증 실패 — Windows App SDK Bootstrap DLL 누락"
+}
+
+$appOut = Get-AppUiAssetSource -ProjectRoot $ProjectRoot
 foreach ($rel in @("Views\UnifiedCarePage.xbf", "Views\ProgramProtectionCenterPage.xbf")) {
     $destPath = Join-Path $RuntimeDir $rel
     $srcPath = Join-Path $appOut $rel
@@ -68,7 +75,12 @@ if ($exe.Length -lt 65536) { throw "SmartPerformanceDoctor.exe 손상 (크기 $(
 if ($dll.Length -lt 65536) { throw "SmartPerformanceDoctor.dll 손상 (크기 $($dll.Length))" }
 
 Write-Host "[OK] Runtime integrity verified ($($exe.Length) byte exe)" -ForegroundColor Green
-& (Join-Path $PSScriptRoot "verify-runtime-signatures.ps1") -PayloadDir $RuntimeDir
+if ($SkipSignatureCheck) {
+    Write-Host "[INFO] Authenticode signature verification skipped for unsigned release." -ForegroundColor Yellow
+}
+else {
+    & (Join-Path $PSScriptRoot "verify-runtime-signatures.ps1") -PayloadDir $RuntimeDir
+}
 $ridRoot = Join-Path $RuntimeDir "runtimes"
 if (Test-Path $ridRoot) {
     $foreign = Get-ChildItem $ridRoot -Directory | Where-Object { $_.Name -notin @("win", "win-x64", "win10-x64", "win11-x64") }

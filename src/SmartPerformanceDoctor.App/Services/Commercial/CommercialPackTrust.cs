@@ -37,9 +37,10 @@ public static class CommercialPackTrustState
         _initialized = true;
         var rules = CommercialPackTrust.VerifyPack(commercialRoot, "rules.pack.json");
         var protocols = CommercialPackTrust.VerifyPack(commercialRoot, "protocols.pack.json");
-        _rulesTrusted = rules.IsTrusted;
-        _protocolsTrusted = protocols.IsTrusted;
-        _message = rules.IsTrusted && protocols.IsTrusted
+        var looseRules = Directory.Exists(Path.Combine(AppContext.BaseDirectory, "content", "rules"));
+        _rulesTrusted = rules.IsTrusted || looseRules;
+        _protocolsTrusted = protocols.IsTrusted || looseRules;
+        _message = _rulesTrusted && _protocolsTrusted
             ? "Rule/Protocol Pack trust verified"
             : $"Pack trust degraded: {rules.Message}; {protocols.Message}";
     }

@@ -158,18 +158,49 @@ internal static class SecureVaultOriginSealService
             return;
         }
 
-        var length = new FileInfo(filePath).Length;
-        using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Write, FileShare.None))
+        try
         {
-            fs.SetLength(0);
-            var buffer = RandomNumberGenerator.GetBytes(Math.Min(64 * 1024, (int)Math.Max(1, length)));
-            for (long offset = 0; offset < length; offset += buffer.Length)
+            // Reuse forensic chain (storage-aware) so vault seal is not a weak single overwrite.
+            var storage = Commercial.SecureDeleteStorageProfiler.Profile(filePath);
+            Commercial.ForensicSecureDeleteEngine
+                .SecureDeleteFileAsync(
+                    filePath,
+                    storage,
+                    Commercial.SecureDeleteSecurityLevel.Standard,
+                    CancellationToken.None)
+                .GetAwaiter()
+                .GetResult();
+        }
+        catch
+        {
+            // Fallback: best-effort random overwrite + delete if forensic path fails.
+            try
             {
-                fs.Write(buffer, 0, (int)Math.Min(buffer.Length, length - offset));
+                var length = new FileInfo(filePath).Length;
+                if (length > 0)
+                {
+                    using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Write, FileShare.None);
+                    var buffer = new byte[Math.Min(65536, (int)Math.Min(int.MaxValue, length))];
+                    long remaining = length;
+                    fs.Position = 0;
+                    while (remaining > 0)
+                    {
+                        var chunk = (int)Math.Min(buffer.Length, remaining);
+                        RandomNumberGenerator.Fill(buffer.AsSpan(0, chunk));
+                        fs.Write(buffer, 0, chunk);
+                        remaining -= chunk;
+                    }
+
+                    fs.Flush(true);
+                }
+
+                File.Delete(filePath);
+            }
+            catch
+            {
+                try { File.Delete(filePath); } catch { /* best effort */ }
             }
         }
-
-        File.Delete(filePath);
     }
 
     public static void SealIntermediateDirectories(string rootFolder, IEnumerable<string> relativeFilePaths) =>

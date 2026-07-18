@@ -1,0 +1,13 @@
+{
+  "version": "50.2.2",
+  "changes": [
+    "Rust Core 엔진 소스 복원 — orchestrator/system/driver/audio/intelligence/dism_guard/report 재빌드 가능",
+    "Core quick/system 모듈 강화 — 재부팅 대기·저장장치 건강·안정성(BSOD/WHEA) 신호 스트리밍",
+    "시스템 케어: 검사 항목 병렬 스캔(프로세서 기반 2~6 워커)",
+    "시스템 케어: 저장장치 건강·재부팅 대기·자동 서비스 이상·프록시·다운로드 폴더 프로브 추가",
+    "시스템 케어: 휴지통 안전 비우기·DNS 캐시 자동 적용 지원",
+    "최적화: EmptyWorkingSet 네이티브 호출로 메모리 정리 경량화",
+    "시작 프로그램 검사: 사용자+공용 시작 폴더 합산",
+    "README 머지 충돌 마커 제거 및 문서 정리"
+  ]
+}

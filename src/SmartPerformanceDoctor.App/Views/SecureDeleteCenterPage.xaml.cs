@@ -59,10 +59,7 @@ public sealed partial class SecureDeleteCenterPage : Page
             $"작업 ID: {_plan.OperationId}\n" +
             $"보안 등급: {_plan.SecurityLevel}\n" +
             $"대상 {_plan.Targets.Count}개 · 차단 {_plan.BlockedTargets.Count}개\n" +
-            $"공인 복구 저항: {_plan.CertifiedResistanceLabel}\n" +
-            $"기술 삭제 강도 Tier {_plan.TechnicalDeletionIntensity} · Level5 공인: {(_plan.Level5Certified ? "예" : "아니오")}\n" +
-            $"위험: {_plan.ProfessionalRecoveryRisk}\n" +
-            (string.IsNullOrWhiteSpace(_plan.ResistanceDisclaimer) ? "" : $"{_plan.ResistanceDisclaimer}\n") +
+            $"복구 저항 Level {_plan.RecoveryResistanceLevel} · 위험: {_plan.ProfessionalRecoveryRisk}\n" +
             $"풀체인: {_plan.ChainSummary}\n" +
             $"예상 시간: {_plan.EstimatedDuration}\n" +
             _plan.Limitations;

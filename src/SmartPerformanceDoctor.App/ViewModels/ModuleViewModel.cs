@@ -27,7 +27,7 @@ public sealed class ModuleViewModel : ObservableObject
     {
         Status = "대기 중";
         Progress = 0;
-        LatestMessage = $"{module.Title} 실행 버튼을 누르면 AstraCore 엔진이 진단을 시작합니다.";
+        LatestMessage = $"{module.Title} 실행 버튼을 누르면 최신 진단 엔진이 점검을 시작합니다.";
         Events = Array.Empty<EngineEvent>();
         Intelligence = null;
         HtmlReportPath = null;

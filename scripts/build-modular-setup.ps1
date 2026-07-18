@@ -1,7 +1,8 @@
 param(
-    [string]$Version = "50.0.0",
+    [string]$Version = "50.5.0",
     [switch]$SkipAppBuild,
-    [switch]$SkipMsi
+    [switch]$SkipMsi,
+    [switch]$SkipSigning
 )
 
 $ErrorActionPreference = "Stop"
@@ -10,7 +11,8 @@ Set-Location $ProjectRoot
 
 Write-Host "== Modular Setup Build (v$Version) ==" -ForegroundColor Cyan
 
-$appOut = Join-Path $ProjectRoot "src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0"
+. (Join-Path $PSScriptRoot "RuntimeLayout.ps1")
+$appOut = Get-AppPublishOutput -ProjectRoot $ProjectRoot
 $setupOut = Join-Path $ProjectRoot "src\SmartPerformanceDoctor.Setup\bin\x64\Release\net10.0-windows"
 $installerDir = Join-Path $ProjectRoot "artifacts\installer"
 $setupDir = Join-Path $installerDir "setup"
@@ -20,8 +22,8 @@ if (-not $SkipAppBuild) {
     Write-Host "Building App + Setup (Release x64)..." -ForegroundColor Yellow
     & (Join-Path $PSScriptRoot "build-core.ps1")
     & (Join-Path $PSScriptRoot "build-app.ps1")
-    & (Join-Path $PSScriptRoot "publish-runtime.ps1")
-    & (Join-Path $PSScriptRoot "verify-runtime.ps1")
+    & (Join-Path $PSScriptRoot "publish-runtime.ps1") -SkipSigning:$SkipSigning
+    & (Join-Path $PSScriptRoot "verify-runtime.ps1") -SkipSignatureCheck:$SkipSigning
 }
 
 if (-not (Test-Path $appOut)) {
@@ -32,25 +34,45 @@ if (-not (Test-Path $setupOut)) {
 }
 
 . (Join-Path $PSScriptRoot "RuntimeLayout.ps1")
-$layoutSource = Get-RuntimeRoot -ProjectRoot $ProjectRoot
-if (-not (Test-RuntimePublished $layoutSource)) {
+$runtimeRoot = Get-RuntimeRoot -ProjectRoot $ProjectRoot
+if (Test-SelfContainedRuntimeLayout $appOut) {
+    $layoutSource = $appOut
+}
+elseif (Test-SelfContainedRuntimeLayout $runtimeRoot) {
+    $layoutSource = $runtimeRoot
+}
+elseif (Test-RuntimePublished $runtimeRoot) {
+    $layoutSource = $runtimeRoot
+}
+else {
     $layoutSource = $appOut
 }
 & (Join-Path $PSScriptRoot "prepare-installer-layout.ps1") -SourceDir $layoutSource
 & (Join-Path $PSScriptRoot "trim-runtime-rid.ps1") -RuntimeDir $layout
-& (Join-Path $PSScriptRoot "sign-runtime-payload.ps1") -PayloadDir $layout -SkipIfNoCert
+if (-not $SkipSigning) {
+    & (Join-Path $PSScriptRoot "sign-runtime-payload.ps1") -PayloadDir $layout
+    try {
+        & (Join-Path $PSScriptRoot "trust-dev-signing-cert.ps1")
+        Write-Host "[OK] Dev signing certificate trusted for Authenticode verification." -ForegroundColor Green
+    }
+    catch {
+        Write-Host "[WARN] Dev signing trust step failed: $($_.Exception.Message)" -ForegroundColor Yellow
+    }
+}
+else {
+    Write-Host "[INFO] Runtime signing and certificate trust skipped by request." -ForegroundColor Yellow
+}
 
 $setupExe = Join-Path $setupOut "SmartPerformanceDoctor.Setup.exe"
 if (-not (Test-Path $setupExe)) {
     throw "Setup EXE not found: $setupExe"
 }
-Copy-Item $setupExe (Join-Path $layout "SmartPerformanceDoctor.Setup.exe") -Force
-Copy-Item (Join-Path $setupOut "SmartPerformanceDoctor.Setup.dll") $layout -Force -ErrorAction SilentlyContinue
-Copy-Item (Join-Path $setupOut "SmartPerformanceDoctor.Contracts.dll") $layout -Force -ErrorAction SilentlyContinue
 
 New-Item -ItemType Directory -Path $setupDir -Force | Out-Null
-# 이전 버전 설치 산출물 제거 — 배포는 단일 PCCare_Setup EXE만 유지
-Get-ChildItem $setupDir -File -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue
+# 동일 버전 설치 산출물만 교체 (50.1.0 / 50.1.1 등 병행 배포 유지)
+$bundleNameToReplace = "PCCare_Setup_v$Version.exe"
+Get-ChildItem $setupDir -File -Filter $bundleNameToReplace -ErrorAction SilentlyContinue |
+    Remove-Item -Force -ErrorAction SilentlyContinue
 $msiToken = $Version -replace '\.', '_'
 Get-ChildItem $installerDir -Filter "SmartPerformanceDoctor_v*.msi" -File -ErrorAction SilentlyContinue |
     Where-Object { $_.Name -ne "SmartPerformanceDoctor_v$msiToken.msi" } |
@@ -68,32 +90,35 @@ if (-not $SkipMsi) {
 
 $msiFile = Get-ChildItem $installerDir -Filter "SmartPerformanceDoctor_v*.msi" -File -ErrorAction SilentlyContinue |
     Sort-Object LastWriteTime -Descending | Select-Object -First 1
+$msiPath = if ($msiFile) { $msiFile.FullName } else { "" }
 if ($msiFile) {
     Copy-Item $msiFile.FullName $layout -Force
 }
 
-if ($msiFile) {
-    & (Join-Path $PSScriptRoot "pack-embedded-setup-payload.ps1") -LayoutDir $layout -MsiPath $msiFile.FullName -Version $Version
-    $layoutZip = Join-Path $ProjectRoot "src\SmartPerformanceDoctor.Setup\Resources\installer-layout.zip"
-    $setupProj = Join-Path $ProjectRoot "src\SmartPerformanceDoctor.Setup\SmartPerformanceDoctor.Setup.csproj"
-    Write-Host "Publishing self-contained Setup (single-file host)..." -ForegroundColor Yellow
-    dotnet publish $setupProj -c Release -p:Platform=x64 -r win-x64 --self-contained true `
-        -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true
-    if ($LASTEXITCODE -ne 0) { throw "Setup publish failed." }
-    $publishCandidates = @(
-        (Join-Path $setupOut "win-x64\publish\SmartPerformanceDoctor.Setup.exe"),
-        (Join-Path $setupOut "publish\SmartPerformanceDoctor.Setup.exe"),
-        (Join-Path $setupOut "SmartPerformanceDoctor.Setup.exe")
-    )
-    $baseSetup = $publishCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
-    if (-not $baseSetup) { throw "Published Setup EXE not found under $setupOut" }
-    Write-Host "[OK] Setup host: $baseSetup ($([math]::Round((Get-Item $baseSetup).Length/1MB, 1)) MB)" -ForegroundColor Green
-    & (Join-Path $PSScriptRoot "append-setup-payload.ps1") -SetupExe $baseSetup -LayoutZip $layoutZip -MsiPath $msiFile.FullName -OutputExe $bundlePath
-    Copy-Item $bundlePath (Join-Path $layout "SmartPerformanceDoctor.Setup.exe") -Force
-    $setupExe = $bundlePath
+& (Join-Path $PSScriptRoot "pack-embedded-setup-payload.ps1") -LayoutDir $layout -MsiPath $msiPath -Version $Version
+$layoutZip = Join-Path $ProjectRoot "src\SmartPerformanceDoctor.Setup\Resources\installer-layout.zip"
+$setupProj = Join-Path $ProjectRoot "src\SmartPerformanceDoctor.Setup\SmartPerformanceDoctor.Setup.csproj"
+if (-not (Test-Path $layoutZip)) {
+    throw "Layout zip missing before publish: $layoutZip"
 }
-
-& (Join-Path $PSScriptRoot "sign-modular-setup.ps1") -Version $Version -SkipIfNoCert
+Write-Host "Publishing self-contained Setup (single-file host)..." -ForegroundColor Yellow
+dotnet publish $setupProj -c Release -p:Platform=x64 -r win-x64 --self-contained true `
+    -p:Version=$Version -p:FileVersion=$Version -p:AssemblyVersion=$Version `
+    -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true
+if ($LASTEXITCODE -ne 0) { throw "Setup publish failed." }
+$publishCandidates = @(
+    (Join-Path $setupOut "win-x64\publish\SmartPerformanceDoctor.Setup.exe"),
+    (Join-Path $setupOut "publish\SmartPerformanceDoctor.Setup.exe"),
+    (Join-Path $setupOut "SmartPerformanceDoctor.Setup.exe")
+)
+$baseSetup = $publishCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+if (-not $baseSetup) { throw "Published Setup EXE not found under $setupOut" }
+Write-Host "[OK] Setup host: $baseSetup ($([math]::Round((Get-Item $baseSetup).Length/1MB, 1)) MB)" -ForegroundColor Green
+if (-not $SkipSigning) {
+    & (Join-Path $PSScriptRoot "sign-modular-setup.ps1") -Version $Version -SkipIfNoCert -Targets @($baseSetup)
+}
+& (Join-Path $PSScriptRoot "append-setup-payload.ps1") -SetupExe $baseSetup -LayoutZip $layoutZip -MsiPath $msiPath -OutputExe $bundlePath
+$setupExe = $bundlePath
 
 function Get-Sha256([string]$path) {
     if (-not (Test-Path $path)) { return $null }
@@ -133,8 +158,12 @@ foreach ($item in $artifacts) {
 }
 $sumLines | Set-Content (Join-Path $installerDir "SHA256SUMS.txt") -Encoding UTF8
 
+$updatePackageName = "PCCare_Update_v$Version.spdup"
+$updatePackagePath = Join-Path $ProjectRoot "dist\updates\$updatePackageName"
+$updateHash = Get-Sha256 $updatePackagePath
+
 $channel = [PSCustomObject]@{
-    product = "Smart Performance Doctor"
+    product = "PC 케어 프로"
     channel = "stable"
     latestVersion = $Version
     minimumSupportedVersion = "45.0.0"
@@ -144,6 +173,14 @@ $channel = [PSCustomObject]@{
         setup = @{
             file = $bundleName
             sha256 = (Get-Sha256 $bundlePath)
+        }
+        update = if ($updateHash) {
+            @{
+                file = $updatePackageName
+                sha256 = $updateHash
+            }
+        } else {
+            $null
         }
         msi = $null
     }

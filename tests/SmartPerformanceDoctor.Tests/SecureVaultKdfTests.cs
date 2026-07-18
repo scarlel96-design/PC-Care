@@ -1,12 +1,38 @@
 using System.Security.Cryptography;
 using System.Text;
 using Konscious.Security.Cryptography;
+using SmartPerformanceDoctor.App.Services.Security;
 using Xunit;
 
 namespace SmartPerformanceDoctor.Tests;
 
 public sealed class SecureVaultKdfTests
 {
+    [Fact]
+    public void Chunked_encrypt_decrypt_round_trip_and_tamper()
+    {
+        var key = SecureVaultCrypto.GenerateKey();
+        var plain = Encoding.UTF8.GetBytes("chunk-payload-" + new string('X', 5000));
+        var aad = "entry-aad"u8.ToArray();
+        var blob = SecureVaultCrypto.EncryptChunked(key, plain, aad);
+        Assert.True(SecureVaultCrypto.IsChunkedBlob(blob));
+        var back = SecureVaultCrypto.DecryptChunked(key, blob, aad);
+        Assert.Equal(plain, back);
+
+        blob[20] ^= 0xFF;
+        Assert.ThrowsAny<CryptographicException>(() => SecureVaultCrypto.DecryptChunked(key, blob, aad));
+    }
+
+    [Fact]
+    public void Kdf_profiles_are_distinct()
+    {
+        var b = VaultKdfParameters.FromProfile(VaultKdfProfile.Balanced);
+        var s = VaultKdfParameters.FromProfile(VaultKdfProfile.Strong);
+        var e = VaultKdfParameters.FromProfile(VaultKdfProfile.Extreme);
+        Assert.True(b.MemoryKb < s.MemoryKb);
+        Assert.True(s.MemoryKb < e.MemoryKb);
+    }
+
     [Fact]
     public void Argon2id_produces_32_byte_key_distinct_from_pbkdf2()
     {

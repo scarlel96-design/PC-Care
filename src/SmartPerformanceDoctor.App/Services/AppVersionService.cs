@@ -7,38 +7,43 @@ namespace SmartPerformanceDoctor.App.Services;
 
 public static class AppVersionService
 {
-    private const string FallbackVersion = "45.0.10";
+    private const string FallbackVersion = AppInfo.BuildVersion;
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
 
     public static string GetInstalledVersion()
     {
+        // The running assembly can be the previous version while a deferred
+        // updater has already written the new files. Keep both sources so the
+        // update checker never falls back to a stale historic version.
         var resolved = ResolveAssemblyVersion();
-        if (!string.IsNullOrWhiteSpace(resolved))
+        var stored = ReadStoredVersion();
+        var current = string.IsNullOrWhiteSpace(resolved) ? FallbackVersion : resolved;
+        if (!string.IsNullOrWhiteSpace(stored))
         {
-            return PreferNewer(resolved, FallbackVersion);
+            current = PreferNewer(current, stored);
         }
 
-        if (File.Exists(UpdatePaths.InstalledVersionFile))
+        return PreferNewer(current, FallbackVersion);
+    }
+
+    private static string? ReadStoredVersion()
+    {
+        if (!File.Exists(UpdatePaths.InstalledVersionFile))
         {
-            try
-            {
-                using var doc = JsonDocument.Parse(File.ReadAllText(UpdatePaths.InstalledVersionFile));
-                if (doc.RootElement.TryGetProperty("version", out var versionNode))
-                {
-                    var stored = versionNode.GetString();
-                    if (!string.IsNullOrWhiteSpace(stored))
-                    {
-                        return PreferNewer(Normalize(stored), FallbackVersion);
-                    }
-                }
-            }
-            catch
-            {
-                // Fall through.
-            }
+            return null;
         }
 
-        return FallbackVersion;
+        try
+        {
+            using var doc = JsonDocument.Parse(File.ReadAllText(UpdatePaths.InstalledVersionFile));
+            return doc.RootElement.TryGetProperty("version", out var versionNode)
+                ? Normalize(versionNode.GetString() ?? "")
+                : null;
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     private static string? ResolveAssemblyVersion()
@@ -89,10 +94,17 @@ public static class AppVersionService
             return new VersionVerificationResult(true, actual, fileVersion, expectedVersion ?? "", "기대 버전 없음");
         }
 
-        var assemblyOk = UpdateVersionComparer.Compare(actual, expectedVersion) >= 0;
-        var fileOk = string.IsNullOrWhiteSpace(fileVersion)
-            || UpdateVersionComparer.Compare(fileVersion, expectedVersion) >= 0;
-        var ok = assemblyOk && fileOk;
+        var runtimeOk = UpdateVersionComparer.Compare(actual, expectedVersion) >= 0;
+        var fileOk = !string.IsNullOrWhiteSpace(fileVersion)
+            && UpdateVersionComparer.Compare(fileVersion, expectedVersion) >= 0;
+        var storedVersion = ReadStoredVersion();
+        var storedOk = !string.IsNullOrWhiteSpace(storedVersion)
+            && UpdateVersionComparer.Compare(storedVersion, expectedVersion) >= 0;
+
+        // Deferred updates run outside this process. In that window the loaded
+        // assembly is intentionally old, so verify the on-disk DLL/state rather
+        // than rejecting a successful replacement because of the old runtime.
+        var ok = fileOk || storedOk || (string.IsNullOrWhiteSpace(fileVersion) && runtimeOk);
         var details = ok
             ? $"설치 확인됨 · 실행 버전 {actual} · DLL {fileVersion}"
             : $"버전 불일치 · 실행 {actual} · DLL {fileVersion} · 기대 {expectedVersion}";

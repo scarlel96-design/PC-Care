@@ -8,15 +8,16 @@
         <StackPanel Padding="{StaticResource SpdMacPagePadding}" Spacing="18">
             <StackPanel Spacing="4">
                 <TextBlock Text="통합 점검" Style="{StaticResource MacPageTitleStyle}"/>
-                <TextBlock Text="케어 엔진 · 감사 체인 · 스냅샷 · 전 모듈 재검증"
+                <TextBlock Text="최신 진단 엔진 · 로컬 규칙 분석 · AI 요약 · 점검 보고서"
                            Foreground="{StaticResource SpdAccentBrush}" FontWeight="SemiBold"/>
-                <TextBlock Text="드라이버·오디오 복구는 아래 「점검 범위」에서 선택합니다. 실행 방식에서 「진단만」 또는 「진단+복구」를 고르세요. 세션 감사 로그와 HTML 보고서가 자동 생성됩니다."
+                <TextBlock Text="점검 범위와 실행 방식을 선택한 뒤 검사를 시작하세요. 보고서는 프로그램 설치 폴더의 reports 에 저장됩니다."
                            Style="{StaticResource MacInlineStatusTextStyle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource MacWindowPanelStyle}">
                 <StackPanel Spacing="12">
-                    <TextBlock Text="점검 범위" FontSize="20" FontWeight="SemiBold"/>
+                    <TextBlock Text="점검 설정" FontSize="20" FontWeight="SemiBold"/>
+                    <TextBlock Text="점검 범위" FontWeight="SemiBold"/>
                     <ComboBox x:Name="ScopeBox" SelectedIndex="0" SelectionChanged="ScopeChanged">
                         <ComboBoxItem Content="빠른 점검" Tag="quick"/>
                         <ComboBoxItem Content="시스템 점검" Tag="system"/>
@@ -25,7 +26,7 @@
                         <ComboBoxItem Content="전체 점검 (빠른+시스템+드라이버+오디오)" Tag="full"/>
                     </ComboBox>
 
-                    <TextBlock Text="실행 방식" FontSize="20" FontWeight="SemiBold"/>
+                    <TextBlock Text="실행 방식" FontWeight="SemiBold"/>
                     <RadioButton x:Name="DiagnosisOnlyRadio" Content="진단만 — PC에 변경 없음" GroupName="CareMode" Checked="ModeChanged"/>
                     <RadioButton x:Name="DiagnosisAndRepairRadio" Content="진단 + 복구 — 문제가 있으면 안전 복구까지 진행" GroupName="CareMode" Checked="ModeChanged"/>
 
@@ -39,47 +40,28 @@
                                Foreground="{StaticResource SpdMutedTextBrush}"
                                TextWrapping="Wrap"/>
 
-                    <Border Margin="0,4,0,0" Padding="0,14,0,0"
-                            BorderBrush="{StaticResource SpdMacSeparatorBrush}" BorderThickness="0,1,0,0">
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16">
-                            <TextBlock VerticalAlignment="Center"
-                                       Text="범위와 실행 방식을 확인한 뒤 점검을 시작하세요."
-                                       Foreground="{StaticResource SpdMutedTextBrush}"
-                                       TextWrapping="Wrap"/>
-                            <Button x:Name="StartButton" Grid.Column="1"
-                                    Content="점검 시작"
-                                    Style="{StaticResource PremiumPrimaryButtonStyle}"
-                                    Click="StartCare"
-                                    MinWidth="132"
-                                    VerticalAlignment="Center"/>
-                        </Grid>
-                    </Border>
+                    <Button x:Name="StartButton" Content="검사 시작" Style="{StaticResource MacToolbarButtonStyle}" HorizontalAlignment="Left" Click="StartCare"/>
                 </StackPanel>
             </Border>
 
             <Border Style="{StaticResource MacWindowPanelStyle}">
                 <StackPanel Spacing="12">
-                    <TextBlock Text="진행 상태" FontSize="20" FontWeight="SemiBold"/>
+                    <TextBlock Text="진행 요약" FontSize="20" FontWeight="SemiBold"/>
                     <ProgressBar x:Name="ProgressBar" Maximum="100" Value="0"/>
                     <TextBlock x:Name="StatusText" Text="대기" FontWeight="SemiBold"/>
-                    <TextBlock x:Name="SummaryText" Text="점검 범위에서 설정을 확인한 뒤 「점검 시작」을 누르세요." TextWrapping="Wrap"/>
+                    <TextBlock x:Name="SummaryText" Text="점검 범위와 실행 방식을 선택한 뒤 [검사 시작]을 누르세요." TextWrapping="Wrap"/>
                     <TextBlock x:Name="SessionText" Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
-                </StackPanel>
-            </Border>
-
-            <Border Style="{StaticResource MacWindowPanelStyle}">
-                <StackPanel Spacing="12">
-                    <TextBlock Text="작업 내역" FontSize="20" FontWeight="SemiBold"/>
-                    <TextBlock Text="최신 항목이 위에 표시됩니다. 유형: 점검 · 지능 분석 · 사전 확인 · 복구 적용 · 재점검"
+                    <TextBlock Text="최근 처리 단계"
                                Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
-                    <ListView x:Name="StepList" MinHeight="320" SelectionMode="None">
+                    <ListView x:Name="StepList" MaxHeight="220" SelectionMode="None">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Border Margin="0,0,0,8" Padding="10" CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource SpdMacSeparatorBrush}">
                                     <StackPanel Spacing="4">
-                                        <Grid ColumnDefinitions="*,Auto">
+                                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
                                             <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap"/>
                                             <TextBlock Grid.Column="1" Text="{Binding ExecutionKind}" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding Phase}" Foreground="{StaticResource SpdMutedTextBrush}" HorizontalAlignment="Right"/>
                                         </Grid>
                                         <TextBlock Text="{Binding Detail}" TextWrapping="Wrap" Foreground="{StaticResource SpdMutedTextBrush}"/>
                                     </StackPanel>

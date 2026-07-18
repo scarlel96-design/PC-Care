@@ -12,12 +12,9 @@
             <Border Style="{StaticResource MacWindowPanelStyle}">
                 <StackPanel Spacing="8">
                     <TextBlock x:Name="StatusText" Style="{StaticResource MacEmphasisValueStyle}"/>
-                    <TextBlock x:Name="TrustSummaryText" Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
                     <TextBlock x:Name="RulesChecksumText" Style="{StaticResource MacInlineStatusTextStyle}"/>
-                    <TextBlock x:Name="RulesSignatureText" Style="{StaticResource MacInlineStatusTextStyle}"/>
                     <TextBlock x:Name="ProtocolsChecksumText" Style="{StaticResource MacInlineStatusTextStyle}"/>
-                    <TextBlock x:Name="ProtocolsSignatureText" Style="{StaticResource MacInlineStatusTextStyle}"/>
-                    <TextBlock Text="checksum·서명 검증에 실패하면 규칙 기반 기능이 제한 모드로 동작합니다."
+                    <TextBlock Text="데이터가 맞지 않으면 이전 버전을 그대로 씁니다."
                                Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
                 </StackPanel>
             </Border>

@@ -1,54 +1,63 @@
-<<<<<<< HEAD
-# PC 케어 프로 v49
+# PC 케어 프로 (PCCare) v50.5.0
 
-PC 통합 점검·복구·보안 관리 프로그램입니다.
+Windows PC의 상태 점검, 안전한 정리, 드라이버·오디오 문제 진단, 보안 금고와 보안 삭제를 하나로 제공하는 로컬 PC 관리 프로그램입니다.
 
-## 폴더 구조
+## 주요 기능
 
-| 경로 | 용도 |
-|------|------|
-| `src/` | 소스 코드 |
-| `scripts/` | 빌드·배포·설치 스크립트 |
-| `content/` | 규칙·에셋 (소스) |
-| `PCCare.exe` | **실행 프로그램** (빌드 후 프로젝트 루트에 배포) |
-| `engine/`, `runtimes/` | 런타임 보조 파일 (빌드 후 생성) |
-| `artifacts/` | 설치 파일·릴리즈 산출물 |
-| `target/` | Rust 네이티브 엔진 빌드 |
+| 영역 | 제공 기능 |
+|---|---|
+| 시스템 케어 | 임시 파일·캐시·휴지통·레지스트리 경로·바로가기·시작 프로그램·서비스·디스크·네트워크·Windows 보안 상태 점검 |
+| 정리 결과 | 검사 후 정리 대상, 정상 항목, 검사 완료 수를 요약하고 실제 조치가 필요한 항목만 목록으로 표시 |
+| 통합 점검 | 빠른/시스템/드라이버/오디오/전체 점검과 단계별 진단·안전 복구 흐름 |
+| 드라이버·오디오 | 장치 오류 코드, 오디오 서비스·장치 상태, 안전한 복구 제안 |
+| 보안 금고 | AstraVault 기반의 로컬 암호화 금고, 복구·무결성 검증 설계 포함 |
+| 보안 삭제 | 선택한 파일을 일반 복구가 어렵도록 삭제하며, 대상 경로 검증과 감사 기록을 남김 |
 
-빌드 후 실행 파일은 프로젝트 루트에 `PCCare.exe`로 배포됩니다.
+## 50.5.0 하이라이트
 
-## 빠른 시작
+- 시스템 케어 검사 범위를 브라우저 개인정보 흔적, 예약 작업, SmartScreen 보호, HOSTS 리디렉션까지 확대했습니다.
+- 검사 결과를 `정리 대상 / 정상 항목 / 검사 완료` 요약과 간결한 정리 목록으로 재구성했습니다.
+- 통합 점검은 최근 처리 단계 중심으로 정리해 진행·결과 화면의 복잡도를 줄였습니다.
+- 업데이트는 실행 중인 앱 내부 복사를 없애고 별도 마무리 프로세스로 처리하며, 설치 파일 기준 버전 검증을 강화했습니다.
+- 최신 소스에 누락돼 있던 AstraVault 검증 도구와 Target 소스를 함께 반영했습니다.
 
-```powershell
-Set-ExecutionPolicy -Scope Process Bypass
-.\scripts\build.ps1 -SkipInstaller   # 빌드 + 실행 배포
-.\PCCare.exe
-```
+## 설치와 업데이트
 
-전체 빌드 + 설치 파일:
+- 설치 파일: GitHub Releases의 `PCCare_Setup_v*.exe`
+- 업데이트 파일: `PCCare_Update_v*.spdup`
+- 앱의 **업데이트** 화면에서 패키지 검사 후 적용할 수 있습니다. 실행 중인 파일은 앱 종료 후 별도 프로세스가 안전하게 교체합니다.
+- 릴리스에는 SHA-256과 `UPDATE_CHANNEL.json`이 함께 제공됩니다. 이 빌드는 개인 배포용이므로 Authenticode 서명 대신 패키지 해시 검증을 사용합니다.
 
-```powershell
-.\scripts\build.ps1
-# 설치 파일: artifacts\installer\setup\SmartPerformanceDoctor_Setup_v49.0.0.exe
-```
-
-## 개발
+## 개발 빌드
 
 ```powershell
-.\scripts\build.ps1 -SkipInstaller -SkipTests
-dotnet test .\tests\SmartPerformanceDoctor.Tests\SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64
+.\scripts\build.ps1 -SkipInstaller
 ```
 
-워크스페이스 정리 (루트에 남은 빌드 찌꺼기 제거):
+서명을 생략한 설치·업데이트 패키지 빌드:
 
 ```powershell
-.\scripts\clean-workspace.ps1
+.\scripts\build.ps1 -SkipTests -SkipSigning
 ```
 
-## 데이터 저장 위치
+## 검증 상태
+
+50.5.0 기준 x64 Release 빌드가 통과했고, 전체 직렬 회귀 테스트 결과는 **542 passed / 116 skipped / 0 failed**입니다. 보류 테스트는 AstraVault의 아직 의도적으로 활성화하지 않은 생산용 쓰기·마이그레이션 경로를 검증하는 항목입니다.
+
+## 런타임 데이터
 
 - 지식 DB: `%LOCALAPPDATA%\SmartPerformanceDoctor\data\knowledge.db`
+- 업데이트 상태: `%LOCALAPPDATA%\SmartPerformanceDoctor\updates\`
 - Aegis Mirror: `%ProgramData%\AstraCare\AegisMirror\`
-- 보고서: `%USERPROFILE%\Desktop\AstraCare\`
-=======
->>>>>>> fd754d9974b6c0b5657a8047e30fc12ac0ebb6e8
+- 검사 보고서: 설치 폴더의 `reports\`
+
+## 저장소 구성
+
+| 경로 | 용도 |
+|---|---|
+| `src/` | 앱·서비스·네이티브 엔진 소스 |
+| `experimental/SecurityLab/` | 보안 금고·보안 삭제 보강 계층 |
+| `tools/` | AstraVault 골든 벡터 등 검증 도구 |
+| `tests/` | 단위·회귀 테스트 |
+| `scripts/` | 빌드·패키징·검증·업데이트 스크립트 |
+| `updates/` | 업데이트 변경 기록 |

@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using SmartPerformanceDoctor.App.Models;
+using SmartPerformanceDoctor.App.Services.OpenSourceLlm;
+using SmartPerformanceDoctor.App.Services.SystemCare;
 using SmartPerformanceDoctor.App.ViewModels;
 using SmartPerformanceDoctor.Contracts;
 using SmartPerformanceDoctor.Contracts.Services;
@@ -20,15 +22,55 @@ public sealed class UnifiedCareService
         UnifiedCareAuditService.Append(session, "session-start", $"범위 {request.Scope}", true);
 
         var steps = new List<CareStepResult>();
+        var reportDirs = new List<string>();
+        var actionsTaken = new List<string>();
         var sw = Stopwatch.StartNew();
         var moduleIds = ScopeRepairFilter.ResolveModuleIds(request.Scope);
         var diagnoses = new List<IntelligenceSummary>();
         var rawSignals = new List<string>();
-        var reportDirs = new List<string>();
-        var actionsTaken = new List<string>();
         int? scoreBefore = null;
         int? scoreAfter = null;
         InferenceResult? inference = null;
+
+        try
+        {
+        if (ShouldRunStabilityProbe(request.Scope))
+        {
+            onStep(RunningStep("diagnosis", "블루스크린·시스템 안정성", "BugCheck·WHEA·비정상 종료 이벤트를 확인합니다.", "점검"));
+            try
+            {
+                var stability = SystemStabilityProbe.Analyze(cancellationToken);
+                rawSignals.AddRange(stability.ToSignalLines());
+                var stabilityIntel = stability.ToIntelligenceSummary();
+                diagnoses.Add(stabilityIntel);
+                scoreBefore ??= stabilityIntel.Score;
+
+                var detail = stability.HasRecentStabilityRisk
+                    ? $"블루스크린 {stability.BugCheckCount30d}건 · WHEA {stability.WheaErrorCount30d}건 · 비정상 종료 {stability.UnexpectedShutdownCount30d}건"
+                    : "최근 30일 블루스크린·하드웨어 오류·비정상 종료 기록 없음";
+
+                var stabilityStep = new CareStepResult(
+                    "diagnosis",
+                    stability.HasRecentStabilityRisk ? "시스템 안정성 주의" : "시스템 안정성 양호",
+                    detail,
+                    "점검",
+                    true);
+                steps.Add(stabilityStep);
+                onStep(stabilityStep);
+                UnifiedCareAuditService.Append(session, "diagnosis", "stability-probe", true);
+            }
+            catch (Exception ex)
+            {
+                var stabilityFailed = new CareStepResult(
+                    "diagnosis",
+                    "시스템 안정성 점검 제한",
+                    $"안정성 이벤트를 일부만 확인했습니다.\n{ex.Message}",
+                    "점검",
+                    false);
+                steps.Add(stabilityFailed);
+                onStep(stabilityFailed);
+            }
+        }
 
         foreach (var moduleId in moduleIds)
         {
@@ -108,15 +150,43 @@ public sealed class UnifiedCareService
             }
         }
 
-        onStep(RunningStep("inference", "지능 분석 진행", "규칙 DB, 학습 기록, 신호 상관 분석을 융합합니다.", "지능 분석"));
+        LocalLlmAnalysisResult? localLlm = null;
+        onStep(RunningStep("inference", "내장 경량 AI", "설치본에 포함된 로컬 AI로 진단 신호를 요약합니다.", "AI 분석"));
         try
         {
-            inference = _inference.Analyze(request.Scope, diagnoses, rawSignals);
+            localLlm = await OpenSourceLlmInferenceService.Shared
+                .AnalyzeAsync(request.Scope, rawSignals, cancellationToken)
+                .ConfigureAwait(false);
+            var llmStep = new CareStepResult(
+                "inference",
+                localLlm.Success ? "경량 오픈소스 AI 완료" : "경량 오픈소스 AI 제한",
+                localLlm.Message,
+                "AI 분석",
+                localLlm.Success || localLlm.Insights.Count > 0);
+            steps.Add(llmStep);
+            onStep(llmStep);
+        }
+        catch (Exception ex)
+        {
+            var llmFailed = new CareStepResult(
+                "inference",
+                "경량 오픈소스 AI 제한",
+                $"로컬 AI를 실행하지 못했습니다. 규칙 분석으로 계속합니다.\n{ex.Message}",
+                "AI 분석",
+                false);
+            steps.Add(llmFailed);
+            onStep(llmFailed);
+        }
+
+        onStep(RunningStep("inference", "로컬 규칙 분석", "오픈 소스 경량 분석(규칙 DB·로컬 코퍼스)으로 결과를 정리합니다.", "규칙 분석"));
+        try
+        {
+            inference = _inference.Analyze(request.Scope, diagnoses, rawSignals, localLlm);
             var inferenceStep = new CareStepResult(
                 "inference",
-                "지능 분석 완료",
+                "로컬 규칙 분석 완료",
                 FormatInferenceDetail(inference),
-                "지능 분석",
+                "규칙 분석",
                 true);
             steps.Add(inferenceStep);
             onStep(inferenceStep);
@@ -130,9 +200,9 @@ public sealed class UnifiedCareService
         {
             var inferenceFailed = new CareStepResult(
                 "inference",
-                "지능 분석 제한 모드",
+                "로컬 규칙 분석 제한",
                 $"분석 엔진을 완전히 실행하지 못했습니다. 기본 규칙으로 계속합니다.\n{ex.Message}",
-                "지능 분석",
+                "규칙 분석",
                 false);
             steps.Add(inferenceFailed);
             onStep(inferenceFailed);
@@ -167,6 +237,44 @@ public sealed class UnifiedCareService
             FinalizeReportBundles(reportDirs, actionsTaken, includeRepair: false);
             return FinishSession(session, request, steps, scoreBefore, null, false,
                 "점검·추론은 완료됐지만 복구 승인이 없어 복구 단계를 건너뛰었습니다.");
+        }
+
+        if (ShouldRunSystemOptimization(request.Scope))
+        {
+            onStep(RunningStep(
+                "optimization",
+                "시스템 최적화",
+                "DNS·전원·메모리·네트워크·시각 효과를 안전하게 조정합니다.",
+                "최적화"));
+            try
+            {
+                var optimizations = await SystemOptimizationService.ApplyRecommendedAsync(request.Scope, cancellationToken)
+                    .ConfigureAwait(false);
+                foreach (var opt in optimizations)
+                {
+                    var optStep = new CareStepResult(
+                        "optimization",
+                        opt.Title,
+                        opt.Detail,
+                        "최적화",
+                        opt.Success);
+                    steps.Add(optStep);
+                    onStep(optStep);
+                    actionsTaken.Add($"{opt.Title} — {(opt.Success ? "완료" : "실패")}");
+                    UnifiedCareAuditService.Append(session, "optimization", opt.Title, opt.Success);
+                }
+            }
+            catch (Exception ex)
+            {
+                var optFailed = new CareStepResult(
+                    "optimization",
+                    "시스템 최적화 제한",
+                    $"일부 최적화를 적용하지 못했습니다.\n{ex.Message}",
+                    "최적화",
+                    false);
+                steps.Add(optFailed);
+                onStep(optFailed);
+            }
         }
 
         var plan = RepairPlanMapper.BuildPlan(request.Scope, diagnoses, onlyWhenIssuesFound: true, inference);
@@ -315,6 +423,13 @@ public sealed class UnifiedCareService
 
         FinalizeReportBundles(reportDirs, actionsTaken, request.IncludeRepair);
         return FinishSession(session, request, steps, scoreBefore, scoreAfter, true, summary);
+        }
+        catch (OperationCanceledException)
+        {
+            FinalizeReportBundles(reportDirs, actionsTaken, request.IncludeRepair);
+            return FinishSession(session, request, steps, scoreBefore, scoreAfter, false,
+                "사용자 또는 화면 전환으로 점검이 중단되었습니다. 부분 보고서가 저장되었습니다.");
+        }
     }
 
     private static CareSessionResult FinishSession(
@@ -374,6 +489,12 @@ public sealed class UnifiedCareService
             auditChainValid);
     }
 
+    private static bool ShouldRunSystemOptimization(string scope) =>
+        scope is "quick" or "system" or "full";
+
+    private static bool ShouldRunStabilityProbe(string scope) =>
+        scope is "system" or "full" or "quick";
+
     private static CareStepResult RunningStep(string phase, string title, string detail, string kind) =>
         new(phase, title, detail, kind, true);
 
@@ -413,7 +534,7 @@ public sealed class UnifiedCareService
     {
         var lines = new List<string>
         {
-            $"융합 점수: {inference.FusedScore}점",
+            $"종합 점수: {inference.FusedScore}점",
             $"상태: {inference.Status}",
             inference.Summary
         };

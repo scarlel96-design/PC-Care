@@ -1,5 +1,6 @@
 param(
     [string]$Version = "50.0.0",
+    [string[]]$Targets = @(),
     [switch]$SkipIfNoCert
 )
 
@@ -24,10 +25,14 @@ if (-not $env:SPD_SIGN_CERT_PASSWORD) {
 
 $primaryName = "PCCare_Setup_v$Version.exe"
 $legacyName = "SmartPerformanceDoctor_Setup_v$Version.exe"
-$targets = @(
-    (Join-Path $setupDir $primaryName),
-    (Join-Path $setupDir $legacyName)
-) | Where-Object { Test-Path $_ }
+$targets = if ($Targets.Count -gt 0) {
+    $Targets | Where-Object { Test-Path $_ }
+} else {
+    @(
+        (Join-Path $setupDir $primaryName),
+        (Join-Path $setupDir $legacyName)
+    ) | Where-Object { Test-Path $_ }
+}
 
 if ($targets.Count -eq 0) {
     Write-Host "[SKIP] No setup EXE to sign in $setupDir" -ForegroundColor Yellow

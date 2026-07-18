@@ -35,6 +35,19 @@
 
             <Border Style="{StaticResource MacWindowPanelStyle}">
                 <StackPanel Spacing="12">
+                    <TextBlock Text="GitHub 릴리즈" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <TextBlock Text="PC-Care 저장소에서 최신 .spdup 업데이트를 확인·다운로드합니다."
+                               Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Content="확인" Style="{StaticResource MacToolbarButtonStyle}" Click="CheckGitHubRelease"/>
+                        <Button Content="다운로드" Style="{StaticResource MacToolbarButtonStyle}" Click="DownloadGitHubUpdate"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding GitHubLine}" TextWrapping="Wrap" Style="{StaticResource MacInlineStatusTextStyle}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="12">
                     <TextBlock Text="업데이트 파일" Style="{StaticResource MacSectionHeaderStyle}"/>
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <Button Content="파일 선택 (.spdup)" Style="{StaticResource MacToolbarButtonStyle}" Click="PickUpdateFile"/>

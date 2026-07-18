@@ -6,7 +6,7 @@
     <ScrollViewer>
         <StackPanel Padding="{StaticResource SpdMacPagePadding}" Style="{StaticResource MacPageRootStackStyle}">
             <TextBlock Text="보안 삭제" Style="{StaticResource MacPageTitleStyle}"/>
-            <TextBlock Text="베타 기능 — 최대 강도 삭제 체인 적용. 공인 복구 저항 등급은 저장장치·범위에 따라 별도 표기됩니다."
+            <TextBlock Text="베타 기능 — dry-run으로 대상과 풀체인을 확인한 뒤 실행하세요."
                        Foreground="{StaticResource SpdAccentBrush}" FontWeight="SemiBold" TextWrapping="Wrap"/>
             <TextBlock Text="SSD 물리 한계·클라우드 동기화 등은 완전 제거를 보장하지 않습니다. 삭제 전 대상과 확인 문구를 반드시 검토하세요."
                        Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>

@@ -24,11 +24,8 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <Button Content="정밀 점검·복구 시작" Style="{StaticResource PremiumPrimaryButtonStyle}"
+                        <Button Content="정밀 점검 시작" Style="{StaticResource PremiumPrimaryButtonStyle}"
                                 HorizontalAlignment="Left" Margin="0,8,0,0" Click="StartDeepScan"/>
-                        <TextBlock Text="통합 점검(전체 범위)으로 이동하며, 점검과 함께 안전 복구가 자동 진행됩니다. PC 설정이 일부 변경될 수 있습니다."
-                                   FontSize="12" TextWrapping="Wrap" Margin="0,6,0,0"
-                                   Foreground="{StaticResource SpdMacSecondaryTextBrush}"/>
                     </StackPanel>
                 </Grid>
             </Border>

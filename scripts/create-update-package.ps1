@@ -9,11 +9,12 @@ param(
 $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path $PSScriptRoot -Parent
 Set-Location $ProjectRoot
+. (Join-Path $PSScriptRoot "RuntimeLayout.ps1")
 
 if (-not $AppOut) {
-    $AppOut = Join-Path $ProjectRoot "src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0"
-    if (-not (Test-Path (Join-Path $AppOut "SmartPerformanceDoctor.exe")) -and (Test-Path (Join-Path $ProjectRoot "SmartPerformanceDoctor.exe"))) {
-        $AppOut = $ProjectRoot
+    $AppOut = Get-AppPublishOutput -ProjectRoot $ProjectRoot
+    if (-not (Test-SelfContainedRuntimeLayout $AppOut)) {
+        throw "self-contained publish 가 필요합니다. scripts\publish-runtime.ps1 후 다시 실행하세요: $AppOut"
     }
 }
 
@@ -75,6 +76,8 @@ function Copy-RuntimePayload {
 }
 
 Copy-RuntimePayload -Source $AppOut -Destination $payload
+& (Join-Path $PSScriptRoot "sanitize-commercial-layout.ps1") -LayoutDir $payload
+& (Join-Path $PSScriptRoot "verify-install-layout.ps1") -LayoutDir $payload
 
 $fileEntries = New-Object System.Collections.Generic.List[object]
 Get-ChildItem $payload -Recurse -File | ForEach-Object {
@@ -88,7 +91,7 @@ Get-ChildItem $payload -Recurse -File | ForEach-Object {
 
 $manifest = [PSCustomObject]@{
     format = "spd-update-v1"
-    product = "Smart Performance Doctor"
+    product = "PC 케어 프로"
     channel = "stable"
     fromVersion = $FromVersion
     toVersion = $ToVersion
@@ -101,25 +104,52 @@ $manifest = [PSCustomObject]@{
     files = $fileEntries
 }
 
-$fingerprintSource = ($fileEntries | Sort-Object path | ForEach-Object { "{0}:{1}" -f $_.path.ToLower(), $_.sha256 }) -join "|"
+# Match UpdatePackageInspector.ComputeManifestFingerprint (Ordinal sort of "path:sha256" lines).
+$fpLines = [System.Collections.Generic.List[string]]::new()
+foreach ($fe in $fileEntries) {
+    $fpLines.Add(("{0}:{1}" -f $fe.path.ToLowerInvariant(), $fe.sha256.ToLowerInvariant()))
+}
+$fpLines.Sort([StringComparer]::Ordinal)
+$fingerprintSource = [string]::Join("|", $fpLines)
 $manifest.packageSha256 = [BitConverter]::ToString(
     [System.Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes($fingerprintSource))
 ).Replace("-", "").ToLower()
 
 $manifestPath = Join-Path $stage "update.manifest.json"
-$manifest | ConvertTo-Json -Depth 8 | Set-Content $manifestPath -Encoding UTF8
+# UTF-8 without BOM — System.Text.Json reads cleanly
+$utf8NoBom = New-Object System.Text.UTF8Encoding $false
+[System.IO.File]::WriteAllText($manifestPath, ($manifest | ConvertTo-Json -Depth 8), $utf8NoBom)
 
-$packageName = "SmartPerformanceDoctor_v${ToVersion}_Update.spdup"
+$packageName = "PCCare_Update_v${ToVersion}.spdup"
 $packagePath = Join-Path $OutputDir $packageName
-$zipPath = [System.IO.Path]::ChangeExtension($packagePath, ".zip")
 if (Test-Path $packagePath) { Remove-Item $packagePath -Force }
-if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
-Compress-Archive -Path (Join-Path $stage "*") -DestinationPath $zipPath -Force
-Move-Item $zipPath $packagePath -Force
+
+# Prefer forward-slash ZIP entries (Compress-Archive uses backslashes and breaks GetEntry).
+Add-Type -AssemblyName System.IO.Compression
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+if (Test-Path $packagePath) { Remove-Item $packagePath -Force }
+$zip = [System.IO.Compression.ZipFile]::Open($packagePath, [System.IO.Compression.ZipArchiveMode]::Create)
+try {
+    # manifest at root
+    [void][System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile(
+        $zip, $manifestPath, "update.manifest.json", [System.IO.Compression.CompressionLevel]::Optimal)
+
+    Get-ChildItem $payload -Recurse -File | ForEach-Object {
+        $relative = $_.FullName.Substring($payload.Length).TrimStart('\', '/').Replace('\', '/')
+        $entryName = "payload/$relative"
+        [void][System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile(
+            $zip, $_.FullName, $entryName, [System.IO.Compression.CompressionLevel]::Optimal)
+    }
+}
+finally {
+    $zip.Dispose()
+}
 
 Remove-Item $stage -Recurse -Force
 
 $finalHash = (Get-FileHash $packagePath -Algorithm SHA256).Hash.ToLower()
 Write-Host "[OK] Update package: $packagePath" -ForegroundColor Green
-Write-Host "[OK] Package SHA256: $finalHash" -ForegroundColor Green
+Write-Host "[OK] Package SHA256 (file): $finalHash" -ForegroundColor Green
+Write-Host "[OK] Manifest fingerprint: $($manifest.packageSha256)" -ForegroundColor Green
 Write-Host "[OK] Files: $($fileEntries.Count)" -ForegroundColor Green
+Write-Host "[OK] GitHub release body tip: update-sha256: $finalHash" -ForegroundColor Cyan

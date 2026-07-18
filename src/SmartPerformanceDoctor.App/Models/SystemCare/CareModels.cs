@@ -15,7 +15,8 @@ public enum CareModuleKind
     Shortcut,
     Optimization,
     Internet,
-    Vulnerability
+    Vulnerability,
+    Stability
 }
 
 public sealed class CareModuleInfo

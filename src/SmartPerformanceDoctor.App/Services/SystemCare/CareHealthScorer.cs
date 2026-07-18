@@ -31,9 +31,10 @@ public static class CareHealthScorer
         var safe = findings.Count(f => f.RiskCode == "safe");
         var review = findings.Count(f => f.RiskCode == "review");
         var caution = findings.Count(f => f.RiskCode == "caution");
+        var highrisk = findings.Count(f => f.RiskCode == "highrisk");
         var blocked = findings.Count(f => f.RiskCode == "blocked");
 
-        var penalty = review * 2 + caution * 5 + blocked * 8;
+        var penalty = review * 2 + caution * 5 + highrisk * 10 + blocked * 8;
         var score = Math.Clamp(100 - penalty, 0, 100);
         var grade = score switch
         {

@@ -111,9 +111,18 @@ public sealed class AegisProtectionBackgroundService : IDisposable
         LastCycleAt = DateTimeOffset.Now;
         NextCycleAt = LastCycleAt.Value.Add(AegisWatchdogRunner.DefaultInterval);
         LastStatus = status;
-        LastMessage = watchdog.RepairedFiles > 0 || status.RepairedFiles > 0
-            ? $"자동 복구 완료 · Watchdog {watchdog.RepairedFiles}건 · 미러 {status.RepairedFiles}건"
-            : status.Message;
+        var repairedTotal = watchdog.RepairedFiles + status.RepairedFiles;
+        LastMessage = repairedTotal > 0
+            ? $"자동 복구 {repairedTotal}건"
+            : "정상";
+        if (repairedTotal > 0)
+        {
+            TrayIconService.Shared.EnsureInitialized();
+            TrayIconService.Shared.ShowBalloon(
+                AppInfo.ProductName,
+                $"백그라운드 보호: 손상된 파일 {repairedTotal}개를 복구했습니다.");
+        }
+
         NotifyChanged();
         return status;
     }

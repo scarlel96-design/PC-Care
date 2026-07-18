@@ -1,7 +1,8 @@
 param(
     [string]$AppOut = "",
     [string]$RuntimeDir = "",
-    [switch]$SkipProcessStop
+    [switch]$SkipProcessStop,
+    [switch]$SkipSigning
 )
 
 [Console]::InputEncoding = [System.Text.UTF8Encoding]::new()
@@ -15,7 +16,7 @@ $ProjectRoot = Split-Path $PSScriptRoot -Parent
 . (Join-Path $PSScriptRoot "RuntimeLayout.ps1")
 
 if (-not $AppOut) {
-    $AppOut = Join-Path $ProjectRoot "src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0"
+    $AppOut = Get-AppPublishOutput -ProjectRoot $ProjectRoot
 }
 if (-not $RuntimeDir) {
     $RuntimeDir = Get-RuntimeRoot -ProjectRoot $ProjectRoot
@@ -201,14 +202,10 @@ function Move-EngineBinaries {
             Move-Item $rootPath $enginePath -Force
         }
     }
-    foreach ($pair in @(
-            @{ Src = "smart_performance_doctor_core.exe"; Alias = "AstraCore.exe" },
-            @{ Src = "smart_performance_doctor_repair_helper.exe"; Alias = "AstraRepairHelper.exe" }
-        )) {
-        $src = Join-Path $engineDir $pair.Src
-        $alias = Join-Path $engineDir $pair.Alias
-        if ((Test-Path $src) -and -not (Test-Path $alias)) {
-            Copy-Item $src $alias -Force
+    foreach ($alias in Get-CommercialBlockedEngineAliases) {
+        $aliasPath = Join-Path $engineDir $alias
+        if (Test-Path $aliasPath) {
+            Remove-Item $aliasPath -Force
         }
     }
 }
@@ -262,10 +259,13 @@ function Assert-RuntimeIntegrity {
         @{ Path = Join-Path $Root "SmartPerformanceDoctor.exe"; Min = 65536 },
         @{ Path = Join-Path $Root "SmartPerformanceDoctor.dll"; Min = 65536 },
         @{ Path = Join-Path $Root "Microsoft.WinUI.dll"; Min = 65536 },
-        @{ Path = Join-Path $Root "runtimes\win-x64\native\Microsoft.WindowsAppRuntime.Bootstrap.dll"; Min = 4096 }
+        @{ Path = (Resolve-WindowsAppBootstrapPath $Root); Min = 4096 },
+        @{ Path = Join-Path $Root "coreclr.dll"; Min = 1024 },
+        @{ Path = Join-Path $Root "hostfxr.dll"; Min = 1024 },
+        @{ Path = Join-Path $Root "hostpolicy.dll"; Min = 1024 }
     )
     foreach ($check in $checks) {
-        if (-not (Test-Path $check.Path)) {
+        if ([string]::IsNullOrWhiteSpace($check.Path) -or -not (Test-Path $check.Path)) {
             throw "필수 런타임 누락: $($check.Path)"
         }
         if (-not (Test-PortableExecutable $check.Path $check.Min) -and $check.Path -like "*.exe") {
@@ -293,8 +293,9 @@ if (-not $SkipProcessStop) {
     Stop-AppProcesses
 }
 
+$uiSource = Get-AppUiAssetSource -ProjectRoot $ProjectRoot
 Copy-RuntimeTree -Source $AppOut -Destination $RuntimeDir
-Sync-RuntimeUiAssets -Source $AppOut -Destination $RuntimeDir
+Sync-RuntimeUiAssets -Source $uiSource -Destination $RuntimeDir
 Move-EngineBinaries -Root $RuntimeDir
 
 function Sync-ProjectContentAssets {
@@ -333,14 +334,21 @@ function Ensure-AegisSigningKey {
     Write-Host "[WARN] Aegis signing key not deployed — manifest auto-sign may fail until key is present." -ForegroundColor Yellow
 }
 
-Ensure-AegisSigningKey -Root $RuntimeDir -ProjectRoot $ProjectRoot
+if (-not $SkipSigning) {
+    Ensure-AegisSigningKey -Root $RuntimeDir -ProjectRoot $ProjectRoot
+}
+else {
+    Write-Host "[INFO] Aegis key deployment and runtime signing skipped by request." -ForegroundColor Yellow
+}
 Sync-ProjectContentAssets -ProjectRoot $ProjectRoot -Destination $RuntimeDir
 & (Join-Path $PSScriptRoot "trim-runtime-rid.ps1") -RuntimeDir $RuntimeDir
 Write-RuntimeExecutable -Root $RuntimeDir -ProjectRoot $ProjectRoot
-& (Join-Path $PSScriptRoot "sign-runtime-payload.ps1") -PayloadDir $RuntimeDir -SkipIfNoCert
-Sync-RuntimeUiAssets -Source $AppOut -Destination $RuntimeDir
+if (-not $SkipSigning) {
+    & (Join-Path $PSScriptRoot "sign-runtime-payload.ps1") -PayloadDir $RuntimeDir -SkipIfNoCert
+}
+Sync-RuntimeUiAssets -Source $uiSource -Destination $RuntimeDir
 Write-RuntimeExecutable -Root $RuntimeDir -ProjectRoot $ProjectRoot
-Assert-RuntimeUiAssetsMatch -Source $AppOut -Destination $RuntimeDir
+Assert-RuntimeUiAssetsMatch -Source $uiSource -Destination $RuntimeDir
 Assert-RuntimeIntegrity -Root $RuntimeDir -SourceRoot $AppOut
 
 $readme = @(
@@ -348,16 +356,12 @@ $readme = @(
     "",
     "Run: PCCare.exe",
     "",
-    "Layout:",
-    "  PCCare.exe - main app (user entry)",
-    "  SmartPerformanceDoctor.exe - runtime host",
-    "  engine/ - core, repair, Aegis helpers",
-    "  content/ - rules, assets, commercial packs",
-    "  runtimes/ - Windows App SDK",
+    "See FOLDER_LAYOUT.txt for install folder structure.",
     "",
     "Published: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
 ) -join "`r`n"
 Set-Content (Join-Path $RuntimeDir "README.txt") $readme -Encoding UTF8
+Get-CommercialFolderLayoutText | Set-Content (Join-Path $RuntimeDir "FOLDER_LAYOUT.txt") -Encoding UTF8
 
 Write-Host "[OK] Runtime published: $RuntimeDir" -ForegroundColor Green
 Write-Host "[OK] Main EXE: $((Get-Item (Join-Path $RuntimeDir 'SmartPerformanceDoctor.exe')).Length) bytes" -ForegroundColor Green

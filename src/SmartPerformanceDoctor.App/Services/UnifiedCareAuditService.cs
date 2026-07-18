@@ -17,13 +17,8 @@ public static class UnifiedCareAuditService
     public static UnifiedCareSessionContext BeginSession(CareRequest request)
     {
         var sessionId = $"care-{DateTimeOffset.Now:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToString("N")[..8]}";
-        var folder = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "SmartPerformanceDoctor",
-            "unified_care",
-            "sessions",
-            sessionId);
-        Directory.CreateDirectory(folder);
+        var folder = CareAuditPaths.CreateUnifiedCareSessionFolder(sessionId);
+        CareAuditPaths.AppendJobHistory("unified_care", folder, $"scope={request.Scope} repair={request.IncludeRepair}");
 
         var manifest = new
         {

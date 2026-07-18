@@ -1,0 +1,17 @@
+{
+  "fromVersion": "50.1.0",
+  "toVersion": "50.1.1",
+  "releaseNotes": "PC 케어 프로 50.1.1 — 아이콘·설치·시스템 최적화 패치",
+  "changes": [
+    "제품 아이콘 전역 적용 (메인 앱 타이틀바, 설치 창, 바로가기)",
+    "설치 페이로드 오염 수정 — layout zip에 Setup EXE 재주입 제거",
+    "EmbeddedInstallerPayload PCCare.exe·엔진 필수 검증 및 오류 메시지 개선",
+    "LayoutFileFilter로 설치 시 Setup/MSI/zip 제외 통합",
+    "RepairRunner FeatureInstallMapper 적용",
+    "ProgramData·설치 경로 PCCare 통일",
+    "SystemOptimizationService 신규 — DNS·전원·Game DVR·시각효과·TCP·메모리",
+    "시스템 케어 최적화 검사·자동 적용 항목 확대",
+    "통합 점검(quick/system/full) 복구 전 시스템 최적화 단계 추가",
+    "UnifiedCareAuditService 감사 폴더 PCCare 경로 사용"
+  ]
+}

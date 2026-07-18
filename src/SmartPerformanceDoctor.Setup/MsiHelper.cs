@@ -12,7 +12,19 @@ internal static class MsiHelper
             return;
         }
 
+        if (!MsiMatchesProductVersion(msiPath))
+        {
+            return;
+        }
+
         RunMsiexec($"/i \"{msiPath}\" /qn /norestart");
+    }
+
+    private static bool MsiMatchesProductVersion(string msiPath)
+    {
+        var token = InstallerPaths.ProductVersion.Replace('.', '_');
+        var expected = $"SmartPerformanceDoctor_v{token}.msi";
+        return Path.GetFileName(msiPath).Equals(expected, StringComparison.OrdinalIgnoreCase);
     }
 
     public static void TryRepairMsi()

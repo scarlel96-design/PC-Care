@@ -1,0 +1,55 @@
+{
+  "phaseLabel": "E-14",
+  "verifiedAtUtc": "2026-07-08",
+  "latestVerified": {
+    "fullSuite": {
+      "evidenceId": "E-TEST-SOT",
+      "project": "tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj",
+      "command": "dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64",
+      "configuration": "Release",
+      "platform": "x64",
+      "passed": 657,
+      "failed": 0,
+      "skipped": 0
+    },
+    "filteredAv3WriterSlice": {
+      "evidenceId": "E-TEST-AV3-FILTER",
+      "command": "dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --filter \"FullyQualifiedName~Av3PhaseE9|FullyQualifiedName~Av3PhaseGate|FullyQualifiedName~Av3PhaseE8|FullyQualifiedName~Av3PhaseE7|FullyQualifiedName~DryRun|FullyQualifiedName~Invariant|FullyQualifiedName~Fault|FullyQualifiedName~Cancellation|FullyQualifiedName~Recovery|FullyQualifiedName~Av3PhaseE91|FullyQualifiedName~Av3NamedSignoff|FullyQualifiedName~Av3PhaseE10|FullyQualifiedName~Av3PhaseE11|FullyQualifiedName~Av3PhaseE111|FullyQualifiedName~Av3PhaseE12|FullyQualifiedName~Av3PhaseE121|FullyQualifiedName~Av3PhaseE13|FullyQualifiedName~Av3PhaseE131|FullyQualifiedName~Av3PhaseE14\"",
+      "configuration": "Release",
+      "platform": "x64",
+      "passed": 393,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "historicalPhaseResults": [
+    {
+      "phase": "E-13.1",
+      "label": "historical",
+      "note": "Pre-E-14 disk durability review tests; superseded by latestVerified.",
+      "fullSuitePassed": 620,
+      "filterPassed": 356
+    },
+    {
+      "phase": "E-13",
+      "label": "historical",
+      "note": "Pre-E-13.1 trusted anchor sign-off tests; superseded by latestVerified.",
+      "fullSuitePassed": 599,
+      "filterPassed": 335
+    },
+    {
+      "phase": "E-12.1",
+      "label": "historical",
+      "note": "Pre-E-13 trusted anchor provider tests; superseded by latestVerified.",
+      "fullSuitePassed": 567,
+      "filterPassed": 303
+    },
+    {
+      "phase": "E-11.1",
+      "label": "historical",
+      "note": "Pre-E-12 XChaCha24 closure tests; superseded by latestVerified.",
+      "fullSuitePassed": 517,
+      "filterPassed": 253
+    }
+  ]
+}

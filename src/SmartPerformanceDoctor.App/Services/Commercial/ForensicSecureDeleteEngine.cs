@@ -49,8 +49,9 @@ internal static class ForensicSecureDeleteEngine
 
         if (storageType is "SSD" or "NVMe")
         {
-            await SsdForensicObfuscationAsync(path, level, cancellationToken);
+            // Random crypto-erase MUST run before obfuscation truncates the file to 0.
             await SsdCryptoEraseAsync(path, level, cancellationToken);
+            await SsdForensicObfuscationAsync(path, level, cancellationToken);
         }
         else
         {
@@ -143,30 +144,77 @@ internal static class ForensicSecureDeleteEngine
     {
         try
         {
-            var directory = Path.GetDirectoryName(path);
-            var fileName = Path.GetFileName(path);
-            if (string.IsNullOrWhiteSpace(directory) || string.IsNullOrWhiteSpace(fileName))
+            // FindFirstStreamW enumerates :stream names correctly (Directory.EnumerateFiles "file:*" is unreliable).
+            var findData = new WIN32_FIND_STREAM_DATA();
+            var handle = FindFirstStreamW(path, 0, ref findData, 0);
+            if (handle == IntPtr.Zero || handle == new IntPtr(-1))
             {
                 return;
             }
 
-            var pattern = Path.Combine(directory, fileName + ":*");
-            foreach (var streamPath in Directory.EnumerateFiles(directory, fileName + ":*"))
+            try
             {
-                if (string.Equals(streamPath, path, StringComparison.OrdinalIgnoreCase))
+                do
                 {
-                    continue;
-                }
+                    var streamName = findData.cStreamName;
+                    if (string.IsNullOrWhiteSpace(streamName) || streamName is "::$DATA")
+                    {
+                        continue;
+                    }
 
-                try
-                {
-                    File.SetAttributes(streamPath, FileAttributes.Normal);
-                    File.Delete(streamPath);
+                    // streamName looks like ":Zone.Identifier:$DATA"
+                    var colon = streamName.IndexOf(':', 1);
+                    var bare = colon > 1 ? streamName[1..colon] : streamName.TrimStart(':').Replace(":$DATA", "", StringComparison.OrdinalIgnoreCase);
+                    if (string.IsNullOrWhiteSpace(bare))
+                    {
+                        continue;
+                    }
+
+                    var adsPath = path + ":" + bare;
+                    try
+                    {
+                        if (File.Exists(adsPath))
+                        {
+                            File.SetAttributes(adsPath, FileAttributes.Normal);
+                            // Overwrite small ADS then delete.
+                            try
+                            {
+                                using var fs = new FileStream(adsPath, FileMode.Open, FileAccess.Write, FileShare.None);
+                                var len = fs.Length;
+                                if (len > 0)
+                                {
+                                    var buf = new byte[Math.Min(4096, (int)Math.Min(int.MaxValue, len))];
+                                    RandomNumberGenerator.Fill(buf);
+                                    fs.Position = 0;
+                                    long rem = len;
+                                    while (rem > 0)
+                                    {
+                                        var n = (int)Math.Min(buf.Length, rem);
+                                        fs.Write(buf, 0, n);
+                                        rem -= n;
+                                    }
+
+                                    fs.Flush(true);
+                                }
+                            }
+                            catch
+                            {
+                                // Continue to delete attempt.
+                            }
+
+                            File.Delete(adsPath);
+                        }
+                    }
+                    catch
+                    {
+                        // Ignore individual ADS failures.
+                    }
                 }
-                catch
-                {
-                    // Ignore individual ADS failures.
-                }
+                while (FindNextStreamW(handle, ref findData));
+            }
+            finally
+            {
+                FindClose(handle);
             }
         }
         catch
@@ -532,6 +580,29 @@ internal static class ForensicSecureDeleteEngine
         int dwCreationDisposition,
         int dwFlagsAndAttributes,
         IntPtr hTemplateFile);
+
+    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    private static extern IntPtr FindFirstStreamW(
+        string lpFileName,
+        int InfoLevel,
+        ref WIN32_FIND_STREAM_DATA lpFindStreamData,
+        int dwFlags);
+
+    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool FindNextStreamW(IntPtr hFindStream, ref WIN32_FIND_STREAM_DATA lpFindStreamData);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool FindClose(IntPtr hFindFile);
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    private struct WIN32_FIND_STREAM_DATA
+    {
+        public long StreamSize;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 296)]
+        public string cStreamName;
+    }
 
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool DeviceIoControl(

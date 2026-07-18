@@ -6,8 +6,8 @@ public static class FeatureInstallMapper
 {
     private static readonly (string FeatureId, string PathPrefix)[] OptionalPathPrefixes =
     [
-        (InstallFeatureIds.DriverAudioRepair, @"engine\AstraRepairHelper.exe"),
         (InstallFeatureIds.DriverAudioRepair, @"engine\smart_performance_doctor_repair_helper.exe"),
+        (InstallFeatureIds.DriverAudioRepair, @"engine\AstraRepairHelper.exe"),
         (InstallFeatureIds.KnowledgePack, @"content\data\commercial\rules.pack"),
         (InstallFeatureIds.DeepScanIntelligence, @"content\data\commercial\protocols.pack"),
         (InstallFeatureIds.KnowledgePack, @"content\data\commercial\security_baseline.pack"),

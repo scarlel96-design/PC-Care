@@ -1,349 +1,126 @@
-use super::rules_loader::{load_rules, resolve_rules_base_dir, RulesCatalog};
-use serde::{Deserialize, Serialize};
+use super::types::{ActionPlanItem, EngineEvent, IntelligenceSummary, RootCauseCandidate};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct RootCause {
-    pub area: String,
-    pub severity: String,
-    pub evidence: String,
-    pub explanation: String,
-    pub recommendation: String,
-    pub confidence: f32,
-}
+/// Rule-based intelligence fusion restored from v50 binary signal heuristics.
+pub fn analyze(module: &str, signals: &[String], events: &[EngineEvent]) -> IntelligenceSummary {
+    let mut root_causes = Vec::new();
+    let mut actions = Vec::new();
+    let mut score: i32 = 94;
+    let joined = signals.join(" | ").to_lowercase();
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ActionPlanItem {
-    pub priority: String,
-    pub area: String,
-    pub action: String,
-    pub reason: String,
-    pub risk: String,
-}
+    let critical_markers = [
+        ("bluescreen", 18, "critical", "블루스크린 신호가 감지되었습니다."),
+        ("bugcheck", 16, "critical", "BugCheck 이벤트가 확인되었습니다."),
+        ("whea", 12, "warning", "하드웨어 오류(WHEA) 신호가 있습니다."),
+        ("unexpected_shutdown", 10, "warning", "예기치 않은 종료 기록이 있습니다."),
+        ("configmanagererror", 12, "warning", "PnP 장치 구성 오류가 있습니다."),
+        ("driverconflict", 10, "warning", "드라이버 충돌 가능성이 있습니다."),
+        ("service_stopped", 8, "warning", "자동 시작 서비스가 중지 상태입니다."),
+        ("disk_unhealthy", 14, "critical", "디스크 상태가 불량입니다."),
+        ("low_disk", 8, "warning", "디스크 여유 공간이 부족합니다."),
+        ("reboot_pending", 6, "info", "재부팅 대기 상태가 있습니다."),
+        ("audio_service", 10, "warning", "오디오 서비스 이상이 있습니다."),
+        ("no_render_endpoint", 12, "warning", "재생 엔드포인트가 없습니다."),
+        ("unsigned driver", 6, "info", "서명되지 않은 드라이버가 있습니다."),
+    ];
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct IntelligenceSummary {
-    pub score: u8,
-    pub status: String,
-    pub plain_summary: String,
-    pub root_causes: Vec<RootCause>,
-    pub actions: Vec<ActionPlanItem>,
-}
-
-pub struct IntelligenceEngine {
-    rules: RulesCatalog,
-}
-
-impl Default for IntelligenceEngine {
-    fn default() -> Self {
-        Self {
-            rules: load_rules(&resolve_rules_base_dir()),
-        }
-    }
-}
-
-impl IntelligenceEngine {
-    pub fn new() -> Self {
-        Self::default()
-    }
-
-    pub fn summarize(&self, module: &str, signals: &[String]) -> IntelligenceSummary {
-        let mut root_causes = Vec::new();
-        let mut actions = Vec::new();
-        let mut score = 94u8;
-
-        for signal in signals {
-            let s = signal.to_lowercase();
-
-            if let Some(code) = extract_problem_code(&s)
-                && let Some(rule) = self.rules.driver_codes.get(&code)
-            {
-                    score = score.saturating_sub(risk_penalty(&rule.risk));
-                    root_causes.push(Self::cause(
-                        module,
-                        map_risk_to_severity(&rule.risk),
-                        signal,
-                        &rule.title,
-                        "규칙 DB에 등록된 장치 문제 코드가 감지되었습니다.",
-                        &rule.recommendation,
-                        0.82,
-                    ));
-                    actions.push(ActionPlanItem {
-                        priority: "1".into(),
-                        area: module.to_string(),
-                        action: rule.recommendation.clone(),
-                        reason: format!("문제 코드 {code} 규칙 매칭"),
-                        risk: rule.risk.clone(),
-                    });
-                    continue;
-            }
-
-            if (s.contains("low disk") || s.contains("disk free"))
-                && let Some(rule) = self.rules.system_rules.get("low_disk")
-            {
-                    score = score.saturating_sub(10);
-                    root_causes.push(Self::cause(
-                        module,
-                        "warning",
-                        signal,
-                        "저장 공간 부족",
-                        "시스템 규칙에 따라 디스크 여유가 낮습니다.",
-                        &rule.action,
-                        0.78,
-                    ));
-                    continue;
-            }
-
-            if s.contains("memory") && (s.contains("high") || s.contains("used"))
-                && let Some(rule) = self.rules.system_rules.get("high_memory")
-            {
-                    score = score.saturating_sub(8);
-                    root_causes.push(Self::cause(
-                        module,
-                        "warning",
-                        signal,
-                        "메모리 사용량 높음",
-                        "시스템 규칙에 따라 메모리 사용률이 높습니다.",
-                        &rule.action,
-                        0.74,
-                    ));
-                    continue;
-            }
-
-            if s.contains("state") && (s.contains("stopped") || s.contains("not running"))
-                && let Some(rule) = self.rules.system_rules.get("service_stopped")
-            {
-                    score = score.saturating_sub(14);
-                    root_causes.push(Self::cause(
-                        module,
-                        "warning",
-                        signal,
-                        "자동 시작 서비스 중단",
-                        "자동 시작으로 설정된 서비스가 실행 중이 아닙니다.",
-                        &rule.action,
-                        0.80,
-                    ));
-                    actions.push(ActionPlanItem {
-                        priority: "1".into(),
-                        area: module.to_string(),
-                        action: rule.action.clone(),
-                        reason: "서비스 상태 이상 규칙 매칭".into(),
-                        risk: "medium".into(),
-                    });
-                    continue;
-            }
-
-            if (s.contains("reboot") || s.contains("pending reboot"))
-                && let Some(rule) = self.rules.system_rules.get("pending_reboot")
-            {
-                    score = score.saturating_sub(6);
-                    root_causes.push(Self::cause(
-                        module,
-                        "info",
-                        signal,
-                        "재부팅 필요",
-                        "시스템 업데이트 또는 복구 작업 후 재부팅이 필요할 수 있습니다.",
-                        &rule.action,
-                        0.70,
-                    ));
-                    continue;
-            }
-
-            if let Some((rule_name, rule)) = self.match_audio_rule(&s) {
-                if rule_name == "repair_not_needed" {
-                    score = score.saturating_add(2).min(99);
-                    continue;
-                }
-
-                score = score.saturating_sub(10);
-                root_causes.push(Self::cause(
-                    module,
-                    "warning",
-                    signal,
-                    &format!("오디오 규칙: {rule_name}"),
-                    "오디오 정밀 스캔 신호가 규칙 DB와 일치했습니다.",
-                    &rule.action,
-                    0.84,
-                ));
-                actions.push(ActionPlanItem {
-                    priority: "1".into(),
-                    area: module.to_string(),
-                    action: rule.action.clone(),
-                    reason: format!("audio_rules/{rule_name}"),
-                    risk: "medium".into(),
-                });
-                continue;
-            }
-
-            if s.contains("driverconflict\":true") || s.contains("duplicate driver") {
-                score = score.saturating_sub(16);
-                root_causes.push(Self::cause(
-                    module,
-                    "warning",
-                    signal,
-                    "드라이버 충돌 후보",
-                    "동일 장치에 복수 드라이버 또는 PnP 충돌 신호가 감지되었습니다.",
-                    "문제 장치만 선별 재시작 후 공식 드라이버 재설치를 검토하세요.",
-                    0.86,
-                ));
-                actions.push(ActionPlanItem {
-                    priority: "1".into(),
-                    area: module.to_string(),
-                    action: "문제 장치 선별 재시작 및 드라이버 재설치 검토".into(),
-                    reason: "driver_conflict_scan".into(),
-                    risk: "medium".into(),
-                });
-                continue;
-            }
-
-            if s.contains("repairneeded\":false") || s.contains("no repair needed") || s.contains("무작정 복구 불필요") {
-                score = score.saturating_add(3).min(99);
-                continue;
-            }
-
-            if s.contains("timeout") {
-                score = score.saturating_sub(15);
-                root_causes.push(Self::cause(
-                    module,
-                    "warning",
-                    signal,
-                    "작업 제한 시간 초과",
-                    "해당 단계가 지연되거나 응답하지 않았습니다.",
-                    "단독 재실행 후 반복되면 관련 이벤트 로그를 우선 확인하세요.",
-                    0.70,
-                ));
-            } else if s.contains("spawn_failed") || s.contains("wait_failed") {
-                score = score.saturating_sub(12);
-                root_causes.push(Self::cause(
-                    module,
-                    "warning",
-                    signal,
-                    "진단 명령 실행 실패",
-                    "Windows 구성 요소, 권한, 명령 지원 여부에 문제가 있을 수 있습니다.",
-                    "관리자 권한과 Windows 11 기본 구성 요소 상태를 확인하세요.",
-                    0.65,
-                ));
-            } else if s.contains("problem") || s.contains("error") || s.contains("stopped") || s.contains("warning") {
-                score = score.saturating_sub(8);
-                root_causes.push(Self::cause(
-                    module,
-                    "info",
-                    signal,
-                    "문제 신호 후보",
-                    "진단 출력에 문제 후보 문자열이 포함되어 있습니다.",
-                    "보고서 원본 로그와 모듈 사후 검증을 함께 확인하세요.",
-                    0.55,
-                ));
-            }
-        }
-
-        if root_causes.is_empty() {
-            root_causes.push(Self::cause(
-                module,
-                "info",
-                "no critical signal",
-                "치명 신호 없음",
-                "현재 수집된 신호에서 치명적인 오류 후보는 낮습니다.",
-                "문제가 계속되면 해당 모듈을 단독 실행하고 사후 검증을 확인하세요.",
-                0.60,
-            ));
-        }
-
-        if actions.is_empty() {
+    for (marker, penalty, severity, explanation) in critical_markers {
+        if joined.contains(marker) {
+            score -= penalty;
+            root_causes.push(RootCauseCandidate {
+                area: module.into(),
+                severity: severity.into(),
+                evidence: marker.into(),
+                explanation: explanation.into(),
+                recommendation: recommendation_for(marker).into(),
+                confidence: if severity == "critical" { 0.86 } else { 0.72 },
+            });
             actions.push(ActionPlanItem {
-                priority: "1".into(),
-                area: module.to_string(),
-                action: "사후 검증 포함 모듈 실행".into(),
-                reason: "복구 성공 여부는 재스캔으로만 확정할 수 있습니다.".into(),
-                risk: "low".into(),
+                priority: if severity == "critical" {
+                    "1".into()
+                } else {
+                    "2".into()
+                },
+                area: module.into(),
+                action: action_for(marker).into(),
+                reason: explanation.into(),
+                risk: if severity == "critical" {
+                    "medium".into()
+                } else {
+                    "low".into()
+                },
             });
         }
-
-        let rule_count = self.rules.driver_codes.len()
-            + self.rules.system_rules.len()
-            + self.rules.audio_rules.len();
-
-        IntelligenceSummary {
-            score,
-            status: if score >= 85 {
-                "양호".into()
-            } else if score >= 65 {
-                "주의".into()
-            } else {
-                "위험".into()
-            },
-            plain_summary: format!(
-                "{module} 모듈에서 {}개 신호를 분석했습니다. 규칙 {rule_count}개가 적용되었습니다.",
-                signals.len(),
-                rule_count = rule_count
-            ),
-            root_causes,
-            actions,
-        }
     }
 
-    fn match_audio_rule(&self, signal: &str) -> Option<(&str, &super::rules_loader::AudioRuleEntry)> {
-        for (name, rule) in &self.rules.audio_rules {
-            for marker in &rule.signals {
-                if signal.contains(&marker.to_lowercase()) {
-                    return Some((name.as_str(), rule));
-                }
-            }
-        }
-        None
+    // Count warning-level streaming events.
+    let warn_events = events
+        .iter()
+        .filter(|e| e.severity == "warning" || e.severity == "error")
+        .count() as i32;
+    score -= warn_events * 2;
+
+    if root_causes.is_empty() {
+        root_causes.push(RootCauseCandidate {
+            area: module.into(),
+            severity: "info".into(),
+            evidence: "no critical signal".into(),
+            explanation: "치명 신호 없음: 현재 수집된 신호에서 치명적인 오류 패턴이 없습니다.".into(),
+            recommendation: "문제가 계속되면 해당 모듈을 단독 실행하고 사후 검증을 확인하세요.".into(),
+            confidence: 0.6,
+        });
+        actions.push(ActionPlanItem {
+            priority: "1".into(),
+            area: module.into(),
+            action: "사후 검증 포함 모듈 재실행".into(),
+            reason: "복구 성공 여부는 리스캔으로만 확정할 수 있습니다.".into(),
+            risk: "low".into(),
+        });
     }
 
-    fn cause(
-        module: &str,
-        severity: &str,
-        evidence: &str,
-        title: &str,
-        explanation: &str,
-        recommendation: &str,
-        confidence: f32,
-    ) -> RootCause {
-        RootCause {
-            area: module.to_string(),
-            severity: severity.to_string(),
-            evidence: compact(evidence, 380),
-            explanation: format!("{title}: {explanation}"),
-            recommendation: recommendation.to_string(),
-            confidence,
-        }
+    score = score.clamp(5, 100);
+    let status = match score {
+        90..=100 => "양호",
+        75..=89 => "주의",
+        55..=74 => "경고",
+        _ => "위험",
+    };
+
+    IntelligenceSummary {
+        score,
+        status: status.into(),
+        plain_summary: format!(
+            "{module} 모듈에서 {}개 신호를 분석했습니다. 규칙 {}개를 적용했습니다.",
+            signals.len().max(events.len()),
+            root_causes.len()
+        ),
+        root_causes,
+        actions,
     }
 }
 
-fn extract_problem_code(signal: &str) -> Option<String> {
-    for token in signal.split(|c: char| !c.is_ascii_digit()) {
-        if (token.len() == 1 || token.len() == 2) && token.chars().all(|c| c.is_ascii_digit()) {
-            return Some(token.to_string());
-        }
-    }
-    None
-}
-
-fn risk_penalty(risk: &str) -> u8 {
-    match risk.to_lowercase().as_str() {
-        "high" | "critical" => 18,
-        "medium" => 12,
-        _ => 8,
+fn recommendation_for(marker: &str) -> &'static str {
+    match marker {
+        "bluescreen" | "bugcheck" => "최근 드라이버 업데이트·메모리 진단·미니덤프를 확인하세요.",
+        "whea" => "RAM/CPU/SSD 하드웨어 상태를 점검하고 과열·전원 이상을 확인하세요.",
+        "unexpected_shutdown" => "전원 공급·과열·강제 종료 원인을 확인하세요.",
+        "configmanagererror" | "driverconflict" => "문제 장치를 재시작·재스캔하고 공식 드라이버를 재설치하세요.",
+        "service_stopped" => "자동 시작 서비스를 재시작하고 시작 유형을 확인하세요.",
+        "disk_unhealthy" | "low_disk" => "여유 공간 확보 후 chkdsk/저장장치 상태 점검을 권장합니다.",
+        "reboot_pending" => "업데이트가 완료되도록 재부팅을 권장합니다.",
+        "audio_service" | "no_render_endpoint" => "Audiosrv/AudioEndpointBuilder 재시작 후 장치 재스캔을 실행하세요.",
+        _ => "관련 모듈을 다시 실행하고 사후 검증 보고서를 확인하세요.",
     }
 }
 
-fn map_risk_to_severity(risk: &str) -> &'static str {
-    match risk.to_lowercase().as_str() {
-        "high" | "critical" => "warning",
-        "medium" => "info",
-        _ => "info",
-    }
-}
-
-fn compact(input: &str, max: usize) -> String {
-    if input.len() <= max {
-        input.to_string()
-    } else {
-        format!("{}…", &input[..max.min(input.len())])
+fn action_for(marker: &str) -> &'static str {
+    match marker {
+        "bluescreen" | "bugcheck" => "안정성 이벤트·미니덤프 분석",
+        "whea" => "하드웨어 진단 실행",
+        "configmanagererror" | "driverconflict" => "문제 장치 재스캔",
+        "service_stopped" => "중지된 자동 서비스 재시작",
+        "disk_unhealthy" | "low_disk" => "디스크 정리 및 상태 점검",
+        "reboot_pending" => "재부팅 후 재검증",
+        "audio_service" | "no_render_endpoint" => "오디오 스택 재시작",
+        _ => "사후 검증 포함 모듈 재실행",
     }
 }

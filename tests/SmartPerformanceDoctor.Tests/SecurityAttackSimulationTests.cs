@@ -44,6 +44,9 @@ public sealed class SecurityAttackSimulationTests : IDisposable
         }
     }
 
+    private static string ResolveShardPrimary(string shardName) =>
+        Path.Combine(SecureVaultPaths.DataDirectory, shardName);
+
     [Fact]
     public void Vault_WrongPassword_RejectsBruteForceAttempts()
     {
@@ -209,6 +212,37 @@ public sealed class SecurityAttackSimulationTests : IDisposable
     }
 
     [Fact]
+    public void PathSafetyGuard_BlocksWindowsOnAnyDriveLetter()
+    {
+        // Drive-agnostic system tree protection (not only C:).
+        var (allowedD, _) = PathSafetyGuard.Evaluate(@"D:\Windows\System32\drivers\etc\hosts");
+        Assert.False(allowedD);
+
+        var (allowedE, _) = PathSafetyGuard.Evaluate(@"E:\Program Files\Common Files\tool.exe");
+        Assert.False(allowedE);
+    }
+
+    [Fact]
+    public void Vault_RecoveryUnlock_RespectsRateLimitLockout()
+    {
+        using var vault = new SecureVaultService();
+        const string password = "CorrectHorseBattery99!";
+        var created = vault.CreateVault(password);
+        Assert.True(created.Success);
+        vault.Lock();
+
+        for (var i = 0; i < 6; i++)
+        {
+            _ = vault.Unlock($"WrongAttempt{i}!!Aa");
+        }
+
+        // While locked out, recovery key must also be rejected.
+        var recoveryWhileLocked = vault.UnlockWithRecoveryKey(created.RecoveryKey!);
+        Assert.False(recoveryWhileLocked.Success);
+        Assert.Contains("너무 많습니다", recoveryWhileLocked.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void PasswordPolicy_RejectsWeakNewVaultPassword()
     {
         var result = SecureVaultPasswordPolicy.ValidateForNewVault("short1!");
@@ -318,10 +352,10 @@ public sealed class SecurityAttackSimulationTests : IDisposable
         Assert.NotNull(entry);
         Assert.False(string.IsNullOrWhiteSpace(entry!.ShardName));
 
-        var primary = Path.Combine(SecureVaultPaths.DataDirectory, entry.ShardName);
+        var primary = ResolveShardPrimary(entry.ShardName);
         var redundant = Path.Combine(SecureVaultPaths.RedundantDataDirectory, entry.ShardName);
-        Assert.True(File.Exists(primary));
-        Assert.True(File.Exists(redundant));
+        Assert.True(File.Exists(primary), primary);
+        Assert.True(File.Exists(redundant), redundant);
 
         var bytes = await File.ReadAllBytesAsync(primary);
         bytes[bytes.Length / 3] ^= 0xAA;
@@ -351,7 +385,7 @@ public sealed class SecurityAttackSimulationTests : IDisposable
         var entry = vault.Entries.FirstOrDefault();
         Assert.NotNull(entry);
 
-        var primary = Path.Combine(SecureVaultPaths.DataDirectory, entry!.ShardName);
+        var primary = ResolveShardPrimary(entry!.ShardName);
         var bytes = await File.ReadAllBytesAsync(primary);
         bytes[^2] ^= 0x55;
         await File.WriteAllBytesAsync(primary, bytes);
@@ -418,7 +452,7 @@ public sealed class SecurityAttackSimulationTests : IDisposable
 
         foreach (var shardPath in new[]
                  {
-                     Path.Combine(SecureVaultPaths.DataDirectory, entry!.ShardName),
+                     ResolveShardPrimary(entry!.ShardName),
                      Path.Combine(SecureVaultPaths.RedundantDataDirectory, entry.ShardName)
                  })
         {

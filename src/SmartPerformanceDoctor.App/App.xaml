@@ -2,14 +2,15 @@
     x:Class="SmartPerformanceDoctor.App.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     RequestedTheme="Light">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <muxc:XamlControlsResources />
                 <ResourceDictionary Source="Resources/MacDesignTokens.xaml"/>
                 <ResourceDictionary Source="Resources/MacDesignFallback.xaml"/>
                 <ResourceDictionary Source="Resources/LogLayoutGuard.xaml"/>
-                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <ResourceDictionary Source="Styles/Theme.xaml"/>
                 <ResourceDictionary Source="Styles/Animations.xaml"/>
             </ResourceDictionary.MergedDictionaries>

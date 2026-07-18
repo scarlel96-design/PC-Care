@@ -30,6 +30,17 @@ public sealed class InstallLifecycleLayoutTests
     }
 
     [Fact]
+    public void Full_layout_includes_all_optional_feature_paths()
+    {
+        var manifest = FeatureCatalog.CreateManifest(InstallMode.Full, Version, []);
+        Assert.Equal("full", manifest.InstallMode);
+        Assert.True(manifest.Features[InstallFeatureIds.PrivacyCleaner]);
+        Assert.True(manifest.Features[InstallFeatureIds.PortableTools]);
+        Assert.True(manifest.Features[InstallFeatureIds.InternetAcceleration]);
+        Assert.True(FeatureInstallMapper.ShouldInstallRelativePath(@"content\data\commercial\rules.pack.json", manifest));
+    }
+
+    [Fact]
     public void Layout_copy_roundtrip_preserves_hashes()
     {
         var layout = ResolveLayoutRoot();

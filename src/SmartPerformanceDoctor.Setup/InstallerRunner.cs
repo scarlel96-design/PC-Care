@@ -17,34 +17,48 @@ internal sealed class InstallerRunner
         InstalledFeaturesManifest manifest,
         IProgress<(int percent, string detail)> progress)
     {
-        Directory.CreateDirectory(targetDir);
-        var files = Directory.EnumerateFiles(sourceLayout, "*", SearchOption.AllDirectories).ToArray();
-        var total = Math.Max(files.Length, 1);
+        var reporter = new InstallProgressReporter(progress);
+        reporter.Report(0, "설치 준비 중...", force: true);
+        await Task.Yield();
+
+        var filesToCopy = Directory.EnumerateFiles(sourceLayout, "*", SearchOption.AllDirectories)
+            .Where(file => !LayoutFileFilter.ShouldSkip(file, sourceLayout))
+            .Select(file => (Source: file, Relative: Path.GetRelativePath(sourceLayout, file)))
+            .Where(item => FeatureInstallMapper.ShouldInstallRelativePath(item.Relative, manifest))
+            .ToList();
+
+        var skipped = Directory.EnumerateFiles(sourceLayout, "*", SearchOption.AllDirectories)
+            .Where(file => !LayoutFileFilter.ShouldSkip(file, sourceLayout))
+            .Select(file => Path.GetRelativePath(sourceLayout, file))
+            .Where(relative => !FeatureInstallMapper.ShouldInstallRelativePath(relative, manifest))
+            .ToList();
+
+        var copyTotal = Math.Max(filesToCopy.Count, 1);
         var copied = 0;
 
-        var skipped = new List<string>();
-        foreach (var file in files.Where(f => !ShouldSkipLayoutFile(f, sourceLayout)))
+        await Task.Run(() =>
         {
-            var relative = Path.GetRelativePath(sourceLayout, file);
-            if (!FeatureInstallMapper.ShouldInstallRelativePath(relative, manifest))
+            InstallFileOperations.PrepareTargetDirectory(targetDir);
+            InstallShellAssets.EnsureFromLayout(sourceLayout, targetDir);
+            foreach (var (source, relative) in filesToCopy)
             {
-                skipped.Add(relative);
-                continue;
+                var dest = Path.Combine(targetDir, relative);
+                InstallFileOperations.CopyFile(source, dest);
+                copied++;
+                var percent = (int)(copied * 85.0 / copyTotal);
+                reporter.Report(percent, $"복사 중 ({copied}/{copyTotal}): {relative}");
             }
 
-            var dest = Path.Combine(targetDir, relative);
-            Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
-            File.Copy(file, dest, true);
-            copied++;
-            var percent = (int)(copied * 100.0 / total);
-            progress.Report((percent, $"복사 중: {relative}"));
-            await Task.Yield();
-        }
+            InstallShellAssets.EnsureFromLayout(sourceLayout, targetDir);
+            InstallShellAssets.EnsurePresentOrThrow(targetDir);
+            InstallRuntimeGuard.EnsureSelfContainedFromLayout(sourceLayout, targetDir);
+        }).ConfigureAwait(true);
 
+        reporter.Report(86, "설치 설정 저장 중...", force: true);
         var programData = InstallerPaths.ProgramDataRoot;
         Directory.CreateDirectory(programData);
         var manifestPath = Path.Combine(programData, "installed_features.json");
-        File.WriteAllText(manifestPath, JsonSerializer.Serialize(manifest, JsonOptions));
+        await File.WriteAllTextAsync(manifestPath, JsonSerializer.Serialize(manifest, JsonOptions));
 
         var logDir = Path.Combine(programData, "InstallerLogs");
         Directory.CreateDirectory(logDir);
@@ -58,10 +72,20 @@ internal sealed class InstallerRunner
             SkippedOptionalFiles = skipped.Count,
             Success = true
         };
-        File.WriteAllText(Path.Combine(programData, "install_features.json"), JsonSerializer.Serialize(manifest.Features, JsonOptions));
+        await File.WriteAllTextAsync(
+            Path.Combine(programData, "install_features.json"),
+            JsonSerializer.Serialize(manifest.Features, JsonOptions));
 
-        MsiHelper.TryInstallMsi(InstallerPaths.ResolveMsiPath());
-        var aegis = TryFinalizeAegis(targetDir, manifest.Version);
+        reporter.Report(88, "제거 프로그램 등록 중...", force: true);
+        await Task.Run(() => InstallerStaging.StageUninstallerArtifacts(targetDir)).ConfigureAwait(true);
+
+        reporter.Report(90, "바로가기 생성 중...", force: true);
+        await Task.Run(() => InstallShortcutService.CreateShortcuts(targetDir, InstallerPaths.ProductName))
+            .ConfigureAwait(true);
+
+        reporter.Report(93, "복구 미러 준비 중...", force: true);
+        await Task.Run(() => InstallRuntimeGuard.EnsurePresentOrThrow(targetDir)).ConfigureAwait(true);
+        var aegis = await Task.Run(() => TryFinalizeAegis(targetDir, manifest.Version)).ConfigureAwait(true);
         report = report with
         {
             AegisProtectionLevel = aegis.ProtectionLevel,
@@ -70,21 +94,16 @@ internal sealed class InstallerRunner
         };
 
         var reportPath = Path.Combine(programData, "install_report.json");
-        File.WriteAllText(reportPath, JsonSerializer.Serialize(report, JsonOptions));
+        await File.WriteAllTextAsync(reportPath, JsonSerializer.Serialize(report, JsonOptions));
         var stamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
         var logText = report.ToString();
-        File.WriteAllText(Path.Combine(logDir, $"install_{stamp}.txt"), logText);
-        File.WriteAllText(Path.Combine(logDir, "install_log.txt"), logText);
-        File.WriteAllText(Path.Combine(programData, "install_report.html"), report.ToHtml(manifest, aegis));
-        progress.Report((100, "설치 완료"));
-        return report;
-    }
+        await File.WriteAllTextAsync(Path.Combine(logDir, $"install_{stamp}.txt"), logText);
+        await File.WriteAllTextAsync(Path.Combine(logDir, "install_log.txt"), logText);
+        await File.WriteAllTextAsync(Path.Combine(programData, "install_report.html"), report.ToHtml(manifest, aegis));
 
-    private static bool ShouldSkipLayoutFile(string file, string layoutRoot)
-    {
-        var name = Path.GetFileName(file);
-        return name.Equals("SmartPerformanceDoctor.Setup.exe", StringComparison.OrdinalIgnoreCase)
-            || name.Equals("INSTALLER_README.txt", StringComparison.OrdinalIgnoreCase);
+        reporter.Report(100, "설치 완료", force: true);
+        await Task.Delay(350).ConfigureAwait(true);
+        return report;
     }
 
     private static AegisInstallStatus TryFinalizeAegis(string targetDir, string version)

@@ -1,0 +1,14 @@
+{
+  "version": "50.4.0",
+  "fromVersion": "50.3.0",
+  "toVersion": "50.4.0",
+  "releaseNotes": "2차 개편: Astra 설계 반영 보안 금고 v5",
+  "changes": [
+    "보안 금고 v5 (spd-vault-v5-lab): vault.locator · 이중 헤더 generation · journal",
+    "복구 코드로 VMK 잠금 해제(일회 슬롯) · 비밀번호 변경 시 슬롯 재발급",
+    "읽기 전용 unlock · import 트랜잭션 Prepared→Committed",
+    "대용량 파일 스트리밍 import · Sentinel 결정적 정책 게이트",
+    "Astra 설계 2차 개편 문서 PHASE2_ASTRA_DESIGN_OVERHAUL.md",
+    "AV3 production writer는 여전히 비활성 (별도 게이트)"
+  ]
+}

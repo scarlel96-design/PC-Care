@@ -19,10 +19,28 @@
             </Border>
             <Border Style="{StaticResource MacWindowPanelStyle}">
                 <StackPanel Spacing="10">
-                    <TextBlock Text="프로그램 보호" Style="{StaticResource MacSectionHeaderStyle}"/>
-                    <TextBlock Text="복구 미러 — 프로그램 손상 시 자동 복구 (사용자 데이터·보안 금고는 복제하지 않음)"
+                    <TextBlock Text="시작 및 백그라운드" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <ToggleSwitch x:Name="StartupToggle" Header="Windows 시작 시 자동 실행"
+                                  OffContent="끔" OnContent="켬"
+                                  Toggled="StartupToggleChanged"/>
+                    <TextBlock x:Name="StartupStatusText" Style="{StaticResource MacListItemSubtitleStyle}" TextWrapping="Wrap"/>
+                    <TextBlock Text="로그인 후 백그라운드로 실행됩니다. 알림 영역(트레이)의 PC 케어 프로 아이콘에서 다시 열 수 있습니다."
                                Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
-                    <Button Content="복구 미러" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenProgramProtection"/>
+                    <ToggleSwitch x:Name="BackgroundToggle" Header="닫을 때 백그라운드 유지"
+                                  OffContent="끔" OnContent="켬"
+                                  Toggled="BackgroundToggleChanged"/>
+                    <TextBlock Text="창을 닫아도 점검·보호 루프는 계속 동작합니다. 완전 종료는 트레이 아이콘 메뉴의 [종료]를 사용하세요."
+                               Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="업데이트" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <ToggleSwitch x:Name="AutoUpdateToggle" Header="자동 업데이트 확인"
+                                  OffContent="끔" OnContent="켬"
+                                  Toggled="AutoUpdateToggleChanged"/>
+                    <TextBlock Text="앱 시작 시 GitHub 릴리즈를 확인하고 새 버전이 있으면 알림을 표시합니다. (6시간 간격)"
+                               Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
                 </StackPanel>
             </Border>
             <Border Style="{StaticResource MacWindowPanelStyle}">

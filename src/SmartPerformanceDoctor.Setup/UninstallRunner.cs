@@ -22,23 +22,30 @@ internal sealed class UninstallRunner
         IProgress<(int percent, string detail)> progress)
     {
         await Task.Yield();
-        progress.Report((10, "프로그램 파일 제거 중..."));
+        progress.Report((5, "바로가기 제거 중..."));
+        InstallShortcutService.RemoveAllShortcuts(InstallerPaths.ProductName);
+        WindowsStartupRegistration.Remove();
+        await Task.Delay(120).ConfigureAwait(false);
 
+        progress.Report((15, "프로그램 파일 제거 중..."));
         if (Directory.Exists(targetDir))
         {
             TryDeleteDirectory(targetDir);
         }
 
+        await Task.Delay(150).ConfigureAwait(false);
+
         var programData = InstallerPaths.ProgramDataRoot;
         if (scope >= UninstallScope.ProgramAndSettings && Directory.Exists(programData))
         {
-            progress.Report((40, "공용 설정 제거 중..."));
+            progress.Report((35, "공용 설정 제거 중..."));
             RemoveProgramData(programData, scope, deleteVaultData);
+            await Task.Delay(120).ConfigureAwait(false);
         }
 
         if (scope >= UninstallScope.ProgramSettingsAndReports)
         {
-            progress.Report((70, "보고서 폴더 정리 중..."));
+            progress.Report((55, "보고서 폴더 정리 중..."));
             var desktopReports = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                 "AstraCare");
@@ -52,16 +59,27 @@ internal sealed class UninstallRunner
             {
                 TryDeleteDirectory(desktopReports);
             }
+
+            await Task.Delay(120).ConfigureAwait(false);
         }
 
         if (!deleteVaultData)
         {
-            progress.Report((85, "Secure Vault 사용자 데이터는 보존되었습니다."));
+            progress.Report((72, "Secure Vault 사용자 데이터는 보존되었습니다."));
+            await Task.Delay(80).ConfigureAwait(false);
+        }
+        else
+        {
+            progress.Report((72, "Secure Vault 사용자 데이터 제거 완료"));
+            await Task.Delay(80).ConfigureAwait(false);
         }
 
-        progress.Report((90, "복구 미러 제거 중..."));
+        progress.Report((82, "복구 서비스·미러 제거 중..."));
         AegisPostInstall.FinalizeUninstall();
+        await Task.Delay(100).ConfigureAwait(false);
+        progress.Report((92, "MSI 등록 정보 정리 중..."));
         MsiHelper.TryUninstallMsi();
+        await Task.Delay(100).ConfigureAwait(false);
         progress.Report((100, "제거 완료"));
 
         var report = new UninstallReport

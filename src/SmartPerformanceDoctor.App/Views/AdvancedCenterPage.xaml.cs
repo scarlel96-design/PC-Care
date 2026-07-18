@@ -21,7 +21,7 @@ public sealed partial class AdvancedCenterPage : Page
         RootPanel.Children.Add(new TextBlock { Text = "고급 도구", Style = Application.Current.Resources["MacPageTitleStyle"] as Style });
         RootPanel.Children.Add(new TextBlock
         {
-            Text = "복구 방법, 규칙 데이터, 프로그램 보호 등 전문 도구는 여기서만 열 수 있습니다.",
+            Text = "복구 방법, 규칙 데이터 등 전문 도구는 여기서만 열 수 있습니다.",
             Style = Application.Current.Resources["MacInlineStatusTextStyle"] as Style
         });
 
@@ -39,7 +39,6 @@ public sealed partial class AdvancedCenterPage : Page
             ("복구 방법", "ProtocolCenterPage"),
             ("자세한 점검", "DeepScanSetupPage"),
             ("규칙 데이터", "KnowledgePackManagerPage"),
-            ("프로그램 보호", "ProgramProtectionCenterPage"),
             ("프로그램 상태", "AppDiagnosticsPage"),
         ]);
 

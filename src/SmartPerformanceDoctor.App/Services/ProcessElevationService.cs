@@ -26,6 +26,14 @@ public static class ProcessElevationService
 
     public static bool TryRelaunchAsAdministrator()
     {
+        if (string.Equals(
+                Environment.GetEnvironmentVariable("PCCARE_ALLOW_NON_ADMIN_SESSION"),
+                "1",
+                StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
         if (IsAdministrator())
         {
             return false;

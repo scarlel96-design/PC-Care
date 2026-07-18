@@ -103,7 +103,14 @@ public sealed class UpdatePackageInspector
                 var fingerprint = ComputeManifestFingerprint(manifest);
                 if (!string.Equals(fingerprint, manifest.PackageSha256, StringComparison.OrdinalIgnoreCase))
                 {
-                    return Invalid(packagePath, "CHECKSUM-FAIL", "패키지 체크섬이 일치하지 않습니다.");
+                    reporter.Report(70, 5, StepCount, "검사", "지문 재검증", "목록 지문 불일치 · ZIP 내용 해시로 재확인 중…");
+                    if (!TryVerifyArchiveFileHashes(archive, manifest, cancellationToken, out var hashError))
+                    {
+                        return Invalid(
+                            packagePath,
+                            "CHECKSUM-FAIL",
+                            $"패키지 체크섬이 일치하지 않습니다. {hashError}");
+                    }
                 }
 
                 packageIntegrityVerified = true;
@@ -147,9 +154,82 @@ public sealed class UpdatePackageInspector
 
     public static string ComputeManifestFingerprint(UpdateManifestDocument manifest)
     {
+        // Deterministic: lowercased path + Ordinal sort (must match create-update-package.ps1).
         var joined = string.Join('|', manifest.Files
-            .Select(f => $"{f.Path}:{f.Sha256}".ToLowerInvariant())
-            .OrderBy(x => x, StringComparer.Ordinal));
+            .Select(f => $"{f.Path.ToLowerInvariant()}:{f.Sha256.ToLowerInvariant()}")
+            .OrderBy(s => s, StringComparer.Ordinal));
         return Convert.ToHexString(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(joined))).ToLowerInvariant();
+    }
+
+    private static bool TryVerifyArchiveFileHashes(
+        ZipArchive archive,
+        UpdateManifestDocument manifest,
+        CancellationToken cancellationToken,
+        out string error)
+    {
+        error = "";
+        var checkedCount = 0;
+
+        foreach (var entry in manifest.Files)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (string.IsNullOrWhiteSpace(entry.Path) || string.IsNullOrWhiteSpace(entry.Sha256))
+            {
+                error = "매니페스트 파일 항목이 비어 있습니다.";
+                return false;
+            }
+
+            var zipEntry = FindZipEntry(archive, entry.Path);
+            if (zipEntry is null)
+            {
+                error = $"ZIP에 파일이 없습니다: {entry.Path}";
+                return false;
+            }
+
+            using var stream = zipEntry.Open();
+            var actual = Convert.ToHexString(SHA256.HashData(stream)).ToLowerInvariant();
+            if (!string.Equals(actual, entry.Sha256, StringComparison.OrdinalIgnoreCase))
+            {
+                error = $"파일 해시 불일치: {entry.Path}";
+                return false;
+            }
+
+            checkedCount++;
+        }
+
+        if (checkedCount == 0)
+        {
+            error = "검증할 파일이 없습니다.";
+            return false;
+        }
+
+        return true;
+    }
+
+    private static string NormalizeZipEntryPath(string path) =>
+        path.Replace('\\', '/').TrimStart('/');
+
+    /// <summary>
+    /// PowerShell Compress-Archive often stores entries with backslashes while the
+    /// manifest uses forward slashes (payload/foo.dll). Match both styles.
+    /// </summary>
+    private static ZipArchiveEntry? FindZipEntry(ZipArchive archive, string path)
+    {
+        var forward = NormalizeZipEntryPath(path);
+        var backslash = forward.Replace('/', '\\');
+
+        var entry = archive.GetEntry(forward)
+                    ?? archive.GetEntry(backslash)
+                    ?? archive.GetEntry(path);
+        if (entry is not null)
+        {
+            return entry;
+        }
+
+        return archive.Entries.FirstOrDefault(e =>
+        {
+            var full = NormalizeZipEntryPath(e.FullName);
+            return string.Equals(full, forward, StringComparison.OrdinalIgnoreCase);
+        });
     }
 }

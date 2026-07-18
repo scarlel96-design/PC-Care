@@ -24,12 +24,7 @@ public sealed partial class MacDashboardPage : Page
         var frame = App.Shell?.NavigationFrame;
         if (frame is not null)
         {
-            AppNavigationService.NavigateUnifiedCare(
-                frame,
-                scope: "full",
-                autoStart: true,
-                includeRepair: true,
-                riskAccepted: true);
+            AppNavigationService.NavigateUnifiedCare(frame, "system", autoStart: true);
         }
     }
 
@@ -54,18 +49,6 @@ public sealed partial class MacDashboardPage : Page
         var frame = App.Shell?.NavigationFrame;
         if (frame is null)
         {
-            return;
-        }
-
-        if (action.TargetPage.StartsWith("UnifiedCarePage:", StringComparison.OrdinalIgnoreCase))
-        {
-            var scope = action.TargetPage.Split(':', 2, StringSplitOptions.TrimEntries)[1];
-            AppNavigationService.NavigateUnifiedCare(
-                frame,
-                scope,
-                action.AutoStart,
-                action.IncludeRepair,
-                action.RiskAccepted);
             return;
         }
 

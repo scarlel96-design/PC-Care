@@ -10,6 +10,14 @@
   "pending_reboot": {
     "action": "재부팅 후 재진단"
   },
+  "recent_bsod": {
+    "lookback_days": 30,
+    "action": "드라이버·Windows 업데이트 확인, SFC/DISM·메모리 진단 권장"
+  },
+  "whea_hardware_error": {
+    "lookback_days": 30,
+    "action": "RAM·CPU·GPU·SSD 하드웨어 점검, 과열·전원 확인"
+  },
   "service_stopped": {
     "action": "자동 시작 서비스 상태 점검 및 안전 재시작"
   }

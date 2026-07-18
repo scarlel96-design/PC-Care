@@ -2,49 +2,56 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- Shared palette from SmartPerformanceDoctor.App MacDesignTokens (WPF-compatible subset) -->
-    <Color x:Key="SpdMacWindowColor">#F4F5F7</Color>
-    <Color x:Key="SpdMacSidebarColor">#DDE2EA</Color>
-    <Color x:Key="SpdMacPanelColor">#FDFDFE</Color>
-    <Color x:Key="SpdMacTextColor">#111827</Color>
-    <Color x:Key="SpdMacSecondaryTextColor">#667085</Color>
-    <Color x:Key="SpdMacSeparatorColor">#301F2937</Color>
-
-    <SolidColorBrush x:Key="SpdWindowBrush" Color="{StaticResource SpdMacWindowColor}"/>
-    <SolidColorBrush x:Key="SpdSidebarBrush" Color="{StaticResource SpdMacSidebarColor}"/>
-    <SolidColorBrush x:Key="SpdPanelBrush" Color="{StaticResource SpdMacPanelColor}"/>
-    <SolidColorBrush x:Key="SpdTextBrush" Color="{StaticResource SpdMacTextColor}"/>
-    <SolidColorBrush x:Key="SpdMutedBrush" Color="{StaticResource SpdMacSecondaryTextColor}"/>
-    <SolidColorBrush x:Key="SpdSeparatorBrush" Color="{StaticResource SpdMacSeparatorColor}"/>
+    <SolidColorBrush x:Key="SpdWindowBrush" Color="#F4F5F7"/>
+    <SolidColorBrush x:Key="SpdPanelBrush" Color="#FDFDFE"/>
+    <SolidColorBrush x:Key="SpdTextBrush" Color="#111827"/>
+    <SolidColorBrush x:Key="SpdMutedBrush" Color="#667085"/>
     <SolidColorBrush x:Key="SpdAccentBrush" Color="#0A84FF"/>
-    <SolidColorBrush x:Key="SpdDangerBrush" Color="#FF453A"/>
-
-    <Style x:Key="SpdCardBorderStyle" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource SpdPanelBrush}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource SpdSeparatorBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="18"/>
-        <Setter Property="Padding" Value="18"/>
-    </Style>
+    <SolidColorBrush x:Key="SpdSeparatorBrush" Color="#D0D5DD"/>
 
     <Style x:Key="SpdPrimaryButtonStyle" TargetType="Button">
-        <Setter Property="MinHeight" Value="34"/>
-        <Setter Property="Padding" Value="16,8"/>
-        <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="Background" Value="{StaticResource SpdAccentBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource SpdAccentBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="14,8"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="8"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="SpdSecondaryButtonStyle" TargetType="Button">
-        <Setter Property="MinHeight" Value="34"/>
-        <Setter Property="Padding" Value="16,8"/>
-        <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{StaticResource SpdTextBrush}"/>
         <Setter Property="Background" Value="#EEF1F6"/>
         <Setter Property="BorderBrush" Value="{StaticResource SpdSeparatorBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="14,8"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="8"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
+
 </ResourceDictionary>

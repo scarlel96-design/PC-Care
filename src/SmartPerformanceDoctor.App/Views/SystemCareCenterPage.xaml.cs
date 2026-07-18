@@ -12,6 +12,13 @@ public sealed partial class SystemCareCenterPage : Page
     {
         InitializeComponent();
         DataContext = _viewModel;
+        _viewModel.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName is nameof(SystemCareViewModel.HasResults))
+            {
+                ResultsPanel.Visibility = _viewModel.HasResults ? Visibility.Visible : Visibility.Collapsed;
+            }
+        };
         SmartScanRadio.IsChecked = true;
         UpdateChecklistVisibility();
     }
@@ -42,11 +49,8 @@ public sealed partial class SystemCareCenterPage : Page
     private async void StartScan(object sender, RoutedEventArgs e) =>
         await _viewModel.StartScanAsync();
 
-    private async void PreviewChanges(object sender, RoutedEventArgs e) =>
-        await _viewModel.PreviewChangesAsync();
-
     private async void ApplyChanges(object sender, RoutedEventArgs e) =>
-        await _viewModel.ApplySafeAsync(IncludeReviewBox.IsChecked == true);
+        await _viewModel.ApplySafeAsync(includeReview: false);
 
     private async void RollbackChanges(object sender, RoutedEventArgs e) =>
         await _viewModel.RollbackAsync();

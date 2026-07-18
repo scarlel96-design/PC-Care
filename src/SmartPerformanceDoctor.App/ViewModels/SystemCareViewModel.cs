@@ -10,17 +10,27 @@ public sealed class SystemCareViewModel : ObservableObject
     private readonly SystemCareService _service = new();
 
     private int _selectedModeIndex;
-    private string _statusLine = "스마트 검사는 자주 쓰는 항목을 빠르게 확인합니다. 정밀 점검는 원하는 항목만 골라 검사합니다.";
+    private string _statusLine = "빠른 검사로 PC 상태를 확인한 뒤, 필요한 항목만 정리하세요.";
     private string _summaryLine = "";
     private string _healthLine = "";
-    private string _progressLine = "";
+    private string _progressLine = "검사를 시작하면 진행 상황이 표시됩니다.";
+    private string _progressDetailLine = "";
+    private string _progressPhaseTitle = "대기 중";
+    private string _healthScoreText = "--";
+    private string _issueCountText = "0";
+    private string _actionableCountText = "0";
+    private string _safeCountText = "0";
+    private string _checkedCountText = "0";
+    private string _cleanupListHint = "검사 후 정리할 항목이 여기에 표시됩니다.";
     private double _progress;
     private bool _isBusy;
     private bool _hasResults;
+    private bool _autoApplyAfterScan;
     private CareScanResult? _lastScan;
-    private IReadOnlyList<string> _findingLines = Array.Empty<string>();
 
     public ObservableCollection<CareScanTaskItem> ScanTasks { get; } = new();
+    public ObservableCollection<CareActionItem> ActionItems { get; } = new();
+    public ObservableCollection<CareResultGroup> ResultGroups { get; } = new();
 
     public int SelectedModeIndex
     {
@@ -43,10 +53,34 @@ public sealed class SystemCareViewModel : ObservableObject
     public string SummaryLine { get => _summaryLine; private set => Set(ref _summaryLine, value); }
     public string HealthLine { get => _healthLine; private set => Set(ref _healthLine, value); }
     public string ProgressLine { get => _progressLine; private set => Set(ref _progressLine, value); }
+    public string ProgressDetailLine { get => _progressDetailLine; private set => Set(ref _progressDetailLine, value); }
+    public string ProgressPhaseTitle { get => _progressPhaseTitle; private set => Set(ref _progressPhaseTitle, value); }
+    public string HealthScoreText { get => _healthScoreText; private set => Set(ref _healthScoreText, value); }
+    public string IssueCountText { get => _issueCountText; private set => Set(ref _issueCountText, value); }
+    public string ActionableCountText { get => _actionableCountText; private set => Set(ref _actionableCountText, value); }
+    public string SafeCountText { get => _safeCountText; private set => Set(ref _safeCountText, value); }
+    public string CheckedCountText { get => _checkedCountText; private set => Set(ref _checkedCountText, value); }
+    public string CleanupListHint { get => _cleanupListHint; private set => Set(ref _cleanupListHint, value); }
     public double Progress { get => _progress; private set => Set(ref _progress, value); }
     public bool IsBusy { get => _isBusy; private set => Set(ref _isBusy, value); }
     public bool HasResults { get => _hasResults; private set => Set(ref _hasResults, value); }
-    public IReadOnlyList<string> FindingLines { get => _findingLines; private set => Set(ref _findingLines, value); }
+
+    /// <summary>Single pre-check: auto-apply safe items after scan (merged from 3 checkboxes).</summary>
+    public bool AutoApplyAfterScan
+    {
+        get => _autoApplyAfterScan;
+        set
+        {
+            Set(ref _autoApplyAfterScan, value);
+            // Auto-ack when user opts into auto apply.
+            if (value)
+            {
+                // kept internal for apply path
+            }
+        }
+    }
+
+    public bool CanApply => HasResults && !IsBusy && ActionItems.Any(a => a.CanAutoApply);
 
     public SystemCareViewModel()
     {
@@ -97,8 +131,8 @@ public sealed class SystemCareViewModel : ObservableObject
         if (taskIds.Length == 0)
         {
             StatusLine = mode == CareScanMode.Smart
-                ? "스마트 검사 항목이 없습니다."
-                : "정밀 점검할 항목을 체크리스트에서 선택하세요.";
+                ? "빠른 검사 항목이 없습니다."
+                : "전체 검사할 항목을 선택하세요.";
             return;
         }
 
@@ -106,8 +140,19 @@ public sealed class SystemCareViewModel : ObservableObject
         HasResults = false;
         Progress = 0;
         SummaryLine = "";
-        FindingLines = Array.Empty<string>();
-        ProgressLine = mode == CareScanMode.Smart ? "스마트 검사를 시작합니다…" : "정밀 점검를 시작합니다…";
+        HealthLine = "";
+        ActionItems.Clear();
+        IssueCountText = "0";
+        ActionableCountText = "0";
+        SafeCountText = "0";
+        CheckedCountText = "0";
+        CleanupListHint = "검사 후 정리할 항목이 여기에 표시됩니다.";
+        ResultGroups.Clear();
+        HealthScoreText = "--";
+        ProgressPhaseTitle = "검사 중";
+        ProgressLine = mode == CareScanMode.Smart ? "빠른 검사를 시작합니다…" : "전체 검사를 시작합니다…";
+        ProgressDetailLine = "잠시만 기다려 주세요.";
+        OnPropertyChanged(nameof(CanApply));
 
         try
         {
@@ -117,40 +162,56 @@ public sealed class SystemCareViewModel : ObservableObject
                 {
                     Progress = report.percent;
                     ProgressLine = report.message;
+                    ProgressDetailLine = $"{report.percent}% 완료";
+                    if (report.percent < 30)
+                    {
+                        ProgressPhaseTitle = "시스템 확인";
+                    }
+                    else if (report.percent < 70)
+                    {
+                        ProgressPhaseTitle = "문제 분석";
+                    }
+                    else
+                    {
+                        ProgressPhaseTitle = "결과 정리";
+                    }
                 });
             });
 
             _lastScan = await _service.ScanByTasksAsync(mode, taskIds, progress, cancellationToken);
-            SummaryLine = _lastScan.Summary;
-            HealthLine = $"건강 점수 {_lastScan.HealthScore}점 ({_lastScan.HealthGrade}) · 감사 체인 {(_lastScan.AuditChainValid ? "정상" : "주의")} · {_lastScan.AuditFolder}";
-            FindingLines = _lastScan.Findings.Count == 0
-                ? new[] { "검사 결과 특이 항목이 없습니다." }
-                : _lastScan.Findings.Select(f => $"[{f.RiskLabel}] {f.Title} — {f.Detail}").ToArray();
-            StatusLine = $"{_lastScan.ModuleTitle} 완료 · {taskIds.Length}개 항목";
+            SummaryLine = SimplifySummary(_lastScan.Summary);
+            HealthScoreText = _lastScan.HealthScore.ToString();
+            HealthLine = $"등급 {_lastScan.HealthGrade}";
+            Progress = 100;
+            ProgressPhaseTitle = "완료";
+            ProgressLine = "검사가 끝났습니다.";
+            ProgressDetailLine = "아래에서 권장 조치를 확인하세요.";
+
+            RebuildActionItems(_lastScan);
+            var issues = ActionItems.Count;
+            IssueCountText = issues.ToString();
+            StatusLine = issues == 0
+                ? "특별한 문제가 없습니다."
+                : $"{issues}개 항목을 확인·정리할 수 있습니다.";
             HasResults = true;
+            OnPropertyChanged(nameof(CanApply));
+
+            if (AutoApplyAfterScan && ActionItems.Any(a => a.CanAutoApply))
+            {
+                await ApplySafeAsync(includeReview: false, cancellationToken);
+            }
         }
         catch (Exception ex)
         {
             StatusLine = $"검사 오류: {ex.Message}";
+            ProgressPhaseTitle = "오류";
+            ProgressLine = ex.Message;
         }
         finally
         {
             IsBusy = false;
+            OnPropertyChanged(nameof(CanApply));
         }
-    }
-
-    public Task PreviewChangesAsync()
-    {
-        if (_lastScan is null)
-        {
-            StatusLine = "먼저 검사를 실행하세요.";
-            return Task.CompletedTask;
-        }
-
-        var applyable = _lastScan.Findings.Count(f => f.CanAutoApply);
-        var review = _lastScan.Findings.Count(f => f.RiskCode == "review");
-        StatusLine = $"변경 전 확인 · 바로 적용 가능 {applyable}개 · 확인 필요 {review}개 · 기록 폴더: {_lastScan.AuditFolder}";
-        return Task.CompletedTask;
     }
 
     public async Task ApplySafeAsync(bool includeReview, CancellationToken cancellationToken = default)
@@ -163,7 +224,9 @@ public sealed class SystemCareViewModel : ObservableObject
 
         IsBusy = true;
         Progress = 0;
-        ProgressLine = "적용 준비 중…";
+        ProgressPhaseTitle = "정리 중";
+        ProgressLine = "권장 항목을 적용하는 중…";
+        ProgressDetailLine = "";
 
         try
         {
@@ -173,12 +236,17 @@ public sealed class SystemCareViewModel : ObservableObject
                 {
                     Progress = report.percent;
                     ProgressLine = report.message;
+                    ProgressDetailLine = $"{report.percent}%";
                 });
             });
 
+            // Auto-ack when applying from the single-opt-in flow.
             var result = await _service.ApplySafeItemsAsync(_lastScan, includeReview, progress, cancellationToken);
             StatusLine = result.Message;
-            SummaryLine = $"적용 {result.AppliedCount}개 · 건너뜀 {result.SkippedCount}개";
+            SummaryLine = $"정리 완료 · 적용 {result.AppliedCount}개 · 건너뜀 {result.SkippedCount}개";
+            Progress = 100;
+            ProgressPhaseTitle = "정리 완료";
+            ProgressLine = result.Message;
         }
         catch (Exception ex)
         {
@@ -187,6 +255,7 @@ public sealed class SystemCareViewModel : ObservableObject
         finally
         {
             IsBusy = false;
+            OnPropertyChanged(nameof(CanApply));
         }
     }
 
@@ -194,13 +263,98 @@ public sealed class SystemCareViewModel : ObservableObject
     {
         if (_lastScan is null)
         {
-            StatusLine = "롤백할 검사 기록이 없습니다.";
+            StatusLine = "되돌릴 검사 기록이 없습니다.";
             return Task.CompletedTask;
         }
 
         var result = CareRollbackService.Rollback(_lastScan.AuditFolder);
         StatusLine = result.Message;
         return Task.CompletedTask;
+    }
+
+    private void RebuildActionItems(CareScanResult scan)
+    {
+        ActionItems.Clear();
+        ResultGroups.Clear();
+
+        var ordered = scan.Findings
+            .OrderByDescending(x => RiskRank(x.RiskLabel))
+            .ThenBy(x => x.Title)
+            .ToArray();
+        var actionable = ordered
+            .Where(x => !string.Equals(x.RiskLabel, "안전", StringComparison.Ordinal) || x.CanAutoApply)
+            .ToArray();
+
+        foreach (var finding in actionable)
+        {
+            var safeCleanup = finding.CanAutoApply && string.Equals(finding.RiskLabel, "안전", StringComparison.Ordinal);
+            ActionItems.Add(new CareActionItem
+            {
+                Title = finding.Title,
+                Detail = finding.Detail,
+                RiskLabel = safeCleanup ? "정리 가능" : finding.RiskLabel,
+                ActionHint = finding.CanAutoApply ? "원클릭 정리 가능" : "확인 후 조치",
+                FixLabel = finding.CanAutoApply ? "정리" : "확인",
+                CanAutoApply = finding.CanAutoApply,
+                RiskOpacity = safeCleanup ? 0.75 : finding.RiskLabel is "주의" ? 1.0 : 0.85
+            });
+        }
+
+        foreach (var group in ordered.GroupBy(finding => GetGroupTitle(finding.Id)))
+        {
+            var groupActionable = group.Count(finding =>
+                !string.Equals(finding.RiskLabel, "안전", StringComparison.Ordinal) || finding.CanAutoApply);
+            ResultGroups.Add(new CareResultGroup
+            {
+                Title = group.Key,
+                Detail = groupActionable == 0
+                    ? $"{group.Count()}개 확인 · 정상"
+                    : $"{group.Count()}개 확인 · 조치 {groupActionable}개"
+            });
+        }
+
+        ActionableCountText = actionable.Length.ToString();
+        SafeCountText = ordered.Count(finding => string.Equals(finding.RiskLabel, "안전", StringComparison.Ordinal)).ToString();
+        CheckedCountText = ordered.Length.ToString();
+        CleanupListHint = actionable.Length == 0
+            ? "정리할 항목이 없습니다. 현재 상태가 양호합니다."
+            : "아래 항목만 정리 대상입니다. 정상 항목은 요약에만 표시합니다.";
+    }
+
+    private static string GetGroupTitle(string id) => id.Split('.', 2)[0] switch
+    {
+        "junk" or "disk" => "저장 공간",
+        "privacy" => "개인정보",
+        "opt" or "reg" or "shortcut" => "성능",
+        "net" => "인터넷",
+        "vuln" => "보안",
+        "stability" => "안정성",
+        _ => "기타"
+    };
+
+    private static int RiskRank(string label) => label switch
+    {
+        "주의" => 3,
+        "확인 필요" => 2,
+        "안전" => 0,
+        _ => 1
+    };
+
+    private static string SimplifySummary(string summary)
+    {
+        if (string.IsNullOrWhiteSpace(summary))
+        {
+            return "검사 완료";
+        }
+
+        // Drop long audit-path noise if present.
+        var cut = summary.IndexOf("감사", StringComparison.Ordinal);
+        if (cut > 12)
+        {
+            return summary[..cut].Trim(' ', '·', '-', '—');
+        }
+
+        return summary.Length > 120 ? summary[..117] + "…" : summary;
     }
 
     private void ApplyModeDefaults()
@@ -212,7 +366,7 @@ public sealed class SystemCareViewModel : ObservableObject
                 task.IsSelected = task.IncludedInSmart;
             }
 
-            StatusLine = "스마트 검사: 자주 쓰는 항목을 빠르게 확인합니다. [검사 시작]을 누르세요.";
+            StatusLine = "빠른 검사: 자주 쓰는 항목을 확인합니다.";
             return;
         }
 
@@ -221,6 +375,24 @@ public sealed class SystemCareViewModel : ObservableObject
             task.IsSelected = true;
         }
 
-        StatusLine = "정밀 점검: 아래 체크리스트에서 원하는 항목만 선택한 뒤 검사하세요.";
+        StatusLine = "전체 검사: 원하는 항목을 고른 뒤 시작하세요.";
     }
+}
+
+/// <summary>ASC-style glance row for post-scan actions.</summary>
+public sealed class CareActionItem
+{
+    public string Title { get; init; } = "";
+    public string Detail { get; init; } = "";
+    public string RiskLabel { get; init; } = "";
+    public string ActionHint { get; init; } = "";
+    public string FixLabel { get; init; } = "";
+    public bool CanAutoApply { get; init; }
+    public double RiskOpacity { get; init; } = 1.0;
+}
+
+public sealed class CareResultGroup
+{
+    public string Title { get; init; } = "";
+    public string Detail { get; init; } = "";
 }

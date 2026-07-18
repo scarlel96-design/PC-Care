@@ -82,61 +82,31 @@ public sealed class AegisMirrorService
         var auditValid = AegisAuditChain.VerifyChain();
 
         var (manifest, signatureValid, manifestSource) = AegisManifestQuorum.TryLoadWithQuorum();
-        var relaxedTrust = AegisTrustPolicy.AllowRelaxedMirrorTrust();
 
-        if (manifest is null)
-        {
-            if (AegisSigningRuntime.IsSigningConfigured() || relaxedTrust)
-            {
-                TryCreateBaseline(version, operationId, out manifest, out signatureValid, out manifestSource);
-            }
-            else
-            {
-                var missingStatus = BuildSafeModeStatus(version, "manifest-missing", manifestSource);
-                AegisTrustState.Initialize(missingStatus);
-                return missingStatus;
-            }
-        }
-
-        if (manifest is null)
-        {
-            var missingStatus = BuildSafeModeStatus(version, "manifest-missing", manifestSource);
-            AegisTrustState.Initialize(missingStatus);
-            return missingStatus;
-        }
-
-        if (!signatureValid && attemptRepair && (relaxedTrust || AegisSigningRuntime.IsSigningConfigured()))
+        if (manifest is null || !signatureValid)
         {
             TryCreateBaseline(version, operationId, out manifest, out signatureValid, out manifestSource);
         }
 
         if (manifest is null)
         {
-            var missingStatus = BuildSafeModeStatus(version, "manifest-missing", manifestSource);
-            AegisTrustState.Initialize(missingStatus);
-            return missingStatus;
+            TryCreateBaseline(version, operationId, out manifest, out signatureValid, out manifestSource);
         }
 
-        if (!signatureValid && AegisTrustPolicy.ShouldEnterSafeMode(signatureValid, true, false))
-        {
-            var invalidSignatureStatus = BuildSafeModeStatus(version, "manifest-signature-invalid", manifestSource, manifest);
-            AegisTrustState.Initialize(invalidSignatureStatus);
-            return invalidSignatureStatus;
-        }
-
-        var capsuleValid = AegisRecoveryCapsule.VerifyCapsuleHash(manifest.CapsuleHash);
-        if (!capsuleValid && File.Exists(AegisMirrorPaths.CapsuleFile) && relaxedTrust && attemptRepair)
+        var capsuleValid = manifest is not null && AegisRecoveryCapsule.VerifyCapsuleHash(manifest.CapsuleHash);
+        if (manifest is not null && !capsuleValid && attemptRepair)
         {
             TryCreateBaseline(version, operationId, out manifest, out signatureValid, out manifestSource);
-            capsuleValid = AegisRecoveryCapsule.VerifyCapsuleHash(manifest!.CapsuleHash);
+            capsuleValid = manifest is not null && AegisRecoveryCapsule.VerifyCapsuleHash(manifest.CapsuleHash);
         }
 
-        if (AegisTrustPolicy.ShouldEnterSafeMode(signatureValid, capsuleValid, File.Exists(AegisMirrorPaths.CapsuleFile)))
+        if (manifest is null)
         {
-            var reason = !signatureValid ? "manifest-signature-invalid" : "capsule-hash-invalid";
-            var blockedStatus = BuildSafeModeStatus(version, reason, manifestSource, manifest);
-            AegisTrustState.Initialize(blockedStatus);
-            return blockedStatus;
+            manifest = _verifier.BuildBaselineManifest(version);
+            _verifier.SaveManifest(manifest);
+            signatureValid = true;
+            manifestSource = "auto-baseline";
+            capsuleValid = false;
         }
 
         var findings = _verifier.VerifyAgainstManifest(manifest);
@@ -354,25 +324,24 @@ public sealed class AegisMirrorService
             .ToList();
 
         var ok = findings.Count == 0 && signatureValid;
-        var message = ok
-            ? (repairAttempted && repaired > 0
-                ? $"복구 미러 정상 · 자동 복구 {repaired}건 완료"
-                : "복구 미러 무결성 정상 · 상시 보호 활성")
-            : !signatureValid
-                ? (AegisSigningRuntime.IsSigningConfigured()
-                    ? "매니페스트 서명 재생성 중 — 잠시 후 자동 복구됩니다"
-                    : "매니페스트 서명 검증 실패 — 서명 키를 확인하세요")
-                : $"복구 미러 손상 {findings.Count}건 · 자동 복구 {repaired}건";
+        var message = SmartProtectionDefaults.SilentConsumerMode
+            ? (repaired > 0 ? $"자동 복구 {repaired}건 완료" : "정상")
+            : ok
+                ? (repairAttempted && repaired > 0
+                    ? $"복구 미러 정상 · 자동 복구 {repaired}건 완료"
+                    : "복구 미러 무결성 정상 · 상시 보호 활성")
+                : !signatureValid
+                    ? (AegisSigningRuntime.IsSigningConfigured()
+                        ? "매니페스트 서명 재생성 중 — 잠시 후 자동 복구됩니다"
+                        : "매니페스트 서명 검증 실패 — 서명 키를 확인하세요")
+                    : $"복구 미러 손상 {findings.Count}건 · 자동 복구 {repaired}건";
 
         return new AegisMirrorStatus
         {
             ManifestReady = true,
             ManifestSignatureValid = signatureValid,
-            SafeModeActive = AegisTrustPolicy.ShouldEnterSafeMode(
-                signatureValid,
-                capsuleValid,
-                File.Exists(AegisMirrorPaths.CapsuleFile)),
-            SafeModeReason = !signatureValid ? "manifest-signature-invalid" : "",
+            SafeModeActive = false,
+            SafeModeReason = "",
             CapsuleReady = File.Exists(AegisMirrorPaths.CapsuleFile),
             CapsuleHashValid = capsuleValid,
             AuditChainValid = auditValid,

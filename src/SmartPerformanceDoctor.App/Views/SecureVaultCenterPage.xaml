@@ -6,15 +6,18 @@
     <ScrollViewer>
         <StackPanel Padding="{StaticResource SpdMacPagePadding}" Style="{StaticResource MacPageRootStackStyle}">
             <TextBlock Text="보안 금고" Style="{StaticResource MacPageTitleStyle}"/>
-            <TextBlock Text="베타 기능 — 파일·폴더를 다층 암호화해 보관합니다. 원본 위치에는 자물쇠 아이콘으로 잠금 상태가 표시됩니다."
-                       Foreground="{StaticResource SpdAccentBrush}" FontWeight="SemiBold" TextWrapping="Wrap"/>
-            <TextBlock Text="대용량 폴더·엣지 케이스·UI는 개선 중입니다. 중요 데이터는 별도 백업을 권장합니다."
+            <TextBlock Text="파일을 암호화해 안전하게 보관합니다."
                        Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
+            <CheckBox x:Name="SealOriginCheckBox" Content="가져온 뒤 원본 삭제 (권장)" IsChecked="True"/>
 
             <Border Style="{StaticResource MacWindowPanelStyle}">
                 <StackPanel Spacing="8">
-                    <TextBlock Text="금고 상태" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <TextBlock Text="상태" Style="{StaticResource MacSectionHeaderStyle}"/>
                     <TextBlock x:Name="StateLineText" Style="{StaticResource MacEmphasisValueStyle}"/>
+                    <TextBlock x:Name="SecurityStateText" FontWeight="SemiBold" TextWrapping="Wrap"
+                               Foreground="{StaticResource SpdAccentBrush}"/>
+                    <TextBlock x:Name="SessionCountdownText" TextWrapping="Wrap" FontWeight="SemiBold"
+                               Foreground="{StaticResource SpdAccentBrush}"/>
                     <TextBlock x:Name="StatusLineText" TextWrapping="Wrap" Style="{StaticResource MacInlineStatusTextStyle}"/>
                     <TextBlock x:Name="CryptoLineText"
                                Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
@@ -37,10 +40,17 @@
                 <StackPanel Spacing="10">
                     <TextBlock Text="금고 열기" Style="{StaticResource MacSectionHeaderStyle}"/>
                     <PasswordBox x:Name="UnlockPasswordBox" PlaceholderText="마스터 비밀번호"/>
-                    <Button Content="잠금 해제" Style="{StaticResource MacToolbarButtonStyle}" Click="UnlockVault"/>
-                    <TextBlock Text="복구 키로 열기" Style="{StaticResource MacSectionHeaderStyle}" Margin="0,8,0,0"/>
-                    <TextBox x:Name="RecoveryKeyBox" PlaceholderText="XXXX-XXXX-... (복구 키)"/>
-                    <Button Content="복구 키 잠금 해제" Style="{StaticResource MacToolbarButtonStyle}" Click="UnlockWithRecoveryKey"/>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Content="잠금 해제" Style="{StaticResource MacToolbarButtonStyle}" Click="UnlockVault"/>
+                        <Button Content="읽기 전용으로 열기" Style="{StaticResource MacToolbarButtonStyle}" Click="UnlockReadOnly"
+                                ToolTipService.ToolTip="가져오기·삭제는 불가, 내보내기만 가능 (v5 Lab)"/>
+                    </StackPanel>
+                    <TextBlock Text="복구 코드로 열기" Style="{StaticResource MacSectionHeaderStyle}" Margin="0,8,0,0"/>
+                    <TextBlock x:Name="RecoveryHintText" TextWrapping="Wrap"
+                               Foreground="{StaticResource SpdMutedTextBrush}"
+                               Text="일회용 코드 · 사용 후 소진 · 성공 시 복구 세션(비밀번호 변경 권고)"/>
+                    <TextBox x:Name="RecoveryKeyBox" PlaceholderText="XXXX-XXXX-XXXX-XXXX (일회용 복구 코드)"/>
+                    <Button Content="복구 코드 잠금 해제" Style="{StaticResource MacToolbarButtonStyle}" Click="UnlockWithRecoveryKey"/>
                 </StackPanel>
             </Border>
 
@@ -53,7 +63,16 @@
                         <Button x:Name="BackButton" Content="뒤로" Style="{StaticResource MacToolbarButtonStyle}" Click="NavigateBack" Visibility="Collapsed"/>
                         <Button Content="잠그기" Style="{StaticResource MacToolbarButtonStyle}" Click="LockVault"/>
                         <Button Content="무결성 검사" Style="{StaticResource MacToolbarButtonStyle}" Click="VerifyIntegrity"/>
-                        <Button Content="비밀번호 변경" Style="{StaticResource MacToolbarButtonStyle}" Click="ChangePassword"/>
+                        <Button Content="Pack 정리(GC)" Style="{StaticResource MacToolbarButtonStyle}" Click="CompactPacks"
+                                ToolTipService.ToolTip="v5 pack 파일 재패킹·tombstone 제거 (쓰기 세션 필요)"/>
+                        <Button Content="Activation 복구" Style="{StaticResource MacToolbarButtonStyle}" Click="RepairActivation"
+                                ToolTipService.ToolTip="activation.commit 마커를 현재 메타 해시로 재작성 (v5 Lab)"/>
+                        <Button Content="비밀번호 변경" Style="{StaticResource MacToolbarButtonStyle}" Click="ChangePassword"
+                                ToolTipService.ToolTip="변경 시 이전 복구 코드 전부 무효 · 새 코드 10개 발급"/>
+                        <Button Content="복구 코드 재발급" Style="{StaticResource MacToolbarButtonStyle}" Click="ReissueRecoveryCodes"
+                                ToolTipService.ToolTip="비밀번호 확인 후 일회용 복구 코드 10개 재발급 (이전 코드 무효, v5 Lab)"/>
+                        <Button Content="v3→v4 마이그레이션" Style="{StaticResource MacToolbarButtonStyle}" Click="MigrateToLabV4"
+                                ToolTipService.ToolTip="레거시 v3 금고를 Lab v4로 재암호화 복사 (원본 유지)"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <TextBlock Text="자동 잠금 (분):" VerticalAlignment="Center"/>
@@ -70,24 +89,6 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <Border x:Name="KdfMigrationPanel"
-                            Background="#FFF8F0E8"
-                            BorderBrush="#FFE8C4A0"
-                            BorderThickness="1"
-                            CornerRadius="8"
-                            Padding="12"
-                            Visibility="Collapsed">
-                        <StackPanel Spacing="8">
-                            <TextBlock Text="KDF 업그레이드"
-                                       Style="{StaticResource MacSectionHeaderStyle}"/>
-                            <TextBlock Text="이 금고는 PBKDF2 키 유도를 사용 중입니다. Argon2id로 업그레이드하면 무차별 대입 저항이 강화됩니다. 마이그레이션 후 새 복구 키가 발급됩니다."
-                                       Foreground="{StaticResource SpdMutedTextBrush}"
-                                       TextWrapping="Wrap"/>
-                            <Button Content="Argon2id로 업그레이드"
-                                    Style="{StaticResource MacToolbarButtonStyle}"
-                                    Click="MigrateKdf"/>
-                        </StackPanel>
-                    </Border>
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <Button Content="열기" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenSelectedEntry"/>
                         <Button Content="원본 복원" Style="{StaticResource MacToolbarButtonStyle}" Click="RestoreToOrigin"/>

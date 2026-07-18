@@ -23,8 +23,9 @@ internal sealed class RepairRunner
         }
 
         manifest ??= LoadManifest() ?? FeatureCatalog.CreateAllEnabled(InstallerPaths.ProductVersion);
+        InstallFileOperations.PrepareTargetDirectory(targetDir);
         var files = Directory.EnumerateFiles(sourceLayout, "*", SearchOption.AllDirectories)
-            .Where(f => !ShouldSkipLayoutFile(f, sourceLayout))
+            .Where(f => !LayoutFileFilter.ShouldSkip(f, sourceLayout))
             .ToArray();
         var total = Math.Max(files.Length, 1);
         var repaired = 0;
@@ -33,6 +34,11 @@ internal sealed class RepairRunner
         foreach (var file in files)
         {
             var relative = Path.GetRelativePath(sourceLayout, file);
+            if (!FeatureInstallMapper.ShouldInstallRelativePath(relative, manifest))
+            {
+                continue;
+            }
+
             var dest = Path.Combine(targetDir, relative);
             var needsCopy = !File.Exists(dest);
             if (!needsCopy)
@@ -48,14 +54,17 @@ internal sealed class RepairRunner
 
             if (needsCopy)
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
-                File.Copy(file, dest, true);
+                InstallFileOperations.CopyFile(file, dest);
             }
 
             repaired++;
             progress.Report(((int)(repaired * 100.0 / total), $"복구 중: {relative}"));
             await Task.Yield();
         }
+
+        InstallShellAssets.EnsureFromLayout(sourceLayout, targetDir);
+        InstallShellAssets.EnsurePresentOrThrow(targetDir);
+        InstallRuntimeGuard.EnsureSelfContainedFromLayout(sourceLayout, targetDir);
 
         var programData = InstallerPaths.ProgramDataRoot;
         Directory.CreateDirectory(programData);
@@ -87,13 +96,6 @@ internal sealed class RepairRunner
         {
             return new AegisInstallStatus();
         }
-    }
-
-    private static bool ShouldSkipLayoutFile(string file, string layoutRoot)
-    {
-        var name = Path.GetFileName(file);
-        return name.Equals("SmartPerformanceDoctor.Setup.exe", StringComparison.OrdinalIgnoreCase)
-            || name.Equals("INSTALLER_README.txt", StringComparison.OrdinalIgnoreCase);
     }
 
     private static InstalledFeaturesManifest? LoadManifest()

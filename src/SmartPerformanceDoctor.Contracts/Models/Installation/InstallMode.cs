@@ -8,6 +8,9 @@ public enum InstallMode
     /// <summary>권장 구성: 필수 + 일반 사용자에게 유용한 선택 기능.</summary>
     Recommended,
 
+    /// <summary>전체 구성: 필수 + 모든 선택 기능.</summary>
+    Full,
+
     /// <summary>사용자가 기능별로 직접 선택.</summary>
     Custom,
 

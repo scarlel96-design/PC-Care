@@ -2,6 +2,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using SmartPerformanceDoctor.Aegis;
 using SmartPerformanceDoctor.Contracts.Models.Installation;
@@ -11,8 +12,8 @@ namespace SmartPerformanceDoctor.Setup;
 
 public partial class MainWindow : Window
 {
-    private const string ProductVersion = InstallerPaths.ProductVersion;
-    private const string VaultDeletePhrase = "DELETE VAULT DATA";
+    private static string ProductVersion => InstallerPaths.ProductVersion;
+    private const string VaultDeletePhrase = "금고삭제";
     private int _step;
     private bool _welcomeActionPending;
     private bool _installUpgradeFlow;
@@ -35,11 +36,13 @@ public partial class MainWindow : Window
     private TextBox? _vaultConfirmBox;
     private ProgressBar? _progressBar;
     private TextBlock? _progressText;
+    private ListBox? _operationLogList;
+    private bool _operationRunning;
 
     public MainWindow()
     {
         InitializeComponent();
-        VersionLine.Text = $"버전 {ProductVersion}";
+        VersionLine.Text = $"설치 프로그램 버전 {ProductVersion} (파일 크기 약 186MB — 작으면 구형/손상)";
         _launchMode = SetupLaunchModeParser.Parse(Environment.GetCommandLineArgs());
         _existingManifest = TryLoadExistingManifest();
 
@@ -60,7 +63,27 @@ public partial class MainWindow : Window
                 break;
         }
 
+        ApplyWindowIcon();
         RenderStep();
+    }
+
+    private void ApplyWindowIcon()
+    {
+        var iconRoot = InstallerPaths.ResolveLayoutDirectory() ?? AppContext.BaseDirectory;
+        var iconPath = ProductIconService.ResolveIconPath(iconRoot);
+        if (string.IsNullOrWhiteSpace(iconPath) || !File.Exists(iconPath))
+        {
+            return;
+        }
+
+        try
+        {
+            Icon = BitmapFrame.Create(new Uri(iconPath, UriKind.Absolute));
+        }
+        catch
+        {
+            // Cosmetic only.
+        }
     }
 
     private void BackClick(object sender, RoutedEventArgs e)
@@ -74,14 +97,14 @@ public partial class MainWindow : Window
 
     private async void NextClick(object sender, RoutedEventArgs e)
     {
-        if (!CanProceed())
+        if (_operationRunning || !CanProceed())
         {
             return;
         }
 
         if (_step == 7 && _launchMode == SetupLaunchMode.Repair)
         {
-            await RunRepairAsync();
+            await RunOperationAsync(RunRepairAsync);
             _step = 8;
             RenderStep();
             return;
@@ -89,7 +112,7 @@ public partial class MainWindow : Window
 
         if (_step == 7 && _launchMode != SetupLaunchMode.Uninstall)
         {
-            await RunInstallAsync();
+            await RunOperationAsync(RunInstallAsync);
             _step = 8;
             RenderStep();
             return;
@@ -97,13 +120,15 @@ public partial class MainWindow : Window
 
         if (_launchMode == SetupLaunchMode.Uninstall && _step == 1)
         {
-            await RunUninstallAsync();
             _step = 2;
+            RenderStep();
+            await RunOperationAsync(RunUninstallAsync);
+            _step = 3;
             RenderStep();
             return;
         }
 
-        var maxStep = _launchMode == SetupLaunchMode.Uninstall ? 2 : 8;
+        var maxStep = _launchMode == SetupLaunchMode.Uninstall ? 3 : 8;
         if (_step < maxStep)
         {
             _step++;
@@ -172,13 +197,15 @@ public partial class MainWindow : Window
         ContentPanel.Children.Clear();
         if (_launchMode == SetupLaunchMode.Uninstall)
         {
-            BackButton.IsEnabled = _step > 0 && _step < 2;
-            NextButton.Content = _step switch { 1 => "제거", 2 => "완료", _ => "다음" };
+            BackButton.IsEnabled = _step > 0 && _step < 2 && !_operationRunning;
+            NextButton.Content = _step switch { 1 => "제거", 3 => "완료", _ => "다음" };
+            NextButton.IsEnabled = _step != 2 && !_operationRunning;
             switch (_step)
             {
                 case 0: BuildUninstallOptions(); break;
                 case 1: BuildUninstallConfirm(); break;
-                case 2: BuildUninstallDone(); break;
+                case 2: BuildUninstallProgress(); break;
+                case 3: BuildUninstallDone(); break;
             }
             return;
         }
@@ -226,7 +253,7 @@ public partial class MainWindow : Window
         {
             _welcomeActionPending = true;
             AddBody("기존 설치가 감지되었습니다. 원하는 작업을 선택하세요.");
-            AddBody("「새 설치 / 업그레이드」를 선택하면 권장·사용자 지정·최소 설치 중 원하는 유형을 고를 수 있습니다.");
+            AddBody("「새 설치 / 업그레이드」를 선택하면 권장·전체·사용자 지정·최소 설치 중 원하는 유형을 고를 수 있습니다.");
             var actions = new StackPanel { Margin = new Thickness(0, 12, 0, 0) };
             actions.Children.Add(MakeActionButton("새 설치 / 업그레이드", BeginInstallUpgrade));
             actions.Children.Add(MakeActionButton("기능 변경 (Modify)", () =>
@@ -261,6 +288,7 @@ public partial class MainWindow : Window
             : "설치 유형을 선택하세요.");
         var panel = new StackPanel { Margin = new Thickness(0, 12, 0, 0) };
         panel.Children.Add(MakeRadio("권장 설치", InstallMode.Recommended, _mode == InstallMode.Recommended));
+        panel.Children.Add(MakeRadio("전체 설치", InstallMode.Full, _mode == InstallMode.Full));
         panel.Children.Add(MakeRadio("사용자 지정 설치", InstallMode.Custom, _mode == InstallMode.Custom));
         panel.Children.Add(MakeRadio("최소 설치", InstallMode.Minimal, _mode == InstallMode.Minimal));
         ContentPanel.Children.Add(panel);
@@ -410,15 +438,21 @@ public partial class MainWindow : Window
         _featureChecks.Clear();
         if (_mode != InstallMode.Custom)
         {
-            AddBody($"「{_mode}」 프리셋이 적용됩니다. 사용자 지정 설치를 선택하면 개별 기능을 변경할 수 있습니다.");
+            AddBody($"「{GetInstallModeLabel(_mode)}」 프리셋이 적용됩니다. 사용자 지정 설치를 선택하거나 아래 버튼으로 전체 선택·해제하면 개별 기능을 변경할 수 있습니다.");
         }
+
+        var bulkActions = new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            Margin = new Thickness(0, 12, 0, 0)
+        };
+        bulkActions.Children.Add(MakeFeatureBulkButton("전체 선택", SelectAllOptionalFeatures));
+        bulkActions.Children.Add(MakeFeatureBulkButton("전체 해제", DeselectAllOptionalFeatures));
+        ContentPanel.Children.Add(bulkActions);
 
         foreach (var feature in FeatureCatalog.All)
         {
-            var enabled = (!_installUpgradeFlow && _existingManifest?.IsEnabled(feature.Id) == true)
-                || feature.IsRequired
-                || (_mode == InstallMode.Recommended && feature.IncludedInRecommended)
-                || (_mode == InstallMode.Minimal && feature.IncludedInMinimal);
+            var enabled = IsFeatureEnabledByMode(feature);
             var check = new CheckBox
             {
                 Content = $"{feature.DisplayName} — {feature.Description}",
@@ -430,6 +464,92 @@ public partial class MainWindow : Window
             ContentPanel.Children.Add(check);
         }
     }
+
+    private Button MakeFeatureBulkButton(string label, Action onClick)
+    {
+        var button = new Button
+        {
+            Content = label,
+            Margin = new Thickness(0, 0, 8, 0),
+            Padding = new Thickness(12, 6, 12, 6),
+            Style = (Style)FindResource("SpdSecondaryButtonStyle")
+        };
+        button.Click += (_, _) => onClick();
+        return button;
+    }
+
+    private void SelectAllOptionalFeatures()
+    {
+        EnsureCustomFeatureMode();
+        foreach (var (id, check) in _featureChecks)
+        {
+            if (FeatureCatalog.All.First(f => f.Id == id).IsRequired)
+            {
+                continue;
+            }
+
+            check.IsChecked = true;
+        }
+    }
+
+    private void DeselectAllOptionalFeatures()
+    {
+        EnsureCustomFeatureMode();
+        foreach (var (id, check) in _featureChecks)
+        {
+            if (FeatureCatalog.All.First(f => f.Id == id).IsRequired)
+            {
+                continue;
+            }
+
+            check.IsChecked = false;
+        }
+    }
+
+    private void EnsureCustomFeatureMode()
+    {
+        if (_mode == InstallMode.Custom)
+        {
+            return;
+        }
+
+        _mode = InstallMode.Custom;
+        foreach (var (id, check) in _featureChecks)
+        {
+            var feature = FeatureCatalog.All.First(f => f.Id == id);
+            check.IsEnabled = !feature.IsRequired;
+        }
+    }
+
+    private bool IsFeatureEnabledByMode(FeatureDefinition feature)
+    {
+        if (feature.IsRequired)
+        {
+            return true;
+        }
+
+        if (!_installUpgradeFlow && _existingManifest?.IsEnabled(feature.Id) == true)
+        {
+            return true;
+        }
+
+        return _mode switch
+        {
+            InstallMode.Full => true,
+            InstallMode.Recommended => feature.IncludedInRecommended,
+            InstallMode.Minimal => feature.IncludedInMinimal,
+            _ => false
+        };
+    }
+
+    private static string GetInstallModeLabel(InstallMode mode) => mode switch
+    {
+        InstallMode.Recommended => "권장 설치",
+        InstallMode.Full => "전체 설치",
+        InstallMode.Custom => "사용자 지정 설치",
+        InstallMode.Minimal => "최소 설치",
+        _ => mode.ToString()
+    };
 
     private void BuildWarnings()
     {
@@ -557,13 +677,71 @@ public partial class MainWindow : Window
     private void BuildInstallPreview()
     {
         EnsurePathBox();
-        AddTitle(_launchMode == SetupLaunchMode.Repair ? "복구 준비" : "설치 준비");
+        AddTitle(_launchMode == SetupLaunchMode.Repair ? "복구 진행" : "설치 진행");
         AddBody($"대상: {_pathBox?.Text}");
         AddBody($"선택 기능: {SelectedFeatureIds().Count}개");
-        _progressBar = new ProgressBar { Height = 18, Margin = new Thickness(0, 16, 0, 0) };
-        _progressText = new TextBlock { Margin = new Thickness(0, 8, 0, 0), Foreground = (Brush)FindResource("SpdMutedBrush") };
+        AddBody(_operationRunning
+            ? "파일 복사 및 설정 적용 중입니다. 창을 닫지 마세요."
+            : "아래 「설치」를 누르면 진행률이 표시됩니다.");
+        _progressBar = new ProgressBar
+        {
+            Height = 18,
+            Margin = new Thickness(0, 16, 0, 0),
+            Minimum = 0,
+            Maximum = 100,
+            Value = 0
+        };
+        _progressText = new TextBlock
+        {
+            Margin = new Thickness(0, 8, 0, 0),
+            Foreground = (Brush)FindResource("SpdMutedBrush"),
+            Text = _operationRunning ? "작업 준비 중..." : "대기 중"
+        };
         ContentPanel.Children.Add(_progressBar);
         ContentPanel.Children.Add(_progressText);
+    }
+
+    private async Task RunOperationAsync(Func<Task> operation)
+    {
+        _operationRunning = true;
+        BackButton.IsEnabled = false;
+        NextButton.IsEnabled = false;
+        try
+        {
+            await operation();
+        }
+        finally
+        {
+            _operationRunning = false;
+            BackButton.IsEnabled = _step > 0 && _step < 8;
+            NextButton.IsEnabled = true;
+        }
+    }
+
+    private void ReportOperationProgress((int percent, string detail) update)
+    {
+        Dispatcher.Invoke(() =>
+        {
+            if (_progressBar is not null)
+            {
+                _progressBar.Value = update.percent;
+            }
+
+            if (_progressText is not null)
+            {
+                _progressText.Text = $"{update.percent}% — {update.detail}";
+            }
+
+            if (_operationLogList is not null && !string.IsNullOrWhiteSpace(update.detail))
+            {
+                var stamp = DateTime.Now.ToString("HH:mm:ss");
+                _operationLogList.Items.Add($"[{stamp}] {update.detail}");
+                if (_operationLogList.Items.Count > 0)
+                {
+                    _operationLogList.ScrollIntoView(_operationLogList.Items[^1]);
+                }
+            }
+        }, System.Windows.Threading.DispatcherPriority.Render);
     }
 
     private void BuildUninstallOptions()
@@ -599,13 +777,37 @@ public partial class MainWindow : Window
     {
         AddTitle("Secure Vault 데이터");
         AddBody("금고 데이터는 기본적으로 삭제하지 않습니다.");
-        AddBody($"금고 데이터까지 삭제하려면 아래에 \"{VaultDeletePhrase}\"를 입력하세요.");
-        _vaultConfirmBox = new TextBox { Margin = new Thickness(0, 12, 0, 0), Padding = new Thickness(8) };
+        AddBody("일반 제거: 입력 없이 「제거」만 누르세요.");
+        AddBody($"금고 데이터까지 삭제할 때만 아래에 「{VaultDeletePhrase}」 를 입력하세요.");
+        _vaultConfirmBox = new TextBox
+        {
+            Margin = new Thickness(0, 12, 0, 0),
+            Padding = new Thickness(8),
+            ToolTip = $"선택 사항 — 금고 삭제 시에만 {VaultDeletePhrase}"
+        };
         ContentPanel.Children.Add(_vaultConfirmBox);
-        _progressBar = new ProgressBar { Height = 18, Margin = new Thickness(0, 16, 0, 0) };
-        _progressText = new TextBlock { Margin = new Thickness(0, 8, 0, 0), Foreground = (Brush)FindResource("SpdMutedBrush") };
+    }
+
+    private void BuildUninstallProgress()
+    {
+        AddTitle("제거 진행 중");
+        AddBody("아래 진행률과 로그를 확인하세요. 완료되면 자동으로 다음 화면으로 이동합니다.");
+        _progressBar = new ProgressBar { Height = 20, Margin = new Thickness(0, 12, 0, 0), Minimum = 0, Maximum = 100 };
+        _progressText = new TextBlock
+        {
+            Margin = new Thickness(0, 8, 0, 0),
+            Foreground = (Brush)FindResource("SpdMutedBrush"),
+            Text = _operationRunning ? "작업 준비 중..." : "대기 중"
+        };
+        _operationLogList = new ListBox
+        {
+            Height = 220,
+            Margin = new Thickness(0, 12, 0, 0),
+            FontFamily = new FontFamily("Consolas, Malgun Gothic")
+        };
         ContentPanel.Children.Add(_progressBar);
         ContentPanel.Children.Add(_progressText);
+        ContentPanel.Children.Add(_operationLogList);
     }
 
     private void BuildUninstallDone()
@@ -617,7 +819,7 @@ public partial class MainWindow : Window
     private void BuildDone()
     {
         AddTitle(_launchMode == SetupLaunchMode.Repair ? "복구 완료" : "설치 완료");
-        AddBody("작업 보고서는 ProgramData\\AstraCare에 저장되었습니다.");
+        AddBody($"작업 보고서는 ProgramData\\{AegisProduct.ProgramDataFolder}에 저장되었습니다.");
         var launch = new Button
         {
             Content = "프로그램 실행",
@@ -659,11 +861,7 @@ public partial class MainWindow : Window
         var target = _pathBox?.Text?.Trim()
             ?? TryReadExistingTarget()
             ?? AppExecutableResolver.DefaultInstallDirectory();
-        var progress = new Progress<(int percent, string detail)>(p =>
-        {
-            if (_progressBar is not null) { _progressBar.Value = p.percent; }
-            if (_progressText is not null) { _progressText.Text = p.detail; }
-        });
+        var progress = new Progress<(int percent, string detail)>(ReportOperationProgress);
 
         try
         {
@@ -679,13 +877,9 @@ public partial class MainWindow : Window
     private async Task RunUninstallAsync()
     {
         var target = TryReadExistingTarget()
-            ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "AstraCare");
-        var deleteVault = string.Equals(_vaultConfirmBox?.Text?.Trim(), VaultDeletePhrase, StringComparison.Ordinal);
-        var progress = new Progress<(int percent, string detail)>(p =>
-        {
-            if (_progressBar is not null) { _progressBar.Value = p.percent; }
-            if (_progressText is not null) { _progressText.Text = p.detail; }
-        });
+            ?? AppExecutableResolver.DefaultInstallDirectory();
+        var deleteVault = string.Equals(_vaultConfirmBox?.Text?.Trim(), VaultDeletePhrase, StringComparison.OrdinalIgnoreCase);
+        var progress = new Progress<(int percent, string detail)>(ReportOperationProgress);
 
         try
         {
@@ -706,27 +900,31 @@ public partial class MainWindow : Window
             return;
         }
 
-        var manifest = FeatureCatalog.CreateManifest(_mode, ProductVersion, SelectedFeatureIds());
-        var progress = new Progress<(int percent, string detail)>(p =>
+        var targetDir = _pathBox!.Text.Trim();
+        if (InstallFileOperations.RequiresElevation(targetDir) && !InstallFileOperations.IsAdministrator())
         {
-            if (_progressBar is not null)
-            {
-                _progressBar.Value = p.percent;
-            }
+            MessageBox.Show(
+                "Program Files 경로에 설치하려면 관리자 권한이 필요합니다.\n\n" +
+                "설치 프로그램을 마우스 오른쪽 버튼으로 클릭한 뒤 「관리자 권한으로 실행」을 선택하세요.",
+                "관리자 권한 필요",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+            return;
+        }
 
-            if (_progressText is not null)
-            {
-                _progressText.Text = p.detail;
-            }
-        });
+        var manifest = FeatureCatalog.CreateManifest(_mode, ProductVersion, SelectedFeatureIds());
+        var progress = new Progress<(int percent, string detail)>(ReportOperationProgress);
 
         try
         {
-            await _runner.InstallAsync(layout, _pathBox!.Text.Trim(), manifest, progress);
+            await _runner.InstallAsync(layout, targetDir, manifest, progress);
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.Message, "설치 실패");
+            MessageBox.Show(
+                ex.Message + "\n\nPC 케어 프로가 실행 중이면 종료한 뒤 다시 시도하세요. " +
+                "Program Files에 설치할 때는 설치 프로그램을 관리자 권한으로 실행해야 합니다.",
+                "설치 실패");
         }
     }
 
@@ -743,11 +941,27 @@ public partial class MainWindow : Window
         return _featureChecks.Where(kv => kv.Value.IsChecked == true).Select(kv => kv.Key).ToList();
     }
 
-    private bool IsFeatureSelected(string featureId) =>
-        SelectedFeatureIds().Contains(featureId, StringComparer.OrdinalIgnoreCase)
-        || (_mode == InstallMode.Recommended && FeatureCatalog.All.First(f => f.Id == featureId).IncludedInRecommended)
-        || (_mode == InstallMode.Minimal && FeatureCatalog.All.First(f => f.Id == featureId).IncludedInMinimal)
-        || FeatureCatalog.All.First(f => f.Id == featureId).IsRequired;
+    private bool IsFeatureSelected(string featureId)
+    {
+        var feature = FeatureCatalog.All.First(f => f.Id == featureId);
+        if (feature.IsRequired)
+        {
+            return true;
+        }
+
+        if (SelectedFeatureIds().Contains(featureId, StringComparer.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        return _mode switch
+        {
+            InstallMode.Full => true,
+            InstallMode.Recommended => feature.IncludedInRecommended,
+            InstallMode.Minimal => feature.IncludedInMinimal,
+            _ => false
+        };
+    }
 
     private bool NeedsSystemConsent() =>
         IsFeatureSelected(InstallFeatureIds.SystemCare)

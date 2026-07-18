@@ -11,6 +11,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
 {
     private readonly UpdateChannelService _channel = new();
     private readonly UpdateInstallerService _installer = new();
+    private readonly GitHubReleaseUpdateService _github = new();
 
     private string _currentVersion = AppInfo.Version;
     private string _targetVersion = "-";
@@ -26,6 +27,9 @@ public sealed class UpdateStatusViewModel : ObservableObject
     private double _progress;
     private bool _isBusy;
     private bool _canApply;
+    private bool _canDownloadGitHub;
+    private string _githubLine = "GitHub 릴리즈를 확인하려면 [확인]을 누르세요.";
+    private RemoteUpdateCheckResult? _lastGitHubCheck;
     private UpdatePackageInspection? _lastInspection;
     private IReadOnlyList<string> _changes = Array.Empty<string>();
     private IReadOnlyList<UpdateHistoryEntry> _history = Array.Empty<UpdateHistoryEntry>();
@@ -46,6 +50,8 @@ public sealed class UpdateStatusViewModel : ObservableObject
     public double Progress { get => _progress; private set => Set(ref _progress, value); }
     public bool IsBusy { get => _isBusy; private set => Set(ref _isBusy, value); }
     public bool CanApply { get => _canApply; private set => Set(ref _canApply, value); }
+    public bool CanDownloadGitHub { get => _canDownloadGitHub; private set => Set(ref _canDownloadGitHub, value); }
+    public string GitHubLine { get => _githubLine; private set => Set(ref _githubLine, value); }
     public IReadOnlyList<string> Changes { get => _changes; private set => Set(ref _changes, value); }
     public IReadOnlyList<UpdateHistoryEntry> History { get => _history; private set => Set(ref _history, value); }
 
@@ -72,6 +78,113 @@ public sealed class UpdateStatusViewModel : ObservableObject
         if (!string.IsNullOrWhiteSpace(SelectedPackagePath))
         {
             _ = InspectSelectedAsync();
+        }
+    }
+
+    public async Task CheckGitHubAsync(CancellationToken cancellationToken = default)
+    {
+        if (IsBusy)
+        {
+            AppendLog("이미 작업이 진행 중입니다.");
+            return;
+        }
+
+        RunOnUi(() => BeginWork("GitHub", "GitHub 릴리즈를 확인합니다…"));
+
+        try
+        {
+            var check = await _github.CheckLatestAsync(cancellationToken).ConfigureAwait(false);
+            RunOnUi(() =>
+            {
+                _lastGitHubCheck = check;
+                GitHubLine = check.Message;
+                TargetVersion = check.LatestVersion;
+                CanDownloadGitHub = check.Success
+                    && UpdateVersionComparer.IsNewer(check.LatestVersion, CurrentVersion)
+                    && !string.IsNullOrWhiteSpace(check.UpdateDownloadUrl);
+                StatusLine = check.Message;
+                PhaseLine = check.Success ? "확인 완료" : "확인 실패";
+                ActionLine = CanDownloadGitHub ? "다운로드 가능" : "다운로드 불가";
+                DetailLine = check.UpdateFileName ?? UpdateRemoteConfig.ReleasesPageUrl;
+                Changes = check.ReleaseNotesLines;
+            });
+            AppendLog(check.Message);
+        }
+        catch (Exception ex)
+        {
+            RunOnUi(() =>
+            {
+                GitHubLine = $"GitHub 확인 오류: {ex.Message}";
+                CanDownloadGitHub = false;
+                PhaseLine = "실패";
+            });
+            AppendLog($"GitHub 확인 오류: {ex.Message}");
+        }
+        finally
+        {
+            RunOnUi(() => IsBusy = false);
+        }
+    }
+
+    public async Task DownloadGitHubUpdateAsync(CancellationToken cancellationToken = default)
+    {
+        if (IsBusy)
+        {
+            AppendLog("이미 작업이 진행 중입니다.");
+            return;
+        }
+
+        RemoteUpdateCheckResult? check = null;
+        var canDownload = false;
+        RunOnUi(() =>
+        {
+            check = _lastGitHubCheck;
+            canDownload = CanDownloadGitHub;
+        });
+
+        if (check is null || !canDownload)
+        {
+            RunOnUi(() => GitHubLine = "먼저 GitHub 확인을 실행하세요.");
+            AppendLog("다운로드할 GitHub 업데이트가 없습니다.");
+            return;
+        }
+
+        RunOnUi(() => BeginWork("다운로드", "GitHub에서 업데이트 패키지를 받습니다…"));
+
+        try
+        {
+            var progress = new Progress<string>(message => AppendLog(message));
+            var result = await _github.DownloadUpdatePackageAsync(check, progress, cancellationToken)
+                .ConfigureAwait(false);
+
+            RunOnUi(() =>
+            {
+                GitHubLine = result.Message;
+                StatusLine = result.Message;
+                PhaseLine = result.Success ? "다운로드 완료" : "다운로드 실패";
+                ActionLine = result.Success ? "패키지 준비됨" : "실패";
+                DetailLine = result.LocalPath ?? "";
+                CanDownloadGitHub = false;
+            });
+            AppendLog(result.Message);
+
+            if (result.Success && !string.IsNullOrWhiteSpace(result.LocalPath))
+            {
+                await SetSelectedPackageAsync(result.LocalPath).ConfigureAwait(false);
+            }
+        }
+        catch (Exception ex)
+        {
+            RunOnUi(() =>
+            {
+                GitHubLine = $"다운로드 오류: {ex.Message}";
+                PhaseLine = "실패";
+            });
+            AppendLog($"다운로드 오류: {ex.Message}");
+        }
+        finally
+        {
+            RunOnUi(() => IsBusy = false);
         }
     }
 
@@ -154,9 +267,14 @@ public sealed class UpdateStatusViewModel : ObservableObject
 
             if (result.Success && result.RestartScheduled)
             {
-                AppendLog("앱을 종료한 뒤 보류 파일을 적용합니다.");
+                AppendLog("앱을 종료한 뒤 보류 파일을 적용합니다. (Program Files면 UAC 관리자 확인이 필요할 수 있습니다)");
                 RunOnUi(() => History = _channel.LoadHistory());
-                UpdateInstallerService.LaunchPendingRestart();
+                var launched = UpdateInstallerService.LaunchPendingRestart();
+                if (!launched)
+                {
+                    AppendLog("관리자 권한 적용 시작 실패 또는 UAC 취소 · 보류 상태가 유지됩니다. 앱을 다시 열면 재시도합니다.");
+                }
+
                 RunOnUi(() => Application.Current.Exit());
             }
             else

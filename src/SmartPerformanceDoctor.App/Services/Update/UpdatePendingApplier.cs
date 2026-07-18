@@ -6,8 +6,6 @@ namespace SmartPerformanceDoctor.App.Services.Update;
 
 public sealed class UpdatePendingApplier
 {
-    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
-
     public PendingApplyResult TryApplyOnStartup()
     {
         if (!File.Exists(UpdatePaths.PendingState))
@@ -20,18 +18,82 @@ public sealed class UpdatePendingApplier
             using var doc = JsonDocument.Parse(File.ReadAllText(UpdatePaths.PendingState));
             var root = doc.RootElement;
             var stagingDir = root.TryGetProperty("stagingDir", out var s) ? s.GetString() ?? "" : "";
-            var targetDir = root.TryGetProperty("targetDir", out var t) ? t.GetString() ?? UpdatePaths.AppInstallDirectory : UpdatePaths.AppInstallDirectory;
+            var targetDir = root.TryGetProperty("targetDir", out var t)
+                ? t.GetString() ?? UpdatePaths.AppInstallDirectory
+                : UpdatePaths.AppInstallDirectory;
             var toVersion = root.TryGetProperty("toVersion", out var v) ? v.GetString() ?? "" : "";
 
             if (string.IsNullOrWhiteSpace(stagingDir) || !Directory.Exists(stagingDir))
             {
-                return new PendingApplyResult(false, 0, "대기 중인 스테이징 폴더를 찾지 못했습니다. 재시작 스크립트를 다시 실행하세요.", toVersion, false);
+                return new PendingApplyResult(
+                    false,
+                    0,
+                    "대기 중인 스테이징 폴더를 찾지 못했습니다. 재시작 스크립트를 다시 실행하세요.",
+                    toVersion,
+                    false);
             }
 
             var payloadRoot = Path.Combine(stagingDir, "payload");
             if (!Directory.Exists(payloadRoot))
             {
                 payloadRoot = stagingDir;
+            }
+
+            // A running WinUI process keeps its own DLLs loaded. Finalize every
+            // pending update out of process before starting the new application.
+            if (ShouldFinalizeOutOfProcess())
+            {
+                if (!File.Exists(UpdatePaths.PendingScriptPs1))
+                {
+                    UpdateInstallerService.EnsurePendingApplyScript(stagingDir, toVersion);
+                }
+
+                var lockFile = Path.Combine(UpdatePaths.Root, "apply_inflight.lock");
+                var alreadyRunning = false;
+                try
+                {
+                    if (File.Exists(lockFile))
+                    {
+                        alreadyRunning = DateTime.UtcNow - File.GetLastWriteTimeUtc(lockFile) < TimeSpan.FromMinutes(3);
+                    }
+                }
+                catch
+                {
+                    // Best effort.
+                }
+
+                if (alreadyRunning)
+                {
+                    AppendApplyLog($"[startup] pending {toVersion} apply already in flight; no extra launch/exit");
+                    return new PendingApplyResult(
+                        false,
+                        0,
+                        $"업데이트({toVersion}) 적용이 진행 중입니다. 잠시 후 다시 열어 주세요.",
+                        toVersion,
+                        false,
+                        RequestExit: true);
+                }
+
+                AppendApplyLog($"[startup] elevation required for pending {toVersion} → {targetDir}");
+                var launched = UpdateInstallerService.LaunchPendingRestart();
+                if (launched)
+                {
+                    // Exit once so files unlock; apply script restarts app only on success.
+                    return new PendingApplyResult(
+                        false,
+                        0,
+                        $"관리자 권한으로 {toVersion} 마무리를 요청했습니다. UAC를 허용해 주세요.",
+                        toVersion,
+                        false,
+                        RequestExit: true);
+                }
+
+                return new PendingApplyResult(
+                    false,
+                    0,
+                    $"업데이트({toVersion}) 마무리 프로그램을 시작하지 못했습니다. 앱을 완전히 종료한 뒤 다시 시도하세요.",
+                    toVersion,
+                    false);
             }
 
             var failed = new List<string>();
@@ -91,6 +153,7 @@ public sealed class UpdatePendingApplier
         }
     }
 
+    private static bool ShouldFinalizeOutOfProcess() => true;
     public static void AppendApplyLog(string line)
     {
         try
@@ -156,7 +219,8 @@ public sealed record PendingApplyResult(
     int FilesApplied,
     string Message,
     string ToVersion,
-    bool Verified)
+    bool Verified,
+    bool RequestExit = false)
 {
     public static PendingApplyResult None => new(false, 0, "", "", false);
 }

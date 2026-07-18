@@ -1,8 +1,9 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using SmartPerformanceDoctor.Aegis;
 using SmartPerformanceDoctor.App.Models;
 using SmartPerformanceDoctor.App.Services;
-
+using SmartPerformanceDoctor.App.Services.Update;
 namespace SmartPerformanceDoctor.App.Views;
 
 public sealed partial class SettingsPage : Page
@@ -28,6 +29,55 @@ public sealed partial class SettingsPage : Page
         }
 
         UpdateHint();
+        var bg = BackgroundRunPreferences.Load();
+        bg.RunAtWindowsStartup = WindowsStartupRegistration.IsEnabled();
+        bg.Save();
+        StartupToggle.IsOn = bg.RunAtWindowsStartup;
+        BackgroundToggle.IsOn = bg.RunInBackgroundOnClose;
+        UpdateStartupStatusLine();
+        var autoUpdate = AutoUpdateCheckPreferences.Load();
+        AutoUpdateToggle.IsOn = autoUpdate.Enabled;
+    }
+
+    private void AutoUpdateToggleChanged(object sender, RoutedEventArgs e)
+    {
+        var prefs = AutoUpdateCheckPreferences.Load();
+        prefs.Enabled = AutoUpdateToggle.IsOn;
+        prefs.Save();
+    }
+
+    private void StartupToggleChanged(object sender, RoutedEventArgs e)
+    {
+        var prefs = BackgroundRunPreferences.Load();
+        prefs.RunAtWindowsStartup = StartupToggle.IsOn;
+        prefs.Save();
+        var exe = InstalledAppPaths.ResolveClientExecutable();
+        if (string.IsNullOrWhiteSpace(exe) || !File.Exists(exe))
+        {
+            StartupStatusText.Text = "실행 파일 경로를 찾지 못해 시작 프로그램 등록에 실패했습니다.";
+            StartupToggle.IsOn = false;
+            prefs.RunAtWindowsStartup = false;
+            prefs.Save();
+            return;
+        }
+
+        WindowsStartupRegistration.SetEnabled(prefs.RunAtWindowsStartup, exe);
+        UpdateStartupStatusLine();
+    }
+
+    private void UpdateStartupStatusLine()
+    {
+        StartupStatusText.Text = WindowsStartupRegistration.IsEnabled()
+            ? "Windows 시작 시 백그라운드로 실행되도록 등록되어 있습니다."
+            : "시작 프로그램 등록이 해제되어 있습니다.";
+    }
+
+    private void BackgroundToggleChanged(object sender, RoutedEventArgs e)
+    {
+        var prefs = BackgroundRunPreferences.Load();
+        prefs.RunInBackgroundOnClose = BackgroundToggle.IsOn;
+        prefs.Save();
+        TrayIconService.Shared.EnsureInitialized();
     }
 
     private void UserModeChanged(object sender, SelectionChangedEventArgs e)
@@ -70,9 +120,13 @@ public sealed partial class SettingsPage : Page
 
     private void OpenUpdate(object sender, RoutedEventArgs e)
     {
-        if (ShellFrame is not null)
+        try
         {
-            AppNavigationService.TryNavigateByName(ShellFrame, "UpdateStatusPage");
+            ShellFrame?.Navigate(typeof(UpdateStatusPage));
+        }
+        catch (Exception ex)
+        {
+            CrashCaptureService.WriteCrash("open-update-page", ex, ex.Message);
         }
     }
 
@@ -81,8 +135,4 @@ public sealed partial class SettingsPage : Page
         ShellFrame?.Navigate(typeof(FirstRunPage));
     }
 
-    private void OpenProgramProtection(object sender, RoutedEventArgs e)
-    {
-        ShellFrame?.Navigate(typeof(ProgramProtectionCenterPage));
-    }
 }

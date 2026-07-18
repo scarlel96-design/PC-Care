@@ -1,4 +1,6 @@
 using System.Collections.ObjectModel;
+using SmartPerformanceDoctor.AstraVault.Legacy;
+using SmartPerformanceDoctor.AstraVault.Target;
 using SmartPerformanceDoctor.App.Models.Security;
 using SmartPerformanceDoctor.App.Services.Security;
 
@@ -12,7 +14,9 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
     private string _stateLine = "금고 없음";
     private string _breadcrumb = "보관 항목";
     private string _securityLine = "";
-    private string _cryptoLine = "Argon2id · HKDF · AES-256-GCM · DEK 이중 봉인 · 샤드 MAC · DPAPI · NTFS ACL";
+    private string _securityStateLine = "Locked";
+    private string _sessionCountdownLine = "";
+    private string _cryptoLine = "레거시: Argon2id · HKDF · AES-GCM · → 목표: AVLT v3 · XChaCha20-Poly1305 · VMK/DEK · journal";
     private int _autoLockMinutes = 5;
     private bool _isBusy;
     private bool _isNotCreated = true;
@@ -29,11 +33,24 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
     public string StateLine { get => _stateLine; private set => Set(ref _stateLine, value); }
     public string Breadcrumb { get => _breadcrumb; private set => Set(ref _breadcrumb, value); }
     public string SecurityLine { get => _securityLine; private set => Set(ref _securityLine, value); }
+    public string SecurityStateLine { get => _securityStateLine; private set => Set(ref _securityStateLine, value); }
+    public string SessionCountdownLine { get => _sessionCountdownLine; private set => Set(ref _sessionCountdownLine, value); }
     public string CryptoLine { get => _cryptoLine; private set => Set(ref _cryptoLine, value); }
     public int AutoLockMinutes
     {
         get => _autoLockMinutes;
-        set => Set(ref _autoLockMinutes, Math.Clamp(value, 1, 60));
+        set
+        {
+            var clamped = Math.Clamp(value, 1, 60);
+            if (_autoLockMinutes == clamped)
+            {
+                return;
+            }
+
+            Set(ref _autoLockMinutes, clamped);
+            _service.ApplyLabAutoLockMinutes(_autoLockMinutes);
+            RefreshSessionCountdown();
+        }
     }
 
     public bool IsBusy { get => _isBusy; private set => Set(ref _isBusy, value); }
@@ -49,7 +66,28 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
 
     public event EventHandler? AutoLockRequested;
 
-    public void TouchActivity() => AutoLockRequested?.Invoke(this, EventArgs.Empty);
+    public void TouchActivity()
+    {
+        _service.TouchLabActivity();
+        AutoLockRequested?.Invoke(this, EventArgs.Empty);
+        RefreshSessionCountdown();
+    }
+
+    public void RefreshSessionCountdown()
+    {
+        if (!_service.IsLabVaultFormat || !IsUnlocked)
+        {
+            SessionCountdownLine = "";
+            return;
+        }
+
+        SessionCountdownLine = _service.GetLabSessionCountdownLine();
+        // keep SecurityStateLine in sync when idle warning flips AutoLockScheduled
+        if (_service.IsLabVaultFormat)
+        {
+            SecurityStateLine = _service.GetLabSecurityStateLabel();
+        }
+    }
 
     public void RefreshState()
     {
@@ -67,6 +105,12 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
         };
         ReloadVisibleItems();
         RefreshSecurityStatus();
+        if (IsUnlocked && _service.IsLabVaultFormat)
+        {
+            _service.ApplyLabAutoLockMinutes(AutoLockMinutes);
+        }
+
+        RefreshSessionCountdown();
         NeedsKdfMigration = _service.NeedsKdfMigration;
     }
 
@@ -134,6 +178,28 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
         return result;
     }
 
+    public SecureVaultOperationResult UnlockReadOnly(string password)
+    {
+        if (!_service.IsLabVaultFormat)
+        {
+            var msg = "읽기 전용 열기는 보안 금고 v5 Lab 경로에서만 지원됩니다.";
+            StatusLine = msg;
+            return new SecureVaultOperationResult { Success = false, Message = msg };
+        }
+
+        var result = _service.UnlockReadOnlyLab(password);
+        StatusLine = result.Message;
+        ResetNavigation();
+        RefreshState();
+        if (result.Success)
+        {
+            SecurityStateLine = _service.GetLabSecurityStateLabel();
+            TouchActivity();
+        }
+
+        return result;
+    }
+
     public SecureVaultOperationResult UnlockWithRecoveryKey(string recoveryKey)
     {
         var result = _service.UnlockWithRecoveryKey(recoveryKey);
@@ -156,6 +222,16 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
         return result;
     }
 
+    public SecureVaultOperationResult MigrateLegacyToLabV4(string masterPassword)
+    {
+        var result = _service.MigrateLegacyVaultToLabV4(masterPassword);
+        StatusLine = result.Message;
+        RefreshState();
+        return result;
+    }
+
+    public bool IsLabVaultFormat => _service.IsLabVaultFormat;
+
     public SecureVaultOperationResult ChangeMasterPassword(string currentPassword, string newPassword)
     {
         var result = _service.ChangeMasterPassword(currentPassword, newPassword);
@@ -163,6 +239,25 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
         RefreshState();
         return result;
     }
+
+    public SecureVaultOperationResult ReissueRecoveryCodes(string password)
+    {
+        if (!_service.IsLabVaultFormat)
+        {
+            var msg = "복구 코드 재발급은 보안 금고 v5 Lab 경로에서만 지원됩니다.";
+            StatusLine = msg;
+            return new SecureVaultOperationResult { Success = false, Message = msg };
+        }
+
+        var result = _service.ReissueLabRecoveryCodes(password);
+        StatusLine = result.Message;
+        RefreshState();
+        return result;
+    }
+
+    /// <summary>Lab v5: change password may return new recovery codes list.</summary>
+    public bool LastChangeReturnedRecoveryCodes(SecureVaultOperationResult result) =>
+        result.RecoveryCodes is { Count: > 0 };
 
     public void Lock()
     {
@@ -174,14 +269,16 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
 
     public async Task<SecureVaultOperationResult> AddFileAsync(
         string path,
-        IProgress<SecureVaultProgressReport>? progress = null)
+        IProgress<SecureVaultProgressReport>? progress = null,
+        bool sealOrigin = true)
     {
         IsBusy = true;
         try
         {
             TouchActivity();
             var result = await Task.Run(async () =>
-                await _service.AddFileAsync(path, progress: progress).ConfigureAwait(false));
+                await _service.AddFileAsync(path, sealOrigin, cancellationToken: default, progress: progress)
+                    .ConfigureAwait(false));
             StatusLine = result.Message;
             if (result.Success)
             {
@@ -199,14 +296,16 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
 
     public async Task<SecureVaultOperationResult> AddFolderAsync(
         string path,
-        IProgress<SecureVaultProgressReport>? progress = null)
+        IProgress<SecureVaultProgressReport>? progress = null,
+        bool sealOrigin = true)
     {
         IsBusy = true;
         try
         {
             TouchActivity();
             var result = await Task.Run(async () =>
-                await _service.AddFolderAsync(path, progress: progress).ConfigureAwait(false));
+                await _service.AddFolderAsync(path, sealOrigin, cancellationToken: default, progress: progress)
+                    .ConfigureAwait(false));
             StatusLine = result.Message;
             if (result.Success)
             {
@@ -222,7 +321,10 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
         }
     }
 
-    public async Task<SecureVaultOperationResult> ExportEntryAsync(SecureVaultBrowsableItem item, string destination)
+    public async Task<SecureVaultOperationResult> ExportEntryAsync(
+        SecureVaultBrowsableItem item,
+        string destination,
+        bool stepUpConfirmed = false)
     {
         IsBusy = true;
         try
@@ -231,7 +333,7 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
             if (item.Kind is SecureVaultBrowsableKind.FolderRoot)
             {
                 result = item.EntryId is not null
-                    ? await _service.ExportEntryAsync(item.EntryId, destination)
+                    ? await _service.ExportEntryAsync(item.EntryId, destination, stepUpConfirmed: stepUpConfirmed)
                     : item.BundleId is not null
                         ? await _service.ExportBundleAsync(item.BundleId, destination)
                         : new SecureVaultOperationResult { Success = false, Message = "폴더 항목을 찾을 수 없습니다." };
@@ -246,7 +348,7 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
             }
             else
             {
-                result = await _service.ExportEntryAsync(item.EntryId!, destination);
+                result = await _service.ExportEntryAsync(item.EntryId!, destination, stepUpConfirmed: stepUpConfirmed);
             }
 
             StatusLine = result.Message;
@@ -343,20 +445,56 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
         return result;
     }
 
+    public SecureVaultOperationResult CompactPacks()
+    {
+        var result = _service.CompactLabPacks(userConfirmed: true);
+        StatusLine = result.Message;
+        RefreshState();
+        return result;
+    }
+
+    public SecureVaultOperationResult RepairActivation()
+    {
+        var result = _service.RepairLabActivation();
+        StatusLine = result.Message;
+        RefreshState();
+        return result;
+    }
+
     public void Dispose() => _service.Dispose();
 
     private void RefreshSecurityStatus()
     {
         if (_service.State == SecureVaultState.NotCreated)
         {
-            SecurityLine = $"신규 금고: {SecureVaultPasswordPolicy.MinLengthNewVault}자+ · 대소문자·숫자·특수문자";
-            CryptoLine = "Argon2id · HKDF · AES-256-GCM · DEK 이중 봉인 · 샤드 MAC · DPAPI · NTFS ACL";
+            SecurityStateLine = "금고 없음";
+            SecurityLine = "마스터 비밀번호로 새 금고를 만드세요.";
+            CryptoLine = "강력한 암호화 · 복구 코드 지원";
             return;
         }
 
         var status = _service.GetSecurityStatus();
-        SecurityLine = $"KDF {status.KdfIterations:N0}회 · ACL {(status.AclHardened ? "적용" : "미적용")} · 복구키 {(status.RecoveryKeyConfigured ? "설정됨" : "없음")} · 감사 {status.AuditEntryCount}건 {(status.AuditChainValid ? "정상" : "주의")}";
-        CryptoLine = status.CryptoStack;
+        if (_service.IsLabVaultFormat)
+        {
+            SecurityStateLine = _service.GetLabSecurityStateLabel();
+            var recLine = string.IsNullOrWhiteSpace(status.RecoveryStatusLine)
+                ? _service.GetLabRecoveryStatusLine()
+                : status.RecoveryStatusLine;
+            SecurityLine = recLine;
+            CryptoLine = status.AuditChainValid ? "보안 상태 정상" : "보안 점검 필요";
+            return;
+        }
+
+        SecurityStateLine = _service.State switch
+        {
+            SecureVaultState.NotCreated => "금고 없음",
+            SecureVaultState.Locked => "잠김",
+            SecureVaultState.Unlocked => "열림",
+            _ => _service.State.ToString()
+        };
+
+        SecurityLine = status.RecoveryKeyConfigured ? "복구 키 설정됨" : "복구 키 없음";
+        CryptoLine = "암호화 보호 중";
     }
 
 

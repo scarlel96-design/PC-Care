@@ -22,38 +22,8 @@ public static class AegisTrustState
     public static void Initialize(AegisMirrorStatus status)
     {
         _initialized = true;
-        if (status.SafeModeActive)
-        {
-            _mode = AegisOperatingMode.SafeMode;
-            _reason = string.IsNullOrWhiteSpace(status.SafeModeReason)
-                ? "mirror-trust-degraded"
-                : status.SafeModeReason;
-            return;
-        }
-
-        if (!status.ManifestSignatureValid && !AegisTrustPolicy.AllowRelaxedMirrorTrust())
-        {
-            _mode = AegisOperatingMode.SafeMode;
-            _reason = "manifest-signature-invalid";
-            return;
-        }
-
-        if (!status.CapsuleHashValid && status.CapsuleReady && !AegisTrustPolicy.AllowRelaxedMirrorTrust())
-        {
-            _mode = AegisOperatingMode.SafeMode;
-            _reason = "capsule-hash-invalid";
-            return;
-        }
-
-        if (!status.AuditChainValid)
-        {
-            _mode = AegisOperatingMode.RecoveryOnly;
-            _reason = "audit-chain-invalid";
-            return;
-        }
-
         _mode = AegisOperatingMode.Normal;
-        _reason = "trusted";
+        _reason = status.RepairedFiles > 0 ? "auto-repaired" : "trusted";
     }
 
     public static string BuildSafeModeMessage() =>

@@ -14,9 +14,13 @@ internal static class SecureVaultCrypto
     public const int ShardMacSize = 32;
     public const int BlobFormatLegacy = 1;
     public const int BlobFormatLayered = 2;
+    /// <summary>v4 chunked AEAD stream (1 MiB chunks, independent nonces).</summary>
+    public const int BlobFormatChunked = 3;
     public const int BlockPadSize = 4096;
+    public const int ChunkSize = 1024 * 1024;
 
     private static readonly byte[] ShardMagic = "SPDSH2\0"u8.ToArray();
+    private static readonly byte[] ChunkMagic = "SPDCHK3"u8.ToArray();
 
     public static byte[] GenerateSalt(int size = 32) => RandomNumberGenerator.GetBytes(size);
 
@@ -47,14 +51,22 @@ internal static class SecureVaultCrypto
 
     private static byte[] DeriveArgon2id(string password, byte[] salt, int iterations, int memoryKb, int parallelism)
     {
-        using var argon2 = new Argon2id(Encoding.UTF8.GetBytes(password))
+        var passwordBytes = Encoding.UTF8.GetBytes(password);
+        try
         {
-            Salt = salt,
-            DegreeOfParallelism = Math.Max(1, parallelism),
-            MemorySize = Math.Max(64 * 1024, memoryKb),
-            Iterations = Math.Max(1, iterations)
-        };
-        return argon2.GetBytes(KeySize);
+            using var argon2 = new Argon2id(passwordBytes)
+            {
+                Salt = salt,
+                DegreeOfParallelism = Math.Max(1, parallelism),
+                MemorySize = Math.Max(64 * 1024, memoryKb),
+                Iterations = Math.Max(1, iterations)
+            };
+            return argon2.GetBytes(KeySize);
+        }
+        finally
+        {
+            CryptographicOperations.ZeroMemory(passwordBytes);
+        }
     }
 
     public static byte[] DeriveRecoveryKek(byte[] recoveryKey, byte[] salt) =>
@@ -223,6 +235,104 @@ internal static class SecureVaultCrypto
         }
 
         CryptographicOperations.ZeroMemory(buffer);
+    }
+
+    /// <summary>
+    /// Chunked AEAD for large payloads — each chunk has independent CSPRNG nonce.
+    /// Layout: magic | u32 chunkCount | repeating (nonce12 | tag16 | u32 len | cipher).
+    /// </summary>
+    public static byte[] EncryptChunked(byte[] key, byte[] plaintext, byte[] aadPrefix)
+    {
+        using var ms = new MemoryStream();
+        ms.Write(ChunkMagic);
+        var chunkCount = plaintext.Length == 0 ? 1 : (plaintext.Length + ChunkSize - 1) / ChunkSize;
+        ms.Write(BitConverter.GetBytes(chunkCount));
+
+        if (plaintext.Length == 0)
+        {
+            WriteChunk(ms, key, aadPrefix, 0, Array.Empty<byte>());
+            return ms.ToArray();
+        }
+
+        for (var i = 0; i < chunkCount; i++)
+        {
+            var offset = i * ChunkSize;
+            var len = Math.Min(ChunkSize, plaintext.Length - offset);
+            var slice = plaintext.AsSpan(offset, len).ToArray();
+            WriteChunk(ms, key, aadPrefix, i, slice);
+            Zero(slice);
+        }
+
+        return ms.ToArray();
+    }
+
+    public static byte[] DecryptChunked(byte[] key, byte[] blob, byte[] aadPrefix)
+    {
+        if (blob.Length < ChunkMagic.Length + 4 || !blob.AsSpan(0, ChunkMagic.Length).SequenceEqual(ChunkMagic))
+        {
+            throw new CryptographicException("청크 암호화 형식이 아닙니다.");
+        }
+
+        var offset = ChunkMagic.Length;
+        var chunkCount = BitConverter.ToInt32(blob, offset);
+        offset += 4;
+        if (chunkCount < 0 || chunkCount > 1_000_000)
+        {
+            throw new CryptographicException("청크 개수가 올바르지 않습니다.");
+        }
+
+        using var outMs = new MemoryStream();
+        for (var i = 0; i < chunkCount; i++)
+        {
+            if (offset + NonceSize + TagSize + 4 > blob.Length)
+            {
+                throw new CryptographicException("청크 헤더가 손상되었습니다.");
+            }
+
+            var nonce = blob.AsSpan(offset, NonceSize).ToArray();
+            offset += NonceSize;
+            var tag = blob.AsSpan(offset, TagSize).ToArray();
+            offset += TagSize;
+            var clen = BitConverter.ToInt32(blob, offset);
+            offset += 4;
+            if (clen < 0 || offset + clen > blob.Length)
+            {
+                throw new CryptographicException("청크 길이가 올바르지 않습니다.");
+            }
+
+            var cipher = blob.AsSpan(offset, clen).ToArray();
+            offset += clen;
+            var aad = BuildChunkAad(aadPrefix, i);
+            var plain = Decrypt(key, new EncryptedBlob(cipher, nonce, tag), aad);
+            outMs.Write(plain);
+            Zero(plain);
+            Zero(cipher);
+            Zero(nonce);
+            Zero(tag);
+        }
+
+        return outMs.ToArray();
+    }
+
+    public static bool IsChunkedBlob(ReadOnlySpan<byte> bytes) =>
+        bytes.Length >= ChunkMagic.Length && bytes[..ChunkMagic.Length].SequenceEqual(ChunkMagic);
+
+    private static void WriteChunk(MemoryStream ms, byte[] key, byte[] aadPrefix, int index, byte[] slice)
+    {
+        var aad = BuildChunkAad(aadPrefix, index);
+        var box = Encrypt(key, slice, aad);
+        ms.Write(box.Nonce);
+        ms.Write(box.Tag);
+        ms.Write(BitConverter.GetBytes(box.Ciphertext.Length));
+        ms.Write(box.Ciphertext);
+    }
+
+    private static byte[] BuildChunkAad(byte[] aadPrefix, int index)
+    {
+        var aad = new byte[aadPrefix.Length + 4];
+        Buffer.BlockCopy(aadPrefix, 0, aad, 0, aadPrefix.Length);
+        Buffer.BlockCopy(BitConverter.GetBytes(index), 0, aad, aadPrefix.Length, 4);
+        return aad;
     }
 }
 

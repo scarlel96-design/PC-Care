@@ -11,12 +11,29 @@ public sealed class InferenceOrchestrator
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
     private readonly KnowledgeService _knowledge = KnowledgeService.Shared;
 
-    public InferenceResult Analyze(string scope, IReadOnlyList<IntelligenceSummary> diagnoses, IReadOnlyList<string> rawSignals)
+    public InferenceResult Analyze(
+        string scope,
+        IReadOnlyList<IntelligenceSummary> diagnoses,
+        IReadOnlyList<string> rawSignals,
+        LocalLlmAnalysisResult? localLlm = null)
     {
         _knowledge.EnsureRulesLoaded();
         var policy = LoadPolicy();
         var scopedDiagnoses = FilterDiagnosesByScope(scope, diagnoses);
         var insights = new List<InferenceInsight>();
+
+        if (localLlm?.Insights is { Count: > 0 })
+        {
+            foreach (var item in localLlm.Insights)
+            {
+                insights.Add(new InferenceInsight(
+                    "local-llm",
+                    item.Title,
+                    item.Detail,
+                    item.Confidence,
+                    "경량 오픈소스 AI"));
+            }
+        }
         var repairIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var matchedClusters = new List<SignalClusterPolicy>();
 
@@ -37,7 +54,7 @@ public sealed class InferenceOrchestrator
                     cause.Explanation,
                     cause.Recommendation,
                     cause.Confidence,
-                    "Rust 규칙 엔진"));
+                    "최신 진단 엔진"));
             }
         }
 
@@ -75,11 +92,11 @@ public sealed class InferenceOrchestrator
             }
 
             insights.Add(new InferenceInsight(
-                "ai-cluster",
+                "local-rules",
                 cluster.Title,
-                $"신호 상관 분석으로 {cluster.Title} 패턴이 감지되었습니다.",
+                $"로컬 규칙 매칭: {cluster.Title}",
                 confidence,
-                "AI 신호 클러스터"));
+                "로컬 규칙 DB"));
 
             if (!string.IsNullOrWhiteSpace(cluster.Recommendation)
                 && ScopeRepairFilter.IsAllowedForScope(cluster.Recommendation, scope))
@@ -119,10 +136,9 @@ public sealed class InferenceOrchestrator
         repairIds.RemoveWhere(id => !ScopeRepairFilter.IsAllowedForScope(id, scope));
 
         var status = fusedScore >= 85 ? "양호" : fusedScore >= 65 ? "주의" : "위험";
-        var cotSummary = policy.LlmReasoning?.CotTemplate ?? "증거→게이트→상관→검색→검증→선정";
         var summary = repairNotNeeded
-            ? $"정밀 스캔 완료 · 점수 {fusedScore}점 · 복구 불필요 · 인사이트 {insights.Count}건"
-            : $"AI·규칙 융합 추론 완료 · 점수 {fusedScore}점 · 인사이트 {insights.Count}건 · 복구 후보 {repairIds.Count}개 · CoT: {cotSummary}";
+            ? $"정밀 스캔 완료 · 점수 {fusedScore}점 · 복구 불필요 · 참고 {insights.Count}건"
+            : $"로컬 규칙 분석 완료 · 점수 {fusedScore}점 · 참고 {insights.Count}건 · 복구 후보 {repairIds.Count}개";
 
         var enhanced = BuildEnhancedIntelligence(scopedDiagnoses, insights, fusedScore, status, summary);
 

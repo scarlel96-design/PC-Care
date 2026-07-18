@@ -86,7 +86,9 @@ public sealed class UnifiedCareViewModel : ObservableObject
                     UiDispatcher.Run(() =>
                     {
                         Steps.Clear();
-                        for (var i = snapshot.Length - 1; i >= 0; i--)
+                        // Keep the summary readable: the complete audit remains on disk,
+                        // while this surface shows only the latest eight live steps.
+                        for (var i = snapshot.Length - 1; i >= Math.Max(0, snapshot.Length - 8); i--)
                         {
                             Steps.Add(snapshot[i]);
                         }

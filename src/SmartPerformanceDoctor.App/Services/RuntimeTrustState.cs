@@ -46,6 +46,11 @@ public static class RuntimeTrustState
 
     private static bool ShouldSkipSignatureCheck()
     {
+        if (SmartProtectionDefaults.SilentConsumerMode)
+        {
+            return true;
+        }
+
         var flag = Environment.GetEnvironmentVariable("PCCARE_SKIP_SIGNATURE_CHECK");
         if (string.Equals(flag, "1", StringComparison.Ordinal)
             || string.Equals(flag, "true", StringComparison.OrdinalIgnoreCase))

@@ -72,18 +72,6 @@ public sealed partial class UnifiedCarePage : Page
         DiagnosisAndRepairRadio.IsChecked = request.IncludeRepair;
 
         ReadOptionsFromUi();
-
-        if (request.IncludeRepair && request.RiskAccepted)
-        {
-            RiskCheck.IsChecked = true;
-            _viewModel.RiskAccepted = true;
-        }
-
-        if (request.AutoStart && request.IncludeRepair)
-        {
-            SummaryText.Text = "메인 화면에서 시작됨 — 전체 점검 후 문제가 있으면 안전 복구까지 자동 진행합니다.";
-        }
-
         SyncUi();
 
         if (request.AutoStart)
@@ -194,7 +182,7 @@ public sealed partial class UnifiedCarePage : Page
         }
 
         ModeHintText.Text = _viewModel.IncludeRepair
-            ? "현재: 진단+복구 모드입니다. 문제가 발견되면 사전 확인 후 복구가 적용됩니다."
+            ? "현재: 진단+복구 모드입니다. 문제가 발견되면 사전 확인 후 실제 복구가 진행됩니다."
             : "현재: 진단만 모드입니다. 복구 작업은 실행되지 않습니다.";
     }
 

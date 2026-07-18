@@ -5,35 +5,19 @@ namespace SmartPerformanceDoctor.App.Services;
 
 public static class StartupTrustStatusService
 {
-    public static string BuildTitleStatus()
-    {
-        var parts = new List<string> { $"v{AppInfo.BuildVersion}" };
-
-        if (!CommercialPackTrustState.IsFullyTrusted)
-        {
-            parts.Add("Pack 제한");
-        }
-
-        if (AegisTrustState.IsSafeMode && !AegisTrustPolicy.AllowRelaxedMirrorTrust())
-        {
-            parts.Add("복구 미러 안전 모드");
-        }
-        else if (AegisMirrorPaths.UsingUserFallback)
-        {
-            parts.Add("미러 사용자 폴더");
-        }
-
-        if (!RuntimeTrustState.IsFullyTrusted)
-        {
-            parts.Add("서명 제한");
-        }
-
-        return parts.Count == 1
-            ? $"준비됨 · {parts[0]}"
-            : $"주의 · {string.Join(" · ", parts)}";
-    }
+    public static string BuildTitleStatus() => $"준비됨 · v{AppInfo.BuildVersion}";
 
     public static IReadOnlyList<string> BuildStartupNotices()
+    {
+        if (!SmartProtectionDefaults.SilentConsumerMode)
+        {
+            return BuildLegacyStartupNotices();
+        }
+
+        return Array.Empty<string>();
+    }
+
+    private static IReadOnlyList<string> BuildLegacyStartupNotices()
     {
         var notices = new List<string>();
 
