@@ -381,6 +381,25 @@ public sealed class UpdateInstallerService
                 } catch { return $false }
             }
 
+            function Stop-AegisRecoveryServices {
+                foreach ($serviceName in @('PCCareAegisRecovery', 'AstraCareAegisRecovery')) {
+                    try {
+                        $service = Get-Service -Name $serviceName -ErrorAction SilentlyContinue
+                        if ($null -ne $service -and $service.Status -ne 'Stopped') {
+                            Stop-Service -Name $serviceName -Force -ErrorAction Stop
+                            $service.WaitForStatus('Stopped', [TimeSpan]::FromSeconds(20))
+                            Write-Log "stopped recovery service: $serviceName"
+                        }
+                    } catch {
+                        Write-Log "recovery service stop warning: $serviceName :: $($_.Exception.Message)"
+                    }
+                }
+
+                foreach ($processName in @('AegisRecoveryService', 'AegisRecoveryHelper')) {
+                    Get-Process -Name $processName -ErrorAction SilentlyContinue |
+                        Stop-Process -Force -ErrorAction SilentlyContinue
+                }
+            }
             # Single-instance: prevent overlapping apply scripts (PS flash storm).
             $mutex = $null
             try {
@@ -408,6 +427,7 @@ public sealed class UpdateInstallerService
                 }
 
                 Write-Log "finalize start -> $expected admin=$(Test-IsAdmin)"
+                Stop-AegisRecoveryServices
 
                 $waitNames = @('PCCare','SmartPerformanceDoctor','AstraCare')
                 $deadline = (Get-Date).AddSeconds(90)
@@ -419,9 +439,13 @@ public sealed class UpdateInstallerService
                     if ($alive.Count -eq 0) { break }
                     Start-Sleep -Seconds 1
                 }
-                # Force-release file locks so copy can proceed; do not restart app yet.
+                $stillAlive = @()
                 foreach ($n in $waitNames) {
-                    Get-Process -Name $n -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+                    if (Get-Process -Name $n -ErrorAction SilentlyContinue) { $stillAlive += $n }
+                }
+                if ($stillAlive.Count -gt 0) {
+                    Write-Log "app still running; pending update left for next launch"
+                    exit 0
                 }
                 Start-Sleep -Milliseconds 800
 
@@ -472,6 +496,9 @@ public sealed class UpdateInstallerService
                     Write-Log "verification ok; pending cleared"
                     # Restart app only after successful apply (50.4.1: no reopen-on-failure loop).
                     if (Test-Path -LiteralPath $exe) {
+                        foreach ($serviceName in @('PCCareAegisRecovery', 'AstraCareAegisRecovery')) {
+                            try { Start-Service -Name $serviceName -ErrorAction SilentlyContinue } catch { }
+                        }
                         Start-Process -FilePath $exe
                         Write-Log "started $exe"
                     }

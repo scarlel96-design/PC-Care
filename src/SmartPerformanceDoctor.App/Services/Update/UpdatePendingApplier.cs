@@ -64,14 +64,13 @@ public sealed class UpdatePendingApplier
 
                 if (alreadyRunning)
                 {
-                    AppendApplyLog($"[startup] pending {toVersion} apply already in flight; no extra launch/exit");
+                    AppendApplyLog($"[startup] pending {toVersion} apply already in flight; app remains open");
                     return new PendingApplyResult(
                         false,
                         0,
                         $"업데이트({toVersion}) 적용이 진행 중입니다. 잠시 후 다시 열어 주세요.",
                         toVersion,
-                        false,
-                        RequestExit: true);
+                        false);
                 }
 
                 AppendApplyLog($"[startup] elevation required for pending {toVersion} → {targetDir}");
