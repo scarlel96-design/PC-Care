@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "fusion": {
     "min_confidence": 0.45,
     "learning_weight_blend": 0.35,
@@ -12,59 +12,130 @@
   "signal_clusters": [
     {
       "id": "service_down",
-      "keywords": ["state", "stopped", "not running", "서비스", "stopped"],
+      "keywords": [
+        "service",
+        "서비스",
+        "stopped",
+        "not running",
+        "중지"
+      ],
       "title": "자동 시작 서비스 중단",
       "recommendation": "audio_restart_stack",
-      "confidence": 0.72
+      "confidence": 0.72,
+      "min_keyword_matches": 2,
+      "negative_keywords": []
     },
     {
       "id": "storage_risk",
-      "keywords": ["disk", "storage", "healthstatus", "warning", "저장"],
+      "keywords": [
+        "disk",
+        "storage",
+        "healthstatus",
+        "warning",
+        "unhealthy",
+        "저장"
+      ],
       "title": "저장소 상태 주의",
       "recommendation": "dism_checkhealth",
-      "confidence": 0.68
+      "confidence": 0.68,
+      "min_keyword_matches": 2,
+      "negative_keywords": []
     },
     {
       "id": "driver_problem",
-      "keywords": ["pnp", "problem", "configmanager", "driver", "장치"],
+      "keywords": [
+        "pnp",
+        "driver",
+        "장치",
+        "problem",
+        "configmanager"
+      ],
       "title": "드라이버/장치 문제 신호",
       "recommendation": "driver_check_problem_devices",
-      "confidence": 0.75
+      "confidence": 0.75,
+      "min_keyword_matches": 2,
+      "negative_keywords": []
     },
     {
       "id": "reboot_pending",
-      "keywords": ["reboot", "pending", "재부팅"],
+      "keywords": [
+        "reboot",
+        "pending",
+        "재부팅",
+        "대기"
+      ],
       "title": "재부팅 대기 상태",
       "recommendation": "dism_checkhealth",
-      "confidence": 0.6
+      "confidence": 0.6,
+      "min_keyword_matches": 2,
+      "negative_keywords": []
     },
     {
       "id": "bsod_recent",
-      "keywords": ["bugcheck", "bluescreen", "블루스크린", "bugcheck_30d", "stability risk"],
+      "keywords": [
+        "bugcheck",
+        "bluescreen",
+        "블루스크린",
+        "bugcheck_30d",
+        "stability risk"
+      ],
       "title": "최근 블루스크린(BugCheck) 기록",
       "recommendation": "dism_checkhealth",
-      "confidence": 0.82
+      "confidence": 0.82,
+      "min_keyword_matches": 1,
+      "negative_keywords": []
     },
     {
       "id": "whea_error",
-      "keywords": ["whea", "whea_error", "hardware error", "하드웨어 오류"],
+      "keywords": [
+        "whea",
+        "whea_error",
+        "hardware error",
+        "하드웨어 오류"
+      ],
       "title": "WHEA 하드웨어 오류",
       "recommendation": "dism_checkhealth",
-      "confidence": 0.78
+      "confidence": 0.78,
+      "min_keyword_matches": 1,
+      "negative_keywords": []
     },
     {
       "id": "unexpected_shutdown",
-      "keywords": ["unexpected_shutdown", "비정상 종료", "예기치 않은 종료"],
+      "keywords": [
+        "unexpected_shutdown",
+        "비정상 종료",
+        "예기치 않은 종료"
+      ],
       "title": "예기치 않은 시스템 종료",
       "recommendation": "dism_checkhealth",
-      "confidence": 0.7
+      "confidence": 0.7,
+      "min_keyword_matches": 1,
+      "negative_keywords": []
     }
   ],
   "repair_mapping": {
-    "system": ["dism_checkhealth", "driver_check_problem_devices", "audio_scan_devices"],
-    "driver": ["driver_check_problem_devices", "pnputil_scan_devices"],
-    "audio": ["audio_scan_devices", "audio_restart_stack"],
-    "quick": ["driver_check_problem_devices", "audio_scan_devices"],
-    "full": ["driver_check_problem_devices", "audio_scan_devices", "pnputil_scan_devices", "audio_restart_stack"]
+    "system": [
+      "dism_checkhealth",
+      "driver_check_problem_devices",
+      "audio_scan_devices"
+    ],
+    "driver": [
+      "driver_check_problem_devices",
+      "pnputil_scan_devices"
+    ],
+    "audio": [
+      "audio_scan_devices",
+      "audio_restart_stack"
+    ],
+    "quick": [
+      "driver_check_problem_devices",
+      "audio_scan_devices"
+    ],
+    "full": [
+      "driver_check_problem_devices",
+      "audio_scan_devices",
+      "pnputil_scan_devices",
+      "audio_restart_stack"
+    ]
   }
 }

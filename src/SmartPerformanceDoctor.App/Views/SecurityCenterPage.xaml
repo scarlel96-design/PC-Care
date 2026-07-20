@@ -3,68 +3,86 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     RequestedTheme="Light">
-    <ScrollViewer>
-        <StackPanel Padding="{StaticResource SpdMacPagePadding}" MaxWidth="1080" Spacing="20">
-            <Grid ColumnDefinitions="*,Auto">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalContentAlignment="Stretch">
+        <StackPanel Padding="{StaticResource PccPagePadding}" MaxWidth="1060" HorizontalAlignment="Stretch" Spacing="20">
+            <Grid x:Name="SecurityHeaderGrid" ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="16" RowSpacing="10">
                 <StackPanel Spacing="5">
                     <TextBlock Text="보안" Style="{StaticResource MacPageTitleStyle}"/>
-                    <TextBlock Text="중요 파일 보호와 복구하기 어려운 삭제를 명확히 분리했습니다."
-                               Style="{StaticResource MacInlineStatusTextStyle}"/>
+                    <TextBlock Text="암호화 보관과 복구하기 어려운 삭제를 같은 안전 원칙으로 관리합니다."
+                               Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
                 </StackPanel>
-                <Border Grid.Column="1" Padding="12,7" CornerRadius="16" Background="#EAF8F2" VerticalAlignment="Center">
-                    <TextBlock Text="● 모든 보호 정상" Foreground="#128257" FontSize="12" FontWeight="SemiBold"/>
+                <Border x:Name="SecurityStatusBadge" Grid.Column="1" Padding="12,7" CornerRadius="16"
+                        Background="{StaticResource PccSuccessSoftBrush}" VerticalAlignment="Center">
+                    <TextBlock Text="● 보호 도구 준비됨" Foreground="{StaticResource PccSuccessBrush}" FontSize="12" FontWeight="SemiBold"/>
                 </Border>
             </Grid>
 
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="18">
-                <Border Grid.Column="0" Style="{StaticResource PremiumHeroCardStyle}">
+            <Grid x:Name="SecurityCardGrid" ColumnDefinitions="*,*" RowDefinitions="Auto,Auto"
+                  ColumnSpacing="18" RowSpacing="18" SizeChanged="SecurityCardGridSizeChanged">
+                <Border x:Name="VaultCard" Grid.Column="0" Style="{StaticResource PccCardStyle}" MinHeight="330">
                     <StackPanel Spacing="14">
                         <Grid ColumnDefinitions="*,Auto">
-                            <Border Width="58" Height="58" CornerRadius="17" Background="#EAF3FF">
-                                <TextBlock Text="◇" FontSize="28" Foreground="{StaticResource SpdMacAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Border Width="58" Height="58" CornerRadius="17" Background="{StaticResource PccAccentSoftBrush}">
+                                <TextBlock Text="◇" FontSize="28" Foreground="{StaticResource PccAccentBrush}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
-                            <Border Grid.Column="1" Padding="10,5" CornerRadius="14" Background="#EAF8F2" VerticalAlignment="Top">
-                                <TextBlock Text="잠김 · 안전" Foreground="#128257" FontSize="10" FontWeight="SemiBold"/>
+                            <Border Grid.Column="1" Padding="10,5" CornerRadius="14"
+                                    Background="{StaticResource PccSuccessSoftBrush}" VerticalAlignment="Top">
+                                <TextBlock Text="암호화 보호" Foreground="{StaticResource PccSuccessBrush}" FontSize="10" FontWeight="SemiBold"/>
                             </Border>
                         </Grid>
-                        <TextBlock Text="보안 금고" FontSize="23" FontWeight="SemiBold"/>
-                        <TextBlock Text="중요한 파일과 폴더를 암호화해서 보관합니다. 금고를 잠그면 다른 프로그램에서 내용을 읽을 수 없습니다."
-                                   Style="{StaticResource MacListItemSubtitleStyle}" TextWrapping="Wrap"/>
-                        <Grid ColumnDefinitions="*,*,*" Margin="0,8,0,4">
-                            <StackPanel><TextBlock Text="18개" FontSize="18" FontWeight="SemiBold"/><TextBlock Text="보관 항목" FontSize="10" Foreground="{StaticResource SpdMutedTextBrush}"/></StackPanel>
-                            <StackPanel Grid.Column="1"><TextBlock Text="1.4GB" FontSize="18" FontWeight="SemiBold"/><TextBlock Text="사용 중" FontSize="10" Foreground="{StaticResource SpdMutedTextBrush}"/></StackPanel>
-                            <StackPanel Grid.Column="2"><TextBlock Text="5분" FontSize="18" FontWeight="SemiBold"/><TextBlock Text="자동 잠금" FontSize="10" Foreground="{StaticResource SpdMutedTextBrush}"/></StackPanel>
+                        <TextBlock Text="보안 금고" FontSize="23" FontWeight="SemiBold" Foreground="{StaticResource PccTextBrush}"/>
+                        <TextBlock Text="중요한 파일과 폴더를 암호화해 보관하고, 잠근 뒤에는 다른 프로그램이 내용을 읽지 못하도록 보호합니다."
+                                   Foreground="{StaticResource PccTextMutedBrush}" TextWrapping="Wrap"/>
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8" Margin="0,8,0,4">
+                            <Border Background="{StaticResource PccSurfaceMutedBrush}" CornerRadius="12" Padding="10">
+                                <StackPanel Spacing="3"><TextBlock Text="암호화" FontWeight="SemiBold" Foreground="{StaticResource PccTextBrush}"/><TextBlock Text="파일 보호" FontSize="11" Foreground="{StaticResource PccTextMutedBrush}"/></StackPanel>
+                            </Border>
+                            <Border Grid.Column="1" Background="{StaticResource PccSurfaceMutedBrush}" CornerRadius="12" Padding="10">
+                                <StackPanel Spacing="3"><TextBlock Text="무결성" FontWeight="SemiBold" Foreground="{StaticResource PccTextBrush}"/><TextBlock Text="변조 확인" FontSize="11" Foreground="{StaticResource PccTextMutedBrush}"/></StackPanel>
+                            </Border>
+                            <Border Grid.Column="2" Background="{StaticResource PccSurfaceMutedBrush}" CornerRadius="12" Padding="10">
+                                <StackPanel Spacing="3"><TextBlock Text="자동 잠금" FontWeight="SemiBold" Foreground="{StaticResource PccTextBrush}"/><TextBlock Text="노출 방지" FontSize="11" Foreground="{StaticResource PccTextMutedBrush}"/></StackPanel>
+                            </Border>
                         </Grid>
-                        <Button Content="금고 열기" Style="{StaticResource PremiumPrimaryButtonStyle}" Click="OpenVault" HorizontalAlignment="Left"/>
+                        <Button Content="금고 열기" Style="{StaticResource PccPrimaryButtonStyle}" Click="OpenVault" HorizontalAlignment="Left"/>
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Column="1" Style="{StaticResource PremiumHeroCardStyle}">
+                <Border x:Name="DeleteCard" Grid.Column="1" Style="{StaticResource PccCardStyle}" MinHeight="330">
                     <StackPanel Spacing="14">
                         <Grid ColumnDefinitions="*,Auto">
-                            <Border Width="58" Height="58" CornerRadius="17" Background="#FFF0F1">
-                                <TextBlock Text="⌫" FontSize="28" Foreground="#D84449" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Border Width="58" Height="58" CornerRadius="17" Background="{StaticResource PccDangerSoftBrush}">
+                                <TextBlock Text="⌫" FontSize="28" Foreground="{StaticResource PccDangerBrush}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
-                            <Border Grid.Column="1" Padding="10,5" CornerRadius="14" Background="#FFF7E7" VerticalAlignment="Top">
-                                <TextBlock Text="주의 필요" Foreground="#A56505" FontSize="10" FontWeight="SemiBold"/>
+                            <Border Grid.Column="1" Padding="10,5" CornerRadius="14"
+                                    Background="{StaticResource PccCautionSoftBrush}" VerticalAlignment="Top">
+                                <TextBlock Text="확인 후 실행" Foreground="{StaticResource PccCautionBrush}" FontSize="10" FontWeight="SemiBold"/>
                             </Border>
                         </Grid>
-                        <TextBlock Text="보안 삭제" FontSize="23" FontWeight="SemiBold"/>
-                        <TextBlock Text="복구하기 어렵도록 파일을 영구적으로 삭제합니다. 실행 전에 대상과 저장 장치 특성을 확인합니다."
-                                   Style="{StaticResource MacListItemSubtitleStyle}" TextWrapping="Wrap"/>
-                        <Border Padding="14" CornerRadius="12" Background="#FFF0F1" Margin="0,8,0,4">
-                            <StackPanel Spacing="4"><TextBlock Text="삭제 후 복원할 수 없습니다" Foreground="#A73E42" FontWeight="SemiBold"/><TextBlock Text="미리보기와 확인 문구를 통과해야 실행됩니다." Foreground="#A85F62" FontSize="10"/></StackPanel>
+                        <TextBlock Text="보안 삭제" FontSize="23" FontWeight="SemiBold" Foreground="{StaticResource PccTextBrush}"/>
+                        <TextBlock Text="선택한 파일을 복구하기 어렵도록 삭제합니다. 실행 전 대상, 저장 장치 특성, 삭제 방식을 다시 확인합니다."
+                                   Foreground="{StaticResource PccTextMutedBrush}" TextWrapping="Wrap"/>
+                        <Border Padding="14" CornerRadius="12" Background="{StaticResource PccDangerSoftBrush}" Margin="0,8,0,4">
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="삭제 후 원상 복구할 수 없습니다" Foreground="{StaticResource PccDangerBrush}" FontWeight="SemiBold"/>
+                                <TextBlock Text="미리보기와 확인 문구를 통과한 대상만 처리합니다."
+                                           Foreground="#A85F62" FontSize="11" TextWrapping="Wrap"/>
+                            </StackPanel>
                         </Border>
-                        <Button Content="삭제할 파일 선택" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenSecureDelete" HorizontalAlignment="Left"/>
+                        <Button Content="삭제할 파일 선택" Style="{StaticResource PccDangerButtonStyle}" Click="OpenSecureDelete" HorizontalAlignment="Left"/>
                     </StackPanel>
                 </Border>
             </Grid>
 
             <Expander Header="고급 보안 및 복구 도구" HorizontalAlignment="Stretch">
-                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12" Padding="0,12,0,0">
-                    <Button Content="금고 무결성 검사" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenVault"/>
-                    <Button Grid.Column="1" Content="프로그램 보호 상태" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenProtection"/>
-                    <Button Grid.Column="2" Content="고급 복구 도구" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenAdvanced"/>
+                <Grid x:Name="SecurityToolGrid" ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="12" RowSpacing="8" Padding="0,12,0,0">
+                    <Button x:Name="VaultIntegrityButton" Content="금고 무결성 검사" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenVault"/>
+                    <Button x:Name="ProtectionStatusButton" Grid.Column="1" Content="프로그램 보호 상태" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenProtection"/>
+                    <Button x:Name="AdvancedRecoveryButton" Grid.Column="2" Content="고급 복구 도구" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenAdvanced"/>
                 </Grid>
             </Expander>
         </StackPanel>

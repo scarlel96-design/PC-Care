@@ -74,4 +74,45 @@ public sealed class InferenceOrchestratorTests
         Assert.DoesNotContain(result.RecommendedRepairActionIds, id => id.Contains("driver", StringComparison.OrdinalIgnoreCase));
         Assert.DoesNotContain(result.RecommendedRepairActionIds, id => id.Contains("audio", StringComparison.OrdinalIgnoreCase));
     }
+
+    [Fact]
+    public void Analyze_DoesNotCorrelateKeywordsAcrossDifferentSignalLines()
+    {
+        var result = new InferenceOrchestrator().Analyze(
+            "system",
+            Array.Empty<IntelligenceSummary>(),
+            ["service inventory collected", "background process stopped"]);
+
+        Assert.DoesNotContain(result.Insights, insight =>
+            insight.Category == "local-rules" && insight.Title.Contains("서비스", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void Analyze_MatchesCorrelatedKeywordsWithinOneSignalLine()
+    {
+        var result = new InferenceOrchestrator().Analyze(
+            "system",
+            Array.Empty<IntelligenceSummary>(),
+            ["service audiosrv stopped unexpectedly"]);
+
+        Assert.Contains(result.Insights, insight =>
+            insight.Category == "local-rules" && insight.Title.Contains("서비스", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void Analyze_LocalAiOpinionAlone_DoesNotCreateRepairActions()
+    {
+        var llm = new LocalLlmAnalysisResult(
+            true,
+            "analysis",
+            [new LocalLlmInsight("참고", "추가 확인 권장", 0.99)]);
+
+        var result = new InferenceOrchestrator().Analyze(
+            "system",
+            Array.Empty<IntelligenceSummary>(),
+            Array.Empty<string>(),
+            llm);
+
+        Assert.Empty(result.RecommendedRepairActionIds);
+    }
 }

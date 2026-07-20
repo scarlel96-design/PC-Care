@@ -165,20 +165,23 @@ public sealed class SystemCareService
                     }
                 });
 
+            var evaluatedFindings = CareFindingQualityGate.Evaluate(findings);
             var title = mode == CareScanMode.Smart ? "스마트 검사" : "정밀 점검";
-            var health = CareHealthScorer.Score(findings);
-            CareAuditChain.Append(audit, "scan-complete", $"발견 {findings.Count} · 점수 {health.Score}");
+            var health = CareHealthScorer.Score(evaluatedFindings);
+            var suppressedActions = findings.Count(f => f.CanAutoApply) - evaluatedFindings.Count(f => f.CanAutoApply);
+            CareAuditChain.Append(audit, "quality-gate", $"중복·오탐·자동 처리 차단 {Math.Max(0, suppressedActions)}개");
+            CareAuditChain.Append(audit, "scan-complete", $"발견 {evaluatedFindings.Count} · 점수 {health.Score}");
             var result = new CareScanResult
             {
                 Mode = mode,
                 Module = CareModuleKind.Registry,
                 ModuleTitle = title,
-                Summary = $"{BuildSummary(findings)} · {health.Summary}",
+                Summary = $"{BuildSummary(evaluatedFindings)} · {health.Summary}",
                 HealthScore = health.Score,
                 HealthGrade = health.Grade,
                 AuditChainValid = CareAuditChain.Verify(audit),
                 EnabledTasks = enabled,
-                Findings = findings,
+                Findings = evaluatedFindings,
                 AuditFolder = audit
             };
 
@@ -201,7 +204,10 @@ public sealed class SystemCareService
             Directory.CreateDirectory(quarantine);
             CareAuditChain.Append(scan.AuditFolder, "apply-start", $"대상 필터 · review={includeReviewItems}");
 
-            var targets = scan.Findings.Where(f => f.CanAutoApply || (includeReviewItems && f.RiskCode == "review")).ToArray();
+            var targets = scan.Findings
+                .Where(f => f.CanAutoApply
+                            && (f.RiskCode == "safe" || (includeReviewItems && f.RiskCode == "review")))
+                .ToArray();
             progress?.Report((10, $"적용 대상 {targets.Length}개 확인"));
 
             for (var i = 0; i < targets.Length; i++)
@@ -1153,6 +1159,11 @@ public sealed class SystemCareService
                 ? " · 대용량 폴더(일부 샘플링)"
                 : "";
 
+        var autoApplyEligible = safeApply
+            && !scan.Estimated
+            && scan.Note == "complete"
+            && scan.TotalBytes >= 32L * 1024 * 1024;
+
         list.Add(new CareFinding
         {
             Id = id,
@@ -1160,8 +1171,10 @@ public sealed class SystemCareService
             Detail = $"{path} · 약 {scan.TotalBytes / 1024 / 1024} MB · 파일 {scan.FileCount}개{suffix}",
             RiskLabel = safeApply ? "안전" : "확인 필요",
             RiskCode = safeApply ? "safe" : "review",
-            CanAutoApply = safeApply,
-            TargetPath = path
+            CanAutoApply = autoApplyEligible,
+            TargetPath = path,
+            Confidence = scan.Estimated ? 0.65 : 0.95,
+            Evidence = $"bytes={scan.TotalBytes}; files={scan.FileCount}; complete={!scan.Estimated && scan.Note == "complete"}"
         });
     }
 
@@ -1192,7 +1205,7 @@ public sealed class SystemCareService
             }
         }
 
-        if (old == 0)
+        if (old == 0 || (old < 20 && size < 1024 * 1024))
         {
             return;
         }
@@ -1969,7 +1982,9 @@ public sealed class SystemCareService
                     : "DNS 해석 실패",
                 RiskLabel = ok && !slow ? "안전" : "확인 필요",
                 RiskCode = ok && !slow ? "safe" : "review",
-                CanAutoApply = slow || !ok
+                CanAutoApply = false,
+                Confidence = ok ? 0.9 : 0.75,
+                Evidence = $"resolved={ok}; elapsedMs={sw.ElapsedMilliseconds}"
             });
         }
         catch
@@ -1981,7 +1996,9 @@ public sealed class SystemCareService
                 Detail = "DNS 해석 실패 — 어댑터·프록시 확인",
                 RiskLabel = "확인 필요",
                 RiskCode = "review",
-                CanAutoApply = true
+                CanAutoApply = false,
+                Confidence = 0.7,
+                Evidence = "dns-query-failed"
             });
         }
     }
@@ -1995,7 +2012,9 @@ public sealed class SystemCareService
             Detail = "네트워크 지연·DNS 오류 시 ipconfig /flushdns 로 캐시를 비울 수 있습니다.",
             RiskLabel = "안전",
             RiskCode = "safe",
-            CanAutoApply = true
+            CanAutoApply = false,
+            Confidence = 0.9,
+            Evidence = "requires-correlated-dns-failure"
         });
     }
 

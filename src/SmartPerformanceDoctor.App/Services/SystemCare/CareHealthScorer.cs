@@ -34,8 +34,17 @@ public static class CareHealthScorer
         var highrisk = findings.Count(f => f.RiskCode == "highrisk");
         var blocked = findings.Count(f => f.RiskCode == "blocked");
 
-        var penalty = review * 2 + caution * 5 + highrisk * 10 + blocked * 8;
-        var score = Math.Clamp(100 - penalty, 0, 100);
+        // Probe failures are reported separately and never lower the PC health score.
+        // Low-confidence signals contribute proportionally instead of being counted as facts.
+        var penalty = findings.Sum(f => f.RiskCode switch
+        {
+            "review" => 2 * Math.Clamp(f.Confidence, 0, 1),
+            "caution" => 5 * Math.Clamp(f.Confidence, 0, 1),
+            "highrisk" => 10 * Math.Clamp(f.Confidence, 0, 1),
+            "blocked" => 8 * Math.Clamp(f.Confidence, 0, 1),
+            _ => 0
+        });
+        var score = Math.Clamp(100 - (int)Math.Round(penalty), 0, 100);
         var grade = score switch
         {
             >= 90 => "우수",

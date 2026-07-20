@@ -8,7 +8,11 @@ namespace SmartPerformanceDoctor.App.Services;
 
 public sealed class InferenceOrchestrator
 {
-    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
+    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
+    {
+        PropertyNameCaseInsensitive = true,
+        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+    };
     private readonly KnowledgeService _knowledge = KnowledgeService.Shared;
 
     public InferenceResult Analyze(
@@ -58,7 +62,11 @@ public sealed class InferenceOrchestrator
             }
         }
 
-        var signalBlob = string.Join('\n', rawSignals).ToLowerInvariant();
+        var normalizedSignals = rawSignals
+            .Where(signal => !string.IsNullOrWhiteSpace(signal))
+            .Select(signal => signal.Trim().ToLowerInvariant())
+            .ToArray();
+        var signalBlob = string.Join('\n', normalizedSignals);
         var repairNotNeeded = DetectRepairNotNeeded(signalBlob);
 
         foreach (var cluster in policy.SignalClusters)
@@ -68,7 +76,7 @@ public sealed class InferenceOrchestrator
                 continue;
             }
 
-            if (!cluster.Keywords.Any(keyword => signalBlob.Contains(keyword, StringComparison.OrdinalIgnoreCase)))
+            if (!MatchesCluster(cluster, normalizedSignals))
             {
                 continue;
             }
@@ -111,7 +119,13 @@ public sealed class InferenceOrchestrator
         ApplyRetrievalAugmentedInsights(scope, signalBlob, policy, insights, repairIds, ref fusedScore);
         fusedScore = ApplySelfConsistency(scope, scopedDiagnoses, matchedClusters, policy, fusedScore);
 
-        if (!repairNotNeeded && (fusedScore < 90 || insights.Count > 0))
+        var hasActionableDiagnosis = scopedDiagnoses
+            .SelectMany(diagnosis => diagnosis.RootCauses)
+            .Any(cause => cause.Confidence >= 0.75f
+                && cause.Severity is "warning" or "critical");
+        var hasCorrelatedEvidence = matchedClusters.Count > 0 || hasActionableDiagnosis;
+
+        if (!repairNotNeeded && fusedScore < 90 && hasCorrelatedEvidence)
         {
             if (policy.RepairMapping.TryGetValue(scope, out var scopeActions))
             {
@@ -308,6 +322,24 @@ public sealed class InferenceOrchestrator
         return cluster.Scopes.Any(s => string.Equals(s, scope, StringComparison.OrdinalIgnoreCase));
     }
 
+    private static bool MatchesCluster(SignalClusterPolicy cluster, IReadOnlyList<string> signals)
+    {
+        var requiredMatches = Math.Clamp(cluster.MinKeywordMatches, 1, Math.Max(1, cluster.Keywords.Count));
+        return signals.Any(signal =>
+        {
+            if (cluster.NegativeKeywords.Any(keyword =>
+                    signal.Contains(keyword, StringComparison.OrdinalIgnoreCase)))
+            {
+                return false;
+            }
+
+            return cluster.Keywords
+                .Where(keyword => !string.IsNullOrWhiteSpace(keyword))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Count(keyword => signal.Contains(keyword, StringComparison.OrdinalIgnoreCase)) >= requiredMatches;
+        });
+    }
+
     private static IntelligenceSummary BuildEnhancedIntelligence(
         IReadOnlyList<IntelligenceSummary> diagnoses,
         IReadOnlyList<InferenceInsight> insights,
@@ -432,6 +464,8 @@ public sealed class InferenceOrchestrator
         public string Id { get; init; } = "";
         public List<string> Scopes { get; init; } = new();
         public List<string> Keywords { get; init; } = new();
+        public int MinKeywordMatches { get; init; } = 1;
+        public List<string> NegativeKeywords { get; init; } = new();
         public string Title { get; init; } = "";
         public string Recommendation { get; init; } = "";
         public float Confidence { get; init; } = 0.6f;

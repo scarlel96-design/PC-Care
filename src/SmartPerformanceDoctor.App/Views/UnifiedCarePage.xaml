@@ -4,8 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     RequestedTheme="Light">
 
-    <ScrollViewer>
-        <StackPanel Padding="{StaticResource PccPagePadding}" MaxWidth="1060" Spacing="18">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalContentAlignment="Stretch">
+        <StackPanel Padding="{StaticResource PccPagePadding}" MaxWidth="1060" HorizontalAlignment="Stretch" Spacing="18">
             <StackPanel Spacing="5">
                 <TextBlock Text="통합 점검" Style="{StaticResource MacPageTitleStyle}"/>
                 <TextBlock Text="진단 범위와 변경 여부를 먼저 정한 뒤, 한 화면에서 진행 상황과 결과를 확인합니다."
@@ -70,16 +72,21 @@
 
             <Border x:Name="ProgressPanel" Style="{StaticResource MacWindowPanelStyle}">
                 <StackPanel Spacing="13">
-                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16">
-                        <StackPanel Spacing="4">
-                            <TextBlock Text="진행 및 결과" Style="{StaticResource MacSectionHeaderStyle}"/>
-                            <TextBlock x:Name="StatusText" Text="대기" FontSize="18" FontWeight="SemiBold"/>
+                    <TextBlock Text="진행 및 결과" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <Border Background="{StaticResource PccAccentSoftBrush}" CornerRadius="14" Padding="14,12">
+                        <StackPanel Spacing="9">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                <TextBlock x:Name="StatusText" Text="대기" FontSize="18" FontWeight="SemiBold"
+                                           Foreground="{StaticResource PccTextBrush}" TextWrapping="Wrap"/>
+                                <TextBlock x:Name="ProgressPercentText" Grid.Column="1" Text="0%"
+                                           Foreground="{StaticResource PccAccentBrush}" FontSize="18" FontWeight="SemiBold"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                            <ProgressBar x:Name="ProgressBar" Maximum="100" Value="0" Height="10"/>
+                            <TextBlock x:Name="ProgressFlowText" Text="준비 · 검사 · 분석 · 결과"
+                                       Foreground="{StaticResource PccTextMutedBrush}" FontSize="12" TextWrapping="Wrap"/>
                         </StackPanel>
-                        <Border Grid.Column="1" Background="{StaticResource PccAccentSoftBrush}" CornerRadius="12" Padding="12,7" VerticalAlignment="Center">
-                            <TextBlock x:Name="ProgressPercentText" Text="0%" Foreground="{StaticResource PccAccentBrush}" FontWeight="SemiBold"/>
-                        </Border>
-                    </Grid>
-                    <ProgressBar x:Name="ProgressBar" Maximum="100" Value="0" Height="10"/>
+                    </Border>
                     <TextBlock x:Name="SummaryText" Text="점검 범위와 실행 방식을 선택한 뒤 검사를 시작하세요."
                                TextWrapping="Wrap" FontSize="15"/>
                     <TextBlock x:Name="SessionText" Foreground="{StaticResource PccTextMutedBrush}" TextWrapping="Wrap"/>

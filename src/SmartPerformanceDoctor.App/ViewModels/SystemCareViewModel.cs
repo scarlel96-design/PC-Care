@@ -156,25 +156,16 @@ public sealed class SystemCareViewModel : ObservableObject
 
         try
         {
+            var progressTracker = new CareProgressTracker();
             var progress = new Progress<(int percent, string message)>(report =>
             {
+                var state = progressTracker.AdvanceScan(report.percent, report.message);
                 UiDispatcher.Run(() =>
                 {
-                    Progress = report.percent;
+                    Progress = state.Percent;
+                    ProgressPhaseTitle = state.Headline;
                     ProgressLine = report.message;
-                    ProgressDetailLine = $"{report.percent}% 완료";
-                    if (report.percent < 30)
-                    {
-                        ProgressPhaseTitle = "시스템 확인";
-                    }
-                    else if (report.percent < 70)
-                    {
-                        ProgressPhaseTitle = "문제 분석";
-                    }
-                    else
-                    {
-                        ProgressPhaseTitle = "결과 정리";
-                    }
+                    ProgressDetailLine = state.Flow;
                 });
             });
 
@@ -183,9 +174,9 @@ public sealed class SystemCareViewModel : ObservableObject
             HealthScoreText = _lastScan.HealthScore.ToString();
             HealthLine = $"등급 {_lastScan.HealthGrade}";
             Progress = 100;
-            ProgressPhaseTitle = "완료";
+            ProgressPhaseTitle = "결과 · 100%";
             ProgressLine = "검사가 끝났습니다.";
-            ProgressDetailLine = "아래에서 권장 조치를 확인하세요.";
+            ProgressDetailLine = "4/4 · 아래에서 권장 조치를 확인하세요.";
 
             RebuildActionItems(_lastScan);
             var issues = ActionItems.Count;
@@ -230,13 +221,16 @@ public sealed class SystemCareViewModel : ObservableObject
 
         try
         {
+            var displayedProgress = 0;
             var progress = new Progress<(int percent, string message)>(report =>
             {
+                displayedProgress = Math.Max(displayedProgress, Math.Clamp(report.percent, 0, 100));
                 UiDispatcher.Run(() =>
                 {
-                    Progress = report.percent;
+                    Progress = displayedProgress;
+                    ProgressPhaseTitle = $"정리 · {displayedProgress}%";
                     ProgressLine = report.message;
-                    ProgressDetailLine = $"{report.percent}%";
+                    ProgressDetailLine = "대상 확인 · 안전 처리 · 결과 기록";
                 });
             });
 
@@ -245,8 +239,9 @@ public sealed class SystemCareViewModel : ObservableObject
             StatusLine = result.Message;
             SummaryLine = $"정리 완료 · 적용 {result.AppliedCount}개 · 건너뜀 {result.SkippedCount}개";
             Progress = 100;
-            ProgressPhaseTitle = "정리 완료";
+            ProgressPhaseTitle = "정리 완료 · 100%";
             ProgressLine = result.Message;
+            ProgressDetailLine = "모든 처리 단계 완료";
         }
         catch (Exception ex)
         {
@@ -282,7 +277,9 @@ public sealed class SystemCareViewModel : ObservableObject
             .ThenBy(x => x.Title)
             .ToArray();
         var actionable = ordered
-            .Where(x => !string.Equals(x.RiskLabel, "안전", StringComparison.Ordinal) || x.CanAutoApply)
+            .Where(x => (!string.Equals(x.RiskLabel, "안전", StringComparison.Ordinal)
+                         && !string.Equals(x.RiskCode, "unavailable", StringComparison.OrdinalIgnoreCase))
+                        || x.CanAutoApply)
             .ToArray();
 
         foreach (var finding in actionable)
@@ -293,7 +290,9 @@ public sealed class SystemCareViewModel : ObservableObject
                 Title = finding.Title,
                 Detail = finding.Detail,
                 RiskLabel = safeCleanup ? "정리 가능" : finding.RiskLabel,
-                ActionHint = finding.CanAutoApply ? "원클릭 정리 가능" : "확인 후 조치",
+                ActionHint = finding.CanAutoApply
+                    ? $"자동 처리 기준 통과 · 신뢰도 {finding.Confidence:P0}"
+                    : $"확인 후 조치 · 신뢰도 {finding.Confidence:P0}",
                 FixLabel = finding.CanAutoApply ? "정리" : "확인",
                 CanAutoApply = finding.CanAutoApply,
                 RiskOpacity = safeCleanup ? 0.75 : finding.RiskLabel is "주의" ? 1.0 : 0.85
@@ -303,7 +302,9 @@ public sealed class SystemCareViewModel : ObservableObject
         foreach (var group in ordered.GroupBy(finding => GetGroupTitle(finding.Id)))
         {
             var groupActionable = group.Count(finding =>
-                !string.Equals(finding.RiskLabel, "안전", StringComparison.Ordinal) || finding.CanAutoApply);
+                (!string.Equals(finding.RiskLabel, "안전", StringComparison.Ordinal)
+                 && !string.Equals(finding.RiskCode, "unavailable", StringComparison.OrdinalIgnoreCase))
+                || finding.CanAutoApply);
             ResultGroups.Add(new CareResultGroup
             {
                 Title = group.Key,

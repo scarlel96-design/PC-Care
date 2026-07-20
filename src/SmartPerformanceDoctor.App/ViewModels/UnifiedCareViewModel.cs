@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using Microsoft.UI.Dispatching;
 using SmartPerformanceDoctor.App.Models;
 using SmartPerformanceDoctor.App.Services;
+using SmartPerformanceDoctor.Contracts.Services;
 
 namespace SmartPerformanceDoctor.App.ViewModels;
 
@@ -17,6 +18,7 @@ public sealed class UnifiedCareViewModel : ObservableObject
     private string _status = "대기";
     private string _summary = "범위와 실행 방식을 선택한 뒤 시작하세요.";
     private string _sessionLine = "";
+    private string _progressFlow = "준비 · 검사 · 분석 · 결과";
     private int _progress;
 
     public string Scope { get => _scope; set => Set(ref _scope, value); }
@@ -26,6 +28,7 @@ public sealed class UnifiedCareViewModel : ObservableObject
     public string Status { get => _status; private set => Set(ref _status, value); }
     public string Summary { get => _summary; private set => Set(ref _summary, value); }
     public string SessionLine { get => _sessionLine; private set => Set(ref _sessionLine, value); }
+    public string ProgressFlow { get => _progressFlow; private set => Set(ref _progressFlow, value); }
     public int Progress { get => _progress; private set => Set(ref _progress, value); }
     public ObservableCollection<CareStepResult> Steps { get; } = new();
 
@@ -51,6 +54,7 @@ public sealed class UnifiedCareViewModel : ObservableObject
         Status = "대기";
         Summary = "범위와 실행 방식을 선택한 뒤 시작하세요.";
         SessionLine = "";
+        ProgressFlow = "준비 · 검사 · 분석 · 결과";
         Progress = 0;
         Steps.Clear();
     }
@@ -64,13 +68,16 @@ public sealed class UnifiedCareViewModel : ObservableObject
 
         IsRunning = true;
         Status = "실행 중";
-        Progress = 8;
+        Progress = 4;
+        ProgressFlow = "1/4 · 점검 엔진 준비";
         Summary = IncludeRepair
             ? "점검 후 문제가 있으면 복구까지 진행합니다."
             : "점검만 수행합니다. PC에는 변경을 가하지 않습니다.";
         Steps.Clear();
 
         var liveSteps = new List<CareStepResult>();
+        var stabilityUnit = Scope is "quick" or "system" or "full" ? 1 : 0;
+        var progressTracker = new CareProgressTracker(ScopeRepairFilter.ResolveModuleIds(Scope).Count + stabilityUnit);
         try
         {
             var result = await _service.RunAsync(
@@ -92,21 +99,10 @@ public sealed class UnifiedCareViewModel : ObservableObject
                         {
                             Steps.Add(snapshot[i]);
                         }
-
-                        if (step.Phase == "diagnosis" && step.Title.Contains('%'))
-                        {
-                            var pctStart = step.Title.LastIndexOf('—') + 1;
-                            if (pctStart > 0 && int.TryParse(step.Title.AsSpan(pctStart).Trim().TrimEnd('%'), out var pct))
-                            {
-                                Progress = Math.Clamp(pct, Progress, 95);
-                            }
-                        }
-                        else
-                        {
-                            Progress = Math.Min(95, Progress + 6);
-                        }
-
-                        Status = step.Title;
+                        var progressState = progressTracker.AdvanceUnified(step);
+                        Progress = (int)progressState.Percent;
+                        Status = progressState.Phase;
+                        ProgressFlow = progressState.Flow;
                         Summary = step.Detail;
                     }, DispatcherQueuePriority.High);
                 },
@@ -114,8 +110,10 @@ public sealed class UnifiedCareViewModel : ObservableObject
 
             UiDispatcher.Run(() =>
             {
-                Progress = 100;
-                Status = result.Completed ? "완료" : "일부 완료";
+                var completedProgress = progressTracker.Complete();
+                Progress = (int)completedProgress.Percent;
+                Status = result.Completed ? completedProgress.Phase : "일부 완료";
+                ProgressFlow = result.Completed ? completedProgress.Flow : "일부 단계 완료 · 결과 확인 필요";
                 Summary = result.Summary;
                 SessionLine = result.SessionId is not null
                     ? $"세션 {result.SessionId} · 점수 Δ {result.HealthDelta?.ToString() ?? "-"} · 감사 {(result.AuditChainValid ? "정상" : "주의")} · {result.AuditFolder}"

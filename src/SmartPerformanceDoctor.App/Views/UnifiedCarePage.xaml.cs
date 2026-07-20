@@ -17,6 +17,9 @@ public sealed partial class UnifiedCarePage : Page
     private Task? _runTask;
     private bool _isLoaded;
     private bool _pendingAutoStart;
+    private readonly DispatcherTimer _progressAnimationTimer = new();
+    private double _displayedProgress;
+    private double _targetProgress;
 
     public UnifiedCarePage()
     {
@@ -24,6 +27,8 @@ public sealed partial class UnifiedCarePage : Page
         ApplyDefaultMode();
         _viewModel.PropertyChanged += OnViewModelChanged;
         _viewModel.Steps.CollectionChanged += OnStepsChanged;
+        _progressAnimationTimer.Interval = TimeSpan.FromMilliseconds(16);
+        _progressAnimationTimer.Tick += AnimateProgress;
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
     }
@@ -102,6 +107,7 @@ public sealed partial class UnifiedCarePage : Page
     private void OnUnloaded(object sender, RoutedEventArgs e)
     {
         _isLoaded = false;
+        _progressAnimationTimer.Stop();
         CancelRunning();
     }
 
@@ -199,13 +205,52 @@ public sealed partial class UnifiedCarePage : Page
     private void OnStepsChanged(object? sender, NotifyCollectionChangedEventArgs e) =>
         DispatcherQueue.TryEnqueue(DispatcherQueuePriority.Normal, SyncUi);
 
+    private void SetProgressTarget(double value)
+    {
+        var next = Math.Clamp(value, 0, 100);
+        if (next <= 0 || next < _displayedProgress)
+        {
+            _displayedProgress = next;
+            _targetProgress = next;
+            ApplyDisplayedProgress();
+            return;
+        }
+
+        _targetProgress = Math.Max(_targetProgress, next);
+        if (Math.Abs(_targetProgress - _displayedProgress) > 0.05)
+        {
+            _progressAnimationTimer.Start();
+        }
+    }
+
+    private void AnimateProgress(object? sender, object e)
+    {
+        var remaining = _targetProgress - _displayedProgress;
+        if (remaining <= 0.08)
+        {
+            _displayedProgress = _targetProgress;
+            _progressAnimationTimer.Stop();
+            ApplyDisplayedProgress();
+            return;
+        }
+
+        _displayedProgress += Math.Max(0.18, remaining * 0.16);
+        _displayedProgress = Math.Min(_displayedProgress, _targetProgress);
+        ApplyDisplayedProgress();
+    }
+
+    private void ApplyDisplayedProgress()
+    {
+        ProgressBar.Value = _displayedProgress;
+        ProgressPercentText.Text = $"{Math.Clamp((int)Math.Round(_displayedProgress), 0, 100)}%";
+    }
     private void SyncUi()
     {
-        ProgressBar.Value = _viewModel.Progress;
+        SetProgressTarget(_viewModel.Progress);
         StatusText.Text = _viewModel.Status;
         SummaryText.Text = _viewModel.Summary;
         SessionText.Text = _viewModel.SessionLine;
-        ProgressPercentText.Text = $"{Math.Clamp(_viewModel.Progress, 0, 100)}%";
+        ProgressFlowText.Text = _viewModel.ProgressFlow;
         StepList.ItemsSource = null;
         StepList.ItemsSource = _viewModel.Steps;
         StartButton.IsEnabled = !_viewModel.IsRunning;

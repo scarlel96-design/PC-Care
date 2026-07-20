@@ -44,6 +44,10 @@ public sealed class CareFinding
     public string RiskCode { get; init; } = "review";
     public bool CanAutoApply { get; init; }
     public string? TargetPath { get; init; }
+    public double Confidence { get; init; } = 0.9;
+    public string Evidence { get; init; } = "";
+    public string DetectionSource { get; init; } = "system-care";
+    public string AutoApplyBlockReason { get; init; } = "";
 }
 
 public sealed class CareScanResult
