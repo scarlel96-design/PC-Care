@@ -15,7 +15,7 @@ $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path $PSScriptRoot -Parent
 Set-Location $ProjectRoot
 
-$Version = "51.0.0"
+$Version = "51.0.1"
 Write-Host "== PC 케어 프로 v$Version Build ==" -ForegroundColor Cyan
 
 & (Join-Path $PSScriptRoot "check-environment.ps1")
@@ -55,7 +55,7 @@ $Changelog = Join-Path $ProjectRoot "updates\CHANGELOG_v$Version.json"
 if (-not $SkipInstaller) {
     & (Join-Path $PSScriptRoot "build-modular-setup.ps1") -Version $Version -SkipSigning:$SkipSigning
     & (Join-Path $PSScriptRoot "create-update-package.ps1") `
-        -FromVersion "50.4.1" `
+        -FromVersion "51.0.0" `
         -ToVersion $Version `
         -ChangesFile $Changelog `
         -OutputDir $ReleaseRoot

@@ -167,8 +167,8 @@ public sealed class UpdateInstallerService
             var restartScheduled = false;
             if (deferred.Count > 0 || manifest.RequiresRestart || needsElevatedApply)
             {
-                WritePendingState(stagingDir, deferred, manifest);
-                restartScheduled = ScheduleRestart(stagingDir, manifest.ToVersion, deferred, needsElevatedApply);
+                WritePendingState(stagingDir, deferred, manifest, inspection.PackagePath);
+                restartScheduled = ScheduleRestart(stagingDir, manifest.ToVersion, deferred, needsElevatedApply, inspection.PackagePath);
                 reporter.Report(
                     95,
                     6,
@@ -186,6 +186,16 @@ public sealed class UpdateInstallerService
             if (!restartScheduled && verification.Success)
             {
                 AppVersionService.WriteInstalledVersion(manifest.ToVersion, "in-app-apply");
+                var cleanup = UpdateArtifactCleanup.TryCleanupCompletedUpdate(inspection.PackagePath, stagingDir);
+                if (cleanup.Warnings.Count > 0)
+                {
+                    UpdatePendingApplier.AppendApplyLog($"[cleanup] {string.Join(" | ", cleanup.Warnings)}");
+                }
+                else
+                {
+                    UpdatePendingApplier.AppendApplyLog(
+                        $"[cleanup] completed package={cleanup.PackageDeleted} staging={cleanup.StagingDeleted}");
+                }
             }
 
             var historyNote = restartScheduled
@@ -286,12 +296,13 @@ public sealed class UpdateInstallerService
         return normalized.Replace('/', Path.DirectorySeparatorChar);
     }
 
-    private static void WritePendingState(string stagingDir, IReadOnlyList<string> deferred, UpdateManifestDocument manifest)
+    private static void WritePendingState(string stagingDir, IReadOnlyList<string> deferred, UpdateManifestDocument manifest, string packagePath)
     {
         var state = new
         {
             manifest.ToVersion,
             stagingDir,
+            packagePath,
             deferred,
             targetDir = UpdatePaths.AppInstallDirectory,
             exePath = Path.Combine(UpdatePaths.AppInstallDirectory, "PCCare.exe")
@@ -313,14 +324,35 @@ public sealed class UpdateInstallerService
             stagingDir,
             toVersion,
             Array.Empty<string>(),
-            UpdateInstallElevation.RequiresElevation(UpdatePaths.AppInstallDirectory));
+            UpdateInstallElevation.RequiresElevation(UpdatePaths.AppInstallDirectory),
+            ReadPendingPackagePath());
     }
 
+    private static string ReadPendingPackagePath()
+    {
+        try
+        {
+            if (!File.Exists(UpdatePaths.PendingState))
+            {
+                return "";
+            }
+
+            using var document = JsonDocument.Parse(File.ReadAllText(UpdatePaths.PendingState));
+            return document.RootElement.TryGetProperty("packagePath", out var package)
+                ? package.GetString() ?? ""
+                : "";
+        }
+        catch
+        {
+            return "";
+        }
+    }
     private static bool ScheduleRestart(
         string stagingDir,
         string toVersion,
         IReadOnlyList<string> deferred,
-        bool requireElevation = false)
+        bool requireElevation = false,
+        string packagePath = "")
     {
         var exe = Path.Combine(UpdatePaths.AppInstallDirectory, "PCCare.exe");
         if (!File.Exists(exe))
@@ -353,6 +385,10 @@ public sealed class UpdateInstallerService
             $log = '{{EscapePs1(UpdatePaths.LastApplyLog)}}'
             $target = '{{EscapePs1(UpdatePaths.AppInstallDirectory)}}'
             $payload = '{{EscapePs1(payloadRoot)}}'
+            $staging = '{{EscapePs1(stagingDir)}}'
+            $inbox = '{{EscapePs1(UpdatePaths.Inbox)}}'
+            $stagingRoot = '{{EscapePs1(UpdatePaths.Staging)}}'
+            $package = '{{EscapePs1(packagePath)}}'
             $exe = '{{EscapePs1(exe)}}'
             $expected = '{{EscapePs1(toVersion)}}'
             $pending = '{{EscapePs1(UpdatePaths.PendingState)}}'
@@ -493,7 +529,31 @@ public sealed class UpdateInstallerService
                     } | ConvertTo-Json -Compress
                     Set-Content -LiteralPath $installed -Value $state -Encoding UTF8
                     if (Test-Path -LiteralPath $pending) { Remove-Item -LiteralPath $pending -Force }
-                    Write-Log "verification ok; pending cleared"
+
+                    # Delete only PCCare-managed artifacts after version verification succeeds.
+                    try {
+                        $inboxFull = [IO.Path]::GetFullPath($inbox).TrimEnd('\','/') + [IO.Path]::DirectorySeparatorChar
+                        $packageFull = if ($package) { [IO.Path]::GetFullPath($package) } else { '' }
+                        $packageExt = [IO.Path]::GetExtension($packageFull)
+                        if ($packageFull.StartsWith($inboxFull, [StringComparison]::OrdinalIgnoreCase) -and
+                            ($packageExt -ieq '.spdup' -or $packageExt -ieq '.zip') -and
+                            (Test-Path -LiteralPath $packageFull)) {
+                            Remove-Item -LiteralPath $packageFull -Force -ErrorAction Stop
+                            Write-Log "deleted managed update package"
+                        }
+                    } catch { Write-Log "package cleanup warning: $($_.Exception.Message)" }
+
+                    try {
+                        $stagingRootFull = [IO.Path]::GetFullPath($stagingRoot).TrimEnd('\','/') + [IO.Path]::DirectorySeparatorChar
+                        $stagingFull = if ($staging) { [IO.Path]::GetFullPath($staging) } else { '' }
+                        if ($stagingFull.StartsWith($stagingRootFull, [StringComparison]::OrdinalIgnoreCase) -and
+                            (Test-Path -LiteralPath $stagingFull)) {
+                            Remove-Item -LiteralPath $stagingFull -Recurse -Force -ErrorAction Stop
+                            Write-Log "deleted update staging directory"
+                        }
+                    } catch { Write-Log "staging cleanup warning: $($_.Exception.Message)" }
+
+                    Write-Log "verification ok; pending and managed artifacts cleared"
                     # Restart app only after successful apply (50.4.1: no reopen-on-failure loop).
                     if (Test-Path -LiteralPath $exe) {
                         foreach ($serviceName in @('PCCareAegisRecovery', 'AstraCareAegisRecovery')) {

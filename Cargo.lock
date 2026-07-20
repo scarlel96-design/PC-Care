@@ -273,7 +273,7 @@ checksum = "0c790de23124f9ab44544d7ac05d60440adc586479ce501c1d6d7da3cd8c9cf5"
 
 [[package]]
 name = "smart_performance_doctor_core"
-version = "51.0.0"
+version = "51.0.1"
 dependencies = [
  "base64",
  "serde",
@@ -288,7 +288,7 @@ dependencies = [
 
 [[package]]
 name = "smart_performance_doctor_repair_helper"
-version = "51.0.0"
+version = "51.0.1"
 dependencies = [
  "serde",
  "serde_json",

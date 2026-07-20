@@ -22,6 +22,7 @@ public sealed class UpdatePendingApplier
                 ? t.GetString() ?? UpdatePaths.AppInstallDirectory
                 : UpdatePaths.AppInstallDirectory;
             var toVersion = root.TryGetProperty("toVersion", out var v) ? v.GetString() ?? "" : "";
+            var packagePath = root.TryGetProperty("packagePath", out var p) ? p.GetString() ?? "" : "";
 
             if (string.IsNullOrWhiteSpace(stagingDir) || !Directory.Exists(stagingDir))
             {
@@ -152,7 +153,7 @@ public sealed class UpdatePendingApplier
             }
 
             AppVersionService.WriteInstalledVersion(toVersion, "startup-pending-applier");
-            CleanupPending();
+            CleanupPending(packagePath, stagingDir);
             AppendApplyLog($"[startup] verified {toVersion} · copied={applied}");
             _ = Services.Aegis.AegisMirrorService.Shared.RunPostUpdateCheck(toVersion, updateSucceeded: true);
             return new PendingApplyResult(true, applied, $"{toVersion} 적용 및 버전 확인 완료", toVersion, true);
@@ -198,7 +199,7 @@ public sealed class UpdatePendingApplier
         return UpdateFileHelper.TryCopy(source, target);
     }
 
-    public static void CleanupPending()
+    public static void CleanupPending(string? packagePath = null, string? stagingDirectory = null)
     {
         try
         {
@@ -220,6 +221,16 @@ public sealed class UpdatePendingApplier
         catch
         {
             // Best effort cleanup.
+        }
+
+        var cleanup = UpdateArtifactCleanup.TryCleanupCompletedUpdate(packagePath, stagingDirectory);
+        if (cleanup.Warnings.Count > 0)
+        {
+            AppendApplyLog($"[cleanup] {string.Join(" | ", cleanup.Warnings)}");
+        }
+        else
+        {
+            AppendApplyLog($"[cleanup] completed package={cleanup.PackageDeleted} staging={cleanup.StagingDeleted}");
         }
     }
 }
