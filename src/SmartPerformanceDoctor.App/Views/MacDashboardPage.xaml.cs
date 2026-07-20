@@ -24,7 +24,12 @@ public sealed partial class MacDashboardPage : Page
         var frame = App.Shell?.NavigationFrame;
         if (frame is not null)
         {
-            AppNavigationService.NavigateUnifiedCare(frame, "system", autoStart: true);
+            AppNavigationService.NavigateUnifiedCare(
+                frame,
+                scope: "full",
+                autoStart: true,
+                includeRepair: true,
+                riskAccepted: true);
         }
     }
 

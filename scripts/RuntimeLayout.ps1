@@ -4,7 +4,7 @@
         $ProjectRoot = Split-Path $PSScriptRoot -Parent
     }
 
-    return $ProjectRoot
+    return (Join-Path $ProjectRoot 'artifacts\runtime')
 }
 
 function Get-AppPublishOutput {

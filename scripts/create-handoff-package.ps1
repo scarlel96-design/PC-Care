@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$Version = "50.0.0",
     [string]$HandoffDir = ""
 )
@@ -24,7 +24,7 @@ if (-not $setupSrc) {
 . (Join-Path $PSScriptRoot "RuntimeLayout.ps1")
 $runtimeSrc = Get-RuntimeRoot -ProjectRoot $ProjectRoot
 if (-not (Test-RuntimePublished $runtimeSrc)) {
-    throw "Runtime not found at project root. Run scripts\build.ps1 first: $(Join-Path $runtimeSrc 'PCCare.exe')"
+    throw "Runtime not found under artifacts\runtime. Run scripts\build.ps1 first: $(Join-Path $runtimeSrc 'PCCare.exe')"
 }
 
 $setupName = "PCCare_Setup_v$Version.exe"
@@ -88,7 +88,7 @@ if (Test-Path $fullBuildLog) {
         "Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')",
         "Release build: success",
         "Commercial packs: signed",
-        "Runtime: project root (PCCare.exe, win-x64 trimmed)"
+        "Runtime: artifacts/runtime (PCCare.exe, win-x64 trimmed)"
     ) | Set-Content $buildLog -Encoding UTF8
 }
 

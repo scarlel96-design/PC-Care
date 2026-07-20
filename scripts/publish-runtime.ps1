@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$AppOut = "",
     [string]$RuntimeDir = "",
     [switch]$SkipProcessStop,
@@ -285,7 +285,7 @@ function Assert-RuntimeIntegrity {
     }
 }
 
-Write-Host "== Publish runtime -> project root (PCCare.exe) ==" -ForegroundColor Cyan
+Write-Host "== Publish runtime -> artifacts\runtime (PCCare.exe) ==" -ForegroundColor Cyan
 Write-Host "Source: $AppOut"
 Write-Host "Target: $RuntimeDir"
 

@@ -1,4 +1,4 @@
-param(
+﻿param(
     [switch]$KeepDist
 )
 
@@ -7,12 +7,19 @@ $ProjectRoot = Split-Path $PSScriptRoot -Parent
 Set-Location $ProjectRoot
 . (Join-Path $PSScriptRoot "RuntimeLayout.ps1")
 
-Write-Host "== Clean workspace (remove stale runtime from project root) ==" -ForegroundColor Cyan
+Write-Host "== Clean workspace (separate sources from generated runtime) ==" -ForegroundColor Cyan
 
 foreach ($name in @("SmartPerformanceDoctor", "AstraCare", "PCCare")) {
     Get-Process $name -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
 }
 
+$RuntimeRoot = Get-RuntimeRoot -ProjectRoot $ProjectRoot
+if (Test-Path -LiteralPath $RuntimeRoot) {
+    Remove-Item -LiteralPath $RuntimeRoot -Recurse -Force -ErrorAction SilentlyContinue
+    Write-Host "[CLEAN] artifacts\runtime\" -ForegroundColor DarkGray
+}
+
+# 51.0.2 migration: remove runtime files produced by older builds in the source root.
 Remove-RuntimePublishArtifacts -ProjectRoot $ProjectRoot
 Get-ChildItem $ProjectRoot -File -Filter "*.pdb" -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue
 
@@ -42,4 +49,4 @@ foreach ($dir in @("app", "portable", "installer")) {
 }
 
 Remove-LegacyRuntimeDist -ProjectRoot $ProjectRoot
-Write-Host "[OK] Workspace root cleaned. Runtime will publish to project root (PCCare.exe)." -ForegroundColor Green
+Write-Host "[OK] Workspace root cleaned. Runtime will publish to artifacts\runtime\PCCare.exe." -ForegroundColor Green

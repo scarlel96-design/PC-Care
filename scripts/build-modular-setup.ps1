@@ -1,5 +1,5 @@
-param(
-    [string]$Version = "51.0.1",
+﻿param(
+    [string]$Version = "51.0.2",
     [switch]$SkipAppBuild,
     [switch]$SkipMsi,
     [switch]$SkipSigning

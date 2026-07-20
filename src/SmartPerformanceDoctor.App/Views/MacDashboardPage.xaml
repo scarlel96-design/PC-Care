@@ -9,22 +9,23 @@
                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="24">
                     <StackPanel VerticalAlignment="Center" MinWidth="120">
                         <TextBlock Text="{Binding HealthScore}" FontSize="44" FontWeight="SemiBold"
-                                   Foreground="{StaticResource SpdMacAccentBrush}"/>
-                        <TextBlock Text="상태 점수" FontSize="13" Foreground="{StaticResource SpdMacSecondaryTextBrush}"/>
+                                   Foreground="{StaticResource PccHeroAccentBrush}"/>
+                        <TextBlock Text="상태 점수" FontSize="13" Foreground="{StaticResource PccHeroTextMutedBrush}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Spacing="8">
                         <TextBlock Text="{Binding OverallStatus}" FontSize="28" FontWeight="SemiBold"
-                                   Foreground="{StaticResource SpdMacTextBrush}"/>
-                        <TextBlock Text="{Binding Summary}" Style="{StaticResource MacInlineStatusTextStyle}"/>
+                                   Foreground="{StaticResource PccHeroTextBrush}"/>
+                        <TextBlock Text="{Binding Summary}" Style="{StaticResource MacInlineStatusTextStyle}"
+                                   Foreground="{StaticResource PccHeroTextMutedBrush}"/>
                         <ItemsControl ItemsSource="{Binding TopIssues}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" Margin="0,2,0,0" FontSize="13"
-                                               Foreground="{StaticResource SpdMacSecondaryTextBrush}"/>
+                                               Foreground="{StaticResource PccHeroTextMutedBrush}"/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <Button Content="정밀 점검 시작" Style="{StaticResource PremiumPrimaryButtonStyle}"
+                        <Button Content="정밀 점검·복구 시작" Style="{StaticResource PremiumPrimaryButtonStyle}"
                                 HorizontalAlignment="Left" Margin="0,8,0,0" Click="StartDeepScan"/>
                     </StackPanel>
                 </Grid>

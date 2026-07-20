@@ -51,7 +51,7 @@
     <ProjectReference Include="../SmartPerformanceDoctor.Contracts/SmartPerformanceDoctor.Contracts.csproj" />
     <ProjectReference Include="../SmartPerformanceDoctor.Data/SmartPerformanceDoctor.Data.csproj" />
     <!-- 50.3.0: SecurityLab vault v4 + shred-next merged into product -->
-    <ProjectReference Include="../../experimental/SecurityLab/SmartPerformanceDoctor.SecurityLab.csproj" />
+    <ProjectReference Include="../SmartPerformanceDoctor.SecurityLab/SmartPerformanceDoctor.SecurityLab.csproj" />
     <ProjectReference Include="../SmartPerformanceDoctor.AegisRecoveryHelper/SmartPerformanceDoctor.AegisRecoveryHelper.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="../SmartPerformanceDoctor.AegisRecoveryService/SmartPerformanceDoctor.AegisRecoveryService.csproj" ReferenceOutputAssembly="false" />
   </ItemGroup>

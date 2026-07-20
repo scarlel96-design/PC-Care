@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$Version = "50.0.0",
     [switch]$SkipBuild
 )
@@ -95,10 +95,12 @@ try {
     }
 
     Invoke-Step "Runtime verify" {
-        if (Test-Path ".\PCCare.exe") {
-            & (Join-Path $PSScriptRoot "verify-runtime.ps1")
+        . (Join-Path $PSScriptRoot "RuntimeLayout.ps1")
+        $runtimeRoot = Get-RuntimeRoot -ProjectRoot $ProjectRoot
+        if (Test-RuntimePublished $runtimeRoot) {
+            & (Join-Path $PSScriptRoot "verify-runtime.ps1") -RuntimeDir $runtimeRoot
         } else {
-            throw "PCCare.exe not found at project root — run build.ps1 first"
+            throw "PCCare.exe not found under artifacts\runtime — run build.ps1 first"
         }
     }
 

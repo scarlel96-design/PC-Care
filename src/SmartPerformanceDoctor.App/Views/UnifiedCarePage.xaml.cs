@@ -75,6 +75,8 @@ public sealed partial class UnifiedCarePage : Page
 
         DiagnosisOnlyRadio.IsChecked = !request.IncludeRepair;
         DiagnosisAndRepairRadio.IsChecked = request.IncludeRepair;
+        RiskCheck.IsChecked = request.IncludeRepair && request.RiskAccepted;
+        _viewModel.RiskAccepted = RiskCheck.IsChecked == true;
 
         ReadOptionsFromUi();
         SyncUi();

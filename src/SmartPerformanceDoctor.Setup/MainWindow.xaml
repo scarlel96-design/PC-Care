@@ -35,7 +35,7 @@
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <Grid ColumnDefinitions="*,Auto">
                         <StackPanel><TextBlock x:Name="StepCounterLine" Text="1 / 6" Foreground="{StaticResource SpdAccentBrush}" FontSize="12" FontWeight="SemiBold"/><TextBlock x:Name="StepTitleLine" Text="시작" Margin="0,4,0,0" Foreground="{StaticResource SpdTextBrush}" FontSize="18" FontWeight="SemiBold"/></StackPanel>
-                        <Border Grid.Column="1" Background="{StaticResource SpdAccentSoftBrush}" CornerRadius="12" Padding="10,6"><TextBlock Text="v51.0.1" Foreground="{StaticResource SpdAccentBrush}" FontSize="11" FontWeight="SemiBold"/></Border>
+                        <Border Grid.Column="1" Background="{StaticResource SpdAccentSoftBrush}" CornerRadius="12" Padding="10,6"><TextBlock Text="v51.0.2" Foreground="{StaticResource SpdAccentBrush}" FontSize="11" FontWeight="SemiBold"/></Border>
                     </Grid>
                     <ProgressBar x:Name="StepProgressBar" Grid.Row="1" Height="5" Margin="0,14,0,0" Minimum="0" Maximum="6" Value="1" Style="{StaticResource SpdThinProgressStyle}"/>
                 </Grid>

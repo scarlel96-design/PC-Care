@@ -1,4 +1,4 @@
-param(
+﻿param(
     [switch]$SkipTests,
     [switch]$SkipInstaller,
     [switch]$SkipSigning
@@ -15,7 +15,7 @@ $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path $PSScriptRoot -Parent
 Set-Location $ProjectRoot
 
-$Version = "51.0.1"
+$Version = "51.0.2"
 Write-Host "== PC 케어 프로 v$Version Build ==" -ForegroundColor Cyan
 
 & (Join-Path $PSScriptRoot "check-environment.ps1")
@@ -56,7 +56,7 @@ $Changelog = Join-Path $ProjectRoot "updates\CHANGELOG_v$Version.json"
 if (-not $SkipInstaller) {
     & (Join-Path $PSScriptRoot "build-modular-setup.ps1") -Version $Version -SkipSigning:$SkipSigning
     & (Join-Path $PSScriptRoot "create-update-package.ps1") `
-        -FromVersion "51.0.0" `
+        -FromVersion "51.0.1" `
         -ToVersion $Version `
         -ChangesFile $Changelog `
         -OutputDir $ReleaseRoot
@@ -66,7 +66,7 @@ if (-not $SkipInstaller) {
 Write-Host "" -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Green
 Write-Host " Build complete — v$Version" -ForegroundColor Green
-Write-Host " Run: .\PCCare.exe" -ForegroundColor Green
+Write-Host " Run: .\artifacts\runtime\PCCare.exe" -ForegroundColor Green
 Write-Host " Installer: artifacts\installer\setup\" -ForegroundColor Green
 Write-Host " Release:   $ReleaseRoot\" -ForegroundColor Green
 Write-Host "  (Setup + Update — GitHub 릴리즈 업로드용)" -ForegroundColor Green

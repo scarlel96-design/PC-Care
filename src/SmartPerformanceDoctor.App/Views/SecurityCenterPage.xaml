@@ -25,8 +25,9 @@
                     <StackPanel Spacing="14">
                         <Grid ColumnDefinitions="*,Auto">
                             <Border Width="58" Height="58" CornerRadius="17" Background="{StaticResource PccAccentSoftBrush}">
-                                <TextBlock Text="◇" FontSize="28" Foreground="{StaticResource PccAccentBrush}"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <FontIcon Glyph="&#xE72E;" FontFamily="Segoe Fluent Icons" FontSize="25"
+                                          Foreground="{StaticResource PccAccentBrush}"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                             <Border Grid.Column="1" Padding="10,5" CornerRadius="14"
                                     Background="{StaticResource PccSuccessSoftBrush}" VerticalAlignment="Top">
@@ -55,8 +56,9 @@
                     <StackPanel Spacing="14">
                         <Grid ColumnDefinitions="*,Auto">
                             <Border Width="58" Height="58" CornerRadius="17" Background="{StaticResource PccDangerSoftBrush}">
-                                <TextBlock Text="⌫" FontSize="28" Foreground="{StaticResource PccDangerBrush}"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <FontIcon Glyph="&#xE74D;" FontFamily="Segoe Fluent Icons" FontSize="25"
+                                          Foreground="{StaticResource PccDangerBrush}"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                             <Border Grid.Column="1" Padding="10,5" CornerRadius="14"
                                     Background="{StaticResource PccCautionSoftBrush}" VerticalAlignment="Top">
