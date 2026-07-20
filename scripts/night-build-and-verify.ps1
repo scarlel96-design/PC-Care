@@ -45,8 +45,8 @@ if ($LASTEXITCODE -ne 0) {
 & (Join-Path $PSScriptRoot "build-modular-setup.ps1") -Version $Version -SkipAppBuild
 
 $setupSrc = Join-Path $ProjectRoot "artifacts\installer\setup\PCCare_Setup_v$Version.exe"
-$workspaceRoot = Split-Path (Split-Path $ProjectRoot -Parent) -Parent
-$releaseDir = Join-Path $workspaceRoot "PCCare_Release_v$Version"
+$releaseBase = Join-Path ([Environment]::GetFolderPath([Environment+SpecialFolder]::Desktop)) "코딩 작업"
+$releaseDir = Join-Path $releaseBase "PCCare_Release_v$Version"
 New-Item -ItemType Directory -Path $releaseDir -Force | Out-Null
 Copy-Item $setupSrc (Join-Path $releaseDir "PCCare_Setup_v$Version.exe") -Force
 

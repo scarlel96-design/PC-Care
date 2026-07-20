@@ -49,7 +49,8 @@ if (-not $SkipTests) {
 & (Join-Path $PSScriptRoot "publish-runtime.ps1") -SkipSigning:$SkipSigning
 & (Join-Path $PSScriptRoot "verify-runtime.ps1") -SkipSignatureCheck:$SkipSigning
 
-$ReleaseRoot = Join-Path (Resolve-Path (Join-Path $ProjectRoot "..\..")).Path "PCCare_Release_v$Version"
+$ReleaseBase = Join-Path ([Environment]::GetFolderPath([Environment+SpecialFolder]::Desktop)) "코딩 작업"
+$ReleaseRoot = Join-Path $ReleaseBase "PCCare_Release_v$Version"
 $Changelog = Join-Path $ProjectRoot "updates\CHANGELOG_v$Version.json"
 
 if (-not $SkipInstaller) {

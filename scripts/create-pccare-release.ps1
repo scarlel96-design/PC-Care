@@ -11,7 +11,7 @@ chcp 65001 | Out-Null
 
 $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path $PSScriptRoot -Parent
-$CodingRoot = (Resolve-Path (Join-Path $ProjectRoot "..\..")).Path
+$CodingRoot = Join-Path ([Environment]::GetFolderPath([Environment+SpecialFolder]::Desktop)) "코딩 작업"
 
 if (-not $ReleaseRoot) {
     $ReleaseRoot = Join-Path $CodingRoot "PCCare_Release_v$Version"
