@@ -13,6 +13,9 @@ public sealed class RemoteReleaseManifestDocument
     [JsonPropertyName("repository")]
     public string? Repository { get; set; }
 
+    [JsonPropertyName("releaseNotes")]
+    public string? ReleaseNotes { get; set; }
+
     [JsonPropertyName("artifacts")]
     public RemoteReleaseArtifacts? Artifacts { get; set; }
 }

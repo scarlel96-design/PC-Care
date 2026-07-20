@@ -106,7 +106,11 @@ public sealed class UpdateStatusViewModel : ObservableObject
                 PhaseLine = check.Success ? "확인 완료" : "확인 실패";
                 ActionLine = CanDownloadGitHub ? "다운로드 가능" : "다운로드 불가";
                 DetailLine = check.UpdateFileName ?? UpdateRemoteConfig.ReleasesPageUrl;
-                Changes = check.ReleaseNotesLines;
+                Changes = check.ReleaseNotesLines.Count > 0
+                    ? check.ReleaseNotesLines
+                    : CanDownloadGitHub
+                        ? new[] { "수정 사항 정보를 불러오지 못했습니다. GitHub 릴리스 페이지에서 확인하세요." }
+                        : Array.Empty<string>();
             });
             AppendLog(check.Message);
         }

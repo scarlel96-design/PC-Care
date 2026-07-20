@@ -42,7 +42,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        VersionLine.Text = $"설치 프로그램 버전 {ProductVersion} (파일 크기 약 186MB — 작으면 구형/손상)";
+        VersionLine.Text = $"설치 프로그램 {ProductVersion} · 오프라인 패키지";
         _launchMode = SetupLaunchModeParser.Parse(Environment.GetCommandLineArgs());
         _existingManifest = TryLoadExistingManifest();
 
@@ -234,16 +234,30 @@ public partial class MainWindow : Window
 
     private void HighlightSteps()
     {
-        var labels = new[] { StepWelcome, StepEula, StepConsent, StepFeatures, StepWarnings, StepPath, StepPreflight, StepInstall, StepDone };
+        var stage = _step switch
+        {
+            0 => 0,
+            1 or 2 => 1,
+            3 or 4 or 5 => 2,
+            6 => 3,
+            7 => 4,
+            _ => 5
+        };
+        var labels = new[] { StepWelcome, StepEula, StepFeatures, StepPreflight, StepInstall, StepDone };
+        var titles = new[] { "시작", "약관 및 동의", "설치 구성", "준비 확인", "설치 진행", "완료" };
         for (var i = 0; i < labels.Length; i++)
         {
-            labels[i].Foreground = i == _step
-                ? (Brush)FindResource("SpdAccentBrush")
-                : (Brush)FindResource("SpdMutedBrush");
-            labels[i].FontWeight = i == _step ? FontWeights.SemiBold : FontWeights.Normal;
+            labels[i].Foreground = i == stage
+                ? Brushes.White
+                : (Brush)FindResource("SpdSidebarMutedBrush");
+            labels[i].FontWeight = i == stage ? FontWeights.SemiBold : FontWeights.Normal;
+            labels[i].Opacity = i <= stage ? 1.0 : 0.76;
         }
-    }
 
+        StepCounterLine.Text = $"{stage + 1} / {labels.Length}";
+        StepTitleLine.Text = titles[stage];
+        StepProgressBar.Value = stage + 1;
+    }
     private void BuildWelcome()
     {
         AddTitle("PC 케어 프로 설치");

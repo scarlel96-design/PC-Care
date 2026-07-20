@@ -86,13 +86,15 @@ $manifest = [PSCustomObject]@{
     version = $Version
     repository = "https://github.com/scarlel96-design/PC-Care"
     createdAt = (Get-Date).ToString("o")
+    releaseNotes = $ReleaseNotes
     artifacts = [PSCustomObject]@{
         setup = [PSCustomObject]@{ file = "PCCare_Setup_v$Version.exe"; sha256 = $setupHash }
         update = [PSCustomObject]@{ file = "PCCare_Update_v$Version.spdup"; sha256 = $updateHash }
     }
 }
 $manifest | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $ReleaseRoot "release-manifest.json") -Encoding UTF8
-$manifest | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $ProjectRoot "release-manifest.json") -Encoding UTF8
+# release-manifest.json is attached to the GitHub release only. Keeping it off main
+# lets legacy clients continue to UPDATE_CHANNEL.json and receive release notes.
 $githubBody | Set-Content (Join-Path $ReleaseRoot "GITHUB_RELEASE.md") -Encoding UTF8
 $channelPath = Join-Path $ReleaseRoot "UPDATE_CHANNEL.json"
 $channel = [PSCustomObject]@{
@@ -101,7 +103,7 @@ $channel = [PSCustomObject]@{
     latestVersion = $Version
     minimumSupportedVersion = "45.0.0"
     createdAt = (Get-Date).ToString("o")
-    releaseNotes = ($ReleaseNotes -split "`n" | Select-Object -First 6) -join "`n"
+    releaseNotes = ($ReleaseNotes -split "`n" | Where-Object { $_ -match '^-\s+' } | Select-Object -First 12) -join "`n"
     artifacts = [PSCustomObject]@{
         setup = [PSCustomObject]@{ file = "PCCare_Setup_v$Version.exe"; sha256 = $setupHash }
         update = [PSCustomObject]@{ file = "PCCare_Update_v$Version.spdup"; sha256 = $updateHash }
@@ -122,20 +124,19 @@ $channel | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $ProjectRoot "UPDATE
 
 $githubRoot = Join-Path $ReleaseRoot "github-repo-root"
 New-Item -ItemType Directory -Path $githubRoot -Force | Out-Null
-Copy-Item (Join-Path $ReleaseRoot "release-manifest.json") (Join-Path $githubRoot "release-manifest.json") -Force
+# release-manifest.json stays a release asset; main publishes UPDATE_CHANNEL.json only.
 Copy-Item (Join-Path $ReleaseRoot "UPDATE_CHANNEL.json") (Join-Path $githubRoot "UPDATE_CHANNEL.json") -Force
 @"
 # PC-Care 저장소(main)에 올릴 메타데이터
 
 앱은 다음 순서로 원격 업데이트를 조회합니다.
-1. ``https://raw.githubusercontent.com/scarlel96-design/PC-Care/main/release-manifest.json``
-2. ``.../main/UPDATE_CHANNEL.json``
-3. GitHub Releases API (prerelease 포함 목록 — ``/releases/latest`` 만으로는 404 가능)
-4. 릴리즈 태그에 첨부한 ``release-manifest.json`` / ``UPDATE_CHANNEL.json``
+1. ``https://raw.githubusercontent.com/scarlel96-design/PC-Care/main/UPDATE_CHANNEL.json``
+2. GitHub Releases API (prerelease 포함 목록 — ``/releases/latest`` 만으로는 404 가능)
+3. 릴리즈 태그에 첨부한 ``release-manifest.json`` / ``UPDATE_CHANNEL.json``
 
 ## 권장
 - GitHub Releases에 ``PCCare_Update_v$Version.spdup`` 첨부 (태그 ``v$Version``)
-- 이 폴더의 두 JSON을 **PC-Care 저장소 main 루트**에 커밋·푸시
+- 이 폴더의 ``UPDATE_CHANNEL.json``을 **PC-Care 저장소 main 루트**에 커밋·푸시
 - 또는 동일 파일을 릴리즈 자산으로도 업로드
 "@ | Set-Content (Join-Path $githubRoot "README_GITHUB_SYNC.md") -Encoding UTF8
 

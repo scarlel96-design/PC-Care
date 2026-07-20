@@ -37,7 +37,7 @@ public sealed class GitHubReleaseUpdateService : IDisposable
         var manifest = await TryCheckReleaseManifestAsync(current, cancellationToken).ConfigureAwait(false);
         if (manifest is not null)
         {
-            return manifest;
+            return await EnrichReleaseNotesAsync(manifest, cancellationToken).ConfigureAwait(false);
         }
 
         var channel = await TryCheckUpdateChannelAsync(current, cancellationToken).ConfigureAwait(false);
@@ -141,7 +141,7 @@ public sealed class GitHubReleaseUpdateService : IDisposable
                 sha256,
                 AppInfo.Channel,
                 "release-manifest.json",
-                Array.Empty<string>());
+                NormalizeReleaseNotes(doc.ReleaseNotes));
         }
         catch
         {
@@ -186,16 +186,14 @@ public sealed class GitHubReleaseUpdateService : IDisposable
                             update?.Sha256,
                             AppInfo.Channel,
                             $"release-manifest (tag {tag})",
-                            Array.Empty<string>());
+                            NormalizeReleaseNotes(manifest.ReleaseNotes));
                     }
 
                     var channelDoc = JsonSerializer.Deserialize<RemoteUpdateChannelDocument>(json, JsonOptions);
                     if (channelDoc is not null && !string.IsNullOrWhiteSpace(channelDoc.LatestVersion))
                     {
                         var update = channelDoc.Artifacts?.Update;
-                        var notes = string.IsNullOrWhiteSpace(channelDoc.ReleaseNotes)
-                            ? Array.Empty<string>()
-                            : channelDoc.ReleaseNotes.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                        var notes = NormalizeReleaseNotes(channelDoc.ReleaseNotes);
 
                         return BuildCheckResult(
                             currentVersion,
@@ -245,9 +243,7 @@ public sealed class GitHubReleaseUpdateService : IDisposable
                 ? null
                 : UpdateRemoteConfig.BrowserDownloadUrl(doc.LatestVersion, fileName);
 
-            var notes = string.IsNullOrWhiteSpace(doc.ReleaseNotes)
-                ? Array.Empty<string>()
-                : doc.ReleaseNotes.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            var notes = NormalizeReleaseNotes(doc.ReleaseNotes);
 
             return BuildCheckResult(
                 currentVersion,
@@ -375,7 +371,7 @@ public sealed class GitHubReleaseUpdateService : IDisposable
         var fileName = updateAsset?.Name;
         var downloadUrl = updateAsset?.BrowserDownloadUrl;
         var sha256 = ParseSha256FromBody(release.Body) ?? ParseSha256FromAssetDigest(updateAsset?.Digest);
-        var notes = ParseReleaseNotes(release.Body);
+        var notes = NormalizeReleaseNotes(release.Body);
 
         return BuildCheckResult(
             currentVersion,
@@ -463,7 +459,48 @@ public sealed class GitHubReleaseUpdateService : IDisposable
         return digest[prefix.Length..].Trim().ToLowerInvariant();
     }
 
-    private static IReadOnlyList<string> ParseReleaseNotes(string? body)
+    private async Task<RemoteUpdateCheckResult> EnrichReleaseNotesAsync(
+        RemoteUpdateCheckResult result,
+        CancellationToken cancellationToken)
+    {
+        if (result.ReleaseNotesLines.Count > 0)
+        {
+            return result;
+        }
+
+        // Older release manifests did not contain release notes. Preserve their
+        // artifact metadata, but supplement notes from the channel or GitHub body.
+        var channel = await TryCheckUpdateChannelAsync(result.LatestVersion, cancellationToken).ConfigureAwait(false);
+        if (channel is not null
+            && string.Equals(channel.LatestVersion, result.LatestVersion, StringComparison.OrdinalIgnoreCase)
+            && channel.ReleaseNotesLines.Count > 0)
+        {
+            return result with { ReleaseNotesLines = channel.ReleaseNotesLines };
+        }
+
+        try
+        {
+            var release = await FetchNewestReleaseFromListAsync(cancellationToken).ConfigureAwait(false);
+            var releaseVersion = release?.TagName?.Trim().TrimStart('v', 'V');
+            if (release is not null
+                && string.Equals(releaseVersion, result.LatestVersion, StringComparison.OrdinalIgnoreCase))
+            {
+                var notes = NormalizeReleaseNotes(release.Body);
+                if (notes.Count > 0)
+                {
+                    return result with { ReleaseNotesLines = notes };
+                }
+            }
+        }
+        catch
+        {
+            // Update detection remains usable even when optional note enrichment fails.
+        }
+
+        return result;
+    }
+
+    internal static IReadOnlyList<string> NormalizeReleaseNotes(string? body)
     {
         if (string.IsNullOrWhiteSpace(body))
         {
@@ -472,12 +509,17 @@ public sealed class GitHubReleaseUpdateService : IDisposable
 
         return body
             .Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Where(line => !line.StartsWith('#'))
             .Where(line => !line.StartsWith("update-sha256:", StringComparison.OrdinalIgnoreCase))
             .Where(line => !line.StartsWith("---"))
+            .Where(line => !line.Contains("**배포 파일**", StringComparison.OrdinalIgnoreCase))
+            .Where(line => !line.StartsWith("- 설치:", StringComparison.OrdinalIgnoreCase))
+            .Where(line => !line.StartsWith("- 업데이트:", StringComparison.OrdinalIgnoreCase))
+            .Select(line => line.StartsWith("- ", StringComparison.Ordinal) ? line[2..].Trim() : line)
+            .Where(line => !string.IsNullOrWhiteSpace(line))
             .Take(12)
             .ToArray();
     }
-
     private static async Task<string> ComputeSha256Async(string path, CancellationToken cancellationToken)
     {
         await using var stream = File.OpenRead(path);
