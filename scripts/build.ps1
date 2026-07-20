@@ -31,10 +31,12 @@ else {
 & (Join-Path $PSScriptRoot "build-core.ps1")
 & (Join-Path $PSScriptRoot "build-app.ps1")
 
-dotnet build .\SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore 2>&1 | Out-Null
+dotnet build .\SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 2>&1 | Out-Null
 if ($LASTEXITCODE -ne 0) {
-    dotnet build .\SmartPerformanceDoctor.sln -c Release -p:Platform=x64
-    throw "Solution build failed."
+    dotnet build .\SmartPerformanceDoctor.sln -c Release -p:Platform=x64 -m:1
+    if ($LASTEXITCODE -ne 0) {
+        throw "Solution build failed."
+    }
 }
 
 if (-not $SkipTests) {
