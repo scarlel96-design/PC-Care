@@ -1,0 +1,24 @@
+{
+  "product": "PC 케어 프로",
+  "channel": "stable",
+  "latestVersion": "51.0.0",
+  "minimumSupportedVersion": "45.0.0",
+  "createdAt": "2026-07-20T14:06:54.4880940+09:00",
+  "releaseNotes": "# PC 케어 프로 v51.0.0\n\n## 변경 사항\n- 전체 UI/UX: macOS·One UI·Windows 11 디자인 언어를 조화시킨 5영역 내비게이션과 일관된 디자인 토큰 적용\n- 시스템 케어: 검사 진행과 결과를 분리하고 위험도·카테고리·선택 상태를 한눈에 확인하는 결과 구조로 개선\n- 통합 점검: 단계별 상태와 핵심 결과 중심으로 정보 밀도를 낮추고 주요 작업 흐름을 단순화",
+  "artifacts": {
+    "setup": {
+      "file": "PCCare_Setup_v51.0.0.exe",
+      "sha256": "6f6b60cbbcd55bfd49cf408d7672c7785e24d841ddb019512393a0a7bb5054d1"
+    },
+    "update": {
+      "file": "PCCare_Update_v51.0.0.spdup",
+      "sha256": "4e8e05041cec1164438dd617163e2c0b1fca88583b56ebb0651c41def9fd6aa7"
+    },
+    "msi": null
+  },
+  "safety": {
+    "requiresManualInstall": true,
+    "checksumRequired": true,
+    "signatureRecommended": true
+  }
+}
