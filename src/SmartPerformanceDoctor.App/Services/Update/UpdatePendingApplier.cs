@@ -43,6 +43,17 @@ public sealed class UpdatePendingApplier
             // pending update out of process before starting the new application.
             if (ShouldFinalizeOutOfProcess())
             {
+                if (!PendingUpdateLaunchPolicy.AllowsAutomaticFinalize())
+                {
+                    AppendApplyLog($"[startup] pending {toVersion} detected; waiting for explicit user action");
+                    return new PendingApplyResult(
+                        false,
+                        0,
+                        $"업데이트 {toVersion} 마무리가 대기 중입니다. 설정 > 업데이트에서 직접 적용해 주세요.",
+                        toVersion,
+                        false);
+                }
+
                 if (!File.Exists(UpdatePaths.PendingScriptPs1))
                 {
                     UpdateInstallerService.EnsurePendingApplyScript(stagingDir, toVersion);

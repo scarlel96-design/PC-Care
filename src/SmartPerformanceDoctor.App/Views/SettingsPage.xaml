@@ -4,54 +4,77 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     RequestedTheme="Light">
     <ScrollViewer>
-        <StackPanel Padding="{StaticResource SpdMacPagePadding}" MaxWidth="720" Style="{StaticResource MacPageRootStackStyle}">
-            <TextBlock Text="환경설정" Style="{StaticResource MacPageTitleStyle}"/>
+        <StackPanel Padding="{StaticResource PccPagePadding}" MaxWidth="880" Spacing="18">
+            <StackPanel Spacing="5">
+                <TextBlock Text="설정" Style="{StaticResource MacPageTitleStyle}"/>
+                <TextBlock Text="일상적으로 필요한 옵션만 먼저 보여주고, 전문 기능은 고급 설정에 모았습니다."
+                           Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
+            </StackPanel>
+
             <Border Style="{StaticResource PremiumHeroCardStyle}">
-                <StackPanel Spacing="14">
-                    <TextBlock Text="사용자 모드" Style="{StaticResource MacSectionHeaderStyle}"/>
-                    <ComboBox x:Name="UserModeBox" HorizontalAlignment="Stretch" SelectionChanged="UserModeChanged">
-                        <ComboBoxItem Content="Basic — 일반 사용자" Tag="Basic"/>
-                        <ComboBoxItem Content="Advanced — 고급 기능" Tag="Advanced"/>
-                        <ComboBoxItem Content="Developer — 개발·릴리즈 도구" Tag="Developer"/>
-                    </ComboBox>
-                    <TextBlock x:Name="ModeHint" Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
-                </StackPanel>
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="24">
+                    <StackPanel Spacing="8" VerticalAlignment="Center">
+                        <TextBlock Text="PCCare를 내 방식에 맞게" Foreground="White" FontSize="26" FontWeight="SemiBold"/>
+                        <TextBlock Text="시작 동작과 업데이트는 언제든 변경할 수 있으며 관리자 권한을 자동으로 요구하지 않습니다."
+                                   Foreground="#D5E5FA" TextWrapping="Wrap"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="1" Text="&#xE713;" FontFamily="Segoe Fluent Icons" FontSize="44"
+                               Foreground="#BFD9FF" VerticalAlignment="Center"/>
+                </Grid>
             </Border>
+
             <Border Style="{StaticResource MacWindowPanelStyle}">
-                <StackPanel Spacing="10">
+                <StackPanel Spacing="12">
                     <TextBlock Text="시작 및 백그라운드" Style="{StaticResource MacSectionHeaderStyle}"/>
                     <ToggleSwitch x:Name="StartupToggle" Header="Windows 시작 시 자동 실행"
-                                  OffContent="끔" OnContent="켬"
-                                  Toggled="StartupToggleChanged"/>
+                                  OffContent="끔" OnContent="켬" Toggled="StartupToggleChanged"/>
                     <TextBlock x:Name="StartupStatusText" Style="{StaticResource MacListItemSubtitleStyle}" TextWrapping="Wrap"/>
-                    <TextBlock Text="로그인 후 백그라운드로 실행됩니다. 알림 영역(트레이)의 PC 케어 프로 아이콘에서 다시 열 수 있습니다."
-                               Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
-                    <ToggleSwitch x:Name="BackgroundToggle" Header="닫을 때 백그라운드 유지"
-                                  OffContent="끔" OnContent="켬"
-                                  Toggled="BackgroundToggleChanged"/>
-                    <TextBlock Text="창을 닫아도 점검·보호 루프는 계속 동작합니다. 완전 종료는 트레이 아이콘 메뉴의 [종료]를 사용하세요."
+                    <ToggleSwitch x:Name="BackgroundToggle" Header="창을 닫아도 보호 기능 유지"
+                                  OffContent="끔" OnContent="켬" Toggled="BackgroundToggleChanged"/>
+                    <TextBlock Text="완전히 종료하려면 알림 영역의 PCCare 아이콘에서 종료를 선택하세요."
                                Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
                 </StackPanel>
             </Border>
+
             <Border Style="{StaticResource MacWindowPanelStyle}">
-                <StackPanel Spacing="10">
-                    <TextBlock Text="업데이트" Style="{StaticResource MacSectionHeaderStyle}"/>
-                    <ToggleSwitch x:Name="AutoUpdateToggle" Header="자동 업데이트 확인"
-                                  OffContent="끔" OnContent="켬"
-                                  Toggled="AutoUpdateToggleChanged"/>
-                    <TextBlock Text="앱 시작 시 GitHub 릴리즈를 확인하고 새 버전이 있으면 알림을 표시합니다. (6시간 간격)"
-                               Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
-                </StackPanel>
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="업데이트" Style="{StaticResource MacSectionHeaderStyle}"/>
+                        <ToggleSwitch x:Name="AutoUpdateToggle" Header="새 버전 자동 확인"
+                                      OffContent="끔" OnContent="켬" Toggled="AutoUpdateToggleChanged"/>
+                        <TextBlock Text="시작 시 확인하며, 마지막 확인 후 6시간 동안은 다시 요청하지 않습니다."
+                                   Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
+                    </StackPanel>
+                    <Button Grid.Column="1" Content="업데이트 상태" Style="{StaticResource MacToolbarButtonStyle}"
+                            Click="OpenUpdate" VerticalAlignment="Center"/>
+                </Grid>
             </Border>
-            <Border Style="{StaticResource MacWindowPanelStyle}">
-                <StackPanel Spacing="10">
-                    <TextBlock Text="일반" Style="{StaticResource MacSectionHeaderStyle}"/>
-                    <Button Content="기능 관리" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenFeatureManagement"/>
-                    <Button Content="고급 도구" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenAdvancedCenter"/>
-                    <Button Content="업데이트" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenUpdate"/>
-                    <Button Content="처음 설정" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenFirstRun"/>
+
+            <Expander Header="고급 설정" IsExpanded="False">
+                <StackPanel Spacing="14" Padding="0,14,0,0">
+                    <Border Style="{StaticResource MacWindowPanelStyle}">
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="사용자 모드" Style="{StaticResource MacSectionHeaderStyle}"/>
+                            <ComboBox x:Name="UserModeBox" HorizontalAlignment="Stretch" SelectionChanged="UserModeChanged">
+                                <ComboBoxItem Content="Basic — 일반 사용자" Tag="Basic"/>
+                                <ComboBoxItem Content="Advanced — 고급 기능" Tag="Advanced"/>
+                                <ComboBoxItem Content="Developer — 개발·릴리즈 도구" Tag="Developer"/>
+                            </ComboBox>
+                            <TextBlock x:Name="ModeHint" Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource MacWindowPanelStyle}">
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="구성 및 복구 도구" Style="{StaticResource MacSectionHeaderStyle}"/>
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" RowDefinitions="Auto,Auto" RowSpacing="10">
+                                <Button Content="기능 관리" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenFeatureManagement"/>
+                                <Button Grid.Column="1" Content="고급 도구" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenAdvancedCenter"/>
+                                <Button Grid.Row="1" Content="처음 설정 다시 열기" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenFirstRun"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
-            </Border>
+            </Expander>
         </StackPanel>
     </ScrollViewer>
 </Page>

@@ -126,6 +126,13 @@ public sealed partial class UnifiedCarePage : Page
 
     private async void StartCare(object sender, RoutedEventArgs e) => await RunCareAsync();
 
+    private void CancelCare(object sender, RoutedEventArgs e)
+    {
+        CancelRunning();
+        StatusText.Text = "중단 요청 중…";
+        SummaryText.Text = "현재 처리 단계가 안전하게 끝난 뒤 점검을 중단합니다.";
+    }
+
     private async Task RunCareAsync()
     {
         CancelRunning();
@@ -198,8 +205,14 @@ public sealed partial class UnifiedCarePage : Page
         StatusText.Text = _viewModel.Status;
         SummaryText.Text = _viewModel.Summary;
         SessionText.Text = _viewModel.SessionLine;
+        ProgressPercentText.Text = $"{Math.Clamp(_viewModel.Progress, 0, 100)}%";
         StepList.ItemsSource = null;
         StepList.ItemsSource = _viewModel.Steps;
         StartButton.IsEnabled = !_viewModel.IsRunning;
+        ScopeBox.IsEnabled = !_viewModel.IsRunning;
+        DiagnosisOnlyRadio.IsEnabled = !_viewModel.IsRunning;
+        DiagnosisAndRepairRadio.IsEnabled = !_viewModel.IsRunning;
+        RiskCheck.IsEnabled = !_viewModel.IsRunning && _viewModel.IncludeRepair;
+        CancelButton.Visibility = _viewModel.IsRunning ? Visibility.Visible : Visibility.Collapsed;
     }
 }

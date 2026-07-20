@@ -571,7 +571,13 @@ public sealed class UpdateInstallerService
                 psi.Verb = "runas";
             }
 
-            Process.Start(psi);
+            var process = Process.Start(psi);
+            if (process is null)
+            {
+                UpdatePendingApplier.AppendApplyLog("[restart] process start returned null");
+                return false;
+            }
+
             try
             {
                 File.WriteAllText(lockFile, DateTimeOffset.Now.ToString("o"));

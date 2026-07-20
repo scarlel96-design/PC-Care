@@ -67,6 +67,9 @@ public static class AppNavigationService
         var pageType = targetPage switch
         {
             "MacDashboardPage" or "DashboardPage" => typeof(Views.MacDashboardPage),
+            "CareCenterPage" => typeof(Views.CareCenterPage),
+            "SecurityCenterPage" => typeof(Views.SecurityCenterPage),
+            "HistoryCenterPage" => typeof(Views.HistoryCenterPage),
             "UnifiedCarePage" => typeof(Views.UnifiedCarePage),
             "ModulePage" => typeof(Views.UnifiedCarePage),
             "DriverRepairPage" => typeof(Views.UnifiedCarePage),

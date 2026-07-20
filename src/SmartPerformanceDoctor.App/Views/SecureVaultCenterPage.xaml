@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     RequestedTheme="Light">
     <ScrollViewer>
-        <StackPanel Padding="{StaticResource SpdMacPagePadding}" Style="{StaticResource MacPageRootStackStyle}">
+        <StackPanel Padding="{StaticResource PccPagePadding}" MaxWidth="1060" Spacing="18">
             <TextBlock Text="보안 금고" Style="{StaticResource MacPageTitleStyle}"/>
             <TextBlock Text="파일을 암호화해 안전하게 보관합니다."
                        Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
@@ -32,7 +32,7 @@
                     <PasswordBox x:Name="CreatePasswordBox" PlaceholderText="마스터 비밀번호 (12자+, 대소문자·숫자·특수문자)"/>
                     <PasswordBox x:Name="CreatePasswordConfirmBox" PlaceholderText="비밀번호 확인"/>
                     <TextBox x:Name="RecoveryHintBox" PlaceholderText="복구 힌트 (선택, 비밀번호 아님)"/>
-                    <Button Content="금고 생성" Style="{StaticResource MacToolbarButtonStyle}" Click="CreateVault"/>
+                    <Button Content="금고 생성" Style="{StaticResource PremiumPrimaryButtonStyle}" Click="CreateVault"/>
                 </StackPanel>
             </Border>
 
@@ -41,7 +41,7 @@
                     <TextBlock Text="금고 열기" Style="{StaticResource MacSectionHeaderStyle}"/>
                     <PasswordBox x:Name="UnlockPasswordBox" PlaceholderText="마스터 비밀번호"/>
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <Button Content="잠금 해제" Style="{StaticResource MacToolbarButtonStyle}" Click="UnlockVault"/>
+                        <Button Content="잠금 해제" Style="{StaticResource PremiumPrimaryButtonStyle}" Click="UnlockVault"/>
                         <Button Content="읽기 전용으로 열기" Style="{StaticResource MacToolbarButtonStyle}" Click="UnlockReadOnly"
                                 ToolTipService.ToolTip="가져오기·삭제는 불가, 내보내기만 가능 (v5 Lab)"/>
                     </StackPanel>
@@ -57,23 +57,33 @@
             <Border x:Name="UnlockedPanel" Style="{StaticResource MacWindowPanelStyle}" Visibility="Collapsed">
                 <StackPanel x:Name="UnlockedActionsPanel" Spacing="10">
                     <TextBlock Text="보관 항목" Style="{StaticResource MacSectionHeaderStyle}"/>
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <Button Content="파일 넣기" Style="{StaticResource MacToolbarButtonStyle}" Click="AddFile"/>
-                        <Button Content="폴더 넣기" Style="{StaticResource MacToolbarButtonStyle}" Click="AddFolder"/>
-                        <Button x:Name="BackButton" Content="뒤로" Style="{StaticResource MacToolbarButtonStyle}" Click="NavigateBack" Visibility="Collapsed"/>
-                        <Button Content="잠그기" Style="{StaticResource MacToolbarButtonStyle}" Click="LockVault"/>
-                        <Button Content="무결성 검사" Style="{StaticResource MacToolbarButtonStyle}" Click="VerifyIntegrity"/>
-                        <Button Content="Pack 정리(GC)" Style="{StaticResource MacToolbarButtonStyle}" Click="CompactPacks"
-                                ToolTipService.ToolTip="v5 pack 파일 재패킹·tombstone 제거 (쓰기 세션 필요)"/>
-                        <Button Content="Activation 복구" Style="{StaticResource MacToolbarButtonStyle}" Click="RepairActivation"
-                                ToolTipService.ToolTip="activation.commit 마커를 현재 메타 해시로 재작성 (v5 Lab)"/>
-                        <Button Content="비밀번호 변경" Style="{StaticResource MacToolbarButtonStyle}" Click="ChangePassword"
-                                ToolTipService.ToolTip="변경 시 이전 복구 코드 전부 무효 · 새 코드 10개 발급"/>
-                        <Button Content="복구 코드 재발급" Style="{StaticResource MacToolbarButtonStyle}" Click="ReissueRecoveryCodes"
-                                ToolTipService.ToolTip="비밀번호 확인 후 일회용 복구 코드 10개 재발급 (이전 코드 무효, v5 Lab)"/>
-                        <Button Content="v3→v4 마이그레이션" Style="{StaticResource MacToolbarButtonStyle}" Click="MigrateToLabV4"
-                                ToolTipService.ToolTip="레거시 v3 금고를 Lab v4로 재암호화 복사 (원본 유지)"/>
-                    </StackPanel>
+                    <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto" ColumnSpacing="8">
+                        <Button Content="파일 넣기" Style="{StaticResource PremiumPrimaryButtonStyle}" Click="AddFile"/>
+                        <Button Grid.Column="1" Content="폴더 넣기" Style="{StaticResource MacToolbarButtonStyle}" Click="AddFolder"/>
+                        <Button Grid.Column="2" x:Name="BackButton" Content="뒤로" Style="{StaticResource MacToolbarButtonStyle}" Click="NavigateBack" Visibility="Collapsed"/>
+                        <Button Grid.Column="4" Content="금고 잠그기" Style="{StaticResource MacToolbarButtonStyle}" Click="LockVault"/>
+                    </Grid>
+                    <Expander Header="보안 및 유지 관리" IsExpanded="False">
+                        <StackPanel Spacing="10" Padding="0,10,0,0">
+                            <TextBlock Text="평소에는 사용할 필요가 없습니다. 무결성 확인, 자격 증명 변경, 레거시 형식 전환 도구입니다."
+                                       Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button Content="무결성 검사" Style="{StaticResource MacToolbarButtonStyle}" Click="VerifyIntegrity"/>
+                                <Button Content="비밀번호 변경" Style="{StaticResource MacToolbarButtonStyle}" Click="ChangePassword"
+                                        ToolTipService.ToolTip="변경 시 이전 복구 코드 전부 무효 · 새 코드 10개 발급"/>
+                                <Button Content="복구 코드 재발급" Style="{StaticResource MacToolbarButtonStyle}" Click="ReissueRecoveryCodes"
+                                        ToolTipService.ToolTip="비밀번호 확인 후 일회용 복구 코드 10개 재발급"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button Content="저장소 정리" Style="{StaticResource MacToolbarButtonStyle}" Click="CompactPacks"
+                                        ToolTipService.ToolTip="pack 파일 재패킹·삭제 표식 제거 (쓰기 세션 필요)"/>
+                                <Button Content="활성 상태 복구" Style="{StaticResource MacToolbarButtonStyle}" Click="RepairActivation"
+                                        ToolTipService.ToolTip="활성 커밋 마커를 현재 메타 해시로 재작성"/>
+                                <Button Content="레거시 금고 마이그레이션" Style="{StaticResource MacToolbarButtonStyle}" Click="MigrateToLabV4"
+                                        ToolTipService.ToolTip="레거시 v3 금고를 최신 형식으로 재암호화 복사 (원본 유지)"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Expander>
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <TextBlock Text="자동 잠금 (분):" VerticalAlignment="Center"/>
                         <ComboBox x:Name="AutoLockMinutesBox" Width="88" SelectionChanged="AutoLockMinutesChanged"/>

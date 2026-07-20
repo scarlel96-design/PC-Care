@@ -9,6 +9,7 @@ using Microsoft.UI.Xaml.Shapes;
 using SmartPerformanceDoctor.Aegis;
 using SmartPerformanceDoctor.App.Branding;
 using SmartPerformanceDoctor.App.Controls;
+using SmartPerformanceDoctor.App.Platform;
 using SmartPerformanceDoctor.App.Services;
 using SmartPerformanceDoctor.App.Services.Installation;
 using SmartPerformanceDoctor.App.Views;
@@ -25,6 +26,7 @@ public sealed partial class MainWindow : Window
     private bool _closingHooked;
     private InstalledFeaturesService _installedFeatures = null!;
     private UserModeService _userMode = null!;
+    private ProductCatalog _productCatalog = null!;
 
     private Grid AppTitleBar = null!;
     private Image TitleBarIcon = null!;
@@ -43,6 +45,7 @@ public sealed partial class MainWindow : Window
         StartupDiagnostics.Write("mainwindow", "xaml-init-ok");
         _installedFeatures = new InstalledFeaturesService();
         _userMode = new UserModeService();
+        _productCatalog = ProductComposition.Current;
         UiDispatcher.Queue = DispatcherQueue.GetForCurrentThread();
         RootFrame = new Frame();
         Content = RootFrame;
@@ -70,6 +73,7 @@ public sealed partial class MainWindow : Window
                 ApplyProductIcon();
                 ApplyStartupTrustStatus();
                 AppNavigationService.NavigateDashboard(RootFrame);
+                SelectNavigation("home");
                 RefreshNavigationVisibility();
                 StartupDiagnostics.Write("mainwindow", "deferred-ok");
             }
@@ -85,6 +89,14 @@ public sealed partial class MainWindow : Window
     public void ApplyStartupTrustStatus()
     {
         TitleStatusText.Text = StartupTrustStatusService.BuildTitleStatus();
+    }
+
+    public void SetStatusMessage(string message)
+    {
+        if (!string.IsNullOrWhiteSpace(message))
+        {
+            TitleStatusText.Text = message;
+        }
     }
 
     public void RefreshNavigationVisibility()
@@ -190,6 +202,11 @@ public sealed partial class MainWindow : Window
 
     private void BuildApplicationShell()
     {
+        var canvasBrush = GetBrush("PccCanvasBrush", 255, 243, 246, 251);
+        var sidebarBrush = GetBrush("PccSidebarBrush", 255, 233, 238, 246);
+        var textBrush = GetBrush("PccTextBrush", 255, 23, 35, 60);
+        var mutedBrush = GetBrush("PccTextMutedBrush", 255, 113, 128, 150);
+        var borderBrush = GetBrush("PccBorderBrush", 26, 100, 116, 139);
         TitleBarIcon = new Image { Width = 22, Height = 22 };
         TitleStatusText = new TextBlock
         {
@@ -197,18 +214,18 @@ public sealed partial class MainWindow : Window
             Margin = new Thickness(20, 0, 12, 0),
             VerticalAlignment = VerticalAlignment.Center,
             FontSize = 12,
-            Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 102, 112, 133))
+            Foreground = mutedBrush
         };
         VersionText = new TextBlock
         {
             Text = "버전 …",
             FontSize = 11,
-            Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 102, 112, 133))
+            Foreground = mutedBrush
         };
         SearchBox = new TextBox { PlaceholderText = "메뉴 검색" };
         SearchBox.TextChanged += SearchChanged;
         NavPanel = new StackPanel { Padding = new Thickness(14, 8, 14, 20), Spacing = 2 };
-        RootFrame.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 244, 245, 247));
+        RootFrame.Background = canvasBrush;
 
         var minimize = new Button { Content = "─", Width = 40, Height = 32 };
         minimize.Click += OnMinimizeWindow;
@@ -219,13 +236,13 @@ public sealed partial class MainWindow : Window
 
         AppTitleBar = new Grid
         {
-            Height = 38,
-            Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 221, 226, 234)),
-            BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(48, 31, 41, 55)),
+            Height = 44,
+            Background = sidebarBrush,
+            BorderBrush = borderBrush,
             BorderThickness = new Thickness(0, 0, 0, 1),
             ColumnDefinitions =
             {
-                new ColumnDefinition { Width = new GridLength(272) },
+                new ColumnDefinition { Width = new GridLength(244) },
                 new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
                 new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) }
             }
@@ -242,10 +259,10 @@ public sealed partial class MainWindow : Window
                 TitleBarIcon,
                 new TextBlock
                 {
-                    Text = "PC 케어 프로",
+                    Text = "PCCare",
                     FontSize = 14,
                     FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
-                    Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 17, 24, 39))
+                    Foreground = textBrush
                 }
             }
         };
@@ -254,8 +271,8 @@ public sealed partial class MainWindow : Window
 
         var statusHost = new Border
         {
-            Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 244, 245, 247)),
-            BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(48, 31, 41, 55)),
+            Background = canvasBrush,
+            BorderBrush = borderBrush,
             BorderThickness = new Thickness(0, 0, 0, 1),
             Child = TitleStatusText
         };
@@ -264,8 +281,8 @@ public sealed partial class MainWindow : Window
 
         var buttonsHost = new Border
         {
-            Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 244, 245, 247)),
-            BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(48, 31, 41, 55)),
+            Background = canvasBrush,
+            BorderBrush = borderBrush,
             BorderThickness = new Thickness(0, 0, 0, 1),
             Child = new StackPanel
             {
@@ -297,7 +314,7 @@ public sealed partial class MainWindow : Window
         var sidebarSeparator = new Rectangle
         {
             Height = 1,
-            Fill = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(48, 31, 41, 55))
+            Fill = borderBrush
         };
         Grid.SetRow(sidebarSeparator, 1);
         sidebarGrid.Children.Add(sidebarSeparator);
@@ -308,8 +325,8 @@ public sealed partial class MainWindow : Window
 
         var sidebar = new Border
         {
-            Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 221, 226, 234)),
-            BorderBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(48, 31, 41, 55)),
+            Background = sidebarBrush,
+            BorderBrush = borderBrush,
             BorderThickness = new Thickness(0, 0, 1, 0),
             Child = sidebarGrid
         };
@@ -318,7 +335,7 @@ public sealed partial class MainWindow : Window
         {
             ColumnDefinitions =
             {
-                new ColumnDefinition { Width = new GridLength(272) },
+                new ColumnDefinition { Width = new GridLength(244) },
                 new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
             },
             Children = { sidebar, RootFrame }
@@ -327,10 +344,10 @@ public sealed partial class MainWindow : Window
 
         Content = new Grid
         {
-            Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.ColorHelper.FromArgb(255, 244, 245, 247)),
+            Background = canvasBrush,
             RowDefinitions =
             {
-                new RowDefinition { Height = new GridLength(38) },
+                new RowDefinition { Height = new GridLength(44) },
                 new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
             },
             Children = { AppTitleBar, body }
@@ -338,6 +355,18 @@ public sealed partial class MainWindow : Window
         Grid.SetRow(body, 1);
     }
 
+    private static Microsoft.UI.Xaml.Media.SolidColorBrush GetBrush(
+        string resourceKey,
+        byte alpha,
+        byte red,
+        byte green,
+        byte blue)
+    {
+        return Application.Current.Resources.TryGetValue(resourceKey, out var resource) &&
+               resource is Microsoft.UI.Xaml.Media.SolidColorBrush brush
+            ? brush
+            : new Microsoft.UI.Xaml.Media.SolidColorBrush(ColorHelper.FromArgb(alpha, red, green, blue));
+    }
     private void OnCloseWindow(object sender, RoutedEventArgs e)
     {
         var prefs = BackgroundRunPreferences.Load();
@@ -394,33 +423,38 @@ public sealed partial class MainWindow : Window
             NavPanel.Children.Add(section);
         }
 
-        void AddNav(string title, string symbol, string tag, RoutedEventHandler click)
+        void AddNav(ProductFeatureDescriptor feature)
         {
             var button = new Controls.MacNavigationButton
             {
-                Title = title,
-                Symbol = symbol,
-                Tag = tag
+                Title = feature.Title,
+                Symbol = feature.Glyph,
+                Tag = feature.Id
             };
-            button.Click += click;
+            button.Click += (_, _) => NavigateFeature(feature);
             NavPanel.Children.Add(button);
         }
 
-        AddSection("주요 기능", "section:primary");
-        AddNav("홈", "◫", "nav:home", OpenDashboard);
-        AddNav("통합 점검", "⌁", "nav:pc-check", OpenUnifiedCare);
-        AddNav("시스템 케어", "◉", "nav:system-care", OpenSystemCare);
-        AddNav("보안 금고", "⬢", "nav:secure-vault", OpenSecureVault);
-        AddNav("보안 삭제", "⊗", "nav:secure-delete", OpenSecureDelete);
+        var primary = _productCatalog.Features
+            .Where(feature => feature.IsPrimaryNavigation && feature.Area != ProductArea.Settings)
+            .OrderBy(feature => feature.Order)
+            .ToArray();
+        var settings = _productCatalog.Features
+            .Where(feature => feature.IsPrimaryNavigation && feature.Area == ProductArea.Settings)
+            .OrderBy(feature => feature.Order)
+            .ToArray();
 
-        AddSection("기록", "section:history");
-        AddNav("보고서", "□", "nav:reports", OpenReports);
-        AddNav("작업 내역", "◇", "nav:activity", OpenActivity);
+        AddSection("관리", "section:primary");
+        foreach (var feature in primary)
+        {
+            AddNav(feature);
+        }
 
-        AddSection("설정", "section:settings");
-        AddNav("환경설정", "⚙", "nav:settings", OpenSettings);
-        AddNav("기능 관리", "☷", "nav:feature-mgmt", OpenFeatureManagement);
-        AddNav("고급 도구", "◈", "nav:advanced-center", OpenAdvancedCenter);
+        AddSection("프로그램", "section:settings");
+        foreach (var feature in settings)
+        {
+            AddNav(feature);
+        }
     }
 
     private void ApplyProductIcon()
@@ -495,20 +529,6 @@ public sealed partial class MainWindow : Window
         TitleStatusText.Text = $"{DateTime.Now:HH:mm:ss} · {message}";
     }
 
-    private void Navigate(Action navigate, string label)
-    {
-        try
-        {
-            ShowNavFeedback($"{label}…");
-            navigate();
-            ShowNavFeedback($"{label} 완료");
-        }
-        catch (Exception ex)
-        {
-            ShowNavFeedback($"{label} 오류: {ex.Message}");
-        }
-    }
-
     private void SearchChanged(object sender, TextChangedEventArgs e)
     {
         var query = (SearchBox.Text ?? string.Empty).Trim();
@@ -517,15 +537,54 @@ public sealed partial class MainWindow : Window
         foreach (var button in EnumerateNavButtons())
         {
             var featureVisible = IsNavVisible(button);
-            var searchVisible = !hasQuery || (button.Title?.Contains(query, StringComparison.OrdinalIgnoreCase) ?? false);
+            var searchVisible = !hasQuery || MatchesSearch(button, query);
             button.Visibility = featureVisible && searchVisible ? Visibility.Visible : Visibility.Collapsed;
         }
 
         UpdateSectionVisibility();
     }
 
-    private bool IsNavVisible(MacNavigationButton button) =>
-        FeatureVisibilityService.IsNavVisible(button.Tag as string, _installedFeatures, _userMode);
+    private bool IsNavVisible(MacNavigationButton button)
+    {
+        return button.Tag is string id &&
+               _productCatalog.TryGetFeature(id, out var feature) &&
+               _userMode.Meets(feature.MinimumMode) &&
+               NavigationFeatureMap.ShouldShow(feature.InstallFeatureId, _installedFeatures);
+    }
+
+    private bool MatchesSearch(MacNavigationButton button, string query)
+    {
+        if (button.Title?.Contains(query, StringComparison.OrdinalIgnoreCase) == true)
+        {
+            return true;
+        }
+
+        return button.Tag is string id &&
+               _productCatalog.TryGetFeature(id, out var feature) &&
+               (feature.Description.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                feature.Keywords.Any(keyword => keyword.Contains(query, StringComparison.OrdinalIgnoreCase)));
+    }
+
+    private void SelectNavigation(string featureId)
+    {
+        foreach (var button in EnumerateNavButtons())
+        {
+            button.IsSelected = string.Equals(button.Tag as string, featureId, StringComparison.OrdinalIgnoreCase);
+        }
+    }
+    private void NavigateFeature(ProductFeatureDescriptor feature)
+    {
+        try
+        {
+            AppNavigationService.Navigate(RootFrame, feature.PageType);
+            SelectNavigation(feature.Id);
+            TitleStatusText.Text = StartupTrustStatusService.BuildTitleStatus();
+        }
+        catch (Exception ex)
+        {
+            ShowNavFeedback($"{feature.Title} 오류: {ex.Message}");
+        }
+    }
 
     private void UpdateSectionVisibility()
     {
@@ -569,33 +628,4 @@ public sealed partial class MainWindow : Window
         }
     }
 
-    private void OpenDashboard(object sender, RoutedEventArgs e) =>
-        Navigate(() => AppNavigationService.NavigateDashboard(RootFrame), "홈");
-
-    private void OpenUnifiedCare(object sender, RoutedEventArgs e) =>
-        Navigate(() => AppNavigationService.NavigateUnifiedCare(RootFrame, "quick", autoStart: false), AstraCareBranding.Repair);
-
-    private void OpenReports(object sender, RoutedEventArgs e) =>
-        Navigate(() => RootFrame.Navigate(typeof(ReportPage)), "보고서");
-
-    private void OpenActivity(object sender, RoutedEventArgs e) =>
-        Navigate(() => RootFrame.Navigate(typeof(EvidenceExplorerPage)), "작업 내역");
-
-    private void OpenSettings(object sender, RoutedEventArgs e) =>
-        Navigate(() => RootFrame.Navigate(typeof(SettingsPage)), "환경설정");
-
-    private void OpenAdvancedCenter(object sender, RoutedEventArgs e) =>
-        Navigate(() => RootFrame.Navigate(typeof(AdvancedCenterPage)), "고급 도구");
-
-    private void OpenSystemCare(object sender, RoutedEventArgs e) =>
-        Navigate(() => RootFrame.Navigate(typeof(SystemCareCenterPage)), AstraCareBranding.Clean);
-
-    private void OpenSecureVault(object sender, RoutedEventArgs e) =>
-        Navigate(() => RootFrame.Navigate(typeof(SecureVaultCenterPage)), AstraCareBranding.VaultNav);
-
-    private void OpenSecureDelete(object sender, RoutedEventArgs e) =>
-        Navigate(() => RootFrame.Navigate(typeof(SecureDeleteCenterPage)), AstraCareBranding.ShredNav);
-
-    private void OpenFeatureManagement(object sender, RoutedEventArgs e) =>
-        Navigate(() => RootFrame.Navigate(typeof(FeatureManagementPage)), "기능 관리");
 }

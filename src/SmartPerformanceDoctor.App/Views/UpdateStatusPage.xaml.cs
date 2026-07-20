@@ -28,6 +28,7 @@ public sealed partial class UpdateStatusPage : Page
         try
         {
             _viewModel.Refresh();
+            RefreshPendingUpdatePanel();
             if (_triggerGitHubCheckOnLoad)
             {
                 _triggerGitHubCheckOnLoad = false;
@@ -43,6 +44,32 @@ public sealed partial class UpdateStatusPage : Page
     private void RefreshStatus(object sender, RoutedEventArgs e)
     {
         _viewModel.Refresh();
+        RefreshPendingUpdatePanel();
+    }
+
+    private void RefreshPendingUpdatePanel()
+    {
+        PendingUpdatePanel.Visibility = File.Exists(UpdatePaths.PendingState)
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+    }
+
+    private void ResumePendingUpdate(object sender, RoutedEventArgs e)
+    {
+        if (!File.Exists(UpdatePaths.PendingState))
+        {
+            RefreshPendingUpdatePanel();
+            return;
+        }
+
+        if (!UpdateInstallerService.LaunchPendingRestart())
+        {
+            PendingUpdateMessage.Text = "마무리 프로그램을 시작하지 못했습니다. 로그를 확인한 뒤 다시 시도하세요.";
+            return;
+        }
+
+        PendingUpdateMessage.Text = "업데이트를 마무리합니다. 확인 창이 나타나면 허용해 주세요.";
+        Application.Current.Exit();
     }
 
     private async void PickUpdateFile(object sender, RoutedEventArgs e)

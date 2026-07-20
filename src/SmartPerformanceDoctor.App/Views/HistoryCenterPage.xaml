@@ -1,0 +1,48 @@
+<Page
+    x:Class="SmartPerformanceDoctor.App.Views.HistoryCenterPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    RequestedTheme="Light">
+    <ScrollViewer>
+        <StackPanel Padding="{StaticResource SpdMacPagePadding}" MaxWidth="1080" Spacing="20">
+            <StackPanel Spacing="5">
+                <TextBlock Text="기록 및 복구" Style="{StaticResource MacPageTitleStyle}"/>
+                <TextBlock Text="검사·정리 결과와 되돌릴 수 있는 변경을 한곳에서 확인합니다."
+                           Style="{StaticResource MacInlineStatusTextStyle}"/>
+            </StackPanel>
+
+            <Grid ColumnDefinitions="2*,*" ColumnSpacing="18">
+                <StackPanel Grid.Column="0" Spacing="12">
+                    <Border Style="{StaticResource MacWindowPanelStyle}">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                            <StackPanel Spacing="6"><TextBlock Text="보고서" FontSize="19" FontWeight="SemiBold"/><TextBlock Text="점검 결과와 권장 조치, 시스템 상태를 확인합니다." Style="{StaticResource MacListItemSubtitleStyle}"/></StackPanel>
+                            <Button Grid.Column="1" Content="보고서 열기" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenReports"/>
+                        </Grid>
+                    </Border>
+                    <Border Style="{StaticResource MacWindowPanelStyle}">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                            <StackPanel Spacing="6"><TextBlock Text="작업 내역" FontSize="19" FontWeight="SemiBold"/><TextBlock Text="실행된 복구와 정리 작업의 근거와 결과를 추적합니다." Style="{StaticResource MacListItemSubtitleStyle}"/></StackPanel>
+                            <Button Grid.Column="1" Content="내역 열기" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenActivity"/>
+                        </Grid>
+                    </Border>
+                    <Border Style="{StaticResource MacWindowPanelStyle}">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                            <StackPanel Spacing="6"><TextBlock Text="문제 해결 로그" FontSize="19" FontWeight="SemiBold"/><TextBlock Text="복구 로그와 충돌 기록은 필요할 때만 확인합니다." Style="{StaticResource MacListItemSubtitleStyle}"/></StackPanel>
+                            <Button Grid.Column="1" Content="로그 보기" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenRepairLogs"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+
+                <Border Grid.Column="1" Style="{StaticResource PremiumHeroCardStyle}" Background="#173E78" BorderBrush="#224F8C" VerticalAlignment="Top">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="↶" Foreground="#A9CBFF" FontSize="34"/>
+                        <TextBlock Text="안전 복구 센터" Foreground="White" FontSize="20" FontWeight="SemiBold"/>
+                        <TextBlock Text="최근 정리와 최적화 변경을 이전 상태로 되돌릴 수 있습니다." Foreground="#D5E5FA" TextWrapping="Wrap"/>
+                        <TextBlock Text="복구 가능한 작업은 각 보고서에서 확인할 수 있습니다." Foreground="#A9CBFF" FontSize="11" TextWrapping="Wrap"/>
+                        <Button Content="최근 보고서 확인" Style="{StaticResource PremiumPrimaryButtonStyle}" Click="OpenReports" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

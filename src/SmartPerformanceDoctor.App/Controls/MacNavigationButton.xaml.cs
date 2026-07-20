@@ -10,6 +10,8 @@ public sealed partial class MacNavigationButton : UserControl
 
     public static readonly DependencyProperty SymbolProperty =
         DependencyProperty.Register(nameof(Symbol), typeof(string), typeof(MacNavigationButton), new PropertyMetadata("•", OnChanged));
+    public static readonly DependencyProperty IsSelectedProperty =
+        DependencyProperty.Register(nameof(IsSelected), typeof(bool), typeof(MacNavigationButton), new PropertyMetadata(false, OnChanged));
 
     public event RoutedEventHandler? Click;
 
@@ -23,6 +25,11 @@ public sealed partial class MacNavigationButton : UserControl
     {
         get => (string)GetValue(SymbolProperty);
         set => SetValue(SymbolProperty, value);
+    }
+    public bool IsSelected
+    {
+        get => (bool)GetValue(IsSelectedProperty);
+        set => SetValue(IsSelectedProperty, value);
     }
 
     public MacNavigationButton()
@@ -44,5 +51,13 @@ public sealed partial class MacNavigationButton : UserControl
     {
         SymbolText.Text = Symbol;
         TitleText.Text = Title;
+        RootButton.Background = IsSelected
+            ? (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["PccAccentSoftBrush"]
+            : new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+        var foreground = IsSelected
+            ? (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["PccAccentBrush"]
+            : (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["PccTextBrush"];
+        SymbolText.Foreground = foreground;
+        TitleText.Foreground = foreground;
     }
 }

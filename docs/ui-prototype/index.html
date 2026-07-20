@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PCCare 51 UI/UX Prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="prototype-banner">UI/UX 프로토타입 · 실제 검사나 정리를 수행하지 않습니다</div>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">P</div>
+        <div><strong>PCCare</strong><span>PC 관리 센터</span></div>
+      </div>
+
+      <nav class="primary-nav" aria-label="주 메뉴">
+        <button class="nav-item active" data-page="home"><span class="nav-icon">⌂</span><span>홈</span></button>
+        <button class="nav-item" data-page="care"><span class="nav-icon">✦</span><span>PC 최적화</span><span class="nav-badge">3</span></button>
+        <button class="nav-item" data-page="security"><span class="nav-icon">◇</span><span>보안</span></button>
+        <button class="nav-item" data-page="history"><span class="nav-icon">↶</span><span>기록 및 복구</span></button>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div class="protection-mini">
+          <span class="status-dot"></span>
+          <div><strong>보호 정상</strong><small>마지막 확인 2분 전</small></div>
+        </div>
+        <button class="nav-item" data-page="settings"><span class="nav-icon">⚙</span><span>설정</span></button>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="breadcrumb" id="breadcrumb">홈</div>
+        <div class="top-actions">
+          <button class="icon-button" aria-label="알림">♢<span class="notification-dot"></span></button>
+          <button class="profile-button"><span class="avatar">S</span><span>내 PC</span><span class="chevron">⌄</span></button>
+        </div>
+      </header>
+
+      <section class="page active" id="page-home">
+        <div class="page-heading">
+          <div><p class="eyebrow">2026년 7월 20일</p><h1>PC 상태가 전반적으로 좋습니다</h1><p>확인이 필요한 3개 항목이 있습니다. 권장 항목만 안전하게 정리할 수 있어요.</p></div>
+          <button class="secondary-button" data-go="history">최근 결과 보기</button>
+        </div>
+
+        <div class="hero-grid">
+          <article class="health-card">
+            <div class="score-ring" style="--score:82"><div><strong>82</strong><span>좋음</span></div></div>
+            <div class="health-copy">
+              <span class="pill success">● 보호 중</span>
+              <h2>한 번의 점검으로<br>PC를 더 가볍게</h2>
+              <p>예상 정리 공간 4.8GB · 약 2분 소요</p>
+              <button class="primary-button large" id="home-scan">빠른 점검 시작 <span>→</span></button>
+              <button class="text-button" data-go="care">점검 항목 직접 선택</button>
+            </div>
+          </article>
+
+          <div class="metric-stack">
+            <article class="metric-card"><div class="metric-icon blue">⌁</div><div><span>저장 공간</span><strong>4.8GB</strong><small>정리 가능</small></div><button data-go="care">보기</button></article>
+            <article class="metric-card"><div class="metric-icon amber">↗</div><div><span>시작 속도</span><strong>48초</strong><small>3개 앱 최적화 가능</small></div><button data-go="care">보기</button></article>
+            <article class="metric-card"><div class="metric-icon green">◇</div><div><span>보안 상태</span><strong>안전</strong><small>금고 잠김 · 위협 없음</small></div><button data-go="security">보기</button></article>
+          </div>
+        </div>
+
+        <div class="section-title"><div><h2>지금 확인하면 좋은 항목</h2><p>영향이 큰 순서대로 정리했습니다.</p></div><button class="text-button" data-go="care">모두 보기 →</button></div>
+        <div class="recommendation-list">
+          <article class="recommendation"><span class="priority high">1</span><div><strong>임시 파일 4.2GB를 정리할 수 있어요</strong><p>Windows 업데이트 잔여 파일과 앱 캐시입니다. 개인 파일은 포함되지 않습니다.</p></div><span class="risk safe">안전</span><button class="outline-button" data-go="care">검토</button></article>
+          <article class="recommendation"><span class="priority medium">2</span><div><strong>시작 프로그램 3개가 부팅을 늦추고 있어요</strong><p>비활성화해도 프로그램은 필요할 때 정상적으로 실행할 수 있습니다.</p></div><span class="risk review">검토</span><button class="outline-button" data-go="care">검토</button></article>
+          <article class="recommendation"><span class="priority low">3</span><div><strong>오디오 드라이버 상태 확인을 권장해요</strong><p>최근 오류 기록 2건이 발견됐지만 현재 장치는 정상 작동 중입니다.</p></div><span class="risk info">정보</span><button class="outline-button" data-go="care">진단</button></article>
+        </div>
+      </section>
+
+      <section class="page" id="page-care">
+        <div class="page-heading compact">
+          <div><p class="eyebrow">CARE CENTER</p><h1>PC 최적화</h1><p>검사부터 결과 검토, 정리, 되돌리기까지 한 흐름으로 진행합니다.</p></div>
+          <button class="secondary-button" id="state-demo">결과 화면 미리보기</button>
+        </div>
+
+        <div class="care-shell">
+          <div class="care-progress-rail" aria-label="진행 단계">
+            <div class="rail-step active" data-step="ready"><span>1</span><strong>검사 설정</strong></div>
+            <div class="rail-line"></div>
+            <div class="rail-step" data-step="scanning"><span>2</span><strong>검사 중</strong></div>
+            <div class="rail-line"></div>
+            <div class="rail-step" data-step="results"><span>3</span><strong>결과 검토</strong></div>
+            <div class="rail-line"></div>
+            <div class="rail-step" data-step="complete"><span>4</span><strong>정리 완료</strong></div>
+          </div>
+          <div id="care-content"></div>
+        </div>
+      </section>
+
+      <section class="page" id="page-security">
+        <div class="page-heading compact"><div><p class="eyebrow">SECURITY</p><h1>보안</h1><p>중요 파일 보호와 복구하기 어려운 삭제를 명확히 분리했습니다.</p></div><span class="pill success">● 모든 보호 정상</span></div>
+        <div class="security-overview">
+          <article class="feature-card vault-card">
+            <div class="feature-card-top"><div class="big-feature-icon">◇</div><span class="pill success">잠김 · 안전</span></div>
+            <h2>보안 금고</h2><p>중요한 파일과 폴더를 암호화해서 보관합니다.</p>
+            <div class="feature-facts"><span><strong>18개</strong> 보관 항목</span><span><strong>1.4GB</strong> 사용 중</span><span><strong>5분</strong> 자동 잠금</span></div>
+            <button class="primary-button">금고 열기</button>
+            <button class="text-button">복구 옵션 보기</button>
+          </article>
+          <article class="feature-card shred-card">
+            <div class="feature-card-top"><div class="big-feature-icon">⌫</div><span class="pill caution">주의 필요</span></div>
+            <h2>보안 삭제</h2><p>복구하기 어렵도록 파일을 영구적으로 삭제합니다.</p>
+            <div class="warning-box"><strong>삭제 후 복원할 수 없습니다</strong><span>대상과 저장 장치 특성을 확인한 뒤 실행합니다.</span></div>
+            <button class="danger-button">삭제할 파일 선택</button>
+            <button class="text-button">삭제 방식 알아보기</button>
+          </article>
+        </div>
+        <details class="advanced-disclosure"><summary><span>고급 보안 및 복구 도구</span><small>무결성 검사, 복구 코드, 이전 금고 변환</small></summary><div class="advanced-grid"><button>금고 무결성 검사<span>마지막 검사: 정상</span></button><button>복구 코드 관리<span>남은 코드 8개</span></button><button>이전 금고 변환<span>필요한 경우에만 사용</span></button></div></details>
+      </section>
+
+      <section class="page" id="page-history">
+        <div class="page-heading compact"><div><p class="eyebrow">HISTORY & RECOVERY</p><h1>기록 및 복구</h1><p>작업 결과와 되돌릴 수 있는 변경을 날짜별로 확인합니다.</p></div><button class="secondary-button">보고서 내보내기</button></div>
+        <div class="history-layout">
+          <div class="history-main">
+            <div class="filter-row"><button class="filter active">전체</button><button class="filter">정리</button><button class="filter">복구</button><button class="filter">진단</button></div>
+            <article class="history-item"><span class="timeline-dot green"></span><div><small>오늘 · 오후 12:42</small><strong>빠른 정리 완료</strong><p>임시 파일과 개인정보 흔적 14,291개를 정리했습니다.</p><div class="history-tags"><span>4.6GB 확보</span><span>되돌리기 가능</span></div></div><button class="outline-button">상세 보기</button></article>
+            <article class="history-item"><span class="timeline-dot blue"></span><div><small>어제 · 오후 8:15</small><strong>오디오 진단 완료</strong><p>장치와 서비스가 정상입니다. 변경한 항목은 없습니다.</p><div class="history-tags"><span>문제 없음</span></div></div><button class="outline-button">상세 보기</button></article>
+            <article class="history-item"><span class="timeline-dot amber"></span><div><small>7월 17일 · 오전 9:20</small><strong>시작 프로그램 최적화</strong><p>3개 프로그램의 자동 시작을 비활성화했습니다.</p><div class="history-tags"><span>부팅 8초 개선</span><span>되돌리기 가능</span></div></div><button class="outline-button">상세 보기</button></article>
+          </div>
+          <aside class="restore-panel"><div class="restore-icon">↶</div><h3>안전 복구 센터</h3><p>최근 정리와 최적화 변경을 이전 상태로 되돌릴 수 있습니다.</p><strong>복구 가능한 작업 7개</strong><button class="primary-button">복구 지점 보기</button><small>최근 복구 지점: 오늘 오후 12:41</small></aside>
+        </div>
+      </section>
+
+      <section class="page" id="page-settings">
+        <div class="page-heading compact"><div><p class="eyebrow">SETTINGS</p><h1>설정</h1><p>자주 사용하는 옵션만 앞에 두고 전문 기능은 접어두었습니다.</p></div></div>
+        <div class="settings-layout">
+          <section class="settings-card"><h2>일반</h2><label class="setting-row"><span><strong>Windows 시작 시 실행</strong><small>로그인 후 보호 상태를 확인합니다.</small></span><input type="checkbox" checked><i></i></label><label class="setting-row"><span><strong>창을 닫아도 보호 유지</strong><small>알림 영역에서 계속 실행합니다.</small></span><input type="checkbox" checked><i></i></label></section>
+          <section class="settings-card"><h2>점검 및 정리</h2><label class="setting-row"><span><strong>검사 후 안전한 항목 자동 선택</strong><small>사용자 파일과 검토 필요 항목은 제외합니다.</small></span><input type="checkbox" checked><i></i></label><label class="setting-row"><span><strong>정리 전 복구 지점 만들기</strong><small>변경을 되돌릴 수 있도록 기록합니다.</small></span><input type="checkbox" checked><i></i></label></section>
+          <section class="settings-card"><h2>업데이트</h2><label class="setting-row"><span><strong>자동 업데이트 확인</strong><small>새 버전이 있으면 설치 전에 알려줍니다.</small></span><input type="checkbox" checked><i></i></label><button class="setting-link">업데이트 상태 확인 <span>현재 51.0.0</span></button></section>
+          <details class="advanced-disclosure settings-advanced"><summary><span>고급 설정</span><small>진단 로그, 기능 관리, 개발자 옵션</small></summary><div class="advanced-grid"><button>진단 로그<span>문제 해결용 기록</span></button><button>기능 관리<span>설치된 구성 요소</span></button><button>개발자 옵션<span>일반 사용자는 변경할 필요 없음</span></button></div></details>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <template id="care-ready-template">
+    <div class="care-ready">
+      <div class="scan-focus"><div class="scan-orbit"><span>✦</span></div><h2>어떤 점검을 시작할까요?</h2><p>권장 설정은 개인 파일을 건드리지 않고 안전한 항목부터 확인합니다.</p><div class="mode-toggle"><button class="active">빠른 점검<small>약 2분</small></button><button>전체 점검<small>약 5~10분</small></button></div><button class="primary-button huge" data-care-action="start">검사 시작</button></div>
+      <div class="scan-options"><div class="option-heading"><div><h3>검사 항목</h3><p>10개 중 8개 선택됨</p></div><button class="text-button">권장 설정 복원</button></div>
+        <div class="option-group"><h4>정리</h4><label><input type="checkbox" checked><span class="check-ui"></span><span><strong>불필요한 파일</strong><small>임시 파일, 캐시, 업데이트 잔여물</small></span><em>권장</em></label><label><input type="checkbox" checked><span class="check-ui"></span><span><strong>개인정보 흔적</strong><small>최근 문서와 브라우저 사용 흔적</small></span></label><label><input type="checkbox" checked><span class="check-ui"></span><span><strong>잘못된 바로가기·레지스트리</strong><small>삭제된 프로그램의 안전한 잔여 항목</small></span></label></div>
+        <div class="option-group"><h4>성능 및 안정성</h4><label><input type="checkbox" checked><span class="check-ui"></span><span><strong>시작 프로그램</strong><small>부팅 시간을 늦추는 앱</small></span></label><label><input type="checkbox" checked><span class="check-ui"></span><span><strong>Windows 및 시스템 상태</strong><small>서비스, 저장 장치, 오류 기록</small></span></label><label><input type="checkbox"><span class="check-ui"></span><span><strong>드라이버·오디오 정밀 진단</strong><small>문제가 있을 때 선택하는 심층 검사</small></span><em class="optional">선택</em></label></div>
+      </div>
+    </div>
+  </template>
+
+  <template id="care-scanning-template">
+    <div class="scan-running"><div class="live-scan"><div class="progress-ring" style="--progress:68"><div><strong>68%</strong><span>검사 중</span></div></div><h2>시스템 상태를 확인하고 있습니다</h2><p class="current-path">Windows 업데이트 잔여 파일 분석 중…</p><div class="elapsed"><span>경과 01:24</span><span>예상 남은 시간 약 38초</span></div><div class="scan-controls"><button class="secondary-button" data-care-action="pause">일시 정지</button><button class="text-button" data-care-action="cancel">검사 취소</button></div></div>
+      <div class="module-progress"><h3>검사 진행 상황</h3><div class="module done"><span>✓</span><div><strong>개인정보 흔적</strong><small>8,420개 발견</small></div><em>완료</em></div><div class="module done"><span>✓</span><div><strong>시작 프로그램</strong><small>3개 확인 필요</small></div><em>완료</em></div><div class="module running"><span class="spinner"></span><div><strong>불필요한 파일</strong><small>Windows 캐시 확인 중</small></div><em>68%</em></div><div class="module"><span>4</span><div><strong>시스템 상태</strong><small>대기 중</small></div><em>대기</em></div><div class="module"><span>5</span><div><strong>바로가기·레지스트리</strong><small>대기 중</small></div><em>대기</em></div></div>
+    </div>
+  </template>
+
+  <template id="care-results-template">
+    <div class="result-summary"><div><span class="pill caution">검사 완료 · 검토 필요</span><h2>PC를 더 가볍게 만들 수 있어요</h2><p>권장 항목 27,416개를 정리하면 약 4.8GB의 공간을 확보할 수 있습니다.</p></div><div class="result-numbers"><div><strong>4.8<small>GB</small></strong><span>확보 가능</span></div><div><strong>27,416</strong><span>선택 항목</span></div><div><strong>3</strong><span>검토 필요</span></div></div></div>
+    <div class="result-layout"><div class="result-list"><div class="result-toolbar"><label><input type="checkbox" checked> 권장 항목 전체 선택</label><button class="text-button">선택 기준 보기</button></div>
+      <article class="result-category expanded"><button class="category-head"><input type="checkbox" checked><span class="category-icon blue">⌁</span><div><strong>불필요한 파일</strong><small>개인 파일을 제외한 캐시와 임시 파일</small></div><span class="category-value"><strong>4.2GB</strong><small>18,904개</small></span><span class="expand">⌃</span></button><div class="category-detail"><label><input type="checkbox" checked><span>Windows 업데이트 잔여 파일</span><em>2.8GB</em></label><label><input type="checkbox" checked><span>앱 임시 파일 및 캐시</span><em>1.1GB</em></label><label><input type="checkbox" checked><span>오류 보고서와 로그</span><em>320MB</em></label><p>최근 7일 이내 파일과 사용 중인 파일은 자동으로 제외했습니다.</p></div></article>
+      <article class="result-category"><button class="category-head"><input type="checkbox" checked><span class="category-icon violet">◌</span><div><strong>개인정보 흔적</strong><small>브라우저 기록과 최근 사용 기록</small></div><span class="category-value"><strong>8,420개</strong><small>로그인 유지 쿠키 제외</small></span><span class="expand">⌄</span></button><div class="category-detail"><label><input type="checkbox" checked><span>브라우저 캐시와 기록</span><em>7,114개</em></label><label><input type="checkbox" checked><span>최근 문서 기록</span><em>1,306개</em></label></div></article>
+      <article class="result-category"><button class="category-head"><input type="checkbox" checked><span class="category-icon green">↗</span><div><strong>시작 프로그램</strong><small>부팅 속도에 영향을 주는 앱</small></div><span class="category-value"><strong>3개</strong><small>예상 8초 개선</small></span><span class="expand">⌄</span></button><div class="category-detail"><label><input type="checkbox" checked><span>Discord 자동 시작</span><em>높은 영향</em></label><label><input type="checkbox" checked><span>Adobe Updater</span><em>중간 영향</em></label></div></article>
+      <article class="result-category warning"><button class="category-head"><input type="checkbox"><span class="category-icon amber">!</span><div><strong>검토가 필요한 항목</strong><small>자동 정리에서 제외했습니다</small></div><span class="category-value"><strong>3개</strong><small>직접 확인</small></span><span class="expand">⌄</span></button><div class="category-detail"><p>사용 환경에 따라 영향이 달라질 수 있어 자동으로 선택하지 않았습니다.</p></div></article>
+    </div><aside class="selection-summary"><h3>정리 요약</h3><div class="selection-total"><strong>4.8GB</strong><span>예상 확보 공간</span></div><ul><li><span>안전한 정리</span><strong>27,413개</strong></li><li><span>성능 최적화</span><strong>3개</strong></li><li class="muted"><span>검토 필요</span><strong>선택 안 됨</strong></li></ul><label class="restore-check"><input type="checkbox" checked><span>정리 전 복구 지점 만들기<small>문제가 생기면 이전 상태로 되돌릴 수 있습니다.</small></span></label><button class="primary-button huge" data-care-action="clean">선택 항목 정리</button><button class="text-button" data-care-action="rescan">다시 검사</button></aside></div>
+  </template>
+
+  <template id="care-complete-template">
+    <div class="complete-state"><div class="complete-check">✓</div><span class="pill success">정리 완료</span><h2>PC 정리가 안전하게 완료됐습니다</h2><p>개인 파일은 변경하지 않았으며, 복구 지점이 자동으로 생성됐습니다.</p><div class="complete-metrics"><div><strong>4.6GB</strong><span>확보한 공간</span></div><div><strong>27,193개</strong><span>정리한 항목</span></div><div><strong>8초</strong><span>예상 부팅 개선</span></div></div><div class="complete-note"><span>↶</span><div><strong>변경 내용을 되돌릴 수 있어요</strong><p>복구 센터에 오늘 오후 12:41 복구 지점을 만들었습니다.</p></div><button class="outline-button" data-go="history">복구 센터</button></div><div class="complete-actions"><button class="primary-button" data-care-action="restart">홈으로 돌아가기</button><button class="secondary-button" data-care-action="details">상세 결과 보기</button></div></div>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

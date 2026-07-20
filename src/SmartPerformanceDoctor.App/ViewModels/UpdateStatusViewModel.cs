@@ -270,12 +270,19 @@ public sealed class UpdateStatusViewModel : ObservableObject
                 AppendLog("앱을 종료한 뒤 보류 파일을 적용합니다. (Program Files면 UAC 관리자 확인이 필요할 수 있습니다)");
                 RunOnUi(() => History = _channel.LoadHistory());
                 var launched = UpdateInstallerService.LaunchPendingRestart();
-                if (!launched)
+                if (launched)
                 {
-                    AppendLog("관리자 권한 적용 시작 실패 또는 UAC 취소 · 보류 상태가 유지됩니다. 앱을 다시 열면 재시도합니다.");
+                    RunOnUi(() => Application.Current.Exit());
                 }
-
-                RunOnUi(() => Application.Current.Exit());
+                else
+                {
+                    AppendLog("관리자 권한 적용 시작 실패 또는 UAC 취소 · 앱을 종료하지 않고 보류 상태를 유지합니다.");
+                    RunOnUi(() =>
+                    {
+                        StatusLine = "업데이트 마무리를 시작하지 못했습니다. 앱은 계속 사용할 수 있습니다.";
+                        PhaseLine = "마무리 대기";
+                    });
+                }
             }
             else
             {

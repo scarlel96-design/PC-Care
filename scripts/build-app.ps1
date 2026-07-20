@@ -14,21 +14,22 @@ $engineDir = Join-Path $publishRoot "engine"
 $publishArgs = @(
     "-c", "Release",
     "-p:Platform=x64",
-    "-r", "win-x64",
-    "--self-contained", "true",
+    "-p:RuntimeIdentifier=win-x64",
+    "-p:SelfContained=true",
+    "-m:1",
     "-p:WindowsAppSDKSelfContained=true",
     "-p:PublishSingleFile=false",
     "-p:IncludeNativeLibrariesForSelfExtract=true"
 )
 
 dotnet restore .\src\SmartPerformanceDoctor.Contracts\SmartPerformanceDoctor.Contracts.csproj
-dotnet restore $appProj
+dotnet restore $appProj -p:Platform=x64 -p:RuntimeIdentifier=win-x64 -p:SelfContained=true -m:1
 dotnet restore $helperProj
 dotnet restore $serviceProj
 
 dotnet build .\src\SmartPerformanceDoctor.Contracts\SmartPerformanceDoctor.Contracts.csproj -c Release
-dotnet build $helperProj -c Release -p:Platform=x64
-dotnet build $serviceProj -c Release -p:Platform=x64
+dotnet build $helperProj -c Release -p:Platform=x64 -m:1
+dotnet build $serviceProj -c Release -p:Platform=x64 -m:1
 
 dotnet publish $appProj @publishArgs
 if ($LASTEXITCODE -ne 0) {

@@ -23,13 +23,29 @@ $request = @{
     }
 } | ConvertTo-Json -Compress
 
-$tempIn = New-TemporaryFile
-$tempOut = New-TemporaryFile
-Set-Content -Path $tempIn -Value $request -Encoding UTF8
-
-Get-Content $tempIn | & $core | Tee-Object -FilePath $tempOut
-
-$text = Get-Content $tempOut -Raw
+$utf8 = New-Object Text.UTF8Encoding($false)
+$psi = New-Object Diagnostics.ProcessStartInfo
+$psi.FileName = (Resolve-Path -LiteralPath $core).Path
+$psi.UseShellExecute = $false
+$psi.CreateNoWindow = $true
+$psi.RedirectStandardInput = $true
+$psi.RedirectStandardOutput = $true
+$psi.RedirectStandardError = $true
+$previousInputEncoding = [Console]::InputEncoding
+[Console]::InputEncoding = $utf8
+$process = New-Object Diagnostics.Process
+$process.StartInfo = $psi
+$null = $process.Start()
+$process.StandardInput.WriteLine($request)
+$process.StandardInput.Close()
+$text = $process.StandardOutput.ReadToEnd()
+$errorText = $process.StandardError.ReadToEnd()
+$process.WaitForExit()
+[Console]::InputEncoding = $previousInputEncoding
+Write-Host $text
+if ($process.ExitCode -ne 0) {
+    throw "Core process failed (exit $($process.ExitCode)): $errorText"
+}
 if ($text -notmatch '"frameType":"response"') {
     throw "Core smoke failed: final response frame not found."
 }

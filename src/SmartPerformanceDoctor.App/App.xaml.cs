@@ -142,6 +142,7 @@ public partial class App : Application
                 pending.Verified ? "update-pending-applied" : "update-pending-warning",
                 null,
                 $"Pending update: {pending.FilesApplied} files · {pending.Message}");
+            Shell?.SetStatusMessage(pending.Message);
         }
 
         // Elevated finalize was launched (Program Files write). Exit so the

@@ -4,34 +4,64 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     RequestedTheme="Light">
     <ScrollViewer>
-        <StackPanel Padding="{StaticResource SpdMacPagePadding}" Style="{StaticResource MacPageRootStackStyle}">
-            <TextBlock Text="보안 삭제" Style="{StaticResource MacPageTitleStyle}"/>
-            <TextBlock Text="베타 기능 — dry-run으로 대상과 풀체인을 확인한 뒤 실행하세요."
-                       Foreground="{StaticResource SpdAccentBrush}" FontWeight="SemiBold" TextWrapping="Wrap"/>
-            <TextBlock Text="SSD 물리 한계·클라우드 동기화 등은 완전 제거를 보장하지 않습니다. 삭제 전 대상과 확인 문구를 반드시 검토하세요."
-                       Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
+        <StackPanel Padding="{StaticResource PccPagePadding}" MaxWidth="960" Spacing="18">
+            <StackPanel Spacing="5">
+                <TextBlock Text="보안 삭제" Style="{StaticResource MacPageTitleStyle}"/>
+                <TextBlock Text="대상을 미리 검증한 다음 복구하기 어려운 방식으로 삭제합니다."
+                           Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <Border Background="{StaticResource PccDangerSoftBrush}" BorderBrush="#35D84449"
+                    BorderThickness="1" CornerRadius="18" Padding="20">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16">
+                    <Border Width="42" Height="42" CornerRadius="21" Background="{StaticResource PccDangerBrush}">
+                        <TextBlock Text="!" Foreground="White" FontSize="22" FontWeight="Bold"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel Grid.Column="1" Spacing="5">
+                        <TextBlock Text="삭제 후 되돌릴 수 없습니다" Foreground="{StaticResource PccDangerBrush}" FontSize="18" FontWeight="SemiBold"/>
+                        <TextBlock Text="SSD의 웨어 레벨링, 클라우드 동기화본, 백업 사본까지 제거되는 것은 아닙니다. 대상과 미리보기 결과를 반드시 확인하세요."
+                                   Foreground="{StaticResource PccTextBrush}" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
             <Border Style="{StaticResource MacWindowPanelStyle}">
-                <StackPanel Spacing="10">
-                    <TextBlock Text="보안 등급" Style="{StaticResource MacSectionHeaderStyle}"/>
+                <StackPanel Spacing="13">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                        <Border Width="34" Height="34" CornerRadius="17" Background="{StaticResource PccAccentSoftBrush}">
+                            <TextBlock Text="1" Foreground="{StaticResource PccAccentBrush}" FontWeight="Bold"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Grid.Column="1" Text="대상과 삭제 방식을 선택하세요" Style="{StaticResource MacSectionHeaderStyle}" VerticalAlignment="Center"/>
+                    </Grid>
                     <ComboBox x:Name="SecurityLevelBox" SelectedIndex="1" SelectionChanged="SecurityLevelChanged">
                         <ComboBoxItem Content="표준 — HDD 1패스" Tag="Standard"/>
                         <ComboBoxItem Content="전문 — HDD 3패스 (권장)" Tag="Professional"/>
                         <ComboBoxItem Content="최대 — HDD 7패스" Tag="Maximum"/>
                     </ComboBox>
-                    <Button Content="파일/폴더 선택" Style="{StaticResource MacToolbarButtonStyle}" Click="PickTargets"/>
-                    <TextBlock x:Name="PlanSummaryText" TextWrapping="Wrap"/>
-                    <ListView x:Name="TargetList" MinHeight="160" SelectionMode="None"/>
+                    <Button Content="파일 또는 폴더 선택" Style="{StaticResource MacToolbarButtonStyle}" Click="PickTargets" HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="PlanSummaryText" TextWrapping="Wrap" FontWeight="SemiBold"/>
+                    <ListView x:Name="TargetList" MinHeight="150" MaxHeight="300" SelectionMode="None"/>
+                    <Button Content="선택 항목 미리보기" Style="{StaticResource PremiumPrimaryButtonStyle}" Click="RunDryRun" HorizontalAlignment="Left"/>
                 </StackPanel>
             </Border>
+
             <Border Style="{StaticResource MacWindowPanelStyle}">
-                <StackPanel Spacing="10">
-                    <TextBlock Text="삭제 실행" Style="{StaticResource MacSectionHeaderStyle}"/>
-                    <TextBlock Text="확인 문구: 보안 삭제에 동의합니다" Foreground="{StaticResource SpdMutedTextBrush}"/>
-                    <TextBox x:Name="ConfirmBox" PlaceholderText="확인 문구 입력"/>
-                    <ProgressBar x:Name="ProgressBar" Maximum="100"/>
+                <StackPanel Spacing="13">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                        <Border Width="34" Height="34" CornerRadius="17" Background="{StaticResource PccDangerSoftBrush}">
+                            <TextBlock Text="2" Foreground="{StaticResource PccDangerBrush}" FontWeight="Bold"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Grid.Column="1" Text="최종 확인 후 삭제하세요" Style="{StaticResource MacSectionHeaderStyle}" VerticalAlignment="Center"/>
+                    </Grid>
+                    <TextBlock Text="계속하려면 ‘보안 삭제에 동의합니다’를 정확히 입력하세요."
+                               Foreground="{StaticResource PccTextMutedBrush}" TextWrapping="Wrap"/>
+                    <TextBox x:Name="ConfirmBox" PlaceholderText="보안 삭제에 동의합니다"/>
+                    <ProgressBar x:Name="ProgressBar" Maximum="100" Height="10"/>
                     <TextBlock x:Name="StatusText" TextWrapping="Wrap"/>
-                    <Button Content="다시 미리보기" Click="RunDryRun"/>
-                    <Button Content="보안 삭제 실행" Click="ApplyDelete"/>
+                    <Button Content="보안 삭제 실행" Style="{StaticResource PccDangerButtonStyle}" Click="ApplyDelete" HorizontalAlignment="Left"/>
                 </StackPanel>
             </Border>
         </StackPanel>
