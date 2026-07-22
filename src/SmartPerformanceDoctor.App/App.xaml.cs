@@ -69,15 +69,23 @@ public partial class App : Application
 
     private void OnUnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
+        if (e.Exception is OperationCanceledException or TaskCanceledException)
+        {
+            // User cancellation is recoverable and must not terminate the UI thread.
+            e.Handled = true;
+            return;
+        }
+
         if (Interlocked.CompareExchange(ref _handlingUnhandled, 1, 0) != 0)
         {
-            e.Handled = true;
+            // Recursive unhandled exceptions indicate unsafe process state; do not hide them.
+            e.Handled = false;
             return;
         }
 
         try
         {
-            CrashCaptureService.WriteCrash("winui-unhandled", e.Exception, e.Exception.ToString());
+            CrashCaptureService.WriteCrash("winui-unhandled-fatal", e.Exception, e.Exception.ToString());
             try
             {
                 SmartPerformanceDoctor.Aegis.AegisLaunchMarker.MarkLaunchFailure(AppInfo.BuildVersion, e.Exception.Message);
@@ -86,15 +94,25 @@ public partial class App : Application
             {
                 // MarkLaunchFailure must not recurse through EnsureLayout failures.
             }
+
+            try
+            {
+                Shell?.SetStatusMessage("복구할 수 없는 오류가 발생했습니다. 오류 기록을 저장했으며 PC 케어를 안전하게 종료합니다.");
+            }
+            catch
+            {
+                // Fatal reporting must not replace the original exception.
+            }
         }
         finally
         {
             Interlocked.Exchange(ref _handlingUnhandled, 0);
         }
 
-        e.Handled = true;
+        // Picker and other recoverable feature errors are handled at their local Task boundary.
+        // Anything that still reaches this boundary is treated as fatal instead of being silently swallowed.
+        e.Handled = false;
     }
-
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         StartupDiagnostics.Write("on-launched", "begin");

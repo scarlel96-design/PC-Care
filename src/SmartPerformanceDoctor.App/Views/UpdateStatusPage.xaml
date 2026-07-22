@@ -27,7 +27,7 @@
                             <TextBlock Text="{Binding TargetVersion}" Style="{StaticResource MacEmphasisValueStyle}"/>
                         </StackPanel>
                     </Grid>
-                    <TextBlock Text="{Binding StatusLine}" TextWrapping="Wrap" Style="{StaticResource MacInlineStatusTextStyle}"/>
+                    <TextBlock Text="{Binding StatusLine}" TextWrapping="Wrap" Style="{StaticResource MacInlineStatusTextStyle}" AutomationProperties.LiveSetting="Assertive" AutomationProperties.Name="업데이트 상태"/>
                     <TextBlock Text="{Binding VerifyLine}" TextWrapping="Wrap"
                                Foreground="{StaticResource SpdMutedTextBrush}" Style="{StaticResource MacListItemSubtitleStyle}"/>
                 </StackPanel>
@@ -65,7 +65,7 @@
                 <StackPanel Spacing="12">
                     <TextBlock Text="업데이트 파일" Style="{StaticResource MacSectionHeaderStyle}"/>
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <Button Content="파일 선택 (.spdup)" Style="{StaticResource MacToolbarButtonStyle}" Click="PickUpdateFile"/>
+                        <Button x:Name="PickUpdateFileButton" Content="파일 선택 (.spdup)" Style="{StaticResource MacToolbarButtonStyle}" Click="PickUpdateFile" AutomationProperties.Name="PC 케어 업데이트 파일 선택"/>
                         <Button Content="업데이트 적용" Style="{StaticResource MacToolbarButtonStyle}" Click="ApplyUpdate"/>
                     </StackPanel>
                     <TextBlock Text="{Binding SelectedPackagePath}" TextWrapping="Wrap" Style="{StaticResource MacListItemSubtitleStyle}"/>

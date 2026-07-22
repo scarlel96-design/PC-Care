@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SmartPerformanceDoctor.App.Services;
 using SmartPerformanceDoctor.App.Services.Update;
+using SmartPerformanceDoctor.App.Services.Pickers;
 using SmartPerformanceDoctor.App.ViewModels;
 
 namespace SmartPerformanceDoctor.App.Views;
@@ -12,6 +13,8 @@ public sealed partial class UpdateStatusPage : Page
     private static bool _triggerGitHubCheckOnLoad;
 
     private readonly UpdateStatusViewModel _viewModel = new();
+    private readonly IPathPickerService _pickerService = PathPickerService.Shared;
+    private readonly PickerOperationGate _pickerGate = new();
 
     public static void RequestGitHubCheckOnLoad() => _triggerGitHubCheckOnLoad = true;
 
@@ -72,38 +75,47 @@ public sealed partial class UpdateStatusPage : Page
         Application.Current.Exit();
     }
 
-    private async void PickUpdateFile(object sender, RoutedEventArgs e)
-    {
-        var button = sender as Button;
-        if (button is not null)
-        {
-            button.IsEnabled = false;
-        }
+    private async void PickUpdateFile(object sender, RoutedEventArgs e) => await ExecutePickUpdateFileAsync();
 
+    private async Task ExecutePickUpdateFileAsync()
+    {
+        if (!_pickerGate.TryEnter())
+        {
+            return;
+        }
+        PickUpdateFileButton.IsEnabled = false;
+        _viewModel.SetStatus("업데이트 파일 선택 창 여는 중…");
         try
         {
-            var path = await UpdateFilePickerService.PickUpdatePackageAsync(App.Shell);
-            if (string.IsNullOrWhiteSpace(path))
+            var result = await _pickerService.PickSingleFileAsync(
+                App.Shell,
+                new PickerRequest(
+                    "UpdateFile",
+                    "PC 케어 업데이트 패키지 선택",
+                    "업데이트 파일 선택",
+                    PickerStartLocation.Downloads,
+                    [".spdup", ".zip"]));
+            if (result.IsSuccess)
             {
-                return;
+                await _viewModel.SetSelectedPackageAsync(result.Value!);
             }
-
-            await _viewModel.SetSelectedPackageAsync(path);
+            else
+            {
+                _viewModel.SetStatus(result.UserMessage);
+            }
         }
         catch (Exception ex)
         {
-            CrashCaptureService.WriteCrash("update-pick-file", ex, ex.Message);
-            _viewModel.Refresh();
+            CrashCaptureService.WriteCrash("update-pick-file-local", null, $"Type: {ex.GetType().FullName} · HRESULT: 0x{ex.HResult:X8}");
+            _viewModel.SetStatus($"업데이트 파일 선택 처리 중 오류가 발생했습니다. 오류 코드: 0x{ex.HResult:X8}");
         }
         finally
         {
-            if (button is not null)
-            {
-                button.IsEnabled = true;
-            }
+            _pickerGate.Exit();
+            PickUpdateFileButton.IsEnabled = true;
+            PickUpdateFileButton.Focus(FocusState.Programmatic);
         }
     }
-
     private async void CheckGitHubRelease(object sender, RoutedEventArgs e)
     {
         var button = sender as Button;

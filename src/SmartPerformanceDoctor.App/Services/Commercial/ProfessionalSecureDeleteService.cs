@@ -38,6 +38,25 @@ public sealed class ProfessionalSecureDeleteService
                     reason = "Lab: " + lab.Reason;
                 }
             }
+
+            if (!allowed)
+            {
+                blocked.Add(new SecureDeleteTarget
+                {
+                    Path = path,
+                    Type = Directory.Exists(path) ? "folder" : "file",
+                    Size = 0,
+                    StorageType = "Unknown",
+                    FileSystem = "Unknown",
+                    Risk = "blocked",
+                    RecommendedProtocol = "blocked-before-profiling",
+                    OverwritePasses = 0,
+                    Blocked = true,
+                    BlockReason = reason
+                });
+                continue;
+            }
+
             var storage = SecureDeleteStorageProfiler.Profile(path);
             var fs = DetectFileSystem(path);
             var size = File.Exists(path) ? new FileInfo(path).Length : EstimateDirectorySize(path);
@@ -45,7 +64,6 @@ public sealed class ProfessionalSecureDeleteService
                 ? "lab.shred-next.v1+" + SecureDeleteStorageProfiler.SelectProtocol(storage, level)
                 : SecureDeleteStorageProfiler.SelectProtocol(storage, level);
             var passes = SecureDeleteStorageProfiler.GetOverwritePasses(storage, level);
-            var chain = ForensicSecureDeleteEngine.BuildChainSteps(storage, level);
 
             var target = new SecureDeleteTarget
             {
@@ -61,14 +79,7 @@ public sealed class ProfessionalSecureDeleteService
                 BlockReason = reason
             };
 
-            if (allowed)
-            {
-                targets.Add(target);
-            }
-            else
-            {
-                blocked.Add(target);
-            }
+            targets.Add(target);
         }
 
         var primaryStorage = targets.Count == 0 ? "Unknown" : targets[0].StorageType;
@@ -252,64 +263,116 @@ public sealed class ProfessionalSecureDeleteService
         SecureDeleteSecurityLevel level,
         CancellationToken cancellationToken)
     {
-        foreach (var file in Directory.EnumerateFiles(directoryPath, "*", SearchOption.AllDirectories))
+        var pending = new Stack<string>();
+        var regularDirectories = new List<string>();
+        var reparsePoints = new List<string>();
+        pending.Push(directoryPath);
+
+        while (pending.Count > 0)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var (allowed, _) = PathSafetyGuard.Evaluate(file);
-            if (!allowed)
-            {
-                // Never follow a junction/symlink into a protected tree.
-                continue;
-            }
-
+            var current = pending.Pop();
+            FileAttributes attributes;
             try
             {
-                var attrs = File.GetAttributes(file);
-                if ((attrs & FileAttributes.ReparsePoint) != 0)
-                {
-                    continue;
-                }
+                attributes = File.GetAttributes(current);
             }
             catch
             {
                 continue;
             }
 
-            var storage = SecureDeleteStorageProfiler.Profile(file);
-            await ForensicSecureDeleteEngine.SecureDeleteFileAsync(file, storage, level, cancellationToken);
-        }
+            if ((attributes & FileAttributes.ReparsePoint) != 0)
+            {
+                reparsePoints.Add(current);
+                continue;
+            }
 
-        // Delete empty/remaining tree bottom-up without following reparse points.
-        foreach (var dir in Directory.EnumerateDirectories(directoryPath, "*", SearchOption.AllDirectories)
-                     .OrderByDescending(d => d.Length))
-        {
+            regularDirectories.Add(current);
+            IEnumerable<string> files;
+            IEnumerable<string> childDirectories;
             try
             {
-                var attrs = File.GetAttributes(dir);
-                if ((attrs & FileAttributes.ReparsePoint) != 0)
+                files = Directory.EnumerateFiles(current, "*", SearchOption.TopDirectoryOnly).ToArray();
+                childDirectories = Directory.EnumerateDirectories(current, "*", SearchOption.TopDirectoryOnly).ToArray();
+            }
+            catch
+            {
+                continue;
+            }
+
+            foreach (var file in files)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                var (allowed, _) = PathSafetyGuard.Evaluate(file);
+                if (!allowed)
                 {
-                    Directory.Delete(dir, false);
                     continue;
                 }
 
-                if (!Directory.EnumerateFileSystemEntries(dir).Any())
+                try
                 {
-                    Directory.Delete(dir, false);
+                    var fileAttributes = File.GetAttributes(file);
+                    if ((fileAttributes & FileAttributes.ReparsePoint) != 0)
+                    {
+                        continue;
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+
+                var storage = SecureDeleteStorageProfiler.Profile(file);
+                await ForensicSecureDeleteEngine.SecureDeleteFileAsync(file, storage, level, cancellationToken);
+            }
+
+            foreach (var childDirectory in childDirectories)
+            {
+                try
+                {
+                    var childAttributes = File.GetAttributes(childDirectory);
+                    if ((childAttributes & FileAttributes.ReparsePoint) != 0)
+                    {
+                        reparsePoints.Add(childDirectory);
+                    }
+                    else
+                    {
+                        pending.Push(childDirectory);
+                    }
+                }
+                catch
+                {
+                    // Inaccessible child stays untouched.
+                }
+            }
+        }
+
+        // Reparse points are never followed. Only the link itself is removed.
+        foreach (var reparsePoint in reparsePoints.OrderByDescending(path => path.Length))
+        {
+            try { Directory.Delete(reparsePoint, false); } catch { /* link may be locked */ }
+        }
+
+        foreach (var directory in regularDirectories.OrderByDescending(path => path.Length))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            try
+            {
+                if (!Directory.EnumerateFileSystemEntries(directory).Any())
+                {
+                    Directory.Delete(directory, false);
                 }
             }
             catch
             {
-                // Best-effort tree cleanup.
+                // Remaining inaccessible or locked entries stay untouched.
             }
         }
 
-        try
+        if (Directory.Exists(directoryPath))
         {
-            Directory.Delete(directoryPath, true);
-        }
-        catch
-        {
-            try { Directory.Delete(directoryPath, false); } catch { /* remaining locked entries */ }
+            throw new IOException("일부 파일 또는 폴더가 잠겨 있어 대상 전체를 삭제하지 못했습니다.");
         }
     }
 
@@ -350,16 +413,52 @@ public sealed class ProfessionalSecureDeleteService
 
     private static long EstimateDirectorySize(string dir)
     {
-        try
+        long total = 0;
+        var pending = new Stack<string>();
+        pending.Push(dir);
+        while (pending.Count > 0)
         {
-            return Directory.GetFiles(dir, "*", SearchOption.AllDirectories).Sum(f => new FileInfo(f).Length);
-        }
-        catch
-        {
-            return 0;
-        }
-    }
+            var current = pending.Pop();
+            try
+            {
+                if ((File.GetAttributes(current) & FileAttributes.ReparsePoint) != 0)
+                {
+                    continue;
+                }
 
+                foreach (var file in Directory.EnumerateFiles(current, "*", SearchOption.TopDirectoryOnly))
+                {
+                    try
+                    {
+                        var info = new FileInfo(file);
+                        if ((info.Attributes & FileAttributes.ReparsePoint) == 0)
+                        {
+                            total = checked(total + info.Length);
+                        }
+                    }
+                    catch (OverflowException)
+                    {
+                        return long.MaxValue;
+                    }
+                    catch
+                    {
+                        // Inaccessible files are excluded from the estimate.
+                    }
+                }
+
+                foreach (var child in Directory.EnumerateDirectories(current, "*", SearchOption.TopDirectoryOnly))
+                {
+                    pending.Push(child);
+                }
+            }
+            catch
+            {
+                // Inaccessible branches are excluded from the estimate.
+            }
+        }
+
+        return total;
+    }
     private static void WriteSecureDeleteReport(
         SecureDeletePlan plan,
         int deleted,

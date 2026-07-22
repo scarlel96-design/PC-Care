@@ -1,3 +1,5 @@
+using SmartPerformanceDoctor.App.Services.Security;
+
 namespace SmartPerformanceDoctor.App.Services.Commercial;
 
 public static class PathSafetyGuard
@@ -19,6 +21,13 @@ public static class PathSafetyGuard
             return (false, "경로를 해석할 수 없습니다.");
         }
 
+        if (full.StartsWith(@"\\", StringComparison.OrdinalIgnoreCase)
+            || full.StartsWith(@"\\?\", StringComparison.OrdinalIgnoreCase)
+            || full.StartsWith(@"\\.\", StringComparison.OrdinalIgnoreCase))
+        {
+            return (false, "네트워크·UNC·장치 경로는 파일 단위 보안 삭제를 보장할 수 없어 차단됩니다.");
+        }
+
         var root = Path.GetPathRoot(full) ?? "";
         if (string.Equals(full.TrimEnd('\\'), root.TrimEnd('\\'), StringComparison.OrdinalIgnoreCase))
         {
@@ -30,22 +39,36 @@ public static class PathSafetyGuard
             return (false, "시스템 보호 경로입니다.");
         }
 
-        var profile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        if (!string.IsNullOrWhiteSpace(profile)
-            && string.Equals(full.TrimEnd('\\'), profile.TrimEnd('\\'), StringComparison.OrdinalIgnoreCase))
+        var protectedUserRoots = new[]
         {
-            return (false, "사용자 프로필 전체 삭제는 차단됩니다.");
+            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+            Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+        };
+        if (protectedUserRoots.Any(rootPath => IsSamePath(full, rootPath)))
+        {
+            return (false, "사용자 프로필·바탕 화면·문서 전체 루트 삭제는 차단됩니다.");
         }
 
-        // Never allow shredding the live vault store itself.
-        var localApp = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        if (!string.IsNullOrWhiteSpace(localApp))
+        var protectedProductTrees = new[]
         {
-            var vaultRoot = Path.Combine(localApp, "SmartPerformanceDoctor", "secure_vault");
-            if (full.StartsWith(vaultRoot, StringComparison.OrdinalIgnoreCase))
+            RuntimePaths.InstallRoot,
+            RuntimePaths.UserRoot,
+            SecureVaultPaths.Root,
+            Environment.CurrentDirectory
+        };
+        foreach (var protectedTree in protectedProductTrees)
+        {
+            if (IsSamePath(full, protectedTree) || IsUnderPath(full, protectedTree))
             {
-                return (false, "보안 금고 저장소 경로는 보안 삭제로 지울 수 없습니다.");
+                return (false, "PC 케어 설치·데이터·로그·금고·현재 작업 경로는 보안 삭제로 지울 수 없습니다.");
             }
+        }
+
+        if (!string.IsNullOrWhiteSpace(Environment.ProcessPath)
+            && IsSamePath(full, Environment.ProcessPath))
+        {
+            return (false, "현재 실행 파일은 보안 삭제할 수 없습니다.");
         }
 
         try
@@ -68,6 +91,45 @@ public static class PathSafetyGuard
         return (true, "");
     }
 
+    private static bool IsSamePath(string left, string? right)
+    {
+        if (string.IsNullOrWhiteSpace(right))
+        {
+            return false;
+        }
+
+        try
+        {
+            return string.Equals(
+                Path.GetFullPath(left).TrimEnd('\\', '/'),
+                Path.GetFullPath(right).TrimEnd('\\', '/'),
+                StringComparison.OrdinalIgnoreCase);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool IsUnderPath(string candidate, string? parent)
+    {
+        if (string.IsNullOrWhiteSpace(parent))
+        {
+            return false;
+        }
+
+        try
+        {
+            var normalizedCandidate = Path.GetFullPath(candidate);
+            var normalizedParent = Path.GetFullPath(parent).TrimEnd('\\', '/') + Path.DirectorySeparatorChar;
+            return normalizedCandidate.StartsWith(normalizedParent, StringComparison.OrdinalIgnoreCase);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     private static bool IsUnderBlockedSystemTree(string fullPath)
     {
         // Drive-agnostic critical roots: X:\Windows, X:\Program Files, ...
@@ -78,18 +140,11 @@ public static class PathSafetyGuard
             if (first.Equals("Windows", StringComparison.OrdinalIgnoreCase)
                 || first.Equals("Program Files", StringComparison.OrdinalIgnoreCase)
                 || first.Equals("Program Files (x86)", StringComparison.OrdinalIgnoreCase)
+                || first.Equals("ProgramData", StringComparison.OrdinalIgnoreCase)
                 || first.Equals("System Volume Information", StringComparison.OrdinalIgnoreCase)
                 || first.Equals("$Recycle.Bin", StringComparison.OrdinalIgnoreCase)
                 || first.Equals("Recovery", StringComparison.OrdinalIgnoreCase)
                 || first.Equals("Boot", StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            // ProgramData\Microsoft is high-risk; other ProgramData app caches may be user-requested.
-            if (first.Equals("ProgramData", StringComparison.OrdinalIgnoreCase)
-                && segments.Length >= 3
-                && segments[2].Equals("Microsoft", StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }

@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml.Input;
 using SmartPerformanceDoctor.App.Models.Security;
 using SmartPerformanceDoctor.App.Services.Security;
+using SmartPerformanceDoctor.App.Services.Pickers;
 using SmartPerformanceDoctor.App.ViewModels;
 
 namespace SmartPerformanceDoctor.App.Views;
@@ -13,9 +14,11 @@ namespace SmartPerformanceDoctor.App.Views;
 public sealed partial class SecureVaultCenterPage : Page
 {
     private readonly SecureVaultViewModel _viewModel = new();
+    private readonly IPathPickerService _pickerService = PathPickerService.Shared;
     private readonly DispatcherTimer _autoLockTimer;
     private readonly DispatcherTimer _sessionCountdownTimer;
     private bool _operationInProgress;
+    private readonly PickerOperationGate _pickerGate = new();
 
     public SecureVaultCenterPage()
     {
@@ -463,48 +466,141 @@ public sealed partial class SecureVaultCenterPage : Page
 
     private void LockVault(object sender, RoutedEventArgs e) => _viewModel.Lock();
 
-    private async void AddFile(object sender, RoutedEventArgs e)
+    private async void AddFile(object sender, RoutedEventArgs e) => await ExecuteAddFileAsync();
+
+    private async Task ExecuteAddFileAsync()
     {
-        if (_operationInProgress)
+        if (!BeginPickerOperation("파일 선택 창 여는 중…"))
         {
             return;
         }
 
-        var path = await SecureVaultPickerService.PickFileAsync(App.Shell);
+        string? path = null;
+        try
+        {
+            var result = await _pickerService.PickSingleFileAsync(
+                App.Shell,
+                new PickerRequest("VaultFile", "금고에 넣을 파일 선택", "파일 넣기", FileTypeFilter: ["*"]));
+            if (result.IsSuccess)
+            {
+                var validation = VaultImportPathValidator.ValidateFile(result.Value!);
+                if (validation.Allowed)
+                {
+                    path = validation.NormalizedPath;
+                    _viewModel.SetStatus("파일 선택 완료 · 경로 검증을 통과했습니다.");
+                }
+                else
+                {
+                    _viewModel.SetStatus($"파일을 추가할 수 없습니다: {validation.Message}");
+                }
+            }
+            else
+            {
+                _viewModel.SetStatus(result.UserMessage);
+            }
+        }
+        catch (Exception ex)
+        {
+            _viewModel.SetStatus($"파일 선택 처리 중 오류가 발생했습니다: {ex.Message}");
+        }
+        finally
+        {
+            EndPickerOperation(AddFileButton);
+        }
+
         if (path is null)
         {
             return;
         }
 
         var sealOrigin = SealOriginCheckBox.IsChecked == true;
-        var result = await RunVaultOperationWithProgressAsync(
+        var operationResult = await RunVaultOperationWithProgressAsync(
             sealOrigin ? "파일 암호화 보관 · 원본 잠금" : "파일 암호화 보관",
             progress => _viewModel.AddFileAsync(path, progress, sealOrigin));
-        await ShowOperationResultDialogAsync(result.Success ? "보관 완료" : "보관 실패", result);
+        await ShowOperationResultDialogAsync(operationResult.Success ? "보관 완료" : "보관 실패", operationResult);
         RefreshEntryList();
     }
 
-    private async void AddFolder(object sender, RoutedEventArgs e)
+    private async void AddFolder(object sender, RoutedEventArgs e) => await ExecuteAddFolderAsync();
+
+    private async Task ExecuteAddFolderAsync()
     {
-        if (_operationInProgress)
+        if (!BeginPickerOperation("폴더 선택 창 여는 중…"))
         {
             return;
         }
 
-        var path = await SecureVaultPickerService.PickFolderAsync(App.Shell);
+        string? path = null;
+        try
+        {
+            var result = await _pickerService.PickFolderAsync(
+                App.Shell,
+                new PickerRequest("VaultFolder", "금고에 넣을 폴더 선택", "폴더 넣기"));
+            if (result.IsSuccess)
+            {
+                var validation = VaultImportPathValidator.ValidateDirectory(result.Value!);
+                if (validation.Allowed)
+                {
+                    path = validation.NormalizedPath;
+                    _viewModel.SetStatus("폴더 선택 완료 · 재귀 열거는 금고 가져오기 단계에서 처리합니다.");
+                }
+                else
+                {
+                    _viewModel.SetStatus($"폴더를 추가할 수 없습니다: {validation.Message}");
+                }
+            }
+            else
+            {
+                _viewModel.SetStatus(result.UserMessage);
+            }
+        }
+        catch (Exception ex)
+        {
+            _viewModel.SetStatus($"폴더 선택 처리 중 오류가 발생했습니다: {ex.Message}");
+        }
+        finally
+        {
+            EndPickerOperation(AddFolderButton);
+        }
+
         if (path is null)
         {
             return;
         }
 
         var sealOrigin = SealOriginCheckBox.IsChecked == true;
-        var result = await RunVaultOperationWithProgressAsync(
+        var operationResult = await RunVaultOperationWithProgressAsync(
             sealOrigin ? "폴더 암호화 보관 · 원본 잠금" : "폴더 암호화 보관",
             progress => _viewModel.AddFolderAsync(path, progress, sealOrigin));
-        await ShowOperationResultDialogAsync(result.Success ? "보관 완료" : "보관 실패", result);
+        await ShowOperationResultDialogAsync(operationResult.Success ? "보관 완료" : "보관 실패", operationResult);
         RefreshEntryList();
     }
 
+    private bool BeginPickerOperation(string status)
+    {
+        if (_operationInProgress || !_pickerGate.TryEnter())
+        {
+            return false;
+        }
+
+        _viewModel.SetStatus(status);
+        SetPickerButtonsEnabled(false);
+        return true;
+    }
+
+    private void EndPickerOperation(Control focusTarget)
+    {
+        _pickerGate.Exit();
+        SetPickerButtonsEnabled(true);
+        focusTarget.Focus(FocusState.Programmatic);
+    }
+
+    private void SetPickerButtonsEnabled(bool enabled)
+    {
+        AddFileButton.IsEnabled = enabled;
+        AddFolderButton.IsEnabled = enabled;
+        ExportEntryButton.IsEnabled = enabled;
+    }
     private void NavigateBack(object sender, RoutedEventArgs e) => _viewModel.NavigateBack();
 
     private void EntryDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
@@ -531,6 +627,31 @@ public sealed partial class SecureVaultCenterPage : Page
     private SecureVaultBrowsableItem? GetSelectedItem() =>
         EntryList.SelectedItem as SecureVaultBrowsableItem;
 
+    private async Task<string?> PickExportFolderAsync()
+    {
+        if (!BeginPickerOperation("내보낼 폴더 선택 창 여는 중…"))
+        {
+            return null;
+        }
+
+        try
+        {
+            var result = await _pickerService.PickFolderAsync(
+                App.Shell,
+                new PickerRequest("VaultExportFolder", "금고 항목을 내보낼 폴더 선택", "이 위치로 보내기"));
+            _viewModel.SetStatus(result.UserMessage);
+            return result.IsSuccess ? result.Value : null;
+        }
+        catch (Exception ex)
+        {
+            _viewModel.SetStatus($"내보낼 폴더 선택 중 오류가 발생했습니다: {ex.Message}");
+            return null;
+        }
+        finally
+        {
+            EndPickerOperation(ExportEntryButton);
+        }
+    }
     private async void ExportEntry(object sender, RoutedEventArgs e)
     {
         if (GetSelectedItem() is not { } item)
@@ -539,7 +660,7 @@ public sealed partial class SecureVaultCenterPage : Page
             return;
         }
 
-        var destination = await SecureVaultPickerService.PickExportFolderAsync(App.Shell);
+        var destination = await PickExportFolderAsync();
         if (destination is null)
         {
             return;
@@ -796,6 +917,22 @@ public sealed partial class SecureVaultCenterPage : Page
         try
         {
             return await operation(progress);
+        }
+        catch (OperationCanceledException)
+        {
+            return new SecureVaultOperationResult { Success = false, Message = "금고 작업을 취소했습니다." };
+        }
+        catch (Exception ex)
+        {
+            Services.CrashCaptureService.WriteCrash(
+                "vault-operation-local",
+                null,
+                $"Type: {ex.GetType().FullName} · HRESULT: 0x{ex.HResult:X8}");
+            return new SecureVaultOperationResult
+            {
+                Success = false,
+                Message = $"금고 작업 중 오류가 발생했습니다. 오류 코드: 0x{ex.HResult:X8}"
+            };
         }
         finally
         {

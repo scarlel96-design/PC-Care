@@ -18,7 +18,7 @@
                                Foreground="{StaticResource SpdAccentBrush}"/>
                     <TextBlock x:Name="SessionCountdownText" TextWrapping="Wrap" FontWeight="SemiBold"
                                Foreground="{StaticResource SpdAccentBrush}"/>
-                    <TextBlock x:Name="StatusLineText" TextWrapping="Wrap" Style="{StaticResource MacInlineStatusTextStyle}"/>
+                    <TextBlock x:Name="StatusLineText" TextWrapping="Wrap" Style="{StaticResource MacInlineStatusTextStyle}" AutomationProperties.LiveSetting="Assertive" AutomationProperties.Name="보안 금고 상태"/>
                     <TextBlock x:Name="CryptoLineText"
                                Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
                     <TextBlock x:Name="SecurityLineText"
@@ -58,8 +58,8 @@
                 <StackPanel x:Name="UnlockedActionsPanel" Spacing="10">
                     <TextBlock Text="보관 항목" Style="{StaticResource MacSectionHeaderStyle}"/>
                     <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto" ColumnSpacing="8">
-                        <Button Content="파일 넣기" Style="{StaticResource PremiumPrimaryButtonStyle}" Click="AddFile"/>
-                        <Button Grid.Column="1" Content="폴더 넣기" Style="{StaticResource MacToolbarButtonStyle}" Click="AddFolder"/>
+                        <Button x:Name="AddFileButton" Content="파일 넣기" Style="{StaticResource PremiumPrimaryButtonStyle}" Click="AddFile" AutomationProperties.Name="보안 금고 파일 넣기"/>
+                        <Button Grid.Column="1" x:Name="AddFolderButton" Content="폴더 넣기" Style="{StaticResource MacToolbarButtonStyle}" Click="AddFolder" AutomationProperties.Name="보안 금고 폴더 넣기"/>
                         <Button Grid.Column="2" x:Name="BackButton" Content="뒤로" Style="{StaticResource MacToolbarButtonStyle}" Click="NavigateBack" Visibility="Collapsed"/>
                         <Button Grid.Column="4" Content="금고 잠그기" Style="{StaticResource MacToolbarButtonStyle}" Click="LockVault"/>
                     </Grid>
@@ -102,7 +102,7 @@
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <Button Content="열기" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenSelectedEntry"/>
                         <Button Content="원본 복원" Style="{StaticResource MacToolbarButtonStyle}" Click="RestoreToOrigin"/>
-                        <Button Content="다른 위치로 보내기" Style="{StaticResource MacToolbarButtonStyle}" Click="ExportEntry"/>
+                        <Button x:Name="ExportEntryButton" Content="다른 위치로 보내기" Style="{StaticResource MacToolbarButtonStyle}" Click="ExportEntry" AutomationProperties.Name="보안 금고 항목 다른 위치로 보내기"/>
                         <Button Content="보안 삭제" Style="{StaticResource MacToolbarButtonStyle}" Click="RemoveFromVault"/>
                     </StackPanel>
                     <TextBlock Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"

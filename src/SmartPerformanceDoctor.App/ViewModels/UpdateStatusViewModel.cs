@@ -55,6 +55,8 @@ public sealed class UpdateStatusViewModel : ObservableObject
     public IReadOnlyList<string> Changes { get => _changes; private set => Set(ref _changes, value); }
     public IReadOnlyList<UpdateHistoryEntry> History { get => _history; private set => Set(ref _history, value); }
 
+    public void SetStatus(string message) => RunOnUi(() => StatusLine = message);
+
     public void Refresh()
     {
         RunOnUi(() =>
