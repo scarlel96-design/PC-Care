@@ -116,3 +116,9 @@ public sealed record RemoteUpdateDownloadResult(
     bool Success,
     string? LocalPath,
     string Message);
+
+/// <summary>GitHub에서 패키지를 받는 동안 표시할 간결한 전송 상태입니다.</summary>
+public sealed record RemoteUpdateDownloadProgress(
+    long DownloadedBytes,
+    long? TotalBytes,
+    string Phase);

@@ -51,6 +51,8 @@ public sealed class UpdateStatusViewModel : ObservableObject
     public bool IsBusy { get => _isBusy; private set => Set(ref _isBusy, value); }
     public bool CanApply { get => _canApply; private set => Set(ref _canApply, value); }
     public bool CanDownloadGitHub { get => _canDownloadGitHub; private set => Set(ref _canDownloadGitHub, value); }
+    public RemoteUpdateCheckResult? AvailableGitHubUpdate => _lastGitHubCheck;
+    public bool IsGitHubUpdateAvailable => CanDownloadGitHub && _lastGitHubCheck is not null;
     public string GitHubLine { get => _githubLine; private set => Set(ref _githubLine, value); }
     public IReadOnlyList<string> Changes { get => _changes; private set => Set(ref _changes, value); }
     public IReadOnlyList<UpdateHistoryEntry> History { get => _history; private set => Set(ref _history, value); }
@@ -99,11 +101,13 @@ public sealed class UpdateStatusViewModel : ObservableObject
             RunOnUi(() =>
             {
                 _lastGitHubCheck = check;
+                OnPropertyChanged(nameof(AvailableGitHubUpdate));
                 GitHubLine = check.Message;
                 TargetVersion = check.LatestVersion;
                 CanDownloadGitHub = check.Success
                     && UpdateVersionComparer.IsNewer(check.LatestVersion, CurrentVersion)
                     && !string.IsNullOrWhiteSpace(check.UpdateDownloadUrl);
+                OnPropertyChanged(nameof(IsGitHubUpdateAvailable));
                 StatusLine = check.Message;
                 PhaseLine = check.Success ? "확인 완료" : "확인 실패";
                 ActionLine = CanDownloadGitHub ? "다운로드 가능" : "다운로드 불가";
@@ -132,12 +136,12 @@ public sealed class UpdateStatusViewModel : ObservableObject
         }
     }
 
-    public async Task DownloadGitHubUpdateAsync(CancellationToken cancellationToken = default)
+    public async Task<bool> DownloadGitHubUpdateAsync(CancellationToken cancellationToken = default)
     {
         if (IsBusy)
         {
             AppendLog("이미 작업이 진행 중입니다.");
-            return;
+            return false;
         }
 
         RemoteUpdateCheckResult? check = null;
@@ -150,9 +154,9 @@ public sealed class UpdateStatusViewModel : ObservableObject
 
         if (check is null || !canDownload)
         {
-            RunOnUi(() => GitHubLine = "먼저 GitHub 확인을 실행하세요.");
+            RunOnUi(() => GitHubLine = "다운로드할 GitHub 업데이트가 없습니다.");
             AppendLog("다운로드할 GitHub 업데이트가 없습니다.");
-            return;
+            return false;
         }
 
         RunOnUi(() => BeginWork("다운로드", "GitHub에서 업데이트 패키지를 받습니다…"));
@@ -160,7 +164,11 @@ public sealed class UpdateStatusViewModel : ObservableObject
         try
         {
             var progress = new Progress<string>(message => AppendLog(message));
-            var result = await _github.DownloadUpdatePackageAsync(check, progress, cancellationToken)
+            var result = await _github.DownloadUpdatePackageAsync(
+                    check,
+                    progress,
+                    CreateDownloadProgressHandler(),
+                    cancellationToken)
                 .ConfigureAwait(false);
 
             RunOnUi(() =>
@@ -171,13 +179,17 @@ public sealed class UpdateStatusViewModel : ObservableObject
                 ActionLine = result.Success ? "패키지 준비됨" : "실패";
                 DetailLine = result.LocalPath ?? "";
                 CanDownloadGitHub = false;
+                OnPropertyChanged(nameof(IsGitHubUpdateAvailable));
             });
             AppendLog(result.Message);
 
-            if (result.Success && !string.IsNullOrWhiteSpace(result.LocalPath))
+            if (!result.Success || string.IsNullOrWhiteSpace(result.LocalPath))
             {
-                await SetSelectedPackageAsync(result.LocalPath).ConfigureAwait(false);
+                return false;
             }
+
+            await SetSelectedPackageAsync(result.LocalPath).ConfigureAwait(false);
+            return true;
         }
         catch (Exception ex)
         {
@@ -187,13 +199,33 @@ public sealed class UpdateStatusViewModel : ObservableObject
                 PhaseLine = "실패";
             });
             AppendLog($"다운로드 오류: {ex.Message}");
+            return false;
         }
         finally
         {
             RunOnUi(() => IsBusy = false);
         }
     }
+    /// <summary>
+    /// 사용자는 한 번만 승인하고, 이후 다운로드·무결성 검사·적용을 끊김 없이 진행합니다.
+    /// </summary>
+    public async Task<UpdateApplyResult?> DownloadAndApplyGitHubUpdateAsync(CancellationToken cancellationToken = default)
+    {
+        var downloaded = await DownloadGitHubUpdateAsync(cancellationToken).ConfigureAwait(false);
+        if (!downloaded)
+        {
+            return null;
+        }
 
+        var canApply = false;
+        RunOnUi(() => canApply = CanApply);
+        if (!canApply)
+        {
+            return null;
+        }
+
+        return await ApplySelectedAsync(cancellationToken).ConfigureAwait(false);
+    }
     public async Task SetSelectedPackageAsync(string? path)
     {
         RunOnUi(() =>
@@ -389,6 +421,34 @@ public sealed class UpdateStatusViewModel : ObservableObject
 
     private IProgress<UpdateProgressReport> CreateProgressHandler() =>
         new Progress<UpdateProgressReport>(report => RunOnUi(() => ApplyProgress(report), blocking: false));
+
+    private IProgress<RemoteUpdateDownloadProgress> CreateDownloadProgressHandler() =>
+        new Progress<RemoteUpdateDownloadProgress>(report => RunOnUi(() => ApplyDownloadProgress(report), blocking: false));
+
+    private void ApplyDownloadProgress(RemoteUpdateDownloadProgress report)
+    {
+        PhaseLine = report.Phase;
+        StepLine = report.Phase == "다운로드 중" ? "1/3 · 다운로드" : "2/3 · 보안 검증";
+        ActionLine = report.Phase;
+        if (report.TotalBytes is > 0)
+        {
+            Progress = Math.Min(95, report.DownloadedBytes * 100d / report.TotalBytes.Value);
+            DetailLine = $"{FormatBytes(report.DownloadedBytes)} / {FormatBytes(report.TotalBytes.Value)}";
+        }
+        else
+        {
+            Progress = report.Phase == "검증 완료" ? 100 : 0;
+            DetailLine = report.Phase == "보안 검증 중" ? "SHA-256 무결성을 확인하고 있습니다." : report.Phase;
+        }
+    }
+
+    private static string FormatBytes(long value) => value switch
+    {
+        >= 1024L * 1024 * 1024 => $"{value / 1024d / 1024 / 1024:0.0} GB",
+        >= 1024L * 1024 => $"{value / 1024d / 1024:0.0} MB",
+        >= 1024 => $"{value / 1024d:0.0} KB",
+        _ => $"{value} B"
+    };
 
     private void BeginWork(string phase, string detail)
     {

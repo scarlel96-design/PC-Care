@@ -1,9 +1,10 @@
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using SmartPerformanceDoctor.App.Models.Update;
 using SmartPerformanceDoctor.App.Services;
-using SmartPerformanceDoctor.App.Services.Update;
 using SmartPerformanceDoctor.App.Services.Pickers;
+using SmartPerformanceDoctor.App.Services.Update;
 using SmartPerformanceDoctor.App.ViewModels;
 
 namespace SmartPerformanceDoctor.App.Views;
@@ -35,7 +36,7 @@ public sealed partial class UpdateStatusPage : Page
             if (_triggerGitHubCheckOnLoad)
             {
                 _triggerGitHubCheckOnLoad = false;
-                await _viewModel.CheckGitHubAsync();
+                await CheckForUpdateFlowAsync();
             }
         }
         catch (Exception ex)
@@ -83,6 +84,7 @@ public sealed partial class UpdateStatusPage : Page
         {
             return;
         }
+
         PickUpdateFileButton.IsEnabled = false;
         _viewModel.SetStatus("업데이트 파일 선택 창 여는 중…");
         try
@@ -116,46 +118,102 @@ public sealed partial class UpdateStatusPage : Page
             PickUpdateFileButton.Focus(FocusState.Programmatic);
         }
     }
-    private async void CheckGitHubRelease(object sender, RoutedEventArgs e)
+
+    private async void CheckForUpdate(object sender, RoutedEventArgs e) => await CheckForUpdateFlowAsync();
+
+    private async Task CheckForUpdateFlowAsync()
     {
-        var button = sender as Button;
-        if (button is not null)
+        if (_viewModel.IsBusy)
         {
-            button.IsEnabled = false;
+            return;
         }
 
+        CheckForUpdateButton.IsEnabled = false;
         try
         {
             await _viewModel.CheckGitHubAsync();
+            var update = _viewModel.AvailableGitHubUpdate;
+            if (!_viewModel.IsGitHubUpdateAvailable || update is null)
+            {
+                return;
+            }
+
+            if (await ShowUpdateOfferAsync(update))
+            {
+                await _viewModel.DownloadAndApplyGitHubUpdateAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            CrashCaptureService.WriteCrash("update-one-click-flow", ex, ex.Message);
+            _viewModel.SetStatus("업데이트 처리 중 오류가 발생했습니다. 잠시 후 다시 시도하세요.");
         }
         finally
         {
-            if (button is not null)
-            {
-                button.IsEnabled = true;
-            }
+            CheckForUpdateButton.IsEnabled = true;
         }
     }
 
-    private async void DownloadGitHubUpdate(object sender, RoutedEventArgs e)
+    private async Task<bool> ShowUpdateOfferAsync(RemoteUpdateCheckResult update)
     {
-        var button = sender as Button;
-        if (button is not null)
+        var content = new StackPanel { Spacing = 12, MinWidth = 420 };
+        content.Children.Add(new TextBlock
         {
-            button.IsEnabled = false;
+            Text = $"{_viewModel.CurrentVersion}  →  {update.LatestVersion}",
+            FontSize = 18,
+            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold
+        });
+        content.Children.Add(new TextBlock
+        {
+            Text = "지금 업데이트를 누르면 다운로드 후 SHA-256 무결성을 확인하고 자동으로 적용합니다.",
+            TextWrapping = TextWrapping.Wrap
+        });
+
+        if (update.ReleaseNotesLines.Count > 0)
+        {
+            content.Children.Add(new TextBlock
+            {
+                Text = "이번 업데이트",
+                FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+                Margin = new Thickness(0, 6, 0, 0)
+            });
+
+            var notes = new StackPanel { Spacing = 6 };
+            foreach (var note in update.ReleaseNotesLines.Take(6))
+            {
+                notes.Children.Add(new TextBlock
+                {
+                    Text = $"• {note}",
+                    TextWrapping = TextWrapping.Wrap
+                });
+            }
+
+            content.Children.Add(new ScrollViewer
+            {
+                Content = notes,
+                MaxHeight = 180,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto
+            });
         }
 
-        try
+        content.Children.Add(new TextBlock
         {
-            await _viewModel.DownloadGitHubUpdateAsync();
-        }
-        finally
+            Text = "1 다운로드  ·  2 보안 검증  ·  3 자동 적용",
+            Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["SpdMutedTextBrush"],
+            Margin = new Thickness(0, 6, 0, 0)
+        });
+
+        var dialog = new ContentDialog
         {
-            if (button is not null)
-            {
-                button.IsEnabled = true;
-            }
-        }
+            XamlRoot = XamlRoot,
+            Title = "새 업데이트를 사용할 수 있습니다",
+            Content = content,
+            PrimaryButtonText = "지금 업데이트",
+            CloseButtonText = "나중에",
+            DefaultButton = ContentDialogButton.Primary
+        };
+
+        return await dialog.ShowAsync() == ContentDialogResult.Primary;
     }
 
     private async void ApplyUpdate(object sender, RoutedEventArgs e)

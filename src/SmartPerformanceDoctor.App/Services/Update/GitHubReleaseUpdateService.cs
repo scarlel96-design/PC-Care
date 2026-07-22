@@ -59,6 +59,7 @@ public sealed class GitHubReleaseUpdateService : IDisposable
     public async Task<RemoteUpdateDownloadResult> DownloadUpdatePackageAsync(
         RemoteUpdateCheckResult check,
         IProgress<string>? progress = null,
+        IProgress<RemoteUpdateDownloadProgress>? transferProgress = null,
         CancellationToken cancellationToken = default)
     {
         if (!check.Success)
@@ -86,11 +87,22 @@ public sealed class GitHubReleaseUpdateService : IDisposable
                 .ConfigureAwait(false))
             {
                 response.EnsureSuccessStatusCode();
+                var totalBytes = response.Content.Headers.ContentLength;
+                transferProgress?.Report(new RemoteUpdateDownloadProgress(0, totalBytes, "다운로드 중"));
                 await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
                 await using var file = File.Create(destination);
-                await stream.CopyToAsync(file, cancellationToken).ConfigureAwait(false);
+                var buffer = new byte[128 * 1024];
+                long downloadedBytes = 0;
+                int read;
+                while ((read = await stream.ReadAsync(buffer.AsMemory(0, buffer.Length), cancellationToken).ConfigureAwait(false)) > 0)
+                {
+                    await file.WriteAsync(buffer.AsMemory(0, read), cancellationToken).ConfigureAwait(false);
+                    downloadedBytes += read;
+                    transferProgress?.Report(new RemoteUpdateDownloadProgress(downloadedBytes, totalBytes, "다운로드 중"));
+                }
             }
 
+            transferProgress?.Report(new RemoteUpdateDownloadProgress(0, null, "보안 검증 중"));
             progress?.Report("SHA256 검증 중…");
             var actualHash = await ComputeSha256Async(destination, cancellationToken).ConfigureAwait(false);
             if (!string.IsNullOrWhiteSpace(check.ExpectedSha256)
@@ -103,6 +115,7 @@ public sealed class GitHubReleaseUpdateService : IDisposable
                     $"SHA256 불일치 — 기대 {check.ExpectedSha256}, 실제 {actualHash}");
             }
 
+            transferProgress?.Report(new RemoteUpdateDownloadProgress(0, null, "검증 완료"));
             progress?.Report($"다운로드 완료: {destination}");
             return new RemoteUpdateDownloadResult(true, destination, "GitHub 업데이트 패키지를 받았습니다.");
         }
