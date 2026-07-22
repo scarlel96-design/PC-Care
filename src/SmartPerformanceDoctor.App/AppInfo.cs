@@ -7,7 +7,7 @@ public static class AppInfo
 {
     public const string ProductName = AstraCareBranding.ProductFormal;
     public const string ProductNameEnglish = AstraCareBranding.Product;
-    public const string BuildVersion = "51.0.2";
+    public const string BuildVersion = "51.0.3";
     public static string Version => AppVersionService.GetInstalledVersion();
     public const string Channel = "stable";
     public const string SupportTagline = AstraCareBranding.TaglineKorean;

@@ -310,7 +310,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
                 var launched = UpdateInstallerService.LaunchPendingRestart();
                 if (launched)
                 {
-                    RunOnUi(() => Application.Current.Exit());
+                    RunOnUi(App.ExitForUpdateHandoff);
                 }
                 else
                 {

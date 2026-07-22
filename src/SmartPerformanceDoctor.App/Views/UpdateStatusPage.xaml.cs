@@ -73,7 +73,7 @@ public sealed partial class UpdateStatusPage : Page
         }
 
         PendingUpdateMessage.Text = "업데이트를 마무리합니다. 확인 창이 나타나면 허용해 주세요.";
-        Application.Current.Exit();
+        App.ExitForUpdateHandoff();
     }
 
     private async void PickUpdateFile(object sender, RoutedEventArgs e) => await ExecutePickUpdateFileAsync();

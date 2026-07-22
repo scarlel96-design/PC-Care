@@ -13,6 +13,33 @@ public partial class App : Application
 
     public static MainWindow? Shell { get; private set; }
 
+    /// <summary>
+    /// Fully releases the process for an out-of-process updater. A regular
+    /// window close can be converted to tray/background mode, which leaves DLLs
+    /// locked and prevents the elevated updater from finishing.
+    /// </summary>
+    public static void ExitForUpdateHandoff()
+    {
+        try
+        {
+            Shell?.RequestForceShutdown();
+            TrayIconService.Shared.Dispose();
+        }
+        catch
+        {
+            // The updater still needs a definitive process exit.
+        }
+
+        try
+        {
+            Current.Exit();
+        }
+        finally
+        {
+            Environment.Exit(0);
+        }
+    }
+
     public App()
     {
         AppLaunchOptions.Parse(Environment.GetCommandLineArgs());
@@ -168,14 +195,8 @@ public partial class App : Application
         if (pending.RequestExit)
         {
             StartupDiagnostics.Write("on-launched", "update-pending-exit-for-elevated-apply");
-            try
-            {
-                Exit();
-            }
-            catch
-            {
-                Environment.Exit(0);
-            }
+            ExitForUpdateHandoff();
+
 
             return;
         }

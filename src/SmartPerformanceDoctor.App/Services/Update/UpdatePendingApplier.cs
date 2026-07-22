@@ -24,6 +24,23 @@ public sealed class UpdatePendingApplier
             var toVersion = root.TryGetProperty("toVersion", out var v) ? v.GetString() ?? "" : "";
             var packagePath = root.TryGetProperty("packagePath", out var p) ? p.GetString() ?? "" : "";
 
+            // A setup repair/direct install may already have placed this exact
+            // version on disk. Do not leave a stale pending marker that keeps
+            // asking the user to finish an update that is already present.
+            var alreadyInstalled = AppVersionService.VerifyInstalledVersion(toVersion);
+            if (alreadyInstalled.Success)
+            {
+                AppVersionService.WriteInstalledVersion(toVersion, "startup-pending-already-installed");
+                CleanupPending(packagePath, stagingDir);
+                AppendApplyLog($"[startup] stale pending {toVersion} cleared; {alreadyInstalled.Details}");
+                return new PendingApplyResult(
+                    true,
+                    0,
+                    $"{toVersion}이 이미 설치되어 남은 업데이트 대기 상태를 정리했습니다.",
+                    toVersion,
+                    true);
+            }
+
             if (string.IsNullOrWhiteSpace(stagingDir) || !Directory.Exists(stagingDir))
             {
                 return new PendingApplyResult(
@@ -76,13 +93,14 @@ public sealed class UpdatePendingApplier
 
                 if (alreadyRunning)
                 {
-                    AppendApplyLog($"[startup] pending {toVersion} apply already in flight; app remains open");
+                    AppendApplyLog($"[startup] pending {toVersion} apply already in flight; exiting to release locked files");
                     return new PendingApplyResult(
                         false,
                         0,
-                        $"업데이트({toVersion}) 적용이 진행 중입니다. 잠시 후 다시 열어 주세요.",
+                        $"업데이트({toVersion}) 적용이 진행 중입니다. 파일 잠금을 해제하기 위해 앱을 종료합니다.",
                         toVersion,
-                        false);
+                        false,
+                        RequestExit: true);
                 }
 
                 AppendApplyLog($"[startup] elevation required for pending {toVersion} → {targetDir}");
