@@ -360,6 +360,24 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
         }
     }
 
+    public async Task<SecureVaultOperationResult> ExportEntriesAsync(
+        IReadOnlyCollection<SecureVaultBrowsableItem> items,
+        string destination,
+        bool stepUpConfirmed = false)
+    {
+        IsBusy = true;
+        try
+        {
+            TouchActivity();
+            var result = await _service.ExportBrowsableItemsAsync(items, destination, stepUpConfirmed);
+            StatusLine = result.Message;
+            return result;
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
     public async Task<SecureVaultOperationResult> RestoreToOriginAsync(
         SecureVaultBrowsableItem item,
         IProgress<SecureVaultProgressReport>? progress = null)

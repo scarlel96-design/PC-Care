@@ -5,26 +5,33 @@ namespace SmartPerformanceDoctor.App.Services.Pickers;
 
 public sealed class PathPickerService(IWindowProvider windowProvider) : IPathPickerService
 {
+    // Native pickers are modal for the whole shell. Keep this separate from page-local
+    // button guards so a duplicated routed Click cannot queue a second native dialog.
+    private static readonly PickerOperationGate NativePickerGate = new();
+
     public static IPathPickerService Shared { get; } =
         new PathPickerService(new AppWindowProvider(() => App.Shell));
 
-    public async Task<PickerResult<string>> PickSingleFileAsync(
-        Window? owner,
-        PickerRequest request,
-        CancellationToken cancellationToken = default)
+    public async Task<PickerResult<string>> PickSingleFileAsync(Window? owner, PickerRequest request, CancellationToken cancellationToken = default)
     {
         if (cancellationToken.IsCancellationRequested)
         {
             return PickerResult<string>.Cancelled("파일 선택을 취소했습니다.");
         }
-        var validation = ValidateOwner(owner ?? windowProvider.CurrentWindow, request, "PickSingleFile");
-        if (validation.Failure is not null)
+
+        if (!NativePickerGate.TryEnter())
         {
-            return validation.Failure;
+            return PickerResult<string>.Cancelled("이미 파일 또는 폴더 선택 창이 열려 있습니다.");
         }
 
         try
         {
+            var validation = ValidateOwner(owner ?? windowProvider.CurrentWindow, request, "PickSingleFile");
+            if (validation.Failure is not null)
+            {
+                return validation.Failure;
+            }
+
             var picker = CreateFileOpenPicker(validation.WindowId, request);
             var result = await picker.PickSingleFileAsync();
             cancellationToken.ThrowIfCancellationRequested();
@@ -40,28 +47,32 @@ public sealed class PathPickerService(IWindowProvider windowProvider) : IPathPic
         {
             return PickerDiagnostics.Failure<string>(request.Feature, "PickSingleFile", ex, true, true);
         }
+        finally
+        {
+            NativePickerGate.Exit();
+        }
     }
 
-    public async Task<PickerResult<IReadOnlyList<string>>> PickMultipleFilesAsync(
-        Window? owner,
-        PickerRequest request,
-        CancellationToken cancellationToken = default)
+    public async Task<PickerResult<IReadOnlyList<string>>> PickMultipleFilesAsync(Window? owner, PickerRequest request, CancellationToken cancellationToken = default)
     {
         if (cancellationToken.IsCancellationRequested)
         {
             return PickerResult<IReadOnlyList<string>>.Cancelled("파일 선택을 취소했습니다.");
         }
-        var validation = ValidateOwner<IReadOnlyList<string>>(
-            owner ?? windowProvider.CurrentWindow,
-            request,
-            "PickMultipleFiles");
-        if (validation.Failure is not null)
+
+        if (!NativePickerGate.TryEnter())
         {
-            return validation.Failure;
+            return PickerResult<IReadOnlyList<string>>.Cancelled("이미 파일 또는 폴더 선택 창이 열려 있습니다.");
         }
 
         try
         {
+            var validation = ValidateOwner<IReadOnlyList<string>>(owner ?? windowProvider.CurrentWindow, request, "PickMultipleFiles");
+            if (validation.Failure is not null)
+            {
+                return validation.Failure;
+            }
+
             var picker = CreateFileOpenPicker(validation.WindowId, request);
             var results = await picker.PickMultipleFilesAsync();
             cancellationToken.ThrowIfCancellationRequested();
@@ -79,32 +90,34 @@ public sealed class PathPickerService(IWindowProvider windowProvider) : IPathPic
         }
         catch (Exception ex)
         {
-            return PickerDiagnostics.Failure<IReadOnlyList<string>>(
-                request.Feature,
-                "PickMultipleFiles",
-                ex,
-                true,
-                true);
+            return PickerDiagnostics.Failure<IReadOnlyList<string>>(request.Feature, "PickMultipleFiles", ex, true, true);
+        }
+        finally
+        {
+            NativePickerGate.Exit();
         }
     }
 
-    public async Task<PickerResult<string>> PickFolderAsync(
-        Window? owner,
-        PickerRequest request,
-        CancellationToken cancellationToken = default)
+    public async Task<PickerResult<string>> PickFolderAsync(Window? owner, PickerRequest request, CancellationToken cancellationToken = default)
     {
         if (cancellationToken.IsCancellationRequested)
         {
             return PickerResult<string>.Cancelled("폴더 선택을 취소했습니다.");
         }
-        var validation = ValidateOwner(owner ?? windowProvider.CurrentWindow, request, "PickFolder");
-        if (validation.Failure is not null)
+
+        if (!NativePickerGate.TryEnter())
         {
-            return validation.Failure;
+            return PickerResult<string>.Cancelled("이미 파일 또는 폴더 선택 창이 열려 있습니다.");
         }
 
         try
         {
+            var validation = ValidateOwner(owner ?? windowProvider.CurrentWindow, request, "PickFolder");
+            if (validation.Failure is not null)
+            {
+                return validation.Failure;
+            }
+
             var picker = new FolderPicker(validation.WindowId)
             {
                 Title = request.Title,
@@ -126,25 +139,32 @@ public sealed class PathPickerService(IWindowProvider windowProvider) : IPathPic
         {
             return PickerDiagnostics.Failure<string>(request.Feature, "PickFolder", ex, true, true);
         }
+        finally
+        {
+            NativePickerGate.Exit();
+        }
     }
 
-    public async Task<PickerResult<string>> PickSaveFileAsync(
-        Window? owner,
-        PickerRequest request,
-        CancellationToken cancellationToken = default)
+    public async Task<PickerResult<string>> PickSaveFileAsync(Window? owner, PickerRequest request, CancellationToken cancellationToken = default)
     {
         if (cancellationToken.IsCancellationRequested)
         {
             return PickerResult<string>.Cancelled("저장 위치 선택을 취소했습니다.");
         }
-        var validation = ValidateOwner(owner ?? windowProvider.CurrentWindow, request, "PickSaveFile");
-        if (validation.Failure is not null)
+
+        if (!NativePickerGate.TryEnter())
         {
-            return validation.Failure;
+            return PickerResult<string>.Cancelled("이미 파일 또는 폴더 선택 창이 열려 있습니다.");
         }
 
         try
         {
+            var validation = ValidateOwner(owner ?? windowProvider.CurrentWindow, request, "PickSaveFile");
+            if (validation.Failure is not null)
+            {
+                return validation.Failure;
+            }
+
             var picker = new FileSavePicker(validation.WindowId)
             {
                 Title = request.Title,
@@ -169,6 +189,10 @@ public sealed class PathPickerService(IWindowProvider windowProvider) : IPathPic
         catch (Exception ex)
         {
             return PickerDiagnostics.Failure<string>(request.Feature, "PickSaveFile", ex, true, true);
+        }
+        finally
+        {
+            NativePickerGate.Exit();
         }
     }
 
@@ -209,8 +233,7 @@ public sealed class PathPickerService(IWindowProvider windowProvider) : IPathPic
             return new(default, PickerDiagnostics.Failure<T>(request.Feature, operation, ex, false, false));
         }
 
-        var uiThread = owner.DispatcherQueue?.HasThreadAccess == true;
-        if (!uiThread)
+        if (owner.DispatcherQueue?.HasThreadAccess != true)
         {
             var ex = new InvalidOperationException("선택기는 UI 스레드에서 호출해야 합니다.");
             return new(default, PickerDiagnostics.Failure<T>(request.Feature, operation, ex, false, false));
@@ -218,8 +241,7 @@ public sealed class PathPickerService(IWindowProvider windowProvider) : IPathPic
 
         try
         {
-            var appWindow = owner.AppWindow;
-            var windowId = appWindow.Id;
+            var windowId = owner.AppWindow.Id;
             if (windowId.Value == 0)
             {
                 throw new InvalidOperationException("소유 창의 WindowId가 아직 초기화되지 않았습니다.");
@@ -236,7 +258,5 @@ public sealed class PathPickerService(IWindowProvider windowProvider) : IPathPic
     private static OwnerValidation<string> ValidateOwner(Window? owner, PickerRequest request, string operation) =>
         ValidateOwner<string>(owner, request, operation);
 
-    private readonly record struct OwnerValidation<T>(
-        Microsoft.UI.WindowId WindowId,
-        PickerResult<T>? Failure);
+    private readonly record struct OwnerValidation<T>(Microsoft.UI.WindowId WindowId, PickerResult<T>? Failure);
 }

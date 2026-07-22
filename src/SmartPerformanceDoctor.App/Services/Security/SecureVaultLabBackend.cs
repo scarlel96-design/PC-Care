@@ -199,7 +199,8 @@ internal sealed class SecureVaultLabBackend : IDisposable
 
     public IReadOnlyList<SecureVaultBrowsableItem> GetBrowsableItems(string? bundleId, string relativePrefix)
     {
-        // Flat v4 list via product tree builder
+        // Folder imports keep their root in RelativePath; the shared builder turns it
+        // into a navigable folder rather than presenting every member as a flat file.
         return SecureVaultTreeBuilder.Build(Entries, bundleId, relativePrefix);
     }
 
@@ -234,7 +235,19 @@ internal sealed class SecureVaultLabBackend : IDisposable
             return Fail("폴더를 찾을 수 없습니다.");
         }
 
-        var files = Directory.EnumerateFiles(path, "*", SearchOption.AllDirectories).ToArray();
+        var fullPath = Path.GetFullPath(path);
+        var rootName = Path.GetFileName(Path.TrimEndingDirectorySeparator(fullPath));
+        if (string.IsNullOrWhiteSpace(rootName))
+        {
+            return Fail("보관할 폴더 이름을 확인할 수 없습니다.");
+        }
+
+        var files = Directory.EnumerateFiles(fullPath, "*", SearchOption.AllDirectories).ToArray();
+        if (files.Length == 0)
+        {
+            return Fail("빈 폴더는 현재 보관할 수 없습니다. 파일을 하나 이상 넣은 뒤 다시 시도하세요.");
+        }
+
         var ok = 0;
         var fail = 0;
         for (var i = 0; i < files.Length; i++)
@@ -246,9 +259,10 @@ internal sealed class SecureVaultLabBackend : IDisposable
                 Percent = files.Length == 0 ? 100 : (int)((i + 1) * 100.0 / files.Length),
                 Detail = Path.GetFileName(file)
             });
-            var rel = Path.GetRelativePath(path, file).Replace('\\', '/');
+            var rel = Path.GetRelativePath(fullPath, file).Replace('\\', '/');
+            var vaultRelativePath = rootName + "/" + rel;
             var bytes = await File.ReadAllBytesAsync(file).ConfigureAwait(false);
-            var r = _vault!.ImportBytes(Path.GetFileName(file), rel, bytes);
+            var r = _vault!.ImportBytes(Path.GetFileName(file), vaultRelativePath, bytes);
             if (r.Success)
             {
                 ok++;
@@ -262,7 +276,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
         return new SecureVaultOperationResult
         {
             Success = fail == 0,
-            Message = $"폴더 가져오기 완료 · 성공 {ok} · 실패 {fail}",
+            Message = $"폴더 「{rootName}」 가져오기 완료 · 성공 {ok} · 실패 {fail}",
             ProcessedCount = ok,
             VaultFormat = LabVaultService.FormatId
         };
@@ -286,6 +300,108 @@ internal sealed class SecureVaultLabBackend : IDisposable
         return Task.FromResult(Map(r, LabVaultService.FormatIdV5));
     }
 
+    public Task<SecureVaultOperationResult> ExportBrowsableItemsAsync(
+        IReadOnlyCollection<SecureVaultBrowsableItem> items,
+        string destination,
+        bool stepUpConfirmed = false)
+    {
+        EnsureUnlocked();
+        if (items.Count == 0)
+        {
+            return Task.FromResult(Fail("내보낼 항목을 선택하세요."));
+        }
+
+        var entries = _vault!.List();
+        var selectedIds = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var item in items)
+        {
+            if (!string.IsNullOrWhiteSpace(item.EntryId))
+            {
+                selectedIds.Add(item.EntryId);
+                continue;
+            }
+
+            if (item.BundleId?.StartsWith("path:", StringComparison.Ordinal) == true)
+            {
+                var root = item.BundleId["path:".Length..];
+                var prefix = string.IsNullOrWhiteSpace(item.RelativePrefix)
+                    ? root + "/"
+                    : root + "/" + item.RelativePrefix.Replace('\\', '/').TrimStart('/');
+                foreach (var entry in entries.Where(entry => entry.RelativePath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
+                {
+                    selectedIds.Add(entry.EntryId);
+                }
+            }
+        }
+
+        var selected = entries.Where(entry => selectedIds.Contains(entry.EntryId)).ToArray();
+        if (selected.Length == 0)
+        {
+            return Task.FromResult(Fail("선택한 항목에서 내보낼 파일을 찾지 못했습니다."));
+        }
+
+        var exported = 0;
+        foreach (var entry in selected)
+        {
+            string targetDirectory;
+            try
+            {
+                targetDirectory = GetSafeExportDirectory(destination, entry.RelativePath);
+            }
+            catch (Exception ex)
+            {
+                return Task.FromResult(Fail($"내보낼 경로를 확인할 수 없습니다: {ex.Message}"));
+            }
+
+            var result = _vault.ExportEntry(entry.EntryId, targetDirectory, stepUpConfirmed);
+            if (!result.Success)
+            {
+                if (result.Message.Contains("step-up", StringComparison.OrdinalIgnoreCase))
+                {
+                    return Task.FromResult(new SecureVaultOperationResult
+                    {
+                        Success = false,
+                        Message = "보안 게이트: 금고 항목이 많아 추가 확인이 필요합니다. 내보내기를 다시 확인한 뒤 진행하세요.",
+                        VaultFormat = LabVaultService.FormatIdV5,
+                        ProcessedCount = exported
+                    });
+                }
+
+                return Task.FromResult(new SecureVaultOperationResult
+                {
+                    Success = false,
+                    Message = $"내보내기 중단 · 성공 {exported}/{selected.Length} · {result.Message}",
+                    VaultFormat = LabVaultService.FormatIdV5,
+                    ProcessedCount = exported
+                });
+            }
+
+            exported++;
+        }
+
+        return Task.FromResult(new SecureVaultOperationResult
+        {
+            Success = true,
+            Message = exported == 1 ? "선택 항목을 내보냈습니다." : $"선택한 {exported}개 파일을 폴더 구조대로 내보냈습니다.",
+            ProcessedCount = exported,
+            VaultFormat = LabVaultService.FormatIdV5
+        });
+    }
+
+    private static string GetSafeExportDirectory(string destination, string relativePath)
+    {
+        var destinationRoot = Path.GetFullPath(destination);
+        var relativeDirectory = Path.GetDirectoryName(relativePath.Replace('/', Path.DirectorySeparatorChar)) ?? "";
+        var candidate = Path.GetFullPath(Path.Combine(destinationRoot, relativeDirectory));
+        var rootWithSeparator = Path.TrimEndingDirectorySeparator(destinationRoot) + Path.DirectorySeparatorChar;
+        if (!candidate.StartsWith(rootWithSeparator, StringComparison.OrdinalIgnoreCase)
+            && !string.Equals(candidate, Path.TrimEndingDirectorySeparator(destinationRoot), StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException("금고 밖 경로는 사용할 수 없습니다.");
+        }
+
+        return candidate;
+    }
     public string? LastSecurityState =>
         _vault is null ? null : LabSecurityStateLabels.Format(_vault.GetSecurityState());
 

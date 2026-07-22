@@ -49,7 +49,31 @@ internal static class SecureVaultTreeBuilder
             });
         }
 
-        foreach (var file in entries.Where(e => e.Kind == SecureVaultEntryKind.StandaloneFile).OrderBy(e => e.DisplayLabel))
+        // Vault v4 stores a folder import as files with a shared relative-path root.
+        // Represent that root explicitly so the user sees the same folder/file model as v3.
+        var inferredFolders = entries
+            .Where(e => e.Kind == SecureVaultEntryKind.StandaloneFile && HasPathRoot(e.RelativePath))
+            .GroupBy(e => GetPathRoot(e.RelativePath!), StringComparer.OrdinalIgnoreCase)
+            .OrderBy(group => group.Key, StringComparer.OrdinalIgnoreCase);
+        foreach (var folder in inferredFolders)
+        {
+            var members = folder.ToArray();
+            items.Add(new SecureVaultBrowsableItem
+            {
+                Key = $"path:{folder.Key}",
+                DisplayName = folder.Key,
+                Kind = SecureVaultBrowsableKind.FolderRoot,
+                BundleId = $"path:{folder.Key}",
+                ItemCount = members.Length,
+                TotalSize = members.Sum(member => member.OriginalSize),
+                IconGlyph = "🔒📁",
+                DetailLine = $"폴더 · {members.Length}개 파일 · {members.Sum(member => member.OriginalSize):N0} bytes"
+            });
+        }
+
+        foreach (var file in entries
+                     .Where(e => e.Kind == SecureVaultEntryKind.StandaloneFile && !HasPathRoot(e.RelativePath))
+                     .OrderBy(e => e.DisplayLabel))
         {
             items.Add(ToFileItem(file));
         }
@@ -89,6 +113,14 @@ internal static class SecureVaultTreeBuilder
             members = entries
                 .Where(e => e.Kind == SecureVaultEntryKind.LegacyFolderFile && e.DisplayLabel.StartsWith(folderName + "/", StringComparison.OrdinalIgnoreCase))
                 .Select(e => MapLegacyMember(e, folderName));
+        }
+        else if (bundleId.StartsWith("path:", StringComparison.Ordinal))
+        {
+            var folderName = bundleId["path:".Length..];
+            members = entries
+                .Where(e => e.Kind == SecureVaultEntryKind.StandaloneFile
+                    && e.RelativePath?.StartsWith(folderName + "/", StringComparison.OrdinalIgnoreCase) == true)
+                .Select(e => CloneWithLabel(e, e.DisplayLabel, e.RelativePath![(folderName.Length + 1)..]));
         }
         else
         {
@@ -160,6 +192,12 @@ internal static class SecureVaultTreeBuilder
             IconGlyph = file.IsSealedAtOrigin ? "🔒📄" : "📄",
             DetailLine = $"{file.OriginalSize:N0} bytes · {file.OriginalPath ?? "원본 경로 없음"}"
         };
+
+    private static bool HasPathRoot(string? path) =>
+        !string.IsNullOrWhiteSpace(path) && NormalizeRelative(path).Contains('/');
+
+    private static string GetPathRoot(string path) =>
+        NormalizeRelative(path).Split('/', 2)[0];
 
     private static string NormalizePrefix(string prefix) =>
         string.IsNullOrWhiteSpace(prefix) ? "" : prefix.Replace('\\', '/').TrimEnd('/') + "/";

@@ -152,6 +152,40 @@ public sealed class PathPickerAndSecureDeleteTests
         Assert.False(string.IsNullOrWhiteSpace(result.TrackingId));
     }
 
+    [Fact]
+    public void SecureVaultTreeBuilder_ShowsFolderRootsAndKeepsFilesAsFiles()
+    {
+        var entries = new[]
+        {
+            VaultEntry("1", "report.txt", "Project/report.txt", 12),
+            VaultEntry("2", "notes.md", "Project/docs/notes.md", 18),
+            VaultEntry("3", "loose.txt", "loose.txt", 7)
+        };
+
+        var root = SecureVaultTreeBuilder.Build(entries, null, "");
+        var folder = Assert.Single(root, item => item.Kind == SecureVaultBrowsableKind.FolderRoot);
+        Assert.Equal("Project", folder.DisplayName);
+        Assert.Equal(2, folder.ItemCount);
+        Assert.Equal("🔒📁", folder.IconGlyph);
+
+        var loose = Assert.Single(root, item => item.DisplayName == "loose.txt");
+        Assert.Equal(SecureVaultBrowsableKind.File, loose.Kind);
+        Assert.Equal("📄", loose.IconGlyph);
+
+        var contents = SecureVaultTreeBuilder.Build(entries, folder.BundleId, "");
+        Assert.Contains(contents, item => item.DisplayName == "report.txt" && item.Kind == SecureVaultBrowsableKind.File);
+        Assert.Contains(contents, item => item.DisplayName == "docs" && item.Kind == SecureVaultBrowsableKind.SubFolder);
+    }
+
+    private static SecureVaultEntry VaultEntry(string id, string label, string relativePath, long size) =>
+        new()
+        {
+            EntryId = id,
+            DisplayLabel = label,
+            RelativePath = relativePath,
+            OriginalSize = size,
+            Kind = SecureVaultEntryKind.StandaloneFile
+        };
     private sealed class NullWindowProvider : IWindowProvider
     {
         public Microsoft.UI.Xaml.Window? CurrentWindow => null;

@@ -892,6 +892,70 @@ public sealed class SecureVaultService : IDisposable
         return await ExportSingleEntryAsync(entry, destinationDirectory, cancellationToken);
     }
 
+    public async Task<SecureVaultOperationResult> ExportBrowsableItemsAsync(
+        IReadOnlyCollection<SecureVaultBrowsableItem> items,
+        string destinationDirectory,
+        bool stepUpConfirmed = false)
+    {
+        if (IsLabVaultFormat)
+        {
+            return await _lab.ExportBrowsableItemsAsync(items, destinationDirectory, stepUpConfirmed)
+                .ConfigureAwait(false);
+        }
+
+        EnsureUnlocked();
+        var exportable = items
+            .Where(item => item.Kind is not SecureVaultBrowsableKind.SubFolder)
+            .GroupBy(item => item.Key, StringComparer.Ordinal)
+            .Select(group => group.First())
+            .ToArray();
+        if (exportable.Length == 0)
+        {
+            return Fail("내보낼 파일 또는 최상위 폴더를 선택하세요.");
+        }
+
+        var exported = 0;
+        foreach (var item in exportable)
+        {
+            SecureVaultOperationResult result;
+            if (item.Kind == SecureVaultBrowsableKind.FolderRoot)
+            {
+                result = item.EntryId is not null
+                    ? await ExportEntryAsync(item.EntryId, destinationDirectory, stepUpConfirmed: stepUpConfirmed).ConfigureAwait(false)
+                    : item.BundleId is not null
+                        ? await ExportBundleAsync(item.BundleId, destinationDirectory).ConfigureAwait(false)
+                        : Fail("폴더 항목을 찾을 수 없습니다.");
+            }
+            else if (!string.IsNullOrWhiteSpace(item.EntryId))
+            {
+                result = await ExportEntryAsync(item.EntryId, destinationDirectory, stepUpConfirmed: stepUpConfirmed)
+                    .ConfigureAwait(false);
+            }
+            else
+            {
+                result = Fail("파일 항목을 찾을 수 없습니다.");
+            }
+
+            if (!result.Success)
+            {
+                return new SecureVaultOperationResult
+                {
+                    Success = false,
+                    Message = $"내보내기 중단 · 성공 {exported}/{exportable.Length} · {result.Message}",
+                    ProcessedCount = exported
+                };
+            }
+
+            exported += Math.Max(1, result.ProcessedCount);
+        }
+
+        return new SecureVaultOperationResult
+        {
+            Success = true,
+            Message = exportable.Length == 1 ? "선택 항목을 내보냈습니다." : $"선택한 {exportable.Length}개 항목을 내보냈습니다.",
+            ProcessedCount = exported
+        };
+    }
     public async Task<SecureVaultOperationResult> RestoreToOriginAsync(
         string entryId,
         CancellationToken cancellationToken = default,

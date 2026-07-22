@@ -40,8 +40,10 @@ public sealed partial class SecureVaultCenterPage : Page
         Loaded += OnPageLoaded;
         Unloaded += OnUnloaded;
         InitializeAutoLockMinutesBox();
+        EntryList.ItemsSource = _viewModel.VisibleItems;
         SyncBoundText();
         UpdatePanelVisibility();
+        UpdateSelectionSummary();
     }
 
     private void InitializeAutoLockMinutesBox()
@@ -163,6 +165,11 @@ public sealed partial class SecureVaultCenterPage : Page
             SyncBoundText();
         }
 
+        if (e.PropertyName is nameof(SecureVaultViewModel.VisibleItems) or null or "")
+        {
+            RefreshEntryList(clearSelection: true);
+        }
+
         if (e.PropertyName is nameof(SecureVaultViewModel.IsNotCreated)
             or nameof(SecureVaultViewModel.IsLocked)
             or nameof(SecureVaultViewModel.IsUnlocked))
@@ -214,13 +221,22 @@ public sealed partial class SecureVaultCenterPage : Page
         }
 
         BreadcrumbText.Text = _viewModel.Breadcrumb;
-        RefreshEntryList();
     }
 
-    private void RefreshEntryList()
+    // Keep the observable collection connected. Resetting ItemsSource to null for every
+    // status update recreated all rows and produced a visible flash in the vault list.
+    private void RefreshEntryList(bool clearSelection = false)
     {
-        EntryList.ItemsSource = null;
-        EntryList.ItemsSource = _viewModel.VisibleItems;
+        if (!ReferenceEquals(EntryList.ItemsSource, _viewModel.VisibleItems))
+        {
+            EntryList.ItemsSource = _viewModel.VisibleItems;
+        }
+
+        if (clearSelection)
+        {
+            EntryList.SelectedItems.Clear();
+            UpdateSelectionSummary();
+        }
     }
 
     private async Task ShowOperationResultDialogAsync(string title, SecureVaultOperationResult result)
@@ -627,6 +643,40 @@ public sealed partial class SecureVaultCenterPage : Page
     private SecureVaultBrowsableItem? GetSelectedItem() =>
         EntryList.SelectedItem as SecureVaultBrowsableItem;
 
+    private IReadOnlyCollection<SecureVaultBrowsableItem> GetSelectedItems() =>
+        EntryList.SelectedItems
+            .OfType<SecureVaultBrowsableItem>()
+            .GroupBy(item => item.Key, StringComparer.Ordinal)
+            .Select(group => group.First())
+            .ToArray();
+
+    private void EntrySelectionChanged(object sender, SelectionChangedEventArgs e) => UpdateSelectionSummary();
+
+    private void SelectAllEntries(object sender, RoutedEventArgs e)
+    {
+        EntryList.SelectAll();
+        UpdateSelectionSummary();
+    }
+
+    private void ClearEntrySelection(object sender, RoutedEventArgs e)
+    {
+        EntryList.SelectedItems.Clear();
+        UpdateSelectionSummary();
+    }
+
+    private void UpdateSelectionSummary()
+    {
+        if (SelectionSummaryText is null)
+        {
+            return;
+        }
+
+        var selected = EntryList.SelectedItems.Count;
+        SelectionSummaryText.Text = selected == 0
+            ? "선택된 항목 없음"
+            : $"{selected}개 선택 · 한 번에 내보낼 수 있습니다";
+    }
+
     private async Task<string?> PickExportFolderAsync()
     {
         if (!BeginPickerOperation("내보낼 폴더 선택 창 여는 중…"))
@@ -654,9 +704,10 @@ public sealed partial class SecureVaultCenterPage : Page
     }
     private async void ExportEntry(object sender, RoutedEventArgs e)
     {
-        if (GetSelectedItem() is not { } item)
+        var items = GetSelectedItems();
+        if (items.Count == 0)
         {
-            _viewModel.SetStatus("보낼 항목을 목록에서 선택하세요.");
+            _viewModel.SetStatus("내보낼 파일 또는 폴더를 목록에서 하나 이상 선택하세요.");
             return;
         }
 
@@ -666,13 +717,13 @@ public sealed partial class SecureVaultCenterPage : Page
             return;
         }
 
-        var result = await _viewModel.ExportEntryAsync(item, destination, stepUpConfirmed: false);
+        var result = await _viewModel.ExportEntriesAsync(items, destination, stepUpConfirmed: false);
         if (!result.Success && result.Message.Contains("추가 확인", StringComparison.Ordinal))
         {
             var confirm = new ContentDialog
             {
                 Title = "보안 게이트 · step-up",
-                Content = "금고 항목이 많아 추가 확인이 필요합니다. 내보내기를 계속할까요?",
+                Content = $"선택한 {items.Count}개 항목을 내보내려면 추가 확인이 필요합니다. 계속할까요?",
                 PrimaryButtonText = "확인 후 내보내기",
                 CloseButtonText = "취소",
                 DefaultButton = ContentDialogButton.Close,
@@ -680,16 +731,12 @@ public sealed partial class SecureVaultCenterPage : Page
             };
             if (await confirm.ShowAsync() == ContentDialogResult.Primary)
             {
-                result = await _viewModel.ExportEntryAsync(item, destination, stepUpConfirmed: true);
+                result = await _viewModel.ExportEntriesAsync(items, destination, stepUpConfirmed: true);
             }
         }
 
-        if (!string.IsNullOrWhiteSpace(result.Message))
-        {
-            await ShowOperationResultDialogAsync("내보내기", result);
-        }
+        await ShowOperationResultDialogAsync("내보내기", result);
     }
-
     private async void RestoreToOrigin(object sender, RoutedEventArgs e)
     {
         _viewModel.TouchActivity();
