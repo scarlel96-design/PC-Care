@@ -19,9 +19,11 @@ if (-not $ReleaseRoot) {
 New-Item -ItemType Directory -Path $ReleaseRoot -Force | Out-Null
 
 $setupSrc = Join-Path $ProjectRoot "artifacts\installer\setup\PCCare_Setup_v$Version.exe"
-$updateSrc = Join-Path $ReleaseRoot "PCCare_Update_v$Version.spdup"
+# Always prefer the freshly generated project package. Reusing an existing file
+# from the same release folder silently published a stale update asset.
+$updateSrc = Join-Path $ProjectRoot "dist\updates\PCCare_Update_v$Version.spdup"
 if (-not (Test-Path $updateSrc)) {
-    $updateSrc = Join-Path $ProjectRoot "dist\updates\PCCare_Update_v$Version.spdup"
+    $updateSrc = Join-Path $ReleaseRoot "PCCare_Update_v$Version.spdup"
 }
 
 if (-not (Test-Path $setupSrc)) {
