@@ -60,6 +60,25 @@ public sealed class ProfessionalSecureDeleteService
             var storage = SecureDeleteStorageProfiler.Profile(path);
             var fs = DetectFileSystem(path);
             var size = File.Exists(path) ? new FileInfo(path).Length : EstimateDirectorySize(path);
+            var preflight = SecureDeletePreflight.Inspect(path, storage, fs, level, allowed, reason);
+            if (!preflight.Passed)
+            {
+                blocked.Add(new SecureDeleteTarget
+                {
+                    Path = path,
+                    Type = Directory.Exists(path) ? "folder" : "file",
+                    Size = size,
+                    StorageType = storage,
+                    FileSystem = fs,
+                    Risk = "blocked",
+                    RecommendedProtocol = "blocked-by-preflight",
+                    OverwritePasses = 0,
+                    Blocked = true,
+                    BlockReason = string.IsNullOrWhiteSpace(preflight.Summary) ? "사전 검사 실패" : preflight.Summary,
+                    Preflight = preflight
+                });
+                continue;
+            }
             var protocol = useLab && File.Exists(path)
                 ? "lab.shred-next.v1+" + SecureDeleteStorageProfiler.SelectProtocol(storage, level)
                 : SecureDeleteStorageProfiler.SelectProtocol(storage, level);
@@ -76,21 +95,23 @@ public sealed class ProfessionalSecureDeleteService
                 RecommendedProtocol = protocol,
                 OverwritePasses = passes,
                 Blocked = !allowed,
-                BlockReason = reason
+                BlockReason = reason,
+                Preflight = preflight
             };
 
             targets.Add(target);
         }
 
         var primaryStorage = targets.Count == 0 ? "Unknown" : targets[0].StorageType;
-        var maxCertified = targets.Count == 0
-            ? 0
-            : targets.Max(t => SecureDeleteStorageProfiler.EstimateCertifiedResistanceLevel(t.StorageType, level));
+        // Until VSS removal, side-channel cleanup and an elevated helper are all present,
+        // a file-level operation is honestly capped at PC-L3. Never infer PC-L5 solely
+        // from an overwrite count or storage type.
+        var maxCertified = targets.Count == 0 ? 0 : Math.Min(3,
+            targets.Max(t => SecureDeleteStorageProfiler.EstimateCertifiedResistanceLevel(t.StorageType, level)));
         var maxIntensity = targets.Count == 0
             ? 0
             : targets.Max(t => SecureDeleteStorageProfiler.GetTechnicalDeletionIntensity(t.StorageType, level));
-        var level5Certified = targets.Count > 0
-            && targets.All(t => SecureDeleteStorageProfiler.IsLevel5Certified(t.StorageType, level));
+        var level5Certified = false;
         var disclaimer = SecureDeleteStorageProfiler.BuildResistanceDisclaimer(primaryStorage, level);
         var chainSummary = targets.Count == 0
             ? ""
@@ -115,14 +136,15 @@ public sealed class ProfessionalSecureDeleteService
             RecoveryResistanceLevel = maxCertified,
             TechnicalDeletionIntensity = maxIntensity,
             Level5Certified = level5Certified,
-            CertifiedResistanceLabel = SecureDeleteStorageProfiler.BuildCertifiedResistanceLabel(primaryStorage, level),
+            CertifiedResistanceLabel = targets.Count == 0 ? "PC-L0 (대상 없음)" : "PC-L3 상한 · 파일 단위 Clear",
             ResistanceDisclaimer = disclaimer,
             ProfessionalRecoveryRisk = recoveryRisk,
             Limitations =
-                "상용급 보안 삭제 원칙: (1) 경로 안전 검증 (2) dry-run (3) 확인 문구 " +
+                "보안 삭제 원칙: (1) P01~P11 사전 검사 (2) dry-run (3) 확인 문구 " +
                 $"「{AstraCareBranding.ShredIrreversibleConfirmation}」 (4) 저장장치별 체인 " +
                 "(HDD 다중 패스 / SSD 랜덤+난독화+TRIM) (5) ADS 제거 (6) VSS 잔존 고지.\n" +
                 (useLab ? "50.3.0 ShredNext: Lab 경로 정책(UNC 차단 등) + 파일 Lab 덮어쓰기 엔진 병행.\n" : "") +
+                "현재 파일 삭제 결과는 PC-L3 상한입니다. PC-L5 인증은 VSS 처리·부수 채널 정리·FDE/Vault 게이트·검증 매트릭스가 모두 구현된 뒤에만 제공됩니다.\n" +
                 "금고 내부 데이터 삭제는 키 파기(crypto-shred)가 핵심입니다.\n" +
                 "섀도 복사본/복구 지점/클라우드 사본은 자동 삭제하지 않습니다.\n" +
                 (string.IsNullOrWhiteSpace(disclaimer) ? AstraCareBranding.ShredSsdLimitation : disclaimer),
@@ -130,9 +152,12 @@ public sealed class ProfessionalSecureDeleteService
                 12,
                 targets.Sum(t =>
                     t.StorageType is "SSD" or "NVMe"
-                        ? SecureDeleteStorageProfiler.GetSsdObfuscationPasses(level) * 2 + 8
+                        ? SecureDeleteStorageProfiler.GetSsdCryptoErasePasses(level) * 2 + 8
                         : Math.Max(1, t.OverwritePasses) * 3 + 6))).ToString(@"mm\:ss"),
-            ChainSummary = chainSummary
+            ChainSummary = chainSummary,
+            RequestedPcLevel = level == SecureDeleteSecurityLevel.Standard ? "PC-L2" : level == SecureDeleteSecurityLevel.Professional ? "PC-L3" : "PC-L4 요청",
+            MaximumAchievablePcLevel = "PC-L3",
+            VerifyMatrix = targets.SelectMany(target => target.Preflight?.Checks ?? Array.Empty<SecureDeletePreflightCheck>()).ToArray()
         };
     }
 
@@ -184,7 +209,12 @@ public sealed class ProfessionalSecureDeleteService
 
             try
             {
-                var contentHash = ComputeTargetHash(target.Path);
+                if (!File.Exists(target.Path) && !Directory.Exists(target.Path))
+                {
+                    throw new FileNotFoundException("Dry Run 이후 대상이 사라졌습니다.", target.Path);
+                }
+
+                var contentHash = SecureDeleteAuditChain.ProtectContentFingerprint(ComputeTargetHash(target.Path), hmacKey);
                 var pathHash = HashPath(target.Path);
                 var protocol = SecureDeleteStorageProfiler.SelectProtocol(target.StorageType, level);
 
@@ -216,14 +246,18 @@ public sealed class ProfessionalSecureDeleteService
                             cancellationToken);
                     }
 
-                    deleted++;
-                }
+                    }
                 else if (Directory.Exists(target.Path))
                 {
                     await SecureDeleteDirectoryAsync(target.Path, level, cancellationToken);
-                    deleted++;
                 }
 
+                if (File.Exists(target.Path) || Directory.Exists(target.Path))
+                {
+                    throw new IOException("삭제 후 경로 검증에 실패했습니다.");
+                }
+
+                deleted++;
                 var root = Path.GetPathRoot(Path.GetFullPath(target.Path));
                 if (!string.IsNullOrWhiteSpace(root) && scannedVolumes.Add(root))
                 {

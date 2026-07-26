@@ -27,6 +27,10 @@ public sealed class SecureVaultService : IDisposable
     private SecureVaultAuditVerificationResult? _lastAuditVerification;
     private SecureVaultAclStatus? _aclStatus;
     private readonly SecureVaultLabBackend _lab = new();
+    private readonly object _sessionGate = new();
+    private Timer? _idleLockTimer;
+    private DateTimeOffset _lastSensitiveActivity = DateTimeOffset.MinValue;
+    private static readonly TimeSpan DefaultIdleLock = TimeSpan.FromMinutes(5);
 
     /// <summary>True when on-disk vault is SecurityLab v4 (not legacy spd-vault-v3).</summary>
     public bool IsLabVaultFormat => SecureVaultLabBackend.ExistsOnDisk() && !SecureVaultPaths.Exists();
@@ -265,8 +269,6 @@ public sealed class SecureVaultService : IDisposable
                 Lock();
                 return Fail(_lastAuditVerification.Message);
             }
-
-            ReapplyMissingOriginSeals();
             AppendAudit("vault-unlocked", "금고 잠금 해제", metadataKey, macKey);
             SecureVaultRateLimiter.ResetOnSuccess();
             var rootCount = Entries.Count(e => e.Kind is SecureVaultEntryKind.FolderRoot or SecureVaultEntryKind.StandaloneFile or SecureVaultEntryKind.LegacyFolderFile);
@@ -352,8 +354,6 @@ public sealed class SecureVaultService : IDisposable
                 Lock();
                 return Fail(_lastAuditVerification.Message);
             }
-
-            ReapplyMissingOriginSeals();
             AppendAudit("vault-recovery-unlock", "복구 키 잠금 해제", _metadataKey, _macKey);
             SecureVaultRateLimiter.ResetOnSuccess();
             return new SecureVaultOperationResult
@@ -575,6 +575,13 @@ public sealed class SecureVaultService : IDisposable
 
     public void Lock()
     {
+        lock (_sessionGate)
+        {
+            _idleLockTimer?.Dispose();
+            _idleLockTimer = null;
+            _lastSensitiveActivity = DateTimeOffset.MinValue;
+        }
+
         _lab.Lock();
         SecureVaultCrypto.Zero(_vaultKey);
         SecureVaultCrypto.Zero(_metadataKey);
@@ -586,7 +593,6 @@ public sealed class SecureVaultService : IDisposable
         _envelopeSalt = null;
         _manifest = null;
     }
-
     public async Task<SecureVaultOperationResult> AddFileAsync(
         string sourcePath,
         bool sealOrigin = true,
@@ -632,17 +638,23 @@ public sealed class SecureVaultService : IDisposable
 
         if (sealOrigin)
         {
-            ReportProgress(progress, SecureVaultProgressPhase.Sealing, 80, "원본 잠금", "원본 파일 위치에 잠금 표시를 적용합니다.", label, totalCount: 1);
-            var entryId = FindLastAddedEntryId();
-            SecureVaultOriginSealService.SecureDeleteOriginalFile(sourcePath);
-            SecureVaultOriginSealService.SealFile(sourcePath, entryId);
+            ReportProgress(progress, SecureVaultProgressPhase.Sealing, 80, "원본 보안 삭제", "암호화·커밋 검증을 마친 뒤 원본을 보안 삭제합니다.", label, totalCount: 1);
+            try
+            {
+                SecureVaultOriginSealService.SecureDeleteOriginalFile(sourcePath);
+            }
+            catch (Exception ex)
+            {
+                AppendAudit("import-wipe-failed", $"원본 잔존 · {HashPath(label)}", _metadataKey!, _macKey!);
+                return Fail($"금고 암호화본은 생성됐지만 원본 보안 삭제에 실패했습니다. 원본은 남아 있을 수 있습니다.\n{ex.Message}");
+            }
         }
 
         ReportProgress(
             progress,
             SecureVaultProgressPhase.Completed,
             100,
-            sealOrigin ? "보관 · 잠금 완료" : "보관 완료",
+            sealOrigin ? "보관 · 원본 보안 삭제 완료" : "보관 완료",
             $"「{label}」을(를) 금고에 넣었습니다.",
             label,
             processedCount: 1,
@@ -760,7 +772,6 @@ public sealed class SecureVaultService : IDisposable
             manifestSaved = true;
 
             var deleteWarnings = new List<string>();
-            string? sealWarning = null;
             if (sealOrigin)
             {
                 ReportProgress(
@@ -768,7 +779,7 @@ public sealed class SecureVaultService : IDisposable
                     SecureVaultProgressPhase.Sealing,
                     82,
                     "원본 정리",
-                    "원본 파일을 제거하고 잠금 표시를 적용합니다.",
+                    "암호화·커밋 검증을 마친 뒤 원본 파일을 보안 삭제합니다.",
                     rootName,
                     processedCount: added,
                     totalCount: files.Length);
@@ -785,11 +796,26 @@ public sealed class SecureVaultService : IDisposable
                     }
                 }
 
-                sealWarning = SecureVaultOriginSealService.TrySealFolderTree(
-                    folderPath,
-                    relativePaths,
-                    bundleId,
-                    rootEntryId);
+                try
+                {
+                    foreach (var directory in Directory.EnumerateDirectories(folderPath, "*", SearchOption.AllDirectories)
+                                 .OrderByDescending(path => path.Length))
+                    {
+                        Directory.Delete(directory, false);
+                    }
+
+                    Directory.Delete(folderPath, false);
+                }
+                catch (Exception ex)
+                {
+                    deleteWarnings.Add($"폴더 정리: {ex.Message}");
+                }
+
+                if (deleteWarnings.Count > 0 || Directory.Exists(folderPath))
+                {
+                    AppendAudit("import-wipe-failed", $"원본 폴더 잔존 · {HashPath(rootName)}", _metadataKey!, _macKey!);
+                    return Fail($"금고 암호화본은 생성됐지만 원본 폴더 보안 삭제에 실패했습니다. 원본이 남아 있을 수 있습니다.\n{string.Join(Environment.NewLine, deleteWarnings.Take(3))}");
+                }
             }
 
             AppendAudit("folder-added", $"폴더 추가 · {HashPath(rootName)}", _metadataKey!, _macKey!);
@@ -797,7 +823,7 @@ public sealed class SecureVaultService : IDisposable
                 progress,
                 SecureVaultProgressPhase.Completed,
                 100,
-                sealOrigin ? "보관 · 잠금 완료" : "보관 완료",
+                sealOrigin ? "보관 · 원본 보안 삭제 완료" : "보관 완료",
                 $"「{rootName}」 {added}개 파일을 금고에 넣었습니다.",
                 processedCount: added,
                 totalCount: files.Length);
@@ -810,10 +836,6 @@ public sealed class SecureVaultService : IDisposable
                 message += $"\n\n원본 삭제 경고 {deleteWarnings.Count}건 (금고에는 보관됨):\n{string.Join(Environment.NewLine, deleteWarnings.Take(3))}";
             }
 
-            if (!string.IsNullOrWhiteSpace(sealWarning))
-            {
-                message += $"\n\n잠금 표시 경고 (보관은 완료됨):\n{sealWarning}";
-            }
 
             return new SecureVaultOperationResult
             {
@@ -1000,7 +1022,7 @@ public sealed class SecureVaultService : IDisposable
 
         try
         {
-            ReportProgress(progress, SecureVaultProgressPhase.Unsealing, 15, "잠금 해제", "원본 위치의 잠금 표시를 해제합니다.", Path.GetFileName(fileOrigin), totalCount: 1);
+            ReportProgress(progress, SecureVaultProgressPhase.Unsealing, 15, "잠금 해제", "이전 버전의 잠금 표시가 있으면 정리합니다.", Path.GetFileName(fileOrigin), totalCount: 1);
             SecureVaultOriginSealService.UnsealFileStub(fileOrigin);
             SecureVaultOriginSealService.UnsealFolder(targetDir);
             ReportProgress(progress, SecureVaultProgressPhase.Restoring, 40, "파일 복원", "암호화된 파일을 원본 위치에 되돌립니다.", Path.GetFileName(fileOrigin), totalCount: 1);
@@ -2408,8 +2430,31 @@ public sealed class SecureVaultService : IDisposable
         {
             throw new InvalidOperationException("금고가 잠겨 있습니다.");
         }
+
+        TouchSensitiveSession();
     }
 
+    private void TouchSensitiveSession()
+    {
+        lock (_sessionGate)
+        {
+            _lastSensitiveActivity = DateTimeOffset.UtcNow;
+            _idleLockTimer ??= new Timer(_ => EnforceIdleLock(), null, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15));
+        }
+    }
+
+    private void EnforceIdleLock()
+    {
+        lock (_sessionGate)
+        {
+            if (_lastSensitiveActivity == DateTimeOffset.MinValue || DateTimeOffset.UtcNow - _lastSensitiveActivity < DefaultIdleLock)
+            {
+                return;
+            }
+        }
+
+        Lock();
+    }
     private static void WriteMarker(VaultKdfParameters kdf)
     {
         var marker = new
@@ -2765,22 +2810,9 @@ public sealed class SecureVaultService : IDisposable
 
     private void ReapplyMissingOriginSeals()
     {
-        foreach (var entry in _manifest!.Entries.Where(e => e.EntryKind == "folderRoot" && e.IsSealedAtOrigin))
-        {
-            var origin = DecryptOriginalPath(entry);
-            if (string.IsNullOrWhiteSpace(origin) || !Directory.Exists(origin))
-            {
-                continue;
-            }
-
-            var markerPath = Path.Combine(origin, ".spd_vault_sealed");
-            if (!File.Exists(markerPath))
-            {
-                SecureVaultOriginSealService.EnsureSealedFolderShell(origin, entry.BundleId!, entry.EntryId);
-            }
-        }
+        // Kept only for binary compatibility with old manifests. Origin-path seals are
+        // deliberately not recreated: they leak vault existence and violate the current policy.
     }
-
     private bool RepairOrphanBundleRoots(SecureVaultManifestDocument manifest, byte[] metadataKey)
     {
         var rootBundleIds = manifest.Entries

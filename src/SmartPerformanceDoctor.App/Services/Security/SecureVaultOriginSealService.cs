@@ -16,19 +16,14 @@ internal static class SecureVaultOriginSealService
     private const uint ShcnfFlush = 0x1000;
     private const uint ShcnfIdlist = 0x0000;
 
+    // v51.0.4+: Do not create origin markers, readme files, icon overlays or lock stubs.
+    // The vault portal is the only state surface. These methods only remove markers made
+    // by older versions so imports cannot leave existence metadata at the source path.
     public static void SealFolder(string folderPath, string bundleId, string rootEntryId) =>
-        SealFolder(folderPath, bundleId, rootEntryId, warnings: null);
+        UnsealFolder(folderPath);
 
-    public static void SealFolder(string folderPath, string bundleId, string rootEntryId, IList<string>? warnings)
-    {
-        Directory.CreateDirectory(folderPath);
-        RunSealStep(() => SecureVaultSealIconService.CopyIconBesideDesktopIni(folderPath), "아이콘", folderPath, warnings);
-        RunSealStep(() => WriteFolderDesktopIni(folderPath), "desktop.ini", folderPath, warnings);
-        RunSealStep(() => WriteMarker(folderPath, bundleId, rootEntryId, isFolder: true), "잠금 표시", folderPath, warnings);
-        RunSealStep(() => WriteReadme(folderPath), "안내 파일", folderPath, warnings);
-        RunSealStep(() => ApplyFolderShellAttributes(folderPath), "폴더 속성", folderPath, warnings);
-        NotifyShell(folderPath);
-    }
+    public static void SealFolder(string folderPath, string bundleId, string rootEntryId, IList<string>? warnings) =>
+        UnsealFolder(folderPath);
 
     public static string? TrySealFolderTree(
         string rootFolder,
@@ -36,36 +31,12 @@ internal static class SecureVaultOriginSealService
         string bundleId,
         string rootEntryId)
     {
-        var warnings = new List<string>();
-        try
-        {
-            SealIntermediateDirectories(rootFolder, relativeFilePaths, warnings);
-            SealFolder(rootFolder, bundleId, rootEntryId, warnings);
-        }
-        catch (Exception ex)
-        {
-            warnings.Add(ex.Message);
-        }
-
-        return warnings.Count == 0 ? null : string.Join(Environment.NewLine, warnings);
+        UnsealFolderTree(rootFolder, relativeFilePaths);
+        return null;
     }
 
-    public static void SealFile(string filePath, string entryId)
-    {
-        var directory = Path.GetDirectoryName(filePath);
-        if (string.IsNullOrWhiteSpace(directory))
-        {
-            return;
-        }
-
-        var fileName = Path.GetFileName(filePath);
-        var stubPath = Path.Combine(directory, fileName + FileStubSuffix);
-        var readme = BuildFileReadme(fileName, entryId);
-        File.WriteAllText(stubPath, readme, Encoding.UTF8);
-        WriteMarker(directory, entryId, entryId, isFolder: false, stubPath);
-        NotifyShell(directory);
-    }
-
+    public static void SealFile(string filePath, string entryId) =>
+        UnsealFileStub(filePath);
     public static void UnsealFolder(string folderPath, bool notifyShell = true)
     {
         if (!Directory.Exists(folderPath))
@@ -151,103 +122,44 @@ internal static class SecureVaultOriginSealService
         NotifyShell(directory);
     }
 
+    /// <summary>
+    /// Removes the original only through the shared secure-delete engine. A failed wipe
+    /// is surfaced to the import transaction; it must never fall back to recycle-bin or
+    /// a plain File.Delete path and still be reported as a sealed import.
+    /// </summary>
     public static void SecureDeleteOriginalFile(string filePath)
     {
         if (!File.Exists(filePath))
         {
-            return;
+            throw new FileNotFoundException("원본 파일을 찾을 수 없습니다.", filePath);
         }
 
-        try
-        {
-            // Reuse forensic chain (storage-aware) so vault seal is not a weak single overwrite.
-            var storage = Commercial.SecureDeleteStorageProfiler.Profile(filePath);
-            Commercial.ForensicSecureDeleteEngine
-                .SecureDeleteFileAsync(
-                    filePath,
-                    storage,
-                    Commercial.SecureDeleteSecurityLevel.Standard,
-                    CancellationToken.None)
-                .GetAwaiter()
-                .GetResult();
-        }
-        catch
-        {
-            // Fallback: best-effort random overwrite + delete if forensic path fails.
-            try
-            {
-                var length = new FileInfo(filePath).Length;
-                if (length > 0)
-                {
-                    using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Write, FileShare.None);
-                    var buffer = new byte[Math.Min(65536, (int)Math.Min(int.MaxValue, length))];
-                    long remaining = length;
-                    fs.Position = 0;
-                    while (remaining > 0)
-                    {
-                        var chunk = (int)Math.Min(buffer.Length, remaining);
-                        RandomNumberGenerator.Fill(buffer.AsSpan(0, chunk));
-                        fs.Write(buffer, 0, chunk);
-                        remaining -= chunk;
-                    }
+        var storage = Commercial.SecureDeleteStorageProfiler.Profile(filePath);
+        Commercial.ForensicSecureDeleteEngine
+            .SecureDeleteFileAsync(
+                filePath,
+                storage,
+                Commercial.SecureDeleteSecurityLevel.Professional,
+                CancellationToken.None)
+            .GetAwaiter()
+            .GetResult();
 
-                    fs.Flush(true);
-                }
-
-                File.Delete(filePath);
-            }
-            catch
-            {
-                try { File.Delete(filePath); } catch { /* best effort */ }
-            }
+        if (File.Exists(filePath))
+        {
+            throw new IOException("원본 보안 삭제 후 경로 검증에 실패했습니다.");
         }
     }
-
     public static void SealIntermediateDirectories(string rootFolder, IEnumerable<string> relativeFilePaths) =>
-        SealIntermediateDirectories(rootFolder, relativeFilePaths, warnings: null);
+        UnsealFolderTree(rootFolder, relativeFilePaths);
 
     public static void SealIntermediateDirectories(
         string rootFolder,
         IEnumerable<string> relativeFilePaths,
-        IList<string>? warnings)
-    {
-        var sealedDirs = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { rootFolder };
-        foreach (var relative in relativeFilePaths)
-        {
-            var normalized = relative.Replace('\\', '/');
-            var segments = normalized.Split('/', StringSplitOptions.RemoveEmptyEntries);
-            if (segments.Length <= 1)
-            {
-                continue;
-            }
+        IList<string>? warnings) =>
+        UnsealFolderTree(rootFolder, relativeFilePaths);
 
-            var current = rootFolder;
-            for (var i = 0; i < segments.Length - 1; i++)
-            {
-                current = Path.Combine(current, segments[i]);
-                if (sealedDirs.Add(current))
-                {
-                    Directory.CreateDirectory(current);
-                    RunSealStep(() => SecureVaultSealIconService.CopyIconBesideDesktopIni(current), "아이콘", current, warnings);
-                    RunSealStep(() => WriteFolderDesktopIni(current), "desktop.ini", current, warnings);
-                    RunSealStep(() => ApplyFolderShellAttributes(current), "폴더 속성", current, warnings);
-                }
-            }
-        }
-
-        NotifyShell(rootFolder);
-    }
-
-    public static void EnsureSealedFolderShell(string folderPath, string bundleId, string rootEntryId)
-    {
-        if (!Directory.Exists(folderPath))
-        {
-            return;
-        }
-
-        SealFolder(folderPath, bundleId, rootEntryId);
-    }
-
+    public static void EnsureSealedFolderShell(string folderPath, string bundleId, string rootEntryId) =>
+        UnsealFolder(folderPath);
     private static void WriteFolderDesktopIni(string folderPath)
     {
         var desktopIni = Path.Combine(folderPath, "desktop.ini");

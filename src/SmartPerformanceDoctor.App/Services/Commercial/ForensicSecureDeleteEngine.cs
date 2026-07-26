@@ -258,9 +258,32 @@ internal static class ForensicSecureDeleteEngine
             }
 
             await fs.FlushAsync(cancellationToken);
-            if (useWriteThrough)
+            fs.Flush(true);
+            if (useWriteThrough) FlushFileBuffers(fs.SafeFileHandle);
+        }
+
+        await VerifyOverwriteSamplesAsync(path, len, buffer, cancellationToken);
+    }
+
+    private static async Task VerifyOverwriteSamplesAsync(string path, long length, byte[] expected, CancellationToken cancellationToken)
+    {
+        if (length <= 0 || expected.Length == 0) return;
+        var offsets = new[] { 0L, Math.Max(0, length / 2), Math.Max(0, length - Math.Min(512, length)) }
+            .Distinct()
+            .ToArray();
+        await using var input = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.RandomAccess);
+        var actual = new byte[512];
+        foreach (var offset in offsets)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            input.Position = offset;
+            var wanted = (int)Math.Min(actual.Length, length - offset);
+            var read = await input.ReadAsync(actual.AsMemory(0, wanted), cancellationToken);
+            if (read != wanted) throw new IOException("덮어쓰기 사후 검증을 완료하지 못했습니다.");
+            for (var index = 0; index < read; index++)
             {
-                FlushFileBuffers(fs.SafeFileHandle);
+                if (actual[index] != expected[(int)((offset + index) % expected.Length)])
+                    throw new IOException("덮어쓰기 사후 검증이 일치하지 않습니다.");
             }
         }
     }
@@ -557,17 +580,20 @@ internal static class ForensicSecureDeleteEngine
             return;
         }
 
-        var randomName = Path.Combine(directory, Guid.NewGuid().ToString("N"));
+        var firstRandomName = Path.Combine(directory, ".pcc-shred-" + Guid.NewGuid().ToString("N"));
+        var secondRandomName = Path.Combine(directory, ".pcc-shred-" + Guid.NewGuid().ToString("N"));
         if (File.Exists(path))
         {
-            File.Move(path, randomName);
-            await using (var fs = new FileStream(randomName, FileMode.Open, FileAccess.Write, FileShare.None))
+            File.Move(path, firstRandomName);
+            File.Move(firstRandomName, secondRandomName);
+            await using (var fs = new FileStream(secondRandomName, FileMode.Open, FileAccess.Write, FileShare.None))
             {
                 fs.SetLength(0);
                 await fs.FlushAsync(cancellationToken);
+                fs.Flush(true);
             }
 
-            File.Delete(randomName);
+            File.Delete(secondRandomName);
         }
     }
 

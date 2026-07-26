@@ -45,7 +45,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
         _vault?.Dispose();
         _vault = new LabVaultService(Root, new LabSessionPolicy
         {
-            IdleLock = TimeSpan.FromMinutes(15),
+            IdleLock = TimeSpan.FromMinutes(5),
             MaxSession = TimeSpan.FromHours(4)
         });
         var created = _vault.Create(password, LabKdfProfile.Strong);

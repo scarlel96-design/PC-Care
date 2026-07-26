@@ -7,7 +7,7 @@
         <StackPanel Padding="{StaticResource PccPagePadding}" MaxWidth="960" Spacing="18">
             <StackPanel Spacing="5">
                 <TextBlock Text="보안 삭제" Style="{StaticResource MacPageTitleStyle}"/>
-                <TextBlock Text="대상을 미리 검증한 다음 복구하기 어려운 방식으로 삭제합니다."
+                <TextBlock Text="P01~P11 사전 검사를 통과한 대상만 삭제합니다. 파일 단위 삭제는 PC-L3 상한이며 장치 Purge와 다릅니다."
                            Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
             </StackPanel>
 
@@ -39,7 +39,7 @@
                               AutomationProperties.Name="보안 삭제 등급">
                         <ComboBoxItem Content="표준 — HDD 1패스" Tag="Standard"/>
                         <ComboBoxItem Content="전문 — HDD 3패스 (권장)" Tag="Professional"/>
-                        <ComboBoxItem Content="최대 — HDD 7패스" Tag="Maximum"/>
+                        <ComboBoxItem Content="강화 포렌식 요청 — 관리자 권한 필요" Tag="Maximum"/>
                     </ComboBox>
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <Button x:Name="AddFilesButton" Content="파일 추가" Style="{StaticResource PremiumPrimaryButtonStyle}"

@@ -476,7 +476,7 @@ public sealed class SecurityAttackSimulationTests : IDisposable
         File.WriteAllText(target, "chain-preview");
 
         var service = new ProfessionalSecureDeleteService();
-        var plan = service.PlanDryRun([target], SecureDeleteSecurityLevel.Maximum);
+        var plan = service.PlanDryRun([target], SecureDeleteSecurityLevel.Professional);
 
         Assert.Single(plan.Targets);
         Assert.Contains("ADS", plan.ChainSummary, StringComparison.OrdinalIgnoreCase);
@@ -502,7 +502,7 @@ public sealed class SecurityAttackSimulationTests : IDisposable
 
         Assert.False(File.Exists(Path.Combine(folder, "root.txt")));
         Assert.False(File.Exists(Path.Combine(nested, "child.txt")));
-        Assert.True(File.Exists(Path.Combine(folder, ".spd_vault_sealed")));
+        Assert.False(File.Exists(Path.Combine(folder, ".spd_vault_sealed")));
 
         var root = vault.Entries.First(e => e.Kind == SecureVaultEntryKind.FolderRoot);
         var restored = await vault.RestoreToOriginAsync(root.EntryId);

@@ -42,12 +42,12 @@ public static class SecureDeleteStorageProfiler
 
     public static string SelectProtocol(string storage, SecureDeleteSecurityLevel level) => (storage, level) switch
     {
-        ("HDD" or "USB-NTFS", SecureDeleteSecurityLevel.Maximum) => "hdd.seven_pass.dod_ext.v2",
-        ("HDD" or "USB-NTFS", SecureDeleteSecurityLevel.Professional) => "hdd.three_pass.dod.v2",
-        ("HDD" or "USB-NTFS", _) => "hdd.single_pass.random.v2",
-        ("SSD" or "NVMe", SecureDeleteSecurityLevel.Maximum) => "ssd.astra_shred_obfuscate_10x.random_4x.trim.retrim.zero.v5",
-        ("SSD" or "NVMe", SecureDeleteSecurityLevel.Professional) => "ssd.astra_shred_obfuscate_7x.random_2x.trim.retrim.zero.v5",
-        ("SSD" or "NVMe", _) => "ssd.astra_shred_obfuscate_4x.trim.retrim.v5",
+        ("HDD" or "USB-NTFS", SecureDeleteSecurityLevel.Maximum) => "hdd.csprng_2x.pattern_1x.verify.v3",
+        ("HDD" or "USB-NTFS", SecureDeleteSecurityLevel.Professional) => "hdd.csprng_1x.pattern_1x.verify.v3",
+        ("HDD" or "USB-NTFS", _) => "hdd.csprng_1x.verify.v3",
+        ("SSD" or "NVMe", SecureDeleteSecurityLevel.Maximum) => "ssd.csprng_3x.verify.trim.retrim.v6",
+        ("SSD" or "NVMe", SecureDeleteSecurityLevel.Professional) => "ssd.csprng_2x.verify.trim.retrim.v6",
+        ("SSD" or "NVMe", _) => "ssd.csprng_1x.verify.trim.v6",
         _ => level == SecureDeleteSecurityLevel.Standard
             ? "standard.secure_delete.v2"
             : "storage.adaptive.best_effort.v2"
@@ -108,10 +108,10 @@ public static class SecureDeleteStorageProfiler
         return level switch
         {
             SecureDeleteSecurityLevel.Maximum =>
-                "SSD/NVMe 파일 단위: 최대 강도 삭제 체인(난독화·랜덤 덮어쓰기·TRIM·볼륨 retrim)을 적용합니다. " +
+                "SSD/NVMe 파일 단위: CSPRNG 덮어쓰기·사후 검증·TRIM·볼륨 retrim을 적용합니다. " +
                 "다만 저장장치 물리·섀도 복사본·클라우드 동기화 등으로 잔존 가능성이 있어 공인 복구 저항 등급은 Level 5가 아닙니다.",
             SecureDeleteSecurityLevel.Professional =>
-                "SSD/NVMe 파일 단위: 전문가급 삭제 체인을 적용하나, 공인 복구 저항 등급은 storage-dependent Level 3 이하로 표시됩니다.",
+                "SSD/NVMe 파일 단위: CSPRNG 덮어쓰기와 사후 검증을 적용하나, 물리 잔존 가능성 때문에 PC-L3 상한으로 표시됩니다.",
             _ =>
                 "SSD/NVMe: TRIM·retrim 중심 삭제. 공인 등급은 storage-dependent입니다."
         };
@@ -128,16 +128,11 @@ public static class SecureDeleteStorageProfiler
         _ => 0
     };
 
-    public static int GetSsdObfuscationPasses(SecureDeleteSecurityLevel level) => level switch
-    {
-        SecureDeleteSecurityLevel.Maximum => 10,
-        SecureDeleteSecurityLevel.Professional => 7,
-        _ => 4
-    };
+    public static int GetSsdObfuscationPasses(SecureDeleteSecurityLevel level) => 0;
 
     public static int GetSsdCryptoErasePasses(SecureDeleteSecurityLevel level) => level switch
     {
-        SecureDeleteSecurityLevel.Maximum => 4,
+        SecureDeleteSecurityLevel.Maximum => 3,
         SecureDeleteSecurityLevel.Professional => 2,
         _ => 1
     };

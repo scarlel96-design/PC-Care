@@ -531,7 +531,7 @@ public sealed partial class SecureVaultCenterPage : Page
 
         var sealOrigin = SealOriginCheckBox.IsChecked == true;
         var operationResult = await RunVaultOperationWithProgressAsync(
-            sealOrigin ? "파일 암호화 보관 · 원본 잠금" : "파일 암호화 보관",
+            sealOrigin ? "파일 암호화 보관 · 원본 보안 삭제" : "파일 암호화 보관",
             progress => _viewModel.AddFileAsync(path, progress, sealOrigin));
         await ShowOperationResultDialogAsync(operationResult.Success ? "보관 완료" : "보관 실패", operationResult);
         RefreshEntryList();
@@ -586,7 +586,7 @@ public sealed partial class SecureVaultCenterPage : Page
 
         var sealOrigin = SealOriginCheckBox.IsChecked == true;
         var operationResult = await RunVaultOperationWithProgressAsync(
-            sealOrigin ? "폴더 암호화 보관 · 원본 잠금" : "폴더 암호화 보관",
+            sealOrigin ? "폴더 암호화 보관 · 원본 보안 삭제" : "폴더 암호화 보관",
             progress => _viewModel.AddFolderAsync(path, progress, sealOrigin));
         await ShowOperationResultDialogAsync(operationResult.Success ? "보관 완료" : "보관 실패", operationResult);
         RefreshEntryList();

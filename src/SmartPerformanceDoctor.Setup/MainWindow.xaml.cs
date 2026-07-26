@@ -230,13 +230,13 @@ public partial class MainWindow : Window
     private void BuildWelcome()
     {
         AddTitle("PC 케어 프로 설치");
-        AddBody("시스템 진단·복구·보안 기능을 원하는 구성만 선택해 설치할 수 있습니다.");
+        AddBody("시스템 진단·복구·정리 기능은 기본으로 설치합니다. 데이터 보관·영구 삭제 기능만 선택할 수 있습니다.");
 
         if (_existingManifest is not null && _launchMode == SetupLaunchMode.Install && !_installUpgradeFlow)
         {
             _welcomeActionPending = true;
             AddBody("기존 설치가 감지되었습니다. 원하는 작업을 선택하세요.");
-            AddBody("「새 설치 / 업그레이드」를 선택하면 권장·전체·사용자 지정·최소 설치 중 원하는 유형을 고를 수 있습니다.");
+            AddBody("「새 설치 / 업그레이드」를 선택하면 기본 설치 또는 보안 기능 선택으로 진행할 수 있습니다.");
             var actions = new StackPanel { Margin = new Thickness(0, 12, 0, 0) };
             actions.Children.Add(MakeActionButton("새 설치 / 업그레이드", BeginInstallUpgrade));
             actions.Children.Add(MakeActionButton("기능 변경 (Modify)", () =>
@@ -268,12 +268,10 @@ public partial class MainWindow : Window
         _welcomeActionPending = false;
         AddBody(_installUpgradeFlow
             ? "새 설치 / 업그레이드 유형을 선택하세요. 다음 단계에서 기능을 개별 조정할 수 있습니다."
-            : "설치 유형을 선택하세요.");
+            : "기본 설치 또는 보안 기능 선택을 고르세요.");
         var panel = new StackPanel { Margin = new Thickness(0, 12, 0, 0) };
-        panel.Children.Add(MakeRadio("권장 설치", InstallMode.Recommended, _mode == InstallMode.Recommended));
-        panel.Children.Add(MakeRadio("전체 설치", InstallMode.Full, _mode == InstallMode.Full));
-        panel.Children.Add(MakeRadio("사용자 지정 설치", InstallMode.Custom, _mode == InstallMode.Custom));
-        panel.Children.Add(MakeRadio("최소 설치", InstallMode.Minimal, _mode == InstallMode.Minimal));
+        panel.Children.Add(MakeRadio("기본 설치 — 점검·복구·정리 기능 자동 설치", InstallMode.Recommended, _mode == InstallMode.Recommended));
+        panel.Children.Add(MakeRadio("보안 기능 선택 — 보안 금고·보안 삭제만 선택", InstallMode.Custom, _mode == InstallMode.Custom));
         ContentPanel.Children.Add(panel);
     }
 
@@ -344,37 +342,27 @@ public partial class MainWindow : Window
     }
     private void BuildFeatures()
     {
-        AddTitle("기능 선택");
+        AddTitle("보안 기능 선택");
         _featureChecks.Clear();
-        if (_mode != InstallMode.Custom)
-        {
-            AddBody($"「{GetInstallModeLabel(_mode)}」 프리셋이 적용됩니다. 사용자 지정 설치를 선택하거나 아래 버튼으로 전체 선택·해제하면 개별 기능을 변경할 수 있습니다.");
-        }
+        AddBody("시스템 점검·복구·정리·업데이트·규칙 데이터 등 일반 기능은 모두 기본 설치됩니다. " +
+                "민감 데이터를 보관하거나 되돌릴 수 없는 작업을 수행하는 두 기능만 선택하세요.");
 
-        var bulkActions = new StackPanel
-        {
-            Orientation = Orientation.Horizontal,
-            Margin = new Thickness(0, 12, 0, 0)
-        };
-        bulkActions.Children.Add(MakeFeatureBulkButton("전체 선택", SelectAllOptionalFeatures));
-        bulkActions.Children.Add(MakeFeatureBulkButton("전체 해제", DeselectAllOptionalFeatures));
-        ContentPanel.Children.Add(bulkActions);
-
-        foreach (var feature in FeatureCatalog.All)
+        foreach (var feature in FeatureCatalog.All.Where(FeatureCatalog.IsCoreSecurityFeature))
         {
             var enabled = IsFeatureEnabledByMode(feature);
             var check = new CheckBox
             {
                 Content = $"{feature.DisplayName} — {feature.Description}",
                 IsChecked = enabled,
-                IsEnabled = !feature.IsRequired && _mode == InstallMode.Custom,
+                IsEnabled = true,
                 Margin = new Thickness(0, 8, 0, 0)
             };
             _featureChecks[feature.Id] = check;
             ContentPanel.Children.Add(check);
         }
-    }
 
+        AddBody("나머지 기능은 기본 탑재됩니다. 설치 후에도 설정에서 보안 기능을 추가·제거할 수 있습니다.");
+    }
     private Button MakeFeatureBulkButton(string label, Action onClick)
     {
         var button = new Button
@@ -427,7 +415,7 @@ public partial class MainWindow : Window
         foreach (var (id, check) in _featureChecks)
         {
             var feature = FeatureCatalog.All.First(f => f.Id == id);
-            check.IsEnabled = !feature.IsRequired;
+            check.IsEnabled = FeatureCatalog.IsCoreSecurityFeature(feature);
         }
     }
 
@@ -443,21 +431,25 @@ public partial class MainWindow : Window
             return true;
         }
 
-        return _mode switch
+        if (FeatureCatalog.IsBaseInstalled(feature))
         {
-            InstallMode.Full => true,
-            InstallMode.Recommended => feature.IncludedInRecommended,
-            InstallMode.Minimal => feature.IncludedInMinimal,
-            _ => false
-        };
+            return true;
+        }
+
+        if (_existingManifest?.IsEnabled(feature.Id) == true && !_installUpgradeFlow)
+        {
+            return true;
+        }
+
+        return _mode == InstallMode.Full;
     }
 
     private static string GetInstallModeLabel(InstallMode mode) => mode switch
     {
-        InstallMode.Recommended => "권장 설치",
-        InstallMode.Full => "전체 설치",
-        InstallMode.Custom => "사용자 지정 설치",
-        InstallMode.Minimal => "최소 설치",
+        InstallMode.Recommended => "기본 설치",
+        InstallMode.Custom => "보안 기능 선택",
+        InstallMode.Full => "전체 설치 (호환)",
+        InstallMode.Minimal => "최소 설치 (호환)",
         _ => mode.ToString()
     };
 
@@ -864,13 +856,17 @@ public partial class MainWindow : Window
             return true;
         }
 
-        return _mode switch
+        if (FeatureCatalog.IsBaseInstalled(feature))
         {
-            InstallMode.Full => true,
-            InstallMode.Recommended => feature.IncludedInRecommended,
-            InstallMode.Minimal => feature.IncludedInMinimal,
-            _ => false
-        };
+            return true;
+        }
+
+        if (_existingManifest?.IsEnabled(feature.Id) == true && !_installUpgradeFlow)
+        {
+            return true;
+        }
+
+        return _mode == InstallMode.Full;
     }
 
     private bool NeedsSystemConsent() =>

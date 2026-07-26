@@ -47,6 +47,26 @@ public sealed class SecureDeleteTarget
     public int OverwritePasses { get; init; }
     public bool Blocked { get; init; }
     public string BlockReason { get; init; } = "";
+    public SecureDeletePreflightReport? Preflight { get; init; }
+}
+public sealed class SecureDeletePreflightCheck
+{
+    public string Code { get; init; } = "";
+    public string Status { get; init; } = "pass";
+    public string Detail { get; init; } = "";
+    public bool BlocksExecution => string.Equals(Status, "fail", StringComparison.OrdinalIgnoreCase);
+}
+
+public sealed class SecureDeletePreflightReport
+{
+    public IReadOnlyList<SecureDeletePreflightCheck> Checks { get; init; } = Array.Empty<SecureDeletePreflightCheck>();
+    public string FileSystem { get; init; } = "Unknown";
+    public string StorageType { get; init; } = "Unknown";
+    public bool IsAdministrator { get; init; }
+    public bool BitLockerProtected { get; init; }
+    public bool HasShadowCopies { get; init; }
+    public bool Passed => Checks.All(check => !check.BlocksExecution);
+    public string Summary => string.Join(" · ", Checks.Where(check => check.Status != "pass").Select(check => $"{check.Code}: {check.Detail}"));
 }
 
 public sealed class SecureDeletePlan
@@ -65,6 +85,9 @@ public sealed class SecureDeletePlan
     public string Limitations { get; init; } = "";
     public string EstimatedDuration { get; init; } = "";
     public string ChainSummary { get; init; } = "";
+    public string RequestedPcLevel { get; init; } = "PC-L3";
+    public string MaximumAchievablePcLevel { get; init; } = "PC-L3";
+    public IReadOnlyList<SecureDeletePreflightCheck> VerifyMatrix { get; init; } = Array.Empty<SecureDeletePreflightCheck>();
 }
 
 public sealed class IntelligenceCenterSnapshot

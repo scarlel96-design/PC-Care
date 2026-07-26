@@ -44,6 +44,13 @@ internal static class SecureDeleteAuditChain
         return signature;
     }
 
+
+    /// <summary>Stores an operation-keyed fingerprint rather than the source file's plain SHA-256.</summary>
+    public static string ProtectContentFingerprint(string contentHash, byte[] hmacKey)
+    {
+        using var hmac = new HMACSHA256(hmacKey);
+        return Convert.ToHexString(hmac.ComputeHash(Encoding.UTF8.GetBytes(contentHash))).ToLowerInvariant();
+    }
     public static bool Verify(string auditPath, byte[] hmacKey)
     {
         if (!File.Exists(auditPath))

@@ -23,7 +23,8 @@ public sealed record VaultKdfParameters(
     int MemoryKb = 0,
     int Parallelism = 0)
 {
-    public const int DefaultArgon2MemoryKb = 131_072;
+    /// <summary>Vault-L5 baseline: Argon2id with 256 MiB memory cost.</summary>
+    public const int DefaultArgon2MemoryKb = 262_144;
     public const int DefaultArgon2Iterations = 3;
     public const int DefaultArgon2Parallelism = 4;
 
@@ -32,7 +33,7 @@ public sealed record VaultKdfParameters(
     public static VaultKdfParameters FromProfile(VaultKdfProfile profile) => profile switch
     {
         VaultKdfProfile.Balanced => new(VaultKdfAlgorithm.Argon2id, 2, 65_536, 4),
-        VaultKdfProfile.Extreme => new(VaultKdfAlgorithm.Argon2id, 4, 262_144, 4),
+        VaultKdfProfile.Extreme => new(VaultKdfAlgorithm.Argon2id, 4, 524_288, 4),
         _ => new(VaultKdfAlgorithm.Argon2id, DefaultArgon2Iterations, DefaultArgon2MemoryKb, DefaultArgon2Parallelism)
     };
 

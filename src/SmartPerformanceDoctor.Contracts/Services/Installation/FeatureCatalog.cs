@@ -4,6 +4,19 @@ namespace SmartPerformanceDoctor.Contracts.Services.Installation;
 
 public static class FeatureCatalog
 {
+    /// <summary>
+    /// The installer keeps only destructive / data-custody features as an explicit choice.
+    /// Every diagnostic, repair and maintenance feature is part of the base product.
+    /// </summary>
+    public static bool IsCoreSecurityFeature(FeatureDefinition feature) =>
+        IsCoreSecurityFeature(feature.Id);
+
+    public static bool IsCoreSecurityFeature(string featureId) =>
+        string.Equals(featureId, InstallFeatureIds.SecureVault, StringComparison.OrdinalIgnoreCase)
+        || string.Equals(featureId, InstallFeatureIds.ProfessionalSecureDelete, StringComparison.OrdinalIgnoreCase);
+
+    public static bool IsBaseInstalled(FeatureDefinition feature) =>
+        feature.IsRequired || !IsCoreSecurityFeature(feature);
     public static IReadOnlyList<FeatureDefinition> All { get; } =
     [
         Req(InstallFeatureIds.CoreDiagnostics, "Core Diagnostic Engine", "기본 시스템 진단, 상태 수집, 보고서 생성", "Feature_CoreDiagnostics"),
@@ -60,11 +73,16 @@ public static class FeatureCatalog
 
         foreach (var feature in All)
         {
-            var enabled = feature.IsRequired
-                || mode == InstallMode.Full
-                || (mode == InstallMode.Recommended && feature.IncludedInRecommended)
-                || (mode == InstallMode.Minimal && feature.IncludedInMinimal)
-                || selected.Contains(feature.Id);
+            // The default installation is intentionally complete. Only Secure Vault and
+            // Professional Secure Delete are opt-in because they own sensitive data or
+            // perform irreversible deletion. Keep legacy Full/Minimal semantics for
+            // existing manifests, but do not surface them in the normal setup flow.
+            var enabled = mode switch
+            {
+                InstallMode.Full => true,
+                InstallMode.Minimal => feature.IsRequired || feature.IncludedInMinimal,
+                _ => IsBaseInstalled(feature) || selected.Contains(feature.Id)
+            };
             manifest.Features[feature.Id] = enabled;
         }
 
@@ -77,9 +95,9 @@ public static class FeatureCatalog
     public static InstalledFeaturesManifest CreateMinimalRuntimeDefault(string version) =>
         CreateManifest(InstallMode.Minimal, version, []);
 
-    /// <summary>v49 포터블/개발 실행 기본 — 주요 기능(시스템 케어·보안 금고·보안 삭제) 포함.</summary>
+    /// <summary>Portable/development default mirrors the normal installer baseline.</summary>
     public static InstalledFeaturesManifest CreateRuntimeDefault(string version) =>
-        CreateManifest(InstallMode.Recommended, version, InstallFeatureIds.Optional);
+        CreateManifest(InstallMode.Recommended, version, []);
 
     public static void EnsureV49PrimaryFeatures(InstalledFeaturesManifest manifest)
     {
