@@ -26,12 +26,7 @@ public partial class MainWindow : Window
     private readonly RepairRunner _repairRunner = new();
     private readonly UninstallRunner _uninstallRunner = new();
 
-    private CheckBox? _eulaCheck;
-    private CheckBox? _auditCheck;
-    private CheckBox? _systemChangeCheck;
-    private CheckBox? _vaultCheck;
-    private CheckBox? _secureDeleteCheck;
-    private CheckBox? _privacyCheck;
+    private CheckBox? _consentCheck;
     private TextBox? _pathBox;
     private TextBox? _vaultConfirmBox;
     private ProgressBar? _progressBar;
@@ -50,11 +45,11 @@ public partial class MainWindow : Window
         {
             case SetupLaunchMode.Modify when _existingManifest is not null:
                 _mode = InstallMode.Custom;
-                _step = 3;
+                _step = 2;
                 Title = "PC 케어 프로 — 기능 변경";
                 break;
             case SetupLaunchMode.Repair:
-                _step = 6;
+                _step = 5;
                 Title = "PC 케어 프로 — 복구";
                 break;
             case SetupLaunchMode.Uninstall:
@@ -102,18 +97,18 @@ public partial class MainWindow : Window
             return;
         }
 
-        if (_step == 7 && _launchMode == SetupLaunchMode.Repair)
+        if (_step == 6 && _launchMode == SetupLaunchMode.Repair)
         {
             await RunOperationAsync(RunRepairAsync);
-            _step = 8;
+            _step = 7;
             RenderStep();
             return;
         }
 
-        if (_step == 7 && _launchMode != SetupLaunchMode.Uninstall)
+        if (_step == 6 && _launchMode != SetupLaunchMode.Uninstall)
         {
             await RunOperationAsync(RunInstallAsync);
-            _step = 8;
+            _step = 7;
             RenderStep();
             return;
         }
@@ -128,7 +123,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        var maxStep = _launchMode == SetupLaunchMode.Uninstall ? 3 : 8;
+        var maxStep = _launchMode == SetupLaunchMode.Uninstall ? 3 : 7;
         if (_step < maxStep)
         {
             _step++;
@@ -155,42 +150,17 @@ public partial class MainWindow : Window
         return _step switch
         {
             0 => !_welcomeActionPending,
-            1 => _eulaCheck?.IsChecked == true && _auditCheck?.IsChecked == true,
-            2 => ConsentOk(),
+            1 => ConsentOk(),
+            2 => true,
             3 => true,
-            4 => true,
-            5 => !string.IsNullOrWhiteSpace(_pathBox?.Text),
+            4 => !string.IsNullOrWhiteSpace(_pathBox?.Text),
             _ => true
         };
     }
 
     private bool VaultDeleteConfirmed() => true;
 
-    private bool ConsentOk()
-    {
-        if (NeedsSystemConsent() && _systemChangeCheck?.IsChecked != true)
-        {
-            return false;
-        }
-
-        if (IsFeatureSelected(InstallFeatureIds.SecureVault) && _vaultCheck?.IsChecked != true)
-        {
-            return false;
-        }
-
-        if (IsFeatureSelected(InstallFeatureIds.ProfessionalSecureDelete) && _secureDeleteCheck?.IsChecked != true)
-        {
-            return false;
-        }
-
-        if (IsFeatureSelected(InstallFeatureIds.PrivacyCleaner) && _privacyCheck?.IsChecked != true)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
+    private bool ConsentOk() => _consentCheck?.IsChecked == true;
     private void RenderStep()
     {
         HighlightSteps();
@@ -210,25 +180,24 @@ public partial class MainWindow : Window
             return;
         }
 
-        BackButton.IsEnabled = _step > 0 && _step < 8;
+        BackButton.IsEnabled = _step > 0 && _step < 7;
         NextButton.Content = _step switch
         {
-            7 => _launchMode == SetupLaunchMode.Repair ? "복구" : "설치",
-            8 => "완료",
+            6 => _launchMode == SetupLaunchMode.Repair ? "복구" : "설치",
+            7 => "완료",
             _ => "다음"
         };
 
         switch (_step)
         {
             case 0: BuildWelcome(); break;
-            case 1: BuildEula(); break;
-            case 2: BuildConsent(); break;
-            case 3: BuildFeatures(); break;
-            case 4: BuildWarnings(); break;
-            case 5: BuildPath(); break;
-            case 6: BuildPreflight(); break;
-            case 7: BuildInstallPreview(); break;
-            case 8: BuildDone(); break;
+            case 1: BuildConsent(); break;
+            case 2: BuildFeatures(); break;
+            case 3: BuildWarnings(); break;
+            case 4: BuildPath(); break;
+            case 5: BuildPreflight(); break;
+            case 6: BuildInstallPreview(); break;
+            case 7: BuildDone(); break;
         }
     }
 
@@ -237,10 +206,10 @@ public partial class MainWindow : Window
         var stage = _step switch
         {
             0 => 0,
-            1 or 2 => 1,
-            3 or 4 or 5 => 2,
-            6 => 3,
-            7 => 4,
+            1 => 1,
+            2 or 3 or 4 => 2,
+            5 => 3,
+            6 => 4,
             _ => 5
         };
         var labels = new[] { StepWelcome, StepEula, StepFeatures, StepPreflight, StepInstall, StepDone };
@@ -275,14 +244,14 @@ public partial class MainWindow : Window
                 _welcomeActionPending = false;
                 _launchMode = SetupLaunchMode.Modify;
                 _mode = InstallMode.Custom;
-                _step = 3;
+                _step = 2;
                 RenderStep();
             }));
             actions.Children.Add(MakeActionButton("복구 (Repair)", () =>
             {
                 _welcomeActionPending = false;
                 _launchMode = SetupLaunchMode.Repair;
-                _step = 6;
+                _step = 5;
                 RenderStep();
             }));
             actions.Children.Add(MakeActionButton("제거 (Uninstall)", () =>
@@ -349,103 +318,30 @@ public partial class MainWindow : Window
         return radio;
     }
 
-    private void BuildEula()
-    {
-        AddTitle("사용권 계약 및 개인정보 처리 안내");
-        AddScrollText(
-            """
-            【제1조 목적】
-            PC 케어 프로(이하 「본 프로그램」)는 Windows 11 PC의 통합 점검·복구·보안 관리를 위해 상태 점검, 성능 분석, 안전 복구 지원, 보고서 생성, 보안 금고·보안 삭제, 복구 미러 자가 복구 등의 기능을 제공하는 로컬 실행형 유틸리티입니다.
-
-            【제2조 사용 범위】
-            • 사용자는 본인 소유 또는 명시적 사용 권한이 있는 컴퓨터에서만 본 프로그램을 실행해야 합니다.
-            • 타인의 PC, 회사·기관 장비, 공용 PC에서 관리자 승인 없이 시스템 변경·복구·삭제 기능을 실행해서는 안 됩니다.
-            • 본 프로그램은 의료·법률·금융 등 전문 자문을 대체하지 않으며, 진단 결과는 참고용입니다.
-
-            【제3조 데이터 처리】
-            • 진단·복구 과정에서 생성되는 보고서, 로그, 감사 기록, 스냅샷은 기본적으로 사용자 PC의 로컬 디스크에 저장됩니다.
-            • 본 프로그램은 사용자 동의 없이 개인 파일 내용을 외부 서버로 전송하지 않습니다. (업데이트 확인 시 버전·채널 정보만 사용할 수 있습니다.)
-            • 보안 금고·보안 삭제 기능 사용 시 암호화 키·삭제 기록은 사용자 책임 하에 보관됩니다.
-
-            【제4조 시스템 변경 및 위험】
-            • 복구, 드라이버·오디오 조치, 레지스트리·디스크·시스템 파일 복구(DISM/SFC) 등은 Windows 설정을 변경할 수 있습니다.
-            • 고위험 작업은 사전 시뮬레이션·승인 절차를 거치도록 설계되어 있으나, 100% 무손실을 보장하지는 않습니다.
-            • 중요 데이터는 별도 백업 후 사용할 것을 권장합니다.
-
-            【제5조 보안 금고·보안 삭제】
-            • 보안 금고 비밀번호·복구 키 분실 시 암호화된 데이터는 복구가 불가능할 수 있습니다.
-            • 보안 삭제는 SSD/HDD·파일 시스템·TRIM 정책에 따라 복구 불가 수준이 달라질 수 있습니다.
-
-            【제6조 책임 제한】
-            • 개발자는 사용자의 부적절한 사용, 백업 부재, 타사 드라이버·하드웨어 결함으로 인한 손해에 대해 법령이 허용하는 범위 내에서 책임을 제한합니다.
-            • 본 프로그램은 「있는 그대로」 제공되며, 특정 목적 적합성에 대한 묵시적 보증을 제한할 수 있습니다.
-
-            【제7조 동의】
-            설치를 계속하면 위 내용을 읽고 이해했음을 확인한 것으로 간주됩니다.
-            """);
-        _eulaCheck = AddCheck("위 사용권 계약·개인정보 처리 안내 전체에 동의합니다.");
-        _auditCheck = AddCheck("진단 보고서·감사 로그·세션 기록이 이 PC에 저장될 수 있음을 이해하고 동의합니다.");
-    }
-
     private void BuildConsent()
     {
-        AddTitle("기능별 상세 동의");
-        if (NeedsSystemConsent())
-        {
-            AddScrollText(
-                """
-                【시스템 점검·복구 동의】
-                선택하신 기능은 PowerShell·WMI·DISM·SFC·장치 관리자 등 Windows 관리 도구를 호출할 수 있습니다.
-                • 드라이버·오디오 복구: 서비스 재시작, 장치 재스캔, 드라이버 저장소 조회가 수행될 수 있습니다.
-                • 시스템 복구: DISM RestoreHealth·SFC는 수십 분 이상 소요될 수 있으며 재부팅이 필요할 수 있습니다.
-                • 모든 실제 변경 작업은 사용자 승인·위험도 확인 후에만 실행됩니다.
-                """);
-            _systemChangeCheck = AddCheck("시스템 설정 변경·복구 기능의 위험과 소요 시간을 이해하고 동의합니다.");
-        }
+        AddTitle("약관 및 통합 동의");
+        AddBody("아래 내용을 확인한 뒤, 한 번의 동의로 설치에 필요한 약관·개인정보 처리·선택 기능의 주의 사항을 함께 승인할 수 있습니다.");
+        AddScrollText(
+            """
+            【사용권 계약 및 데이터 처리】
+            • PC 케어 프로는 본인 소유 또는 사용 권한이 있는 Windows PC에서만 사용해야 합니다.
+            • 진단 보고서·감사 로그·세션 기록·스냅샷은 기본적으로 이 PC에 로컬 저장됩니다.
+            • 업데이트 확인에는 버전·채널 정보만 사용하며, 개인 파일 내용은 사용자 동의 없이 외부 서버로 전송하지 않습니다.
 
-        if (IsFeatureSelected(InstallFeatureIds.SecureVault))
-        {
-            AddScrollText(
-                """
-                【보안 금고 동의】
-                • 파일·폴더는 AES-256-GCM 등으로 암호화되어 로컬 금고에 보관됩니다.
-                • 마스터 비밀번호(신규 금고 12자 이상) 또는 복구 키 없이는 데이터를 열 수 없습니다.
-                • 원본 위치에는 잠금 표시가 남을 수 있으며, 원본 복원 시 사용자 확인이 필요합니다.
-                • 금고 데이터 삭제·키 파기는 되돌릴 수 없습니다.
-                """);
-            _vaultCheck = AddCheck("보안 금고의 암호화 특성, 비밀번호·복구 키 분실 위험, 원본 잠금 표시를 이해하고 동의합니다.");
-        }
+            【시스템 점검·복구】
+            • 시스템 케어, 드라이버·오디오 복구, 레지스트리·디스크 검사, DISM/SFC는 Windows 설정·서비스를 변경하거나 재부팅을 요구할 수 있습니다.
+            • 실제 변경 전에는 프로그램 안에서 다시 미리보기·위험도·승인 절차를 제공합니다. 중요 데이터는 별도 백업을 권장합니다.
 
-        if (IsFeatureSelected(InstallFeatureIds.ProfessionalSecureDelete))
-        {
-            AddScrollText(
-                """
-                【보안 삭제 동의】
-                • 선택한 파일·폴더는 다중 패스 덮어쓰기 등으로 삭제되며 일반 복구 소프트웨어로는 복구가 어렵거나 불가능할 수 있습니다.
-                • SSD(TRIM)·클라우드 동기화·섀도 복사본·백업 매체에는 별도 잔존 데이터가 있을 수 있습니다.
-                • 삭제 전 대상 경로와 파일명을 반드시 확인하세요.
-                """);
-            _secureDeleteCheck = AddCheck("보안 삭제의 복구 불가능성·저장장치별 한계·백업 잔존 가능성을 이해하고 동의합니다.");
-        }
+            【보안 기능】
+            • 보안 금고는 암호화된 로컬 보관함을 사용합니다. 비밀번호·복구 키를 잃으면 데이터를 복구하지 못할 수 있습니다.
+            • 보안 삭제와 개인정보 정리는 일부 항목을 되돌릴 수 없으며, SSD TRIM·동기화·백업 매체에는 별도 잔존 데이터가 있을 수 있습니다.
 
-        if (IsFeatureSelected(InstallFeatureIds.PrivacyCleaner))
-        {
-            AddScrollText(
-                """
-                【개인정보 정리 동의】
-                • 브라우저 기록·최근 문서·임시 파일 등을 삭제할 수 있습니다.
-                • 삭제 전 미리보기 목록을 확인하며, 필요한 항목은 제외해야 합니다.
-                """);
-            _privacyCheck = AddCheck("개인정보 정리 기능의 삭제 범위·미리보기 정책·복구 불가 항목을 이해하고 동의합니다.");
-        }
-
-        if (!NeedsSystemConsent() && _vaultCheck is null && _secureDeleteCheck is null && _privacyCheck is null)
-        {
-            AddBody("추가 고위험 동의가 필요한 선택 기능이 없습니다. 아래 안내를 확인한 뒤 다음을 눌러 진행하세요.");
-            AddBody("설치 후 환경설정에서 사용자 모드(Basic/Advanced)와 기능 표시를 변경할 수 있습니다.");
-        }
+            【책임 제한】
+            • 본 프로그램은 있는 그대로 제공되며, 부적절한 사용·백업 부재·타사 드라이버 또는 하드웨어 문제로 생기는 손해는 법령이 허용하는 범위에서 제한됩니다.
+            """);
+        _consentCheck = AddCheck("사용권 계약, 로컬 데이터 처리, 시스템 변경 및 보안 기능의 주의 사항을 읽고 이해했으며 설치에 동의합니다.");
     }
-
     private void BuildFeatures()
     {
         AddTitle("기능 선택");
@@ -727,7 +623,7 @@ public partial class MainWindow : Window
         finally
         {
             _operationRunning = false;
-            BackButton.IsEnabled = _step > 0 && _step < 8;
+            BackButton.IsEnabled = _step > 0 && _step < 7;
             NextButton.IsEnabled = true;
         }
     }
