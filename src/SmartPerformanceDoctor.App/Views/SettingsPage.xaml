@@ -45,7 +45,7 @@
                         <TextBlock Text="시작 시 확인하며, 마지막 확인 후 6시간 동안은 다시 요청하지 않습니다."
                                    Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
                     </StackPanel>
-                    <Button Grid.Column="1" Content="업데이트 상태" Style="{StaticResource MacToolbarButtonStyle}"
+                    <Button Grid.Column="1" Content="업데이트 확인" Style="{StaticResource MacToolbarButtonStyle}"
                             Click="OpenUpdate" VerticalAlignment="Center"/>
                 </Grid>
             </Border>

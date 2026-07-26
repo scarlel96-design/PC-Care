@@ -8,7 +8,7 @@
             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
                 <StackPanel Spacing="4">
                     <TextBlock Text="업데이트" Style="{StaticResource MacPageTitleStyle}"/>
-                    <TextBlock Text="새 버전을 확인하고, 검증한 뒤 한 번에 적용합니다."
+                    <TextBlock Text="한 번 확인하면 변경점을 안내하고, 승인 후 다운로드·검증·적용을 자동으로 이어갑니다\."
                                Style="{StaticResource MacInlineStatusTextStyle}"/>
                 </StackPanel>
                 <Button Grid.Column="1" Content="새로 고침" Style="{StaticResource MacToolbarButtonStyle}" Click="RefreshStatus"/>
@@ -19,7 +19,7 @@
                     <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20">
                         <StackPanel Spacing="6">
                             <TextBlock Text="PC케어를 최신 상태로 유지하세요" Style="{StaticResource MacSectionHeaderStyle}"/>
-                            <TextBlock Text="업데이트 확인 후 변경점을 보고 ‘지금 업데이트’를 누르면 다운로드, 보안 검증, 설치가 자동으로 이어집니다."
+                            <TextBlock Text="Luma Fetch와 같은 단순한 흐름입니다. 새 버전을 확인한 뒤 한 번만 승인하면 다운로드, 보안 검증, 설치가 자동으로 이어집니다\."
                                        TextWrapping="Wrap" Style="{StaticResource MacInlineStatusTextStyle}"/>
                         </StackPanel>
                         <Button x:Name="CheckForUpdateButton" Grid.Column="1" Content="업데이트 확인"

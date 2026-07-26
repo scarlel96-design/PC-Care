@@ -129,6 +129,7 @@ public sealed partial class UpdateStatusPage : Page
         }
 
         CheckForUpdateButton.IsEnabled = false;
+        CheckForUpdateButton.Content = "확인 중…";
         try
         {
             await _viewModel.CheckGitHubAsync();
@@ -151,6 +152,7 @@ public sealed partial class UpdateStatusPage : Page
         finally
         {
             CheckForUpdateButton.IsEnabled = true;
+            CheckForUpdateButton.Content = "업데이트 확인";
         }
     }
 

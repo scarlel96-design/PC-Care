@@ -122,11 +122,23 @@ public sealed partial class SettingsPage : Page
     {
         try
         {
-            ShellFrame?.Navigate(typeof(UpdateStatusPage));
+            if (ShellFrame is not { } frame)
+            {
+                throw new InvalidOperationException("업데이트 화면을 표시할 탐색 프레임을 찾지 못했습니다.");
+            }
+
+            // Luma Fetch처럼 이 진입점은 상태 표시가 아니라 즉시 최신 릴리즈를
+            // 확인하는 하나의 동작으로 동작한다.
+            UpdateStatusPage.RequestGitHubCheckOnLoad();
+            if (!AppNavigationService.TryNavigateByName(frame, "UpdateStatusPage"))
+            {
+                throw new InvalidOperationException("업데이트 화면 탐색을 시작하지 못했습니다.");
+            }
         }
         catch (Exception ex)
         {
             CrashCaptureService.WriteCrash("open-update-page", ex, ex.Message);
+            App.Shell?.SetStatusMessage("업데이트 화면을 열지 못했습니다. 앱을 다시 시작한 뒤 재시도하세요.");
         }
     }
 
