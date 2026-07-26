@@ -20,7 +20,11 @@ public sealed partial class KnowledgePackManagerPage : Page
     {
         var result = _verifier.Verify();
         StatusText.Text = result.Message;
-        RulesChecksumText.Text = $"rules.pack.json SHA256: {result.RulesChecksum} ({(result.RulesValid ? "OK" : "FAIL")})";
-        ProtocolsChecksumText.Text = $"protocols.pack.json SHA256: {result.ProtocolsChecksum} ({(result.ProtocolsValid ? "OK" : "FAIL")})";
+        RulesChecksumText.Text = string.IsNullOrWhiteSpace(result.RulesChecksum)
+            ? result.RulesStatus
+            : $"{result.RulesStatus} · SHA256: {result.RulesChecksum}";
+        ProtocolsChecksumText.Text = string.IsNullOrWhiteSpace(result.ProtocolsChecksum)
+            ? result.ProtocolsStatus
+            : $"{result.ProtocolsStatus} · SHA256: {result.ProtocolsChecksum}";
     }
 }

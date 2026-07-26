@@ -75,7 +75,7 @@
                                            Foreground="#A85F62" FontSize="11" TextWrapping="Wrap"/>
                             </StackPanel>
                         </Border>
-                        <Button Content="삭제할 파일 선택" Style="{StaticResource PccDangerButtonStyle}" Click="OpenSecureDelete" HorizontalAlignment="Left"/>
+                        <Button Content="삭제 열기" Style="{StaticResource PccDangerButtonStyle}" Click="OpenSecureDelete" HorizontalAlignment="Left"/>
                     </StackPanel>
                 </Border>
             </Grid>

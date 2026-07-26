@@ -33,7 +33,10 @@ public sealed class DashboardIntelligenceService
                 ? "medium"
                 : "low";
 
-        var healthScore = MapHealthScore(overallSeverity);
+        // Prefer the score that was actually measured by the latest completed care run.
+        // Crash history still affects the warning state, but must not freeze the score at 42.
+        var healthScore = reports.FirstOrDefault(report => report.HealthScore.HasValue)?.HealthScore
+            ?? MapHealthScore(overallSeverity);
         var topIssues = BuildTopIssues(crashLogs.Count, coreSnapshot.Health, reports.Count);
         var quickActions = BuildQuickActions();
         var attentionCards = BuildAttentionCards(crashLogs.Count, coreSnapshot.Health);

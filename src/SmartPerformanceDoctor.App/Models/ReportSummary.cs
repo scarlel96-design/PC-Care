@@ -10,4 +10,5 @@ public sealed record ReportSummary(
     int ActionsTakenCount,
     string ReportPath,
     string JsonPath,
-    string SummaryPath);
+    string SummaryPath,
+    int? HealthScore = null);
