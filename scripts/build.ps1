@@ -1,4 +1,4 @@
-﻿param(
+param(
     [switch]$SkipTests,
     [switch]$SkipInstaller,
     [switch]$SkipSigning
@@ -15,7 +15,7 @@ $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path $PSScriptRoot -Parent
 Set-Location $ProjectRoot
 
-$Version = "51.0.3"
+$Version = "51.0.4"
 Write-Host "== PC 케어 프로 v$Version Build ==" -ForegroundColor Cyan
 
 & (Join-Path $PSScriptRoot "check-environment.ps1")
