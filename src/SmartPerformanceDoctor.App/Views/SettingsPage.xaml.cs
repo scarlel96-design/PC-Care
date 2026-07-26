@@ -122,7 +122,10 @@ public sealed partial class SettingsPage : Page
     {
         try
         {
-            if (ShellFrame is not { } frame)
+            // App.Shell may not be populated in a restored WinUI navigation tree.
+            // The page-owned Frame is the authoritative navigation host in that case.
+            var frame = Frame ?? ShellFrame;
+            if (frame is null)
             {
                 throw new InvalidOperationException("업데이트 화면을 표시할 탐색 프레임을 찾지 못했습니다.");
             }
