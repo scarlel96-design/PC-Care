@@ -7,7 +7,9 @@ namespace SmartPerformanceDoctor.SecurityLab.VaultV4;
 
 /// <summary>
 /// Recovery slots: each one-time code can unwrap a recovery root which unwraps VMK (design §5 Recovery).
-/// Codes are stored as hashes only; wraps use Argon2id(LabFast) per slot.
+/// Codes are stored as hashes only; new wraps use a 128-bit random code and
+/// product-grade Argon2id parameters per slot. Existing slots retain their
+/// persisted parameters for backward-compatible recovery.
 /// </summary>
 public static class LabRecoverySlots
 {
@@ -50,12 +52,13 @@ public static class LabRecoverySlots
             };
 
             var codes = new List<string>();
-            var kdf = LabKdfParams.FromProfile(LabKdfProfile.LabFast);
+            var kdf = LabKdfParams.FromProfile(LabKdfProfile.Balanced);
             for (var i = 0; i < 10; i++)
             {
-                var raw = RandomNumberGenerator.GetBytes(8);
-                var code =
-                    $"{BitConverter.ToUInt16(raw, 0):X4}-{BitConverter.ToUInt16(raw, 2):X4}-{BitConverter.ToUInt16(raw, 4):X4}-{BitConverter.ToUInt16(raw, 6):X4}";
+                var raw = RandomNumberGenerator.GetBytes(16);
+                var code = string.Join("-", Enumerable.Range(0, 8)
+                    .Select(offset => BitConverter.ToUInt16(raw, offset * 2).ToString("X4")));
+                CryptographicOperations.ZeroMemory(raw);
                 codes.Add(code);
                 var slotSalt = LabVaultCrypto.GenerateSalt(16);
                 var kek = LabVaultCrypto.DeriveArgon2id(code, slotSalt, kdf.Iterations, kdf.MemoryKb, kdf.Parallelism);

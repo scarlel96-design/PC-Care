@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using System.Text.Json;
 using SmartPerformanceDoctor.SecurityLab.Hardening;
 using SmartPerformanceDoctor.SecurityLab.Migration;
 using SmartPerformanceDoctor.SecurityLab.Policy;
@@ -473,6 +474,12 @@ public sealed class VaultV4IntegrationTests : IDisposable
         Assert.True(File.Exists(Path.Combine(vault.Root, "vault.header.copy1.json")));
 
         var code = created.RecoveryCodes[0];
+        Assert.Equal(8, code.Split('-').Length);
+        Assert.All(code.Split('-'), part => Assert.Equal(4, part.Length));
+        using (var slots = JsonDocument.Parse(File.ReadAllText(Path.Combine(vault.Root, "recovery", "recovery_slots.v5.json"))))
+        {
+            Assert.True(slots.RootElement.GetProperty("Slots")[0].GetProperty("MemoryKb").GetInt32() >= 65_536);
+        }
         var snapBefore = LabRecoverySlots.Snapshot(vault.Root);
         Assert.Equal(10, snapBefore.Remaining);
         Assert.Contains("잔여", snapBefore.ToUiLine());

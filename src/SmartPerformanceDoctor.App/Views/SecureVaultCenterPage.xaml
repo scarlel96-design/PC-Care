@@ -49,7 +49,7 @@
                     <TextBlock x:Name="RecoveryHintText" TextWrapping="Wrap"
                                Foreground="{StaticResource SpdMutedTextBrush}"
                                Text="일회용 코드 · 사용 후 소진 · 성공 시 복구 세션(비밀번호 변경 권고)"/>
-                    <TextBox x:Name="RecoveryKeyBox" PlaceholderText="XXXX-XXXX-XXXX-XXXX (일회용 복구 코드)"/>
+                    <TextBox x:Name="RecoveryKeyBox" PlaceholderText="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX (일회용 복구 코드)"/>
                     <Button Content="복구 코드 잠금 해제" Style="{StaticResource MacToolbarButtonStyle}" Click="UnlockWithRecoveryKey"/>
                 </StackPanel>
             </Border>
