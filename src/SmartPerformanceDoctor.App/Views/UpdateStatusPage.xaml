@@ -28,13 +28,13 @@
                     </Grid>
 
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
-                        <Border Background="{StaticResource PccSurfaceAltBrush}" CornerRadius="14" Padding="14">
+                        <Border Background="{StaticResource PccSurfaceMutedBrush}" CornerRadius="14" Padding="14">
                             <StackPanel Spacing="3">
                                 <TextBlock Text="현재 버전" Style="{StaticResource MacListItemSubtitleStyle}"/>
                                 <TextBlock Text="{Binding CurrentVersion}" Style="{StaticResource MacEmphasisValueStyle}"/>
                             </StackPanel>
                         </Border>
-                        <Border Grid.Column="1" Background="{StaticResource PccSurfaceAltBrush}" CornerRadius="14" Padding="14">
+                        <Border Grid.Column="1" Background="{StaticResource PccSurfaceMutedBrush}" CornerRadius="14" Padding="14">
                             <StackPanel Spacing="3">
                                 <TextBlock Text="확인된 최신 버전" Style="{StaticResource MacListItemSubtitleStyle}"/>
                                 <TextBlock Text="{Binding TargetVersion}" Style="{StaticResource MacEmphasisValueStyle}"/>

@@ -1,4 +1,4 @@
-﻿param(
+param(
     [string]$Version = "51.0.2",
     [switch]$SkipAppBuild,
     [switch]$SkipMsi,
@@ -22,6 +22,7 @@ if (-not $SkipAppBuild) {
     Write-Host "Building App + Setup (Release x64)..." -ForegroundColor Yellow
     & (Join-Path $PSScriptRoot "build-core.ps1")
     & (Join-Path $PSScriptRoot "build-app.ps1")
+    & (Join-Path $PSScriptRoot "verify-xaml-static-resources.ps1")
     & (Join-Path $PSScriptRoot "publish-runtime.ps1") -SkipSigning:$SkipSigning
     & (Join-Path $PSScriptRoot "verify-runtime.ps1") -SkipSignatureCheck:$SkipSigning
 }
