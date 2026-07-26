@@ -1,7 +1,4 @@
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.Json;
 
 namespace SmartPerformanceDoctor.App.Services.Security;
 
@@ -160,62 +157,6 @@ internal static class SecureVaultOriginSealService
 
     public static void EnsureSealedFolderShell(string folderPath, string bundleId, string rootEntryId) =>
         UnsealFolder(folderPath);
-    private static void WriteFolderDesktopIni(string folderPath)
-    {
-        var desktopIni = Path.Combine(folderPath, "desktop.ini");
-        var localIcon = Path.Combine(folderPath, "._spd_vault_folder.ico");
-        var iconLine = File.Exists(localIcon)
-            ? $"IconFile={localIcon}\r\nIconIndex=0\r\n"
-            : $"IconResource={SecureVaultSealIconService.GetLockedFolderIconResource()}\r\n";
-
-        var content =
-            "[.ShellClassInfo]\r\n" +
-            iconLine +
-            "InfoTip=PC 케어 프로 보안 금고에 보관 중입니다.\r\n" +
-            "ConfirmFileOp=0\r\n" +
-            "NoSharing=1\r\n";
-        File.WriteAllText(desktopIni, content, Encoding.Unicode);
-        File.SetAttributes(desktopIni, FileAttributes.Hidden | FileAttributes.System);
-    }
-
-    private static void WriteReadme(string folderPath)
-    {
-        var path = Path.Combine(folderPath, ReadmeFileName);
-        File.WriteAllText(
-            path,
-            "이 폴더의 파일은 PC 케어 프로 보안 금고에 암호화되어 보관 중입니다.\r\n" +
-            "원본 파일은 안전하게 제거되었으며, 폴더 아이콘(폴더+자물쇠)은 금고 보관 상태를 나타냅니다.\r\n" +
-            "복원하려면 앱의 보안 금고 메뉴에서 「원본 복원」을 실행하세요.\r\n",
-            Encoding.UTF8);
-    }
-
-    private static string BuildFileReadme(string fileName, string entryId) =>
-        $"「{fileName}」은(는) PC 케어 프로 보안 금고에 암호화되어 보관 중입니다.\r\n" +
-        $"항목 ID: {entryId[..8]}\r\n" +
-        "원본 파일은 안전하게 제거되었습니다. 복원은 보안 금고 메뉴에서 실행하세요.\r\n";
-
-    private static void WriteMarker(string directory, string bundleId, string entryId, bool isFolder, string? stubPath = null)
-    {
-        var marker = new
-        {
-            format = "spd-vault-seal-v1",
-            bundleId,
-            entryId,
-            isFolder,
-            stubPath,
-            sealedAt = DateTimeOffset.Now.ToString("o")
-        };
-        var markerPath = Path.Combine(directory, MarkerFileName);
-        File.WriteAllText(markerPath, JsonSerializer.Serialize(marker), Encoding.UTF8);
-        File.SetAttributes(markerPath, FileAttributes.Hidden | FileAttributes.System);
-    }
-
-    private static void ApplyFolderShellAttributes(string folderPath)
-    {
-        var info = new DirectoryInfo(folderPath);
-        info.Attributes |= FileAttributes.System | FileAttributes.ReadOnly;
-    }
-
     private static void ClearFolderShellAttributes(string folderPath)
     {
         var info = new DirectoryInfo(folderPath);
@@ -231,23 +172,6 @@ internal static class SecureVaultOriginSealService
 
         File.SetAttributes(path, FileAttributes.Normal);
         File.Delete(path);
-    }
-
-    private static void RunSealStep(Action action, string stepName, string folderPath, IList<string>? warnings)
-    {
-        try
-        {
-            action();
-        }
-        catch (Exception ex)
-        {
-            if (warnings is null)
-            {
-                throw;
-            }
-
-            warnings.Add($"{stepName} ({folderPath}): {ex.Message}");
-        }
     }
 
     private static void NotifyShell(string path)

@@ -1,6 +1,7 @@
 using System.Text;
 using SmartPerformanceDoctor.App.Models.Security;
 using SmartPerformanceDoctor.App.Services.Commercial;
+using SmartPerformanceDoctor.SecurityLab.ProductBridge;
 using Xunit;
 using SmartPerformanceDoctor.App.Services.Security;
 
@@ -83,6 +84,42 @@ public sealed class SecurityAttackSimulationTests : IDisposable
             var bytes = await File.ReadAllBytesAsync(file);
             var text = Encoding.UTF8.GetString(bytes);
             Assert.DoesNotContain(secret, text);
+        }
+    }
+
+    [Fact]
+    public async Task Vault_LabImportWithSourceWipe_DeletesOriginalOnlyAfterImport()
+    {
+        const string password = "LabImportWipe99!";
+        var source = Path.Combine(_tempRoot, "lab-source.txt");
+        await File.WriteAllTextAsync(source, "lab-import-secret");
+        ProductFeatureFlags.EnableProductHost();
+
+        try
+        {
+            using var vault = new SecureVaultService();
+            Assert.True(vault.CreateVault(password).Success);
+            Assert.True(vault.IsLabVaultFormat);
+
+            var result = await vault.AddFileAsync(source, sealOrigin: true);
+
+            Assert.True(result.Success, result.Message);
+            Assert.False(File.Exists(source));
+            Assert.Single(vault.Entries);
+
+            var folder = Path.Combine(_tempRoot, "lab-folder");
+            Directory.CreateDirectory(Path.Combine(folder, "nested"));
+            await File.WriteAllTextAsync(Path.Combine(folder, "one.txt"), "one");
+            await File.WriteAllTextAsync(Path.Combine(folder, "nested", "two.txt"), "two");
+            var folderResult = await vault.AddFolderAsync(folder, sealOrigin: true);
+
+            Assert.True(folderResult.Success, folderResult.Message);
+            Assert.False(Directory.Exists(folder));
+            Assert.Equal(3, vault.Entries.Count);
+        }
+        finally
+        {
+            ProductFeatureFlags.ResetForTests();
         }
     }
 

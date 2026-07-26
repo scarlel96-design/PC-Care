@@ -32,6 +32,11 @@ public sealed class SecureVaultService : IDisposable
     private DateTimeOffset _lastSensitiveActivity = DateTimeOffset.MinValue;
     private static readonly TimeSpan DefaultIdleLock = TimeSpan.FromMinutes(5);
 
+    public SecureVaultService()
+    {
+        VaultSessionLockCoordinator.Register(this);
+    }
+
     /// <summary>True when on-disk vault is SecurityLab v4 (not legacy spd-vault-v3).</summary>
     public bool IsLabVaultFormat => SecureVaultLabBackend.ExistsOnDisk() && !SecureVaultPaths.Exists();
 
@@ -599,9 +604,16 @@ public sealed class SecureVaultService : IDisposable
         CancellationToken cancellationToken = default,
         IProgress<SecureVaultProgressReport>? progress = null)
     {
+        var input = VaultImportPathValidator.ValidateFile(sourcePath);
+        if (!input.Allowed)
+        {
+            return Fail(input.Message);
+        }
+
+        sourcePath = input.NormalizedPath;
         if (IsLabVaultFormat)
         {
-            return await _lab.AddFileAsync(sourcePath, progress).ConfigureAwait(false);
+            return await _lab.AddFileAsync(sourcePath, sealOrigin, progress).ConfigureAwait(false);
         }
 
         EnsureUnlocked();
@@ -668,9 +680,30 @@ public sealed class SecureVaultService : IDisposable
         CancellationToken cancellationToken = default,
         IProgress<SecureVaultProgressReport>? progress = null)
     {
+        var input = VaultImportPathValidator.ValidateDirectory(folderPath);
+        if (!input.Allowed)
+        {
+            return Fail(input.Message);
+        }
+
+        folderPath = input.NormalizedPath;
+        try
+        {
+            var linkedMember = Directory.EnumerateFileSystemEntries(folderPath, "*", SearchOption.AllDirectories)
+                .FirstOrDefault(path => (File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0);
+            if (!string.IsNullOrWhiteSpace(linkedMember))
+            {
+                return Fail("폴더 안에 정션·심볼릭 링크·재분석 지점이 있어 보관하지 않았습니다: " + linkedMember);
+            }
+        }
+        catch (Exception ex)
+        {
+            return Fail("폴더 내부 경로를 안전하게 확인하지 못했습니다: " + ex.Message);
+        }
+
         if (IsLabVaultFormat)
         {
-            return await _lab.AddFolderAsync(folderPath, progress).ConfigureAwait(false);
+            return await _lab.AddFolderAsync(folderPath, sealOrigin, progress).ConfigureAwait(false);
         }
 
         EnsureUnlocked();
@@ -829,7 +862,7 @@ public sealed class SecureVaultService : IDisposable
                 totalCount: files.Length);
 
             var message = sealOrigin
-                ? $"폴더 「{rootName}」 {added}개 파일을 금고에 넣고 원본을 잠갔습니다.\n원본: {fullFolderPath}"
+                ? $"폴더 「{rootName}」 {added}개 파일을 금고에 넣고 원본을 보안 삭제했습니다.\n원본: {fullFolderPath}"
                 : $"폴더 「{rootName}」 {added}개 파일을 금고에 넣었습니다.\n원본: {fullFolderPath}";
             if (deleteWarnings.Count > 0)
             {
@@ -1518,6 +1551,7 @@ public sealed class SecureVaultService : IDisposable
 
     public void Dispose()
     {
+        VaultSessionLockCoordinator.Unregister(this);
         Lock();
         _lab.Dispose();
     }

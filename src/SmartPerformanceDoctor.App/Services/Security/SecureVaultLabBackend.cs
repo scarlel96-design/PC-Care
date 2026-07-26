@@ -206,9 +206,15 @@ internal sealed class SecureVaultLabBackend : IDisposable
 
     public async Task<SecureVaultOperationResult> AddFileAsync(
         string path,
+        bool secureDeleteSource,
         IProgress<SecureVaultProgressReport>? progress = null)
     {
         EnsureUnlocked();
+        if (!File.Exists(path))
+        {
+            return Fail("파일을 찾을 수 없습니다.");
+        }
+
         progress?.Report(new SecureVaultProgressReport
         {
             Phase = SecureVaultProgressPhase.Adding,
@@ -216,17 +222,47 @@ internal sealed class SecureVaultLabBackend : IDisposable
             Detail = Path.GetFileName(path)
         });
         var result = await Task.Run(() => _vault!.ImportFile(path)).ConfigureAwait(false);
+        if (!result.Success)
+        {
+            return Map(result, LabVaultService.FormatIdV5);
+        }
+
+        if (secureDeleteSource)
+        {
+            progress?.Report(new SecureVaultProgressReport
+            {
+                Phase = SecureVaultProgressPhase.Sealing,
+                Percent = 80,
+                Detail = "암호화본 검증 후 원본 보안 삭제"
+            });
+            try
+            {
+                SecureVaultOriginSealService.SecureDeleteOriginalFile(path);
+            }
+            catch (Exception ex)
+            {
+                return Fail($"금고 암호화본은 생성됐지만 원본 보안 삭제에 실패했습니다. 원본은 남아 있을 수 있습니다. {ex.Message}");
+            }
+        }
+
         progress?.Report(new SecureVaultProgressReport
         {
             Phase = SecureVaultProgressPhase.Completed,
             Percent = 100,
-            Detail = result.Message
+            Detail = secureDeleteSource ? "보관 및 원본 보안 삭제 완료" : result.Message
         });
-        return Map(result, LabVaultService.FormatId);
+        return new SecureVaultOperationResult
+        {
+            Success = true,
+            Message = secureDeleteSource ? "파일을 금고에 보관하고 원본을 보안 삭제했습니다." : result.Message,
+            ProcessedCount = result.ProcessedCount,
+            VaultFormat = LabVaultService.FormatIdV5
+        };
     }
 
     public async Task<SecureVaultOperationResult> AddFolderAsync(
         string path,
+        bool secureDeleteSource,
         IProgress<SecureVaultProgressReport>? progress = null)
     {
         EnsureUnlocked();
@@ -248,40 +284,87 @@ internal sealed class SecureVaultLabBackend : IDisposable
             return Fail("빈 폴더는 현재 보관할 수 없습니다. 파일을 하나 이상 넣은 뒤 다시 시도하세요.");
         }
 
-        var ok = 0;
-        var fail = 0;
+        var imported = 0;
         for (var i = 0; i < files.Length; i++)
         {
             var file = files[i];
             progress?.Report(new SecureVaultProgressReport
             {
                 Phase = SecureVaultProgressPhase.Adding,
-                Percent = files.Length == 0 ? 100 : (int)((i + 1) * 100.0 / files.Length),
+                Percent = (int)((i + 1) * 75.0 / files.Length),
                 Detail = Path.GetFileName(file)
             });
-            var rel = Path.GetRelativePath(fullPath, file).Replace('\\', '/');
-            var vaultRelativePath = rootName + "/" + rel;
+            var relative = Path.GetRelativePath(fullPath, file).Replace('\\', '/');
+            var vaultRelativePath = rootName + "/" + relative;
             var bytes = await File.ReadAllBytesAsync(file).ConfigureAwait(false);
-            var r = _vault!.ImportBytes(Path.GetFileName(file), vaultRelativePath, bytes);
-            if (r.Success)
+            try
             {
-                ok++;
+                var result = _vault!.ImportBytes(Path.GetFileName(file), vaultRelativePath, bytes);
+                if (!result.Success)
+                {
+                    return Fail($"폴더 가져오기 중단 · 성공 {imported}/{files.Length} · {result.Message}");
+                }
+
+                imported++;
             }
-            else
+            finally
             {
-                fail++;
+                SecureVaultCrypto.Zero(bytes);
             }
         }
 
+        if (secureDeleteSource)
+        {
+            progress?.Report(new SecureVaultProgressReport
+            {
+                Phase = SecureVaultProgressPhase.Sealing,
+                Percent = 82,
+                Detail = "암호화본 검증 후 원본 폴더 보안 삭제"
+            });
+            var deleteFailures = new List<string>();
+            foreach (var file in files)
+            {
+                try { SecureVaultOriginSealService.SecureDeleteOriginalFile(file); }
+                catch (Exception ex) { deleteFailures.Add(Path.GetFileName(file) + ": " + ex.Message); }
+            }
+
+            try
+            {
+                foreach (var directory in Directory.EnumerateDirectories(fullPath, "*", SearchOption.AllDirectories)
+                             .OrderByDescending(directory => directory.Length))
+                {
+                    Directory.Delete(directory, false);
+                }
+
+                Directory.Delete(fullPath, false);
+            }
+            catch (Exception ex)
+            {
+                deleteFailures.Add("폴더 정리: " + ex.Message);
+            }
+
+            if (deleteFailures.Count > 0 || Directory.Exists(fullPath))
+            {
+                return Fail($"금고 암호화본은 생성됐지만 원본 폴더 보안 삭제에 실패했습니다. 원본이 남아 있을 수 있습니다. {string.Join(Environment.NewLine, deleteFailures.Take(3))}");
+            }
+        }
+
+        progress?.Report(new SecureVaultProgressReport
+        {
+            Phase = SecureVaultProgressPhase.Completed,
+            Percent = 100,
+            Detail = secureDeleteSource ? "보관 및 원본 보안 삭제 완료" : "폴더 가져오기 완료"
+        });
         return new SecureVaultOperationResult
         {
-            Success = fail == 0,
-            Message = $"폴더 「{rootName}」 가져오기 완료 · 성공 {ok} · 실패 {fail}",
-            ProcessedCount = ok,
-            VaultFormat = LabVaultService.FormatId
+            Success = true,
+            Message = secureDeleteSource
+                ? $"폴더 「{rootName}」 {imported}개 파일을 금고에 보관하고 원본을 보안 삭제했습니다."
+                : $"폴더 「{rootName}」 가져오기 완료 · 성공 {imported}",
+            ProcessedCount = imported,
+            VaultFormat = LabVaultService.FormatIdV5
         };
     }
-
     public Task<SecureVaultOperationResult> ExportEntryAsync(string entryId, string destination, bool stepUpConfirmed = false)
     {
         EnsureUnlocked();
