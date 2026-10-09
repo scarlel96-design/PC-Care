@@ -1253,10 +1253,10 @@ public sealed class SystemCareService
     private static bool TryQuarantineFile(string source, string quarantine, string auditFolder)
     {
         var name = Path.GetFileName(source);
-        var dest = Path.Combine(quarantine, $"{DateTimeOffset.Now:HHmmss}_{name}");
+        var dest = Path.Combine(quarantine, $"{Guid.NewGuid():N}_{name}");
         Directory.CreateDirectory(quarantine);
-        File.Move(source, dest, true);
         CareRollbackService.RecordQuarantine(auditFolder, source, dest);
+        File.Move(source, dest, overwrite: false);
         return true;
     }
 

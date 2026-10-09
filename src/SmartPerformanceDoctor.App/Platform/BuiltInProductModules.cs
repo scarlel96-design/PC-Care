@@ -68,7 +68,7 @@ internal sealed class SecurityProductModule : IProductModule
             InstallFeatureId: InstallFeatureIds.SecureVault),
         new("security.delete", "보안 삭제", "복구하기 어렵도록 안전하게 삭제", "⌫", ProductArea.Security, typeof(SecureDeleteCenterPage), 220,
             InstallFeatureId: InstallFeatureIds.ProfessionalSecureDelete),
-        new("security.purge-prep", "장치 PURGE 준비", "장치 Sanitize 지원과 안전 조건을 읽기 전용으로 검증", "▣", ProductArea.Security, typeof(DevicePurgeCenterPage), 225, true,
+        new("security.purge-prep", "장치 PURGE 준비", "장치 Sanitize 지원과 안전 조건을 읽기 전용으로 검증", "▣", ProductArea.Security, typeof(DevicePurgeCenterPage), 225,
             SearchTerms: ["purge", "장치 삭제", "nvme", "sanitize", "디스크 검증"])
     ];
 

@@ -4,6 +4,7 @@ using Xunit;
 
 namespace SmartPerformanceDoctor.Tests;
 
+[Collection("VaultEnvironment")]
 public sealed class LabVaultHeaderAuthenticationTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "spd-vault-header-auth-" + Guid.NewGuid().ToString("N"));

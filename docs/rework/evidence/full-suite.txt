@@ -1,0 +1,1111 @@
+빌드 시작: 2026-10-09 오후 1:32:40
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Debug\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.13]   Discovering: SmartPerformanceDoctor.Tests
+[xUnit.net 00:00:00.25]   Discovered:  SmartPerformanceDoctor.Tests
+[xUnit.net 00:00:00.34]   Starting:    SmartPerformanceDoctor.Tests
+[xUnit.net 00:00:00.39]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:00.39]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:00.40]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_StabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:00.40]       50.4.0 production GO: stability matrix under pre-enable rules superseded
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_StabilityRepeat_Skipped [1 ms]
+  통과 SmartPerformanceDoctor.Tests.PendingUpdateLaunchPolicyTests.NormalStartup_DoesNotAutomaticallyFinalizePendingUpdate(value: "0") [32 ms]
+  통과 SmartPerformanceDoctor.Tests.NvmeIdentifyReadOnlyEvidenceTests.TruncatedIdentifyResponse_IsRejectedAsEvidence [32 ms]
+  통과 SmartPerformanceDoctor.Tests.NvmeCommandEffectsReadOnlyEvidenceTests.TruncatedEffectsLog_IsNotAccepted [31 ms]
+  통과 SmartPerformanceDoctor.Tests.ServiceMigrationE2eTests.Service_migration_registers_PCCareAegisRecovery [38 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_HybridPolicy_Signed [36 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_Downgrade_StabilityReconfirmed(_: 1) [31 ms]
+  통과 SmartPerformanceDoctor.Tests.InstallLifecycleLayoutTests.Minimal_layout_excludes_rules_pack_paths [36 ms]
+  통과 SmartPerformanceDoctor.Tests.SecureVaultPathHelperTests.LooksLikeEncryptedRelativePath_DetectsPipeSeparatedBlob [32 ms]
+  통과 SmartPerformanceDoctor.Tests.FeatureInstallMapperTests.Minimal_install_skips_optional_engine_and_pack_files [36 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseBTests.Locator_Rejects_UnsupportedCipherSuite [35 ms]
+[xUnit.net 00:00:00.44]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_TrustedAnchorSignoff_PreflightEvidenceCurrent [SKIP]
+[xUnit.net 00:00:00.44]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionAnchorStillPartial [31 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_TrustedAnchorSignoff_PreflightEvidenceCurrent [1 ms]
+  통과 SmartPerformanceDoctor.Tests.PendingUpdateLaunchPolicyTests.NormalStartup_DoesNotAutomaticallyFinalizePendingUpdate(value: "false") [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.PendingUpdateLaunchPolicyTests.NormalStartup_DoesNotAutomaticallyFinalizePendingUpdate(value: null) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.PendingUpdateLaunchPolicyTests.NormalStartup_DoesNotAutomaticallyFinalizePendingUpdate(value: "yes") [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_Downgrade_StabilityReconfirmed(_: 3) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.PendingUpdateLaunchPolicyTests.NormalStartup_DoesNotAutomaticallyFinalizePendingUpdate(value: "") [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_Downgrade_StabilityReconfirmed(_: 2) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.PendingUpdateLaunchPolicyTests.ExplicitHandoff_AllowsPendingUpdateFinalize(value: "1") [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseBTests.Locator_Rejects_WrongSize [1 ms]
+  통과 SmartPerformanceDoctor.Tests.PendingUpdateLaunchPolicyTests.ExplicitHandoff_AllowsPendingUpdateFinalize(value: "true") [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.PendingUpdateLaunchPolicyTests.ExplicitHandoff_AllowsPendingUpdateFinalize(value: "TRUE") [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.FeatureInstallMapperTests.Knowledge_pack_enables_commercial_rule_and_protocol_files [1 ms]
+[xUnit.net 00:00:00.45]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:00.45]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:00.45]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:00.45]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.InstallLifecycleLayoutTests.Recommended_layout_includes_knowledge_pack_paths [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_NoSecretLeak_ReportManifestTrace [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SClassStillNotSatisfied [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseBTests.KdfDescriptor_Rejects_UnsupportedAlgorithm [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SameDiskAnchorCannotCloseFullRollback [3 ms]
+[xUnit.net 00:00:00.45]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_DiskDurabilityStillOpen [SKIP]
+[xUnit.net 00:00:00.45]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:00.45]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:00.45]       50.4.0 production GO: pre-enable assertion superseded
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_DiskDurabilityStillOpen [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SpdVaultUnchanged_NoMigration [1 ms]
+  통과 SmartPerformanceDoctor.Tests.SecureVaultPathHelperTests.TryDeriveRelativeFromOriginal_ReturnsRelativePath [3 ms]
+  통과 SmartPerformanceDoctor.Tests.LabVaultCryptoHardeningTests.Concealed_v2_padding_round_trips_and_has_its_own_format_magic [43 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_MachineLocalCandidate_SignedButPartial [1 ms]
+  통과 SmartPerformanceDoctor.Tests.LabVaultCryptoHardeningTests.Unpadded_4096_byte_payload_is_never_mistaken_for_legacy_padding [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.ProductCatalogTests.Register_RejectsDuplicateModuleIds [44 ms]
+  통과 SmartPerformanceDoctor.Tests.SecureVaultPathHelperTests.CombineUnderRoot_BuildsNestedPath [2 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProviderContract_Locked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.LabVaultCryptoHardeningTests.Oversized_kdf_parameters_are_rejected_before_argon_allocation [1 ms]
+  통과 SmartPerformanceDoctor.Tests.SecureVaultPathHelperTests.CombineUnderRoot_BlocksTraversal [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_NextPhase_DiskDurabilityReview [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.SecureVaultPathHelperTests.NormalizeRelative_RejectsEncryptedBlob [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.LabVaultCryptoHardeningTests.Invalid_chunk_counts_fail_closed(count: 0) [1 ms]
+  통과 SmartPerformanceDoctor.Tests.LabVaultCryptoHardeningTests.Invalid_chunk_counts_fail_closed(count: -1) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.NvmeCommandEffectsReadOnlyEvidenceTests.CrossCheck_RejectsEffectsEvidenceForDifferentDevice [12 ms]
+  통과 SmartPerformanceDoctor.Tests.NvmeCommandEffectsReadOnlyEvidenceTests.SanitizeOpcodeSupport_IsReadFromAdminEffectsEntry [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_Vector_Stability_x3(_: 2) [15 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_Vector_Stability_x3(_: 3) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.NvmeCommandEffectsReadOnlyEvidenceTests.CrossCheck_RequiresBothFreshReportsForSameDevice [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_Vector_Stability_x3(_: 1) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_NoSecretLeak [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24_TamperedCiphertext_Rejected [14 ms]
+  통과 SmartPerformanceDoctor.Tests.NvmeSanitizeStatusReadOnlyEvidenceTests.StatusCodes_AreNotCollapsed(code: 4, expected: SucceededWithForcedDeallocation) [11 ms]
+  통과 SmartPerformanceDoctor.Tests.FeatureInstallMapperTests.GetSkippedPaths_reports_only_blocked_optional_files [20 ms]
+  통과 SmartPerformanceDoctor.Tests.NvmeSanitizeStatusReadOnlyEvidenceTests.StatusCodes_AreNotCollapsed(code: 3, expected: Failed) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.NvmeSanitizeStatusReadOnlyEvidenceTests.StatusCodes_AreNotCollapsed(code: 1, expected: Succeeded) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.NvmeSanitizeStatusReadOnlyEvidenceTests.StatusCodes_AreNotCollapsed(code: 0, expected: NeverSanitized) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.NvmeSanitizeStatusReadOnlyEvidenceTests.TruncatedStatusLog_IsRejected [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.NvmeIdentifyReadOnlyEvidenceTests.MissingSanicapSupport_IsExplicitlyUnsupportedNotGuessed [24 ms]
+  통과 SmartPerformanceDoctor.Tests.NvmeIdentifyReadOnlyEvidenceTests.SanicapBits_AreParsedAndBoundToSamePhysicalDevice [2 ms]
+  통과 SmartPerformanceDoctor.Tests.ProductCatalogTests.DefaultCatalog_HasUniqueFeatureAndEngineIds [25 ms]
+  통과 SmartPerformanceDoctor.Tests.NvmeSanitizeStatusReadOnlyEvidenceTests.InProgressStatus_ReportsProgressAndIsNonExecutable [10 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_SecurityDocs_Exist(relativePath: "docs/security/ASTRA_VAULT_WRITER_ENABLE_DECISION_R"···) [2 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_SecurityDocs_Exist(relativePath: "docs/security/ASTRA_VAULT_HARDENING_PLAN.md") [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_SecurityDocs_Exist(relativePath: "docs/security/ASTRA_VAULT_PRODUCTION_WRITER_DESIGN"···) [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_SecurityDocs_Exist(relativePath: "docs/security/ASTRA_VAULT_WRITER_ENABLE_CHECKLIST."···) [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_SecurityDocs_Exist(relativePath: "docs/security/ASTRA_VAULT_WRITER_GATE.md") [4 ms]
+  통과 SmartPerformanceDoctor.Tests.NvmeIdentifyReadOnlyEvidenceTests.IdentifyEvidence_ForDifferentDeviceCannotUpgradeReadiness [16 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_SecurityDocs_Exist(relativePath: "docs/security/ASTRA_VAULT_GAP_REPORT.md") [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_SecurityDocs_Exist(relativePath: "docs/security/ASTRA_VAULT_PHASE_STATUS.md") [9 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_SecurityDocs_Exist(relativePath: "docs/security/ASTRA_VAULT_DATA_LOSS_RISK_REGISTER."···) [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_StaleTempFile_RecoveredOrClassifiedNoMutation [26 ms]
+  통과 SmartPerformanceDoctor.Tests.RepairPlanMapperTests.BuildPlan_ReturnsEmpty_WhenHealthyAndOnlyWhenIssues [26 ms]
+  통과 SmartPerformanceDoctor.Tests.StorageSanitizerDryRunTests.DataDisk_ProducesIdentityAndKeepsExecutionDisabled [28 ms]
+  통과 SmartPerformanceDoctor.Tests.RepairPlanMapperTests.BuildPlan_ReturnsAudioActions_ForAudioScope [21 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_AccessDenied_NotCommitted [22 ms]
+  통과 SmartPerformanceDoctor.Tests.RepairPlanMapperTests.BuildPlan_ReturnsDriverActions_ForDriverScope [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DurabilityHarness_RejectsUserVaultPath [2 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Security_AstraVaultHostService_NoCommitWriterReferences [39 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_ExternalWitness_CounterHigher_RollbackSuspected [76 ms]
+[xUnit.net 00:00:00.52]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityReview_PreflightEvidenceCurrent [SKIP]
+[xUnit.net 00:00:00.52]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:00.54]       Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:00.54]       Expected: 5
+[xUnit.net 00:00:00.54]       Actual:   6
+[xUnit.net 00:00:00.54]       Stack Trace:
+[xUnit.net 00:00:00.54]     SmartPerformanceDoctor.Tests.ProductCatalogTests.DefaultCatalog_ExposesFivePrimaryProductAreas [FAIL]
+[xUnit.net 00:00:00.55]         C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\ProductCatalogTests.cs(16,0): at SmartPerformanceDoctor.Tests.ProductCatalogTests.DefaultCatalog_ExposesFivePrimaryProductAreas()
+[xUnit.net 00:00:00.55]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:00.55]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_PublicError_Redacted [10 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_ProductionEnableAuthorizedFalse [< 1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityReview_PreflightEvidenceCurrent [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DurabilityHarness_RejectsDocumentsDesktopDownloads(folder: UserProfile) [< 1 ms]
+  실패 SmartPerformanceDoctor.Tests.ProductCatalogTests.DefaultCatalog_ExposesFivePrimaryProductAreas [6 ms]
+  오류 메시지:
+   Assert.Equal() Failure: Values differ
+Expected: 5
+Actual:   6
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.ProductCatalogTests.DefaultCatalog_ExposesFivePrimaryProductAreas() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\ProductCatalogTests.cs:line 16
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DurabilityHarness_RejectsDocumentsDesktopDownloads(folder: Desktop) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DurabilityHarness_RejectsDocumentsDesktopDownloads(folder: MyDocuments) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.ProductCatalogTests.Register_RejectsDuplicateFeatureIdsAcrossModules [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.SpdVault_OnDisk_NoE6MigrationTypes [20 ms]
+  통과 SmartPerformanceDoctor.Tests.StoragePurgeAttestationBundleTests.Attestation_IsTamperEvidentAndNeverExecutable [195 ms]
+  통과 SmartPerformanceDoctor.Tests.StorageSanitizerDryRunTests.Evidence_IsLocallyTamperEvidentAndNeverEnablesExecution [192 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureFailFlush") [289 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_CancellationDuringAnchorCommit_NoPromotion [229 ms]
+[xUnit.net 00:00:00.83]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:00.83]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_TrustedAnchorProvider_HarnessRequiresAv3E13TempRoot [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_ExternalWitness_CounterLower_StaleWitness [18 ms]
+  통과 SmartPerformanceDoctor.Tests.StorageSanitizerDryRunTests.WinPePreparation_IsNonExecutableAndRequiresFreshHardwareChecks [116 ms]
+  통과 SmartPerformanceDoctor.Tests.StorageSanitizerDryRunTests.Authorization_BindsOneTimePhraseToTheSamePhysicalDisk [1 ms]
+  통과 SmartPerformanceDoctor.Tests.StorageSanitizerDryRunTests.Authorization_RejectsDeviceSwap [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.StorageSanitizerDryRunTests.BootDisk_IsBlockedAndRequiresWinPe [2 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_ExternalWitness_ReplayRejected [51 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_CleanupFailureAfterAnchorPrepare_NoPromotion [9 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SpdVaultUnchanged_NoMigration [1 ms]
+[xUnit.net 00:00:00.84]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_FullRollbackMatrix_StabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:00.84]       50.4.0 production GO: stability matrix under pre-enable rules superseded
+[xUnit.net 00:00:01.09]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:01.09]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:01.10]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionRouteDenied [SKIP]
+[xUnit.net 00:00:01.10]       50.4.0 production GO: disable-matrix superseded
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_FullRollbackMatrix_StabilityRepeat_Skipped [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ServiceUiImportExportNoWiring [650 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_DowngradeProtectionClosed [2 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_EnableFlagsRemainFalse [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionEnableAuthorizedFalse [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_VectorPackageComplete [2 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionRouteDenied [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_DowngradeMixed_Stability_x3(_: 1) [2 ms]
+[xUnit.net 00:00:01.11]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ReadOnlyValidatorComplete [SKIP]
+[xUnit.net 00:00:01.12]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:01.12]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:01.12]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:01.12]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_PreflightEvidenceCurrent [SKIP]
+[xUnit.net 00:00:01.12]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_DowngradeMixed_Stability_x3(_: 3) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_DowngradeMixed_Stability_x3(_: 2) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_GoldenVectors_LockedUnchanged [15 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ReadOnlyValidatorComplete [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ExternalReviewCompletedCodeFalse [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_CryptoInvariantPass [< 1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_PreflightEvidenceCurrent [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_NextBlockersRemainOpen [1 ms]
+[xUnit.net 00:00:01.12]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SpdVaultUnchangedNoMigration [SKIP]
+[xUnit.net 00:00:01.12]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:01.18]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_HarnessProvider_Signed [SKIP]
+[xUnit.net 00:00:01.18]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:01.18]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionAnchorImplemented_RemainsFalse [SKIP]
+[xUnit.net 00:00:01.18]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:01.18]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:01.18]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:01.18]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionEnableAuthorized_RemainsFalse [SKIP]
+[xUnit.net 00:00:01.18]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:01.18]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_XChaCha24Implemented_RemainsFalseSignedCandidate [SKIP]
+[xUnit.net 00:00:01.18]       50.4.0 production GO: pre-enable assertion superseded
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SpdVaultUnchangedNoMigration [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ServiceUiImportExport_NoTrustedAnchorOrWriterWiring [748 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_ServiceUiImportExport_NoWriterWiring [654 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_HarnessProvider_Signed [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionAnchorImplemented_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionEnableAuthorized_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_XChaCha24Implemented_RemainsFalseSignedCandidate [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_XChaCha24ImplementedFalse [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_ProductionAnchorImplementedFalse [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_ConcurrentSameRootTrustedAnchor_Denied [347 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DurabilityPolicy_NetworkShare_NoProductionWriter [12 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DurabilityPolicy_UnknownFilesystem_FailClosed [2 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_PowerLossAfterHeaderBeforeRevalidation_RecoveryRequired [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_NoSecretLeak_ReportManifestTrace [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_NextBlockersRemainOpen [2 ms]
+[xUnit.net 00:00:01.20]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:01.20]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:01.20]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+[xUnit.net 00:00:01.20]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:01.20]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalWitnessStub_SignedButNotProductionLive [SKIP]
+[xUnit.net 00:00:01.21]       50.4.0 production GO: pre-enable assertion superseded
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SClassStillNotSatisfied [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_FullVaultRollbackCoverage_HarnessClosedProductionPartial [25 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalWitnessStub_SignedButNotProductionLive [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_PowerLossBeforeHeader_NoTrustedPromotion [44 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_CleanupFailure_NoTrustedPromotion [2 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DurabilityPolicy_RemovableDrive_Restricted [4 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_WriteFlushReread_Pass [50 ms]
+[xUnit.net 00:00:01.31]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:01.31]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DocumentationConsistency_MandatoryStatements [6 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SpdVaultUnchanged_NoMigration [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_ExternalReviewCompletedCodeFalse [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DurabilityPolicy_NtfsFixedDisk_Candidate [2 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SurpriseRemoval_RecoveryRequired [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.E9_ServiceHostViewModel_NoCommitOrDryRunWiring [882 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DirectorySyncUnsupported_Classified [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_FileLock_RetryThenClassify [1 ms]
+[xUnit.net 00:00:01.34]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityInvariant_StabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:01.34]       50.4.0 production GO: stability matrix under pre-enable rules superseded
+[xUnit.net 00:00:01.37]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:01.37]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_OutOfSpace_NotCommitted [14 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DurabilityHarness_RequiresAv3E14TempRoot [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DurabilityPolicy_CloudSyncPath_NoProductionWriter [< 1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityInvariant_StabilityRepeat_Skipped [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_ProductionEnableAuthorizedFalse [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_RenameReplaceSemantics_Pass [27 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_EnableFlagsRemainFalse [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.E9_ViewModel_NoProductionWriterInterface [62 ms]
+[xUnit.net 00:00:01.38]     SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse [SKIP]
+[xUnit.net 00:00:01.38]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.E9_PackageReady_DoesNotImplyReviewCompleted [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.E9_DryRunScope_RequiresE8OrHarnessPrefix [< 1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.E9_DryRunManifest_PublicJson_NoForbiddenTokens [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.StoragePurgeReadOnlyInspectionTests.SwappedOrExpiredInspection_IsNotAcceptedAsCurrentEvidence [3 ms]
+  통과 SmartPerformanceDoctor.Tests.StoragePurgeReadOnlyInspectionTests.FailedInspection_CannotBecomeFresh [1 ms]
+  통과 SmartPerformanceDoctor.Tests.StoragePurgeReadOnlyInspectionTests.VerifiedInspection_IsTimeBoundAndRemainsNonExecutable [2 ms]
+  통과 SmartPerformanceDoctor.Tests.PathPickerAndSecureDeleteTests.PathSafetyGuard_BlocksNetworkDeviceAndProgramDataPaths [< 1 ms]
+[xUnit.net 00:00:01.44]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_NonHarnessCommitSession_Blocked [SKIP]
+[xUnit.net 00:00:01.44]       50.4.0 production GO: disable-matrix superseded
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_NonHarnessCommitSession_Blocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.PathPickerAndSecureDeleteTests.PathPickerService_MapsPreCancelledTokenToCancelledResult [19 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_TrustedGeneration_UncommittedNewGenOpen_Violation [8 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_ServiceUiImportExport_NoTrustedAnchorOrWriterWiring [274 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_ExternalReviewCompletedCodeFalse [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.PathPickerAndSecureDeleteTests.SecureDeleteTargetSet_RejectsMissingAndProtectedTargets [21 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_AnchorCommitSuccess_HeaderCommitFailed_RecoveryRequired [3 ms]
+  통과 SmartPerformanceDoctor.Tests.PathPickerAndSecureDeleteTests.PickerResult_DistinguishesSuccessCancellationAndFailure [28 ms]
+  통과 SmartPerformanceDoctor.Tests.PathPickerAndSecureDeleteTests.PickerOperationGate_RejectsRepeatedEntryAndRecoversAfterExit [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_ExternalWitness_ServerUnavailable_NoProductionEnable [51 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_ExternalWitness_DigestMismatch_RollbackSuspected [57 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_TrustedGeneration_Cancelled_PreservesPrevious [128 ms]
+  통과 SmartPerformanceDoctor.Tests.PathPickerAndSecureDeleteTests.PathPickerService_ReportsFailureWhenOwnerWindowIsMissing [101 ms]
+[xUnit.net 00:00:01.61]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:01.61]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:01.61]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:01.61]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_RepairClassifier_NoStorageMutation(recovery: NewGenerationOpen) [10 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorGenerationEqual_Pass [179 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_EnableFlagsRemainFalse [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_RepairClassifier_NoStorageMutation(recovery: UnknownFailClosed) [6 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_RepairClassifier_NoStorageMutation(recovery: RollbackSuspected) [5 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_RepairClassifier_NoStorageMutation(recovery: RecoveryRequired) [7 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_RepairClassifier_NoStorageMutation(recovery: PreviousGenerationOpen) [5 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_RepairClassifier_NoStorageMutation(recovery: CorruptBlocked) [8 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_RepairClassifier_NoStorageMutation(recovery: Aborted) [4 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_RepairClassifier_NoStorageMutation(recovery: RedundancyDegraded) [5 ms]
+  통과 SmartPerformanceDoctor.Tests.PathPickerAndSecureDeleteTests.SecureDeleteTargetSet_NormalizesDuplicatesAndCollapsesChildrenIntoParent [53 ms]
+  통과 SmartPerformanceDoctor.Tests.PathPickerAndSecureDeleteTests.VaultImportValidator_ValidatesTypesAndRejectsReparsePointsWhenAvailable [76 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_SecurityDocs_Exist(relativePath: "docs/security/ASTRA_VAULT_PRODUCTION_WRITER_DESIGN"···) [2 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_SecurityDocs_Exist(relativePath: "docs/security/ASTRA_VAULT_ANCHOR_MODEL.md") [2 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_SecurityDocs_Exist(relativePath: "docs/security/ASTRA_VAULT_PRODUCTION_WRITER_REVIEW"···) [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_SecurityDocs_Exist(relativePath: "docs/security/ASTRA_VAULT_EXTERNAL_REVIEW_BRIEF.md") [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_SecurityDocs_Exist(relativePath: "docs/security/ASTRA_VAULT_XCHACHA24_MIGRATION_PLAN"···) [2 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_SecurityDocs_Exist(relativePath: "docs/security/ASTRA_VAULT_WRITER_ENABLE_DECISION_R"···) [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_SecurityDocs_Exist(relativePath: "docs/security/ASTRA_VAULT_REVIEW_QUESTIONNAIRE.md") [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_NoProductionServiceUiWriterTypes [8 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_WriterDesign_Interfaces_Present_NoImplementations [1 ms]
+  통과 SmartPerformanceDoctor.Tests.KnowledgeDatabaseTests.RecordsDiagnosticRunAndSummary [464 ms]
+  통과 SmartPerformanceDoctor.Tests.PathPickerAndSecureDeleteTests.SecureVaultTreeBuilder_ShowsFolderRootsAndKeepsFilesAsFiles [120 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.Security_ViewModel_NoWriterEnableUiClaims [20 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorDigestMismatch_RollbackSuspected [268 ms]
+  통과 SmartPerformanceDoctor.Tests.WinPeStoragePurgeExecutorTests.BootOrSystemDisk_NeverDispatches [32 ms]
+  통과 SmartPerformanceDoctor.Tests.WinPeStoragePurgeExecutorTests.MismatchedPostDispatchStatus_IsNeverReportedAsCompleted [14 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_IndependentRootsTrustedAnchor_NoInterference [343 ms]
+  통과 SmartPerformanceDoctor.Tests.WinPeStoragePurgeExecutorTests.FailedControllerStatus_IsReportedAfterDispatch [19 ms]
+  통과 SmartPerformanceDoctor.Tests.WinPeStoragePurgeExecutorTests.EligibleWinPeCryptoErase_DispatchesOnlyThroughInjectedTransport [3 ms]
+  통과 SmartPerformanceDoctor.Tests.KnowledgeDatabaseTests.UpsertRulePersistsRegistry [103 ms]
+  통과 SmartPerformanceDoctor.Tests.WinPeStoragePurgeExecutorTests.NonWinPe_NeverDispatches [4 ms]
+  통과 SmartPerformanceDoctor.Tests.WinPeStoragePurgeExecutorTests.UnsupportedOverwriteMethod_NeverDispatches [4 ms]
+  통과 SmartPerformanceDoctor.Tests.WinPeStoragePurgeExecutorTests.InvalidConfirmation_NeverDispatches [3 ms]
+  통과 SmartPerformanceDoctor.Tests.WinPeStoragePurgeExecutorTests.VolumeLockFailure_NeverDispatches [11 ms]
+[xUnit.net 00:00:01.98]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:01.98]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:02.02]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_DecisionRecord_NotProductionEnable [SKIP]
+[xUnit.net 00:00:02.02]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_HeaderCommitSuccess_AnchorCommitFailed_NotCommitted [47 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_TrustedAnchorProvider_RejectsUserVaultPath [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_NoSecretLeak_ReportManifestTrace [< 1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_EnableFlagsRemainFalse [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_MachineBindingMismatch_RecoveryRequired [3 ms]
+  통과 SmartPerformanceDoctor.Tests.WinPeStoragePurgeExecutorTests.NativeDispatchError_IsRecordedAsSubmissionUncertain [14 ms]
+  통과 SmartPerformanceDoctor.Tests.WinPeStoragePurgeExecutorTests.MissingOneTimeAuthorization_NeverDispatches [3 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_DecisionRecord_NotProductionEnable [1 ms]
+[xUnit.net 00:00:02.06]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:02.06]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_ExternalWitness_SignatureInvalid_Rejected [58 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_OfflineMode_NoWriterPromotion [13 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_PublicError_Redacted [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SameDiskAnchorRollbackTogether_NotClosed [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_FullVaultRollback_WithExternalWitness_Detected [5 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SClassStillNotSatisfied [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_E10Checklist_ContainsRemainingBlockers [42 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_ExternalWitness_CounterEqual_Pass [6 ms]
+[xUnit.net 00:00:02.10]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:02.10]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:02.10]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:02.10]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_TrustedAnchorProvider_NullProvider_FailClosed [2 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorGenerationLower_StaleAnchorClassified [154 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorHarness_RejectsUserVaultPath [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_NextBlockersRemainOpen [11 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_NoSClassOrProductionReadyClaims [39 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_EnableFlagsRemainFalse [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.Security_AppAssembly_NoWriterDesignReferences [441 ms]
+[xUnit.net 00:00:02.30]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_AnchorDesign_NotImplemented [SKIP]
+[xUnit.net 00:00:02.30]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:02.30]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable [SKIP]
+[xUnit.net 00:00:02.30]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:02.30]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.PhaseGate_E5_ProductionWriterDesign_NotWriterEnable [SKIP]
+[xUnit.net 00:00:02.30]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:02.38]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_M01M02Closed_CurrentEvidenceConsistent [SKIP]
+[xUnit.net 00:00:02.38]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.SecretNonLeakPass_BackingTests_ExistInE4Fixture [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_AnchorDesign_NotImplemented [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.PhaseGate_E5_ProductionWriterDesign_NotWriterEnable [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.Security_SecureVaultService_NoWriterDesignReferences [2 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.SecretNonLeakPass_LinkedToHarnessGates [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.Security_AstraVaultHostService_NoWriterDesignReferences [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_ServiceUiImportExport_NoWriterOrDryRunWiring [280 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_M01M02Closed_CurrentEvidenceConsistent [1 ms]
+[xUnit.net 00:00:02.39]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_ExternalReviewCompletedCodeRemainsFalse [SKIP]
+[xUnit.net 00:00:02.39]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:02.45]     SmartPerformanceDoctor.Tests.Av3PhaseGateTests.PhaseGate_E0_DesignLocks_MatchDocumentedGate [SKIP]
+[xUnit.net 00:00:02.45]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:02.45]     SmartPerformanceDoctor.Tests.Av3PhaseGateTests.PhaseGate_ProductionWriter_RemainsDisabled [SKIP]
+[xUnit.net 00:00:02.45]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:02.46]     SmartPerformanceDoctor.Tests.Av3PhaseGateTests.PhaseGate_JournalWriter_RemainsDisabled [SKIP]
+[xUnit.net 00:00:02.46]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:02.46]     SmartPerformanceDoctor.Tests.Av3PhaseGateTests.PhaseGate_Migration_RemainsDisabled [SKIP]
+[xUnit.net 00:00:02.46]       50.4.0 production GO: disable-matrix superseded
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_ExternalReviewCompletedCodeRemainsFalse [1 ms]
+  통과 SmartPerformanceDoctor.Tests.ReportStoreTests.LoadRecentReports_IncludesSystemCareAndUnifiedCareAuditReports [892 ms]
+  통과 SmartPerformanceDoctor.Tests.KnowledgeDatabaseTests.LearningWeightIncreasesOnSuccessfulRepair [502 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseGateTests.PhaseGate_E0_DesignLocks_MatchDocumentedGate [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseGateTests.PhaseGate_ProductionWriter_RemainsDisabled [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseGateTests.PhaseGate_WriterGateDocuments_PresentInRepo [5 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseGateTests.PhaseGate_JournalWriter_RemainsDisabled [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseGateTests.PhaseGate_Migration_RemainsDisabled [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseGateTests.PhaseGate_NoProductionWriterTypes_InAstraVaultAssembly [7 ms]
+[xUnit.net 00:00:02.60]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorStabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:02.60]       50.4.0 production GO: stability matrix under pre-enable rules superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseGateTests.PhaseGate_ReadOnlyValidation_RemainsEnabled [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_IndependentRoots_NoInterference [428 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_CleanupFailure_DoesNotPromoteAnchor [41 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorPublicError_Redacted [2 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorInvariants_LinkedToWriterGates [< 1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorStabilityRepeat_Skipped [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_Cancellation_DoesNotPromoteAnchor [62 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_NextBlockersRemainOpen [11 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorGenerationHigher_RollbackSuspected [2 s]
+[xUnit.net 00:00:05.14]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:05.14]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:05.78]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_ProductionWriterGate_RemainsFalse [SKIP]
+[xUnit.net 00:00:05.78]       50.4.0 production GO: pre-enable assertion superseded
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SpdVaultUnchanged_NoMigration [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorHarness_RequiresIsolatedTempRoot [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_HeaderCommitFailure_DoesNotPromoteAnchor [40 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: Locator, mode: TrailingGarbageAppend) [5 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_SuccessfulHarnessRun_NewGenerationOpen [5 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Journal_DescriptorRoundTrip_ValidatorPass [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_ProductionWriterGate_RemainsFalse [1 ms]
+[xUnit.net 00:00:05.95]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Implemented_RemainsFalseUntilSignoff [SKIP]
+[xUnit.net 00:00:05.95]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NoPlaintextLeakInTrace [10 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Recovery_RollbackSuspected_Classified [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_FaultedCommit_ReleasesLease [5 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_DryRun_XChaCha24Fixture_Revalidated [5 s]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Implemented_RemainsFalseUntilSignoff [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_ServiceUiImportExport_NoAnchorOrWriterWiring [908 ms]
+[xUnit.net 00:00:06.62]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionAnchorImplemented_RemainsFalse [SKIP]
+[xUnit.net 00:00:06.62]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorHarness_RejectsDocumentsDesktopDownloads [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.AegisMirrorTests.Baseline_manifest_roundtrip_succeeds [5 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ServiceUiImportExport_NoCryptoWriterWiring [670 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionAnchorImplemented_RemainsFalse [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Vector_StabilityReconfirmed(_: 2) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Vector_StabilityReconfirmed(_: 1) [15 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Vector_StabilityReconfirmed(_: 3) [< 1 ms]
+[xUnit.net 00:00:06.66]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:06.72]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:06.75]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ReadOnlyValidator_XChaCha24_Pass [SKIP]
+[xUnit.net 00:00:06.75]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:06.77]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionEnableAuthorized_RemainsFalse [SKIP]
+[xUnit.net 00:00:06.77]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24_WrongAad_Rejected [2 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SpdVaultUnchanged_NoMigration [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24_DowngradeAttempt_Rejected [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24_Vector_MetadataRoot_Pass [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24_WrongNonce_Rejected [11 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24_Vector_ActivationPayload_Pass [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ReadOnlyValidator_XChaCha24_Pass [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24_MixedAlgorithmChain_Rejected [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionEnableAuthorized_RemainsFalse [1 ms]
+[xUnit.net 00:00:06.78]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+[xUnit.net 00:00:06.78]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24_WrongKey_Rejected [11 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_NextBlockersRemainOpen [10 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24_TamperedTag_Rejected [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_CryptoPublicError_Redacted [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorGenesis_NoPriorAnchor_Verifies [632 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorUpdateFailure_NotCommitted [103 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_RereadFailure_NotCommitted [6 s]
+[xUnit.net 00:00:07.01]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.JournalRecorder_ProductionRoute_Fails_WhenJournalDisabled [SKIP]
+[xUnit.net 00:00:07.01]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:07.03]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.PhaseGate_E6_DisabledProductionWriter_NotAuthorized [SKIP]
+[xUnit.net 00:00:07.03]       50.4.0 production GO: pre-enable assertion superseded
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.JournalRecorder_ProductionRoute_Fails_WhenJournalDisabled [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.PhaseGate_E6_DisabledProductionWriter_NotAuthorized [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureHeaderOneCopy") [6 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_ConcurrentSameRootAnchor_Denied [590 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_ConflictingAuthenticatedCurrentCopy_Reject [6 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_TrustedGeneration_CleanupFailed_NoPromotion [6 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_AppHostViewModel_NoCommitWriter [21 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: ObjectPlaceholder, mode: Truncation) [4 s]
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_MetadataRootAad_StableAgainstProductionBuilder [31 ms]
+[xUnit.net 00:00:10.22]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_DecisionGate_NotProductionEnable [SKIP]
+[xUnit.net 00:00:10.22]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:10.24]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenAnchorMissing [SKIP]
+[xUnit.net 00:00:10.24]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:10.24]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ExternalReviewCompletedCodeRemainsFalse [SKIP]
+[xUnit.net 00:00:10.24]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:10.24]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:10.25]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:10.28]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenXChaCha24Missing [SKIP]
+[xUnit.net 00:00:10.28]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:10.28]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenSClassUnsatisfied [SKIP]
+[xUnit.net 00:00:10.28]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_MetadataVectorHashes_MatchManifest [22 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_DecisionGate_NotProductionEnable [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenAnchorMissing [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ExternalReviewCompletedCodeRemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_EnableFlagsRemainFalse [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_NextPhase_BlockerClosureRequired [58 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenXChaCha24Missing [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenSClassUnsatisfied [1 ms]
+[xUnit.net 00:00:10.28]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:10.29]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:10.30]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ProductionWriterStillNotAuthorized [SKIP]
+[xUnit.net 00:00:10.30]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:10.37]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Recovery_EqualGenerationConflictingRoot_CorruptBlocked [SKIP]
+[xUnit.net 00:00:10.37]       50.4.0 production GO: disable-matrix superseded
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ProductionWriterStillNotAuthorized [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_RereadFailure_NotCommitted [4 s]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Recovery_EqualGenerationConflictingRoot_CorruptBlocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.StoragePurgePreExecutionGateTests.InProgressSanitize_AlwaysBlocksFutureExecutor [39 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseBTests.ReadOnlyUnlock_Succeeds_WithValidVector [10 s]
+  통과 SmartPerformanceDoctor.Tests.StoragePurgePreExecutionGateTests.StaleOrSwappedEvidence_AlwaysBlocksFutureExecutor [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.StoragePurgePreExecutionGateTests.MissingWinPeOrAuthorization_AlwaysBlocksFutureExecutor [1 ms]
+  통과 SmartPerformanceDoctor.Tests.StoragePurgePreExecutionGateTests.CompleteEvidence_IsOnlyEligibleForFutureExecutor [14 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseBTests.Locator_Preserves_MinorVersion [37 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseBTests.Locator_RoundTrip_HeaderOffsets [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseBTests.Locator_Rejects_UnknownMajorVersion [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.AegisMirrorTests.Offline_capsule_export_import_roundtrip [4 s]
+  통과 SmartPerformanceDoctor.Tests.AegisMirrorTests.Audit_chain_appends_and_verifies [200 ms]
+[xUnit.net 00:00:11.13]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_Preflight_CurrentEvidenceSourceOfTruthMatchesActual [SKIP]
+[xUnit.net 00:00:11.13]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:11.18]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenActualDiskDurabilityMissing [SKIP]
+[xUnit.net 00:00:11.18]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ServiceUiImportExport_NoWriterOrDryRunWiring [835 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_NamedSignoffRecord_PreparedHumanSignoffPending [7 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_Preflight_CurrentEvidenceSourceOfTruthMatchesActual [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_NoSClassOrProductionReadyClaims [45 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenActualDiskDurabilityMissing [1 ms]
+  통과 SmartPerformanceDoctor.Tests.ScopeRepairFilterTests.ResolveModuleIds_FullScope_IncludesAllModules [17 ms]
+  통과 SmartPerformanceDoctor.Tests.ScopeRepairFilterTests.IsAllowedForScope_EnforcesScopeGates(scope: "system", actionId: "audio_scan_devices", expected: False) [49 ms]
+  통과 SmartPerformanceDoctor.Tests.ScopeRepairFilterTests.IsAllowedForScope_EnforcesScopeGates(scope: "audio", actionId: "audio_restart_stack", expected: True) [3 ms]
+  통과 SmartPerformanceDoctor.Tests.ScopeRepairFilterTests.IsAllowedForScope_EnforcesScopeGates(scope: "system", actionId: "dism_checkhealth", expected: True) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.ScopeRepairFilterTests.IsAllowedForScope_EnforcesScopeGates(scope: "system", actionId: "driver_check_problem_devices", expected: False) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.ScopeRepairFilterTests.IsAllowedForScope_EnforcesScopeGates(scope: "driver", actionId: "driver_check_problem_devices", expected: True) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.ScopeRepairFilterTests.IsAllowedForScope_EnforcesScopeGates(scope: "system", actionId: "sfc_verifyonly", expected: True) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.ScopeRepairFilterTests.IsAllowedForScope_EnforcesScopeGates(scope: "full", actionId: "audio_restart_stack", expected: True) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.ScopeRepairFilterTests.DefaultActionsForScope_System_HasNoDriverAudio [18 ms]
+  통과 SmartPerformanceDoctor.Tests.ScopeRepairFilterTests.ResolveModuleIds_SystemScope_ExcludesDriverAndAudio [11 ms]
+  통과 SmartPerformanceDoctor.Tests.SecureVaultKdfTests.Kdf_profiles_are_distinct [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_CleanupFailure_DoesNotLeakLease [5 s]
+  통과 SmartPerformanceDoctor.Tests.GitHubReleaseUpdateServiceTests.NormalizeReleaseNotes_ReturnsOnlyUserFacingChanges [125 ms]
+  통과 SmartPerformanceDoctor.Tests.GitHubReleaseUpdateServiceTests.ReleaseManifest_DeserializesReleaseNotes [37 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_CancellationBeforeFlush_NotCommitted(step: FlushJournal) [295 ms]
+  통과 SmartPerformanceDoctor.Tests.InferenceOrchestratorTests.BuildPlan_UsesInferenceActions_WhenProvided [28 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_SameRoot_ConcurrentCommit_Denied [106 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_CancellationBeforeFlush_NotCommitted(step: FlushMetadataRoot) [184 ms]
+[xUnit.net 00:00:11.79]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OrchestratorCommitAsync_Blocked [SKIP]
+[xUnit.net 00:00:11.79]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:11.79]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ConcurrentCommit_SecondBlocked [SKIP]
+[xUnit.net 00:00:11.79]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:11.79]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OpenWriteSessionAsync_Blocked [SKIP]
+[xUnit.net 00:00:11.79]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.StoragePurgeExecutionEvidenceTests.TamperedPreDispatchEvidence_CannotBeCompleted [282 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_CancellationBeforeFlush_NotCommitted(step: FlushObjects) [69 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OrchestratorCommitAsync_Blocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_InvariantValidator_DisabledGates_Pass [< 1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ConcurrentCommit_SecondBlocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OpenWriteSessionAsync_Blocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.StoragePurgeExecutionEvidenceTests.ExecutionEvidence_BindsPreDispatchAndFinalStatus_AndDetectsTampering [245 ms]
+[xUnit.net 00:00:12.30]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_NonHarnessProductionRouteStillDenied [SKIP]
+[xUnit.net 00:00:12.30]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:12.30]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444 [SKIP]
+[xUnit.net 00:00:12.30]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:12.30]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_StabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:12.30]       50.4.0 production GO: stability matrix under pre-enable rules superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_CancelledCommit_ReleasesLease [739 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_NonHarnessProductionRouteStillDenied [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_PhaseGate_ReviewFixes_EnableFlagsStillFalse [< 1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444 [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_StabilityRepeat_Skipped [1 ms]
+  통과 SmartPerformanceDoctor.Tests.UpdateArtifactCleanupTests.CompletedUpdate_PreservesUserSelectedPackageOutsideInbox [120 ms]
+  통과 SmartPerformanceDoctor.Tests.UpdateArtifactCleanupTests.BoundaryCheck_DoesNotTreatSiblingPrefixAsManagedPath [20 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_AuthFailure_NotCommitted [5 s]
+[xUnit.net 00:00:12.38]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionOpenSession_Throws_Blocked [SKIP]
+[xUnit.net 00:00:12.38]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:12.39]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.DurableStore_RelativePathEscape_Blocked [SKIP]
+[xUnit.net 00:00:12.39]       50.4.0 production GO: disable-matrix superseded
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionOpenSession_Throws_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.DurableStore_RelativePathEscape_Blocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.UpdateArtifactCleanupTests.CompletedUpdate_DeletesManagedPackageAndStagingDirectory [87 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureFailCleanup") [5 s]
+  통과 SmartPerformanceDoctor.Tests.CareFindingQualityGateTests.ReviewFinding_IsNeverAutomaticallyApplied [68 ms]
+  통과 SmartPerformanceDoctor.Tests.CareFindingQualityGateTests.DnsFlush_RequiresCorrelatedDnsFailure [1 ms]
+  통과 SmartPerformanceDoctor.Tests.CareFindingQualityGateTests.DuplicateEvidence_IsCollapsed [31 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_ParallelIndependentRoots_NoInterference [182 ms]
+  통과 SmartPerformanceDoctor.Tests.CareFindingQualityGateTests.ProbeError_IsUnavailable_NotAHealthProblem [22 ms]
+  통과 SmartPerformanceDoctor.Tests.AstraVaultCoreTests.Locator_RoundTrip_And_ReservedZero [9 ms]
+  통과 SmartPerformanceDoctor.Tests.AstraVaultCoreTests.Policy_LargeExport_RequiresStepUp [40 ms]
+  통과 SmartPerformanceDoctor.Tests.AstraVaultCoreTests.Locator_Rejects_BadMagic [8 ms]
+  통과 SmartPerformanceDoctor.Tests.AstraVaultCoreTests.Aead_ChaCha_RoundTrip_And_TamperFails [1 ms]
+  통과 SmartPerformanceDoctor.Tests.CareProgressTrackerTests.UnifiedProgress_DoesNotRegress_WhenNextModuleStartsAtZero [124 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_FlushFailure_NotCommitted [287 ms]
+[xUnit.net 00:00:12.71]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_WritePolicy_ProductionDisabled [SKIP]
+[xUnit.net 00:00:12.71]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:12.77]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:12.77]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:12.77]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionEnableAuthorized_RemainsFalse [SKIP]
+[xUnit.net 00:00:12.77]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_WriterDesign_Interfaces_HaveCommitImplementations [< 1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_WritePolicy_ProductionDisabled [1 ms]
+  통과 SmartPerformanceDoctor.Tests.CareProgressTrackerTests.ScanProgress_IsMonotonic_AndCombinesPhaseWithPercent [77 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ServiceUiImportExport_NoAnchorOrWriterWiring [742 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionEnableAuthorized_RemainsFalse [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_E11FailureMatrix_StabilityReconfirmed(_: 1) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_E11FailureMatrix_StabilityReconfirmed(_: 3) [< 1 ms]
+[xUnit.net 00:00:12.79]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionAnchorImplemented_RemainsFalse [SKIP]
+[xUnit.net 00:00:12.79]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:12.80]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+[xUnit.net 00:00:12.80]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:12.80]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:12.80]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:12.81]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_DiskDurabilityStillOpen [SKIP]
+[xUnit.net 00:00:12.81]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:12.81]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:12.81]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:12.81]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_AnchorSignoff_HarnessCandidateOnly_NotProductionImplemented [SKIP]
+[xUnit.net 00:00:12.81]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_E11FailureMatrix_StabilityReconfirmed(_: 2) [< 1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionAnchorImplemented_RemainsFalse [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SameDiskAnchorCannotCloseFullRollback [25 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_DiskDurabilityStillOpen [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_AnchorSignoff_HarnessCandidateOnly_NotProductionImplemented [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_NextPhase_XChaCha24OrTrustedAnchorProvider [< 1 ms]
+[xUnit.net 00:00:12.83]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_XChaCha24StillOpen [SKIP]
+[xUnit.net 00:00:12.83]       50.4.0 production GO: pre-enable assertion superseded
+[xUnit.net 00:00:12.83]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_TrustedMonotonicAnchorRequired_ForFullVaultRollbackClosure [SKIP]
+[xUnit.net 00:00:12.83]       50.4.0 production GO: pre-enable assertion superseded
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_XChaCha24StillOpen [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_TrustedMonotonicAnchorRequired_ForFullVaultRollbackClosure [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: Locator, mode: RandomByteCorruption) [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseBTests.ReadOnlyUnlock_Rejects_ConflictingHeaderCopyConsensus [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseBTests.Locator_Rejects_NonZeroReserved [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseBTests.Locator_Rejects_HeaderCopySize_TooSmall [8 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE61Tests.R11_ValidatePublicSurfaces_BinaryUsesStructural_NotTextScanOnDigests [3 s]
+[xUnit.net 00:00:14.15]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_CommitThreeCopyAsync_Production_Blocked [SKIP]
+[xUnit.net 00:00:14.16]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:14.16]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_DenyMigrationRoute_Blocked [SKIP]
+[xUnit.net 00:00:14.16]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:14.19]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_TryOpenProductionSession_Blocked [SKIP]
+[xUnit.net 00:00:14.19]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:14.19]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.PhaseGate_E71_ReviewFixes_AllEnableFlagsFalse [SKIP]
+[xUnit.net 00:00:14.19]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_TrustedGeneration_CommittedSuccess_Passes [5 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_HarnessRoot_UserDocumentsWithToken_Rejected [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_CommitThreeCopyAsync_Production_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_DenyMigrationRoute_Blocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_HarnessRoot_PathEscapeOutsideTemp_Rejected [9 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_TryOpenProductionSession_Blocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_CancellationToken_CallerCancel_NotCommitted [33 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.PhaseGate_E71_ReviewFixes_AllEnableFlagsFalse [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_TrustedGeneration_PreAuthNewGenTrust_Violation [10 ms]
+[xUnit.net 00:00:14.23]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_JournalWriterGate_False [SKIP]
+[xUnit.net 00:00:14.24]       50.4.0 production GO: pre-enable assertion superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_HarnessRoot_TempPrefix_Allowed [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_HarnessRoot_TempPlainWithoutPrefix_Rejected [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_DisabledGates_IncludesJournalWriter [< 1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_JournalWriterGate_False [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.Security_AppAssembly_FullReflection_NoCommitOrWriterDesignReferences [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_CleanupCrash_ClassificationBounded [4 s]
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_ActivationDigestMismatch_Reject [7 s]
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_KdfBelowMinimum_Reject [1 ms]
+  통과 SmartPerformanceDoctor.Tests.InferenceOrchestratorTests.Analyze_SystemScope_ExcludesDriverAudioRepairs [4 s]
+  통과 SmartPerformanceDoctor.Tests.UpdatePackageInspectorTests.ComputeManifestFingerprint_MatchesPublishedPackage [13 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_Cancellation_NotCommitted(step: FlushActivationHeader) [4 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_Cancellation_NotCommitted(step: FlushObjects) [179 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureFailReread") [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_JournalLeakScanner_Pass_OnDigestOnlyJournal [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_WrongPassword_And_MetadataAuthFailure_SamePublicMessage [6 s]
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_MetadataRootDeterministic_FromGenerator [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_Cancellation_NotCommitted(step: RecordJournal) [219 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_Cancellation_NotCommitted(step: FlushMetadataRoot) [242 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_Cancellation_NotCommitted(step: BuildWritePlan) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE61Tests.R11_BinaryDigest_VmKBytes_NoStructuralFalsePositive [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE61Tests.PhaseGate_E61_JournalScannerStabilization_GatesUnchanged [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: HeaderCopy, mode: SectorBoundarySplit) [3 s]
+  통과 SmartPerformanceDoctor.Tests.SecureVaultKdfTests.Argon2id_produces_32_byte_key_distinct_from_pbkdf2 [6 s]
+  통과 SmartPerformanceDoctor.Tests.SecureVaultKdfTests.Chunked_encrypt_decrypt_round_trip_and_tamper [35 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_PostFlushAuthFailure_NotCommitted [3 s]
+  통과 SmartPerformanceDoctor.Tests.InferenceOrchestratorTests.Analyze_DoesNotCorrelateKeywordsAcrossDifferentSignalLines [2 s]
+[xUnit.net 00:00:18.20]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.PhaseGate_E62_ReviewFixes_ProductionStillDisabled [SKIP]
+[xUnit.net 00:00:18.20]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_OldGenerationPreservedUntilCommit [79 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_CleanupFailure_Trace_NoSecretLeak [3 s]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.PhaseGate_E62_ReviewFixes_ProductionStillDisabled [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_NoPartialGenerationNormalOpen [59 ms]
+  통과 SmartPerformanceDoctor.Tests.SystemCareStabilityTests.SystemCare_SmartScan_CompletesPastTempFolder [18 s]
+  통과 SmartPerformanceDoctor.Tests.SystemCareStabilityTests.SystemStabilityProbe_Intelligence_HasScore [872 ms]
+  통과 SmartPerformanceDoctor.Tests.SystemCareStabilityTests.CareMemoryProbe_Capture_ReturnsUsage [29 ms]
+  통과 SmartPerformanceDoctor.Tests.SystemCareStabilityTests.CareRollback_DoesNotOverwriteNewFileAtOriginalPath [196 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_MetadataRootTrailingBytes_Reject [3 s]
+  통과 SmartPerformanceDoctor.Tests.SystemCareStabilityTests.CareFolderScanner_SkipsReparsePoints_DoesNotHang [164 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: JournalDescriptor, mode: SectorBoundarySplit) [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureHeaderConflict") [3 s]
+[xUnit.net 00:00:20.97]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ReentrantCommit_Blocked [SKIP]
+[xUnit.net 00:00:20.97]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE61Tests.R11_JournalAppendix_ForbiddenPath_Rejected [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE61Tests.R11_TextualException_PathMarker_TriggersLeak [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE61Tests.R11_TextualReport_SecretMarker_TriggersLeak [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_OneHeaderCopy_RedundancyDegraded [4 s]
+  통과 SmartPerformanceDoctor.Tests.SecureVaultKdfTests.Argon2id_derivation_is_deterministic_for_same_inputs [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_Cancellation_NotCommitted(step: Cleanup) [3 s]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ReentrantCommit_Blocked [1 ms]
+[xUnit.net 00:00:20.97]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_FactoryProductionCreate_Blocked [SKIP]
+[xUnit.net 00:00:20.97]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:21.83]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_E6Recovery_EqualGenerationConflictingRoot_CorruptBlocked [SKIP]
+[xUnit.net 00:00:21.83]       50.4.0 production GO: disable-matrix superseded
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_FactoryProductionCreate_Blocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_GateFailure_Scan_NoSecretLeak [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.InferenceOrchestratorTests.Analyze_MatchesCorrelatedKeywordsWithinOneSignalLine [3 s]
+  통과 SmartPerformanceDoctor.Tests.InferenceOrchestratorTests.Analyze_LocalAiOpinionAlone_DoesNotCreateRepairActions [35 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_CleanupFailure_AfterAuth_NotCommitted_PostAuthTrusted [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.SecretNonLeakPass_Requires_E61_BinaryScanGates [< 1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_E6Recovery_EqualGenerationConflictingRoot_CorruptBlocked [1 ms]
+[xUnit.net 00:00:21.83]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_Rollback_PreviousRootMismatch_MatchesE4_CorruptBlocked [SKIP]
+[xUnit.net 00:00:21.83]       50.4.0 production GO: disable-matrix superseded
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_Rollback_PreviousRootMismatch_MatchesE4_CorruptBlocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_MetadataRootAead_FromVectors_Pass [2 s]
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_MetadataRootUnsupportedSuite_Reject [11 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_MetadataRootReservedNonZero_Reject [9 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseBTests.ReadOnlyUnlock_Rejects_HigherGenerationWhenMetadataRootMismatch [8 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseBTests.Locator_Rejects_HeaderCopySize_Oversized [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: Locator, mode: SectorBoundarySplit) [2 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE61Tests.R11_JournalAppendix_ForbiddenPlaintextMetadata_Rejected [2 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_HarnessCommit_Success_NewGenerationOpen [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigurePartialWrite") [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_UnauthenticatedHigherGeneration_Reject [8 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_HarnessSuccess_InvariantsPass [2 s]
+[xUnit.net 00:00:24.03]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.PhaseGate_E7_PreEnableHardening_EnableFlagsFalse [SKIP]
+[xUnit.net 00:00:24.03]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_RepairClassification_NoAutoMutationType(repair: CorruptBlocked) [31 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_RepairClassification_NoAutoMutationType(repair: RollbackSuspected) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_RepairClassification_NoAutoMutationType(repair: RepairRecommended) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_RepairClassification_NoAutoMutationType(repair: RepairRequired) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_RepairClassification_NoAutoMutationType(repair: ManualReviewRequired) [< 1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.PhaseGate_E7_PreEnableHardening_EnableFlagsFalse [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_MultiLayerGate_PublicErrors_Safe(gateType: typeof(SmartPerformanceDoctor.AstraVault.Commit.Av3WriterHarnessFactory)) [14 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_MultiLayerGate_PublicErrors_Safe(gateType: typeof(SmartPerformanceDoctor.AstraVault.Commit.Av3DefaultWritePolicy)) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_MultiLayerGate_PublicErrors_Safe(gateType: typeof(SmartPerformanceDoctor.AstraVault.Commit.Av3WriterAccessGate)) [< 1 ms]
+[xUnit.net 00:00:24.05]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_DuplicateTransactionId_Blocked [SKIP]
+[xUnit.net 00:00:24.05]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:24.05]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_ProductionDurableStore_Blocked [SKIP]
+[xUnit.net 00:00:24.05]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:24.07]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_JournalRecorderProductionRoute_Blocked [SKIP]
+[xUnit.net 00:00:24.07]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:24.07]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_TransactionCoordinator_NonHarness_Blocked [SKIP]
+[xUnit.net 00:00:24.07]       50.4.0 production GO: disable-matrix superseded
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_DuplicateTransactionId_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_ProductionDurableStore_Blocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_RecoveryManager_NoAutoRepair [17 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_ImportExportMethods_NoAv3Writer [27 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_JournalRecorderProductionRoute_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_TransactionCoordinator_NonHarness_Blocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_CleanupRetry_Idempotent [13 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_AfterActivationFlushBeforeReread_DeterministicClassification [5 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_AppHostViewModel_NoCommitWriter [10 ms]
+  통과 SmartPerformanceDoctor.Tests.InferenceOrchestratorTests.Analyze_ReturnsInsights_ForSystemSignals [2 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_WriterNotReachableFromAppAssembly [597 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_SecretMarkerNonLeak_PublicMessageOnly [2 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_CleanupFailure_ReportSurfaces_NoPathOrSecrets [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_E6Recovery_StaleHighGeneration_NotPromotedToCurrent [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE61Tests.R11_JournalFieldAllowlist_DeterministicDescriptor_Passes [2 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.SecureDelete_WrongConfirmation_Rejected [25 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.PathSafetyGuard_BlocksWindowsPrefixAttack [37 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_EqualGenerationConflictingRoot_Reject [2 s]
+[xUnit.net 00:00:26.98]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_ProductionRoute_AppHostViewModel_NoWriter [SKIP]
+[xUnit.net 00:00:26.98]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:26.98]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DurableStore_RootEscape_Blocked [SKIP]
+[xUnit.net 00:00:26.98]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:27.03]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionCommit_Throws_Blocked [SKIP]
+[xUnit.net 00:00:27.03]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureFailAuth") [3 s]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_ProductionRoute_AppHostViewModel_NoWriter [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DurableStore_RootEscape_Blocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRunSuccess_DoesNotImplyWriterEnableReady [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_Trace_NoSecretPathPlaintextLeak [3 s]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionCommit_Throws_Blocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Harness_RealAead_PostCommit_UnlockValidatorEquivalent [2 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NoFilenamePathLeak_InJournalDescriptor [1 ms]
+  통과 SmartPerformanceDoctor.Tests.InstallLifecycleLayoutTests.Layout_copy_roundtrip_preserves_hashes [27 s]
+  통과 SmartPerformanceDoctor.Tests.InstallLifecycleLayoutTests.Full_layout_includes_all_optional_feature_paths [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = BeforeObjectWrite, Expected = PreviousGenerationOpen, RequiresFlushFailure = False, RequiresFailReread = False, RequiresFailAuthentication = False }) [17 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = AfterObjectWriteBeforeFlush, Expected = PreviousGenerationOpen, RequiresFlushFailure = False, RequiresFailReread = False, RequiresFailAuthentication = False }) [65 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = AfterObjectWriteBeforeFlush, Expected = Aborted, RequiresFlushFailure = True, RequiresFailReread = False, RequiresFailAuthentication = False }) [41 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = AfterObjectFlush, Expected = RecoveryRequired, RequiresFlushFailure = False, RequiresFailReread = False, RequiresFailAuthentication = False }) [54 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_MetadataRootAadTamper_Reject [5 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = BeforeMetadataWrite, Expected = PreviousGenerationOpen, RequiresFlushFailure = False, RequiresFailReread = False, RequiresFailAuthentication = False }) [62 ms]
+[xUnit.net 00:00:28.10]     SmartPerformanceDoctor.Tests.Av3PhaseBTests.PhaseGate_ProductionWriter_RemainsDisabled [SKIP]
+[xUnit.net 00:00:28.10]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_MetadataRootOversized_Reject [11 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: HeaderCopy, mode: RandomByteCorruption) [5 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = AfterMetadataWriteBeforeFlush, Expected = PreviousGenerationOpen, RequiresFlushFailure = False, RequiresFailReread = False, RequiresFailAuthentication = False }) [66 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseBTests.ReadOnlyUnlock_Rejects_RollbackGeneration [5 s]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseBTests.PhaseGate_ProductionWriter_RemainsDisabled [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = AfterMetadataWriteBeforeFlush, Expected = Aborted, RequiresFlushFailure = True, RequiresFailReread = False, RequiresFailAuthentication = False }) [90 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = AfterMetadataFlush, Expected = RecoveryRequired, RequiresFlushFailure = False, RequiresFailReread = False, RequiresFailAuthentication = False }) [102 ms]
+[xUnit.net 00:00:28.75]     SmartPerformanceDoctor.Tests.LabVaultHeaderAuthenticationTests.Authenticated_old_header_copy_is_rejected_when_metadata_generation_has_advanced [FAIL]
+[xUnit.net 00:00:28.75]       System.IO.FileNotFoundException : Could not find file 'C:\Users\scarl\AppData\Local\Temp\spd-attack-sim-77f456e3680346ff9f1d6a2023e133c8\vault-isolated\vault.header.json'.
+[xUnit.net 00:00:28.75]       Stack Trace:
+[xUnit.net 00:00:28.75]            at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
+[xUnit.net 00:00:28.76]            at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+[xUnit.net 00:00:28.76]            at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+[xUnit.net 00:00:28.76]            at System.IO.Strategies.FileStreamHelpers.ChooseStrategyCore(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+[xUnit.net 00:00:28.76]            at System.IO.StreamReader.ValidateArgsAndOpenPath(String path, Int32 bufferSize)
+[xUnit.net 00:00:28.76]            at System.IO.File.ReadAllText(String path, Encoding encoding)
+[xUnit.net 00:00:28.76]         C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\LabVaultHeaderAuthenticationTests.cs(50,0): at SmartPerformanceDoctor.Tests.LabVaultHeaderAuthenticationTests.Authenticated_old_header_copy_is_rejected_when_metadata_generation_has_advanced()
+[xUnit.net 00:00:28.76]         --- End of stack trace from previous location ---
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = BeforeJournalWrite, Expected = PreviousGenerationOpen, RequiresFlushFailure = False, RequiresFailReread = False, RequiresFailAuthentication = False }) [82 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE61Tests.R11_DeterministicJournalScan_Stable_1000Iterations [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = AfterJournalWriteBeforeFlush, Expected = PreviousGenerationOpen, RequiresFlushFailure = False, RequiresFailReread = False, RequiresFailAuthentication = False }) [143 ms]
+  통과 SmartPerformanceDoctor.Tests.SystemCareStabilityTests.CareFolderScanner_TempPath_CompletesQuickly [8 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = AfterJournalWriteBeforeFlush, Expected = Aborted, RequiresFlushFailure = True, RequiresFailReread = False, RequiresFailAuthentication = False }) [124 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = AfterJournalFlush, Expected = RecoveryRequired, RequiresFlushFailure = False, RequiresFailReread = False, RequiresFailAuthentication = False }) [123 ms]
+  실패 SmartPerformanceDoctor.Tests.LabVaultHeaderAuthenticationTests.Authenticated_old_header_copy_is_rejected_when_metadata_generation_has_advanced [28 s]
+  오류 메시지:
+   System.IO.FileNotFoundException : Could not find file 'C:\Users\scarl\AppData\Local\Temp\spd-attack-sim-77f456e3680346ff9f1d6a2023e133c8\vault-isolated\vault.header.json'.
+  스택 추적:
+     at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.Strategies.FileStreamHelpers.ChooseStrategyCore(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.StreamReader.ValidateArgsAndOpenPath(String path, Int32 bufferSize)
+   at System.IO.File.ReadAllText(String path, Encoding encoding)
+   at SmartPerformanceDoctor.Tests.LabVaultHeaderAuthenticationTests.Authenticated_old_header_copy_is_rejected_when_metadata_generation_has_advanced() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\LabVaultHeaderAuthenticationTests.cs:line 50
+--- End of stack trace from previous location ---
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_CleanupFailure_BeforeAuth_NotCommitted_NotTrusted [3 s]
+[xUnit.net 00:00:30.25]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.WriterFactory_ProductionCreate_Fails_WhenProductionWriterDisabled [SKIP]
+[xUnit.net 00:00:30.25]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_Rollback_StaleActivationPayload_MatchesE4_PreviousGenerationOpen [45 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_BuildDigestOnlyJournal_RecordDigest_MatchesExpectedHash [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = BeforeActivationHeaderWrite, Expected = PreviousGenerationOpen, RequiresFlushFailure = False, RequiresFailReread = False, RequiresFailAuthentication = False }) [113 ms]
+  통과 SmartPerformanceDoctor.Tests.SystemCareStabilityTests.SystemStabilityProbe_Analyze_ReturnsReport [612 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_PartialWrite_NotCommitted [3 s]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.WriterFactory_ProductionCreate_Fails_WhenProductionWriterDisabled [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Security_SecureVaultService_NoCommitWriterReferences [12 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRun_EndToEnd_Success(kind: EmptyObject) [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_MetadataRootGenerationRollback_Reject [2 s]
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_MetadataRootUnsupportedVersion_Reject [11 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = AfterActivationHeaderWriteBeforeFlush, Expected = RecoveryRequired, RequiresFlushFailure = False, RequiresFailReread = False, RequiresFailAuthentication = False }) [2 s]
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_InvalidHeaderCopy_IsIgnored [4 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_CleanupFailure_OneHeaderCopy_RedundancyDegradedCleanupRequired [2 s]
+[xUnit.net 00:00:31.81]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_HeaderConflict_CorruptBlocked [SKIP]
+[xUnit.net 00:00:31.81]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_BuildDigestOnlyJournal_Deterministic_SameDescriptor [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Security_AppAssembly_NoCommitWriterProductionReferences [1 s]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_HeaderConflict_CorruptBlocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.HarnessRoute_Requires_IsolatedRootToken [4 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: MetadataRootCiphertext, mode: ZeroFilledTail) [4 s]
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_MetadataRootCiphertextDigestMismatch_Reject [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseBTests.ReadOnlyUnlock_Rejects_WrongPassword_And_MalformedSlot_SameMessage [4 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRun_EndToEnd_Success(kind: MultiSegment) [2 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = AfterActivationHeaderWriteBeforeFlush, Expected = RecoveryRequired, RequiresFlushFailure = True, RequiresFailReread = False, RequiresFailAuthentication = False }) [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: MetadataRootCiphertext, mode: Truncation) [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_MetadataRootCommitmentMismatch_Reject [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRun_EndToEnd_Success(kind: MultiObject) [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = AfterActivationFlushBeforeReread, Expected = RecoveryRequired, RequiresFlushFailure = False, RequiresFailReread = False, RequiresFailAuthentication = False }) [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_MetadataRootGenerationRollback_Reject [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: Locator, mode: Truncation) [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.ActualKill_Matrix_CompareSimulated_ReportsSafeJson [35 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.Repair_RedundancyDegraded_Classified [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_OneDurable_RedundancyDegraded [79 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = AfterActivationFlushBeforeReread, Expected = CorruptBlocked, RequiresFlushFailure = False, RequiresFailReread = True, RequiresFailAuthentication = False }) [2 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRun_EndToEnd_Success(kind: Standard) [2 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_Classifier_Posture_NoAutoRepair(recovery: PreviousGenerationOpen) [14 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_Classifier_Posture_NoAutoRepair(recovery: RollbackSuspected) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_Classifier_Posture_NoAutoRepair(recovery: CorruptBlocked) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: JournalDescriptor, mode: ZeroFilledTail) [2 s]
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_MetadataRootMalformedPlaintext_Reject [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.Durable_PostFlushAuthFailure_NotCommitted [2 s]
+[xUnit.net 00:00:39.44]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.PhaseGate_E8_LimitedDryRun_EnableFlagsFalse [SKIP]
+[xUnit.net 00:00:39.44]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:00:39.54]     SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_TamperedKeyEnvelope_RejectedOnUnlock [FAIL]
+[xUnit.net 00:00:39.54]       System.IO.FileNotFoundException : Could not find file 'C:\Users\scarl\AppData\Local\Temp\spd-vault-header-auth-5a488f4e06d14480a1a7708f3af71e89\key_envelope.bin'.
+[xUnit.net 00:00:39.54]       Stack Trace:
+[xUnit.net 00:00:39.54]            at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
+[xUnit.net 00:00:39.54]            at System.IO.File.ReadAllBytes(String path)
+[xUnit.net 00:00:39.54]         C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\SecurityAttackSimulationTests.cs(151,0): at SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_TamperedKeyEnvelope_RejectedOnUnlock()
+[xUnit.net 00:00:39.54]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:39.54]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_StaleAuthenticatedCopy_RedundantLowerCopyIgnoredWhenCurrentValid [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = AfterRereadBeforeAuthentication, Expected = CorruptBlocked, RequiresFlushFailure = False, RequiresFailReread = False, RequiresFailAuthentication = False }) [2 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.Kill_BeforeObjectWrite_ClassifiesPreviousGeneration [942 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_Telemetry_AllSurfaces_NoLeak [2 s]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.PhaseGate_E8_LimitedDryRun_EnableFlagsFalse [1 ms]
+  실패 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_TamperedKeyEnvelope_RejectedOnUnlock [13 s]
+  오류 메시지:
+   System.IO.FileNotFoundException : Could not find file 'C:\Users\scarl\AppData\Local\Temp\spd-vault-header-auth-5a488f4e06d14480a1a7708f3af71e89\key_envelope.bin'.
+  스택 추적:
+     at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
+   at System.IO.File.ReadAllBytes(String path)
+   at SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_TamperedKeyEnvelope_RejectedOnUnlock() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\SecurityAttackSimulationTests.cs:line 151
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.PasswordPolicy_RejectsWeakNewVaultPassword [42 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: MetadataRootCiphertext, mode: TrailingGarbageAppend) [2 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.Kill_AfterJournalFlush_RecoveryClass [779 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.Matrix_Runner_AllRows_Pass [39 s]
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_MetadataRootParentGenerationConflict_Reject [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.Flush_Harness_ObjectFlushFailure_Aborted [35 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.Isolation_CleanupCrash_UsesDedicatedRoot [11 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = ObjectWriteBeforeCrash, Expected = PreviousGenerationOpen, FaultPoint = BeforeObjectWrite, FailFlush = False, FailReread = False, FailAuthentication = False, DurabilityMode = , ClassifierOnly = False }) [21 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = ObjectWriteDuringCrash, Expected = PreviousGenerationOpen, FaultPoint = AfterObjectWriteBeforeFlush, FailFlush = False, FailReread = False, FailAuthentication = False, DurabilityMode = , ClassifierOnly = False }) [32 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = MetadataWriteBeforeCrash, Expected = PreviousGenerationOpen, FaultPoint = BeforeMetadataWrite, FailFlush = False, FailReread = False, FailAuthentication = False, DurabilityMode = , ClassifierOnly = False }) [31 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = MetadataWriteDuringCrash, Expected = PreviousGenerationOpen, FaultPoint = AfterMetadataWriteBeforeFlush, FailFlush = False, FailReread = False, FailAuthentication = False, DurabilityMode = , ClassifierOnly = False }) [52 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = JournalWriteDuringCrash, Expected = PreviousGenerationOpen, FaultPoint = AfterJournalWriteBeforeFlush, FailFlush = False, FailReread = False, FailAuthentication = False, DurabilityMode = , ClassifierOnly = False }) [68 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = ObjectFlushFailure, Expected = Aborted, FaultPoint = AfterObjectWriteBeforeFlush, FailFlush = True, FailReread = False, FailAuthentication = False, DurabilityMode = SimulatedFlushFailure, ClassifierOnly = False }) [20 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = MetadataFlushFailure, Expected = Aborted, FaultPoint = AfterMetadataWriteBeforeFlush, FailFlush = True, FailReread = False, FailAuthentication = False, DurabilityMode = SimulatedFlushFailure, ClassifierOnly = False }) [72 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = JournalFlushFailure, Expected = Aborted, FaultPoint = AfterJournalWriteBeforeFlush, FailFlush = True, FailReread = False, FailAuthentication = False, DurabilityMode = SimulatedFlushFailure, ClassifierOnly = False }) [44 ms]
+[xUnit.net 00:00:40.77]     SmartPerformanceDoctor.Tests.LabVaultHeaderAuthenticationTests.Recovery_code_unlocks_through_the_same_authenticated_header_gate [FAIL]
+[xUnit.net 00:00:40.77]       금고가 없습니다.
+[xUnit.net 00:00:40.77]       Stack Trace:
+[xUnit.net 00:00:40.77]         C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\LabVaultHeaderAuthenticationTests.cs(84,0): at SmartPerformanceDoctor.Tests.LabVaultHeaderAuthenticationTests.Recovery_code_unlocks_through_the_same_authenticated_header_gate()
+[xUnit.net 00:00:40.77]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:40.77]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = ActivationHeaderWriteBeforeCrash, Expected = PreviousGenerationOpen, FaultPoint = BeforeActivationHeaderWrite, FailFlush = False, FailReread = False, FailAuthentication = False, DurabilityMode = , ClassifierOnly = False }) [100 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = AfterRereadBeforeAuthentication, Expected = CorruptBlocked, RequiresFlushFailure = False, RequiresFailReread = False, RequiresFailAuthentication = True }) [1 s]
+  실패 SmartPerformanceDoctor.Tests.LabVaultHeaderAuthenticationTests.Recovery_code_unlocks_through_the_same_authenticated_header_gate [12 s]
+  오류 메시지:
+   금고가 없습니다.
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.LabVaultHeaderAuthenticationTests.Recovery_code_unlocks_through_the_same_authenticated_header_gate() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\LabVaultHeaderAuthenticationTests.cs:line 84
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: JournalDescriptor, mode: TrailingGarbageAppend) [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_CleanupFailure_Posture_Separated [2 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_CancellationToken_NotCommitted [7 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRunScope_UserDocuments_Rejected [< 1 ms]
+[xUnit.net 00:00:41.74]     SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.PhaseGate_E3_ActualKillHarness_DocumentationOnly [SKIP]
+[xUnit.net 00:00:41.74]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.Durable_PostFlushRereadFailure_NotCommitted [1 s]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.PhaseGate_E3_ActualKillHarness_DocumentationOnly [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRunScope_E7OnlyRoot_Rejected [9 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRunScope_E8Prefix_Allowed [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3MetadataRootTests.Golden_MetadataRootTagTamper_Reject [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_TwoDurable_NewGenerationOpen [101 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_MetadataRootContainerIdMismatch_Reject [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = ActivationHeaderWriteDuringCrash, Expected = RecoveryRequired, FaultPoint = AfterActivationHeaderWriteBeforeFlush, FailFlush = False, FailReread = False, FailAuthentication = False, DurabilityMode = , ClassifierOnly = False }) [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = AfterAuthenticationBeforeCleanup, Expected = RecoveryRequired, RequiresFlushFailure = False, RequiresFailReread = False, RequiresFailAuthentication = False }) [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.Security_AppAndHost_NoHarnessWriter [594 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: HeaderCopy, mode: ZeroFilledTail) [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3GoldenVectorTests.Golden_SameInput_ProducesByteForByteSameOutput [42 s]
+  통과 SmartPerformanceDoctor.Tests.Av3GoldenVectorTests.Golden_VmkUnwrapAad_Stable [16 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3GoldenVectorTests.Golden_OutputHashes_MatchManifest [55 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3GoldenVectorTests.Golden_MetadataRootDescriptor_StableParse [1 ms]
+[xUnit.net 00:00:44.43]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NonHarnessWriterInvocation_Blocked [SKIP]
+[xUnit.net 00:00:44.44]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.Kill_AfterActivationHeaderBeforeFlush_RecoveryClass [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.Repair_RecoveryRequired_MapsRepairRequired [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = ActivationHeaderFlushFailure, Expected = RecoveryRequired, FaultPoint = AfterActivationHeaderWriteBeforeFlush, FailFlush = True, FailReread = False, FailAuthentication = False, DurabilityMode = SimulatedFlushFailure, ClassifierOnly = False }) [2 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Fault_Matrix_AllMandatoryPoints_ClassifyExpected(row: MatrixRow { Point = DuringCleanup, Expected = RecoveryRequired, RequiresFlushFailure = False, RequiresFailReread = False, RequiresFailAuthentication = False }) [2 s]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NonHarnessWriterInvocation_Blocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.Kill_AfterObjectWriteBeforeFlush_NotCommitted [663 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.Durable_FlushFailure_NotCommitted [47 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3GoldenVectorTests.Golden_ActivationTagTamper_Fail [1 s]
+[xUnit.net 00:00:45.82]     SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_Conflict_CorruptBlocked [SKIP]
+[xUnit.net 00:00:45.82]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3GoldenVectorTests.Golden_PasswordSlotAad_StableAgainstProductionBuilder [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_ActivationAeadTagTamper_Reject [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.Kill_AfterRereadBeforeAuth_NotCommitted [1 s]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_Conflict_CorruptBlocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = PostFlushRereadFailure, Expected = CorruptBlocked, FaultPoint = AfterActivationFlushBeforeReread, FailFlush = False, FailReread = True, FailAuthentication = False, DurabilityMode = SimulatedPostFlushRereadFailure, ClassifierOnly = False }) [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: ActivationPayload, mode: RandomByteCorruption) [2 s]
+  통과 SmartPerformanceDoctor.Tests.Av3GoldenVectorTests.Golden_VmkUnwrap_FromHeaderSlot_Pass [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3GoldenVectorTests.Golden_HeaderThreeCopyCandidates_ParsePass [8 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3GoldenVectorTests.Golden_GeneratedLocator_ParsePass [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.Kill_AfterActivationFlushBeforeReread_NotCommitted [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = PostFlushAeadAuthFailure, Expected = CorruptBlocked, FaultPoint = AfterRereadBeforeAuthentication, FailFlush = False, FailReread = False, FailAuthentication = True, DurabilityMode = , ClassifierOnly = False }) [1 s]
+  통과 SmartPerformanceDoctor.Tests.SecureDeleteHardeningTests.Changed_folder_after_dry_run_is_not_partially_deleted [47 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.Kill_AfterMetadataFlush_RecoveryClass [800 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.Kill_UnsupportedPlatform_ReportsUnsupportedNotSkipped [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.SecureDeleteHardeningTests.Unknown_media_file_is_cleared_before_removal_path_completes [236 ms]
+  통과 SmartPerformanceDoctor.Tests.SecureDeleteHardeningTests.Unknown_media_uses_a_conservative_overwrite_pass [10 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: MetadataRootCiphertext, mode: RandomByteCorruption) [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3GoldenVectorTests.Golden_WrongPassword_And_MalformedSlot_SamePublicMessage [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3GoldenVectorTests.Golden_ActivationPayloadAad_Stable [6 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_MetadataRootDigestMismatch_Reject [3 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.Kill_DuringCleanup_RecoveryRequired [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: ActivationPayload, mode: SectorBoundarySplit) [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3GoldenVectorTests.Golden_ActivationAead_FromHeader_Pass [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: ObjectPlaceholder, mode: RandomByteCorruption) [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3GoldenVectorTests.Golden_ValidActivation_AeadAuthenticationPass [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3GoldenVectorTests.Golden_AadTamper_Fail [6 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_WrongPassword_MalformedSlot_ActivationFailure_SamePublicError [2 s]
+[xUnit.net 00:00:51.50]     SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_WrongPassword_RejectsBruteForceAttempts [FAIL]
+[xUnit.net 00:00:51.50]       Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:51.50]       Expected: Locked
+[xUnit.net 00:00:51.50]       Actual:   Unlocked
+[xUnit.net 00:00:51.50]       Stack Trace:
+[xUnit.net 00:00:51.50]         C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\SecurityAttackSimulationTests.cs(62,0): at SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_WrongPassword_RejectsBruteForceAttempts()
+[xUnit.net 00:00:51.50]            at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+[xUnit.net 00:00:51.50]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:51.50]            at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  실패 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_WrongPassword_RejectsBruteForceAttempts [11 s]
+  오류 메시지:
+   Assert.Equal() Failure: Values differ
+Expected: Locked
+Actual:   Unlocked
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_WrongPassword_RejectsBruteForceAttempts() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\SecurityAttackSimulationTests.cs:line 62
+   at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: ObjectPlaceholder, mode: ZeroFilledTail) [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_MetadataDescriptorOversized_Reject [956 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_UnsupportedKdfSuite_Reject [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.LabVaultHeaderAuthenticationTests.Tampered_authenticated_headers_are_rejected_after_password_unlock [11 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: HeaderCopy, mode: TrailingGarbageAppend) [875 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_HeaderReservedNonZero_Reject [843 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: ObjectPlaceholder, mode: TrailingGarbageAppend) [868 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_VmkUnwrapAadMismatch_Reject [774 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: Locator, mode: ZeroFilledTail) [741 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_HeaderTrailingBytes_Reject [910 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: ActivationPayload, mode: TrailingGarbageAppend) [915 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: JournalDescriptor, mode: RandomByteCorruption) [846 ms]
+[xUnit.net 00:00:56.68]     SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_TamperedManifest_RejectedOnUnlock [FAIL]
+[xUnit.net 00:00:56.69]       System.InvalidOperationException : SecurityLab 제품 게이트 차단: master flag OFF (vault). 승인된 병합 전 호출 금지.
+[xUnit.net 00:00:56.69]       Stack Trace:
+[xUnit.net 00:00:56.69]         C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.SecurityLab\src\ProductBridge\LabProductGate.cs(13,0): at SmartPerformanceDoctor.SecurityLab.ProductBridge.LabProductGate.EnsureEnabled(String feature)
+[xUnit.net 00:00:56.69]         C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\Services\Security\SecureVaultLabBackend.cs(88,0): at SmartPerformanceDoctor.App.Services.Security.SecureVaultLabBackend.Unlock(String password)
+[xUnit.net 00:00:56.69]         C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\Services\Security\SecureVaultService.cs(236,0): at SmartPerformanceDoctor.App.Services.Security.SecureVaultService.Unlock(String masterPassword)
+[xUnit.net 00:00:56.69]         C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\SecurityAttackSimulationTests.cs(132,0): at SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_TamperedManifest_RejectedOnUnlock()
+[xUnit.net 00:00:56.69]            at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+[xUnit.net 00:00:56.69]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:56.69]            at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  통과 SmartPerformanceDoctor.Tests.Av3VectorCorpusTests.Vector_ValidLocatorAndThreeCopyCandidates_ReadOnlyUnlock [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: ActivationPayload, mode: Truncation) [729 ms]
+  실패 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_TamperedManifest_RejectedOnUnlock [5 s]
+  오류 메시지:
+   System.InvalidOperationException : SecurityLab 제품 게이트 차단: master flag OFF (vault). 승인된 병합 전 호출 금지.
+  스택 추적:
+     at SmartPerformanceDoctor.SecurityLab.ProductBridge.LabProductGate.EnsureEnabled(String feature) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.SecurityLab\src\ProductBridge\LabProductGate.cs:line 13
+   at SmartPerformanceDoctor.App.Services.Security.SecureVaultLabBackend.Unlock(String password) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\Services\Security\SecureVaultLabBackend.cs:line 88
+   at SmartPerformanceDoctor.App.Services.Security.SecureVaultService.Unlock(String masterPassword) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\Services\Security\SecureVaultService.cs:line 236
+   at SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_TamperedManifest_RejectedOnUnlock() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\SecurityAttackSimulationTests.cs:line 132
+   at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: JournalDescriptor, mode: Truncation) [550 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: ActivationPayload, mode: ZeroFilledTail) [626 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: ObjectPlaceholder, mode: SectorBoundarySplit) [510 ms]
+  통과 SmartPerformanceDoctor.Tests.SecureDeleteHardeningTests.Replaced_file_with_matching_metadata_after_dry_run_is_not_deleted [10 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: HeaderCopy, mode: Truncation) [581 ms]
+[xUnit.net 00:00:59.50]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.WriterEnableChecklist_State_NoGo [SKIP]
+[xUnit.net 00:00:59.50]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_TornWrite_NeverTrustedNewGenerationOpen(boundary: MetadataRootCiphertext, mode: SectorBoundarySplit) [560 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.WriterEnableChecklist_State_NoGo [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = HeaderCopyOneDurable, Expected = RedundancyDegraded, FaultPoint = , FailFlush = False, FailReread = False, FailAuthentication = False, DurabilityMode = , ClassifierOnly = True }) [11 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.Security_AppAndHost_NoE4WriterTypes [186 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_OneValid_Current_RedundancyDegraded [34 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.WriterEnableChecklist_Doc_Present [5 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R11_JournalDigestOnly_Policy_Decision [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R10_Rollback_Downgrade_Suspected [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.KillReport_SafeJson_NoSecretLeak [1 ms]
+[xUnit.net 00:00:59.73]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.PhaseGate_E4_HighRiskClosure_NotWriterEnable [SKIP]
+[xUnit.net 00:00:59.73]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R10_FullVaultRollback_Limitation_Documented [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_UnauthenticatedHighGeneration_Rejected [< 1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.PhaseGate_E4_HighRiskClosure_NotWriterEnable [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R10_RollbackClassifier_Matrix(observation: Av3RollbackObservation { ActivationAuthenticated = True, EqualGenerationConflictingRoot = False, FullVaultRollbackWithoutAnchorSuspected = False, JournalClaimsForwardCommit = False, LastAuthenticatedGeneration = 5, ··· }, expected: RollbackSuspected) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R10_RollbackClassifier_Matrix(observation: Av3RollbackObservation { ActivationAuthenticated = True, EqualGenerationConflictingRoot = False, FullVaultRollbackWithoutAnchorSuspected = False, JournalClaimsForwardCommit = False, LastAuthenticatedGeneration = 5, ··· }, expected: RollbackSuspected) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R10_RollbackClassifier_Matrix(observation: Av3RollbackObservation { ActivationAuthenticated = True, EqualGenerationConflictingRoot = False, FullVaultRollbackWithoutAnchorSuspected = False, JournalClaimsForwardCommit = False, LastAuthenticatedGeneration = 4, ··· }, expected: RollbackSuspected) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R10_RollbackClassifier_Matrix(observation: Av3RollbackObservation { ActivationAuthenticated = True, EqualGenerationConflictingRoot = True, FullVaultRollbackWithoutAnchorSuspected = False, JournalClaimsForwardCommit = False, LastAuthenticatedGeneration = 4, ··· }, expected: CorruptBlocked) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R10_RollbackClassifier_Matrix(observation: Av3RollbackObservation { ActivationAuthenticated = True, EqualGenerationConflictingRoot = False, FullVaultRollbackWithoutAnchorSuspected = False, JournalClaimsForwardCommit = False, LastAuthenticatedGeneration = 4, ··· }, expected: CorruptBlocked) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R10_RollbackClassifier_Matrix(observation: Av3RollbackObservation { ActivationAuthenticated = False, EqualGenerationConflictingRoot = False, FullVaultRollbackWithoutAnchorSuspected = False, JournalClaimsForwardCommit = False, LastAuthenticatedGeneration = 4, ··· }, expected: PreviousGenerationOpen) [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R10_RollbackClassifier_Matrix(observation: Av3RollbackObservation { ActivationAuthenticated = True, EqualGenerationConflictingRoot = False, FullVaultRollbackWithoutAnchorSuspected = False, JournalClaimsForwardCommit = False, LastAuthenticatedGeneration = 4, ··· }, expected: CorruptBlocked) [< 1 ms]
+[xUnit.net 00:01:00.91]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R9_Migration_RemainsDisabled_NoWriterCollision [SKIP]
+[xUnit.net 00:01:00.91]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R11_JournalDescriptor_DigestOnly_Passes [597 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R11_LeakScan_ReportTraceException_NoSecretMarker [558 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R9_Migration_RemainsDisabled_NoWriterCollision [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.SpdVault_OnDisk_NoHarnessMutation_Policy [6 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_TwoValidMatching_NewGenerationOpen [3 ms]
+[xUnit.net 00:01:01.98]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_EqualGenerationDifferentRoot_CorruptBlocked [SKIP]
+[xUnit.net 00:01:01.98]       50.4.0 production GO: disable-matrix superseded
+[xUnit.net 00:01:02.46]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked [SKIP]
+[xUnit.net 00:01:02.46]       50.4.0 production GO: disable-matrix superseded
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R1_PostFlushAuth_OnlyPath_AllowsNewGenerationOpen [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R10_JournalForwardWithoutAuth_RollbackSuspected [< 1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_EqualGenerationDifferentRoot_CorruptBlocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R11_Journal_CleartextPath_Fails [478 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ThreeValidMatching_Healthy [< 1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked [1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_CurrentPlusStale_RepairRecommended [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = HeaderCopyTwoDurable, Expected = NewGenerationOpen, FaultPoint = , FailFlush = False, FailReread = False, FailAuthentication = False, DurabilityMode = , ClassifierOnly = True }) [7 s]
+  통과 SmartPerformanceDoctor.Tests.SecureDeleteHardeningTests.Reparse_point_folder_is_blocked_instead_of_crashing_the_batch_dry_run [8 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = HeaderCopyThreeConflicting, Expected = CorruptBlocked, FaultPoint = , FailFlush = False, FailReread = False, FailAuthentication = False, DurabilityMode = , ClassifierOnly = True }) [7 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.SecureDelete_ValidConfirmation_RemovesFileAndContent [18 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.PasswordPolicy_AcceptsStrongPassword [19 ms]
+  통과 SmartPerformanceDoctor.Tests.SecureDeleteHardeningTests.Changed_file_after_dry_run_is_not_deleted [8 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_IntegrityCheck_DetectsCorruptPrimaryShard [1 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_RepairIntegrity_BackfillsMissingRedundantCopy [1 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_RepairIntegrity_FailsWhenBothCopiesCorrupt [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = DiskFullSimulation, Expected = Aborted, FaultPoint = , FailFlush = False, FailReread = False, FailAuthentication = False, DurabilityMode = SimulatedDiskFull, ClassifierOnly = True }) [7 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_EncryptedStore_ContainsNoPlaintextPayload [1 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_ExportToSystemPath_Blocked [1 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = ExternalDriveRemovalSimulation, Expected = Aborted, FaultPoint = , FailFlush = False, FailReread = False, FailAuthentication = False, DurabilityMode = SimulatedExternalMediaRemoved, ClassifierOnly = True }) [7 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_RecoveryUnlock_RespectsRateLimitLockout [6 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = StaleHighGeneration, Expected = PreviousGenerationOpen, FaultPoint = , FailFlush = False, FailReread = False, FailAuthentication = False, DurabilityMode = , ClassifierOnly = True }) [8 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = EqualGenerationConflictingRoot, Expected = CorruptBlocked, FaultPoint = , FailFlush = False, FailReread = False, FailAuthentication = False, DurabilityMode = , ClassifierOnly = True }) [7 s]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.CrashSafe_Scenario_ClassifiesExpected(row: ScenarioRow { Scenario = CleanupDuringCrash, Expected = RecoveryRequired, FaultPoint = DuringCleanup, FailFlush = False, FailReread = False, FailAuthentication = False, DurabilityMode = SimulatedProcessKill, ClassifierOnly = False }) [687 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.PartialGeneration_FlushFailure_NotCommitted [17 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.Isolation_TestRoot_UsesE2Prefix [8 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.PartialGeneration_UnauthenticatedHighGeneration_Rejected [< 1 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.Security_HostService_NoExperimentalWriterReference [142 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.PartialGeneration_MetadataUntrustedBeforeActivationAuth [22 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.Harness_FullAuthChain_SucceedsOnHappyPath [580 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.ProcessKill_Harness_SimulatedOnly_FlagDocumented [4 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.Golden_MetadataRootAad_CrossCheck_FromVectors [9 ms]
+  통과 SmartPerformanceDoctor.Tests.Av3FaultMatrixE2Tests.Matrix_Report_NoSecretLeak [7 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_LabImportWithSourceWipe_DeletesOriginalOnlyAfterImport [27 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.SecureDelete_DryRun_ReportsForensicFullChain [8 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_SealedFolder_RestoreToOrigin_RoundTrip [41 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_RateLimiter_LocksAfterRepeatedFailures [4 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_RepairIntegrity_RestoresCorruptPrimaryFromRedundant [2 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_ValidSession_ExportRoundTrip [2 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.PathSafetyGuard_BlocksWindowsOnAnyDriveLetter [5 ms]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_ChangePassword_RekeysAndIssuesNewRecoveryKey [6 s]
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.SecureDelete_BlocksSystemAndTraversalPaths [18 ms]
+[xUnit.net 00:03:06.20]   Finished:    SmartPerformanceDoctor.Tests
+  통과 SmartPerformanceDoctor.Tests.SecurityAttackSimulationTests.Vault_RecoveryKey_UnlocksWithoutPassword [1 s]
+
+총 테스트 수: 750
+     통과: 628
+테스트 실행이 실패했습니다.
+     실패: 6
+    건너뜀: 116
+ 총 시간: 3.1172 분
+     1>1 노드의 "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\SmartPerformanceDoctor.Tests.csproj" 프로젝트(VSTest 대상)입니다.
+     1>_VSTestConsole:
+         MSB4181: "VSTestTask" 작업이 false를 반환했지만 오류를 기록하지 않았습니다.
+     1>"C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\SmartPerformanceDoctor.Tests.csproj" 프로젝트를 빌드했습니다(VSTest 대상). - 실패
+
+빌드하지 못했습니다.
+    경고 0개
+    오류 0개
+
+경과 시간: 00:03:08.09

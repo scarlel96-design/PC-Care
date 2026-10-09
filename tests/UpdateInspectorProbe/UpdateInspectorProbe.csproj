@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <InspectorSource Condition="'$(InspectorSource)' == ''">../../src/SmartPerformanceDoctor.App/Services/Update/UpdatePackageInspector.cs</InspectorSource>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="$(InspectorSource)" />
+    <Compile Include="../../src/SmartPerformanceDoctor.App/Models/Update/UpdateManifestDocument.cs" />
+    <Compile Include="../../src/SmartPerformanceDoctor.App/Models/Update/UpdatePackageInspection.cs" />
+    <Compile Include="../../src/SmartPerformanceDoctor.App/Models/Update/UpdateProgressReport.cs" />
+    <Compile Include="../../src/SmartPerformanceDoctor.App/Services/Update/UpdateProgressReporter.cs" />
+    <Compile Include="../../src/SmartPerformanceDoctor.App/Services/Update/UpdateVersionComparer.cs" />
+  </ItemGroup>
+</Project>

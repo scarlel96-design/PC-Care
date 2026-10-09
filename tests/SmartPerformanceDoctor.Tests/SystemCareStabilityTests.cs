@@ -7,6 +7,34 @@ namespace SmartPerformanceDoctor.Tests;
 public sealed class SystemCareStabilityTests
 {
     [Fact]
+    public void CareRollback_DoesNotOverwriteNewFileAtOriginalPath()
+    {
+        var audit = Path.Combine(Path.GetTempPath(), "care-rollback-" + Guid.NewGuid().ToString("N"));
+        var quarantine = Path.Combine(audit, "quarantine");
+        var original = Path.Combine(audit, "original.txt");
+        var held = Path.Combine(quarantine, "held.txt");
+        Directory.CreateDirectory(quarantine);
+        try
+        {
+            File.WriteAllText(held, "quarantined");
+            CareRollbackService.RecordQuarantine(audit, original, held);
+            File.WriteAllText(original, "new user data");
+
+            var result = CareRollbackService.Rollback(audit);
+
+            Assert.False(result.Success);
+            Assert.Equal(0, result.RestoredCount);
+            Assert.Equal(1, result.FailedCount);
+            Assert.Equal("new user data", File.ReadAllText(original));
+            Assert.Equal("quarantined", File.ReadAllText(held));
+        }
+        finally
+        {
+            Directory.Delete(audit, recursive: true);
+        }
+    }
+
+    [Fact]
     public void CareFolderScanner_TempPath_CompletesQuickly()
     {
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));

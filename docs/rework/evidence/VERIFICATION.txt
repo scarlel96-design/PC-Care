@@ -1,0 +1,49 @@
+BRANCH=codex/pccare-rework-phase0-1
+CHANGED_FIELD=UpdatePackageInspector.Inspect / 실제 ZIP 항목 SHA-256 및 안전 경로 검증; UpdateInstallerService / 검증된 목록만 제한 추출; CareRollbackService / 충돌 파일 보존
+MODIFIED_FILE=C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\Services\Update\UpdatePackageInspector.cs
+DIFF_FILE=C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\UpdatePackageInspector.diff
+VERIFICATION=C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\VERIFICATION.txt
+ROLLBACK=C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\ROLLBACK.sh
+ORIGINAL_COPY=C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\UpdatePackageInspector.original.cs
+ORIGINAL_SHA256=B0624CB57C6DF8580AA87041B018B01E14E9C29DE270F06E844A7AB5A743360C
+MODIFIED_SHA256=6C8FF319101B4B7B9F9EF2F97915938FB28B4A16B85B2ADCCDD5624C384E081A
+
+Test environment (PowerShell, cwd=C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care):
+$env:DOTNET_CLI_HOME=(Join-Path (Get-Location) '.dotnet-home')
+$env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE='1'
+$env:DOTNET_CLI_TELEMETRY_OPTOUT='1'
+$env:MSBuildEnableWorkloadResolver='false'
+
+BASELINE command: dotnet run --project tests/UpdateInspectorProbe/UpdateInspectorProbe.csproj --property:InspectorSource=../../docs/rework/evidence/UpdatePackageInspector.original.cs -- --baseline
+BASELINE input: generated valid ZIP, tampered ZIP, traversal ZIP, extra-entry ZIP, duplicate-entry ZIP, Windows reserved-name ZIP; source=ORIGINAL_COPY
+BASELINE literal output: valid=READY;tampered=READY;traversal=READY;extra=READY;duplicate=READY;reserved=READY
+BASELINE exit status: 0
+
+MODIFIED command: dotnet run --project tests/UpdateInspectorProbe/UpdateInspectorProbe.csproj -- --modified
+MODIFIED input: identical generated cases; source=MODIFIED_FILE
+MODIFIED literal output: valid=READY;tampered=CHECKSUM-FAIL;traversal=CHECKSUM-FAIL;extra=CHECKSUM-FAIL;duplicate=CHECKSUM-FAIL;reserved=CHECKSUM-FAIL
+MODIFIED exit status: 0
+
+ROLLBACK command: & 'C:\Program Files\Git\bin\bash.exe' docs/rework/evidence/ROLLBACK.sh docs/rework/evidence/rollback-test-copy.cs
+ROLLBACK input: another copy of final MODIFIED_FILE, never the working source
+ROLLBACK literal output: restored_sha256=b0624cb57c6df8580aa87041b018b01e14e9c29de270f06e844a7ab5a743360c
+ROLLBACK exit status: 0
+ROLLBACK restored behavior/status: rollback-test-copy.cs SHA-256=B0624CB57C6DF8580AA87041B018B01E14E9C29DE270F06E844A7AB5A743360C; working MODIFIED_FILE SHA-256=6C8FF319101B4B7B9F9EF2F97915938FB28B4A16B85B2ADCCDD5624C384E081A and remains changed.
+
+BUILD command: dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj --no-restore --disable-build-servers -p:Platform=x64 -v:minimal
+BUILD literal result: 빌드했습니다. 경고 0개, 오류 0개.
+BUILD exit status: 0
+
+FOCUSED_TEST command: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj --no-restore -p:Platform=x64 --filter "FullyQualifiedName~CareRollback_DoesNotOverwriteNewFileAtOriginalPath|FullyQualifiedName~UpdatePackageInspectorTests|FullyQualifiedName~GitHubReleaseUpdateServiceTests" -v:minimal
+FOCUSED_TEST literal result: 통과! - 실패: 0, 통과: 4, 건너뜀: 0, 전체: 4
+FOCUSED_TEST exit status: 0
+
+FULL_SUITE initial command: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj --no-restore -p:Platform=x64 -v:minimal
+FULL_SUITE initial literal result: 실패! - 실패: 5, 통과: 628, 건너뜀: 116, 전체: 749
+FULL_SUITE initial exit status: 1
+FULL_SUITE final command: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj --no-restore -p:Platform=x64 -v:minimal
+FULL_SUITE final input: final patched source, x64; same test environment above
+FULL_SUITE final literal result: 통과!  - 실패:     0, 통과:   634, 건너뜀:   116, 전체:   750, 기간: 4 m 27 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+FULL_SUITE final exit status: 0
+FULL_SUITE final log: docs/rework/evidence/full-suite-final.txt
+FULL_SUITE initial failures were fixed by vault test isolation and primary navigation metadata.

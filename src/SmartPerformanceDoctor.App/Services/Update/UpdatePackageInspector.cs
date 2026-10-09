@@ -8,6 +8,10 @@ namespace SmartPerformanceDoctor.App.Services.Update;
 public sealed class UpdatePackageInspector
 {
     public const string ManifestEntryName = "update.manifest.json";
+    public const long MaxEntryBytes = 512L * 1024 * 1024;
+    public const long MaxPackageBytes = 2L * 1024 * 1024 * 1024;
+    public const int MaxEntries = 10_000;
+    private const long MaxManifestBytes = 2L * 1024 * 1024;
     private const int StepCount = 5;
 
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
@@ -47,6 +51,11 @@ public sealed class UpdatePackageInspector
             reporter.Report(15, 2, StepCount, "검사", "ZIP 열기", $"압축 패키지 읽기 · {fileSizeMb:F1} MB");
 
             using var archive = ZipFile.OpenRead(packagePath);
+            if (archive.Entries.Count == 0 || archive.Entries.Count > MaxEntries)
+            {
+                return Invalid(packagePath, "ENTRY-LIMIT", "ZIP 항목 수가 허용 범위를 벗어났습니다.");
+            }
+
             var manifestEntry = archive.GetEntry(ManifestEntryName)
                                  ?? archive.Entries.FirstOrDefault(x =>
                                      x.FullName.Equals(ManifestEntryName, StringComparison.OrdinalIgnoreCase));
@@ -54,6 +63,10 @@ public sealed class UpdatePackageInspector
             if (manifestEntry is null)
             {
                 return Invalid(packagePath, "NO-MANIFEST", "패키지 안에 update.manifest.json 이 없습니다.");
+            }
+            if (manifestEntry.Length > MaxManifestBytes)
+            {
+                return Invalid(packagePath, "MANIFEST-LIMIT", "매니페스트 크기 제한을 초과했습니다.");
             }
 
             reporter.Report(30, 3, StepCount, "검사", "매니페스트 읽기", "update.manifest.json 파싱 중…");
@@ -96,33 +109,27 @@ public sealed class UpdatePackageInspector
                     manifest.RequiresRestart);
             }
 
-            var packageIntegrityVerified = false;
+            if (manifest.Files.Count == 0)
+            {
+                return Invalid(packagePath, "NO-FILES", "적용할 파일 목록이 비어 있습니다.");
+            }
+
             if (!string.IsNullOrWhiteSpace(manifest.PackageSha256))
             {
                 reporter.Report(70, 5, StepCount, "검사", "지문 검증", $"파일 목록 지문 확인 · {manifest.Files.Count}개 항목");
                 var fingerprint = ComputeManifestFingerprint(manifest);
                 if (!string.Equals(fingerprint, manifest.PackageSha256, StringComparison.OrdinalIgnoreCase))
                 {
-                    reporter.Report(70, 5, StepCount, "검사", "지문 재검증", "목록 지문 불일치 · ZIP 내용 해시로 재확인 중…");
-                    if (!TryVerifyArchiveFileHashes(archive, manifest, cancellationToken, out var hashError))
-                    {
-                        return Invalid(
-                            packagePath,
-                            "CHECKSUM-FAIL",
-                            $"패키지 체크섬이 일치하지 않습니다. {hashError}");
-                    }
+                    // Older packages may use a different list-fingerprint recipe.
+                    // The authoritative gate below is the actual ZIP content hash for every file.
+                    reporter.Report(70, 5, StepCount, "검사", "지문 재검증", "목록 지문 불일치 · 실제 파일 해시를 검증 중…");
                 }
-
-                packageIntegrityVerified = true;
-            }
-            else
-            {
-                reporter.Report(70, 5, StepCount, "검사", "지문 검증", "패키지 지문 없음 · 매니페스트 구조만 확인");
             }
 
-            if (manifest.Files.Count == 0)
+            reporter.Report(75, 5, StepCount, "검사", "파일 검증", "ZIP의 실제 파일과 SHA-256을 검증 중…");
+            if (!TryVerifyArchiveFileHashes(archive, manifest, cancellationToken, out var hashError))
             {
-                return Invalid(packagePath, "NO-FILES", "적용할 파일 목록이 비어 있습니다.");
+                return Invalid(packagePath, "CHECKSUM-FAIL", hashError);
             }
 
             reporter.Report(100, StepCount, StepCount, "검사", "준비 완료", $"적용 가능 · 파일 {manifest.Files.Count}개");
@@ -134,7 +141,7 @@ public sealed class UpdatePackageInspector
                 $"{manifest.FromVersion} → {manifest.ToVersion} 업데이트를 적용할 수 있습니다.",
                 true,
                 manifest.RequiresRestart,
-                packageIntegrityVerified);
+                true);
         }
         catch (Exception ex)
         {
@@ -161,75 +168,146 @@ public sealed class UpdatePackageInspector
         return Convert.ToHexString(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(joined))).ToLowerInvariant();
     }
 
-    private static bool TryVerifyArchiveFileHashes(
+    public static bool TryGetSafePayloadRelativePath(string path, out string relative)
+    {
+        relative = "";
+        if (string.IsNullOrWhiteSpace(path) || path.IndexOfAny(['\0', ':']) >= 0
+            || path.StartsWith('/') || path.StartsWith('\\'))
+        {
+            return false;
+        }
+
+        var normalized = path.Replace('\\', '/');
+        if (!normalized.StartsWith("payload/", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        var parts = normalized.Split('/');
+        if (parts.Length < 2 || parts.Any(IsUnsafeWindowsSegment))
+        {
+            return false;
+        }
+
+        relative = string.Join(Path.DirectorySeparatorChar.ToString(), parts.Skip(1));
+        return !string.IsNullOrWhiteSpace(relative);
+    }
+
+    private static bool IsUnsafeWindowsSegment(string part)
+    {
+        if (string.IsNullOrWhiteSpace(part) || part is "." or ".."
+            || part.EndsWith(' ') || part.EndsWith('.')
+            || part.IndexOfAny(['<', '>', '"', '|', '?', '*']) >= 0
+            || part.Any(char.IsControl))
+        {
+            return true;
+        }
+
+        var stem = part.Split('.')[0];
+        return stem.Equals("CON", StringComparison.OrdinalIgnoreCase)
+            || stem.Equals("PRN", StringComparison.OrdinalIgnoreCase)
+            || stem.Equals("AUX", StringComparison.OrdinalIgnoreCase)
+            || stem.Equals("NUL", StringComparison.OrdinalIgnoreCase)
+            || (stem.Length == 4 && (stem.StartsWith("COM", StringComparison.OrdinalIgnoreCase)
+                                     || stem.StartsWith("LPT", StringComparison.OrdinalIgnoreCase))
+                && stem[3] is >= '1' and <= '9');
+    }
+
+    internal static bool TryVerifyArchiveFileHashes(
         ZipArchive archive,
         UpdateManifestDocument manifest,
         CancellationToken cancellationToken,
         out string error)
     {
         error = "";
-        var checkedCount = 0;
+        var expected = new Dictionary<string, UpdateManifestFileEntry>(StringComparer.OrdinalIgnoreCase);
+        long totalBytes = 0;
 
-        foreach (var entry in manifest.Files)
+        foreach (var file in manifest.Files)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            if (string.IsNullOrWhiteSpace(entry.Path) || string.IsNullOrWhiteSpace(entry.Sha256))
+            if (!TryGetSafePayloadRelativePath(file.Path, out _)
+                || file.Sha256.Length != 64 || !file.Sha256.All(Uri.IsHexDigit)
+                || !expected.TryAdd(NormalizeZipEntryPath(file.Path), file))
             {
-                error = "매니페스트 파일 항목이 비어 있습니다.";
+                error = $"매니페스트 경로·해시가 잘못됐거나 중복됐습니다: {file.Path}";
                 return false;
             }
-
-            var zipEntry = FindZipEntry(archive, entry.Path);
-            if (zipEntry is null)
-            {
-                error = $"ZIP에 파일이 없습니다: {entry.Path}";
-                return false;
-            }
-
-            using var stream = zipEntry.Open();
-            var actual = Convert.ToHexString(SHA256.HashData(stream)).ToLowerInvariant();
-            if (!string.Equals(actual, entry.Sha256, StringComparison.OrdinalIgnoreCase))
-            {
-                error = $"파일 해시 불일치: {entry.Path}";
-                return false;
-            }
-
-            checkedCount++;
         }
 
-        if (checkedCount == 0)
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var zipEntry in archive.Entries)
         {
-            error = "검증할 파일이 없습니다.";
+            cancellationToken.ThrowIfCancellationRequested();
+            var path = NormalizeZipEntryPath(zipEntry.FullName);
+            if (path.Equals(ManifestEntryName, StringComparison.OrdinalIgnoreCase))
+            {
+                if (!seen.Add(ManifestEntryName))
+                {
+                    error = "매니페스트가 중복됐습니다.";
+                    return false;
+                }
+                continue;
+            }
+
+            if (path.EndsWith('/'))
+            {
+                var marker = path.TrimEnd('/') + "/placeholder";
+                if (!TryGetSafePayloadRelativePath(marker, out _))
+                {
+                    error = $"안전하지 않은 ZIP 디렉터리: {zipEntry.FullName}";
+                    return false;
+                }
+                continue;
+            }
+
+            if (!TryGetSafePayloadRelativePath(zipEntry.FullName, out _)
+                || !expected.TryGetValue(path, out var file)
+                || !seen.Add(path))
+            {
+                error = $"ZIP 파일이 매니페스트와 다르거나 중복됐습니다: {zipEntry.FullName}";
+                return false;
+            }
+
+            if (zipEntry.Length > MaxEntryBytes || totalBytes > MaxPackageBytes - zipEntry.Length)
+            {
+                error = "압축 해제 크기 제한을 초과했습니다.";
+                return false;
+            }
+            totalBytes += zipEntry.Length;
+
+            using var stream = zipEntry.Open();
+            using var sha = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+            var buffer = new byte[128 * 1024];
+            long readBytes = 0;
+            int count;
+            while ((count = stream.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                readBytes += count;
+                if (readBytes > MaxEntryBytes || readBytes > zipEntry.Length)
+                {
+                    error = $"파일 크기 제한 또는 ZIP 길이 불일치: {path}";
+                    return false;
+                }
+                sha.AppendData(buffer, 0, count);
+            }
+            if (readBytes != zipEntry.Length
+                || !string.Equals(Convert.ToHexString(sha.GetHashAndReset()), file.Sha256, StringComparison.OrdinalIgnoreCase))
+            {
+                error = $"파일 해시 또는 길이 불일치: {path}";
+                return false;
+            }
+        }
+
+        if (seen.Count != expected.Count + 1)
+        {
+            error = "매니페스트에 선언한 파일 중 ZIP에 없는 항목이 있습니다.";
             return false;
         }
 
         return true;
     }
 
-    private static string NormalizeZipEntryPath(string path) =>
-        path.Replace('\\', '/').TrimStart('/');
+    internal static string NormalizeZipEntryPath(string path) => path.Replace('\\', '/');
 
-    /// <summary>
-    /// PowerShell Compress-Archive often stores entries with backslashes while the
-    /// manifest uses forward slashes (payload/foo.dll). Match both styles.
-    /// </summary>
-    private static ZipArchiveEntry? FindZipEntry(ZipArchive archive, string path)
-    {
-        var forward = NormalizeZipEntryPath(path);
-        var backslash = forward.Replace('/', '\\');
-
-        var entry = archive.GetEntry(forward)
-                    ?? archive.GetEntry(backslash)
-                    ?? archive.GetEntry(path);
-        if (entry is not null)
-        {
-            return entry;
-        }
-
-        return archive.Entries.FirstOrDefault(e =>
-        {
-            var full = NormalizeZipEntryPath(e.FullName);
-            return string.Equals(full, forward, StringComparison.OrdinalIgnoreCase);
-        });
-    }
 }

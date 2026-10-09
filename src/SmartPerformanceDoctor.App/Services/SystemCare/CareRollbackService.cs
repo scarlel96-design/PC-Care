@@ -46,12 +46,9 @@ public static class CareRollbackService
                     Directory.CreateDirectory(targetDir);
                 }
 
-                if (File.Exists(original))
-                {
-                    File.Delete(original);
-                }
-
-                File.Move(file, original, overwrite: true);
+                // A file created after quarantine belongs to the user. Preserve both
+                // files and let the caller resolve the conflict explicitly.
+                File.Move(file, original, overwrite: false);
                 restored++;
             }
             catch
@@ -63,11 +60,11 @@ public static class CareRollbackService
         CareAuditChain.Append(auditFolder, "rollback", $"복원 {restored} · 실패 {failed}");
         return new CareRollbackResult
         {
-            Success = restored > 0,
+            Success = restored > 0 && failed == 0,
             RestoredCount = restored,
             FailedCount = failed,
             Message = restored > 0
-                ? $"격리 항목 {restored}개를 원래 위치로 복원했습니다."
+                ? $"격리 항목 {restored}개 복원 · 미복원 {failed}개."
                 : "복원할 수 있는 항목이 없습니다."
         };
     }

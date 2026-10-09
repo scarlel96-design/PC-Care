@@ -11,6 +11,7 @@ namespace SmartPerformanceDoctor.Tests;
 /// Isolated attack simulations for Secure Vault and Secure Delete.
 /// Uses a temporary LOCALAPPDATA — never touches the user's live vault.
 /// </summary>
+[Collection("VaultEnvironment")]
 public sealed class SecurityAttackSimulationTests : IDisposable
 {
     private readonly string _originalLocalAppData;

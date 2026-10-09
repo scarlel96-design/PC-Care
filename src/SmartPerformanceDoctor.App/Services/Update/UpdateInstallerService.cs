@@ -38,11 +38,20 @@ public sealed class UpdateInstallerService
             return new UpdateApplyResult(false, AppInfo.Version, "", inspection.Message, false, 0, 0);
         }
 
+        // The package may have changed since the UI inspection. Re-open it before staging.
+        var currentInspection = _inspector.Inspect(inspection.PackagePath, AppInfo.Version, cancellationToken: cancellationToken);
+        if (!currentInspection.IsValid || !currentInspection.CanApply || !currentInspection.PackageIntegrityVerified
+            || currentInspection.Manifest is null
+            || !string.Equals(currentInspection.Manifest.ToVersion, inspection.Manifest.ToVersion, StringComparison.Ordinal))
+        {
+            return new UpdateApplyResult(false, AppInfo.Version, "", "업데이트 파일이 변경됐거나 검증되지 않았습니다.", false, 0, 0);
+        }
+
         UpdatePaths.EnsureLayout();
-        var manifest = inspection.Manifest;
+        var manifest = currentInspection.Manifest;
         var currentVersion = AppInfo.Version;
         var reporter = new UpdateProgressReporter(progress);
-        var stagingDir = Path.Combine(UpdatePaths.Staging, $"apply_{DateTimeOffset.Now:yyyyMMdd_HHmmss}");
+        var stagingDir = Path.Combine(UpdatePaths.Staging, $"apply_{Guid.NewGuid():N}");
         Directory.CreateDirectory(stagingDir);
 
         try
@@ -52,12 +61,11 @@ public sealed class UpdateInstallerService
 
             reporter.Report(5, 2, StepCount, "압축 해제", "패키지 열기", $"원본: {Path.GetFileName(inspection.PackagePath)}");
             var payloadRoot = await Task.Run(
-                () => ExtractPackageWithProgress(inspection.PackagePath, stagingDir, reporter, cancellationToken),
+                () => ExtractPackageWithProgress(inspection.PackagePath, stagingDir, manifest, reporter, cancellationToken),
                 cancellationToken);
 
             var deferred = new List<string>();
             var applied = 0;
-            var skippedVerify = inspection.PackageIntegrityVerified || inspection.IsValid;
             var total = manifest.Files.Count;
             var needsElevatedApply = UpdateInstallElevation.RequiresElevation(UpdatePaths.AppInstallDirectory);
 
@@ -65,13 +73,11 @@ public sealed class UpdateInstallerService
                 28,
                 3,
                 StepCount,
-                skippedVerify ? "적용" : "검증",
-                skippedVerify ? "무결성 확인됨" : "체크섬 생략",
+                "검증",
+                "무결성 확인됨",
                 needsElevatedApply
-                    ? "Program Files 설치 · 종료 후 관리자 권한으로 일괄 적용"
-                    : skippedVerify
-                        ? "검사 단계에서 지문 확인 완료 · 파일별 SHA256 생략"
-                        : "매니페스트 신뢰 · 파일별 SHA256 생략");
+                    ? "파일별 SHA-256 확인 완료 · 종료 후 관리자 권한으로 일괄 적용"
+                    : "파일별 SHA-256 확인 완료 · 설치 폴더에 적용");
 
             if (needsElevatedApply)
             {
@@ -245,27 +251,71 @@ public sealed class UpdateInstallerService
     private static string ExtractPackageWithProgress(
         string packagePath,
         string stagingDir,
+        UpdateManifestDocument manifest,
         UpdateProgressReporter reporter,
         CancellationToken cancellationToken)
     {
         using var archive = ZipFile.OpenRead(packagePath);
-        var entries = archive.Entries.Where(e => !string.IsNullOrEmpty(e.Name)).ToArray();
-        var total = Math.Max(1, entries.Length);
+        if (archive.Entries.Count > UpdatePackageInspector.MaxEntries)
+        {
+            throw new InvalidDataException("ZIP 항목 수 제한을 초과했습니다.");
+        }
+        if (!UpdatePackageInspector.TryVerifyArchiveFileHashes(archive, manifest, cancellationToken, out var error))
+        {
+            throw new InvalidDataException($"스테이징 전 패키지 검증 실패: {error}");
+        }
 
-        for (var i = 0; i < entries.Length; i++)
+        var entries = manifest.Files;
+        var total = entries.Count;
+
+        for (var i = 0; i < entries.Count; i++)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var entry = entries[i];
-            var dest = Path.Combine(stagingDir, entry.FullName);
+            if (!UpdatePackageInspector.TryGetSafePayloadRelativePath(entry.Path, out var relative))
+            {
+                throw new InvalidDataException($"안전하지 않은 업데이트 경로: {entry.Path}");
+            }
+
+            var name = UpdatePackageInspector.NormalizeZipEntryPath(entry.Path);
+            var zipEntry = archive.Entries.Single(e =>
+                string.Equals(UpdatePackageInspector.NormalizeZipEntryPath(e.FullName), name, StringComparison.OrdinalIgnoreCase));
+            var dest = Path.GetFullPath(Path.Combine(stagingDir, "payload", relative));
+            var stagingRoot = Path.GetFullPath(Path.Combine(stagingDir, "payload")) + Path.DirectorySeparatorChar;
+            if (!dest.StartsWith(stagingRoot, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidDataException($"스테이징 경계를 벗어난 경로: {entry.Path}");
+            }
             var dir = Path.GetDirectoryName(dest);
             if (!string.IsNullOrWhiteSpace(dir))
             {
                 Directory.CreateDirectory(dir);
             }
 
-            if (!string.IsNullOrEmpty(entry.Name))
+            using (var source = zipEntry.Open())
+            using (var target = new FileStream(dest, FileMode.CreateNew, FileAccess.Write, FileShare.None))
             {
-                entry.ExtractToFile(dest, true);
+                var buffer = new byte[128 * 1024];
+                long copied = 0;
+                int count;
+                while ((count = source.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    copied += count;
+                    if (copied > zipEntry.Length || copied > UpdatePackageInspector.MaxEntryBytes)
+                    {
+                        throw new InvalidDataException($"압축 해제 크기 제한 초과: {entry.Path}");
+                    }
+                    target.Write(buffer, 0, count);
+                }
+                if (copied != zipEntry.Length)
+                {
+                    throw new InvalidDataException($"압축 해제 길이 불일치: {entry.Path}");
+                }
+            }
+            if (!string.Equals(UpdatePackageInspector.ComputeSha256(dest), entry.Sha256, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidDataException($"스테이징 파일 해시 불일치: {entry.Path}");
             }
 
             var percent = 5 + (int)((i + 1) / (double)total * 22);
@@ -275,10 +325,10 @@ public sealed class UpdateInstallerService
                 StepCount,
                 "압축 해제",
                 "항목 추출",
-                $"{entry.FullName.Replace('\\', '/')}",
+                name,
                 i + 1,
                 total,
-                entry.Name);
+                Path.GetFileName(relative));
         }
 
         var payloadRoot = Path.Combine(stagingDir, "payload");
@@ -287,13 +337,11 @@ public sealed class UpdateInstallerService
 
     private static string NormalizePayloadPath(string path)
     {
-        var normalized = path.Replace('\\', '/').TrimStart('/');
-        if (normalized.StartsWith("payload/", StringComparison.OrdinalIgnoreCase))
+        if (!UpdatePackageInspector.TryGetSafePayloadRelativePath(path, out var relative))
         {
-            normalized = normalized["payload/".Length..];
+            throw new InvalidDataException($"안전하지 않은 업데이트 경로: {path}");
         }
-
-        return normalized.Replace('/', Path.DirectorySeparatorChar);
+        return relative;
     }
 
     private static void WritePendingState(string stagingDir, IReadOnlyList<string> deferred, UpdateManifestDocument manifest, string packagePath)
