@@ -1,0 +1,40 @@
+
+.NET 10.0을(를) 시작합니다.
+---------------------
+SDK 버전: 10.0.401
+
+원격 분석
+---------
+.NET 도구는 사용자 환경 개선을 위해 사용량 현황 데이터를 수집합니다. Microsoft에서 데이터를 수집하여 커뮤니티와 공유합니다. 원하는 셸을 사용하여 DOTNET_CLI_TELEMETRY_OPTOUT 환경 변수를 '1' 또는 'true'로 설정하여 원격 분석을 옵트아웃할 수 있습니다.
+
+.NET CLI 도구 원격 분석에 대한 자세한 내용은 https://aka.ms/dotnet-cli-telemetry를 참조하세요.
+
+----------------
+ASP.NET Core HTTPS 개발 인증서를 설치했습니다.
+인증서를 신뢰하려면 'dotnet dev-certs https --trust'를 실행하세요.
+HTTPS에 관한 자세한 정보: https://aka.ms/dotnet-https
+
+----------------
+첫 번째 앱 작성: https://aka.ms/dotnet-hello-world
+새로운 기능 확인: https://aka.ms/dotnet-whats-new
+설명서 살펴보기: https://aka.ms/dotnet-docs
+GitHub에서 문제 보고 및 소스 찾기: https://github.com/dotnet/core
+사용 가능한 명령을 보려면 'dotnet --help'를 사용하거나 https://aka.ms/dotnet-cli를 방문하세요.
+--------------------------------------------------------------------------------------
+  복원할 프로젝트를 확인하는 중...
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj : warning NU1510: System.IO.Pipes.AccessControl PackageReferenc는 정리할 수 없습니다. 이 패키지는 자동으로 사용할 수 있으며 명시적으로 참조할 필요가 없습니다. PackageReference 항목을 제거합니다. [C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\SmartPerformanceDoctor.sln]
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj : warning NU1510: System.Security.Cryptography.ProtectedData PackageReferenc는 정리할 수 없습니다. 이 패키지는 자동으로 사용할 수 있으며 명시적으로 참조할 필요가 없습니다. PackageReference 항목을 제거합니다. [C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\SmartPerformanceDoctor.sln]
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj : warning NU1510: System.Drawing.Common PackageReferenc는 정리할 수 없습니다. 이 패키지는 자동으로 사용할 수 있으며 명시적으로 참조할 필요가 없습니다. PackageReference 항목을 제거합니다. [C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\SmartPerformanceDoctor.sln]
+  C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.Contracts\SmartPerformanceDoctor.Contracts.csproj을(를) 558밀리초 동안 복원했습니다.
+  C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.Setup\SmartPerformanceDoctor.Setup.csproj을(를) 598밀리초 동안 복원했습니다.
+  C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.SecurityLab\SmartPerformanceDoctor.SecurityLab.csproj을(를) 3.04초 동안 복원했습니다.
+  C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.AstraVault\SmartPerformanceDoctor.AstraVault.csproj을(를) 3.03초 동안 복원했습니다.
+  C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tools\SmartPerformanceDoctor.SecurityLab.Cli\SmartPerformanceDoctor.SecurityLab.Cli.csproj을(를) 3.04초 동안 복원했습니다.
+  C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.Aegis\SmartPerformanceDoctor.Aegis.csproj을(를) 3.03초 동안 복원했습니다.
+  C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryHelper\SmartPerformanceDoctor.AegisRecoveryHelper.csproj을(를) 3.04초 동안 복원했습니다.
+  C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.Data\SmartPerformanceDoctor.Data.csproj을(를) 3.05초 동안 복원했습니다.
+  C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.SecurityLab.Tests\SmartPerformanceDoctor.SecurityLab.Tests.csproj을(를) 3.07초 동안 복원했습니다.
+  C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryService\SmartPerformanceDoctor.AegisRecoveryService.csproj을(를) 3.12초 동안 복원했습니다.
+  C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\SmartPerformanceDoctor.Tests.csproj을(를) 3.14초 동안 복원했습니다.
+  C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj을(를) 3.14초 동안 복원했습니다.
+  C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.AstraVault.KillWorker\SmartPerformanceDoctor.AstraVault.KillWorker.csproj을(를) 14.06초 동안 복원했습니다.

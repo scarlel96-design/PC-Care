@@ -56,21 +56,21 @@ public sealed class Av3NamedSignoffTests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void NamedSignoff_EnableFlagsRemainFalse()
     {
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
-        Assert.True(Av3PhaseGate.ProductionAnchorImplemented);
-        Assert.True(Av3PhaseGate.XChaCha24Implemented);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
+        Assert.False(Av3PhaseGate.XChaCha24Implemented);
         Assert.True(Av3EnableReadinessChecklist.AllWriterGatesClosed);
     }
 
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void NamedSignoff_ExternalReviewCompletedCodeRemainsFalse()
     {
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
-        Assert.True(Av3EnableReadinessChecklist.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3EnableReadinessChecklist.ExternalReviewCompleted);
         Assert.True(Av3PhaseGate.E10NamedSignoffRecordComplete);
     }
 
@@ -88,7 +88,7 @@ public sealed class Av3NamedSignoffTests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void NamedSignoff_SpdVaultUnchanged_NoMigration()
     {
-        Assert.True(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
         Assert.True(Av3EnableReadinessChecklist.MigrationSeparated);
         Assert.True(Av3EnableReadinessChecklist.R9DeferredToPhaseH);
         Assert.False(Av3CommitRecoveryManager.PerformsAutomaticRepair);

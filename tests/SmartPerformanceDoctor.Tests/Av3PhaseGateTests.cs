@@ -7,25 +7,25 @@ namespace SmartPerformanceDoctor.Tests;
 
 public sealed class Av3PhaseGateTests
 {
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact]
     public void PhaseGate_ProductionWriter_RemainsDisabled()
     {
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact]
     public void PhaseGate_JournalWriter_RemainsDisabled()
     {
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact]
     public void PhaseGate_Migration_RemainsDisabled()
     {
-        Assert.True(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact]
     public void PhaseGate_E0_DesignLocks_MatchDocumentedGate()
     {
         Assert.True(Av3PhaseGate.WriterDesignLocked);
@@ -45,7 +45,7 @@ public sealed class Av3PhaseGateTests
         Assert.True(Av3PhaseGate.E121XChaCha24SignoffGateComplete);
         Assert.True(Av3PhaseGate.XChaCha24SignoffApprovedCandidate);
         Assert.True(Av3PhaseGate.XChaCha24ImplementationCandidate);
-        Assert.True(Av3PhaseGate.XChaCha24Implemented);
+        Assert.False(Av3PhaseGate.XChaCha24Implemented);
         Assert.True(Av3PhaseGate.E111AnchorSignoffGateComplete);
         Assert.False(Av3PhaseGate.TrustedMonotonicProductionAnchorImplemented);
         Assert.True(Av3PhaseGate.E9ExternalSignoffPrepComplete);
@@ -53,7 +53,7 @@ public sealed class Av3PhaseGateTests
         Assert.True(Av3PhaseGate.E11AnchorHarnessEnabled);
         Assert.True(Av3PhaseGate.E11AnchorClosurePackageComplete);
         Assert.True(Av3PhaseGate.ProductionAnchorImplementationCandidate);
-        Assert.True(Av3PhaseGate.ProductionEnableAuthorized);
+        Assert.False(Av3PhaseGate.ProductionEnableAuthorized);
         Assert.True(Av3PhaseGate.JournalLeakScannerDeterministic);
         Assert.True(Av3PhaseGate.JournalBinaryScanSeparated);
         Assert.True(Av3PhaseGate.DisabledProductionWriterImplementationPresent);
@@ -67,10 +67,10 @@ public sealed class Av3PhaseGateTests
         Assert.True(Av3PhaseGate.JournalConfidentialityChecked);
         Assert.True(Av3PhaseGate.ProductionWriterDesignLocked);
         Assert.True(Av3PhaseGate.ExternalReviewPackageReady);
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
         Assert.True(Av3PhaseGate.AnchorModelDocumented);
         Assert.True(Av3PhaseGate.XChaChaMigrationPlanDocumented);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
         Assert.True(Av3PhaseGate.E6ReviewFixesApplied);
         Assert.True(Av3PhaseGate.CleanupFailureHarnessCovered);
         Assert.True(Av3PhaseGate.E7PreEnableHardeningComplete);
@@ -78,9 +78,9 @@ public sealed class Av3PhaseGateTests
         Assert.True(Av3PhaseGate.E8LimitedDryRunComplete);
         Assert.True(Av3EnableReadinessChecklist.AllWriterGatesClosed);
         Assert.True(Av3PhaseGate.WriterInvariantChecksEnabled);
-        Assert.True(Av3PhaseGate.ProductionAnchorImplemented);
-        Assert.True(Av3PhaseGate.XChaCha24Implemented);
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
+        Assert.False(Av3PhaseGate.XChaCha24Implemented);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
     }
 
     [Fact]

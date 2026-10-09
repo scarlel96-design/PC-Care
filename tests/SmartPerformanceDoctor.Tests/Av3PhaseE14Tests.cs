@@ -308,36 +308,36 @@ public sealed class Av3PhaseE14Tests
         Assert.True(Av3PhaseGate.ActualDiskDurabilityReviewCandidate);
         Assert.False(Av3EnableReadinessChecklist.ActualDiskDurabilityReviewed);
         Assert.True(Av3EnableReadinessChecklist.DiskDurabilityReviewPackageComplete);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
         Assert.False(Av3DiskDurabilityRuntimePolicy.ProductionDiskDurabilityRouteEnabled);
     }
 
     [Fact]
     public void E14_ProductionEnableAuthorizedFalse() =>
-        Assert.True(Av3PhaseGate.ProductionEnableAuthorized);
+        Assert.False(Av3PhaseGate.ProductionEnableAuthorized);
 
     [Fact]
     public void E14_ExternalReviewCompletedCodeFalse()
     {
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
-        Assert.True(Av3EnableReadinessChecklist.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3EnableReadinessChecklist.ExternalReviewCompleted);
     }
 
     [Fact]
     public void E14_ProductionAnchorImplementedFalse()
     {
-        Assert.True(Av3PhaseGate.ProductionAnchorImplemented);
+        Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
         Assert.True(Av3PhaseGate.B1ProductionAnchorSignedCandidateOnly);
     }
 
     [Fact]
     public void E14_XChaCha24ImplementedFalse()
     {
-        Assert.True(Av3PhaseGate.XChaCha24Implemented);
+        Assert.False(Av3PhaseGate.XChaCha24Implemented);
         Assert.True(Av3PhaseGate.XChaCha24SignoffApprovedCandidate);
     }
 
@@ -354,14 +354,14 @@ public sealed class Av3PhaseE14Tests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E14_SpdVaultUnchanged_NoMigration()
     {
-        Assert.True(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
         Assert.False(Av3CommitRecoveryManager.PerformsAutomaticRepair);
     }
 
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E14_SClassStillNotSatisfied()
     {
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
         var text = File.ReadAllText(ResolveDoc("ASTRA_VAULT_E14_DISK_DURABILITY_REVIEW_REPORT.md"));
         Assert.Contains("NOT YET SATISFIED", text, StringComparison.Ordinal);
     }

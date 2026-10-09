@@ -1,5 +1,13 @@
 namespace SmartPerformanceDoctor.App.Models.Update;
 
+public enum UpdatePublisherTrustLevel
+{
+    Unverified,
+    ContentVerifiedOnly,
+    PublisherVerified,
+    VerificationFailed
+}
+
 public sealed record UpdatePackageInspection(
     bool IsValid,
     string PackagePath,
@@ -8,4 +16,5 @@ public sealed record UpdatePackageInspection(
     string Message,
     bool CanApply,
     bool RequiresRestart,
-    bool PackageIntegrityVerified = false);
+    bool PackageIntegrityVerified = false,
+    UpdatePublisherTrustLevel PublisherTrust = UpdatePublisherTrustLevel.Unverified);

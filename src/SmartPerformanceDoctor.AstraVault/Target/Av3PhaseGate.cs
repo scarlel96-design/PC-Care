@@ -1,9 +1,19 @@
 namespace SmartPerformanceDoctor.AstraVault.Target;
 
-/// <summary>AV3 phase gates — Phase E-6.2 review fixes; production writer AUTHORIZED for 50.4.0.</summary>
+public enum Av3ProductionStatus
+{
+    Experimental,
+    ReadOnlyValidated,
+    ProductionCandidate,
+    ProductionAuthorized,
+    Disabled
+}
+
+/// <summary>AV3 target phase. User-facing vault still uses the legacy backend.</summary>
 public static class Av3PhaseGate
 {
-    public const string PhaseLabel = "PRODUCTION AUTHORIZED (50.4.0 product GO · Lab v5 + AV3 gates enabled · ExternalReviewCompleted)";
+    public const string PhaseLabel = "E-14 READ-ONLY VALIDATED · production writer NO-GO";
+    public const Av3ProductionStatus CurrentStatus = Av3ProductionStatus.ReadOnlyValidated;
 
     /// <summary>E-6 writer implementation types exist; production route remains disabled.</summary>
     public const bool DisabledProductionWriterImplementationPresent = true;
@@ -15,7 +25,7 @@ public static class Av3PhaseGate
     public const bool ExternalReviewPackageReady = true;
 
     /// <summary>External security review sign-off — false until decision record updated.</summary>
-    public static readonly bool ExternalReviewCompleted = true;
+    public static readonly bool ExternalReviewCompleted = false;
 
     /// <summary>E-5 anchor model documented; not implemented.</summary>
     public const bool AnchorModelDocumented = true;
@@ -24,7 +34,7 @@ public static class Av3PhaseGate
     public const bool XChaChaMigrationPlanDocumented = true;
 
     /// <summary>Writer enable readiness — remains NO-GO until explicit decision record.</summary>
-    public static readonly bool WriterEnableReady = true;
+    public static readonly bool WriterEnableReady = false;
 
     /// <summary>E-4 automated R1/R2/R3/R10/R11 closure harness (test-only; not writer enable).</summary>
     public const bool HighRiskClosureHarnessEnabled = true;
@@ -72,13 +82,13 @@ public static class Av3PhaseGate
     public const bool FaultInjectionPlanLocked = true;
 
     /// <summary>Production AV3 container writer — NOT AUTHORIZED until gate review + FI pass.</summary>
-    public static readonly bool ProductionWriterEnabled = true;
+    public static readonly bool ProductionWriterEnabled = false;
 
     /// <summary>Journal durable writer — NOT AUTHORIZED.</summary>
-    public static readonly bool JournalWriterEnabled = true;
+    public static readonly bool JournalWriterEnabled = false;
 
     /// <summary>spd-vault → AV3 migration — NOT AUTHORIZED (Phase H).</summary>
-    public static readonly bool MigrationEnabled = true;
+    public static readonly bool MigrationEnabled = false;
 
     /// <summary>E-6.2: harness covers cleanup failure FI and committed vs cleanup-required separation.</summary>
     public const bool CleanupFailureHarnessCovered = true;
@@ -129,7 +139,7 @@ public static class Av3PhaseGate
     public const bool E10EnableDecisionGateComplete = true;
 
     /// <summary>E-10 outcome: production writer enable explicitly not authorized (NO-GO).</summary>
-    public static readonly bool ProductionEnableAuthorized = true;
+    public static readonly bool ProductionEnableAuthorized = false;
 
     /// <summary>E-11: harness-only anchor closure package enabled (NOT production anchor enable).</summary>
     public const bool E11AnchorHarnessEnabled = true;
@@ -144,10 +154,10 @@ public static class Av3PhaseGate
     public const bool E111AnchorSignoffGateComplete = true;
 
     /// <summary>E-11.1: trusted monotonic production anchor — NOT implemented.</summary>
-    public static readonly bool TrustedMonotonicProductionAnchorImplemented = true;
+    public static readonly bool TrustedMonotonicProductionAnchorImplemented = false;
 
     /// <summary>Production trusted/external anchor — NOT implemented (S-Class blocker).</summary>
-    public static readonly bool ProductionAnchorImplemented = true;
+    public static readonly bool ProductionAnchorImplemented = false;
 
     /// <summary>E-12: XChaCha24 closure package complete — NOT production crypto sign-off.</summary>
     public const bool E12XChaCha24ClosurePackageComplete = true;
@@ -162,13 +172,13 @@ public static class Av3PhaseGate
     public const bool XChaCha24SignoffApprovedCandidate = true;
 
     /// <summary>XChaCha20-Poly1305 24-byte nonce — code flag remains false until explicit future production crypto gate.</summary>
-    public static readonly bool XChaCha24Implemented = true;
+    public static readonly bool XChaCha24Implemented = false;
 
     /// <summary>Current ChaCha20-Poly1305 12-byte nonce suite is transitional / BELOW S-CLASS.</summary>
-    public static readonly bool ChaCha12ByteNonceBelowSClass = false;
+    public static readonly bool ChaCha12ByteNonceBelowSClass = true;
 
     /// <summary>S-Class target aggregate — NOT satisfied until anchor + XChaCha24 + production writer GO.</summary>
-    public static readonly bool SClassTargetSatisfied = true;
+    public static readonly bool SClassTargetSatisfied = false;
 
     /// <summary>E-13: trusted anchor provider implementation package complete (NOT production anchor enable).</summary>
     public const bool E13TrustedAnchorProviderPackageComplete = true;

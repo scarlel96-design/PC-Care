@@ -71,7 +71,7 @@ public sealed class Av3PhaseE131Tests
         var text = File.ReadAllText(ResolveDoc("ASTRA_VAULT_E13_1_PRODUCTION_ANCHOR_DECISION.md"));
         Assert.Contains("stub", text, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("live", text, StringComparison.OrdinalIgnoreCase);
-        Assert.True(Av3PhaseGate.ProductionAnchorImplemented);
+        Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
         Assert.False(Av3PhaseGate.TrustedMonotonicProductionAnchorImplemented);
     }
 
@@ -114,25 +114,25 @@ public sealed class Av3PhaseE131Tests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E131_ProductionAnchorImplemented_RemainsFalse()
     {
-        Assert.True(Av3PhaseGate.ProductionAnchorImplemented);
+        Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
         Assert.False(Av3AnchorDesignPolicy.ProductionAnchorImplemented);
         Assert.False(Av3TrustedAnchorPolicy.ProductionAnchorImplemented);
     }
 
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E131_ProductionEnableAuthorized_RemainsFalse() =>
-        Assert.True(Av3PhaseGate.ProductionEnableAuthorized);
+        Assert.False(Av3PhaseGate.ProductionEnableAuthorized);
 
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E131_EnableFlagsRemainFalse()
     {
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
-        Assert.True(Av3PhaseGate.XChaCha24Implemented);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.False(Av3PhaseGate.XChaCha24Implemented);
         Assert.True(Av3PhaseGate.XChaCha24SignoffApprovedCandidate);
         Assert.True(Av3EnableReadinessChecklist.AllWriterGatesClosed);
     }
@@ -140,14 +140,14 @@ public sealed class Av3PhaseE131Tests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E131_ExternalReviewCompletedCode_RemainsFalse()
     {
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
-        Assert.True(Av3EnableReadinessChecklist.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3EnableReadinessChecklist.ExternalReviewCompleted);
     }
 
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E131_XChaCha24Implemented_RemainsFalseSignedCandidate()
     {
-        Assert.True(Av3PhaseGate.XChaCha24Implemented);
+        Assert.False(Av3PhaseGate.XChaCha24Implemented);
         Assert.True(Av3PhaseGate.XChaCha24ImplementationCandidate);
         Assert.True(Av3PhaseGate.XChaCha24SignoffApprovedCandidate);
     }
@@ -165,7 +165,7 @@ public sealed class Av3PhaseE131Tests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E131_SpdVaultUnchanged_NoMigration()
     {
-        Assert.True(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
         Assert.False(Av3CommitRecoveryManager.PerformsAutomaticRepair);
         Assert.False(Av3TrustedAnchorRecoveryPolicy.AutomaticRepairEnabled);
     }
@@ -173,7 +173,7 @@ public sealed class Av3PhaseE131Tests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E131_SClassStillNotSatisfied()
     {
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
         var text = File.ReadAllText(ResolveDoc("ASTRA_VAULT_E13_1_TRUSTED_ANCHOR_SIGNOFF_REPORT.md"));
         Assert.Contains("NOT YET SATISFIED", text, StringComparison.Ordinal);
     }

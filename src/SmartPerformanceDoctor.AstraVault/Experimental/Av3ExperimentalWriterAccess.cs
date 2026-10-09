@@ -3,7 +3,7 @@ using SmartPerformanceDoctor.AstraVault.Target;
 namespace SmartPerformanceDoctor.AstraVault.Experimental;
 
 /// <summary>
-/// Experimental harness access. Production writer authorized at 50.4.0 product GO.
+/// Experimental harness access. Production writer remains separately gated.
 /// Harness-only invocations still required for experimental types.
 /// </summary>
 public static class Av3ExperimentalWriterAccess

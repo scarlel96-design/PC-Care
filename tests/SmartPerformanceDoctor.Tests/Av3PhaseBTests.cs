@@ -13,11 +13,11 @@ public sealed class Av3PhaseBTests
 {
     private const string TestPassword = "PhaseB-Test-Passw0rd!";
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact]
     public void PhaseGate_ProductionWriter_RemainsDisabled()
     {
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
         Assert.True(Av3PhaseGate.ReadOnlyValidationEnabled);
     }
 

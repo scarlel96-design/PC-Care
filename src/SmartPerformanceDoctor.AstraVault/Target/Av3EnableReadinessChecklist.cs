@@ -1,8 +1,7 @@
 namespace SmartPerformanceDoctor.AstraVault.Target;
 
 /// <summary>
-/// Writer enable checklist — 50.4.0 product GO.
-/// Lab v5 is product vault path; AV3 gates authorized with external/product sign-off recorded.
+/// Writer enable checklist. Production AV3 remains NO-GO until each gate is verified.
 /// </summary>
 public static class Av3EnableReadinessChecklist
 {
@@ -12,7 +11,7 @@ public static class Av3EnableReadinessChecklist
     public static bool R10RollbackHarnessClosedOrLimitationDocumented => true;
     public static bool R11JournalConfidentialityHarnessClosed => true;
 
-    public static bool R9DeferredToPhaseH => false; // Phase H migration authorized at product level
+    public static bool R9DeferredToPhaseH => true;
     public static bool ActualKillFiPass => Av3PhaseGate.ActualKillHarnessEnabled;
     public static bool DurableFlushFiPass => Av3PhaseGate.HarnessRealCryptoEnabled;
     public static bool ThreeCopyHeaderFiPass => Av3PhaseGate.HighRiskClosureHarnessEnabled;
@@ -38,7 +37,7 @@ public static class Av3EnableReadinessChecklist
         "Av3PhaseE62Tests.E62_CleanupFailure_Trace_NoSecretLeak"
     ];
 
-    /// <summary>UI may connect once production writer is authorized (50.4.0).</summary>
+    /// <summary>UI may connect once the production writer is authorized.</summary>
     public static bool NoProductionServiceUiConnection => !Av3PhaseGate.ProductionWriterEnabled;
 
     public static bool ProductionWriterStillDisabled => !Av3PhaseGate.ProductionWriterEnabled;
@@ -54,23 +53,22 @@ public static class Av3EnableReadinessChecklist
 
     public static bool DiskDurabilityReviewPackageComplete => Av3PhaseGate.E14DiskDurabilityReviewPackageComplete;
     public static bool ActualDiskDurabilityReviewCandidate => Av3PhaseGate.ActualDiskDurabilityReviewCandidate;
-    public static bool ActualDiskDurabilityReviewed => true;
+    public static bool ActualDiskDurabilityReviewed => false;
 
-    public static bool ReleaseSecurityReviewCompleted => true;
+    public static bool ReleaseSecurityReviewCompleted => false;
 
     public static bool MigrationSeparated => !Av3PhaseGate.MigrationEnabled && R9DeferredToPhaseH;
 
     /// <summary>
-    /// Legacy name: previously meant "all enable gates closed (writer blocked)".
-    /// At 50.4.0 GO: true when production is fully authorized (gates passed).
+    /// All production writer gates remain closed until independently verified.
     /// </summary>
     public static bool AllWriterGatesClosed =>
-        Av3PhaseGate.ProductionWriterEnabled
-        && Av3PhaseGate.JournalWriterEnabled
-        && Av3PhaseGate.MigrationEnabled
-        && Av3PhaseGate.WriterEnableReady
-        && Av3PhaseGate.ExternalReviewCompleted
-        && Av3PhaseGate.ProductionEnableAuthorized;
+        !Av3PhaseGate.ProductionWriterEnabled
+        && !Av3PhaseGate.JournalWriterEnabled
+        && !Av3PhaseGate.MigrationEnabled
+        && !Av3PhaseGate.WriterEnableReady
+        && !Av3PhaseGate.ExternalReviewCompleted
+        && !Av3PhaseGate.ProductionEnableAuthorized;
 
     public static bool SClassBlockersExplicitlyListed => true;
 

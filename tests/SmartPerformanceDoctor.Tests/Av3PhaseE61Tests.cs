@@ -15,14 +15,14 @@ public sealed class Av3PhaseE61Tests
     [Fact]
     public void PhaseGate_E61_JournalScannerStabilization_GatesUnchanged()
     {
-        Assert.Contains("PRODUCTION AUTHORIZED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
+        Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
         Assert.True(Av3PhaseGate.JournalLeakScannerDeterministic);
         Assert.True(Av3PhaseGate.JournalBinaryScanSeparated);
         Assert.True(Av3PhaseGate.DisabledProductionWriterImplementationPresent);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
     }
 
     [Fact]

@@ -20,11 +20,11 @@ public sealed class Av3PhaseE3Tests
     [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
     public void PhaseGate_E3_ActualKillHarness_DocumentationOnly()
     {
-        Assert.Contains("PRODUCTION AUTHORIZED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
+        Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
         Assert.True(Av3PhaseGate.ActualKillHarnessEnabled);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
         Assert.False(Av3PhaseGate.ExperimentalWriterHarnessEnabled);
     }
 

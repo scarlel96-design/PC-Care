@@ -1257,6 +1257,7 @@ public sealed class SystemCareService
         Directory.CreateDirectory(quarantine);
         CareRollbackService.RecordQuarantine(auditFolder, source, dest);
         File.Move(source, dest, overwrite: false);
+        CareRollbackService.MarkQuarantined(auditFolder, dest);
         return true;
     }
 

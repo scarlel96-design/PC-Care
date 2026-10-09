@@ -25,15 +25,15 @@ public sealed class Av3PhaseE4Tests
     [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
     public void PhaseGate_E4_HighRiskClosure_NotWriterEnable()
     {
-        Assert.Contains("PRODUCTION AUTHORIZED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
+        Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
         Assert.True(Av3PhaseGate.HighRiskClosureHarnessEnabled);
         Assert.True(Av3PhaseGate.HighRiskClosureGateLocked);
         Assert.True(Av3PhaseGate.WriterEnableChecklistLocked);
         Assert.True(Av3PhaseGate.RollbackLimitationsDocumented);
         Assert.True(Av3PhaseGate.JournalConfidentialityChecked);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
     }
 
     public static IEnumerable<object[]> TornWriteMatrix() =>
@@ -389,7 +389,7 @@ public sealed class Av3PhaseE4Tests
     [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
     public void WriterEnableChecklist_State_NoGo()
     {
-        Assert.True(Av3EnableReadinessChecklist.WriterEnableReady);
+        Assert.False(Av3EnableReadinessChecklist.WriterEnableReady);
         Assert.True(Av3EnableReadinessChecklist.R1PartialTornWriteHarnessClosed);
         Assert.True(Av3EnableReadinessChecklist.R10RollbackHarnessClosedOrLimitationDocumented);
         Assert.True(Av3EnableReadinessChecklist.ExternalReviewRequiredBeforeEnable);
@@ -407,8 +407,8 @@ public sealed class Av3PhaseE4Tests
     [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
     public void R9_Migration_RemainsDisabled_NoWriterCollision()
     {
-        Assert.True(Av3PhaseGate.MigrationEnabled);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
     }
 
     [Fact]

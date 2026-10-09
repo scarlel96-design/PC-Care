@@ -132,16 +132,17 @@ public sealed class UpdatePackageInspector
                 return Invalid(packagePath, "CHECKSUM-FAIL", hashError);
             }
 
-            reporter.Report(100, StepCount, StepCount, "검사", "준비 완료", $"적용 가능 · 파일 {manifest.Files.Count}개");
+            reporter.Report(100, StepCount, StepCount, "검사", "내용 검증 완료", $"발행자 인증 미완료 · 파일 {manifest.Files.Count}개");
             return new UpdatePackageInspection(
                 true,
                 packagePath,
                 manifest,
-                "READY",
-                $"{manifest.FromVersion} → {manifest.ToVersion} 업데이트를 적용할 수 있습니다.",
-                true,
+                "PUBLISHER-UNVERIFIED",
+                $"{manifest.FromVersion} → {manifest.ToVersion} 파일 내용은 확인됐으나 발행자 인증은 완료되지 않았습니다.",
+                false,
                 manifest.RequiresRestart,
-                true);
+                true,
+                UpdatePublisherTrustLevel.ContentVerifiedOnly);
         }
         catch (Exception ex)
         {

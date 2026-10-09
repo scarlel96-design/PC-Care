@@ -57,22 +57,22 @@ public sealed class Av3PhaseE10SignoffTests
     public void E10_EnableFlagsRemainFalse()
     {
         Assert.True(Av3PhaseGate.E10EnableDecisionGateComplete);
-        Assert.True(Av3PhaseGate.ProductionEnableAuthorized);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
-        Assert.True(Av3PhaseGate.ProductionAnchorImplemented);
-        Assert.True(Av3PhaseGate.XChaCha24Implemented);
+        Assert.False(Av3PhaseGate.ProductionEnableAuthorized);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
+        Assert.False(Av3PhaseGate.XChaCha24Implemented);
         Assert.True(Av3EnableReadinessChecklist.AllWriterGatesClosed);
     }
 
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E10_ExternalReviewCompletedCodeRemainsFalse()
     {
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
-        Assert.True(Av3EnableReadinessChecklist.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3EnableReadinessChecklist.ExternalReviewCompleted);
         Assert.True(Av3PhaseGate.E10NamedSignoffRecordComplete);
         Assert.True(Av3PhaseGate.E10EnableDecisionGateComplete);
     }
@@ -80,39 +80,39 @@ public sealed class Av3PhaseE10SignoffTests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E10_ProductionWriterStillNotAuthorized()
     {
-        Assert.True(Av3PhaseGate.ProductionEnableAuthorized);
+        Assert.False(Av3PhaseGate.ProductionEnableAuthorized);
         Assert.False(Av3EnableReadinessChecklist.ProductionEnableAuthorized);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
         Assert.False(Av3EnableReadinessChecklist.ProductionWriterStillDisabled);
     }
 
     [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
     public void E10_WriterEnableReadinessNoGoWhenAnchorMissing()
     {
-        Assert.True(Av3PhaseGate.ProductionAnchorImplemented);
-        Assert.True(Av3EnableReadinessChecklist.WriterEnableReady);
-        Assert.True(Av3PhaseGate.ProductionEnableAuthorized);
+        Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
+        Assert.False(Av3EnableReadinessChecklist.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ProductionEnableAuthorized);
     }
 
     [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
     public void E10_WriterEnableReadinessNoGoWhenXChaCha24Missing()
     {
-        Assert.True(Av3PhaseGate.XChaCha24Implemented);
-        Assert.True(Av3EnableReadinessChecklist.WriterEnableReady);
+        Assert.False(Av3PhaseGate.XChaCha24Implemented);
+        Assert.False(Av3EnableReadinessChecklist.WriterEnableReady);
     }
 
     [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
     public void E10_WriterEnableReadinessNoGoWhenSClassUnsatisfied()
     {
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
-        Assert.True(Av3EnableReadinessChecklist.WriterEnableReady);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.False(Av3EnableReadinessChecklist.WriterEnableReady);
     }
 
     [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
     public void E10_WriterEnableReadinessNoGoWhenActualDiskDurabilityMissing()
     {
         Assert.False(Av3EnableReadinessChecklist.ActualDiskDurabilityReviewed);
-        Assert.True(Av3EnableReadinessChecklist.WriterEnableReady);
+        Assert.False(Av3EnableReadinessChecklist.WriterEnableReady);
     }
 
     [Fact]
@@ -129,7 +129,7 @@ public sealed class Av3PhaseE10SignoffTests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E10_SpdVaultUnchanged_NoMigration()
     {
-        Assert.True(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
         Assert.True(Av3EnableReadinessChecklist.MigrationSeparated);
         Assert.False(Av3CommitRecoveryManager.PerformsAutomaticRepair);
     }
@@ -155,7 +155,7 @@ public sealed class Av3PhaseE10SignoffTests
         Assert.Contains("blocker", text, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("Anchor", text, StringComparison.Ordinal);
         Assert.Contains("XChaCha24", text, StringComparison.Ordinal);
-        Assert.True(Av3PhaseGate.ProductionEnableAuthorized);
+        Assert.False(Av3PhaseGate.ProductionEnableAuthorized);
     }
 
     [Fact]

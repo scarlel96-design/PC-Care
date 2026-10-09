@@ -22,14 +22,14 @@ public sealed class Av3PhaseE71Tests
     public void PhaseGate_E71_ReviewFixes_AllEnableFlagsFalse()
     {
         Assert.True(Av3PhaseGate.E71ReviewFixesApplied);
-        Assert.Contains("PRODUCTION AUTHORIZED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
+        Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
         Assert.True(Av3PhaseGate.E71ReviewFixesApplied);
         Assert.True(Av3EnableReadinessChecklist.AllWriterGatesClosed);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public sealed class Av3PhaseE71Tests
     {
         Assert.True(Av3WriterInvariantValidator.ValidateDisabledProductionGates().Passed);
         Assert.True(Av3WriterInvariantValidator.InvariantExpectWriterGatesClosed());
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
     }
 
     [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
@@ -95,7 +95,7 @@ public sealed class Av3PhaseE71Tests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E71_NegativeMatrix_JournalWriterGate_False()
     {
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
         var ex = Assert.Throws<Av3WriterRouteBlockedException>(() =>
             Av3WriterAccessGate.DenyJournalProductionRoute());
         Assert.Equal(Av3WriterAccessGate.ErrorJournalProductionDisabled, ex.PublicErrorClass);

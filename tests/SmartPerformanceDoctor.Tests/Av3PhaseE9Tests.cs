@@ -18,18 +18,18 @@ public sealed class Av3PhaseE9Tests
     [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
     public void PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse()
     {
-        Assert.Contains("PRODUCTION AUTHORIZED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
+        Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
         Assert.True(Av3PhaseGate.E9ExternalSignoffPrepComplete);
         Assert.True(Av3PhaseGate.ExternalReviewPackageReady);
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
-        Assert.True(Av3PhaseGate.ProductionAnchorImplemented);
-        Assert.True(Av3PhaseGate.XChaCha24Implemented);
-        Assert.True(Av3EnableReadinessChecklist.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
+        Assert.False(Av3PhaseGate.XChaCha24Implemented);
+        Assert.False(Av3EnableReadinessChecklist.WriterEnableReady);
         Assert.True(Av3EnableReadinessChecklist.AllWriterGatesClosed);
     }
 
@@ -37,8 +37,8 @@ public sealed class Av3PhaseE9Tests
     public void E9_PackageReady_DoesNotImplyReviewCompleted()
     {
         Assert.True(Av3PhaseGate.ExternalReviewPackageReady);
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
-        Assert.True(Av3EnableReadinessChecklist.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3EnableReadinessChecklist.ExternalReviewCompleted);
     }
 
     [Fact]

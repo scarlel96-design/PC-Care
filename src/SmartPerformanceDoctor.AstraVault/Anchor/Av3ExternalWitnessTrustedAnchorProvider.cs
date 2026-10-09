@@ -9,7 +9,7 @@ public sealed class Av3ExternalWitnessTrustedAnchorProvider : IAv3TrustedAnchorP
 
     public Av3TrustedAnchorProviderKind ProviderKind => Av3TrustedAnchorProviderKind.ExternalWitnessCandidate;
 
-    public bool IsAvailableForProductionEnable => true;
+    public bool IsAvailableForProductionEnable => false;
 
     public Task<Av3TrustedAnchorWitness?> ReadWitnessAsync(string vaultRoot, CancellationToken cancellationToken = default)
     {

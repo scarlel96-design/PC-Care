@@ -7,6 +7,43 @@ namespace SmartPerformanceDoctor.Tests;
 public sealed class SystemCareStabilityTests
 {
     [Fact]
+    public void CareRollback_RecoversMoveBeforeCompletionRecord_AndRejectsTamper()
+    {
+        var audit = Path.Combine(Path.GetTempPath(), "care-journal-" + Guid.NewGuid().ToString("N"));
+        var quarantine = Path.Combine(audit, "quarantine");
+        var original = Path.Combine(audit, "original.txt");
+        var held = Path.Combine(quarantine, Guid.NewGuid().ToString("N") + "_original.txt");
+        Directory.CreateDirectory(quarantine);
+        try
+        {
+            File.WriteAllText(original, "original data");
+            CareRollbackService.RecordQuarantine(audit, original, held);
+            File.Move(original, held); // Simulate termination before MarkQuarantined.
+            File.WriteAllText(Path.Combine(audit, "quarantine_map.json"), "{broken");
+
+            var recovered = CareRollbackService.Rollback(audit);
+            Assert.True(recovered.Success);
+            Assert.Equal("original data", File.ReadAllText(original));
+
+            File.Delete(original);
+            File.WriteAllText(original, "second data");
+            var held2 = Path.Combine(quarantine, Guid.NewGuid().ToString("N") + "_original.txt");
+            CareRollbackService.RecordQuarantine(audit, original, held2);
+            File.Move(original, held2);
+            File.WriteAllText(held2, "tampered");
+            var rejected = CareRollbackService.Rollback(audit);
+            Assert.False(rejected.Success);
+            Assert.Equal(1, rejected.FailedCount);
+            Assert.False(File.Exists(original));
+            Assert.Equal("tampered", File.ReadAllText(held2));
+        }
+        finally
+        {
+            Directory.Delete(audit, recursive: true);
+        }
+    }
+
+    [Fact]
     public void CareRollback_DoesNotOverwriteNewFileAtOriginalPath()
     {
         var audit = Path.Combine(Path.GetTempPath(), "care-rollback-" + Guid.NewGuid().ToString("N"));

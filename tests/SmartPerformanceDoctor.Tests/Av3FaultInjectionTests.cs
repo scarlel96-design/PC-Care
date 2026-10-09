@@ -223,9 +223,9 @@ public sealed class Av3FaultInjectionTests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void Security_ProductionWriterGate_RemainsFalse()
     {
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
         Assert.False(Av3PhaseGate.ExperimentalWriterHarnessEnabled);
     }
 

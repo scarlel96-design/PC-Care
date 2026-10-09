@@ -1,0 +1,12 @@
+WORK ITEM: WO-02 Release x64 app build
+STATUS: PASS
+BASELINE SHA: 13828584176f3f1b8ee390b43df1ff86d76c2489
+PLATFORM: Windows x64, .NET SDK 10.0.401
+BASELINE COMMAND: dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 --no-restore --disable-build-servers -v:minimal
+BASELINE RESULT: 빌드했습니다. 경고 0개 오류 0개 경과 시간: 00:01:06.41
+BASELINE EXIT CODE: 0
+MODIFIED COMMAND: dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 --no-restore --disable-build-servers -m:1 -v:minimal
+MODIFIED RESULT: 빌드했습니다. 경고 0개 오류 0개 경과 시간: 00:01:16.30
+MODIFIED EXIT CODE: 0
+LOGS: ../wo02-build-baseline.txt; ../wo02-build-modified-final.txt
+LIMIT: Build success does not demonstrate installed-app, UAC, updater or reboot E2E.

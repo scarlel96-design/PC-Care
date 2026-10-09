@@ -15,28 +15,28 @@ public sealed class Av3PhaseE5Tests
     [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
     public void PhaseGate_E5_ProductionWriterDesign_NotWriterEnable()
     {
-        Assert.Contains("PRODUCTION AUTHORIZED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
-        Assert.Contains("PRODUCTION AUTHORIZED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
+        Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
+        Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
         Assert.True(Av3PhaseGate.ProductionWriterDesignLocked);
         Assert.True(Av3PhaseGate.ExternalReviewPackageReady);
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
         Assert.True(Av3PhaseGate.AnchorModelDocumented);
         Assert.True(Av3PhaseGate.XChaChaMigrationPlanDocumented);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
         Assert.True(Av3PhaseGate.HighRiskClosureGateLocked);
     }
 
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable()
     {
-        Assert.True(Av3EnableReadinessChecklist.WriterEnableReady);
+        Assert.False(Av3EnableReadinessChecklist.WriterEnableReady);
         Assert.True(Av3EnableReadinessChecklist.R1PartialTornWriteHarnessClosed);
         Assert.True(Av3EnableReadinessChecklist.R10RollbackHarnessClosedOrLimitationDocumented);
-        Assert.True(Av3EnableReadinessChecklist.ExternalReviewCompleted);
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3EnableReadinessChecklist.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
         Assert.Empty(Av3EnableReadinessChecklist.BlockingReasons);
         Assert.Contains(Av3EnableReadinessChecklist.BlockingReasons, r => r.Contains("NOT AUTHORIZED", StringComparison.OrdinalIgnoreCase)
             || r.Contains("WriterEnableReady=false", StringComparison.Ordinal));
@@ -163,10 +163,10 @@ public sealed class Av3PhaseE5Tests
     [Fact]
     public void Security_ViewModel_NoWriterEnableUiClaims()
     {
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
         var label = Av3PhaseGate.PhaseLabel;
-        Assert.Contains("PRODUCTION AUTHORIZED", label, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("READ-ONLY VALIDATED", label, StringComparison.OrdinalIgnoreCase);
         AssertNoWriterDesignReferences(typeof(SecureVaultViewModel).Assembly, typeof(SecureVaultViewModel).FullName!);
     }
 

@@ -307,7 +307,7 @@ public sealed class Av3PhaseE11Tests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E11_SpdVaultUnchanged_NoMigration()
     {
-        Assert.True(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
         Assert.False(Av3CommitRecoveryManager.PerformsAutomaticRepair);
         Assert.True(Av3EnableReadinessChecklist.MigrationSeparated);
     }
@@ -318,11 +318,11 @@ public sealed class Av3PhaseE11Tests
         Assert.True(Av3PhaseGate.E11AnchorHarnessEnabled);
         Assert.True(Av3PhaseGate.E11AnchorClosurePackageComplete);
         Assert.True(Av3PhaseGate.ProductionAnchorImplementationCandidate);
-        Assert.True(Av3PhaseGate.ProductionAnchorImplemented);
-        Assert.True(Av3PhaseGate.ProductionEnableAuthorized);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
+        Assert.False(Av3PhaseGate.ProductionEnableAuthorized);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
         Assert.False(Av3AnchorDesignPolicy.ProductionAnchorImplemented);
         Assert.True(Av3AnchorDesignPolicy.ProductionAnchorImplementationCandidate);
     }
@@ -330,8 +330,8 @@ public sealed class Av3PhaseE11Tests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E11_SClassStillNotSatisfied()
     {
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
-        Assert.True(Av3PhaseGate.XChaCha24Implemented);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.False(Av3PhaseGate.XChaCha24Implemented);
         Assert.False(Av3EnableReadinessChecklist.ActualDiskDurabilityReviewed);
     }
 

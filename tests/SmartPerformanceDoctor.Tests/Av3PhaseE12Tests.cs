@@ -189,33 +189,33 @@ public sealed class Av3PhaseE12Tests
     {
         Assert.True(Av3PhaseGate.E12XChaCha24ClosurePackageComplete);
         Assert.True(Av3PhaseGate.XChaCha24ImplementationCandidate);
-        Assert.True(Av3PhaseGate.XChaCha24Implemented);
+        Assert.False(Av3PhaseGate.XChaCha24Implemented);
         Assert.True(Av3PhaseGate.ChaCha12ByteNonceBelowSClass);
     }
 
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E12_EnableFlagsRemainFalse()
     {
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
         Assert.True(Av3EnableReadinessChecklist.AllWriterGatesClosed);
     }
 
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E12_ProductionEnableAuthorized_RemainsFalse() =>
-        Assert.True(Av3PhaseGate.ProductionEnableAuthorized);
+        Assert.False(Av3PhaseGate.ProductionEnableAuthorized);
 
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E12_ExternalReviewCompletedCode_RemainsFalse() =>
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
 
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E12_ProductionAnchorImplemented_RemainsFalse() =>
-        Assert.True(Av3PhaseGate.ProductionAnchorImplemented);
+        Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
 
     [Fact]
     public void E12_ServiceUiImportExport_NoCryptoWriterWiring()
@@ -229,13 +229,13 @@ public sealed class Av3PhaseE12Tests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E12_SpdVaultUnchanged_NoMigration()
     {
-        Assert.True(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
         Assert.False(Av3CommitRecoveryManager.PerformsAutomaticRepair);
     }
 
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E12_SClassStillNotSatisfied() =>
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
 
     [Fact]
     public void E12_NextBlockersRemainOpen()

@@ -21,21 +21,21 @@ public sealed class Av3PhaseE7Tests
     [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
     public void PhaseGate_E7_PreEnableHardening_EnableFlagsFalse()
     {
-        Assert.Contains("PRODUCTION AUTHORIZED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
+        Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
         Assert.True(Av3PhaseGate.E71ReviewFixesApplied);
         Assert.True(Av3PhaseGate.E7PreEnableHardeningComplete);
         Assert.True(Av3PhaseGate.WriterInvariantChecksEnabled);
         Assert.True(Av3PhaseGate.ProductionRouteNegativeMatrixCovered);
         Assert.True(Av3PhaseGate.CancellationHardeningCovered);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
-        Assert.True(Av3PhaseGate.ProductionAnchorImplemented);
-        Assert.True(Av3PhaseGate.XChaCha24Implemented);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
+        Assert.False(Av3PhaseGate.XChaCha24Implemented);
         Assert.True(Av3PhaseGate.ChaCha12ByteNonceBelowSClass);
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
     }
 
     [Fact]
@@ -66,8 +66,8 @@ public sealed class Av3PhaseE7Tests
         var r = Av3WriterHarnessFactory.TryCreateProductionRoute();
         Assert.False(r.Success);
         Assert.Equal(Av3WriterAccessGate.ErrorProductionDisabled, r.PublicErrorClass);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
     }
 
     [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]

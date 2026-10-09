@@ -1,0 +1,16 @@
+WORK ITEM: WO-02 full x64 test suite
+STATUS: PASS for executed tests; 111 Skip remain
+BASELINE SHA: 13828584176f3f1b8ee390b43df1ff86d76c2489
+BASELINE COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -v:minimal
+BASELINE INPUT: Unmodified source at baseline commit.
+BASELINE LITERAL RESULT: 통과!  - 실패:     0, 통과:   634, 건너뜀:   116, 전체:   750, 기간: 4 m 42 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+BASELINE EXIT CODE: 0
+MODIFIED COMMAND: $isolatedTemp=Join-Path $env:LOCALAPPDATA 'Temp\pccare-wo02-suite'; New-Item -ItemType Directory -Path $isolatedTemp -Force | Out-Null; $env:TEMP=$isolatedTemp; $env:TMP=$isolatedTemp; dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+MODIFIED INPUT: WO-02 modified source, isolated Windows temporary root.
+MODIFIED LITERAL RESULT: 통과!  - 실패:     0, 통과:   641, 건너뜀:   111, 전체:   752, 기간: 5 m 23 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+MODIFIED EXIT CODE: 0
+TARGETED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~UpdatePackageInspectorTests|FullyQualifiedName~SystemCareStabilityTests|FullyQualifiedName~Av3PhaseGateTests' -v:minimal
+TARGETED LITERAL RESULT: 통과!  - 실패:     0, 통과:    17, 건너뜀:     0, 전체:    17, 기간: 10 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+TARGETED EXIT CODE: 0
+LOGS: ../wo02-test-baseline.txt; wo02-test-modified-final.txt; wo02-targeted-tests-elevated-final.txt
+LIMIT: Skip inventory is WO02_TEST_SKIP_INVENTORY.md; tests cannot establish hardware durability, independent review or production updater trust.

@@ -24,7 +24,7 @@ public static class FeatureGateService
             return false;
         }
 
-        if (!RuntimeTrustState.IsFullyTrusted && RequiresFullTrust(featureId))
+        if (!RuntimeTrustState.IsOperationallyAllowed && RequiresFullTrust(featureId))
         {
             onBlocked?.Invoke(RuntimeTrustState.BuildDegradedFeatureMessage(featureTitle));
             return false;

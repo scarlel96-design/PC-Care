@@ -1,0 +1,10 @@
+WORK ITEM: UpdateInstallerService source rollback rehearsal
+STATUS: PASS (isolated copy); production update transaction remains BLOCKED
+BASELINE SHA256: 75DD62BA1A2CE07CF0E332BAC60A9D33E5FB6B26884C4E237514CBD0FB982232
+MODIFIED SHA256: 216BFBF21087E1C6AB8835AE0940C32241A4987246B55086AD58975E0583A8E9
+INPUT: rollback-test-copy.cs was copied from modified UpdateInstallerService.cs.
+COMMAND: & 'docs/rework/evidence/wo02/ROLLBACK.ps1' -Target $copy
+LITERAL OUTPUT: RESTORED SHA256=75DD62BA1A2CE07CF0E332BAC60A9D33E5FB6B26884C4E237514CBD0FB982232
+LITERAL OUTPUT: EXIT=0
+EXIT CODE: 0
+RESTORED BEHAVIOR/STATUS: Test copy matches original source SHA256. Modified repository source remains unchanged. The same hash-guarded operation is supplied in executable ROLLBACK.sh for Bash environments.

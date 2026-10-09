@@ -1,0 +1,12 @@
+WORK ITEM: Isolated package and care security probes
+STATUS: PASS for synthetic fixtures
+UPDATE COMMAND: dotnet run --project tests/UpdateInspectorProbe/UpdateInspectorProbe.csproj -c Release -p:Platform=x64 --no-restore
+UPDATE INPUT: Synthetic valid, tampered, traversal, extra, duplicate and reserved-name packages.
+UPDATE LITERAL OUTPUT: valid=PUBLISHER-UNVERIFIED;tampered=CHECKSUM-FAIL;traversal=CHECKSUM-FAIL;extra=CHECKSUM-FAIL;duplicate=CHECKSUM-FAIL;reserved=CHECKSUM-FAIL
+UPDATE EXIT CODE: 0
+CARE COMMAND: $probeTemp=(Resolve-Path 'docs/rework/evidence/wo02/tmp').Path; $env:TEMP=$probeTemp; $env:TMP=$probeTemp; dotnet run --project tests/Wo02SecurityProbe/Wo02SecurityProbe.csproj -c Release -p:Platform=x64 --no-restore
+CARE INPUT: Synthetic quarantine, conflict, tamper and production writer access fixtures.
+CARE LITERAL OUTPUT: care-crash-recovery=PASS | care-conflict-preservation=PASS | care-tamper-rejection=PASS | av3-production-writer=BLOCKED_EXPECTED | result=PASS
+CARE EXIT CODE: 0
+LOGS: update-inspector-probe-final.txt; security-probe-final.txt
+LIMIT: Real installed-app UAC, device failure and publisher-authenticated update were not exercised.

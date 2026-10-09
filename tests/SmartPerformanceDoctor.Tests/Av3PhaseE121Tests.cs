@@ -95,34 +95,34 @@ public sealed class Av3PhaseE121Tests
     [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
     public void E121_XChaCha24Signoff_ProductionRouteDenied()
     {
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
         Assert.False(Av3WriterHarnessFactory.TryCreateProductionRoute().Success);
     }
 
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E121_XChaCha24Signoff_EnableFlagsRemainFalse()
     {
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
         Assert.True(Av3EnableReadinessChecklist.AllWriterGatesClosed);
     }
 
     [Fact]
     public void E121_XChaCha24Signoff_ProductionEnableAuthorizedFalse() =>
-        Assert.True(Av3PhaseGate.ProductionEnableAuthorized);
+        Assert.False(Av3PhaseGate.ProductionEnableAuthorized);
 
     [Fact]
     public void E121_XChaCha24Signoff_ExternalReviewCompletedCodeFalse() =>
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
 
     [Fact]
     public void E121_XChaCha24Signoff_ProductionAnchorStillPartial()
     {
-        Assert.True(Av3PhaseGate.ProductionAnchorImplemented);
+        Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
         Assert.True(Av3PhaseGate.ProductionAnchorImplementationCandidate);
         var text = File.ReadAllText(ResolveDoc("ASTRA_VAULT_E12_1_XCHACHA24_CRYPTO_SIGNOFF_REPORT.md"));
         Assert.Contains("PARTIAL", text, StringComparison.Ordinal);
@@ -140,20 +140,20 @@ public sealed class Av3PhaseE121Tests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E121_XChaCha24Signoff_SpdVaultUnchangedNoMigration()
     {
-        Assert.True(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
         Assert.False(Av3CommitRecoveryManager.PerformsAutomaticRepair);
     }
 
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E121_XChaCha24Signoff_SClassStillNotSatisfied() =>
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
 
     [Fact]
     public void E121_XChaCha24Signoff_NextBlockersRemainOpen()
     {
         Assert.True(Av3PhaseGate.E121XChaCha24SignoffGateComplete);
         Assert.True(Av3PhaseGate.XChaCha24SignoffApprovedCandidate);
-        Assert.True(Av3PhaseGate.XChaCha24Implemented);
+        Assert.False(Av3PhaseGate.XChaCha24Implemented);
         var text = File.ReadAllText(ResolveDoc("ASTRA_VAULT_E12_1_XCHACHA24_IMPLEMENTATION_DECISION.md"));
         Assert.Contains("NOT YET SATISFIED", text, StringComparison.Ordinal);
         Assert.Contains("NO-GO", text, StringComparison.Ordinal);

@@ -1,0 +1,503 @@
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+[xUnit.net 00:00:00.77]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_DecisionGate_NotProductionEnable [SKIP]
+[xUnit.net 00:00:00.79]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:00.79]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_DecisionRecord_NotProductionEnable [SKIP]
+[xUnit.net 00:00:00.82]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_StabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:00.82]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenAnchorMissing [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_DecisionGate_NotProductionEnable [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_DecisionRecord_NotProductionEnable [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_StabilityRepeat_Skipped [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenAnchorMissing [1 ms]
+[xUnit.net 00:00:00.83]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ExternalReviewCompletedCodeRemainsFalse [SKIP]
+[xUnit.net 00:00:00.84]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ExternalReviewCompletedCodeRemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:00.87]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenXChaCha24Missing [SKIP]
+[xUnit.net 00:00:00.87]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_TrustedAnchorSignoff_PreflightEvidenceCurrent [SKIP]
+[xUnit.net 00:00:00.87]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenSClassUnsatisfied [SKIP]
+[xUnit.net 00:00:00.88]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:00.88]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ProductionWriterStillNotAuthorized [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenXChaCha24Missing [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_TrustedAnchorSignoff_PreflightEvidenceCurrent [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenSClassUnsatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ProductionWriterStillNotAuthorized [1 ms]
+[xUnit.net 00:00:00.89]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:00.89]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:00.89]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_DiskDurabilityStillOpen [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_DiskDurabilityStillOpen [1 ms]
+[xUnit.net 00:00:00.89]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SpdVaultUnchanged_NoMigration [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SpdVaultUnchanged_NoMigration [1 ms]
+[xUnit.net 00:00:00.94]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityReview_PreflightEvidenceCurrent [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityReview_PreflightEvidenceCurrent [1 ms]
+[xUnit.net 00:00:00.97]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.Security_ViewModel_NoWriterEnableUiClaims [FAIL]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.Security_ViewModel_NoWriterEnableUiClaims [6 ms]
+  오류 메시지:
+   Assert.Contains() Failure: Sub-string not found
+String:    "E-14 READ-ONLY VALIDATED · production wri"···
+Not found: "PRODUCTION AUTHORIZED"
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.Security_ViewModel_NoWriterEnableUiClaims() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE5Tests.cs:line 169
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:01.11]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OrchestratorCommitAsync_Blocked [SKIP]
+[xUnit.net 00:00:01.11]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ConcurrentCommit_SecondBlocked [SKIP]
+[xUnit.net 00:00:01.12]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OpenWriteSessionAsync_Blocked [SKIP]
+[xUnit.net 00:00:01.13]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureFailFlush") [FAIL]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OrchestratorCommitAsync_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ConcurrentCommit_SecondBlocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OpenWriteSessionAsync_Blocked [1 ms]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureFailFlush") [146 ms]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(String configure) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE8Tests.cs:line 126
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:01.19]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:01.19]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_FullRollbackMatrix_StabilityRepeat_Skipped [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_FullRollbackMatrix_StabilityRepeat_Skipped [1 ms]
+[xUnit.net 00:00:01.81]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_HarnessProvider_Signed [SKIP]
+[xUnit.net 00:00:01.81]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionAnchorImplemented_RemainsFalse [SKIP]
+[xUnit.net 00:00:01.81]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:01.82]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionEnableAuthorized_RemainsFalse [SKIP]
+[xUnit.net 00:00:01.82]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_XChaCha24Implemented_RemainsFalseSignedCandidate [SKIP]
+[xUnit.net 00:00:01.82]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+[xUnit.net 00:00:01.82]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalWitnessStub_SignedButNotProductionLive [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_HarnessProvider_Signed [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionAnchorImplemented_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionEnableAuthorized_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_XChaCha24Implemented_RemainsFalseSignedCandidate [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalWitnessStub_SignedButNotProductionLive [1 ms]
+[xUnit.net 00:00:01.90]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_NoSecretLeak_ReportManifestTrace [FAIL]
+[xUnit.net 00:00:01.90]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SClassStillNotSatisfied [SKIP]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_NoSecretLeak_ReportManifestTrace [< 1 ms]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_NoSecretLeak_ReportManifestTrace() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE14Tests.cs:line 301
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SClassStillNotSatisfied [1 ms]
+[xUnit.net 00:00:01.94]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_M01M02Closed_CurrentEvidenceConsistent [SKIP]
+[xUnit.net 00:00:01.94]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_ExternalReviewCompletedCodeRemainsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_M01M02Closed_CurrentEvidenceConsistent [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_ExternalReviewCompletedCodeRemainsFalse [1 ms]
+[xUnit.net 00:00:01.95]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:01.95]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_ExternalReviewCompletedCodeFalse [FAIL]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SpdVaultUnchanged_NoMigration [1 ms]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_ExternalReviewCompletedCodeFalse [< 1 ms]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_ExternalReviewCompletedCodeFalse() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE14Tests.cs:line 327
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:01.98]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityInvariant_StabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:01.98]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_AnchorDesign_NotImplemented [SKIP]
+[xUnit.net 00:00:01.98]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable [SKIP]
+[xUnit.net 00:00:01.98]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.PhaseGate_E5_ProductionWriterDesign_NotWriterEnable [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityInvariant_StabilityRepeat_Skipped [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_AnchorDesign_NotImplemented [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.PhaseGate_E5_ProductionWriterDesign_NotWriterEnable [1 ms]
+[xUnit.net 00:00:01.99]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_Preflight_CurrentEvidenceSourceOfTruthMatchesActual [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_Preflight_CurrentEvidenceSourceOfTruthMatchesActual [1 ms]
+[xUnit.net 00:00:01.99]     SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.E9_PackageReady_DoesNotImplyReviewCompleted [FAIL]
+[xUnit.net 00:00:02.00]     SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse [SKIP]
+[xUnit.net 00:00:02.00]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenActualDiskDurabilityMissing [SKIP]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.E9_PackageReady_DoesNotImplyReviewCompleted [< 1 ms]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.E9_PackageReady_DoesNotImplyReviewCompleted() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE9Tests.cs:line 41
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenActualDiskDurabilityMissing [1 ms]
+[xUnit.net 00:00:02.02]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:02.98]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SClassStillNotSatisfied [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SClassStillNotSatisfied [1 ms]
+[xUnit.net 00:00:02.99]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionEnableAuthorized_RemainsFalse [SKIP]
+[xUnit.net 00:00:03.00]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_E11FailureMatrix_StabilityReconfirmed(_: 1) [FAIL]
+[xUnit.net 00:00:03.01]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_E11FailureMatrix_StabilityReconfirmed(_: 3) [FAIL]
+[xUnit.net 00:00:03.02]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_E11FailureMatrix_StabilityReconfirmed(_: 2) [FAIL]
+[xUnit.net 00:00:03.03]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionAnchorImplemented_RemainsFalse [SKIP]
+[xUnit.net 00:00:03.09]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionEnableAuthorized_RemainsFalse [1 ms]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_E11FailureMatrix_StabilityReconfirmed(_: 1) [< 1 ms]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_E11FailureMatrix_StabilityReconfirmed(Int32 _) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE111Tests.cs:line 131
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_E11FailureMatrix_StabilityReconfirmed(_: 3) [12 ms]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_E11FailureMatrix_StabilityReconfirmed(Int32 _) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE111Tests.cs:line 131
+   at InvokeStub_Av3PhaseE111Tests.E111_E11FailureMatrix_StabilityReconfirmed(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_E11FailureMatrix_StabilityReconfirmed(_: 2) [< 1 ms]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_E11FailureMatrix_StabilityReconfirmed(Int32 _) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE111Tests.cs:line 131
+   at InvokeStub_Av3PhaseE111Tests.E111_E11FailureMatrix_StabilityReconfirmed(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionAnchorImplemented_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+[xUnit.net 00:00:03.11]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:03.12]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_DiskDurabilityStillOpen [SKIP]
+[xUnit.net 00:00:03.12]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:03.13]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_AnchorSignoff_HarnessCandidateOnly_NotProductionImplemented [SKIP]
+[xUnit.net 00:00:03.13]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_XChaCha24StillOpen [SKIP]
+[xUnit.net 00:00:03.15]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_TrustedMonotonicAnchorRequired_ForFullVaultRollbackClosure [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_DiskDurabilityStillOpen [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_AnchorSignoff_HarnessCandidateOnly_NotProductionImplemented [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_XChaCha24StillOpen [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_TrustedMonotonicAnchorRequired_ForFullVaultRollbackClosure [1 ms]
+[xUnit.net 00:00:03.24]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_NonHarnessCommitSession_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_NonHarnessCommitSession_Blocked [1 ms]
+[xUnit.net 00:00:03.64]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:03.65]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:03.66]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:03.67]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionRouteDenied [SKIP]
+[xUnit.net 00:00:03.71]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ReadOnlyValidatorComplete [SKIP]
+[xUnit.net 00:00:03.72]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SClassStillNotSatisfied [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionRouteDenied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ReadOnlyValidatorComplete [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SClassStillNotSatisfied [1 ms]
+[xUnit.net 00:00:03.72]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_PreflightEvidenceCurrent [SKIP]
+[xUnit.net 00:00:03.73]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SpdVaultUnchangedNoMigration [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_PreflightEvidenceCurrent [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SpdVaultUnchangedNoMigration [1 ms]
+[xUnit.net 00:00:03.88]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_NoSecretLeak_ReportManifestTrace [FAIL]
+[xUnit.net 00:00:03.90]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_EnableFlagsRemainFalse [SKIP]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_NoSecretLeak_ReportManifestTrace [9 ms]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_NoSecretLeak_ReportManifestTrace() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE13Tests.cs:line 436
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:04.19]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SClassStillNotSatisfied [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SClassStillNotSatisfied [1 ms]
+[xUnit.net 00:00:07.36]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_ProductionWriterGate_RemainsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_ProductionWriterGate_RemainsFalse [1 ms]
+[xUnit.net 00:00:08.64]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureHeaderOneCopy") [FAIL]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureHeaderOneCopy") [7 s]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(String configure) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE8Tests.cs:line 126
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:10.88]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.JournalRecorder_ProductionRoute_Fails_WhenJournalDisabled [SKIP]
+[xUnit.net 00:00:10.88]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.PhaseGate_E6_DisabledProductionWriter_NotAuthorized [SKIP]
+[xUnit.net 00:00:11.24]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.PhaseGate_E62_ReviewFixes_ProductionStillDisabled [SKIP]
+[xUnit.net 00:00:11.41]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_DryRun_XChaCha24Fixture_Revalidated [FAIL]
+[xUnit.net 00:00:11.41]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Implemented_RemainsFalseUntilSignoff [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.JournalRecorder_ProductionRoute_Fails_WhenJournalDisabled [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.PhaseGate_E6_DisabledProductionWriter_NotAuthorized [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.PhaseGate_E62_ReviewFixes_ProductionStillDisabled [1 ms]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_DryRun_XChaCha24Fixture_Revalidated [7 s]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_DryRun_XChaCha24Fixture_Revalidated() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE12Tests.cs:line 160
+--- End of stack trace from previous location ---
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Implemented_RemainsFalseUntilSignoff [1 ms]
+[xUnit.net 00:00:11.78]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_TrustedGeneration_CleanupFailed_NoPromotion [FAIL]
+[xUnit.net 00:00:12.20]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionAnchorImplemented_RemainsFalse [SKIP]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_TrustedGeneration_CleanupFailed_NoPromotion [7 s]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_TrustedGeneration_CleanupFailed_NoPromotion() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE71Tests.cs:line 196
+--- End of stack trace from previous location ---
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionAnchorImplemented_RemainsFalse [1 ms]
+[xUnit.net 00:00:12.21]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:12.23]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ReadOnlyValidator_XChaCha24_Pass [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ReadOnlyValidator_XChaCha24_Pass [1 ms]
+[xUnit.net 00:00:12.24]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionEnableAuthorized_RemainsFalse [SKIP]
+[xUnit.net 00:00:12.25]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+[xUnit.net 00:00:12.75]     SmartPerformanceDoctor.Tests.Av3PhaseE61Tests.PhaseGate_E61_JournalScannerStabilization_GatesUnchanged [FAIL]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionEnableAuthorized_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE61Tests.PhaseGate_E61_JournalScannerStabilization_GatesUnchanged [< 1 ms]
+  오류 메시지:
+   Assert.Contains() Failure: Sub-string not found
+String:    "E-14 READ-ONLY VALIDATED · production wri"···
+Not found: "PRODUCTION AUTHORIZED"
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE61Tests.PhaseGate_E61_JournalScannerStabilization_GatesUnchanged() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE61Tests.cs:line 18
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:13.10]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Recovery_EqualGenerationConflictingRoot_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Recovery_EqualGenerationConflictingRoot_CorruptBlocked [1 ms]
+[xUnit.net 00:00:14.34]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_CleanupFailure_DoesNotLeakLease [FAIL]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_CleanupFailure_DoesNotLeakLease [6 s]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_CleanupFailure_DoesNotLeakLease() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE91Tests.cs:line 170
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:15.36]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureFailCleanup") [FAIL]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureFailCleanup") [6 s]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(String configure) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE8Tests.cs:line 126
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:15.48]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_NonHarnessProductionRouteStillDenied [SKIP]
+[xUnit.net 00:00:15.50]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_PhaseGate_ReviewFixes_EnableFlagsStillFalse [FAIL]
+[xUnit.net 00:00:15.50]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444 [SKIP]
+[xUnit.net 00:00:15.51]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_StabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:15.65]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ReentrantCommit_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_NonHarnessProductionRouteStillDenied [1 ms]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_PhaseGate_ReviewFixes_EnableFlagsStillFalse [1 ms]
+  오류 메시지:
+   Assert.Contains() Failure: Sub-string not found
+String:    "E-14 READ-ONLY VALIDATED · production wri"···
+Not found: "PRODUCTION AUTHORIZED"
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_PhaseGate_ReviewFixes_EnableFlagsStillFalse() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE91Tests.cs:line 27
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444 [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_StabilityRepeat_Skipped [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ReentrantCommit_Blocked [1 ms]
+[xUnit.net 00:00:15.66]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_FactoryProductionCreate_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_FactoryProductionCreate_Blocked [1 ms]
+[xUnit.net 00:00:16.25]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:16.25]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:17.33]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_E6Recovery_EqualGenerationConflictingRoot_CorruptBlocked [SKIP]
+[xUnit.net 00:00:17.33]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionOpenSession_Throws_Blocked [SKIP]
+[xUnit.net 00:00:17.33]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_Rollback_PreviousRootMismatch_MatchesE4_CorruptBlocked [SKIP]
+[xUnit.net 00:00:17.34]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.DurableStore_RelativePathEscape_Blocked [SKIP]
+[xUnit.net 00:00:17.67]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_TrustedGeneration_CommittedSuccess_Passes [FAIL]
+[xUnit.net 00:00:17.68]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_CommitThreeCopyAsync_Production_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_E6Recovery_EqualGenerationConflictingRoot_CorruptBlocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionOpenSession_Throws_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_Rollback_PreviousRootMismatch_MatchesE4_CorruptBlocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.DurableStore_RelativePathEscape_Blocked [1 ms]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_TrustedGeneration_CommittedSuccess_Passes [5 s]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_TrustedGeneration_CommittedSuccess_Passes() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE71Tests.cs:line 156
+--- End of stack trace from previous location ---
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_CommitThreeCopyAsync_Production_Blocked [1 ms]
+[xUnit.net 00:00:17.68]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_DenyMigrationRoute_Blocked [SKIP]
+[xUnit.net 00:00:17.70]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_WritePolicy_ProductionDisabled [SKIP]
+[xUnit.net 00:00:17.70]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_TryOpenProductionSession_Blocked [SKIP]
+[xUnit.net 00:00:17.72]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.PhaseGate_E71_ReviewFixes_AllEnableFlagsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_DenyMigrationRoute_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_WritePolicy_ProductionDisabled [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_TryOpenProductionSession_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.PhaseGate_E71_ReviewFixes_AllEnableFlagsFalse [1 ms]
+[xUnit.net 00:00:17.74]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_JournalWriterGate_False [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_JournalWriterGate_False [1 ms]
+[xUnit.net 00:00:18.16]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorInvariants_LinkedToWriterGates [FAIL]
+[xUnit.net 00:00:18.17]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorStabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:18.67]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SpdVaultUnchanged_NoMigration [SKIP]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorInvariants_LinkedToWriterGates [< 1 ms]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorInvariants_LinkedToWriterGates() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE11Tests.cs:line 359
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorStabilityRepeat_Skipped [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SpdVaultUnchanged_NoMigration [1 ms]
+[xUnit.net 00:00:20.23]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureFailReread") [FAIL]
+[xUnit.net 00:00:20.65]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_HarnessSuccess_InvariantsPass [FAIL]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureFailReread") [4 s]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(String configure) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE8Tests.cs:line 126
+--- End of stack trace from previous location ---
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_HarnessSuccess_InvariantsPass [4 s]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_HarnessSuccess_InvariantsPass() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE7Tests.cs:line 288
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:20.68]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.PhaseGate_E7_PreEnableHardening_EnableFlagsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.PhaseGate_E7_PreEnableHardening_EnableFlagsFalse [1 ms]
+[xUnit.net 00:00:20.72]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_DuplicateTransactionId_Blocked [SKIP]
+[xUnit.net 00:00:20.73]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_ProductionDurableStore_Blocked [SKIP]
+[xUnit.net 00:00:20.75]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_JournalRecorderProductionRoute_Blocked [SKIP]
+[xUnit.net 00:00:20.75]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_TransactionCoordinator_NonHarness_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_DuplicateTransactionId_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_ProductionDurableStore_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_JournalRecorderProductionRoute_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_TransactionCoordinator_NonHarness_Blocked [1 ms]
+[xUnit.net 00:00:24.04]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureHeaderConflict") [FAIL]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureHeaderConflict") [3 s]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(String configure) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE8Tests.cs:line 126
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:27.81]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigurePartialWrite") [FAIL]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigurePartialWrite") [3 s]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(String configure) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE8Tests.cs:line 126
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:31.15]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureFailAuth") [FAIL]
+[xUnit.net 00:00:31.17]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_ProductionRoute_AppHostViewModel_NoWriter [SKIP]
+[xUnit.net 00:00:31.17]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DurableStore_RootEscape_Blocked [SKIP]
+[xUnit.net 00:00:31.18]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRunSuccess_DoesNotImplyWriterEnableReady [FAIL]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(configure: "ConfigureFailAuth") [3 s]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_FaultMatrix_NotCommitted_NoNewGenOpen(String configure) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE8Tests.cs:line 126
+--- End of stack trace from previous location ---
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_ProductionRoute_AppHostViewModel_NoWriter [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DurableStore_RootEscape_Blocked [1 ms]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRunSuccess_DoesNotImplyWriterEnableReady [1 ms]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRunSuccess_DoesNotImplyWriterEnableReady() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE8Tests.cs:line 241
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:33.38]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionCommit_Throws_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionCommit_Throws_Blocked [1 ms]
+[xUnit.net 00:00:34.33]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRun_EndToEnd_Success(kind: EmptyObject) [FAIL]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRun_EndToEnd_Success(kind: EmptyObject) [3 s]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRun_EndToEnd_Success(Av3SyntheticFixtureKind kind) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE8Tests.cs:line 57
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:36.97]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.WriterFactory_ProductionCreate_Fails_WhenProductionWriterDisabled [SKIP]
+[xUnit.net 00:00:37.22]     SmartPerformanceDoctor.Tests.SystemCareStabilityTests.CareFolderScanner_TempPath_CompletesQuickly [FAIL]
+[xUnit.net 00:00:37.80]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRun_EndToEnd_Success(kind: MultiSegment) [FAIL]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.WriterFactory_ProductionCreate_Fails_WhenProductionWriterDisabled [1 ms]
+  실패 SmartPerformanceDoctor.Tests.SystemCareStabilityTests.CareFolderScanner_TempPath_CompletesQuickly [10 s]
+  오류 메시지:
+   System.OperationCanceledException : The operation was canceled.
+  스택 추적:
+     at System.Threading.CancellationToken.ThrowOperationCanceledException()
+   at System.Threading.CancellationToken.ThrowIfCancellationRequested()
+   at SmartPerformanceDoctor.App.Services.SystemCare.CareFolderScanner.ScanDirectory(String directory, Int32 depth, ScanContext ctx) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\Services\SystemCare\CareFolderScanner.cs:line 120
+   at SmartPerformanceDoctor.App.Services.SystemCare.CareFolderScanner.ScanDirectory(String directory, Int32 depth, ScanContext ctx) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\Services\SystemCare\CareFolderScanner.cs:line 208
+   at SmartPerformanceDoctor.App.Services.SystemCare.CareFolderScanner.Measure(String path, CancellationToken cancellationToken, Int32 maxDepth, Int32 maxFiles, Boolean tempFolder, Boolean topLevelOnly) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\Services\SystemCare\CareFolderScanner.cs:line 39
+   at SmartPerformanceDoctor.Tests.SystemCareStabilityTests.CareFolderScanner_TempPath_CompletesQuickly() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\SystemCareStabilityTests.cs:line 79
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRun_EndToEnd_Success(kind: MultiSegment) [3 s]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRun_EndToEnd_Success(Av3SyntheticFixtureKind kind) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE8Tests.cs:line 57
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:38.88]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_HeaderConflict_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_HeaderConflict_CorruptBlocked [1 ms]
+[xUnit.net 00:00:40.65]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRun_EndToEnd_Success(kind: MultiObject) [FAIL]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRun_EndToEnd_Success(kind: MultiObject) [2 s]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRun_EndToEnd_Success(Av3SyntheticFixtureKind kind) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE8Tests.cs:line 57
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:43.63]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRun_EndToEnd_Success(kind: Standard) [FAIL]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRun_EndToEnd_Success(kind: Standard) [2 s]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DryRun_EndToEnd_Success(Av3SyntheticFixtureKind kind) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseE8Tests.cs:line 57
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:45.67]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.PhaseGate_E8_LimitedDryRun_EnableFlagsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.PhaseGate_E8_LimitedDryRun_EnableFlagsFalse [1 ms]
+[xUnit.net 00:00:50.08]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NonHarnessWriterInvocation_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NonHarnessWriterInvocation_Blocked [1 ms]
+[xUnit.net 00:01:02.78]     SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.PhaseGate_E3_ActualKillHarness_DocumentationOnly [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.PhaseGate_E3_ActualKillHarness_DocumentationOnly [1 ms]
+[xUnit.net 00:01:07.94]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.WriterEnableChecklist_State_NoGo [SKIP]
+[xUnit.net 00:01:07.96]     SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_Conflict_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.WriterEnableChecklist_State_NoGo [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_Conflict_CorruptBlocked [1 ms]
+[xUnit.net 00:01:08.13]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.PhaseGate_E4_HighRiskClosure_NotWriterEnable [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.PhaseGate_E4_HighRiskClosure_NotWriterEnable [1 ms]
+[xUnit.net 00:01:09.14]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R9_Migration_RemainsDisabled_NoWriterCollision [SKIP]
+[xUnit.net 00:01:10.09]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_EqualGenerationDifferentRoot_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R9_Migration_RemainsDisabled_NoWriterCollision [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_EqualGenerationDifferentRoot_CorruptBlocked [1 ms]
+[xUnit.net 00:01:10.53]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked [1 ms]
+
+실패!  - 실패:    29, 통과:   612, 건너뜀:   111, 전체:   752, 기간: 6 m 3 s - SmartPerformanceDoctor.Tests.dll (net10.0)

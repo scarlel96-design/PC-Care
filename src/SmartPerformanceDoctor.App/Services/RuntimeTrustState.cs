@@ -2,20 +2,23 @@ namespace SmartPerformanceDoctor.App.Services;
 
 public enum RuntimeTrustLevel
 {
-    Full,
-    Degraded,
+    Verified,
+    UnsignedAllowed,
+    Unverified,
     Failed
 }
 
 public static class RuntimeTrustState
 {
     private static bool _initialized;
-    private static RuntimeTrustLevel _level = RuntimeTrustLevel.Full;
-    private static string _summary = "trusted";
+    private static RuntimeTrustLevel _level = RuntimeTrustLevel.Unverified;
+    private static string _summary = "not-checked";
     private static IReadOnlyList<string> _unsignedFiles = Array.Empty<string>();
 
-    public static RuntimeTrustLevel Level => _initialized ? _level : RuntimeTrustLevel.Full;
-    public static bool IsFullyTrusted => Level == RuntimeTrustLevel.Full;
+    public static RuntimeTrustLevel Level => _level;
+    public static bool IsFullyTrusted => Level == RuntimeTrustLevel.Verified;
+    public static bool IsOperationallyAllowed =>
+        Level is RuntimeTrustLevel.Verified or RuntimeTrustLevel.UnsignedAllowed;
     public static string Summary => _summary;
     public static IReadOnlyList<string> UnsignedFiles => _unsignedFiles;
 
@@ -29,8 +32,8 @@ public static class RuntimeTrustState
         _initialized = true;
         if (ShouldSkipSignatureCheck())
         {
-            _level = RuntimeTrustLevel.Full;
-            _summary = "signature-check-skipped";
+            _level = RuntimeTrustLevel.UnsignedAllowed;
+            _summary = "unsigned-allowed-signature-not-verified";
             return;
         }
 

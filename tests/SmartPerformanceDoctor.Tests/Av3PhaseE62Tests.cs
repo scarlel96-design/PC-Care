@@ -24,14 +24,14 @@ public sealed class Av3PhaseE62Tests
     [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
     public void PhaseGate_E62_ReviewFixes_ProductionStillDisabled()
     {
-        Assert.Contains("PRODUCTION AUTHORIZED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
+        Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
         Assert.True(Av3PhaseGate.E6ReviewFixesApplied);
         Assert.True(Av3PhaseGate.CleanupFailureHarnessCovered);
         Assert.True(Av3PhaseGate.JournalLeakScannerDeterministic);
         Assert.True(Av3PhaseGate.JournalBinaryScanSeparated);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
     }
 
     [Fact]

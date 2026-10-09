@@ -1,0 +1,7 @@
+WORK ITEM: Elevated update installation E2E
+STATUS: BLOCKED / NOT TESTED
+INPUT: Production v1 package and current updater path.
+COMMAND: None; elevated installation was not started.
+RESULT: No trusted publisher key or production signature exists for the v1 package format. Valid content-only packages return PUBLISHER-UNVERIFIED and CanApply=false. The legacy PowerShell apply path is disabled.
+EXIT CODE: NOT RUN
+REMAINING: Publisher root, limited elevated helper, protected staging, pre-apply identity and hash recheck, durable transaction journal, rollback and reboot recovery require implementation and isolated Windows E2E.

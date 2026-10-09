@@ -33,7 +33,7 @@ internal static class Program
             var expectedTampered = baseline ? "READY" : "CHECKSUM-FAIL";
             var expectedTraversal = baseline ? "READY" : "CHECKSUM-FAIL";
             var expectedExtra = baseline ? "READY" : "CHECKSUM-FAIL";
-            return valid.Status == "READY" && tampered.Status == expectedTampered
+            return valid.Status == (baseline ? "READY" : "PUBLISHER-UNVERIFIED") && tampered.Status == expectedTampered
                 && traversal.Status == expectedTraversal && extra.Status == expectedExtra
                 && duplicate.Status == expectedExtra && reserved.Status == expectedExtra ? 0 : 1;
         }

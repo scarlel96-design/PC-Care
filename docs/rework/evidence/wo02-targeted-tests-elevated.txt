@@ -1,0 +1,14 @@
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+[xUnit.net 00:00:00.55]     SmartPerformanceDoctor.Tests.Av3PhaseGateTests.PhaseGate_E0_DesignLocks_MatchDocumentedGate [FAIL]
+  실패 SmartPerformanceDoctor.Tests.Av3PhaseGateTests.PhaseGate_E0_DesignLocks_MatchDocumentedGate [15 ms]
+  오류 메시지:
+   Assert.False() Failure
+Expected: False
+Actual:   True
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.Av3PhaseGateTests.PhaseGate_E0_DesignLocks_MatchDocumentedGate() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\Av3PhaseGateTests.cs:line 38
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+실패!  - 실패:     1, 통과:    16, 건너뜀:     0, 전체:    17, 기간: 14 s - SmartPerformanceDoctor.Tests.dll (net10.0)

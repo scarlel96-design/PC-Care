@@ -86,7 +86,7 @@ public static class RuntimeIntegrityGuard
         }
 
         RuntimeTrustState.Initialize();
-        if (RuntimeTrustState.IsFullyTrusted)
+        if (RuntimeTrustState.IsOperationallyAllowed)
         {
             return;
         }

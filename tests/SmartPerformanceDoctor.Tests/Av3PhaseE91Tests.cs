@@ -24,13 +24,13 @@ public sealed class Av3PhaseE91Tests
     public void E91_PhaseGate_ReviewFixes_EnableFlagsStillFalse()
     {
         Assert.True(Av3PhaseGate.E91ExternalReviewFixesApplied);
-        Assert.Contains("PRODUCTION AUTHORIZED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
         Assert.True(Av3WriterInvariantValidator.InvariantExpectWriterGatesClosed());
     }
 
@@ -184,8 +184,8 @@ public sealed class Av3PhaseE91Tests
         Assert.False(create.Success);
         Assert.Equal(Av3WriterAccessGate.ErrorProductionDisabled, create.PublicErrorClass);
         Assert.Throws<Av3WriterRouteBlockedException>(Av3WriterAccessGate.DenyProductionCreate);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
     }
 
     [Fact(Skip = "50.4.0 production GO: stability matrix under pre-enable rules superseded")]

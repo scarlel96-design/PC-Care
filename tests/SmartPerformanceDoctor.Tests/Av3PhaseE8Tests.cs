@@ -23,21 +23,21 @@ public sealed class Av3PhaseE8Tests
     [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
     public void PhaseGate_E8_LimitedDryRun_EnableFlagsFalse()
     {
-        Assert.Contains("PRODUCTION AUTHORIZED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
+        Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
         Assert.True(Av3PhaseGate.E8LimitedDryRunComplete);
         Assert.True(Av3PhaseGate.E8LimitedDryRunHarnessEnabled);
         Assert.True(Av3PhaseGate.E8ReadOnlyRevalidationCovered);
         Assert.True(Av3PhaseGate.E8DryRunTelemetryNonLeakCovered);
         Assert.True(Av3PhaseGate.E8FaultMatrixCovered);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
-        Assert.True(Av3PhaseGate.ProductionAnchorImplemented);
-        Assert.True(Av3PhaseGate.XChaCha24Implemented);
-        Assert.True(Av3EnableReadinessChecklist.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
+        Assert.False(Av3PhaseGate.XChaCha24Implemented);
+        Assert.False(Av3EnableReadinessChecklist.WriterEnableReady);
     }
 
     [Theory]
@@ -237,8 +237,8 @@ public sealed class Av3PhaseE8Tests
     [Fact]
     public void E8_DryRunSuccess_DoesNotImplyWriterEnableReady()
     {
-        Assert.True(Av3PhaseGate.WriterEnableReady);
-        Assert.True(Av3EnableReadinessChecklist.WriterEnableReady);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3EnableReadinessChecklist.WriterEnableReady);
     }
 
     private void ConfigureFailFlush(Av3CommitSimulationOptions s) =>

@@ -442,22 +442,22 @@ public sealed class Av3PhaseE13Tests
         Assert.True(Av3PhaseGate.E13TrustedAnchorProviderPackageComplete);
         Assert.True(Av3PhaseGate.TrustedAnchorProviderImplementationCandidate);
         Assert.True(Av3PhaseGate.TrustedMonotonicProductionAnchorImplementationCandidate);
-        Assert.True(Av3PhaseGate.ProductionAnchorImplemented);
+        Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
         Assert.False(Av3PhaseGate.TrustedMonotonicProductionAnchorImplemented);
-        Assert.True(Av3PhaseGate.ProductionWriterEnabled);
-        Assert.True(Av3PhaseGate.JournalWriterEnabled);
-        Assert.True(Av3PhaseGate.MigrationEnabled);
-        Assert.True(Av3PhaseGate.WriterEnableReady);
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
+        Assert.False(Av3PhaseGate.JournalWriterEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.WriterEnableReady);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
     }
 
     [Fact]
     public void E13_ProductionEnableAuthorizedFalse() =>
-        Assert.True(Av3PhaseGate.ProductionEnableAuthorized);
+        Assert.False(Av3PhaseGate.ProductionEnableAuthorized);
 
     [Fact]
     public void E13_ExternalReviewCompletedCodeFalse() =>
-        Assert.True(Av3PhaseGate.ExternalReviewCompleted);
+        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
 
     [Fact]
     public void E13_ServiceUiImportExport_NoTrustedAnchorOrWriterWiring()
@@ -472,7 +472,7 @@ public sealed class Av3PhaseE13Tests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E13_SpdVaultUnchanged_NoMigration()
     {
-        Assert.True(Av3PhaseGate.MigrationEnabled);
+        Assert.False(Av3PhaseGate.MigrationEnabled);
         Assert.False(Av3CommitRecoveryManager.PerformsAutomaticRepair);
         Assert.False(Av3TrustedAnchorRecoveryPolicy.AutomaticRepairEnabled);
     }
@@ -480,9 +480,9 @@ public sealed class Av3PhaseE13Tests
     [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
     public void E13_SClassStillNotSatisfied()
     {
-        Assert.True(Av3PhaseGate.SClassTargetSatisfied);
-        Assert.True(Av3PhaseGate.XChaCha24Implemented);
-        Assert.True(Av3PhaseGate.ProductionAnchorImplemented);
+        Assert.False(Av3PhaseGate.SClassTargetSatisfied);
+        Assert.False(Av3PhaseGate.XChaCha24Implemented);
+        Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
     }
 
     [Fact]

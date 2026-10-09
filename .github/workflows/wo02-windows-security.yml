@@ -1,0 +1,79 @@
+name: WO02 Windows security gate
+
+on:
+  push:
+    branches: [codex/pccare-rework-phase1-closure]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Environment
+        shell: pwsh
+        run: |
+          git rev-parse HEAD | Tee-Object -FilePath commit-sha.txt
+          dotnet --info | Out-File dotnet-info.txt
+      - name: Restore
+        shell: pwsh
+        run: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
+      - name: Release x64 build
+        shell: pwsh
+        run: dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 --no-restore --disable-build-servers -m:1 -v:minimal
+      - name: Full unit and integration suite
+        shell: pwsh
+        env:
+          VSTEST_CONNECTION_TIMEOUT: '300'
+        run: |
+          $isolatedTemp = Join-Path $env:RUNNER_TEMP 'pccare-wo02-suite'
+          New-Item -ItemType Directory -Path $isolatedTemp -Force | Out-Null
+          $env:TEMP = $isolatedTemp
+          $env:TMP = $isolatedTemp
+          dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo02.trx' -v:minimal
+          exit $LASTEXITCODE
+      - name: Security and package regression
+        shell: pwsh
+        env:
+          VSTEST_CONNECTION_TIMEOUT: '300'
+        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~UpdatePackageInspectorTests|FullyQualifiedName~SystemCareStabilityTests|FullyQualifiedName~Av3PhaseGateTests' --logger 'trx;LogFileName=wo02-security.trx' -v:minimal
+      - name: Isolated package and care probes
+        shell: pwsh
+        run: |
+          dotnet run --project tests/UpdateInspectorProbe/UpdateInspectorProbe.csproj -c Release -p:Platform=x64
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet run --project tests/Wo02SecurityProbe/Wo02SecurityProbe.csproj -c Release -p:Platform=x64
+          exit $LASTEXITCODE
+      - name: Artifact hashes and release candidate gate
+        if: always()
+        shell: pwsh
+        run: |
+          $appOutput = 'src/SmartPerformanceDoctor.App/bin/x64/Release/net10.0-windows10.0.26100.0'
+          if (Test-Path $appOutput) {
+            Get-ChildItem -Path $appOutput -Recurse -File |
+              Where-Object { $_.Extension -in '.exe', '.dll' } |
+              Sort-Object FullName |
+              ForEach-Object { '{0}  {1}' -f (Get-FileHash -Algorithm SHA256 -LiteralPath $_.FullName).Hash, $_.FullName } |
+              Set-Content -Path artifact-hashes.txt
+          }
+          'NO-GO: publisher-authenticated transactional elevated update and installed-app reboot recovery remain unverified.' |
+            Set-Content -Path release-readiness.txt
+      - name: Retain evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wo02-windows-evidence
+          path: |
+            commit-sha.txt
+            dotnet-info.txt
+            artifact-hashes.txt
+            release-readiness.txt
+            docs/rework/WO02_TEST_SKIP_INVENTORY.md
+            tests/**/TestResults/*.trx
+          if-no-files-found: warn

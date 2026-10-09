@@ -17,7 +17,7 @@ public static class Av3DiskDurabilityInvariantValidator
             violations.Add(Code(Av3DiskDurabilityInvariant.DiskDurabilityRequiredForWriterEnable, "harness_prod_disk_conflated"));
         }
 
-        // 50.4.0 GO: durability reviewed + writer gates authorized are expected together.
+        // A disk review claim requires matching production authorization.
         if (Av3EnableReadinessChecklist.ActualDiskDurabilityReviewed && !Av3PhaseGate.ProductionEnableAuthorized)
         {
             violations.Add(Code(Av3DiskDurabilityInvariant.ActualDiskDurabilityNotMarkedReviewedWithoutSignoff, "disk_durability_reviewed_without_signoff"));

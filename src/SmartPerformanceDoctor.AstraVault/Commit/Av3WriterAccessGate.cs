@@ -43,7 +43,9 @@ public static class Av3WriterAccessGate
 
     public static void DenyProductionCreate()
     {
-        if (!Av3PhaseGate.ProductionWriterEnabled || !Av3PhaseGate.WriterEnableReady)
+        if (Av3PhaseGate.CurrentStatus != Av3ProductionStatus.ProductionAuthorized
+            || !Av3PhaseGate.ProductionWriterEnabled || !Av3PhaseGate.WriterEnableReady
+            || !Av3PhaseGate.ProductionEnableAuthorized || !Av3PhaseGate.ExternalReviewCompleted)
         {
             throw new Av3WriterRouteBlockedException(
                 !Av3PhaseGate.ProductionWriterEnabled
@@ -57,7 +59,8 @@ public static class Av3WriterAccessGate
 
     public static void DenyMigrationRoute()
     {
-        if (!Av3PhaseGate.MigrationEnabled)
+        if (Av3PhaseGate.CurrentStatus != Av3ProductionStatus.ProductionAuthorized
+            || !Av3PhaseGate.MigrationEnabled)
         {
             throw new Av3WriterRouteBlockedException(ErrorMigrationDisabled);
         }
@@ -183,12 +186,17 @@ public static class Av3WriterAccessGate
 
     public static void DenyJournalProductionRoute()
     {
-        if (!Av3PhaseGate.JournalWriterEnabled)
+        if (Av3PhaseGate.CurrentStatus != Av3ProductionStatus.ProductionAuthorized
+            || !Av3PhaseGate.JournalWriterEnabled)
         {
             throw new Av3WriterRouteBlockedException(ErrorJournalProductionDisabled);
         }
     }
 
     public static bool IsProductionRouteAllowed =>
-        Av3PhaseGate.ProductionWriterEnabled && Av3PhaseGate.WriterEnableReady;
+        Av3PhaseGate.CurrentStatus == Av3ProductionStatus.ProductionAuthorized
+        && Av3PhaseGate.ProductionEnableAuthorized
+        && Av3PhaseGate.ExternalReviewCompleted
+        && Av3PhaseGate.ProductionWriterEnabled
+        && Av3PhaseGate.WriterEnableReady;
 }
