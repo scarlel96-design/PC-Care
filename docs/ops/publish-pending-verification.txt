@@ -63,7 +63,7 @@ Restored behavior/status: sample.txt returned to baseline and the temporary repo
 Rollback artifact: scripts/rollback-publish-pending.sh validates its marker and HEAD before reverting and pushing the revert; the above test exercised the same revert behavior in isolation.
 
 Remote publication state
-`gh auth status --hostname github.com` currently reports an invalid saved token. `git ls-remote origin` failed before authentication due to a resolver/thread startup error. No remote ref was modified and no push is claimed.
+Published to `origin/fix/v51.0.1-care-polish` through the connected GitHub repository API. GitHub returned success when updating the branch ref. Follow-up branch lookup reports HEAD `1f38a3c0d68f5361db5957a4db7dd329bf6f4034`; compare from `95bac6ad2a61b636ccc4ffb36cbecfab589a34b7` reports ahead_by=1, behind_by=0, total_commits=1, and 53 changed files. The direct local Git transport could not use the CLI credential in this execution environment, so the authenticated GitHub connector was used to upload the file blobs, create the tree and commit, and advance the ref with an expected-old-SHA check.
 
 One-command publish from this repository root after GitHub authentication/network are available:
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\publish-pending.ps1
