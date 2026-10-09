@@ -85,6 +85,7 @@
                     <Button x:Name="VaultIntegrityButton" Content="금고 무결성 검사" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenVault"/>
                     <Button x:Name="ProtectionStatusButton" Grid.Column="1" Content="프로그램 보호 상태" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenProtection"/>
                     <Button x:Name="AdvancedRecoveryButton" Grid.Column="2" Content="고급 복구 도구" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenAdvanced"/>
+                    <Button x:Name="PurgePreparationButton" Grid.Row="1" Content="장치 PURGE 준비" Style="{StaticResource MacToolbarButtonStyle}" Click="OpenDevicePurge"/>
                 </Grid>
             </Expander>
         </StackPanel>

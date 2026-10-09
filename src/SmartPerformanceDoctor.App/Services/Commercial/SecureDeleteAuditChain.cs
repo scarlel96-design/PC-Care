@@ -7,13 +7,13 @@ internal static class SecureDeleteAuditChain
 {
     private static readonly byte[] KeyMagic = "SPDSDAK1"u8.ToArray();
 
-    public static byte[] EnsureOperationKey(string operationId)
+    public static byte[] EnsureOperationKey(string operationId, string? storageRoot = null)
     {
-        var keyDir = Path.Combine(
+        var defaultRoot = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "SmartPerformanceDoctor",
-            "secure_delete",
-            "keys");
+            "PC-Care",
+            "secure_delete");
+        var keyDir = Path.Combine(storageRoot ?? defaultRoot, "keys");
         Directory.CreateDirectory(keyDir);
         var keyPath = Path.Combine(keyDir, $"{operationId}.key");
 

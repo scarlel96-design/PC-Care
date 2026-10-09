@@ -1,0 +1,109 @@
+diff --git a/scripts/publish-pending.ps1 b/scripts/publish-pending.ps1
+new file mode 100644
+index 0000000..31847b8
+--- /dev/null
++++ b/scripts/publish-pending.ps1
+@@ -0,0 +1,103 @@
++param(
++    [switch]$Preview
++)
++
++$ErrorActionPreference = 'Stop'
++Set-StrictMode -Version Latest
++
++$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
++
++function Invoke-Git {
++    param([Parameter(ValueFromRemainingArguments = $true)][string[]]$GitArgs)
++    $output = & git -C $repoRoot @GitArgs
++    if ($LASTEXITCODE -ne 0) {
++        throw "git $($GitArgs -join ' ') failed with exit code $LASTEXITCODE"
++    }
++    return $output
++}
++
++$branch = (Invoke-Git rev-parse --abbrev-ref HEAD | Select-Object -First 1).Trim()
++if ([string]::IsNullOrWhiteSpace($branch) -or $branch -eq 'HEAD') {
++    throw 'A named Git branch is required.'
++}
++if ($branch -in @('main', 'master')) {
++    throw 'This publisher only pushes the current feature branch; it will not push directly to main/master.'
++}
++
++$origin = (Invoke-Git remote get-url origin | Select-Object -First 1).Trim()
++if ($origin -notmatch '^https://github\.com/[^/]+/[^/]+(?:\.git)?$') {
++    throw 'origin must be a GitHub HTTPS repository URL.'
++}
++
++$before = @(Invoke-Git status --porcelain=v1 --untracked-files=all)
++if ($Preview) {
++    Write-Output "PREVIEW OK"
++    Write-Output "Branch: $branch"
++    Write-Output "Remote: $origin"
++    Write-Output "Pending status entries: $($before.Count)"
++    Write-Output 'Would stage all non-ignored changes, create one commit if needed, and push this branch.'
++    return
++}
++
++# Use GitHub's browser/device flow only when this machine lacks a valid CLI session.
++& gh auth status --hostname github.com *> $null
++if ($LASTEXITCODE -ne 0) {
++    & gh auth login --hostname github.com --git-protocol https --web
++    if ($LASTEXITCODE -ne 0) {
++        throw 'GitHub browser authentication did not complete.'
++    }
++}
++& gh auth status --hostname github.com *> $null
++if ($LASTEXITCODE -ne 0) {
++    throw 'GitHub CLI still has no valid authenticated session.'
++}
++& gh auth setup-git --hostname github.com
++if ($LASTEXITCODE -ne 0) {
++    throw 'Could not configure Git to use the authenticated GitHub CLI session.'
++}
++
++# Refuse common credential/private-key files before staging; ignored build output remains excluded by .gitignore.
++$blockedNames = @($before | ForEach-Object { $_.Substring([Math]::Min(3, $_.Length)).Trim('"') } | Where-Object {
++    $_ -match '(^|/|\\)\.env(?:\.|$)' -or $_ -match '\.(pem|key|pfx|snk)$'
++})
++if ($blockedNames.Count -gt 0) {
++    throw 'Credential/private-key-like paths are present. Remove or ignore them before publishing.'
++}
++
++Invoke-Git add --all | Out-Null
++Invoke-Git update-index --chmod=+x -- scripts/rollback-publish-pending.sh | Out-Null
++Invoke-Git diff --cached --check | Out-Null
++
++$stagedNames = @(Invoke-Git diff --cached --name-only)
++if ($stagedNames.Count -gt 0) {
++    $stagedPatch = (Invoke-Git diff --cached --no-ext-diff) -join "`n"
++    if ($stagedPatch -match '(?i)(gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|sk-proj-[A-Za-z0-9_-]{20,})') {
++        throw 'A credential-like value was detected in staged content. Nothing was committed or pushed.'
++    }
++
++    $login = (& gh api user --jq .login).Trim()
++    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($login)) {
++        throw 'Could not resolve the authenticated GitHub login for the commit identity.'
++    }
++    $email = (Invoke-Git config user.email 2>$null | Select-Object -First 1)
++    if ([string]::IsNullOrWhiteSpace($email)) {
++        $email = "$login@users.noreply.github.com"
++    }
++    & git -C $repoRoot -c "user.name=$login" -c "user.email=$email" commit -m 'feat: publish pending PC-Care security hardening'
++    if ($LASTEXITCODE -ne 0) {
++        throw "git commit failed with exit code $LASTEXITCODE"
++    }
++}
++
++Invoke-Git push --set-upstream origin HEAD | Out-Null
++$publishedCommit = (Invoke-Git rev-parse HEAD | Select-Object -First 1).Trim()
++$gitMarker = (Invoke-Git rev-parse --git-path pc-care-publish-last-commit | Select-Object -First 1).Trim()
++if (-not [IO.Path]::IsPathRooted($gitMarker)) {
++    $gitMarker = Join-Path $repoRoot $gitMarker
++}
++[IO.File]::WriteAllText($gitMarker, $publishedCommit + [Environment]::NewLine)
++
++Write-Output 'PUBLISH OK'
++Write-Output "Branch: $branch"
++Write-Output "Commit: $publishedCommit"
++Write-Output "Remote: $origin"

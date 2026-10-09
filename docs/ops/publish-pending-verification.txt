@@ -1,0 +1,71 @@
+PC-Care single-command publisher verification
+
+Changed branch / field
+Git publication workflow: stage all non-ignored pending files, commit once on the current feature branch, then push that branch to origin. The publisher rejects main/master and non-GitHub HTTPS origins, checks for credential-like paths and tokens, and launches GitHub web authentication if the saved CLI session is invalid.
+
+Artifacts
+MODIFIED_FILE: scripts/publish-pending.ps1
+DIFF_FILE: scripts/publish-pending.diff
+VERIFICATION.txt: docs/ops/publish-pending-verification.txt
+ROLLBACK.sh: scripts/rollback-publish-pending.sh (Bash script; executable mode is set by publisher in Git index)
+
+BASELINE
+Command: git diff --check
+Input: existing PC-Care working tree before publisher artifacts were added
+Literal output/result: exit 0; only Git LF-to-CRLF warnings, no whitespace errors
+Exit status: 0
+
+MODIFIED script syntax
+Command: PowerShell parser API via pwsh -NoProfile
+Input: scripts/publish-pending.ps1
+Literal output/result: PowerShell parse OK
+Exit status: 0
+
+MODIFIED preview
+Command: pwsh -NoProfile -File scripts/publish-pending.ps1 -Preview
+Input: branch fix/v51.0.1-care-polish; origin https://github.com/scarlel96-design/PC-Care.git; current working tree
+Literal output/result:
+PREVIEW OK
+Branch: fix/v51.0.1-care-polish
+Remote: https://github.com/scarlel96-design/PC-Care.git
+Pending status entries: 53
+Would stage all non-ignored changes, create one commit if needed, and push this branch.
+Exit status: 0
+Behavior: preview left index and HEAD unchanged; no login, commit, or push was attempted.
+
+BASELINE product checks (observed on this source snapshot in the prior work session)
+Command: dotnet test tests\SmartPerformanceDoctor.Tests\SmartPerformanceDoctor.Tests.csproj -c Release --no-restore -m:1 -p:Platform=x64 -v quiet
+Input: PC-Care source snapshot at 95bac6ad2a61b636ccc4ffb36cbecfab589a34b7 with pending product work
+Literal output/result: failed 13, passed 620, skipped 116, total 749; duration 2m30s
+Exit status: 1
+Meaning: baseline full suite has 13 existing failures; this publisher-only change does not alter product code.
+
+MODIFIED product checks (observed on same source snapshot in prior work session)
+Command: dotnet build src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 --no-restore -m:1 -v minimal
+Input: current PC-Care source
+Literal output/result: Build succeeded; 0 Warning(s), 0 Error(s)
+Exit status: 0
+Command: focused security/care/update/purge test filter
+Input: relevant tests from current PC-Care test project
+Literal output/result: passed 68, failed 0, skipped 0, total 68
+Exit status: 0
+Command: cargo test --workspace --release --locked
+Input: Rust workspace
+Literal output/result: completed; all targets reported 0 tests, 0 failed
+Exit status: 0
+
+ROLLBACK test on a separate temporary Git repository
+Command: git revert --no-edit HEAD
+Input: isolated repo with sample.txt=modified and HEAD marker matching the publisher commit subject
+Literal output/result: [master 07bb97b] Revert "feat: publish pending PC-Care security hardening"; 1 file changed, 1 insertion(+), 1 deletion(-); ROLLBACK_EXIT=0; RESTORED_FILE=baseline; STATUS= (empty); HEAD_SUBJECT=Revert "feat: publish pending PC-Care security hardening"
+Exit status: 0
+Restored behavior/status: sample.txt returned to baseline and the temporary repository was clean. Test files were removed after verification.
+Rollback artifact: scripts/rollback-publish-pending.sh validates its marker and HEAD before reverting and pushing the revert; the above test exercised the same revert behavior in isolation.
+
+Remote publication state
+`gh auth status --hostname github.com` currently reports an invalid saved token. `git ls-remote origin` failed before authentication due to a resolver/thread startup error. No remote ref was modified and no push is claimed.
+
+One-command publish from this repository root after GitHub authentication/network are available:
+pwsh -NoProfile -ExecutionPolicy Bypass -File .\scripts\publish-pending.ps1
+
+The script will stage the pending non-ignored changes, commit them on the current feature branch, and push that branch. It does not create a release or push directly to main/master.

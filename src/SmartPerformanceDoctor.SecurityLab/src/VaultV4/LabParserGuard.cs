@@ -10,6 +10,12 @@ public static class LabParserGuard
     public const long MaxObjectBytes = 512L * 1024 * 1024;
     public const int MaxEntries = 50_000;
     public const int MaxObjectIdHexLen = 64;
+    // Header values are attacker-controlled until the password-authenticated VMK unwrap succeeds.
+    // Keep these limits above every supported profile, but finite to prevent Argon2 allocation DoS.
+    public const int MinKdfMemoryKb = 8 * 1024; // legacy LabFast compatibility
+    public const int MaxKdfMemoryKb = 512 * 1024;
+    public const int MaxKdfIterations = 8;
+    public const int MaxKdfParallelism = 16;
 
     public static void EnsureHeaderSize(int length)
     {
@@ -52,6 +58,16 @@ public static class LabParserGuard
         if (count < 0 || count > MaxEntries)
         {
             throw new CryptographicException("entry count out of bounds");
+        }
+    }
+
+    public static void EnsureKdfParameters(int iterations, int memoryKb, int parallelism)
+    {
+        if (iterations < 1 || iterations > MaxKdfIterations
+            || memoryKb < MinKdfMemoryKb || memoryKb > MaxKdfMemoryKb
+            || parallelism < 1 || parallelism > MaxKdfParallelism)
+        {
+            throw new CryptographicException("KDF parameters out of bounds");
         }
     }
 }

@@ -8,7 +8,7 @@ public enum LabContentSuite
 {
     /// <summary>Legacy AES-256-GCM 12-byte nonce (SPDCHK3).</summary>
     Aes256Gcm = 0,
-    /// <summary>Design §6 preferred: XChaCha20-Poly1305 24-byte nonce (SPDCHK4).</summary>
+    /// <summary>Design §6 preferred: XChaCha20-Poly1305 24-byte nonce (SPDCHK4 legacy, SPDCHK5 current).</summary>
     XChaCha20Poly1305 = 1
 }
 
@@ -26,24 +26,32 @@ public static class LabVaultCrypto
     public const int ChunkSize = 1024 * 1024;
     /// <summary>Optional pad for small last chunks when concealed-lite is on (design §7 intro).</summary>
     public const int ConcealedPadBlock = 4096;
+    private const int MaxChunkCount = 1_000_000;
+    private const int ConcealedPadV2FooterBytes = 18;
 
     private static readonly byte[] MagicAes = "SPDCHK3"u8.ToArray();
+    // SPDCHK4 remains readable for existing vaults. SPDCHK5 adds an unambiguous padding footer.
     private static readonly byte[] MagicXch = "SPDCHK4"u8.ToArray();
+    private static readonly byte[] MagicXchV2 = "SPDCHK5"u8.ToArray();
+    private static readonly byte[] ConcealedPadV2Marker = "PCVLT-PAD-V2!!##"u8.ToArray();
 
     public static byte[] GenerateKey() => RandomNumberGenerator.GetBytes(KeySize);
     public static byte[] GenerateSalt(int size = 32) => RandomNumberGenerator.GetBytes(size);
 
     public static byte[] DeriveArgon2id(string password, byte[] salt, int iterations, int memoryKb, int parallelism)
     {
+        LabParserGuard.EnsureKdfParameters(iterations, memoryKb, parallelism);
         var pw = Encoding.UTF8.GetBytes(password);
         try
         {
             using var argon = new Argon2id(pw)
             {
                 Salt = salt,
-                Iterations = Math.Max(1, iterations),
+                Iterations = iterations,
+                // Older LabFast headers stored 8 MiB but the prior implementation always used 64 MiB.
+                // Preserve that unlock behavior while keeping all new profiles at their explicit strength.
                 MemorySize = Math.Max(64 * 1024, memoryKb),
-                DegreeOfParallelism = Math.Max(1, parallelism)
+                DegreeOfParallelism = parallelism
             };
             return argon.GetBytes(KeySize);
         }
@@ -61,13 +69,20 @@ public static class LabVaultCrypto
         bool concealedPad = false)
     {
         using var ms = new MemoryStream();
-        var magic = suite == LabContentSuite.XChaCha20Poly1305 ? MagicXch : MagicAes;
+        var useConcealedPad = suite == LabContentSuite.XChaCha20Poly1305
+                              && concealedPad
+                              && plaintext.Length > 0
+                              && plaintext.Length <= ConcealedPadBlock - ConcealedPadV2FooterBytes;
+        var hardenedPadding = useConcealedPad;
+        var magic = suite == LabContentSuite.XChaCha20Poly1305
+            ? MagicXchV2
+            : MagicAes;
         ms.Write(magic);
         var count = plaintext.Length == 0 ? 1 : (plaintext.Length + ChunkSize - 1) / ChunkSize;
         ms.Write(BitConverter.GetBytes(count));
         if (plaintext.Length == 0)
         {
-            WriteChunk(ms, key, aadPrefix, 0, Array.Empty<byte>(), suite, concealedPad);
+            WriteChunk(ms, key, aadPrefix, 0, Array.Empty<byte>(), suite, false, hardenedPadding);
             return ms.ToArray();
         }
 
@@ -76,7 +91,7 @@ public static class LabVaultCrypto
             var offset = i * ChunkSize;
             var len = Math.Min(ChunkSize, plaintext.Length - offset);
             var slice = plaintext.AsSpan(offset, len).ToArray();
-            WriteChunk(ms, key, aadPrefix, i, slice, suite, concealedPad && i == count - 1);
+            WriteChunk(ms, key, aadPrefix, i, slice, suite, useConcealedPad && i == count - 1, hardenedPadding);
             CryptographicOperations.ZeroMemory(slice);
         }
 
@@ -90,29 +105,16 @@ public static class LabVaultCrypto
             throw new CryptographicException("not a lab chunk blob");
         }
 
-        LabContentSuite suite;
-        int nonceSize;
-        if (blob.AsSpan(0, 7).SequenceEqual(MagicXch))
-        {
-            suite = LabContentSuite.XChaCha20Poly1305;
-            nonceSize = XChaChaNonceSize;
-        }
-        else if (blob.AsSpan(0, 7).SequenceEqual(MagicAes))
-        {
-            suite = LabContentSuite.Aes256Gcm;
-            nonceSize = AesNonceSize;
-        }
-        else
-        {
-            throw new CryptographicException("not a lab chunk blob");
-        }
+        var (suite, nonceSize, paddingVersion) = DecodeMagic(blob.AsSpan(0, 7));
 
         var pos = 7;
         var count = BitConverter.ToInt32(blob, pos);
         pos += 4;
+        EnsureChunkCount(count);
         using var outMs = new MemoryStream();
         for (var i = 0; i < count; i++)
         {
+            EnsureRemaining(blob.Length, pos, nonceSize + TagSize + sizeof(int));
             var nonce = blob.AsSpan(pos, nonceSize).ToArray();
             pos += nonceSize;
             var tag = blob.AsSpan(pos, TagSize).ToArray();
@@ -124,15 +126,21 @@ public static class LabVaultCrypto
                 throw new CryptographicException("invalid chunk length");
             }
 
+            EnsureRemaining(blob.Length, pos, clen);
             var cipher = blob.AsSpan(pos, clen).ToArray();
             pos += clen;
             var aad = BuildAad(aadPrefix, i);
             var plain = new byte[clen];
             DecryptOne(key, nonce, cipher, tag, plain, aad, suite);
             // strip optional pad trailer: last 2 bytes little-endian original length if padded
-            var payload = StripConcealedPad(plain);
+            var payload = StripConcealedPad(plain, paddingVersion, i == count - 1);
             outMs.Write(payload);
             CryptographicOperations.ZeroMemory(plain);
+        }
+
+        if (pos != blob.Length)
+        {
+            throw new CryptographicException("unexpected trailing chunk data");
         }
 
         return outMs.ToArray();
@@ -145,7 +153,7 @@ public static class LabVaultCrypto
         byte[] aadPrefix,
         LabContentSuite suite = LabContentSuite.XChaCha20Poly1305)
     {
-        var magic = suite == LabContentSuite.XChaCha20Poly1305 ? MagicXch : MagicAes;
+        var magic = suite == LabContentSuite.XChaCha20Poly1305 ? MagicXchV2 : MagicAes;
         output.Write(magic);
         var countPos = output.Position;
         output.Write(BitConverter.GetBytes(0));
@@ -154,7 +162,7 @@ public static class LabVaultCrypto
         int read;
         if (plaintext.CanSeek && plaintext.Length == 0)
         {
-            WriteChunk(output, key, aadPrefix, 0, Array.Empty<byte>(), suite, false);
+            WriteChunk(output, key, aadPrefix, 0, Array.Empty<byte>(), suite, false, false);
             count = 1;
         }
         else
@@ -162,14 +170,19 @@ public static class LabVaultCrypto
             while ((read = plaintext.Read(buffer, 0, buffer.Length)) > 0)
             {
                 var slice = buffer.AsSpan(0, read).ToArray();
-                WriteChunk(output, key, aadPrefix, count, slice, suite, false);
+                if (count == MaxChunkCount)
+                {
+                    throw new CryptographicException("chunk count exceeds limit");
+                }
+
+                WriteChunk(output, key, aadPrefix, count, slice, suite, false, false);
                 CryptographicOperations.ZeroMemory(slice);
                 count++;
             }
 
             if (count == 0)
             {
-                WriteChunk(output, key, aadPrefix, 0, Array.Empty<byte>(), suite, false);
+                WriteChunk(output, key, aadPrefix, 0, Array.Empty<byte>(), suite, false, false);
                 count = 1;
             }
         }
@@ -189,22 +202,7 @@ public static class LabVaultCrypto
             throw new CryptographicException("truncated magic");
         }
 
-        LabContentSuite suite;
-        int nonceSize;
-        if (magic.AsSpan().SequenceEqual(MagicXch))
-        {
-            suite = LabContentSuite.XChaCha20Poly1305;
-            nonceSize = XChaChaNonceSize;
-        }
-        else if (magic.AsSpan().SequenceEqual(MagicAes))
-        {
-            suite = LabContentSuite.Aes256Gcm;
-            nonceSize = AesNonceSize;
-        }
-        else
-        {
-            throw new CryptographicException("not a lab chunk blob");
-        }
+        var (suite, nonceSize, paddingVersion) = DecodeMagic(magic);
 
         var countBuf = new byte[4];
         if (input.Read(countBuf, 0, 4) != 4)
@@ -213,6 +211,7 @@ public static class LabVaultCrypto
         }
 
         var count = BitConverter.ToInt32(countBuf);
+        EnsureChunkCount(count);
         for (var i = 0; i < count; i++)
         {
             var nonce = new byte[nonceSize];
@@ -240,10 +239,15 @@ public static class LabVaultCrypto
             var plain = new byte[clen];
             var aad = BuildAad(aadPrefix, i);
             DecryptOne(key, nonce, cipher, tag, plain, aad, suite);
-            var payload = StripConcealedPad(plain);
+            var payload = StripConcealedPad(plain, paddingVersion, i == count - 1);
             plaintextOut.Write(payload);
             CryptographicOperations.ZeroMemory(plain);
             CryptographicOperations.ZeroMemory(cipher);
+        }
+
+        if (input.CanSeek && input.Position != input.Length)
+        {
+            throw new CryptographicException("unexpected trailing chunk data");
         }
     }
 
@@ -254,16 +258,25 @@ public static class LabVaultCrypto
         int index,
         byte[] slice,
         LabContentSuite suite,
-        bool concealedPad)
+        bool concealedPad,
+        bool hardenedPadding)
     {
         var plain = slice;
         if (concealedPad && slice.Length > 0 && slice.Length < ConcealedPadBlock)
         {
             plain = new byte[ConcealedPadBlock];
             Buffer.BlockCopy(slice, 0, plain, 0, slice.Length);
-            // trailer: original length u16
-            BinaryPrimitivesWriteUInt16(plain.AsSpan(ConcealedPadBlock - 2), (ushort)slice.Length);
-            plain[ConcealedPadBlock - 3] = 0xA5; // pad marker
+            if (hardenedPadding)
+            {
+                ConcealedPadV2Marker.CopyTo(plain, ConcealedPadBlock - ConcealedPadV2FooterBytes);
+                BinaryPrimitivesWriteUInt16(plain.AsSpan(ConcealedPadBlock - 2), (ushort)slice.Length);
+            }
+            else
+            {
+                // Legacy SPDCHK4 footer retained only for reading older vaults.
+                BinaryPrimitivesWriteUInt16(plain.AsSpan(ConcealedPadBlock - 2), (ushort)slice.Length);
+                plain[ConcealedPadBlock - 3] = 0xA5;
+            }
         }
 
         var nonceSize = suite == LabContentSuite.XChaCha20Poly1305 ? XChaChaNonceSize : AesNonceSize;
@@ -322,12 +335,28 @@ public static class LabVaultCrypto
         }
     }
 
-    private static byte[] StripConcealedPad(byte[] plain)
+    private static byte[] StripConcealedPad(byte[] plain, ChunkPaddingVersion paddingVersion, bool isLastChunk)
     {
-        if (plain.Length == ConcealedPadBlock && plain[^3] == 0xA5)
+        if (!isLastChunk || plain.Length != ConcealedPadBlock)
+        {
+            return plain;
+        }
+
+        if (paddingVersion == ChunkPaddingVersion.HardenedV2
+            && plain.AsSpan(ConcealedPadBlock - ConcealedPadV2FooterBytes, ConcealedPadV2Marker.Length)
+                .SequenceEqual(ConcealedPadV2Marker))
         {
             var orig = plain[^2] | (plain[^1] << 8);
-            if (orig >= 0 && orig <= ConcealedPadBlock - 3)
+            if (orig <= ConcealedPadBlock - ConcealedPadV2FooterBytes)
+            {
+                return plain.AsSpan(0, orig).ToArray();
+            }
+        }
+
+        if (paddingVersion == ChunkPaddingVersion.LegacyV1 && plain[^3] == 0xA5)
+        {
+            var orig = plain[^2] | (plain[^1] << 8);
+            if (orig <= ConcealedPadBlock - 3)
             {
                 return plain.AsSpan(0, orig).ToArray();
             }
@@ -348,5 +377,48 @@ public static class LabVaultCrypto
         Buffer.BlockCopy(prefix, 0, aad, 0, prefix.Length);
         Buffer.BlockCopy(BitConverter.GetBytes(index), 0, aad, prefix.Length, 4);
         return aad;
+    }
+
+    private static (LabContentSuite Suite, int NonceSize, ChunkPaddingVersion PaddingVersion) DecodeMagic(ReadOnlySpan<byte> magic)
+    {
+        if (magic.SequenceEqual(MagicXchV2))
+        {
+            return (LabContentSuite.XChaCha20Poly1305, XChaChaNonceSize, ChunkPaddingVersion.HardenedV2);
+        }
+
+        if (magic.SequenceEqual(MagicXch))
+        {
+            return (LabContentSuite.XChaCha20Poly1305, XChaChaNonceSize, ChunkPaddingVersion.LegacyV1);
+        }
+
+        if (magic.SequenceEqual(MagicAes))
+        {
+            return (LabContentSuite.Aes256Gcm, AesNonceSize, ChunkPaddingVersion.None);
+        }
+
+        throw new CryptographicException("not a lab chunk blob");
+    }
+
+    private static void EnsureChunkCount(int count)
+    {
+        if (count < 1 || count > MaxChunkCount)
+        {
+            throw new CryptographicException("invalid chunk count");
+        }
+    }
+
+    private static void EnsureRemaining(int length, int position, int required)
+    {
+        if (position < 0 || required < 0 || position > length || required > length - position)
+        {
+            throw new CryptographicException("truncated chunk data");
+        }
+    }
+
+    private enum ChunkPaddingVersion
+    {
+        None,
+        LegacyV1,
+        HardenedV2
     }
 }

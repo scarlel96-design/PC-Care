@@ -47,6 +47,8 @@ public sealed class SecureDeleteTarget
     public int OverwritePasses { get; init; }
     public bool Blocked { get; init; }
     public string BlockReason { get; init; } = "";
+    /// <summary>Dry-run snapshot for execution-time substitution detection. Folder targets carry a structural manifest digest.</summary>
+    public string TargetFingerprint { get; init; } = "";
     public SecureDeletePreflightReport? Preflight { get; init; }
 }
 public sealed class SecureDeletePreflightCheck

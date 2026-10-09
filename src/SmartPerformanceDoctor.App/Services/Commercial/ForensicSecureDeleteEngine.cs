@@ -9,8 +9,6 @@ internal static class ForensicSecureDeleteEngine
 {
     private const uint FsctlFileLevelTrim = 0x00098208;
     private const uint FsctlSetZeroData = 0x000980C8;
-    private const uint FileFlagWriteThrough = 0x80000000;
-    private const uint FileFlagNoBuffering = 0x20000000;
 
     public static IReadOnlyList<string> BuildChainSteps(string storageType, SecureDeleteSecurityLevel level)
     {
@@ -22,9 +20,8 @@ internal static class ForensicSecureDeleteEngine
         }
         else
         {
-            var obfuscation = SecureDeleteStorageProfiler.GetSsdObfuscationPasses(level);
-            var crypto = SecureDeleteStorageProfiler.GetSsdCryptoErasePasses(level);
-            steps.Add($"SSD/NVMe: 난독화 {obfuscation}회 · 랜덤 덮어쓰기 {crypto}회 · TRIM · 볼륨 retrim");
+            var crypto = SecureDeleteStorageProfiler.GetFileClearPasses(storageType, level);
+            steps.Add($"SSD/NVMe: 파일 CSPRNG 덮어쓰기 {crypto}회 · 표본 검증 · TRIM 요청 (장치 crypto erase 아님)");
         }
 
         steps.Add("파일명 난수화");
@@ -46,20 +43,19 @@ internal static class ForensicSecureDeleteEngine
 
         ClearReadOnlyAttributes(path);
         WipeAlternateDataStreams(path);
+        EnsureAlternateDataStreamsCleared(path);
 
         if (storageType is "SSD" or "NVMe")
         {
-            // Random crypto-erase MUST run before obfuscation truncates the file to 0.
-            await SsdCryptoEraseAsync(path, level, cancellationToken);
-            await SsdForensicObfuscationAsync(path, level, cancellationToken);
+            // Logical file Clear only; this is not a device cryptographic erase.
+            await SsdFileClearAsync(path, level, cancellationToken);
+            // Obfuscation is intentionally disabled: it cannot prove physical-cell erasure.
         }
         else
         {
-            var passes = SecureDeleteStorageProfiler.GetOverwritePasses(storageType, level);
-            if (passes > 0)
-            {
-                await OverwriteFileAsync(path, passes, storageType, cancellationToken);
-            }
+            // Unknown and removable file systems still require a conservative logical clear before deletion.
+            var passes = Math.Max(1, SecureDeleteStorageProfiler.GetOverwritePasses(storageType, level));
+            await OverwriteFileAsync(path, passes, storageType, cancellationToken);
         }
 
         TryTrimOrZeroData(path);
@@ -223,6 +219,44 @@ internal static class ForensicSecureDeleteEngine
         }
     }
 
+    private static void EnsureAlternateDataStreamsCleared(string path)
+    {
+        try
+        {
+            var findData = new WIN32_FIND_STREAM_DATA();
+            var handle = FindFirstStreamW(path, 0, ref findData, 0);
+            if (handle == IntPtr.Zero || handle == new IntPtr(-1))
+            {
+                // Non-NTFS and files without ADS both return no stream handle. There is nothing to verify.
+                return;
+            }
+
+            try
+            {
+                do
+                {
+                    if (!string.IsNullOrWhiteSpace(findData.cStreamName)
+                        && !string.Equals(findData.cStreamName, "::$DATA", StringComparison.OrdinalIgnoreCase))
+                    {
+                        throw new IOException("대체 데이터 스트림을 제거하지 못해 보안 삭제를 중단했습니다.");
+                    }
+                }
+                while (FindNextStreamW(handle, ref findData));
+            }
+            finally
+            {
+                FindClose(handle);
+            }
+        }
+        catch (IOException)
+        {
+            throw;
+        }
+        catch
+        {
+            // A failed enumeration is not evidence of an ADS. The preflight result retains this limitation.
+        }
+    }
     private static async Task OverwriteFileAsync(
         string path,
         int passes,
@@ -230,41 +264,30 @@ internal static class ForensicSecureDeleteEngine
         CancellationToken cancellationToken)
     {
         var len = new FileInfo(path).Length;
-        if (len <= 0)
-        {
-            return;
-        }
-
+        if (len <= 0) return;
         var useWriteThrough = storageType is "HDD" or "USB-NTFS";
-        var options = FileOptions.SequentialScan;
-        if (useWriteThrough)
-        {
-            options |= FileOptions.WriteThrough;
-        }
-
-        await using var fs = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.None, 4096, options);
+        var options = FileOptions.SequentialScan | (useWriteThrough ? FileOptions.WriteThrough : FileOptions.None);
         var buffer = new byte[Math.Min(65536, Math.Max(1, len))];
-        for (var pass = 0; pass < passes; pass++)
+        await using (var fs = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.None, 4096, options))
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            FillOverwriteBuffer(buffer, pass, passes);
-            fs.Position = 0;
-            var remaining = len;
-            while (remaining > 0)
+            for (var pass = 0; pass < passes; pass++)
             {
-                var chunk = (int)Math.Min(buffer.Length, remaining);
-                await fs.WriteAsync(buffer.AsMemory(0, chunk), cancellationToken);
-                remaining -= chunk;
+                cancellationToken.ThrowIfCancellationRequested();
+                FillOverwriteBuffer(buffer, pass, passes);
+                fs.Position = 0;
+                for (var remaining = len; remaining > 0;)
+                {
+                    var chunk = (int)Math.Min(buffer.Length, remaining);
+                    await fs.WriteAsync(buffer.AsMemory(0, chunk), cancellationToken);
+                    remaining -= chunk;
+                }
+                await fs.FlushAsync(cancellationToken);
+                fs.Flush(true);
+                if (useWriteThrough) FlushFileBuffers(fs.SafeFileHandle);
             }
-
-            await fs.FlushAsync(cancellationToken);
-            fs.Flush(true);
-            if (useWriteThrough) FlushFileBuffers(fs.SafeFileHandle);
         }
-
         await VerifyOverwriteSamplesAsync(path, len, buffer, cancellationToken);
     }
-
     private static async Task VerifyOverwriteSamplesAsync(string path, long length, byte[] expected, CancellationToken cancellationToken)
     {
         if (length <= 0 || expected.Length == 0) return;
@@ -295,7 +318,6 @@ internal static class ForensicSecureDeleteEngine
             switch (pass)
             {
                 case 0:
-                case 6:
                     Array.Fill(buffer, (byte)0x00);
                     return;
                 case 1:
@@ -321,163 +343,34 @@ internal static class ForensicSecureDeleteEngine
         }
     }
 
-    private static async Task SsdForensicObfuscationAsync(
-        string path,
-        SecureDeleteSecurityLevel level,
-        CancellationToken cancellationToken)
-    {
-        var originalLen = new FileInfo(path).Length;
-        if (originalLen <= 0)
-        {
-            return;
-        }
-
-        var inflationCap = level == SecureDeleteSecurityLevel.Maximum
-            ? 64L * 1024 * 1024
-            : 16L * 1024 * 1024;
-        var multiplier = level == SecureDeleteSecurityLevel.Maximum ? 3.0 : level == SecureDeleteSecurityLevel.Professional ? 2.0 : 1.5;
-        var targetLen = Math.Min(
-            (long)(originalLen * multiplier),
-            originalLen + inflationCap);
-        targetLen = Math.Max(targetLen, originalLen);
-
-        var passes = SecureDeleteStorageProfiler.GetSsdObfuscationPasses(level);
-
-        await using var fs = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.None);
-        fs.SetLength(targetLen);
-
-        var buffer = new byte[65536];
-        for (var pass = 0; pass < passes; pass++)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            FillForensicObfuscationBuffer(buffer, pass, originalLen);
-            fs.Position = 0;
-            var remaining = targetLen;
-            long offset = 0;
-            while (remaining > 0)
-            {
-                var chunk = (int)Math.Min(buffer.Length, remaining);
-                if (pass % 2 == 1)
-                {
-                    InjectDecoySignatures(buffer, chunk, offset);
-                }
-
-                if (pass % 3 == 2)
-                {
-                    ApplyXorDiffusion(buffer, chunk, pass);
-                }
-
-                await fs.WriteAsync(buffer.AsMemory(0, chunk), cancellationToken);
-                remaining -= chunk;
-                offset += chunk;
-            }
-
-            await fs.FlushAsync(cancellationToken);
-        }
-
-        fs.SetLength(0);
-        await fs.FlushAsync(cancellationToken);
-    }
-
-    private static void FillForensicObfuscationBuffer(byte[] buffer, int pass, long originalLen)
-    {
-        switch (pass % 5)
-        {
-            case 0:
-                RandomNumberGenerator.Fill(buffer);
-                break;
-            case 1:
-                for (var i = 0; i < buffer.Length; i++)
-                {
-                    buffer[i] = (byte)((i * 131 + pass * 17 + (int)(originalLen % 251)) & 0xFF);
-                }
-
-                break;
-            case 2:
-                Array.Fill(buffer, (byte)0xA5);
-                break;
-            case 3:
-                for (var i = 0; i < buffer.Length; i++)
-                {
-                    buffer[i] = (byte)((pass ^ i ^ 0x5A) & 0xFF);
-                }
-
-                break;
-            default:
-                for (var i = 0; i < buffer.Length; i += 2)
-                {
-                    buffer[i] = 0x00;
-                    if (i + 1 < buffer.Length)
-                    {
-                        buffer[i + 1] = 0xFF;
-                    }
-                }
-
-                break;
-        }
-    }
-
-    private static void InjectDecoySignatures(byte[] buffer, int length, long offset)
-    {
-        byte[][] decoys =
-        [
-            [0xFF, 0xD8, 0xFF, 0xE0],
-            [0x89, 0x50, 0x4E, 0x47],
-            [0x50, 0x4B, 0x03, 0x04],
-            [0x25, 0x50, 0x44, 0x46],
-            [0x7F, 0x45, 0x4C, 0x46],
-            [0x52, 0x61, 0x72, 0x21]
-        ];
-
-        var slots = Math.Min(6, Math.Max(1, length / 8192));
-        for (var slot = 0; slot < slots; slot++)
-        {
-            var decoy = decoys[(int)((offset / 8192 + slot) % decoys.Length)];
-            var insertAt = (int)((offset + slot * 4099 + 37) % Math.Max(1, length - decoy.Length));
-            Buffer.BlockCopy(decoy, 0, buffer, insertAt, decoy.Length);
-        }
-    }
-
-    private static void ApplyXorDiffusion(byte[] buffer, int length, int pass)
-    {
-        var key = (byte)(0x3C ^ (pass * 29));
-        for (var i = 0; i < length; i++)
-        {
-            buffer[i] ^= (byte)(key ^ (i & 0xFF) ^ ((pass * 7) & 0xFF));
-        }
-    }
-
-    private static async Task SsdCryptoEraseAsync(
+    private static async Task SsdFileClearAsync(
         string path,
         SecureDeleteSecurityLevel level,
         CancellationToken cancellationToken)
     {
         var len = new FileInfo(path).Length;
-        if (len <= 0)
-        {
-            return;
-        }
-
-        var passes = SecureDeleteStorageProfiler.GetSsdCryptoErasePasses(level);
-        await using var fs = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.None);
+        if (len <= 0) return;
+        var passes = SecureDeleteStorageProfiler.GetFileClearPasses("SSD", level);
         var buffer = new byte[Math.Min(65536, Math.Max(1, len))];
-        for (var pass = 0; pass < passes; pass++)
+        await using (var fs = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.None, 4096, FileOptions.WriteThrough))
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            RandomNumberGenerator.Fill(buffer);
-            fs.Position = 0;
-            var remaining = len;
-            while (remaining > 0)
+            for (var pass = 0; pass < passes; pass++)
             {
-                var chunk = (int)Math.Min(buffer.Length, remaining);
-                await fs.WriteAsync(buffer.AsMemory(0, chunk), cancellationToken);
-                remaining -= chunk;
+                cancellationToken.ThrowIfCancellationRequested();
+                RandomNumberGenerator.Fill(buffer);
+                fs.Position = 0;
+                for (var remaining = len; remaining > 0;)
+                {
+                    var chunk = (int)Math.Min(buffer.Length, remaining);
+                    await fs.WriteAsync(buffer.AsMemory(0, chunk), cancellationToken);
+                    remaining -= chunk;
+                }
+                await fs.FlushAsync(cancellationToken);
+                fs.Flush(true);
             }
-
-            await fs.FlushAsync(cancellationToken);
         }
+        await VerifyOverwriteSamplesAsync(path, len, buffer, cancellationToken);
     }
-
     private static void TryTrimOrZeroData(string path)
     {
         try

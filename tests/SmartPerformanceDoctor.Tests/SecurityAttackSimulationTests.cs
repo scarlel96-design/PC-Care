@@ -186,7 +186,7 @@ public sealed class SecurityAttackSimulationTests : IDisposable
     [Fact]
     public void SecureDelete_BlocksSystemAndTraversalPaths()
     {
-        var service = new ProfessionalSecureDeleteService();
+        var service = new ProfessionalSecureDeleteService(_tempRoot);
         var candidates = new[]
         {
             @"C:\Windows\System32\kernel32.dll",
@@ -208,7 +208,7 @@ public sealed class SecurityAttackSimulationTests : IDisposable
         var target = Path.Combine(_tempRoot, "delete-wrong-confirm.txt");
         await File.WriteAllTextAsync(target, "delete-me");
 
-        var service = new ProfessionalSecureDeleteService();
+        var service = new ProfessionalSecureDeleteService(_tempRoot);
         var plan = service.PlanDryRun([target]);
         Assert.Single(plan.Targets);
 
@@ -224,7 +224,7 @@ public sealed class SecurityAttackSimulationTests : IDisposable
         var target = Path.Combine(_tempRoot, "delete-valid.txt");
         await File.WriteAllTextAsync(target, secret);
 
-        var service = new ProfessionalSecureDeleteService();
+        var service = new ProfessionalSecureDeleteService(_tempRoot);
         var plan = service.PlanDryRun([target]);
         var (deleted, failed, auditPath, auditValid) = await service.ApplyAsync(plan, "보안 삭제에 동의합니다");
 
@@ -512,14 +512,16 @@ public sealed class SecurityAttackSimulationTests : IDisposable
         var target = Path.Combine(_tempRoot, "chain-preview.txt");
         File.WriteAllText(target, "chain-preview");
 
-        var service = new ProfessionalSecureDeleteService();
+        var service = new ProfessionalSecureDeleteService(_tempRoot);
         var plan = service.PlanDryRun([target], SecureDeleteSecurityLevel.Professional);
 
         Assert.Single(plan.Targets);
         Assert.Contains("ADS", plan.ChainSummary, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("VSS", plan.ChainSummary, StringComparison.OrdinalIgnoreCase);
         Assert.False(string.IsNullOrWhiteSpace(plan.Limitations));
-        Assert.True(plan.RecoveryResistanceLevel >= 3);
+        Assert.Equal(0, plan.RecoveryResistanceLevel);
+        Assert.False(plan.Level5Certified);
+        Assert.Contains("파일 단위 Clear", plan.CertifiedResistanceLabel);
     }
 
     [Fact]

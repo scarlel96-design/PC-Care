@@ -83,18 +83,18 @@ public sealed partial class LabVaultService : IDisposable
                 KdfIterations = kdf.Iterations,
                 KdfMemoryKb = kdf.MemoryKb,
                 KdfParallelism = kdf.Parallelism,
-                ContentSuite = "XChaCha20-Poly1305",
+                ContentSuite = "XChaCha20-Poly1305-v2",
                 SaltHex = Convert.ToHexString(salt),
                 WrappedVmkNonceHex = Convert.ToHexString(wrapped.Nonce),
                 WrappedVmkTagHex = Convert.ToHexString(wrapped.Tag),
                 WrappedVmkCipherHex = Convert.ToHexString(wrapped.Cipher)
             };
-            WriteHeader(header);
+            WriteHeader(header, vmk);
             LabVaultLocator.Write(_root, new LabVaultLocator.Document
             {
                 VaultId = vaultId,
                 Format = FormatIdV5,
-                Suite = "Argon2id+XChaCha20-Poly1305+AES-GCM-wrap+HKDF",
+                Suite = "Argon2id+XChaCha20-Poly1305-v2+AES-GCM-wrap+HKDF",
                 CreatedUnix = header.CreatedUnix,
                 HeaderCopyCount = 2,
                 PackFixedSlots = true,
@@ -671,6 +671,13 @@ public sealed partial class LabVaultService : IDisposable
 
     private LabVaultOperationResult OpenSession(byte[] vmk, LabVaultHeader header, bool writeAllowed, string auditKind)
     {
+        if (!VerifyHeaderMac(header, vmk))
+        {
+            CryptographicOperations.ZeroMemory(vmk);
+            LabRateLimiter.RecordFailure(_root);
+            return FailOp("헤더 인증에 실패했습니다. 금고를 열지 않았습니다.");
+        }
+
         Lock();
         // S-class: keys enter via CryptoBroker; session mirrors for existing helpers
         var vmkCopy = (byte[])vmk.Clone();
@@ -950,9 +957,15 @@ public sealed partial class LabVaultService : IDisposable
         Directory.CreateDirectory(Path.Combine(_root, "packs"));
     }
 
-    private void WriteHeader(LabVaultHeader header)
+    private void WriteHeader(LabVaultHeader header, byte[]? headerAuthVmk = null)
     {
-        // Dual-copy authenticated headers (design §5 subset) + generation
+        // The sidecar digest detects accidental tears only. v5 additionally MACs all header fields with the VMK.
+        var authKey = headerAuthVmk ?? _vmk;
+        if (authKey is not null && header.Version >= 5)
+        {
+            header.HeaderMacHex = ComputeHeaderMac(header, authKey);
+        }
+
         var json = JsonSerializer.SerializeToUtf8Bytes(header, JsonOpts);
         LabParserGuard.EnsureHeaderSize(json.Length);
         var hash = Convert.ToHexString(SHA256.HashData(json));
@@ -1196,6 +1209,42 @@ public sealed partial class LabVaultService : IDisposable
         return okm;
     }
 
+    private static string ComputeHeaderMac(LabVaultHeader header, byte[] vmk)
+    {
+        var original = header.HeaderMacHex;
+        header.HeaderMacHex = "";
+        try
+        {
+            var payload = JsonSerializer.SerializeToUtf8Bytes(header, JsonOpts);
+            var headerKey = Hkdf(vmk, "lab/v5/header-auth");
+            try
+            {
+                using var hmac = new HMACSHA256(headerKey);
+                return Convert.ToHexString(hmac.ComputeHash(payload));
+            }
+            finally
+            {
+                CryptographicOperations.ZeroMemory(headerKey);
+            }
+        }
+        finally
+        {
+            header.HeaderMacHex = original;
+        }
+    }
+
+    private static bool VerifyHeaderMac(LabVaultHeader header, byte[] vmk)
+    {
+        // v4/v5 vaults created before header authentication remain readable. The next authenticated write upgrades them.
+        if (string.IsNullOrWhiteSpace(header.HeaderMacHex))
+        {
+            return true;
+        }
+
+        var expected = ComputeHeaderMac(header, vmk);
+        return LabCryptoCompare.FixedTimeEqualsHex(header.HeaderMacHex, expected);
+    }
+
     private static LabVaultCreateResult FailCreate(string msg) =>
         new() { Success = false, Message = msg };
 
@@ -1221,6 +1270,8 @@ public sealed partial class LabVaultService : IDisposable
         public string WrappedVmkNonceHex { get; set; } = "";
         public string WrappedVmkTagHex { get; set; } = "";
         public string WrappedVmkCipherHex { get; set; } = "";
+        /// <summary>v5 VMK-keyed HMAC over the complete serialized header; empty only for legacy vaults.</summary>
+        public string HeaderMacHex { get; set; } = "";
     }
 
     private sealed class LabVaultMetadata

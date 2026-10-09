@@ -13,10 +13,10 @@ public sealed record LabKdfParams(int Iterations, int MemoryKb, int Parallelism)
 {
     public static LabKdfParams FromProfile(LabKdfProfile profile) => profile switch
     {
-        LabKdfProfile.LabFast => new(1, 8 * 1024, 1),
+        LabKdfProfile.LabFast => new(1, 64 * 1024, 1),
         LabKdfProfile.Balanced => new(2, 65_536, 4),
         LabKdfProfile.Extreme => new(4, 262_144, 4),
-        _ => new(3, 131_072, 4) // Strong
+        _ => new(3, 262_144, 4) // Strong: 256 MiB, aligned with the product vault profile
     };
 
     public string DisplayName => $"Argon2id ({Iterations}t · {MemoryKb / 1024}MB · p{Parallelism})";

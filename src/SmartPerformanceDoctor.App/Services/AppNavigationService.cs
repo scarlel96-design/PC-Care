@@ -79,6 +79,7 @@ public static class AppNavigationService
             "SystemCareCenterPage" => typeof(Views.SystemCareCenterPage),
             "SecureVaultCenterPage" => typeof(Views.SecureVaultCenterPage),
             "SecureDeleteCenterPage" => typeof(Views.SecureDeleteCenterPage),
+            "DevicePurgeCenterPage" => typeof(Views.DevicePurgeCenterPage),
             "KnowledgePackManagerPage" => typeof(Views.KnowledgePackManagerPage),
             "ProtocolCenterPage" => typeof(Views.ProtocolCenterPage),
             "ProgramProtectionCenterPage" => typeof(Views.ProgramProtectionCenterPage),

@@ -53,6 +53,7 @@ public sealed partial class SecurityCenterPage : Page
     }
     private void OpenVault(object sender, RoutedEventArgs e) => Navigate(typeof(SecureVaultCenterPage));
     private void OpenSecureDelete(object sender, RoutedEventArgs e) => Navigate(typeof(SecureDeleteCenterPage));
+    private void OpenDevicePurge(object sender, RoutedEventArgs e) => Navigate(typeof(DevicePurgeCenterPage));
     private void OpenProtection(object sender, RoutedEventArgs e) => Navigate(typeof(ProgramProtectionCenterPage));
     private void OpenAdvanced(object sender, RoutedEventArgs e) => Navigate(typeof(AdvancedCenterPage));
 }
