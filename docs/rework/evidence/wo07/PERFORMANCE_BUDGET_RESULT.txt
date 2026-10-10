@@ -1,0 +1,92 @@
+STATUS: PASS for measured nonadmin probe; PARTIAL for overall resource qualification
+COMMAND: dotnet run --project tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-build --no-restore -- 30 docs/rework/evidence/wo07/final-measurement-N.json
+INPUT: live read-only Windows counters; N=1,2,3; no user files
+EXIT CODE: 0 for each capture
+OUTPUT:
+[
+  {
+    "file": "final-measurement-1.json",
+    "utc": "2026-10-10T19:44:10.4255783+00:00",
+    "durationSeconds": 30.0725859,
+    "samples": 24,
+    "cpuMedian": 40.794809376042494,
+    "cpuP95": 91.33358204671985,
+    "availableMemoryMedian": 26.075613748269383,
+    "machineCpuCostPercent": 0.30308611848817874,
+    "peakProbeMiB": 57.453125,
+    "analysisMilliseconds": 56.2971,
+    "diskMeasuredSamples": 24,
+    "logicalCpuMeasured": 24,
+    "errors": [
+      {
+        "Provider": "Process",
+        "Code": "PartialAccessOrExited"
+      },
+      {
+        "Provider": "ProcessBudget",
+        "Code": "Truncated"
+      },
+      {
+        "Provider": "ETW",
+        "Code": "PermissionDenied"
+      }
+    ]
+  },
+  {
+    "file": "final-measurement-2.json",
+    "utc": "2026-10-10T19:44:45.775151+00:00",
+    "durationSeconds": 30.0700552,
+    "samples": 25,
+    "cpuMedian": 50.439698492462306,
+    "cpuP95": 88.04896421845572,
+    "availableMemoryMedian": 23.57535555474774,
+    "machineCpuCostPercent": 0.48714368505715283,
+    "peakProbeMiB": 57.2265625,
+    "analysisMilliseconds": 19.9282,
+    "diskMeasuredSamples": 25,
+    "logicalCpuMeasured": 24,
+    "errors": [
+      {
+        "Provider": "Process",
+        "Code": "PartialAccessOrExited"
+      },
+      {
+        "Provider": "ProcessBudget",
+        "Code": "Truncated"
+      },
+      {
+        "Provider": "ETW",
+        "Code": "PermissionDenied"
+      }
+    ]
+  },
+  {
+    "file": "final-measurement-3.json",
+    "utc": "2026-10-10T19:45:17.5114862+00:00",
+    "durationSeconds": 30.0276527,
+    "samples": 28,
+    "cpuMedian": 16.80618158403091,
+    "cpuP95": 28.894502724543127,
+    "availableMemoryMedian": 22.227428890856004,
+    "machineCpuCostPercent": 0.20163705636571452,
+    "peakProbeMiB": 57.3984375,
+    "analysisMilliseconds": 15.3378,
+    "diskMeasuredSamples": 28,
+    "logicalCpuMeasured": 24,
+    "errors": [
+      {
+        "Provider": "Process",
+        "Code": "PartialAccessOrExited"
+      },
+      {
+        "Provider": "ProcessBudget",
+        "Code": "Truncated"
+      },
+      {
+        "Provider": "ETW",
+        "Code": "PermissionDenied"
+      }
+    ]
+  }
+]
+No isolated idle workload. ETW permission denied. Probe RSS is not incremental app RSS.

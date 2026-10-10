@@ -1,0 +1,9 @@
+STATUS: PASS
+COMMAND: dotnet build tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+INPUT: final source working tree
+OUTPUT: final-build.log
+LITERAL RESULT: 경고 0개 / 오류 0개
+EXIT CODE: 0
+PROBE COMMAND: dotnet build tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+PROBE OUTPUT: probe-build.log
+PROBE EXIT CODE: 0

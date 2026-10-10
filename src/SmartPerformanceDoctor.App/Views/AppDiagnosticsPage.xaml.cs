@@ -20,6 +20,8 @@ public sealed partial class AppDiagnosticsPage : Page
         Refresh();
     }
 
+    private void OpenPerformance(object sender, RoutedEventArgs e) => Frame.Navigate(typeof(PerformanceDiagnosticsPage));
+
     private void OpenAppFolder(object sender, RoutedEventArgs e)
     {
         Process.Start(new ProcessStartInfo

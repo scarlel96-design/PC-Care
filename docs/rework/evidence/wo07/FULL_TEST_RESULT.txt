@@ -1,0 +1,24 @@
+STATUS: PASS
+BASELINE SHA: f793cbabcbf8beb4355a7538c28b1e26ad4517b3
+BASELINE COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+BASELINE INPUT: WO-06 source; existing synthetic fixtures
+BASELINE OUTPUT: baseline.log; 769 passed / 0 failed / 111 skipped / 880 total
+BASELINE EXIT CODE: 0 after test-host sandbox retry
+MODIFIED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo07-full.trx' --results-directory artifacts/wo07-tests -v:minimal
+MODIFIED INPUT: final direct x64 Release build; synthetic test fixtures
+MODIFIED OUTPUT: full-tests.log; 801 passed / 0 failed / 111 skipped / 912 total
+MODIFIED EXIT CODE: 0
+PERFORMANCE FILTER: FullyQualifiedName~WO07
+PERFORMANCE OUTPUT: performance-tests.log; 32 passed / 0 failed / 0 skipped
+PERFORMANCE EXIT CODE: 0
+UPDATER FILTER: FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests|FullyQualifiedName~WO06
+UPDATER OUTPUT: updater-tests.log; 128 passed / 0 failed / 0 skipped
+UPDATER EXIT CODE: 0
+SECURITYLAB COMMAND: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo07-securitylab.trx' --results-directory artifacts/wo07-tests -v:minimal
+SECURITYLAB OUTPUT: securitylab.log; 36 passed / 0 failed / 0 skipped
+SECURITYLAB EXIT CODE: 0
+DELTA: 32 added performance cases. Existing skip count unchanged.
+COUNTING: Performance and updater tests are subsets of full application tests. SecurityLab is separate.
+TRX NOTE: This VSTest version reports notExecuted=0 despite 111 skipped cases. Console totals and total-executed establish skip count.
+INITIAL FAILURE: 797 passed / 1 failed / 111 skipped / 909 total. Observer test deadline expired before sampling.
+CORRECTION: Allow 30 seconds for the observer failure test. Preserve initial-full.trx and initial-full-tests.log.

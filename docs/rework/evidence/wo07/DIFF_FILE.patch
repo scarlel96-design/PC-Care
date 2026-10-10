@@ -1,0 +1,963 @@
+diff --git a/.github/workflows/wo07-windows-validation.yml b/.github/workflows/wo07-windows-validation.yml
+new file mode 100644
+index 0000000..abb7ebd
+--- /dev/null
++++ b/.github/workflows/wo07-windows-validation.yml
+@@ -0,0 +1,103 @@
++name: WO07 Windows performance diagnostics
++
++on:
++  push:
++    branches:
++      - codex/pccare-performance-diagnostics-foundation
++    paths-ignore:
++      - 'docs/**'
++      - '.gitattributes'
++  pull_request:
++
++jobs:
++  windows-validation:
++    runs-on: windows-latest
++    timeout-minutes: 55
++    permissions:
++      contents: read
++    steps:
++      - uses: actions/checkout@v4
++      - uses: actions/setup-dotnet@v4
++        with:
++          dotnet-version: '10.0.x'
++      - name: Restore
++        run: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
++      - name: Release build
++        run: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
++      - name: Signed package, publisher, transaction, recovery and staging tests
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests|FullyQualifiedName~WO06' --logger 'trx;LogFileName=wo06-signed-updater.trx' -v:minimal
++      - name: Performance diagnostics scenarios
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO07' --logger 'trx;LogFileName=wo07-performance.trx' -v:minimal
++      - name: Read-only Windows collector smoke
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-restore -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'probe build failed' }
++          New-Item -ItemType Directory -Force artifacts/wo07-ci | Out-Null
++          dotnet run --project tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-build --no-restore -- 30 artifacts/wo07-ci/measurement.json
++          if ($LASTEXITCODE -ne 0) { throw 'CPU or memory collector unavailable' }
++      - name: Separate-process termination and recovery
++        shell: pwsh
++        run: |
++          dotnet build tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          ./scripts/wo06-process-validation.ps1 -OutputDirectory artifacts/wo06-ci-process
++      - name: Production profile and isolated test profile
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'test kit build failed' }
++          dotnet build tools/SmartPerformanceDoctor.VaultRecovery/SmartPerformanceDoctor.VaultRecovery.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'data recovery build failed' }
++          $kit = 'tools/SmartPerformanceDoctor.VMTestKit/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.VMTestKit.exe'
++          $engine = 'src/SmartPerformanceDoctor.UpdateEngine/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateEngine.dll'
++          & $kit audit-production $engine
++          if ($LASTEXITCODE -ne 0) { throw 'test trust leaked into production' }
++          & $kit audit-production 'src/SmartPerformanceDoctor.App/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.dll'
++          if ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production app' }
++          & $kit audit-production 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.dll'
++          if ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production helper' }
++          $profile = Join-Path $env:RUNNER_TEMP 'wo06-test-profile'
++          & $kit fixture-profile $profile ('0' * 40)
++          if ($LASTEXITCODE -ne 0) { throw 'profile generation failed' }
++          $source = Join-Path $profile 'TestVmTrust.g.cs'
++          dotnet build src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -o (Join-Path $profile 'output') -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'test profile build failed' }
++          & $kit audit-production (Join-Path $profile 'output/SmartPerformanceDoctor.UpdateEngine.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test artifact' }
++          dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -m:1 -o (Join-Path $profile 'app-output') -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'VM Release application profile build failed' }
++          & $kit audit-production (Join-Path $profile 'app-output/SmartPerformanceDoctor.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test application' }
++          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateHelper.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'VM application copied a production update helper' }
++          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateEngine.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'VM helper copied a production update engine' }
++          exit 0
++      - name: Full application regression
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo06-full.trx' -v:minimal
++      - name: SecurityLab regression
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo06-securitylab.trx' -v:minimal
++      - name: Reject unsupported helper verb
++        shell: pwsh
++        run: |
++          $helper = 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe'
++          $process = Start-Process -FilePath $helper -ArgumentList @('--exec', 'arbitrary') -Wait -PassThru -NoNewWindow
++          if ($process.ExitCode -ne 2) { throw "Unexpected helper exit code: $($process.ExitCode)" }
++      - name: Upload test evidence
++        if: always()
++        uses: actions/upload-artifact@v4
++        with:
++          name: wo07-windows-evidence
++          path: |
++            tests/SmartPerformanceDoctor.Tests/TestResults/*.trx
++            tests/SmartPerformanceDoctor.SecurityLab.Tests/TestResults/*.trx
++            artifacts/wo06-ci-process/process-results.json
++            artifacts/wo07-ci/measurement.json
+diff --git a/Directory.Packages.props b/Directory.Packages.props
+index f15f0b4..ad9c7c2 100644
+--- a/Directory.Packages.props
++++ b/Directory.Packages.props
+@@ -3,6 +3,8 @@
+     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+   </PropertyGroup>
+   <ItemGroup>
++    <PackageVersion Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="3.2.8" />
++    <PackageVersion Include="Microsoft.Windows.CsWin32" Version="0.3.358" />
+     <PackageVersion Include="Microsoft.WindowsAppSDK" Version="2.2.0" />
+     <PackageVersion Include="Microsoft.Data.Sqlite" Version="10.0.10" />
+     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.4" />
+@@ -19,4 +21,4 @@
+     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+     <PackageVersion Include="Konscious.Security.Cryptography.Argon2" Version="1.3.1" />
+   </ItemGroup>
+-</Project>
+\ No newline at end of file
++</Project>
+diff --git a/SmartPerformanceDoctor.sln b/SmartPerformanceDoctor.sln
+index 46935f5..083d221 100644
+--- a/SmartPerformanceDoctor.sln
++++ b/SmartPerformanceDoctor.sln
+@@ -35,6 +35,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartPerformanceDoctor.Upda
+ EndProject
+ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartPerformanceDoctor.UpdateHelper", "src\SmartPerformanceDoctor.UpdateHelper\SmartPerformanceDoctor.UpdateHelper.csproj", "{066CD13D-1CD7-4DAB-A087-26B8EE9F47A9}"
+ EndProject
++Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartPerformanceDoctor.Diagnostics", "src\SmartPerformanceDoctor.Diagnostics\SmartPerformanceDoctor.Diagnostics.csproj", "{75304927-6858-45D5-91BC-AC2B886FDA08}"
++EndProject
++Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{07C2787E-EAC7-C090-1BA3-A61EC2A24D84}"
++EndProject
++Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartPerformanceDoctor.DiagnosticsProbe", "tools\SmartPerformanceDoctor.DiagnosticsProbe\SmartPerformanceDoctor.DiagnosticsProbe.csproj", "{452CAEF4-36D9-4A0B-B616-2599F3E2DDC7}"
++EndProject
+ Global
+ 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+ 		Debug|Any CPU = Debug|Any CPU
+@@ -225,6 +231,30 @@ Global
+ 		{066CD13D-1CD7-4DAB-A087-26B8EE9F47A9}.Release|x64.Build.0 = Release|x64
+ 		{066CD13D-1CD7-4DAB-A087-26B8EE9F47A9}.Release|x86.ActiveCfg = Release|x64
+ 		{066CD13D-1CD7-4DAB-A087-26B8EE9F47A9}.Release|x86.Build.0 = Release|x64
++		{75304927-6858-45D5-91BC-AC2B886FDA08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
++		{75304927-6858-45D5-91BC-AC2B886FDA08}.Debug|Any CPU.Build.0 = Debug|Any CPU
++		{75304927-6858-45D5-91BC-AC2B886FDA08}.Debug|x64.ActiveCfg = Debug|Any CPU
++		{75304927-6858-45D5-91BC-AC2B886FDA08}.Debug|x64.Build.0 = Debug|Any CPU
++		{75304927-6858-45D5-91BC-AC2B886FDA08}.Debug|x86.ActiveCfg = Debug|Any CPU
++		{75304927-6858-45D5-91BC-AC2B886FDA08}.Debug|x86.Build.0 = Debug|Any CPU
++		{75304927-6858-45D5-91BC-AC2B886FDA08}.Release|Any CPU.ActiveCfg = Release|Any CPU
++		{75304927-6858-45D5-91BC-AC2B886FDA08}.Release|Any CPU.Build.0 = Release|Any CPU
++		{75304927-6858-45D5-91BC-AC2B886FDA08}.Release|x64.ActiveCfg = Release|Any CPU
++		{75304927-6858-45D5-91BC-AC2B886FDA08}.Release|x64.Build.0 = Release|Any CPU
++		{75304927-6858-45D5-91BC-AC2B886FDA08}.Release|x86.ActiveCfg = Release|Any CPU
++		{75304927-6858-45D5-91BC-AC2B886FDA08}.Release|x86.Build.0 = Release|Any CPU
++		{452CAEF4-36D9-4A0B-B616-2599F3E2DDC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
++		{452CAEF4-36D9-4A0B-B616-2599F3E2DDC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
++		{452CAEF4-36D9-4A0B-B616-2599F3E2DDC7}.Debug|x64.ActiveCfg = Debug|Any CPU
++		{452CAEF4-36D9-4A0B-B616-2599F3E2DDC7}.Debug|x64.Build.0 = Debug|Any CPU
++		{452CAEF4-36D9-4A0B-B616-2599F3E2DDC7}.Debug|x86.ActiveCfg = Debug|Any CPU
++		{452CAEF4-36D9-4A0B-B616-2599F3E2DDC7}.Debug|x86.Build.0 = Debug|Any CPU
++		{452CAEF4-36D9-4A0B-B616-2599F3E2DDC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
++		{452CAEF4-36D9-4A0B-B616-2599F3E2DDC7}.Release|Any CPU.Build.0 = Release|Any CPU
++		{452CAEF4-36D9-4A0B-B616-2599F3E2DDC7}.Release|x64.ActiveCfg = Release|Any CPU
++		{452CAEF4-36D9-4A0B-B616-2599F3E2DDC7}.Release|x64.Build.0 = Release|Any CPU
++		{452CAEF4-36D9-4A0B-B616-2599F3E2DDC7}.Release|x86.ActiveCfg = Release|Any CPU
++		{452CAEF4-36D9-4A0B-B616-2599F3E2DDC7}.Release|x86.Build.0 = Release|Any CPU
+ 	EndGlobalSection
+ 	GlobalSection(SolutionProperties) = preSolution
+ 		HideSolutionNode = FALSE
+@@ -234,5 +264,7 @@ Global
+ 		{62E9643A-51B9-4AB4-BEA7-1CCE010C4682} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
+ 		{6B6FBA42-8705-4A3A-8EEA-BB4C0278B133} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+ 		{066CD13D-1CD7-4DAB-A087-26B8EE9F47A9} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
++		{75304927-6858-45D5-91BC-AC2B886FDA08} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
++		{452CAEF4-36D9-4A0B-B616-2599F3E2DDC7} = {07C2787E-EAC7-C090-1BA3-A61EC2A24D84}
+ 	EndGlobalSection
+ EndGlobal
+diff --git a/src/SmartPerformanceDoctor.App/Services/AppNavigationService.cs b/src/SmartPerformanceDoctor.App/Services/AppNavigationService.cs
+index 5e886ce..2bab6ae 100644
+--- a/src/SmartPerformanceDoctor.App/Services/AppNavigationService.cs
++++ b/src/SmartPerformanceDoctor.App/Services/AppNavigationService.cs
+@@ -97,6 +97,7 @@ public static class AppNavigationService
+             "VerifiedRepairPage" => typeof(Views.VerifiedRepairPage),
+             "ErrorBundlePage" => typeof(Views.ErrorBundlePage),
+             "AppDiagnosticsPage" => typeof(Views.AppDiagnosticsPage),
++            "PerformanceDiagnosticsPage" => typeof(Views.PerformanceDiagnosticsPage),
+             "ReportPage" => typeof(Views.ReportPage),
+             "RepairLogPage" => typeof(Views.RepairLogPage),
+             "CrashLogPage" => typeof(Views.CrashLogPage),
+@@ -158,4 +159,4 @@ public static class AppNavigationService
+                 return parameter is not null;
+         }
+     }
+-}
+\ No newline at end of file
++}
+diff --git a/src/SmartPerformanceDoctor.App/Services/SystemCare/PerformanceFindingAdapter.cs b/src/SmartPerformanceDoctor.App/Services/SystemCare/PerformanceFindingAdapter.cs
+new file mode 100644
+index 0000000..8cc2dca
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.App/Services/SystemCare/PerformanceFindingAdapter.cs
+@@ -0,0 +1,15 @@
++using SmartPerformanceDoctor.App.Models.SystemCare;
++using SmartPerformanceDoctor.Diagnostics;
++
++namespace SmartPerformanceDoctor.App.Services.SystemCare;
++
++public static class PerformanceFindingAdapter
++{
++    public static IReadOnlyList<CareFinding> Convert(DiagnosticSnapshot snapshot) => CareFindingQualityGate.Evaluate(
++        BottleneckAnalyzer.Analyze(snapshot).Select(f => new CareFinding
++        {
++            Id = f.FindingId, Title = f.Category, Detail = $"{f.Severity} · {f.MeasurementWindow} · {f.SampleCount} samples · {f.RecommendedNextCheck}",
++            Confidence = f.Confidence, Evidence = f.Evidence + " " + string.Join(" ", f.Limitations), DetectionSource = f.SourceProvider,
++            CanAutoApply = false, RiskCode = "review", RiskLabel = "측정 결과", AutoApplyBlockReason = f.RecommendedNextCheck
++        }).ToArray());
++}
+diff --git a/src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj b/src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj
+index 423db72..da96be8 100644
+--- a/src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj
++++ b/src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj
+@@ -24,6 +24,7 @@
+   </PropertyGroup>
+ 
+   <ItemGroup>
++    <ProjectReference Include="..\SmartPerformanceDoctor.Diagnostics\SmartPerformanceDoctor.Diagnostics.csproj" />
+     <FrameworkReference Include="Microsoft.WindowsDesktop.App" />
+     <Using Remove="System.Windows.Forms" />
+     <Using Remove="System.Drawing" />
+diff --git a/src/SmartPerformanceDoctor.App/Views/AppDiagnosticsPage.xaml b/src/SmartPerformanceDoctor.App/Views/AppDiagnosticsPage.xaml
+index 94b1e01..281cf16 100644
+--- a/src/SmartPerformanceDoctor.App/Views/AppDiagnosticsPage.xaml
++++ b/src/SmartPerformanceDoctor.App/Views/AppDiagnosticsPage.xaml
+@@ -10,6 +10,7 @@
+             <StackPanel Spacing="12">
+                 <StackPanel Orientation="Horizontal" Spacing="8">
+                     <Button Content="다시 검사" Click="RefreshDiagnostics"/>
++                    <Button Content="성능 병목 측정" Click="OpenPerformance"/>
+                     <Button Content="앱 폴더 열기" Click="OpenAppFolder"/>
+                 </StackPanel>
+                 <ListView x:Name="DiagnosticsList" MinHeight="420">
+diff --git a/src/SmartPerformanceDoctor.App/Views/AppDiagnosticsPage.xaml.cs b/src/SmartPerformanceDoctor.App/Views/AppDiagnosticsPage.xaml.cs
+index 842b8d7..a9bbfd2 100644
+--- a/src/SmartPerformanceDoctor.App/Views/AppDiagnosticsPage.xaml.cs
++++ b/src/SmartPerformanceDoctor.App/Views/AppDiagnosticsPage.xaml.cs
+@@ -20,6 +20,8 @@ public sealed partial class AppDiagnosticsPage : Page
+         Refresh();
+     }
+ 
++    private void OpenPerformance(object sender, RoutedEventArgs e) => Frame.Navigate(typeof(PerformanceDiagnosticsPage));
++
+     private void OpenAppFolder(object sender, RoutedEventArgs e)
+     {
+         Process.Start(new ProcessStartInfo
+diff --git a/src/SmartPerformanceDoctor.App/Views/PerformanceDiagnosticsPage.xaml b/src/SmartPerformanceDoctor.App/Views/PerformanceDiagnosticsPage.xaml
+new file mode 100644
+index 0000000..24cec3c
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.App/Views/PerformanceDiagnosticsPage.xaml
+@@ -0,0 +1,39 @@
++<Page x:Class="SmartPerformanceDoctor.App.Views.PerformanceDiagnosticsPage"
++      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
++    <ScrollViewer>
++        <StackPanel Padding="{StaticResource SpdMacPagePadding}" Spacing="18">
++            <TextBlock Text="성능 병목 측정" FontSize="34" FontWeight="SemiBold"/>
++            <TextBlock Text="30초 동안 읽기 전용으로 측정합니다. 시스템 설정과 사용자 파일은 변경하지 않습니다."
++                       TextWrapping="Wrap" Foreground="{StaticResource SpdMutedTextBrush}"/>
++            <StackPanel Orientation="Horizontal" Spacing="8">
++                <Button x:Name="StartButton" Content="측정 시작" Click="Start" AutomationProperties.Name="성능 측정 시작"/>
++                <Button x:Name="StopButton" Content="측정 중단" Click="Stop" IsEnabled="False"/>
++            </StackPanel>
++            <CheckBox x:Name="ExpectedLoad" Content="게임·렌더링 등 높은 부하 작업을 의도적으로 실행 중"/>
++            <Border Style="{StaticResource MacWindowPanelStyle}">
++                <StackPanel Spacing="12">
++                    <TextBlock x:Name="StatusText" Text="측정 대기" TextWrapping="Wrap"/>
++                    <ProgressBar x:Name="Progress" Maximum="30"/>
++                    <TextBlock x:Name="Metrics" Text="CPU — · 메모리 — · 디스크 —" TextWrapping="Wrap"/>
++                    <TextBlock x:Name="Coverage" Text="측정되지 않은 항목은 Unknown으로 표시합니다."
++                               TextWrapping="Wrap" Foreground="{StaticResource SpdMutedTextBrush}"/>
++                </StackPanel>
++            </Border>
++            <ItemsControl x:Name="FindingsList">
++                <ItemsControl.ItemTemplate>
++                    <DataTemplate>
++                        <Border Style="{StaticResource MacWindowPanelStyle}" Margin="0,0,0,8">
++                            <StackPanel Spacing="6">
++                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap"/>
++                                <TextBlock Text="{Binding Detail}" TextWrapping="Wrap"/>
++                                <TextBlock Text="{Binding Evidence}" TextWrapping="Wrap" Foreground="{StaticResource SpdMutedTextBrush}"/>
++                                <TextBlock Text="{Binding Confidence}"/>
++                                <TextBlock Text="{Binding AutoApplyBlockReason}" TextWrapping="Wrap"/>
++                            </StackPanel>
++                        </Border>
++                    </DataTemplate>
++                </ItemsControl.ItemTemplate>
++            </ItemsControl>
++        </StackPanel>
++    </ScrollViewer>
++</Page>
+diff --git a/src/SmartPerformanceDoctor.App/Views/PerformanceDiagnosticsPage.xaml.cs b/src/SmartPerformanceDoctor.App/Views/PerformanceDiagnosticsPage.xaml.cs
+new file mode 100644
+index 0000000..adc16af
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.App/Views/PerformanceDiagnosticsPage.xaml.cs
+@@ -0,0 +1,42 @@
++using Microsoft.UI.Xaml;
++using Microsoft.UI.Xaml.Controls;
++using SmartPerformanceDoctor.Diagnostics;
++using SmartPerformanceDoctor.App.Services.SystemCare;
++
++namespace SmartPerformanceDoctor.App.Views;
++
++public sealed partial class PerformanceDiagnosticsPage : Page
++{
++    private CancellationTokenSource? _cancellation;
++    private int _generation;
++    public PerformanceDiagnosticsPage() { InitializeComponent(); Unloaded += (_, _) => { _generation++; _cancellation?.Cancel(); }; }
++    private async void Start(object sender, RoutedEventArgs e)
++    {
++        if (_cancellation is not null) return;
++        _cancellation = new();
++        var generation = ++_generation;
++        StartButton.IsEnabled = false; StopButton.IsEnabled = true; ExpectedLoad.IsEnabled = false;
++        FindingsList.ItemsSource = null; Progress.Value = 0; StatusText.Text = "측정 중 · 30초";
++        try
++        {
++            var progress = new Progress<PerformanceSample>(s =>
++            {
++                if (generation != _generation) return;
++                static string Number(double? x, string unit) => x.HasValue ? $"{x:F1}{unit}" : "Unknown";
++                Progress.Value = Math.Min(30, s.Seconds);
++                Metrics.Text = $"CPU {Number(s.CpuPercent, "%")} · 가용 메모리 {Number(s.AvailableMemoryPercent, "%")} · 디스크 지연 {Number(s.DiskLatencyMilliseconds, "ms")}";
++            });
++            var result = await new PerformanceCollector().CollectAsync(new(), _cancellation.Token, progress,
++                ExpectedLoad.IsChecked == true ? "ExpectedHighLoad" : "Unspecified");
++            if (generation != _generation) return;
++            FindingsList.ItemsSource = PerformanceFindingAdapter.Convert(result);
++            StatusText.Text = result.Errors.Any(x => x.Code == "Cancelled") ? "측정 중단 · 수집된 표본만 표시" : "측정 완료 · 병목 후보를 재측정으로 확인하세요";
++            Coverage.Text = $"{result.Samples.Count}개 표본 · {result.DurationSeconds:F1}초 · 이벤트 손실 {result.EventsLost} · "
++                + string.Join(", ", result.Errors.Select(x => x.Provider + ": " + x.Code))
++                + " · 온도·클럭·부팅 원인·서비스 상관관계 Unknown";
++        }
++        catch (Exception ex) { if (generation == _generation) StatusText.Text = "측정 중단: " + ex.GetType().Name; }
++        finally { _cancellation.Dispose(); _cancellation = null; StartButton.IsEnabled = true; StopButton.IsEnabled = false; ExpectedLoad.IsEnabled = true; }
++    }
++    private void Stop(object sender, RoutedEventArgs e) => _cancellation?.Cancel();
++}
+diff --git a/src/SmartPerformanceDoctor.Diagnostics/BottleneckAnalyzer.cs b/src/SmartPerformanceDoctor.Diagnostics/BottleneckAnalyzer.cs
+new file mode 100644
+index 0000000..c0f5c2a
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.Diagnostics/BottleneckAnalyzer.cs
+@@ -0,0 +1,63 @@
++namespace SmartPerformanceDoctor.Diagnostics;
++
++public static class BottleneckAnalyzer
++{
++    public static IReadOnlyList<Finding> Analyze(DiagnosticSnapshot snapshot)
++    {
++        var results = new List<Finding>();
++        var samples = snapshot.Samples.Select(Normalizer.Normalize).ToList();
++        var validTime = samples.Count > 0 && samples.All(s => double.IsFinite(s.Seconds) && s.Seconds > 0 && s.Seconds <= snapshot.DurationSeconds + .5)
++            && samples.Zip(samples.Skip(1)).All(pair => pair.Second.Seconds > pair.First.Seconds);
++        var baseLimits = new List<string> { "Resource pressure does not prove abnormal software.", "Repeat the same workload before planning a repair.",
++            "Clock, temperature, boot attribution and service correlation are not measured." };
++        if (snapshot.Errors.Count > 0) baseLimits.Add("Collection errors: " + string.Join(",", snapshot.Errors.Select(e => e.Provider + ":" + e.Code)));
++        if (snapshot.EventsLost > 0) baseLimits.Add("ETW events were lost; event attribution is incomplete.");
++        void Add(string category, string evidence, int count, double coverage, string severity = "Observation")
++        {
++            var span = samples.Count > 1 ? samples[^1].Seconds - samples[0].Seconds : 0;
++            var confidence = Math.Clamp(coverage * Math.Min(1, count / 20d) * Math.Min(1, span / 20d), 0, 1);
++            if (!validTime) confidence = 0;
++            results.Add(new("perf." + category, category, evidence, $"{snapshot.StartedUtc:O} + {snapshot.DurationSeconds:F2}s", count,
++                snapshot.SourceProvider, confidence, severity, baseLimits.ToArray(), "Repeat measurement and identify the active workload; no automatic repair."));
++        }
++        bool Check(string category, Func<PerformanceSample, double?> select, Func<double, bool> predicate, Func<double, bool> valid)
++        {
++            var values = samples.Select(select).ToArray();
++            var measured = values.Count(v => v.HasValue && double.IsFinite(v.Value) && valid(v.Value));
++            var coverage = samples.Count == 0 ? 0 : (double)measured / samples.Count;
++            var matching = values.Count(v => v.HasValue && double.IsFinite(v.Value) && valid(v.Value) && predicate(v.Value));
++            if (!validTime || measured < 8 || coverage < .8 || snapshot.DurationSeconds < 10)
++            { Add("InsufficientEvidence." + category, $"Valid measurements {measured}/{samples.Count}; coverage {coverage:P1}.", measured, 0, "Unknown"); return false; }
++            var continuousSeconds = 0d; var longest = 0d;
++            for (var i = 1; i < samples.Count; i++)
++            {
++                var dt = samples[i].Seconds - samples[i - 1].Seconds;
++                var a = values[i - 1]; var b = values[i];
++                if (dt <= 5.5 && a.HasValue && b.HasValue && double.IsFinite(a.Value) && double.IsFinite(b.Value)
++                    && valid(a.Value) && valid(b.Value) && predicate(a.Value) && predicate(b.Value)) continuousSeconds += dt;
++                else continuousSeconds = 0;
++                longest = Math.Max(longest, continuousSeconds);
++            }
++            var distribution = Statistics.Describe(values.Where(v => v.HasValue && valid(v.Value)));
++            var evidence = $"Median {distribution.Median:F2}; P95 {distribution.P95:F2}; matching {matching}/{measured}; longest continuous {longest:F2}s; coverage {coverage:P1}.";
++            if (matching >= .8 * measured && longest >= 8)
++            { Add(category, evidence, measured, coverage, snapshot.WorkloadContext == "ExpectedHighLoad" ? "ExpectedWorkload" : "Candidate"); return true; }
++            Add(matching > 0 ? "Transient." + category : "NoObservedPressure." + category, evidence, measured, coverage);
++            return false;
++        }
++        var cpu = Check("CpuSaturation", s => s.CpuPercent, x => x >= 90, x => x is >= 0 and <= 100);
++        Check("MemoryPressure", s => s.AvailableMemoryPercent.HasValue && s.CommitPercent.HasValue ? Math.Max(100 - s.AvailableMemoryPercent.Value, s.CommitPercent.Value) : null,
++            x => x >= 90, x => x is >= 0 and <= 100);
++        Check("DiskIoPressure", s => s.DiskQueue >= 1 && s.IoPerSecond > 0 ? s.DiskLatencyMilliseconds :
++            s.DiskLatencyMilliseconds.HasValue && s.DiskQueue.HasValue && s.IoPerSecond.HasValue ? 0 : null,
++            x => x >= 20, x => x >= 0 && x < 60000);
++        if (cpu)
++        {
++            var contributors = samples.SelectMany(s => s.Processes.Select(p => (s.Seconds, Metric: p)))
++                .GroupBy(x => x.Metric.Identifier).Select(g => new { Id = g.Key, Count = g.Count(), Cpu = Statistics.Describe(g.Select(x => x.Metric.CpuPercent)) });
++            foreach (var p in contributors.Where(p => p.Count >= samples.Count * .8 && p.Cpu.Median >= 20).Take(8))
++                Add("ProcessContribution." + p.Id, $"Process {p.Id}; CPU median {p.Cpu.Median:F2}% of all logical processors.", p.Count, (double)p.Count / samples.Count);
++        }
++        return results;
++    }
++}
+diff --git a/src/SmartPerformanceDoctor.Diagnostics/Contracts.cs b/src/SmartPerformanceDoctor.Diagnostics/Contracts.cs
+new file mode 100644
+index 0000000..0a75056
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.Diagnostics/Contracts.cs
+@@ -0,0 +1,44 @@
++namespace SmartPerformanceDoctor.Diagnostics;
++
++public sealed record SamplingPolicy(int DurationSeconds = 30, int IntervalMilliseconds = 1000, int MaxProcesses = 128, int EventQueueCapacity = 4096)
++{
++    public void Validate()
++    {
++        if (DurationSeconds is < 2 or > 120 || IntervalMilliseconds is < 1000 or > 5000 || MaxProcesses is < 1 or > 128
++            || EventQueueCapacity is < 32 or > 4096) throw new ArgumentOutOfRangeException(nameof(SamplingPolicy));
++    }
++}
++public sealed record ProcessMetric(string Identifier, double? CpuPercent, long WorkingSetBytes, double CpuTimeSeconds);
++public sealed record DiskMetric(int DiskNumber, long ReadBytes, long WriteBytes, int Operations, double? P95LatencyMilliseconds);
++public sealed record SpaceMetric(string Volume, double FreePercent);
++public sealed record PerformanceSample(double Seconds, double? CpuPercent, double? AvailableMemoryPercent, double? CommitPercent,
++    double? DiskLatencyMilliseconds, double? DiskQueue, double? ReadBytesPerSecond, double? WriteBytesPerSecond,
++    double? IoPerSecond, double? PageReadsPerSecond, IReadOnlyList<ProcessMetric> Processes,
++    IReadOnlyDictionary<string, double?> LogicalCpu, IReadOnlyList<DiskMetric> Disks, int? HardFaults)
++{
++    public IReadOnlyList<EtwProcessMetric> EtwProcesses { get; init; } = [];
++    public int? ContextSwitches { get; init; }
++    public ulong? TotalMemoryBytes { get; init; }
++    public ulong? AvailableMemoryBytes { get; init; }
++    public ulong? CommitBytes { get; init; }
++    public ulong? CommitLimitBytes { get; init; }
++}
++public sealed record EtwProcessMetric(string Identifier, int CpuSamples, long ReadBytes, long WriteBytes, int Operations);
++public sealed record CollectionError(string Provider, string Code);
++public sealed record DiagnosticSnapshot(DateTimeOffset StartedUtc, double DurationSeconds, string SourceProvider,
++    IReadOnlyList<PerformanceSample> Samples, IReadOnlyList<CollectionError> Errors, long EventsReceived, long EventsLost,
++    double CollectorCpuSeconds, long PeakWorkingSetBytes, double CollectionMilliseconds, string WorkloadContext,
++    IReadOnlyList<SpaceMetric> StorageSpace, int? StartupEntries, double UptimeSeconds);
++public sealed record Finding(string FindingId, string Category, string Evidence, string MeasurementWindow, int SampleCount,
++    string SourceProvider, double Confidence, string Severity, string[] Limitations, string RecommendedNextCheck);
++public sealed record Distribution(double? Median, double? P95, int Count);
++public static class Statistics
++{
++    public static Distribution Describe(IEnumerable<double?> values)
++    {
++        var sorted = values.Where(x => x.HasValue && double.IsFinite(x.Value)).Select(x => x!.Value).Order().ToArray();
++        if (sorted.Length == 0) return new(null, null, 0);
++        double Q(double p) { var index = (sorted.Length - 1) * p; var low = (int)index; return sorted[low] + (sorted[(int)Math.Ceiling(index)] - sorted[low]) * (index - low); }
++        return new(Q(.5), Q(.95), sorted.Length);
++    }
++}
+diff --git a/src/SmartPerformanceDoctor.Diagnostics/CounterProbe.cs b/src/SmartPerformanceDoctor.Diagnostics/CounterProbe.cs
+new file mode 100644
+index 0000000..e4f348f
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.Diagnostics/CounterProbe.cs
+@@ -0,0 +1,30 @@
++using Windows.Win32;
++using Windows.Win32.System.Performance;
++
++namespace SmartPerformanceDoctor.Diagnostics;
++
++public sealed class CounterProbe : IDisposable
++{
++    private readonly PdhCloseQuerySafeHandle _query;
++    private readonly Dictionary<string, PDH_HCOUNTER> _counters = new();
++    public CounterProbe(IEnumerable<KeyValuePair<string, string>> paths)
++    {
++        if (PInvoke.PdhOpenQuery(null, 0, out _query) != 0) throw new IOException("PDH query unavailable");
++        foreach (var (name, path) in paths)
++            if (PInvoke.PdhAddEnglishCounter(_query, path, 0, out var counter) == 0) _counters[name] = counter;
++        PInvoke.PdhCollectQueryData((PDH_HQUERY)_query.DangerousGetHandle());
++    }
++    public IReadOnlyDictionary<string, double?> Read()
++    {
++        var result = new Dictionary<string, double?>();
++        var collected = PInvoke.PdhCollectQueryData((PDH_HQUERY)_query.DangerousGetHandle()) == 0;
++        foreach (var (name, counter) in _counters)
++        {
++            var status = PInvoke.PdhGetFormattedCounterValue(counter, PDH_FMT.PDH_FMT_DOUBLE, out _, out var value);
++            result[name] = collected && status == 0 && value.CStatus <= 1 && double.IsFinite(value.Anonymous.doubleValue)
++                ? value.Anonymous.doubleValue : null;
++        }
++        return result;
++    }
++    public void Dispose() => _query.Dispose();
++}
+diff --git a/src/SmartPerformanceDoctor.Diagnostics/EtwCollector.cs b/src/SmartPerformanceDoctor.Diagnostics/EtwCollector.cs
+new file mode 100644
+index 0000000..3503572
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.Diagnostics/EtwCollector.cs
+@@ -0,0 +1,64 @@
++using Microsoft.Diagnostics.Tracing;
++using Microsoft.Diagnostics.Tracing.Parsers;
++using Microsoft.Diagnostics.Tracing.Parsers.Kernel;
++using Microsoft.Diagnostics.Tracing.Session;
++
++namespace SmartPerformanceDoctor.Diagnostics;
++
++public sealed class EtwCollector : IAsyncDisposable
++{
++    private readonly EventBuffer _buffer;
++    private TraceEventSession? _session;
++    private Task? _worker;
++    private readonly string _salt = Guid.NewGuid().ToString("N");
++    private long _finalNativeLoss;
++    public CollectionError? Error { get; private set; }
++    public long Received => _buffer.Received;
++    public long Lost => _buffer.Dropped + _finalNativeLoss;
++    public EtwCollector(int capacity) => _buffer = new EventBuffer(capacity);
++    public void Start()
++    {
++        if (_session is not null || _worker is not null) throw new InvalidOperationException("SessionAlreadyStarted");
++        if (TraceEventSession.IsElevated() != true) { Error = new("ETW", "PermissionDenied"); return; }
++        try
++        {
++            // Never attach to, restart, or stop a session owned by another collector.
++            _session = new TraceEventSession("PCCare.Diagnostics." + Guid.NewGuid().ToString("N"), TraceEventSessionOptions.NoRestartOnCreate)
++                { StopOnDispose = true, BufferSizeMB = 8 };
++            void Disk(DiskIOTraceData data, bool write) => _buffer.Offer(new(data.DiskNumber, data.TransferSize, write, data.ElapsedTimeMSec, false, data.ProcessID));
++            _session.Source.Kernel.DiskIORead += d => Disk(d, false);
++            _session.Source.Kernel.DiskIOWrite += d => Disk(d, true);
++            _session.Source.Kernel.MemoryHardFault += _ => _buffer.Offer(new(0, 0, false, 0, true));
++            _session.Source.Kernel.PerfInfoSample += d => _buffer.Offer(new(0, 0, false, 0, false, d.ProcessID, CpuSample: true));
++            _session.Source.Kernel.ThreadCSwitch += d => _buffer.Offer(new(0, 0, false, 0, false, d.ProcessID, ContextSwitch: true));
++            _session.EnableKernelProvider(KernelTraceEventParser.Keywords.DiskIO | KernelTraceEventParser.Keywords.MemoryHardFaults
++                | KernelTraceEventParser.Keywords.Profile | KernelTraceEventParser.Keywords.Process | KernelTraceEventParser.Keywords.Thread | KernelTraceEventParser.Keywords.ContextSwitch);
++            var source = _session.Source;
++            _worker = Task.Run(() => { try { source.Process(); } catch (Exception e) { Error = new("ETW", e.GetType().Name); } });
++        }
++        catch (Exception e) { Error = new("ETW", e.GetType().Name); _session?.Dispose(); _session = null; }
++    }
++    public (IReadOnlyList<DiskMetric> Disks, int Faults, IReadOnlyList<EtwProcessMetric> Processes, int Switches) Drain()
++    {
++        var events = _buffer.Drain();
++        string Mask(int pid) => Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(_salt + pid)))[..12];
++        return (events.Where(e => !e.Fault && !e.CpuSample && !e.ContextSwitch).GroupBy(e => e.Disk).Take(64).Select(g => new DiskMetric(g.Key,
++            g.Where(e => !e.Write).Sum(e => (long)e.Size), g.Where(e => e.Write).Sum(e => (long)e.Size), g.Count(),
++            Statistics.Describe(g.Select(e => (double?)e.Latency)).P95)).ToArray(), events.Count(e => e.Fault),
++            events.Where(e => e.ProcessId >= 0 && !e.Fault && !e.ContextSwitch).GroupBy(e => e.ProcessId).Take(128)
++                .Select(g => new EtwProcessMetric(Mask(g.Key), g.Count(e => e.CpuSample), g.Where(e => !e.Write).Sum(e => (long)e.Size),
++                    g.Where(e => e.Write).Sum(e => (long)e.Size), g.Count(e => !e.CpuSample))).ToArray(), events.Count(e => e.ContextSwitch));
++    }
++    public async ValueTask DisposeAsync()
++    {
++        if (_session is null) return;
++        try { _finalNativeLoss = _session.EventsLost; }
++        catch (Exception e) { Error = ErrorReporter.From("ETW.Loss", e); }
++        try { _session.Dispose(); }
++        catch (Exception e) { Error = ErrorReporter.From("ETW.Stop", e); }
++        if (_worker is not null)
++            try { await _worker.WaitAsync(TimeSpan.FromSeconds(5)); }
++            catch (Exception e) { Error = ErrorReporter.From("ETW.Stop", e); }
++        _session = null; _worker = null;
++    }
++}
+diff --git a/src/SmartPerformanceDoctor.Diagnostics/EventBuffer.cs b/src/SmartPerformanceDoctor.Diagnostics/EventBuffer.cs
+new file mode 100644
+index 0000000..9fb1171
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.Diagnostics/EventBuffer.cs
+@@ -0,0 +1,34 @@
++using System.Threading.Channels;
++
++namespace SmartPerformanceDoctor.Diagnostics;
++
++public sealed record NumericEvent(int Disk, int Size, bool Write, double Latency, bool Fault, int ProcessId = -1, bool CpuSample = false, bool ContextSwitch = false);
++public sealed class EventBuffer
++{
++    private readonly Channel<NumericEvent> _queue;
++    private long _received, _dropped;
++    private readonly int _capacity;
++    public long Received => Interlocked.Read(ref _received);
++    public long Dropped => Interlocked.Read(ref _dropped);
++    public EventBuffer(int capacity)
++    {
++        if (capacity is < 32 or > 4096) throw new ArgumentOutOfRangeException(nameof(capacity));
++        _capacity = capacity;
++        _queue = Channel.CreateBounded<NumericEvent>(new BoundedChannelOptions(capacity) { FullMode = BoundedChannelFullMode.Wait, SingleReader = true });
++    }
++    public void Offer(NumericEvent value)
++    {
++        Interlocked.Increment(ref _received);
++        if (value.Size < 0 || !double.IsFinite(value.Latency) || value.Latency < 0 || !_queue.Writer.TryWrite(value)) Interlocked.Increment(ref _dropped);
++    }
++    public IReadOnlyList<NumericEvent> Drain()
++    {
++        var result = new List<NumericEvent>();
++        while (result.Count < _capacity && _queue.Reader.TryRead(out var value)) result.Add(value);
++        return result;
++    }
++}
++public static class ErrorReporter
++{
++    public static CollectionError From(string provider, Exception error) => new(provider, error is UnauthorizedAccessException ? "PermissionDenied" : error.GetType().Name);
++}
+diff --git a/src/SmartPerformanceDoctor.Diagnostics/NativeMethods.json b/src/SmartPerformanceDoctor.Diagnostics/NativeMethods.json
+new file mode 100644
+index 0000000..f3e0f48
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.Diagnostics/NativeMethods.json
+@@ -0,0 +1 @@
++{ "public": false, "allowMarshaling": true }
+diff --git a/src/SmartPerformanceDoctor.Diagnostics/NativeMethods.txt b/src/SmartPerformanceDoctor.Diagnostics/NativeMethods.txt
+new file mode 100644
+index 0000000..a039efa
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.Diagnostics/NativeMethods.txt
+@@ -0,0 +1,8 @@
++PdhOpenQueryW
++PdhAddEnglishCounterW
++PdhCollectQueryData
++PdhGetFormattedCounterValue
++PdhCloseQuery
++GetSystemTimes
++GlobalMemoryStatusEx
++GetPerformanceInfo
+diff --git a/src/SmartPerformanceDoctor.Diagnostics/Normalizer.cs b/src/SmartPerformanceDoctor.Diagnostics/Normalizer.cs
+new file mode 100644
+index 0000000..39ddadb
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.Diagnostics/Normalizer.cs
+@@ -0,0 +1,16 @@
++namespace SmartPerformanceDoctor.Diagnostics;
++
++public static class Normalizer
++{
++    public static double? Bounded(double? value, double minimum, double maximum) =>
++        value.HasValue && double.IsFinite(value.Value) && value >= minimum && value <= maximum ? value : null;
++    public static PerformanceSample Normalize(PerformanceSample s) => s with
++    {
++        CpuPercent = Bounded(s.CpuPercent, 0, 100), AvailableMemoryPercent = Bounded(s.AvailableMemoryPercent, 0, 100),
++        CommitPercent = Bounded(s.CommitPercent, 0, 100), DiskLatencyMilliseconds = Bounded(s.DiskLatencyMilliseconds, 0, 60000),
++        DiskQueue = Bounded(s.DiskQueue, 0, 1000000), ReadBytesPerSecond = Bounded(s.ReadBytesPerSecond, 0, 1e15),
++        WriteBytesPerSecond = Bounded(s.WriteBytesPerSecond, 0, 1e15), IoPerSecond = Bounded(s.IoPerSecond, 0, 1e12),
++        PageReadsPerSecond = Bounded(s.PageReadsPerSecond, 0, 1e12),
++        LogicalCpu = s.LogicalCpu.ToDictionary(p => p.Key, p => Bounded(p.Value, 0, 100))
++    };
++}
+diff --git a/src/SmartPerformanceDoctor.Diagnostics/PerformanceCollector.cs b/src/SmartPerformanceDoctor.Diagnostics/PerformanceCollector.cs
+new file mode 100644
+index 0000000..79596ca
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.Diagnostics/PerformanceCollector.cs
+@@ -0,0 +1,129 @@
++using System.Diagnostics;
++using System.Security.Cryptography;
++using System.Text;
++using Microsoft.Win32;
++
++namespace SmartPerformanceDoctor.Diagnostics;
++
++public sealed class PerformanceCollector
++{
++    private static readonly SemaphoreSlim SessionGate = new(1, 1);
++    public async Task<DiagnosticSnapshot> CollectAsync(SamplingPolicy policy, CancellationToken cancellationToken,
++        IProgress<PerformanceSample>? progress = null, string workloadContext = "Unspecified")
++    {
++        policy.Validate();
++        if (workloadContext is not ("Unspecified" or "ExpectedHighLoad" or "Idle")) throw new ArgumentException("Unknown workload context");
++        if (!await SessionGate.WaitAsync(0, cancellationToken)) throw new InvalidOperationException("SessionConflict");
++        try { return await Task.Run(() => CollectCoreAsync(policy, cancellationToken, progress, workloadContext), CancellationToken.None); }
++        finally { SessionGate.Release(); }
++    }
++    private static async Task<DiagnosticSnapshot> CollectCoreAsync(SamplingPolicy policy, CancellationToken token,
++        IProgress<PerformanceSample>? progress, string workload)
++    {
++        var started = DateTimeOffset.UtcNow;
++        var clock = Stopwatch.StartNew();
++        using var self = Process.GetCurrentProcess();
++        var ownCpu = self.TotalProcessorTime.TotalSeconds;
++        var peak = self.WorkingSet64;
++        var errors = new List<CollectionError>();
++        var samples = new List<PerformanceSample>();
++        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token);
++        deadline.CancelAfter(TimeSpan.FromSeconds(policy.DurationSeconds));
++        var native = new SystemSnapshotProbe();
++        native.Read();
++        var paths = new Dictionary<string, string> {
++            ["latency"] = @"\PhysicalDisk(_Total)\Avg. Disk sec/Transfer",
++            ["queue"] = @"\PhysicalDisk(_Total)\Current Disk Queue Length",
++            ["read"] = @"\PhysicalDisk(_Total)\Disk Read Bytes/sec",
++            ["write"] = @"\PhysicalDisk(_Total)\Disk Write Bytes/sec",
++            ["iops"] = @"\PhysicalDisk(_Total)\Disk Transfers/sec",
++            ["pageReads"] = @"\Memory\Page Reads/sec"
++        };
++        for (var i = 0; i < Math.Min(Environment.ProcessorCount, 128); i++) paths["cpu" + i] = $@"\Processor({i})\% Processor Time";
++        CounterProbe? counters = null;
++        try { counters = new CounterProbe(paths); } catch (Exception e) { errors.Add(new("PDH", e.GetType().Name)); }
++        await using var etw = new EtwCollector(policy.EventQueueCapacity);
++        etw.Start();
++        var previous = new Dictionary<string, (double Cpu, double Seconds)>();
++        var salt = Guid.NewGuid().ToString("N");
++        var space = new List<SpaceMetric>();
++        foreach (var drive in DriveInfo.GetDrives().Where(d => d.DriveType == DriveType.Fixed).Take(64))
++            try { if (drive.TotalSize > 0) space.Add(new(drive.Name[..1], 100d * drive.AvailableFreeSpace / drive.TotalSize)); }
++            catch (Exception e) { errors.Add(new("StorageSpace", e.GetType().Name)); }
++        int? startup = 0;
++        try
++        {
++            foreach (var hive in new[] { Registry.CurrentUser, Registry.LocalMachine })
++            {
++                using var key = hive.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", writable: false);
++                startup += key?.ValueCount ?? 0;
++            }
++        }
++        catch (Exception e) { startup = null; errors.Add(new("StartupInventory", e.GetType().Name)); }
++        try
++        {
++            while (samples.Count < 120)
++            {
++                var interval = samples.LastOrDefault()?.CpuPercent >= 90 ? Math.Max(2000, policy.IntervalMilliseconds) : policy.IntervalMilliseconds;
++                await Task.Delay(interval, deadline.Token);
++                var seconds = clock.Elapsed.TotalSeconds;
++                var system = native.Read();
++                IReadOnlyDictionary<string, double?> values = new Dictionary<string, double?>();
++                try { values = counters?.Read() ?? values; } catch (Exception e) { if (!errors.Any(x => x.Provider == "PDH")) errors.Add(new("PDH", e.GetType().Name)); }
++                double? Value(string name) => values.GetValueOrDefault(name);
++                var processMetrics = new List<ProcessMetric>();
++                var current = new Dictionary<string, (double Cpu, double Seconds)>();
++                // Dispose every process handle, including entries beyond the configured budget.
++                var processes = Process.GetProcesses();
++                try
++                {
++                    foreach (var process in processes.Take(policy.MaxProcesses))
++                    {
++                        try
++                        {
++                            var identity = process.Id + ":" + process.StartTime.ToUniversalTime().Ticks;
++                            var cpuTime = process.TotalProcessorTime.TotalSeconds;
++                            double? cpu = previous.TryGetValue(identity, out var old) && seconds > old.Seconds && cpuTime >= old.Cpu
++                                ? 100 * (cpuTime - old.Cpu) / (seconds - old.Seconds) / Environment.ProcessorCount : null;
++                            var identifier = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(salt + identity)))[..12];
++                            processMetrics.Add(new(identifier, cpu is >= 0 and <= 100 ? cpu : null, process.WorkingSet64, cpuTime));
++                            current[identity] = (cpuTime, seconds);
++                        }
++                        catch (Exception e) when (e is InvalidOperationException or System.ComponentModel.Win32Exception or NotSupportedException)
++                        { if (!errors.Any(x => x.Provider == "Process")) errors.Add(new("Process", "PartialAccessOrExited")); }
++                    }
++                    if (processes.Length > policy.MaxProcesses && !errors.Any(x => x.Provider == "ProcessBudget")) errors.Add(new("ProcessBudget", "Truncated"));
++                }
++                finally { foreach (var process in processes) process.Dispose(); }
++                previous = current;
++                var (disks, faults, etwProcesses, switches) = etw.Drain();
++                var sample = new PerformanceSample(seconds, Environment.ProcessorCount <= 64 ? system.Cpu : null,
++                    system.TotalMemory > 0 ? 100d * system.AvailableMemory / system.TotalMemory : null,
++                    system.CommitLimit > 0 ? 100d * system.Commit / system.CommitLimit : null,
++                    Value("latency") * 1000, Value("queue"), Value("read"), Value("write"), Value("iops"), Value("pageReads"),
++                    processMetrics, values.Where(v => v.Key.StartsWith("cpu", StringComparison.Ordinal)).ToDictionary(), disks,
++                    etw.Error is null ? faults : null) { EtwProcesses = etwProcesses, ContextSwitches = etw.Error is null ? switches : null,
++                    TotalMemoryBytes = system.TotalMemory, AvailableMemoryBytes = system.AvailableMemory,
++                    CommitBytes = system.Commit, CommitLimitBytes = system.CommitLimit };
++                sample = Normalizer.Normalize(sample);
++                samples.Add(sample);
++                progress?.Report(sample);
++                self.Refresh(); peak = Math.Max(peak, self.WorkingSet64);
++            }
++        }
++        catch (OperationCanceledException) { if (token.IsCancellationRequested) errors.Add(new("Collector", "Cancelled")); }
++        catch (Exception e) { errors.Add(new("Collector", e.GetType().Name)); }
++        finally { counters?.Dispose(); }
++        await etw.DisposeAsync();
++        if (etw.Error is not null) errors.Add(etw.Error);
++        if (!samples.Any(s => s.CpuPercent.HasValue)) errors.Add(new("SystemCpu", "Unavailable"));
++        if (!samples.Any(s => s.AvailableMemoryPercent.HasValue)) errors.Add(new("PhysicalMemory", "Unavailable"));
++        if (!samples.Any(s => s.CommitPercent.HasValue)) errors.Add(new("CommitMemory", "Unavailable"));
++        if (Environment.ProcessorCount > 64) errors.Add(new("SystemCpu", "ProcessorGroupCoverageUnknown"));
++        if (!samples.Any(s => s.DiskLatencyMilliseconds.HasValue)) errors.Add(new("PDH.Disk", "Unavailable"));
++        if (!samples.Any(s => s.LogicalCpu.Values.Any(v => v.HasValue))) errors.Add(new("PDH.LogicalCpu", "Unavailable"));
++        self.Refresh();
++        return new(started, clock.Elapsed.TotalSeconds, "CsWin32.SystemSnapshot+PDH+TraceEvent", samples, errors, etw.Received, etw.Lost,
++            self.TotalProcessorTime.TotalSeconds - ownCpu, peak, clock.Elapsed.TotalMilliseconds, workload, space, startup, Environment.TickCount64 / 1000d);
++    }
++}
+diff --git a/src/SmartPerformanceDoctor.Diagnostics/SmartPerformanceDoctor.Diagnostics.csproj b/src/SmartPerformanceDoctor.Diagnostics/SmartPerformanceDoctor.Diagnostics.csproj
+new file mode 100644
+index 0000000..7d41537
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.Diagnostics/SmartPerformanceDoctor.Diagnostics.csproj
+@@ -0,0 +1,12 @@
++<Project Sdk="Microsoft.NET.Sdk">
++  <PropertyGroup>
++    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
++    <Nullable>enable</Nullable>
++    <ImplicitUsings>enable</ImplicitUsings>
++    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
++  </PropertyGroup>
++  <ItemGroup>
++    <PackageReference Include="Microsoft.Diagnostics.Tracing.TraceEvent" />
++    <PackageReference Include="Microsoft.Windows.CsWin32" PrivateAssets="all" />
++  </ItemGroup>
++</Project>
+diff --git a/src/SmartPerformanceDoctor.Diagnostics/SystemSnapshotProbe.cs b/src/SmartPerformanceDoctor.Diagnostics/SystemSnapshotProbe.cs
+new file mode 100644
+index 0000000..88aeff8
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.Diagnostics/SystemSnapshotProbe.cs
+@@ -0,0 +1,29 @@
++using Windows.Win32;
++using Windows.Win32.System.SystemInformation;
++using Windows.Win32.System.ProcessStatus;
++
++namespace SmartPerformanceDoctor.Diagnostics;
++
++public sealed class SystemSnapshotProbe
++{
++    private ulong? _idle, _total;
++    public unsafe (double? Cpu, ulong? TotalMemory, ulong? AvailableMemory, ulong? Commit, ulong? CommitLimit) Read()
++    {
++        double? cpu = null;
++        if (PInvoke.GetSystemTimes(out var idle, out var kernel, out var user))
++        {
++            static ulong T(System.Runtime.InteropServices.ComTypes.FILETIME t) => ((ulong)(uint)t.dwHighDateTime << 32) | (uint)t.dwLowDateTime;
++            var total = T(kernel) + T(user);
++            if (_total.HasValue && total > _total && T(idle) >= _idle)
++                cpu = 100d * (1 - (double)(T(idle) - _idle!.Value) / (total - _total.Value));
++            _total = total; _idle = T(idle);
++        }
++        var memory = new MEMORYSTATUSEX { dwLength = (uint)sizeof(MEMORYSTATUSEX) };
++        var memoryOk = PInvoke.GlobalMemoryStatusEx(ref memory);
++        var perf = new PERFORMANCE_INFORMATION { cb = (uint)sizeof(PERFORMANCE_INFORMATION) };
++        var commitOk = PInvoke.GetPerformanceInfo(ref perf, (uint)sizeof(PERFORMANCE_INFORMATION));
++        return (cpu, memoryOk ? memory.ullTotalPhys : null, memoryOk ? memory.ullAvailPhys : null,
++            commitOk ? (ulong)perf.CommitTotal * (ulong)perf.PageSize : null,
++            commitOk ? (ulong)perf.CommitLimit * (ulong)perf.PageSize : null);
++    }
++}
+diff --git a/tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj b/tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj
+index 284d3d9..ecef683 100644
+--- a/tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj
++++ b/tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj
+@@ -9,6 +9,7 @@
+   </PropertyGroup>
+ 
+   <ItemGroup>
++    <ProjectReference Include="..\..\src\SmartPerformanceDoctor.Diagnostics\SmartPerformanceDoctor.Diagnostics.csproj" />
+     <PackageReference Include="Konscious.Security.Cryptography.Argon2" />
+     <PackageReference Include="Microsoft.NET.Test.Sdk" />
+     <PackageReference Include="xunit" />
+diff --git a/tests/SmartPerformanceDoctor.Tests/WO07PerformanceTests.cs b/tests/SmartPerformanceDoctor.Tests/WO07PerformanceTests.cs
+new file mode 100644
+index 0000000..39f0a75
+--- /dev/null
++++ b/tests/SmartPerformanceDoctor.Tests/WO07PerformanceTests.cs
+@@ -0,0 +1,58 @@
++using SmartPerformanceDoctor.Diagnostics;
++using SmartPerformanceDoctor.App.Services.SystemCare;
++using Xunit;
++
++namespace SmartPerformanceDoctor.Tests;
++
++public sealed class WO07PerformanceTests
++{
++    private static DiagnosticSnapshot Fixture(Func<int, PerformanceSample> make, string workload = "Unspecified", long lost = 0) =>
++        new(DateTimeOffset.Parse("2026-10-11T00:00:00Z"), 30, "Synthetic", Enumerable.Range(1, 30).Select(make).ToArray(), [], 100, lost, 0, 0, 0, workload, [], 0, 0);
++    private static PerformanceSample S(int i, double? cpu = 10, double? available = 60, double? commit = 40, double? latency = 1,
++        double? queue = 0, double? iops = 0) => new(i, cpu, available, commit, latency, queue, 1000, 1000, iops, 0, [], new Dictionary<string,double?>(), [], 0);
++    [Fact] public void SustainedCpuIsCandidate() => Assert.Contains(BottleneckAnalyzer.Analyze(Fixture(i => S(i, 95))), f => f.Category == "CpuSaturation" && f.Severity == "Candidate" && f.Confidence == 1);
++    [Fact] public void SinglePeakIsTransient() => Assert.DoesNotContain(BottleneckAnalyzer.Analyze(Fixture(i => S(i, i == 15 ? 99 : 10))), f => f.Category == "CpuSaturation");
++    [Theory] [InlineData(1)] [InlineData(1000)] public void ThroughputAloneIsNotDiskBottleneck(double bytes) => Assert.DoesNotContain(BottleneckAnalyzer.Analyze(Fixture(i => S(i) with { ReadBytesPerSecond = bytes })), f => f.Category == "DiskIoPressure");
++    [Theory] [InlineData(30, 2, 200)] [InlineData(80, 4, 10)] public void SequentialAndRandomPressureRequireLatencyQueueAndOperations(double latency, double queue, double ops) => Assert.Contains(BottleneckAnalyzer.Analyze(Fixture(i => S(i, latency: latency, queue: queue, iops: ops))), f => f.Category == "DiskIoPressure");
++    [Fact] public void SustainedMemoryPressure() => Assert.Contains(BottleneckAnalyzer.Analyze(Fixture(i => S(i, available: 5, commit: 95))), f => f.Category == "MemoryPressure");
++    [Fact] public void ExpectedWorkloadIsNotAbnormal() => Assert.Contains(BottleneckAnalyzer.Analyze(Fixture(i => S(i, 98), "ExpectedHighLoad")), f => f.Category == "CpuSaturation" && f.Severity == "ExpectedWorkload");
++    [Fact] public void MixedProcessesHaveStableContribution() => Assert.Contains(BottleneckAnalyzer.Analyze(Fixture(i => S(i, 95) with { Processes = [new("fixtureA", 55, 100, i), new("fixtureB", 25, 100, i)] })), f => f.Category == "ProcessContribution.fixtureA");
++    [Fact] public void LostEventsExposeLimitations() => Assert.All(BottleneckAnalyzer.Analyze(Fixture(i => S(i), lost: 10)), f => Assert.Contains(f.Limitations, l => l.Contains("lost")));
++    [Fact] public void MissingCountersRemainUnknown() => Assert.Contains(BottleneckAnalyzer.Analyze(Fixture(i => S(i, latency: null))), f => f.Category == "InsufficientEvidence.DiskIoPressure" && f.Confidence == 0);
++    [Theory] [InlineData(-1)] [InlineData(101)] [InlineData(double.NaN)] [InlineData(double.PositiveInfinity)] public void InvalidCpuRejected(double value) => Assert.Contains(BottleneckAnalyzer.Analyze(Fixture(i => S(i, value))), f => f.Category == "InsufficientEvidence.CpuSaturation");
++    [Theory] [InlineData(-1)] [InlineData(double.NaN)] public void InvalidDiskQueueRemainsUnknown(double queue) => Assert.Contains(BottleneckAnalyzer.Analyze(Fixture(i => S(i, latency: 30, queue: queue, iops: 10))), f => f.Category == "InsufficientEvidence.DiskIoPressure");
++    [Fact] public void InvalidCommitRemainsUnknown() => Assert.Contains(BottleneckAnalyzer.Analyze(Fixture(i => S(i, available: 5, commit: -1))), f => f.Category == "InsufficientEvidence.MemoryPressure");
++    [Fact] public void ReversedTimeRejected() => Assert.All(BottleneckAnalyzer.Analyze(Fixture(i => S(i, 95) with { Seconds = 31 - i })), f => Assert.Equal(0, f.Confidence));
++    [Fact] public void ShortWindowIsInsufficient() => Assert.Contains(BottleneckAnalyzer.Analyze(Fixture(i => S(i, 95)) with { DurationSeconds = 2 }), f => f.Severity == "Unknown");
++    [Fact] public void SparseMeasurementsAreInsufficient() => Assert.Contains(BottleneckAnalyzer.Analyze(Fixture(i => S(i, i < 5 ? 95 : null))), f => f.Category == "InsufficientEvidence.CpuSaturation");
++    [Fact] public void LongMissingGapDoesNotBecomeSustained() => Assert.DoesNotContain(BottleneckAnalyzer.Analyze(Fixture(i => S(i, i % 5 == 0 ? null : 95))), f => f.Category == "CpuSaturation");
++    [Fact] public void AdapterNeverProvidesRepair() => Assert.All(PerformanceFindingAdapter.Convert(Fixture(i => S(i, 95))), f => { Assert.False(f.CanAutoApply); Assert.Null(f.TargetPath); Assert.NotEmpty(f.Evidence); });
++    [Fact] public void ResourcePolicyRejectsUnboundedSettings() => Assert.Throws<ArgumentOutOfRangeException>(() => new SamplingPolicy(DurationSeconds: 121).Validate());
++    [Fact] public void StatisticsUseInterpolation() { var d = Statistics.Describe([1, 2, 3, 4]); Assert.Equal(2.5, d.Median); Assert.Equal(3.85, d.P95!.Value, 5); }
++    [Fact] public void EmptyDistributionIsUnknown() => Assert.Null(Statistics.Describe([]).Median);
++    [Fact] public void QueueOverflowIsMeasured() { var buffer = new EventBuffer(32); for (var i = 0; i < 40; i++) buffer.Offer(new(0, 1, false, 1, false)); Assert.Equal(40, buffer.Received); Assert.Equal(8, buffer.Dropped); Assert.Equal(32, buffer.Drain().Count); }
++    [Fact] public void MalformedEventsAreDropped() { var buffer = new EventBuffer(32); buffer.Offer(new(0, -1, false, double.NaN, false)); Assert.Empty(buffer.Drain()); Assert.Equal(1, buffer.Dropped); }
++    [Fact] public void NormalizerRejectsCounterSentinels() { var sample = Normalizer.Normalize(S(1, double.NaN, latency: -1) with { ReadBytesPerSecond = double.PositiveInfinity }); Assert.Null(sample.CpuPercent); Assert.Null(sample.DiskLatencyMilliseconds); Assert.Null(sample.ReadBytesPerSecond); }
++    [Fact] public void ErrorReporterDoesNotLeakExceptionPaths() => Assert.Equal(new CollectionError("fixture", "PermissionDenied"), ErrorReporter.From("fixture", new UnauthorizedAccessException(@"C:\Users\secret\vault")));
++    private sealed class ThrowProgress : IProgress<PerformanceSample> { public void Report(PerformanceSample value) => throw new IOException("synthetic observer failure"); }
++    [Fact] public async Task CollectorExceptionPreservesEvidence()
++    {
++        var result = await new PerformanceCollector().CollectAsync(new(DurationSeconds: 30), CancellationToken.None, new ThrowProgress());
++        Assert.Contains(result.Errors, e => e.Provider == "Collector" && e.Code == "IOException");
++        Assert.Single(result.Samples);
++        Assert.All(BottleneckAnalyzer.Analyze(result), f => Assert.Equal(0, f.Confidence));
++    }
++    [Fact] public async Task CancellationAndSessionConflictAreContained()
++    {
++        using var cancel = new CancellationTokenSource();
++        var collector = new PerformanceCollector();
++        var first = collector.CollectAsync(new(DurationSeconds: 5), cancel.Token);
++        await Task.Delay(100);
++        await Assert.ThrowsAsync<InvalidOperationException>(() => collector.CollectAsync(new(DurationSeconds: 5), CancellationToken.None));
++        cancel.Cancel();
++        var snapshot = await first;
++        Assert.Contains(snapshot.Errors, e => e.Code == "Cancelled");
++        using var again = new CancellationTokenSource(); again.Cancel();
++        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => collector.CollectAsync(new(), again.Token));
++    }
++}
+diff --git a/tools/SmartPerformanceDoctor.DiagnosticsProbe/Program.cs b/tools/SmartPerformanceDoctor.DiagnosticsProbe/Program.cs
+new file mode 100644
+index 0000000..81b7ffb
+--- /dev/null
++++ b/tools/SmartPerformanceDoctor.DiagnosticsProbe/Program.cs
+@@ -0,0 +1,20 @@
++using SmartPerformanceDoctor.Diagnostics;
++using Microsoft.Diagnostics.Tracing.Session;
++using System.Text.Json;
++var seconds = args.Length > 0 && int.TryParse(args[0], out var duration) ? duration : 10;
++var collector = new PerformanceCollector();
++var result = await collector.CollectAsync(new(DurationSeconds: seconds), CancellationToken.None);
++var analysisClock = System.Diagnostics.Stopwatch.StartNew();
++var findings = BottleneckAnalyzer.Analyze(result);
++analysisClock.Stop();
++var json = JsonSerializer.Serialize(new {
++    environment = new { os = Environment.OSVersion.ToString(), logicalProcessors = Environment.ProcessorCount,
++        traceEvent = typeof(TraceEventSession).Assembly.GetName().Version?.ToString(), elevated = TraceEventSession.IsElevated() },
++    snapshot = result, findings, analysisMilliseconds = analysisClock.Elapsed.TotalMilliseconds,
++    cpu = Statistics.Describe(result.Samples.Select(s => s.CpuPercent)),
++    memory = Statistics.Describe(result.Samples.Select(s => s.AvailableMemoryPercent)),
++    overheadPercentOfMachine = 100 * result.CollectorCpuSeconds / result.DurationSeconds / Environment.ProcessorCount
++}, new JsonSerializerOptions { WriteIndented = true });
++if (args.Length > 1) await File.WriteAllTextAsync(args[1], json);
++else Console.WriteLine(json);
++return result.Samples.Any(s => s.CpuPercent.HasValue && s.AvailableMemoryPercent.HasValue) ? 0 : 1;
+diff --git a/tools/SmartPerformanceDoctor.DiagnosticsProbe/SmartPerformanceDoctor.DiagnosticsProbe.csproj b/tools/SmartPerformanceDoctor.DiagnosticsProbe/SmartPerformanceDoctor.DiagnosticsProbe.csproj
+new file mode 100644
+index 0000000..6d3e3c7
+--- /dev/null
++++ b/tools/SmartPerformanceDoctor.DiagnosticsProbe/SmartPerformanceDoctor.DiagnosticsProbe.csproj
+@@ -0,0 +1,4 @@
++<Project Sdk="Microsoft.NET.Sdk">
++  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0-windows10.0.26100.0</TargetFramework><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
++  <ItemGroup><ProjectReference Include="../../src/SmartPerformanceDoctor.Diagnostics/SmartPerformanceDoctor.Diagnostics.csproj" /></ItemGroup>
++</Project>

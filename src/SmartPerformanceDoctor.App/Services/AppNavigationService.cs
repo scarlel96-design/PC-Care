@@ -97,6 +97,7 @@ public static class AppNavigationService
             "VerifiedRepairPage" => typeof(Views.VerifiedRepairPage),
             "ErrorBundlePage" => typeof(Views.ErrorBundlePage),
             "AppDiagnosticsPage" => typeof(Views.AppDiagnosticsPage),
+            "PerformanceDiagnosticsPage" => typeof(Views.PerformanceDiagnosticsPage),
             "ReportPage" => typeof(Views.ReportPage),
             "RepairLogPage" => typeof(Views.RepairLogPage),
             "CrashLogPage" => typeof(Views.CrashLogPage),

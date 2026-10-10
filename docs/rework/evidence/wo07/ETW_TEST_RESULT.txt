@@ -1,0 +1,11 @@
+STATUS: PARTIAL
+IMPLEMENTATION: TraceEvent session controller and bounded numeric parser
+ACTUAL WINDOWS INPUT: 3 nonadmin 30-second captures
+ACTUAL OUTPUT: ETW PermissionDenied; native and PDH measurements retained; hard faults and context switches null
+EXIT CODE: 0 for capture probe
+SYNTHETIC INPUT: 40 events; queue capacity 32
+SYNTHETIC OUTPUT: 32 retained; 8 drops
+PERFORMANCE TESTS: 32 passed; 0 failed; 0 skipped
+ELEVATED KERNEL ETW: BLOCKED
+INDEPENDENT PERFVIEW COMPARISON: NOT TESTED
+WINDOWS 10 / GUI: NOT TESTED

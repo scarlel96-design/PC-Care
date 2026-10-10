@@ -10,6 +10,7 @@
             <StackPanel Spacing="12">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <Button Content="다시 검사" Click="RefreshDiagnostics"/>
+                    <Button Content="성능 병목 측정" Click="OpenPerformance"/>
                     <Button Content="앱 폴더 열기" Click="OpenAppFolder"/>
                 </StackPanel>
                 <ListView x:Name="DiagnosticsList" MinHeight="420">
