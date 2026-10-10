@@ -40,6 +40,24 @@ try {
     Invoke-Probe 'recover' $fixture 'ZERO'
     Invoke-Probe 'verify' $fixture 'ZERO'
 
+    $journalPoints = @('JournalTempCreated','JournalPartialWrite','JournalFlushed','JournalBeforeReplace','JournalAfterReplace')
+    foreach ($point in @('AfterRollbackStarted','BeforeRestoredJournal') + $journalPoints) {
+        $fixture = Join-Path $output ('recovery-'+$point)
+        Invoke-Probe 'prepare' $fixture 'ZERO'
+        Invoke-Probe 'apply-kill' $fixture 'NONZERO'
+        Invoke-Probe ('recover-kill:'+$point) $fixture 'NONZERO'
+        Invoke-Probe 'recover' $fixture 'ZERO'
+        Invoke-Probe 'verify' $fixture 'ZERO'
+    }
+    foreach ($point in $journalPoints) {
+        $fixture = Join-Path $output ('restored-journal-'+$point)
+        Invoke-Probe 'prepare' $fixture 'ZERO'
+        Invoke-Probe 'apply-kill' $fixture 'NONZERO'
+        Invoke-Probe ('recover-final-kill:'+$point) $fixture 'NONZERO'
+        Invoke-Probe 'recover' $fixture 'ZERO'
+        Invoke-Probe 'verify' $fixture 'ZERO'
+    }
+
     $fixture = Join-Path $output 'detached-image'
     Invoke-Probe 'prepare-self' $fixture 'ZERO'
     $holderPath = Join-Path $fixture 'install/engine/SmartPerformanceDoctor.UpdateRecoveryProbe.exe'

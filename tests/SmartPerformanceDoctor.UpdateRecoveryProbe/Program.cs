@@ -3,7 +3,10 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using SmartPerformanceDoctor.UpdateEngine;
 
-if (args.Length != 2 || (args[0] is not ("prepare" or "prepare-self" or "hold" or "verify-updated" or "apply" or "apply-kill" or "recover-kill" or "recover" or "verify" or "verify-orphan") && !args[0].StartsWith("kill:", StringComparison.Ordinal))) return 2;
+if (args.Length != 2 || (args[0] is not ("prepare" or "prepare-self" or "hold" or "verify-updated" or "apply" or "apply-kill" or "recover-kill" or "recover" or "verify" or "verify-orphan") &&
+    !args[0].StartsWith("kill:", StringComparison.Ordinal) &&
+    !args[0].StartsWith("recover-kill:", StringComparison.Ordinal) &&
+    !args[0].StartsWith("recover-final-kill:", StringComparison.Ordinal))) return 2;
 var root = Path.GetFullPath(args[1]);
 var install = Path.Combine(root, "install");
 var work = Path.Combine(root, "work");
@@ -113,6 +116,20 @@ try
         var result = transaction.Recover(install);
         Console.WriteLine($"BEFORE={before.State}:{before.Code} RESULT={result.Stage}:{result.Code}");
         return result.Stage == UpdateStage.Restored ? 0 : 5;
+    }
+    if (args[0].StartsWith("recover-kill:", StringComparison.Ordinal) ||
+        args[0].StartsWith("recover-final-kill:", StringComparison.Ordinal))
+    {
+        var finalJournal = args[0].StartsWith("recover-final-kill:", StringComparison.Ordinal);
+        var prefix = finalJournal ? "recover-final-kill:" : "recover-kill:";
+        if (!Enum.TryParse<UpdateFaultPoint>(args[0][prefix.Length..], out var target) || !Enum.IsDefined(target)) return 2;
+        var armed = !finalJournal;
+        transaction.Recover(install, faultInjector: point =>
+        {
+            if (point == UpdateFaultPoint.BeforeRestoredJournal) armed = true;
+            if (armed && point == target) Crash("WO06 synthetic recovery termination: " + point);
+        });
+        return 4;
     }
     if (args[0] == "recover-kill")
     {
