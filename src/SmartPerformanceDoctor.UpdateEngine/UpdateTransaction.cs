@@ -32,6 +32,8 @@ public sealed class UpdateFileJournal
     public string OriginalIdentity { get; set; } = "";
     public string BackupIdentity { get; set; } = "";
     public string InstalledIdentity { get; set; } = "";
+    public string TemporaryPath { get; set; } = "";
+    public bool TemporaryReady { get; set; }
     public string Path { get; set; } = "";
     public bool Existed { get; set; }
     public long OriginalLength { get; set; }
@@ -58,7 +60,9 @@ public enum UpdateFaultPoint
     DuringBackupCreation, AfterBackupVerification, AfterApplyingJournal,
     AfterFirstReplacement, BeforeReplacement, AfterLastReplacement,
     DuringPostApplyVerification, BeforeCommittedJournal, AfterRollbackStarted,
-    DuringRollbackCopy, BeforeRestoredJournal, BeforeFailureJournal
+    DuringRollbackCopy, BeforeRestoredJournal, BeforeFailureJournal,
+    AfterNewFileIntent, AfterNewFileCreated, AfterNewFileIdentity, BeforeNewFileRename, AfterNewFileRename,
+    JournalTempCreated, JournalPartialWrite, JournalFlushed, JournalBeforeReplace, JournalAfterReplace
 }
 
 public sealed record UpdateRecoveryStatus(UpdateRecoveryState State, string Code, string TransactionId);
@@ -68,6 +72,7 @@ public sealed class UpdateTransaction
     private readonly PublisherTrustPolicy _policy;
     private readonly string _workRoot;
     private readonly bool _strictAcl;
+    private Action<UpdateFaultPoint>? _journalFault;
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
     private const int MaxJournalFiles = 4096;
     private const int MaxJournalBytes = 1024 * 1024;
@@ -80,10 +85,17 @@ public sealed class UpdateTransaction
         _strictAcl = strictAcl;
     }
 
+    public void InitializeProtectedRoot()
+    {
+        if (!_strictAcl) throw new InvalidOperationException("protected mode required");
+        SecureWorkRoot();
+    }
+
     public TransactionResult Apply(string packagePath, string installRoot, string currentVersion,
         Action<int>? afterFileApplied = null, Func<string, bool>? postApplyVersionCheck = null,
         Action<UpdateFaultPoint>? faultInjector = null)
     {
+        _journalFault = faultInjector;
         installRoot = Path.GetFullPath(installRoot);
         EnsureRoot(installRoot);
         if (_strictAcl) SecureWorkRoot();
@@ -101,6 +113,7 @@ public sealed class UpdateTransaction
             if (_strictAcl) { VerifyProtectedAcl(dir); AllowReadOnlyInspection(dir); }
             if (prior.Stage is not (UpdateStage.Committed or UpdateStage.Restored))
                 return new(UpdateStage.RecoveryRequired, "PRIOR-TRANSACTION", prior.TransactionId, 0);
+            if (prior.SchemaVersion == 1) ArchiveLegacyTerminal(dir, installRoot);
             priorJournals.Add(prior);
         }
 
@@ -217,11 +230,21 @@ public sealed class UpdateTransaction
                 retained.Add(sourceLease);
                 VerifyProtectedFile(sourceLease, Path.GetDirectoryName(Resolve(stageDir, relative))!);
                 sourceLease.Verify(expected.Length, expected.Sha256);
-                var targetLease = WindowsFileBoundary.OpenWrite(installRoot, relative, create: !entry.Existed);
+                if (!entry.Existed)
+                {
+                    entry.TemporaryPath = Path.Combine(Path.GetDirectoryName(relative) ?? "",
+                        ".pccare-" + id + "-" + Guid.NewGuid().ToString("N") + ".pending");
+                    WriteJournal(txDir, journal);
+                    faultInjector?.Invoke(UpdateFaultPoint.AfterNewFileIntent);
+                }
+                var targetLease = WindowsFileBoundary.OpenWrite(installRoot,
+                    entry.Existed ? relative : entry.TemporaryPath, create: !entry.Existed, deletable: !entry.Existed);
                 retained.Add(targetLease);
+                if (!entry.Existed) faultInjector?.Invoke(UpdateFaultPoint.AfterNewFileCreated);
                 if (entry.Existed) targetLease.Verify(entry.OriginalLength, entry.OriginalSha256, entry.OriginalIdentity);
                 entry.InstalledIdentity = targetLease.Identity;
                 WriteJournal(txDir, journal); // Record new-file identity before writing its content.
+                if (!entry.Existed) faultInjector?.Invoke(UpdateFaultPoint.AfterNewFileIdentity);
                 prepared.Add(entry.Path, (sourceLease, targetLease));
             }
             // Acquire every destination before changing any existing file.
@@ -233,6 +256,14 @@ public sealed class UpdateTransaction
                 faultInjector?.Invoke(UpdateFaultPoint.BeforeReplacement);
                 targetLease.CopyFrom(sourceLease);
                 targetLease.Verify(expected.Length, expected.Sha256);
+                if (!entry.Existed)
+                {
+                    entry.TemporaryReady = true;
+                    WriteJournal(txDir, journal);
+                    faultInjector?.Invoke(UpdateFaultPoint.BeforeNewFileRename);
+                    targetLease.RenameOpenedFile(Resolve(installRoot, Relative(entry.Path)));
+                    faultInjector?.Invoke(UpdateFaultPoint.AfterNewFileRename);
+                }
                 entry.Applied = true;
                 WriteJournal(txDir, journal);
                 count++;
@@ -290,6 +321,7 @@ public sealed class UpdateTransaction
 
     public TransactionResult Recover(string installRoot, Action<UpdateFaultPoint>? faultInjector = null)
     {
+        _journalFault = faultInjector;
         installRoot = Path.GetFullPath(installRoot);
         EnsureRoot(installRoot);
         if (_strictAcl) SecureWorkRoot();
@@ -305,7 +337,11 @@ public sealed class UpdateTransaction
                 return new(UpdateStage.RecoveryRequired, reason, "", 0);
             if (_strictAcl) { VerifyProtectedAcl(dir); AllowReadOnlyInspection(dir); }
             if (journal is null) return new(UpdateStage.RecoveryRequired, "JOURNAL-MISSING", "", 0);
-            if (journal.Stage is UpdateStage.Committed or UpdateStage.Restored) continue;
+            if (journal.Stage is UpdateStage.Committed or UpdateStage.Restored)
+            {
+                if (journal.SchemaVersion == 1) ArchiveLegacyTerminal(dir, installRoot);
+                continue;
+            }
             if (journal.Stage < UpdateStage.Applying)
             {
                 journal.Stage = UpdateStage.Restored;
@@ -381,7 +417,8 @@ public sealed class UpdateTransaction
             if (!name.StartsWith("tx-", StringComparison.Ordinal) ||
                 !Guid.TryParseExact(name[3..], "N", out _)) return false;
             var path = Path.Combine(directory, "journal.json");
-            if (!File.Exists(path) || (File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0)
+            if ((!File.Exists(path) && !File.Exists(Path.Combine(directory, "journal.previous.json"))) ||
+                (File.Exists(path) && (File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0))
             {
                 reason = "JOURNAL-MISSING";
                 return false;
@@ -392,6 +429,7 @@ public sealed class UpdateTransaction
                 !Enum.IsDefined(journal.Stage) || journal.Files is null || journal.Files.Count > MaxJournalFiles ||
                 journal.Failure is null || journal.Failure.Length > MaxFailureCharacters)
                 return false;
+            if (journal.SchemaVersion == 1) return ValidateLegacyTerminal(directory, installRoot, journal, out reason);
             if (journal.SchemaVersion != 2 || journal.InstallIdentity != DirectoryIdentity(installRoot) ||
                 journal.TransactionIdentity != DirectoryIdentity(directory))
             {
@@ -409,6 +447,11 @@ public sealed class UpdateTransaction
                     entry.InstalledIdentity is null ||
                     (entry.InstalledIdentity.Length != 0 && !IsIdentity(entry.InstalledIdentity)))
                     return false;
+                if (entry.TemporaryPath is null || (entry.TemporaryPath.Length != 0 &&
+                    (entry.Existed || !SignedPackage.SafeRelativePath("payload/" + entry.TemporaryPath.Replace('\\', '/')) ||
+                     !Path.GetFileName(entry.TemporaryPath).StartsWith(".pccare-" + journal.TransactionId + "-", StringComparison.Ordinal) ||
+                     !entry.TemporaryPath.EndsWith(".pending", StringComparison.Ordinal) ||
+                     Path.GetDirectoryName(entry.TemporaryPath) != Path.GetDirectoryName(Relative(entry.Path))))) return false;
             }
             var backup = Path.Combine(directory, "backup");
             if (Directory.Exists(backup))
@@ -429,6 +472,74 @@ public sealed class UpdateTransaction
 
     private static bool IsSha256(string? value) => value is { Length: 64 } &&
         value.All(c => Uri.IsHexDigit(c));
+
+    private bool ValidateLegacyTerminal(string directory, string installRoot, UpdateJournal journal, out string reason)
+    {
+        reason = "LEGACY-RECOVERY-REQUIRED";
+        if (journal.Stage is not (UpdateStage.Committed or UpdateStage.Restored)) return false;
+        if (journal.InstallIdentity is null || journal.TransactionIdentity is null ||
+            journal.InstallIdentity.Length != 0 || journal.TransactionIdentity.Length != 0 || journal.Files.Count == 0)
+            return false;
+        if (_strictAcl) VerifyProtectedAcl(directory);
+        var receiptPath = Path.Combine(directory, "legacy-terminal.receipt");
+        if (File.Exists(receiptPath))
+        {
+            using var receipt = WindowsFileBoundary.OpenRead(directory, "legacy-terminal.receipt");
+            VerifyProtectedFile(receipt, directory);
+            if (receipt.Stream.Length > 256) return false;
+            using var reader = new StreamReader(receipt.Stream);
+            if (reader.ReadToEnd() != LegacyFingerprint(directory, installRoot)) return false;
+            reason = "LEGACY-ARCHIVED-READONLY";
+            return true;
+        }
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var entry in journal.Files)
+        {
+            if (entry is null || entry.OriginalIdentity is null || entry.BackupIdentity is null || entry.InstalledIdentity is null ||
+                string.IsNullOrWhiteSpace(entry.Path) || !SignedPackage.SafeRelativePath(entry.Path) || !seen.Add(entry.Path) || !IsSha256(entry.NewSha256) ||
+                entry.InstalledIdentity.Length != 0 || entry.OriginalIdentity.Length != 0 || entry.BackupIdentity.Length != 0)
+                return false;
+            var relative = Relative(entry.Path);
+            if (entry.Existed)
+            {
+                if (!IsSha256(entry.OriginalSha256) || entry.OriginalLength < 0) return false;
+                using var backup = WindowsFileBoundary.OpenRead(Path.Combine(directory, "backup"), relative);
+                VerifyProtectedFile(backup, Path.Combine(directory, "backup"));
+                backup.Verify(entry.OriginalLength, entry.OriginalSha256);
+            }
+            if (journal.Stage == UpdateStage.Restored && !entry.Existed)
+            { if (File.Exists(Resolve(installRoot, relative))) return false; }
+            else
+            {
+                using var target = WindowsFileBoundary.OpenRead(installRoot, relative);
+                if (target.Hash() != (journal.Stage == UpdateStage.Committed ? entry.NewSha256 : entry.OriginalSha256)) return false;
+            }
+        }
+        reason = "LEGACY-TERMINAL-READONLY";
+        return true;
+    }
+
+    private string LegacyFingerprint(string directory, string installRoot)
+    {
+        using var original = WindowsFileBoundary.OpenRead(directory, "journal.json");
+        VerifyProtectedFile(original, directory);
+        return original.Hash() + "|" + DirectoryIdentity(installRoot) + "|" + DirectoryIdentity(directory);
+    }
+
+    private void ArchiveLegacyTerminal(string directory, string installRoot)
+    {
+        if (File.Exists(Path.Combine(directory, "legacy-terminal.receipt"))) return;
+        using var parent = WindowsFileBoundary.PinDirectory(directory);
+        var name = "legacy-" + Guid.NewGuid().ToString("N") + ".new";
+        using (var receipt = WindowsFileBoundary.OpenWrite(directory, name, true))
+        {
+            VerifyProtectedFile(receipt, directory);
+            receipt.Stream.Write(System.Text.Encoding.UTF8.GetBytes(LegacyFingerprint(directory, installRoot)));
+            receipt.Stream.Flush(true);
+        }
+        parent.Validate();
+        File.Move(Path.Combine(directory, name), Path.Combine(directory, "legacy-terminal.receipt"));
+    }
 
     private static bool IsIdentity(string? value) => value is { Length: 49 } && value[16] == ':' &&
         value.Where((_, index) => index != 16).All(Uri.IsHexDigit);
@@ -473,8 +584,16 @@ public sealed class UpdateTransaction
                         if (!IsIdentity(entry.InstalledIdentity)) throw new InvalidDataException("DELETE-IDENTITY-MISSING");
                         target = WindowsFileBoundary.OpenWrite(installRoot, relative, deletable: true);
                         target.Validate(entry.InstalledIdentity);
-                        if (entry.Applied && target.Hash() != entry.NewSha256)
+                        if ((entry.Applied || entry.TemporaryReady) && target.Hash() != entry.NewSha256)
                             throw new InvalidDataException("DELETE-TARGET-CONTENT-CHANGED");
+                    }
+                    else if (entry.TemporaryPath.Length != 0 && File.Exists(Resolve(installRoot, entry.TemporaryPath)))
+                    {
+                        if (!IsIdentity(entry.InstalledIdentity)) throw new InvalidDataException("TEMPORARY-IDENTITY-MISSING");
+                        target = WindowsFileBoundary.OpenWrite(installRoot, entry.TemporaryPath, deletable: true);
+                        target.Validate(entry.InstalledIdentity);
+                        if (entry.TemporaryReady && target.Hash() != entry.NewSha256)
+                            throw new InvalidDataException("TEMPORARY-CONTENT-CHANGED");
                     }
                     leases.Add((entry, backup, target));
                 }
@@ -663,13 +782,31 @@ public sealed class UpdateTransaction
 
     private UpdateJournal? ReadJournal(string directory)
     {
-        using var file = WindowsFileBoundary.OpenRead(directory, "journal.json");
+        try { return ReadJournalFile(directory, "journal.json"); }
+        catch (Exception ex) when (ex is JsonException ||
+            (ex is IOException && !File.Exists(Path.Combine(directory, "journal.json"))))
+        {
+            // Recover only parse loss or an absent primary. Semantic rejection never selects an older record.
+            return ReadJournalFile(directory, "journal.previous.json");
+        }
+    }
+
+    private UpdateJournal? ReadJournalFile(string directory, string name)
+    {
+        using var file = WindowsFileBoundary.OpenRead(directory, name);
         VerifyProtectedFile(file, directory);
         if (file.Stream.Length > MaxJournalBytes) throw new InvalidDataException("journal exceeds size limit");
         using var document = JsonDocument.Parse(file.Stream);
         ValidateJsonProperties(document.RootElement);
-        return document.RootElement.Deserialize<UpdateJournal>(new JsonSerializerOptions
-            { UnmappedMemberHandling = System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow });
+        var known = typeof(UpdateJournal).GetProperties().Select(p => p.Name).ToHashSet(StringComparer.Ordinal);
+        if (document.RootElement.EnumerateObject().Any(p => !known.Contains(p.Name)))
+            throw new InvalidDataException("unknown journal property");
+        UpdateJournal? journal;
+        try { journal = document.RootElement.Deserialize<UpdateJournal>(new JsonSerializerOptions
+            { UnmappedMemberHandling = System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow }); }
+        catch (JsonException ex) { throw new InvalidDataException("journal schema invalid", ex); }
+        if (journal is not null && !document.RootElement.TryGetProperty("SchemaVersion", out _)) journal.SchemaVersion = 1;
+        return journal;
     }
 
     private static void ValidateJsonProperties(JsonElement element)
@@ -693,6 +830,12 @@ public sealed class UpdateTransaction
         if (journal.TransactionIdentity != parent.Identity) throw new IOException("JOURNAL-DIRECTORY-IDENTITY");
         var path = Path.Combine(directory, "journal.json");
         var relative = "journal-" + Guid.NewGuid().ToString("N") + ".new";
+        if (File.Exists(Path.Combine(directory, "journal.previous.json")))
+        {
+            using var previous = WindowsFileBoundary.OpenRead(directory, "journal.previous.json");
+            VerifyProtectedFile(previous, directory);
+            previous.Validate();
+        }
         if (journal.Failure.Length > MaxFailureCharacters) journal.Failure = journal.Failure[..MaxFailureCharacters];
         var bytes = JsonSerializer.SerializeToUtf8Bytes(journal, JsonOptions);
         if (journal.Files.Count > MaxJournalFiles || bytes.Length > MaxJournalBytes)
@@ -706,14 +849,23 @@ public sealed class UpdateTransaction
         using (var file = WindowsFileBoundary.OpenWrite(directory, relative, create: true))
         {
             VerifyProtectedFile(file, directory);
-            file.Stream.Write(bytes);
+            _journalFault?.Invoke(UpdateFaultPoint.JournalTempCreated);
+            var midpoint = bytes.Length / 2;
+            file.Stream.Write(bytes.AsSpan(0, midpoint));
+            _journalFault?.Invoke(UpdateFaultPoint.JournalPartialWrite);
+            file.Stream.Write(bytes.AsSpan(midpoint));
             file.Stream.Flush(flushToDisk: true);
+            _journalFault?.Invoke(UpdateFaultPoint.JournalFlushed);
             file.Validate();
         }
         parent.Validate();
         // The protected parent ACL excludes unprivileged journal replacement.
         // Administrators remain inside the trust boundary during this rename.
-        File.Move(Path.Combine(directory, relative), path, overwrite: true);
+        _journalFault?.Invoke(UpdateFaultPoint.JournalBeforeReplace);
+        if (File.Exists(path))
+            File.Replace(Path.Combine(directory, relative), path, Path.Combine(directory, "journal.previous.json"));
+        else File.Move(Path.Combine(directory, relative), path);
+        _journalFault?.Invoke(UpdateFaultPoint.JournalAfterReplace);
     }
 
     private void VerifyProtectedFile(WindowsFileBoundary.FileLease file, string directory)
@@ -747,6 +899,7 @@ public sealed class UpdateTransaction
                 Path = file.Path, Existed = true, OriginalLength = long.MaxValue,
                 OriginalSha256 = new string('F', 64), NewSha256 = file.Sha256,
                 OriginalIdentity = new string('F', 49), BackupIdentity = new string('F', 49), InstalledIdentity = new string('F', 49),
+                TemporaryPath = Path.Combine(Path.GetDirectoryName(Relative(file.Path)) ?? "", ".pccare-" + new string('f', 32) + "-" + new string('f', 32) + ".pending"),
                 Applied = false, Restored = false
             }).ToList()
         };

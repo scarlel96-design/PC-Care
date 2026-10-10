@@ -6,6 +6,20 @@ using SmartPerformanceDoctor.UpdateEngine;
 
 try
 {
+    if (args.Length == 2 && args[0] == "fixture-vault")
+    {
+        var directory = Path.GetFullPath(args[1]);
+        if (Directory.Exists(directory)) return 3;
+        Directory.CreateDirectory(directory);
+        var source = Path.Combine(directory, "synthetic.txt");
+        File.WriteAllText(source, "WO06-SYNTHETIC-CLI");
+        using var vault = new SmartPerformanceDoctor.SecurityLab.VaultV4.LabVaultService(Path.Combine(directory, "vault"));
+        const string fixturePassword = "WO06-Synthetic-Only-42!";
+        if (!vault.Create(fixturePassword, SmartPerformanceDoctor.SecurityLab.VaultV4.LabKdfProfile.LabFast).Success ||
+            !vault.Unlock(fixturePassword).Success || !vault.ImportFile(source).Success) return 10;
+        Console.WriteLine("ENCRYPTED_LAB_FIXTURE=CREATED; SOURCE_SHA256=" + Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(source))));
+        return 0;
+    }
     if (args.Length == 3 && args[0] is "fixture-profile" or "vm-profile")
     {
         var directory = Path.GetFullPath(args[1]);

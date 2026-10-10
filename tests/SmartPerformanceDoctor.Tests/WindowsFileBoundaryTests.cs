@@ -189,8 +189,8 @@ public sealed class WindowsFileBoundaryTests
         }
         if (mutation is not ("duplicate-property" or "unknown-property" or "truncated"))
             File.WriteAllText(path, JsonSerializer.Serialize(journal));
-        Assert.Equal(UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
-        Assert.Equal("new", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
+        Assert.Equal(mutation == "truncated" ? UpdateStage.Restored : UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
+        Assert.Equal(mutation == "truncated" ? "old" : "new", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
     }
 
     [Fact]

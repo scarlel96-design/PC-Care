@@ -20,16 +20,20 @@ public static class UpdateRecoveryCoordinator
     {
         var helper = Path.Combine(UpdatePaths.AppInstallDirectory, "engine",
             "SmartPerformanceDoctor.UpdateHelper.exe");
-        if (!File.Exists(helper) || (File.GetAttributes(helper) & FileAttributes.ReparsePoint) != 0)
-            return RecoveryLaunchResult.HelperMissing;
-        var info = new ProcessStartInfo(helper) { UseShellExecute = true, Verb = "runas" };
-        info.ArgumentList.Add("--recover");
-        info.ArgumentList.Add("--wait-pid");
-        info.ArgumentList.Add(Environment.ProcessId.ToString());
-        try { return Process.Start(info) is null ? RecoveryLaunchResult.Failed : RecoveryLaunchResult.Launched; }
+        try
+        {
+            try
+            {
+                if (File.Exists(helper) && UpdateBootstrap.LaunchInstalled(UpdatePaths.AppInstallDirectory, "--recover", "", Environment.ProcessId) is not null)
+                    return RecoveryLaunchResult.Launched;
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { }
+            return UpdateBootstrap.LaunchSnapshotRecovery(UpdatePaths.AppInstallDirectory, Environment.ProcessId) is null
+                ? RecoveryLaunchResult.HelperMissing : RecoveryLaunchResult.Launched;
+        }
         catch (Win32Exception ex) when (ex.NativeErrorCode == 1223)
         { return RecoveryLaunchResult.Cancelled; }
-        catch (Exception ex) when (ex is Win32Exception or InvalidOperationException)
+        catch (Exception ex) when (ex is Win32Exception or InvalidOperationException or IOException or UnauthorizedAccessException)
         { return RecoveryLaunchResult.Failed; }
     }
 }

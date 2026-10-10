@@ -70,7 +70,7 @@ public static class WindowsFileBoundary
     public sealed class FileLease : IDisposable
     {
         private readonly DirectoryPin _parent;
-        private readonly string _path;
+        private string _path;
         public FileStream Stream { get; }
         public string Identity { get; }
 
@@ -151,6 +151,29 @@ public static class WindowsFileBoundary
                 throw Error("FILE-DELETE");
         }
 
+        public void RenameOpenedFile(string destination)
+        {
+            Validate();
+            var full = Path.GetFullPath(destination);
+            if (!string.Equals(Path.GetDirectoryName(full), Path.GetDirectoryName(_path), StringComparison.OrdinalIgnoreCase))
+                throw new IOException("RENAME-PARENT-MISMATCH");
+            var name = Encoding.Unicode.GetBytes(full);
+            var offset = IntPtr.Size == 8 ? 20 : 12;
+            var size = offset + name.Length + 2;
+            var buffer = Marshal.AllocHGlobal(size);
+            try
+            {
+                for (var i = 0; i < size; i++) Marshal.WriteByte(buffer, i, 0);
+                Marshal.WriteInt32(buffer, IntPtr.Size == 8 ? 16 : 8, name.Length);
+                Marshal.Copy(name, 0, buffer + offset, name.Length);
+                if (!SetFileInformationByHandle(Stream.SafeFileHandle, 3, buffer, (uint)size))
+                    throw Error("FILE-RENAME");
+                _path = full;
+                Validate();
+            }
+            finally { Marshal.FreeHGlobal(buffer); }
+        }
+
         public void Dispose() { Stream.Dispose(); _parent.Dispose(); }
     }
 
@@ -173,7 +196,7 @@ public static class WindowsFileBoundary
         var actual = buffer.ToString();
         if (actual.StartsWith("\\\\?\\", StringComparison.Ordinal)) actual = actual[4..];
         if (!string.Equals(actual.TrimEnd('\\'), Path.GetFullPath(expected).TrimEnd('\\'), StringComparison.OrdinalIgnoreCase))
-            throw new IOException("FINAL-PATH-MISMATCH");
+            throw new IOException("FINAL-PATH-MISMATCH: " + actual + " != " + expected);
         return $"{id.Volume:X16}:{id.Low:X16}{id.High:X16}";
     }
 
@@ -196,4 +219,6 @@ public static class WindowsFileBoundary
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode)] private static extern uint GetDriveTypeW(string root);
     [DllImport("kernel32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool SetFileInformationByHandle(SafeFileHandle handle, int type, ref int info, uint size);
+    [DllImport("kernel32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool SetFileInformationByHandle(SafeFileHandle handle, int type, IntPtr info, uint size);
 }

@@ -107,18 +107,15 @@ public sealed class UpdateInstallerService
         if (package is null) return false;
         var helper = Path.Combine(UpdatePaths.AppInstallDirectory, "engine", "SmartPerformanceDoctor.UpdateHelper.exe");
         if (!File.Exists(helper) || (File.GetAttributes(helper) & FileAttributes.ReparsePoint) != 0) return false;
-        var info = new ProcessStartInfo(helper) { UseShellExecute = true, Verb = "runas" };
-        info.ArgumentList.Add("--apply");
-        info.ArgumentList.Add(package);
-        info.ArgumentList.Add("--wait-pid");
-        info.ArgumentList.Add(Environment.ProcessId.ToString());
         try
         {
-            if (Process.Start(info) is null) return false;
+            if (UpdateBootstrap.LaunchInstalled(UpdatePaths.AppInstallDirectory, "--apply", package, Environment.ProcessId) is null) return false;
             _pendingSignedPackage = null;
             return true;
         }
         catch (Win32Exception) { return false; }
         catch (InvalidOperationException) { return false; }
+        catch (IOException) { return false; }
+        catch (UnauthorizedAccessException) { return false; }
     }
 }

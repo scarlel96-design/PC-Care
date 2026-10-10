@@ -7,5 +7,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj" />
+    <ProjectReference Include="../../src/SmartPerformanceDoctor.SecurityLab/SmartPerformanceDoctor.SecurityLab.csproj" />
   </ItemGroup>
 </Project>
