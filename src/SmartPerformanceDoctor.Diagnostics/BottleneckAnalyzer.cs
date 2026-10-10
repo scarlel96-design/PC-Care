@@ -17,8 +17,12 @@ public static class BottleneckAnalyzer
             var span = samples.Count > 1 ? samples[^1].Seconds - samples[0].Seconds : 0;
             var confidence = Math.Clamp(coverage * Math.Min(1, count / 20d) * Math.Min(1, span / 20d), 0, 1);
             if (!validTime) confidence = 0;
+            var provider = snapshot.SourceProvider == "Synthetic" ? "Synthetic" :
+                category.Contains("CpuSaturation", StringComparison.Ordinal) ? "CsWin32.GetSystemTimes" :
+                category.Contains("MemoryPressure", StringComparison.Ordinal) ? "CsWin32.GlobalMemoryStatusEx+GetPerformanceInfo" :
+                category.Contains("DiskIoPressure", StringComparison.Ordinal) ? "CsWin32.PDH" : "System.Diagnostics.Process";
             results.Add(new("perf." + category, category, evidence, $"{snapshot.StartedUtc:O} + {snapshot.DurationSeconds:F2}s", count,
-                snapshot.SourceProvider, confidence, severity, baseLimits.ToArray(), "Repeat measurement and identify the active workload; no automatic repair."));
+                provider, confidence, severity, baseLimits.ToArray(), "Repeat measurement and identify the active workload; no automatic repair."));
         }
         bool Check(string category, Func<PerformanceSample, double?> select, Func<double, bool> predicate, Func<double, bool> valid)
         {

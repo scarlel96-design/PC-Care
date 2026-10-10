@@ -27,9 +27,36 @@ public sealed class WO07PerformanceTests
     [Fact] public void SparseMeasurementsAreInsufficient() => Assert.Contains(BottleneckAnalyzer.Analyze(Fixture(i => S(i, i < 5 ? 95 : null))), f => f.Category == "InsufficientEvidence.CpuSaturation");
     [Fact] public void LongMissingGapDoesNotBecomeSustained() => Assert.DoesNotContain(BottleneckAnalyzer.Analyze(Fixture(i => S(i, i % 5 == 0 ? null : 95))), f => f.Category == "CpuSaturation");
     [Fact] public void AdapterNeverProvidesRepair() => Assert.All(PerformanceFindingAdapter.Convert(Fixture(i => S(i, 95))), f => { Assert.False(f.CanAutoApply); Assert.Null(f.TargetPath); Assert.NotEmpty(f.Evidence); });
+    [Fact] public void MemoryDurationCountsObservedIntervals()
+    {
+        var summary = MeasurementSummary.From(Fixture(i => S(i, available: i <= 10 ? 5 : 60, commit: 40)));
+        Assert.Equal(9, summary.ObservedMemoryPressureSeconds);
+        var missing = MeasurementSummary.From(Fixture(i => S(i, available: i % 2 == 0 ? null : 5, commit: 95)));
+        Assert.Equal(0, missing.ObservedMemoryPressureSeconds);
+    }
+    [Fact] public void DiskDistributionUsesActualLatencyWithoutPressureFilter()
+    {
+        var summary = MeasurementSummary.From(Fixture(i => S(i, latency: i, queue: 0)));
+        Assert.Equal(15.5, summary.DiskLatencyMilliseconds.Median);
+        Assert.Equal(28.55, summary.DiskLatencyMilliseconds.P95!.Value, 5);
+    }
     [Fact] public void ResourcePolicyRejectsUnboundedSettings() => Assert.Throws<ArgumentOutOfRangeException>(() => new SamplingPolicy(DurationSeconds: 121).Validate());
     [Fact] public void StatisticsUseInterpolation() { var d = Statistics.Describe([1, 2, 3, 4]); Assert.Equal(2.5, d.Median); Assert.Equal(3.85, d.P95!.Value, 5); }
     [Fact] public void EmptyDistributionIsUnknown() => Assert.Null(Statistics.Describe([]).Median);
+    [Fact] public void FailedByteMeasurementsRemainUnknown()
+    {
+        var sample = Normalizer.Normalize(S(1) with { TotalMemoryBytes = 0, AvailableMemoryBytes = 0, CommitBytes = 0, CommitLimitBytes = 0 });
+        Assert.Null(sample.TotalMemoryBytes); Assert.Null(sample.AvailableMemoryBytes);
+        Assert.Null(sample.CommitBytes); Assert.Null(sample.CommitLimitBytes);
+        Assert.Null(Normalizer.Normalize(S(1) with { TotalMemoryBytes = 10, AvailableMemoryBytes = 11 }).AvailableMemoryBytes);
+    }
+    [Fact] public void FindingProviderIdentifiesActualMeasurement()
+    {
+        var findings = BottleneckAnalyzer.Analyze(Fixture(i => S(i)) with { SourceProvider = "CsWin32.SystemSnapshot+PDH+TraceEvent" });
+        Assert.Equal("CsWin32.GetSystemTimes", findings.Single(f => f.Category.EndsWith("CpuSaturation")).SourceProvider);
+        Assert.Equal("CsWin32.PDH", findings.Single(f => f.Category.EndsWith("DiskIoPressure")).SourceProvider);
+        Assert.DoesNotContain(findings, f => f.SourceProvider.Contains("TraceEvent"));
+    }
     [Fact] public void QueueOverflowIsMeasured() { var buffer = new EventBuffer(32); for (var i = 0; i < 40; i++) buffer.Offer(new(0, 1, false, 1, false)); Assert.Equal(40, buffer.Received); Assert.Equal(8, buffer.Dropped); Assert.Equal(32, buffer.Drain().Count); }
     [Fact] public void MalformedEventsAreDropped() { var buffer = new EventBuffer(32); buffer.Offer(new(0, -1, false, double.NaN, false)); Assert.Empty(buffer.Drain()); Assert.Equal(1, buffer.Dropped); }
     [Fact] public void NormalizerRejectsCounterSentinels() { var sample = Normalizer.Normalize(S(1, double.NaN, latency: -1) with { ReadBytesPerSecond = double.PositiveInfinity }); Assert.Null(sample.CpuPercent); Assert.Null(sample.DiskLatencyMilliseconds); Assert.Null(sample.ReadBytesPerSecond); }

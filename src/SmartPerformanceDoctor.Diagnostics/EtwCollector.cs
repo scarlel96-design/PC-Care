@@ -20,23 +20,32 @@ public sealed class EtwCollector : IAsyncDisposable
     {
         if (_session is not null || _worker is not null) throw new InvalidOperationException("SessionAlreadyStarted");
         if (TraceEventSession.IsElevated() != true) { Error = new("ETW", "PermissionDenied"); return; }
+        var stage = "Create";
         try
         {
             // Never attach to, restart, or stop a session owned by another collector.
             _session = new TraceEventSession("PCCare.Diagnostics." + Guid.NewGuid().ToString("N"), TraceEventSessionOptions.NoRestartOnCreate)
                 { StopOnDispose = true, BufferSizeMB = 8 };
+            // Enable the kernel provider before Source creates a non-kernel session.
+            stage = "EnableKernelProvider";
+            _session.EnableKernelProvider(KernelTraceEventParser.Keywords.DiskIO | KernelTraceEventParser.Keywords.MemoryHardFaults
+                | KernelTraceEventParser.Keywords.Profile | KernelTraceEventParser.Keywords.Process | KernelTraceEventParser.Keywords.Thread | KernelTraceEventParser.Keywords.ContextSwitch);
+            stage = "Subscribe";
             void Disk(DiskIOTraceData data, bool write) => _buffer.Offer(new(data.DiskNumber, data.TransferSize, write, data.ElapsedTimeMSec, false, data.ProcessID));
             _session.Source.Kernel.DiskIORead += d => Disk(d, false);
             _session.Source.Kernel.DiskIOWrite += d => Disk(d, true);
             _session.Source.Kernel.MemoryHardFault += _ => _buffer.Offer(new(0, 0, false, 0, true));
             _session.Source.Kernel.PerfInfoSample += d => _buffer.Offer(new(0, 0, false, 0, false, d.ProcessID, CpuSample: true));
             _session.Source.Kernel.ThreadCSwitch += d => _buffer.Offer(new(0, 0, false, 0, false, d.ProcessID, ContextSwitch: true));
-            _session.EnableKernelProvider(KernelTraceEventParser.Keywords.DiskIO | KernelTraceEventParser.Keywords.MemoryHardFaults
-                | KernelTraceEventParser.Keywords.Profile | KernelTraceEventParser.Keywords.Process | KernelTraceEventParser.Keywords.Thread | KernelTraceEventParser.Keywords.ContextSwitch);
             var source = _session.Source;
-            _worker = Task.Run(() => { try { source.Process(); } catch (Exception e) { Error = new("ETW", e.GetType().Name); } });
+            _worker = Task.Run(() => { try { source.Process(); } catch (Exception e) { Error = new("ETW.Process", e.GetType().Name + ":0x" + e.HResult.ToString("X8")); } });
         }
-        catch (Exception e) { Error = new("ETW", e.GetType().Name); _session?.Dispose(); _session = null; }
+        catch (Exception e)
+        {
+            Error = new("ETW." + stage, e.GetType().Name + ":0x" + e.HResult.ToString("X8"));
+            try { _session?.Dispose(); } catch (Exception cleanup) { Error = ErrorReporter.From("ETW.Stop", cleanup); }
+            _session = null;
+        }
     }
     public (IReadOnlyList<DiskMetric> Disks, int Faults, IReadOnlyList<EtwProcessMetric> Processes, int Switches) Drain()
     {

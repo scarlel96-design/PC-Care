@@ -11,6 +11,10 @@ public static class Normalizer
         DiskQueue = Bounded(s.DiskQueue, 0, 1000000), ReadBytesPerSecond = Bounded(s.ReadBytesPerSecond, 0, 1e15),
         WriteBytesPerSecond = Bounded(s.WriteBytesPerSecond, 0, 1e15), IoPerSecond = Bounded(s.IoPerSecond, 0, 1e12),
         PageReadsPerSecond = Bounded(s.PageReadsPerSecond, 0, 1e12),
-        LogicalCpu = s.LogicalCpu.ToDictionary(p => p.Key, p => Bounded(p.Value, 0, 100))
+        LogicalCpu = s.LogicalCpu.ToDictionary(p => p.Key, p => Bounded(p.Value, 0, 100)),
+        TotalMemoryBytes = s.TotalMemoryBytes > 0 ? s.TotalMemoryBytes : null,
+        AvailableMemoryBytes = s.TotalMemoryBytes > 0 && s.AvailableMemoryBytes <= s.TotalMemoryBytes ? s.AvailableMemoryBytes : null,
+        CommitLimitBytes = s.CommitLimitBytes > 0 ? s.CommitLimitBytes : null,
+        CommitBytes = s.CommitLimitBytes > 0 && s.CommitBytes <= s.CommitLimitBytes ? s.CommitBytes : null
     };
 }
