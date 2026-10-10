@@ -22,7 +22,8 @@ public static class BottleneckAnalyzer
                 category.Contains("MemoryPressure", StringComparison.Ordinal) ? "CsWin32.GlobalMemoryStatusEx+GetPerformanceInfo" :
                 category.Contains("DiskIoPressure", StringComparison.Ordinal) ? "CsWin32.PDH" : "System.Diagnostics.Process";
             results.Add(new("perf." + category, category, evidence, $"{snapshot.StartedUtc:O} + {snapshot.DurationSeconds:F2}s", count,
-                provider, confidence, severity, baseLimits.ToArray(), "Repeat measurement and identify the active workload; no automatic repair."));
+                provider, confidence, severity, baseLimits.ToArray(), "Repeat measurement and identify the active workload; no automatic repair.")
+                { EvidenceCoverage = coverage, MeasurementQuality = validTime ? confidence : 0 });
         }
         bool Check(string category, Func<PerformanceSample, double?> select, Func<double, bool> predicate, Func<double, bool> valid)
         {
@@ -62,6 +63,16 @@ public static class BottleneckAnalyzer
             foreach (var p in contributors.Where(p => p.Count >= samples.Count * .8 && p.Cpu.Median >= 20).Take(8))
                 Add("ProcessContribution." + p.Id, $"Process {p.Id}; CPU median {p.Cpu.Median:F2}% of all logical processors.", p.Count, (double)p.Count / samples.Count);
         }
+        foreach (var id in samples.SelectMany(s => s.PhysicalDisks).Select(d => d.Identifier).Distinct().Take(64))
+            Check("DiskIoPressure." + id, s => s.PhysicalDisks.FirstOrDefault(d => d.Identifier == id) is { } d
+                && d.Queue >= 1 && d.IoPerSecond > 0 ? d.LatencyMilliseconds :
+                s.PhysicalDisks.FirstOrDefault(d => d.Identifier == id) is { LatencyMilliseconds: not null, Queue: not null, IoPerSecond: not null } ? 0 : null,
+                x => x >= 20, x => x >= 0 && x < 60000);
+        foreach (var p in samples.SelectMany(s => s.Processes).GroupBy(p => p.Identifier)
+            .Select(g => new { Id = g.Key, Values = Statistics.Describe(g.Select(p => p.CpuPercent)) })
+            .Where(p => p.Values.Count >= 8 && p.Values.Median >= 1).OrderByDescending(p => p.Values.Median).Take(8))
+            Add("ResourceConsumer." + p.Id, $"Session process {p.Id}; median CPU {p.Values.Median:F2}% of all logical processors. Consumption alone is not abnormal.",
+                p.Values.Count, Math.Min(1, (double)p.Values.Count / Math.Max(1, samples.Count)), snapshot.WorkloadContext == "ExpectedHighLoad" ? "ExpectedWorkload" : "Observation");
         return results;
     }
 }

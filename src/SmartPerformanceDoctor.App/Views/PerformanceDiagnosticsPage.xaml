@@ -15,7 +15,7 @@
                     <TextBlock x:Name="StatusText" Text="측정 대기" TextWrapping="Wrap"/>
                     <ProgressBar x:Name="Progress" Maximum="30"/>
                     <TextBlock x:Name="Metrics" Text="CPU — · 메모리 — · 디스크 —" TextWrapping="Wrap"/>
-                    <TextBlock x:Name="Coverage" Text="측정되지 않은 항목은 Unknown으로 표시합니다."
+                    <TextBlock x:Name="Coverage" Text="측정되지 않은 항목은 미측정으로 표시합니다."
                                TextWrapping="Wrap" Foreground="{StaticResource SpdMutedTextBrush}"/>
                 </StackPanel>
             </Border>
@@ -27,7 +27,6 @@
                                 <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap"/>
                                 <TextBlock Text="{Binding Detail}" TextWrapping="Wrap"/>
                                 <TextBlock Text="{Binding Evidence}" TextWrapping="Wrap" Foreground="{StaticResource SpdMutedTextBrush}"/>
-                                <TextBlock Text="{Binding Confidence}"/>
                                 <TextBlock Text="{Binding AutoApplyBlockReason}" TextWrapping="Wrap"/>
                             </StackPanel>
                         </Border>

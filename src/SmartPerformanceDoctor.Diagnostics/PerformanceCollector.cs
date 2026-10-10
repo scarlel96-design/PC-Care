@@ -24,6 +24,8 @@ public sealed class PerformanceCollector
         var clock = Stopwatch.StartNew();
         using var self = Process.GetCurrentProcess();
         var ownCpu = self.TotalProcessorTime.TotalSeconds;
+        var allocated = GC.GetTotalAllocatedBytes();
+        var identities = new ProcessIdentityRegistry();
         var peak = self.WorkingSet64;
         var errors = new List<CollectionError>();
         var samples = new List<PerformanceSample>();
@@ -39,10 +41,17 @@ public sealed class PerformanceCollector
             ["iops"] = @"\PhysicalDisk(_Total)\Disk Transfers/sec",
             ["pageReads"] = @"\Memory\Page Reads/sec"
         };
+        foreach (var (key, suffix) in new[] { ("latency", "Avg. Disk sec/Transfer"), ("queue", "Current Disk Queue Length"),
+            ("read", "Disk Read Bytes/sec"), ("write", "Disk Write Bytes/sec"), ("iops", "Disk Transfers/sec"), ("active", "% Disk Time") })
+            paths["perdisk." + key] = @"\PhysicalDisk(*)\" + suffix;
         for (var i = 0; i < Math.Min(Environment.ProcessorCount, 128); i++) paths["cpu" + i] = $@"\Processor({i})\% Processor Time";
         CounterProbe? counters = null;
         try { counters = new CounterProbe(paths); } catch (Exception e) { errors.Add(new("PDH", e.GetType().Name)); }
-        await using var etw = new EtwCollector(policy.EventQueueCapacity);
+        await using var etw = new EtwCollector(policy.EventQueueCapacity, identities, policy.EtwProfile, started);
+        var initialProcesses = Process.GetProcesses();
+        try { foreach (var process in initialProcesses.Take(8192))
+            try { identities.ObserveSnapshot(process.Id, new(process.StartTime.ToUniversalTime()), DateTimeOffset.UtcNow); } catch { } }
+        finally { foreach (var process in initialProcesses) process.Dispose(); }
         etw.Start();
         var previous = new Dictionary<string, (double Cpu, double Seconds)>();
         var salt = Guid.NewGuid().ToString("N");
@@ -72,41 +81,47 @@ public sealed class PerformanceCollector
                 try { values = counters?.Read() ?? values; } catch (Exception e) { if (!errors.Any(x => x.Provider == "PDH")) errors.Add(new("PDH", e.GetType().Name)); }
                 double? Value(string name) => values.GetValueOrDefault(name);
                 var processMetrics = new List<ProcessMetric>();
+                var failures = 0;
                 var current = new Dictionary<string, (double Cpu, double Seconds)>();
                 // Dispose every process handle, including entries beyond the configured budget.
                 var processes = Process.GetProcesses();
                 try
                 {
-                    foreach (var process in processes.Take(policy.MaxProcesses))
+                    foreach (var process in processes.Take(8192))
                     {
                         try
                         {
-                            var identity = process.Id + ":" + process.StartTime.ToUniversalTime().Ticks;
+                            var identity = identities.ObserveSnapshot(process.Id, new(process.StartTime.ToUniversalTime()), DateTimeOffset.UtcNow);
+                            if (identity is null) { failures++; continue; }
                             var cpuTime = process.TotalProcessorTime.TotalSeconds;
                             double? cpu = previous.TryGetValue(identity, out var old) && seconds > old.Seconds && cpuTime >= old.Cpu
                                 ? 100 * (cpuTime - old.Cpu) / (seconds - old.Seconds) / Environment.ProcessorCount : null;
-                            var identifier = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(salt + identity)))[..12];
+                            var identifier = identity;
                             processMetrics.Add(new(identifier, cpu is >= 0 and <= 100 ? cpu : null, process.WorkingSet64, cpuTime));
                             current[identity] = (cpuTime, seconds);
                         }
                         catch (Exception e) when (e is InvalidOperationException or System.ComponentModel.Win32Exception or NotSupportedException)
-                        { if (!errors.Any(x => x.Provider == "Process")) errors.Add(new("Process", "PartialAccessOrExited")); }
+                        { failures++; if (!errors.Any(x => x.Provider == "Process")) errors.Add(new("Process", "PartialAccessOrExited")); }
                     }
                     if (processes.Length > policy.MaxProcesses && !errors.Any(x => x.Provider == "ProcessBudget")) errors.Add(new("ProcessBudget", "Truncated"));
                 }
                 finally { foreach (var process in processes) process.Dispose(); }
+                var selected = ProcessSelection.Select(processMetrics, policy.MaxProcesses);
+                var coverage = new ProcessSelectionCoverage(processes.Length, processMetrics.Count, selected.Count, failures, Math.Max(0, processes.Length - 8192));
                 previous = current;
                 var (disks, faults, etwProcesses, switches) = etw.Drain();
                 var sample = new PerformanceSample(seconds, Environment.ProcessorCount <= 64 ? system.Cpu : null,
                     system.TotalMemory > 0 ? 100d * system.AvailableMemory / system.TotalMemory : null,
                     system.CommitLimit > 0 ? 100d * system.Commit / system.CommitLimit : null,
                     Value("latency") * 1000, Value("queue"), Value("read"), Value("write"), Value("iops"), Value("pageReads"),
-                    processMetrics, values.Where(v => v.Key.StartsWith("cpu", StringComparison.Ordinal)).ToDictionary(), disks,
-                    etw.Error is null ? faults : null) { EtwProcesses = etwProcesses, ContextSwitches = etw.Error is null ? switches : null,
+                    selected, values.Where(v => v.Key.StartsWith("cpu", StringComparison.Ordinal)).ToDictionary(), disks,
+                    policy.EtwProfile == "Detailed" && etw.Error is null && !etw.RangeReduced ? faults : null) { EtwProcesses = etwProcesses, ContextSwitches = policy.EtwProfile == "Detailed" && etw.Error is null && !etw.RangeReduced ? switches : null,
                     TotalMemoryBytes = system.TotalMemory, AvailableMemoryBytes = system.AvailableMemory,
-                    CommitBytes = system.Commit, CommitLimitBytes = system.CommitLimit };
+                    CommitBytes = system.Commit, CommitLimitBytes = system.CommitLimit, ProcessCoverage = coverage,
+                    PhysicalDisks = PerDiskNormalizer.From(values, salt) };
                 sample = Normalizer.Normalize(sample);
                 samples.Add(sample);
+                await etw.ReduceIfOverloadedAsync();
                 progress?.Report(sample);
                 self.Refresh(); peak = Math.Max(peak, self.WorkingSet64);
             }
@@ -116,6 +131,7 @@ public sealed class PerformanceCollector
         finally { counters?.Dispose(); }
         await etw.DisposeAsync();
         if (etw.Error is not null) errors.Add(etw.Error);
+        if (identities.Truncated) errors.Add(new("ProcessIdentity", "LifetimeBudgetExceeded"));
         if (!samples.Any(s => s.CpuPercent.HasValue)) errors.Add(new("SystemCpu", "Unavailable"));
         if (!samples.Any(s => s.AvailableMemoryPercent.HasValue)) errors.Add(new("PhysicalMemory", "Unavailable"));
         if (!samples.Any(s => s.CommitPercent.HasValue)) errors.Add(new("CommitMemory", "Unavailable"));
@@ -124,6 +140,7 @@ public sealed class PerformanceCollector
         if (!samples.Any(s => s.LogicalCpu.Values.Any(v => v.HasValue))) errors.Add(new("PDH.LogicalCpu", "Unavailable"));
         self.Refresh();
         return new(started, clock.Elapsed.TotalSeconds, "CsWin32.SystemSnapshot+PDH+TraceEvent", samples, errors, etw.Received, etw.Lost,
-            self.TotalProcessorTime.TotalSeconds - ownCpu, peak, clock.Elapsed.TotalMilliseconds, workload, space, startup, Environment.TickCount64 / 1000d);
+            self.TotalProcessorTime.TotalSeconds - ownCpu, peak, clock.Elapsed.TotalMilliseconds, workload, space, startup, Environment.TickCount64 / 1000d) { EtwStatistics = etw.GetStatistics(), ProcessLifetimes = identities.Export(),
+                EtwContributions = etw.ExportContributions(), ManagedAllocatedBytes = GC.GetTotalAllocatedBytes() - allocated, RequestedEtwProfile = policy.EtwProfile };
     }
 }
