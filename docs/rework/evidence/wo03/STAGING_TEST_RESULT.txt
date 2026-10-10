@@ -1,0 +1,15 @@
+WORK ITEM: WO03 protected staging and path controls
+STATUS: PARTIAL
+BASELINE SHA: bbdfe4301fa3e8b6b448596b5cd3a954c3eb0d3c
+FINAL SHA: 2bcfc7b91ea87c493b29aa956672fece16560545
+ROOT CAUSE: User-writable downloaded update bytes could be replaced before elevated installation.
+FILES MODIFIED: src/SmartPerformanceDoctor.App/Services/Update/UpdateInstallerService.cs
+FILES ADDED: src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs; tests/SmartPerformanceDoctor.Tests/SignedUpdateTests.cs
+IMPLEMENTATION: Protected ProgramData transaction root, owner/ACL checks, isolated job directories, protected package copy, extracted-file rehash and target reparse-point checks.
+SAFETY MEASURES: Strict mode rejects untrusted roots and ACLs; tests use only disposable temporary directories.
+TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests' -v:minimal
+TEST INPUT: Staged-file mutation and outside hardlink fixture.
+TEST OUTPUT: 통과!  - 실패:     0, 통과:    20, 건너뜀:     0, 전체:    20, 기간: 1 s - SmartPerformanceDoctor.Tests.dll (net10.0); original file restored and outside hardlink unchanged.
+EXIT CODE: 0
+REMAINING RISKS: Real strict ACL, UAC, junction races and handle identity need disposable-VM E2E.
+ROLLBACK PROCEDURE: Revert the implementation commit; no installed files were touched by the test.

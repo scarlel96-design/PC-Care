@@ -1,0 +1,25 @@
+  SmartPerformanceDoctor.SecurityLab -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+  SmartPerformanceDoctor.SecurityLab.Tests -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+[xUnit.net 00:00:32.38]     SmartPerformanceDoctor.SecurityLab.Tests.VaultV4IntegrationTests.Stream_chunk_roundtrip_and_session_idle_lock [FAIL]
+  실패 SmartPerformanceDoctor.SecurityLab.Tests.VaultV4IntegrationTests.Stream_chunk_roundtrip_and_session_idle_lock [15 ms]
+  오류 메시지:
+   Assert.StartsWith() Failure: String start does not match
+String:         "SPDCHK5"
+Expected start: "SPDCHK4"
+  스택 추적:
+     at SmartPerformanceDoctor.SecurityLab.Tests.VaultV4IntegrationTests.Stream_chunk_roundtrip_and_session_idle_lock() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.SecurityLab.Tests\VaultV4IntegrationTests.cs:line 754
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:43.92]     SmartPerformanceDoctor.SecurityLab.Tests.VaultV4IntegrationTests.Phase3_sentinel_stepup_and_xchacha_object [FAIL]
+  실패 SmartPerformanceDoctor.SecurityLab.Tests.VaultV4IntegrationTests.Phase3_sentinel_stepup_and_xchacha_object [957 ms]
+  오류 메시지:
+   pack should contain XChaCha chunk magic
+  스택 추적:
+     at SmartPerformanceDoctor.SecurityLab.Tests.VaultV4IntegrationTests.Phase3_sentinel_stepup_and_xchacha_object() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.SecurityLab.Tests\VaultV4IntegrationTests.cs:line 810
+   at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+실패!  - 실패:     2, 통과:    34, 건너뜀:     0, 전체:    36, 기간: 47 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)

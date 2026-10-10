@@ -36,8 +36,9 @@ jobs:
       - name: Reject unsupported elevated-helper verb
         shell: pwsh
         run: |
-          & 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe' --exec arbitrary
-          if ($LASTEXITCODE -ne 2) { throw "Unexpected helper exit code: $LASTEXITCODE" }
+          $helper = 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe'
+          $process = Start-Process -FilePath $helper -ArgumentList @('--exec', 'arbitrary') -Wait -PassThru -NoNewWindow
+          if ($process.ExitCode -ne 2) { throw "Unexpected helper exit code: $($process.ExitCode)" }
       - name: Upload test evidence
         if: always()
         uses: actions/upload-artifact@v4

@@ -1,0 +1,15 @@
+WORK ITEM: WO03 real installed Windows UAC/reboot/interruption E2E
+STATUS: NOT TESTED
+BASELINE SHA: bbdfe4301fa3e8b6b448596b5cd3a954c3eb0d3c
+FINAL SHA: 2bcfc7b91ea87c493b29aa956672fece16560545
+ROOT CAUSE: The installed-system gate needs a disposable VM and a trusted test-channel signed package.
+FILES MODIFIED: none on the installed user PC
+FILES ADDED: docs/rework/WO03_WINDOWS_E2E_REPORT.md
+IMPLEMENTATION: Documented VM snapshot, UAC approval/denial, reboot, interrupted apply, recovery, vault/settings compatibility and hash-comparison matrix.
+SAFETY MEASURES: No destructive update, reboot or shutdown was performed on the user PC.
+TEST COMMAND: NOT RUN
+TEST INPUT: NOT RUN
+TEST OUTPUT: NOT TESTED
+EXIT CODE: N/A
+REMAINING RISKS: Production update and release remain NO-GO until VM and official-root gates pass.
+ROLLBACK PROCEDURE: Revert VM snapshot after the future E2E; no local installed-state rollback is required here.

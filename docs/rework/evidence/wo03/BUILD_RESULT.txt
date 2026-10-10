@@ -1,0 +1,15 @@
+WORK ITEM: WO03 Windows build, self-contained publish, commercial layout
+STATUS: PASS
+BASELINE SHA: bbdfe4301fa3e8b6b448596b5cd3a954c3eb0d3c
+FINAL SHA: 2bcfc7b91ea87c493b29aa956672fece16560545
+ROOT CAUSE: The former update route had no signed transactional helper; the first publish check also found unbranded host files and PDB symbols.
+FILES MODIFIED: SmartPerformanceDoctor.sln; scripts/build-app.ps1; scripts/verify-install-layout.ps1
+FILES ADDED: src/SmartPerformanceDoctor.UpdateEngine; src/SmartPerformanceDoctor.UpdateHelper
+IMPLEMENTATION: Build both new projects, publish the helper into engine, remove superseded host metadata and symbols, and verify the published tree.
+SAFETY MEASURES: The publish cleanup resolves its output inside the project root before removing individual files.
+TEST COMMAND: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 -v:minimal; $env:NuGetAudit='false'; & ./scripts/build-app.ps1; & ./scripts/verify-install-layout.ps1 -LayoutDir 'src/SmartPerformanceDoctor.App/bin/x64/Release/net10.0-windows10.0.26100.0/win-x64/publish'
+TEST INPUT: The WO03 source tree on Windows x64.
+TEST OUTPUT: 빌드했습니다. 경고 0개 오류 0개; [OK] Self-contained WinUI publish completed; [OK] Commercial install layout verified.
+EXIT CODE: 0 for each final command
+REMAINING RISKS: An installed-build UAC/reboot E2E has not run. The initial layout check exited 1 because old host files and PDB symbols remained; the corrected final check exited 0 and is recorded in LAYOUT_CHECK_FINAL.log.
+ROLLBACK PROCEDURE: Revert the implementation commit or use ROLLBACK.sh for the copied installer-service source.

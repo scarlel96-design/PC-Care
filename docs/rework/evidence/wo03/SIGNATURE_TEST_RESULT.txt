@@ -1,0 +1,15 @@
+WORK ITEM: WO03 publisher signature and manifest integrity
+STATUS: PARTIAL
+BASELINE SHA: bbdfe4301fa3e8b6b448596b5cd3a954c3eb0d3c
+FINAL SHA: 2bcfc7b91ea87c493b29aa956672fece16560545
+ROOT CAUSE: v1 content hashes could not identify the official publisher.
+FILES MODIFIED: src/SmartPerformanceDoctor.App/Services/Update/UpdateInstallerService.cs
+FILES ADDED: src/SmartPerformanceDoctor.UpdateEngine/SignedPackage.cs; tests/SmartPerformanceDoctor.Tests/SignedUpdateTests.cs
+IMPLEMENTATION: Signed v2 manifest, canonical bytes, ECDSA P-256 verification, publisher/key/channel pinning, version/expiry policy and content allowlist checks; production trust list remains empty.
+SAFETY MEASURES: Test key exists only in a test fixture; production rejects its otherwise valid package.
+TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests' -v:minimal
+TEST INPUT: Generated test-key packages with bad signature, other publisher, content tamper, extra/missing/duplicate entries, traversal, manifest mutation, downgrade and replay.
+TEST OUTPUT: 통과!  - 실패:     0, 통과:    20, 건너뜀:     0, 전체:    20, 기간: 1 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+EXIT CODE: 0
+REMAINING RISKS: Official key custody/public-root distribution and production-signed package validation are pending.
+ROLLBACK PROCEDURE: Revert the implementation commit; ROLLBACK.sh restores the installer-service source on a chosen copy.

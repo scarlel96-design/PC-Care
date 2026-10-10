@@ -1,0 +1,47 @@
+WORK ITEM: PC-Care WO03 signed transactional updater
+STATUS: PARTIAL; production release NO-GO
+BASELINE SHA: bbdfe4301fa3e8b6b448596b5cd3a954c3eb0d3c
+FINAL SHA: 2bcfc7b91ea87c493b29aa956672fece16560545
+CHANGED BRANCH: codex/pccare-rework-phase1-transactional-updater
+CHANGED FIELD: UpdateInstallerService routes v2 publisher-verified packages to the restricted transactional helper; production trust has no official key.
+
+FOUR REAL ARTIFACTS:
+MODIFIED_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\Services\Update\UpdateInstallerService.cs
+DIFF_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo03\UpdateInstallerService.diff
+VERIFICATION.txt: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo03\VERIFICATION.txt
+ROLLBACK.sh: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo03\ROLLBACK.sh
+ORIGINAL SHA256: 5AE7614DA1A7E0CF83E37357772D908F51CFA7C886AB63D77F3C343C2339F8B2
+MODIFIED SHA256: 5EE65CA9852D59FB5706D0283AE270DE0384A2871CC3FBA55466F5BA6D1FA043
+
+BASELINE COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 -v:normal *> wo03-baseline-test.log
+BASELINE WORKDIR: C:\Users\scarl\Documents\Codex\WO03_baseline_bbdfe430 (detached baseline worktree, subsequently removed)
+BASELINE INPUT: Baseline SHA bbdfe4301fa3e8b6b448596b5cd3a954c3eb0d3c and its existing Windows test fixtures.
+BASELINE LITERAL OUTPUT: 통과!  - 실패:     0, 통과:   641, 건너뜀:   111, 전체:   752, 기간: 4 m 38 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+BASELINE EXIT STATUS: 0
+BASELINE LOG: docs/rework/evidence/wo03/BASELINE_TEST.log
+
+MODIFIED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-build --no-restore -m:1 -v:minimal *> docs/rework/evidence/wo03/FULL_TEST_FINAL.log
+MODIFIED WORKDIR: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care
+MODIFIED INPUT: WO03 branch after signed v2 package, elevated helper, transaction, replay and runtime policy changes; synthetic and existing regression fixtures.
+MODIFIED LITERAL OUTPUT: 통과!  - 실패:     0, 통과:   661, 건너뜀:   111, 전체:   772, 기간: 2 m 54 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+MODIFIED EXIT STATUS: 0
+MODIFIED LOG: docs/rework/evidence/wo03/FULL_TEST_FINAL.log
+
+ROLLBACK COMMAND: & 'C:\Program Files\Git\bin\bash.exe' docs/rework/evidence/wo03/ROLLBACK.sh .wo03-rollback-test/UpdateInstallerService.cs; $code=$LASTEXITCODE; 'ROLLBACK_EXIT=' + $code; 'COPY_SHA=' + (Get-FileHash .wo03-rollback-test/UpdateInstallerService.cs -Algorithm SHA256).Hash; 'MODIFIED_SHA=' + (Get-FileHash src/SmartPerformanceDoctor.App/Services/Update/UpdateInstallerService.cs -Algorithm SHA256).Hash; exit $code
+ROLLBACK WORKDIR: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care
+ROLLBACK INPUT: An independent copy of the modified UpdateInstallerService.cs in .wo03-rollback-test/; the copy was removed after verification.
+ROLLBACK LITERAL OUTPUT: RESTORED 5AE7614DA1A7E0CF83E37357772D908F51CFA7C886AB63D77F3C343C2339F8B2 | ROLLBACK_EXIT=0 | COPY_SHA=5AE7614DA1A7E0CF83E37357772D908F51CFA7C886AB63D77F3C343C2339F8B2 | MODIFIED_SHA=5EE65CA9852D59FB5706D0283AE270DE0384A2871CC3FBA55466F5BA6D1FA043
+ROLLBACK EXIT STATUS: 0
+RESTORED BEHAVIOR/STATUS: The copy exactly matches the baseline hash; MODIFIED_FILE still matches the changed hash and stays modified.
+
+ROOT CAUSE: The v1 updater verified file content but lacked official publisher authentication, privileged transaction isolation, durable rollback and restart recovery.
+FILES MODIFIED: SmartPerformanceDoctor.sln; scripts/build-app.ps1; scripts/verify-install-layout.ps1; src/SmartPerformanceDoctor.App; src/SmartPerformanceDoctor.Setup; tests/SmartPerformanceDoctor.Tests.csproj
+FILES ADDED: src/SmartPerformanceDoctor.UpdateEngine; src/SmartPerformanceDoctor.UpdateHelper; tests/SmartPerformanceDoctor.Tests/SignedUpdateTests.cs; docs/rework/WO03_*.md; .github/workflows/wo03-windows-updater.yml
+IMPLEMENTATION: Signed v2 package verifier; publisher policy; protected stage; restricted helper; allowlisted journaled apply, rollback and recovery; runtime trust separation; packaging/installer wiring.
+SAFETY MEASURES: Production publisher key list is empty; legacy v1 remains blocked; development key is isolated to tests; installed user PC was not changed.
+TEST COMMAND: See BASELINE, MODIFIED and ROLLBACK commands above, plus BUILD_RESULT.txt and SIGNATURE_TEST_RESULT.txt.
+TEST INPUT: Source snapshots and synthetic package/transaction fixtures.
+TEST OUTPUT: Baseline 641/752; modified 661/772; Windows CI SecurityLab 36/36 in run 38023131532; rollback copy baseline hash restored. The first CI run failed later at its helper exit-code harness step; a corrected harness is being rerun.
+EXIT CODE: 0 for passing final commands.
+REMAINING RISKS: No official key/public-root governance, production-signed package, protected ACL/UAC/reboot/installed-build VM E2E or independent power-loss recovery evidence.
+ROLLBACK PROCEDURE: ROLLBACK.sh restores the installer-service source on a chosen copy; revert the implementation commit for the entire branch change.

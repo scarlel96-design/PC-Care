@@ -1,0 +1,15 @@
+WORK ITEM: WO03 isolated transaction rollback and source rollback
+STATUS: PARTIAL
+BASELINE SHA: bbdfe4301fa3e8b6b448596b5cd3a954c3eb0d3c
+FINAL SHA: 2bcfc7b91ea87c493b29aa956672fece16560545
+ROOT CAUSE: Mid-update failure could leave a partially replaced installation.
+FILES MODIFIED: src/SmartPerformanceDoctor.App/Services/Update/UpdateInstallerService.cs
+FILES ADDED: src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs; docs/rework/evidence/wo03/ROLLBACK.sh
+IMPLEMENTATION: Per-file verified backup and reverse restoration; an independent source copy can be restored to the original hash.
+SAFETY MEASURES: ROLLBACK.sh checks original and modified hashes before writing; the working modified source stays changed.
+TEST COMMAND: & 'C:\Program Files\Git\bin\bash.exe' docs/rework/evidence/wo03/ROLLBACK.sh .wo03-rollback-test/UpdateInstallerService.cs; $code=$LASTEXITCODE; 'ROLLBACK_EXIT=' + $code; 'COPY_SHA=' + (Get-FileHash .wo03-rollback-test/UpdateInstallerService.cs -Algorithm SHA256).Hash; 'MODIFIED_SHA=' + (Get-FileHash src/SmartPerformanceDoctor.App/Services/Update/UpdateInstallerService.cs -Algorithm SHA256).Hash; exit $code
+TEST INPUT: An independent copy of the modified UpdateInstallerService.cs.
+TEST OUTPUT: RESTORED 5AE7614DA1A7E0CF83E37357772D908F51CFA7C886AB63D77F3C343C2339F8B2; ROLLBACK_EXIT=0; COPY_SHA=5AE7614DA1A7E0CF83E37357772D908F51CFA7C886AB63D77F3C343C2339F8B2; MODIFIED_SHA=5EE65CA9852D59FB5706D0283AE270DE0384A2871CC3FBA55466F5BA6D1FA043
+EXIT CODE: 0
+REMAINING RISKS: Real installed-build rollback after interruption is a VM gate.
+ROLLBACK PROCEDURE: Run ROLLBACK.sh against an explicitly chosen copy; revert the implementation commit for all WO03 files.

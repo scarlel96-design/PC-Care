@@ -1,0 +1,15 @@
+WORK ITEM: WO03 full regression and SecurityLab regression
+STATUS: PASS for application and SecurityLab regression; installed-system E2E remains NOT TESTED
+BASELINE SHA: bbdfe4301fa3e8b6b448596b5cd3a954c3eb0d3c
+FINAL SHA: 2bcfc7b91ea87c493b29aa956672fece16560545
+ROOT CAUSE: The updater redesign must retain the existing diagnostic, vault and security behavior.
+FILES MODIFIED: tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj; tests/SmartPerformanceDoctor.SecurityLab.Tests/VaultV4IntegrationTests.cs
+FILES ADDED: tests/SmartPerformanceDoctor.Tests/SignedUpdateTests.cs
+IMPLEMENTATION: Run the final Windows x64 application suite and separate SecurityLab suite after building all projects.
+SAFETY MEASURES: Tests use synthetic packages and temporary directories; the installed PC-Care is untouched.
+TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-build --no-restore -m:1 -v:minimal; dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 -v:minimal
+TEST INPUT: Synthetic updater fixtures and existing project regression fixtures.
+TEST OUTPUT: Local: 통과!  - 실패:     0, 통과:   661, 건너뜀:   111, 전체:   772, 기간: 2 m 54 s - SmartPerformanceDoctor.Tests.dll (net10.0); Windows CI run 38023131532: Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 53 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0).
+EXIT CODE: 0 for the local application regression and CI SecurityLab step; the initial local rebuilt SecurityLab run exited 1 before correcting two stale SPDCHK4 expectations against the baseline SPDCHK5 writer.
+REMAINING RISKS: Skipped tests retain their existing reasons; isolated tests do not prove installed-system E2E behavior. Windows CI run 38023131532 failed later at the helper exit-code assertion step; that harness step was corrected for a new CI run.
+ROLLBACK PROCEDURE: Revert the implementation commit; source-level installer-service rollback is available in ROLLBACK.sh.

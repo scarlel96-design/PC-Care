@@ -1,0 +1,15 @@
+WORK ITEM: WO03 transaction journal, postcondition and replay
+STATUS: PARTIAL
+BASELINE SHA: bbdfe4301fa3e8b6b448596b5cd3a954c3eb0d3c
+FINAL SHA: 2bcfc7b91ea87c493b29aa956672fece16560545
+ROOT CAUSE: Earlier updater had no durable apply state or automatic recovery coordinator.
+FILES MODIFIED: src/SmartPerformanceDoctor.App/Services/Update/UpdateInstallerService.cs
+FILES ADDED: src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs; src/SmartPerformanceDoctor.UpdateHelper/Program.cs; tests/SmartPerformanceDoctor.Tests/SignedUpdateTests.cs
+IMPLEMENTATION: Exclusive lock, flush-and-replace journal, backup/hash check, allowlisted atomic per-file replacement, installed-version postcheck, rollback/recovery and committed PackageId replay rejection.
+SAFETY MEASURES: Incomplete prior work stops a new apply; missing backup becomes RecoveryRequired; the helper accepts only fixed verbs and derives its install root.
+TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests' -v:minimal
+TEST INPUT: Synthetic success, lock collision, partial copy failure, failed postcondition, replay and simulated Applying journal.
+TEST OUTPUT: 통과!  - 실패:     0, 통과:    20, 건너뜀:     0, 전체:    20, 기간: 1 s - SmartPerformanceDoctor.Tests.dll (net10.0); unsupported helper verb returned exit 2.
+EXIT CODE: 0 for tests; 2 for deliberately unsupported helper verb
+REMAINING RISKS: A real power interruption, file locks and directory flush ordering remain untested in a disposable VM.
+ROLLBACK PROCEDURE: Revert the implementation commit; test fixtures were restored or removed.
