@@ -1,0 +1,7 @@
+# WO03 protected staging
+
+The elevated transaction engine uses `%ProgramData%\PC-Care\UpdateTransactions\tx-<GUID>`. Strict mode checks the exact location, owner and protected ACL on the PC-Care parent and transaction root; ACLs grant only Administrators and SYSTEM access. If an existing parent has an unexpected owner or writable rule, the updater stops instead of taking it over. The job gets its own directory, package copy, `stage`, `backup`, and durable journal.
+
+The engine verifies the source, copies it into the protected area and verifies that copy again. Extraction writes and flushes each file; the hash is checked after extraction and again immediately before the privileged read. It rejects reparse points on existing target path components and resolves signed relative paths inside the installation root. Success removes the protected package copy; journals and backup evidence remain for diagnosis. A staging copy failure is journaled as restored without modifying the installation.
+
+The isolated unit tests use a temporary work root with `strictAcl:false` and cover tampered staged content and a hardlinked outside file. A real protected-ACL/UAC test, junction/symlink race and handle-identity test have not yet been run in a disposable Windows VM. Those remain release gates. See [Windows ACL API](https://learn.microsoft.com/en-us/dotnet/api/system.io.filesystemaclextensions.setaccesscontrol?view=net-10.0).

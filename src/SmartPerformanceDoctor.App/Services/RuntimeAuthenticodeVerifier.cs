@@ -150,5 +150,6 @@ internal static class RuntimeAuthenticodeVerifier
         yield return Path.Combine("engine", "smart_performance_doctor_repair_helper.exe");
         yield return Path.Combine("engine", "AegisRecoveryHelper.exe");
         yield return Path.Combine("engine", "AegisRecoveryService.exe");
+        yield return Path.Combine("engine", "SmartPerformanceDoctor.UpdateHelper.exe");
     }
 }

@@ -1,0 +1,48 @@
+name: WO03 Windows signed updater
+
+on:
+  push:
+    branches:
+      - codex/pccare-rework-phase1-transactional-updater
+  pull_request:
+
+jobs:
+  signed-updater:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Restore
+        run: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
+      - name: Build solution
+        run: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+      - name: Signed package and transaction tests
+        env:
+          VSTEST_CONNECTION_TIMEOUT: '300'
+        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests' --logger 'trx;LogFileName=wo03-signed-updater.trx' -v:minimal
+      - name: Full regression suite
+        env:
+          VSTEST_CONNECTION_TIMEOUT: '300'
+        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo03-full.trx' -v:minimal
+      - name: SecurityLab regression suite
+        env:
+          VSTEST_CONNECTION_TIMEOUT: '300'
+        run: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo03-securitylab.trx' -v:minimal
+      - name: Reject unsupported elevated-helper verb
+        shell: pwsh
+        run: |
+          & 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe' --exec arbitrary
+          if ($LASTEXITCODE -ne 2) { throw "Unexpected helper exit code: $LASTEXITCODE" }
+      - name: Upload test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wo03-windows-trx
+          path: |
+            tests/SmartPerformanceDoctor.Tests/TestResults/*.trx
+            tests/SmartPerformanceDoctor.SecurityLab.Tests/TestResults/*.trx

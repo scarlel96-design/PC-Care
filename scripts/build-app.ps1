@@ -8,6 +8,7 @@ Write-Host "== Build WinUI App (self-contained publish) ==" -ForegroundColor Cya
 $appProj = ".\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj"
 $helperProj = ".\src\SmartPerformanceDoctor.AegisRecoveryHelper\SmartPerformanceDoctor.AegisRecoveryHelper.csproj"
 $serviceProj = ".\src\SmartPerformanceDoctor.AegisRecoveryService\SmartPerformanceDoctor.AegisRecoveryService.csproj"
+$updateHelperProj = ".\src\SmartPerformanceDoctor.UpdateHelper\SmartPerformanceDoctor.UpdateHelper.csproj"
 $publishRoot = Join-Path $ProjectRoot "src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0\win-x64\publish"
 $engineDir = Join-Path $publishRoot "engine"
 
@@ -26,10 +27,12 @@ dotnet restore .\src\SmartPerformanceDoctor.Contracts\SmartPerformanceDoctor.Con
 dotnet restore $appProj -p:Platform=x64 -p:RuntimeIdentifier=win-x64 -p:SelfContained=true -m:1
 dotnet restore $helperProj
 dotnet restore $serviceProj
+dotnet restore $updateHelperProj
 
 dotnet build .\src\SmartPerformanceDoctor.Contracts\SmartPerformanceDoctor.Contracts.csproj -c Release
 dotnet build $helperProj -c Release -p:Platform=x64 -m:1
 dotnet build $serviceProj -c Release -p:Platform=x64 -m:1
+dotnet build $updateHelperProj -c Release -p:Platform=x64 -m:1
 
 dotnet publish $appProj @publishArgs
 if ($LASTEXITCODE -ne 0) {
@@ -45,6 +48,11 @@ if ($LASTEXITCODE -ne 0) {
 dotnet publish $serviceProj @publishArgs -o $engineDir
 if ($LASTEXITCODE -ne 0) {
     throw "AegisRecoveryService self-contained publish failed."
+}
+
+dotnet publish $updateHelperProj @publishArgs -o $engineDir
+if ($LASTEXITCODE -ne 0) {
+    throw "UpdateHelper self-contained publish failed."
 }
 
 foreach ($leak in @(
@@ -97,5 +105,25 @@ if (-not (Test-SelfContainedRuntimeLayout $publishRoot)) {
 }
 
 Sync-PccarePublishBranding -PublishDir $publishRoot
+
+# Keep the directly published tree consistent with the installer layout contract.
+# Branding copies the app host and metadata, so discard the superseded names.
+$publishResolved = (Resolve-Path -LiteralPath $publishRoot).Path.TrimEnd('\')
+$projectResolved = (Resolve-Path -LiteralPath $ProjectRoot).Path.TrimEnd('\')
+if (-not $publishResolved.StartsWith($projectResolved + '\', [StringComparison]::OrdinalIgnoreCase)) {
+    throw "Publish output escaped the project root: $publishResolved"
+}
+foreach ($blocked in Get-CommercialBlockedRootFileNames) {
+    $blockedPath = Join-Path $publishResolved $blocked
+    if (Test-Path -LiteralPath $blockedPath -PathType Leaf) {
+        Remove-Item -LiteralPath $blockedPath -Force
+    }
+}
+Get-ChildItem -LiteralPath $publishResolved -Filter '*.pdb' -File -Recurse | ForEach-Object {
+    if (-not $_.FullName.StartsWith($publishResolved + '\', [StringComparison]::OrdinalIgnoreCase)) {
+        throw "Publish symbol escaped the output root: $($_.FullName)"
+    }
+    Remove-Item -LiteralPath $_.FullName -Force
+}
 
 Write-Host "[OK] Self-contained WinUI publish completed: $publishRoot" -ForegroundColor Green

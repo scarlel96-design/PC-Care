@@ -751,7 +751,7 @@ public sealed class VaultV4IntegrationTests : IDisposable
         Assert.Equal(plain, LabVaultCrypto.DecryptChunked(key, blobAes, aad));
         var blobX = LabVaultCrypto.EncryptChunked(key, plain, aad, LabContentSuite.XChaCha20Poly1305, concealedPad: true);
         Assert.Equal(plain, LabVaultCrypto.DecryptChunked(key, blobX, aad));
-        Assert.StartsWith("SPDCHK4", System.Text.Encoding.ASCII.GetString(blobX.AsSpan(0, 7)));
+        Assert.StartsWith("SPDCHK5", System.Text.Encoding.ASCII.GetString(blobX.AsSpan(0, 7)));
 
         const string password = "Correct-Horse-Battery-99!";
         var policy = new LabSessionPolicy
@@ -801,12 +801,12 @@ public sealed class VaultV4IntegrationTests : IDisposable
         Assert.True(vault.ExportEntry(imp.EntryId!, outDir).Success);
         var exported = File.ReadAllBytes(Directory.GetFiles(outDir).Single());
         Assert.Equal(expected, exported);
-        // Phase4: small cipher goes to pack; verify pack contains SPDCHK4 magic in body
+        // Phase4: small cipher goes to pack; verify pack contains current SPDCHK5 magic in body
         var pack = Path.Combine(vault.Root, "packs", "pack-000001.avpack");
         Assert.True(File.Exists(pack), "expected packfile for small object");
         Assert.True(File.Exists(Path.Combine(vault.Root, "packs", "index.v1.json")));
         var packBytes = File.ReadAllBytes(pack);
-        var magic = System.Text.Encoding.ASCII.GetBytes("SPDCHK4");
+        var magic = System.Text.Encoding.ASCII.GetBytes("SPDCHK5");
         Assert.True(packBytes.AsSpan().IndexOf(magic) >= 0, "pack should contain XChaCha chunk magic");
         Assert.True(vault.VerifyAllContentHashes().Success);
     }

@@ -52,6 +52,8 @@
     <ProjectReference Include="../SmartPerformanceDoctor.Data/SmartPerformanceDoctor.Data.csproj" />
     <!-- 50.3.0: SecurityLab vault v4 + shred-next merged into product -->
     <ProjectReference Include="../SmartPerformanceDoctor.SecurityLab/SmartPerformanceDoctor.SecurityLab.csproj" />
+    <ProjectReference Include="../SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj" />
+    <ProjectReference Include="../SmartPerformanceDoctor.UpdateHelper/SmartPerformanceDoctor.UpdateHelper.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="../SmartPerformanceDoctor.AegisRecoveryHelper/SmartPerformanceDoctor.AegisRecoveryHelper.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="../SmartPerformanceDoctor.AegisRecoveryService/SmartPerformanceDoctor.AegisRecoveryService.csproj" ReferenceOutputAssembly="false" />
   </ItemGroup>
@@ -69,6 +71,7 @@
       <HelperReleaseDir>$(MSBuildProjectDirectory)\..\..\target\release</HelperReleaseDir>
       <AegisHelperOutDir>$(MSBuildProjectDirectory)\..\SmartPerformanceDoctor.AegisRecoveryHelper\bin\$(Platform)\$(Configuration)\net10.0-windows</AegisHelperOutDir>
       <AegisServiceOutDir>$(MSBuildProjectDirectory)\..\SmartPerformanceDoctor.AegisRecoveryService\bin\$(Platform)\$(Configuration)\net10.0-windows</AegisServiceOutDir>
+      <UpdateHelperOutDir>$(MSBuildProjectDirectory)\..\SmartPerformanceDoctor.UpdateHelper\bin\$(Platform)\$(Configuration)\net10.0-windows10.0.26100.0</UpdateHelperOutDir>
     </PropertyGroup>
     <Copy SourceFiles="$(NativeReleaseDir)\smart_performance_doctor_core.exe"
           DestinationFolder="$(OutDir)\engine"
@@ -94,6 +97,13 @@
           DestinationFolder="$(OutDir)\engine\%(RecursiveDir)"
           SkipUnchangedFiles="true"
           Condition="Exists('$(AegisServiceOutDir)\AegisRecoveryService.exe')" />
+    <ItemGroup Condition="Exists('$(UpdateHelperOutDir)\SmartPerformanceDoctor.UpdateHelper.exe')">
+      <UpdateHelperFiles Include="$(UpdateHelperOutDir)\SmartPerformanceDoctor.UpdateHelper.*" />
+      <UpdateHelperFiles Include="$(UpdateHelperOutDir)\SmartPerformanceDoctor.UpdateEngine.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(UpdateHelperFiles)" DestinationFolder="$(OutDir)\engine"
+          SkipUnchangedFiles="true"
+          Condition="Exists('$(UpdateHelperOutDir)\SmartPerformanceDoctor.UpdateHelper.exe')" />
     <Copy SourceFiles="$(OutDir)\SmartPerformanceDoctor.exe"
           DestinationFiles="$(OutDir)\PCCare.exe"
           SkipUnchangedFiles="false"

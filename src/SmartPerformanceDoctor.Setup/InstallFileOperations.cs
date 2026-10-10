@@ -15,7 +15,8 @@ internal static class InstallFileOperations
         "smart_performance_doctor_core",
         "smart_performance_doctor_repair_helper",
         "AegisRecoveryService",
-        "AegisRecoveryHelper"
+        "AegisRecoveryHelper",
+        "SmartPerformanceDoctor.UpdateHelper"
     ];
 
     public static bool IsAdministrator()

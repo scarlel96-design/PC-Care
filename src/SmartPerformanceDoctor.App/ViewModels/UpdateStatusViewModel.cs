@@ -287,21 +287,21 @@ public sealed class UpdateStatusViewModel : ObservableObject
             var progress = CreateProgressHandler();
             var result = await _installer.ApplyAsync(inspection, progress, cancellationToken).ConfigureAwait(false);
 
-            var verify = AppVersionService.VerifyInstalledVersion(result.ToVersion);
+            var verify = result.RestartScheduled ? null : AppVersionService.VerifyInstalledVersion(result.ToVersion);
             RunOnUi(() =>
             {
                 StatusLine = result.Message;
                 TargetVersion = result.ToVersion;
                 CurrentVersion = AppInfo.Version;
-                PhaseLine = result.Success ? "완료" : "실패";
-                ActionLine = result.Success ? "업데이트 적용됨" : "적용 실패";
-                DetailLine = result.Success
+                PhaseLine = result.RestartScheduled ? "적용 시작 대기" : result.Success ? "완료" : "실패";
+                ActionLine = result.RestartScheduled ? "관리자 적용 시작" : result.Success ? "업데이트 적용됨" : "적용 실패";
+                DetailLine = result.RestartScheduled ? "검증 완료 · 앱 종료 후 적용·복구 결과 확인" : result.Success
                     ? $"즉시 적용 {result.FilesApplied}개 · 보류 {result.FilesDeferred}개"
                     : result.Message;
-                VerifyLine = verify.Details;
-                Progress = result.Success ? 100 : Progress;
+                VerifyLine = verify?.Details ?? "설치 후 검증 대기";
+                Progress = result.Success && !result.RestartScheduled ? 100 : Progress;
             });
-            AppendLog(result.Success ? "적용 완료" : $"실패: {result.Message}");
+            AppendLog(result.RestartScheduled ? "관리자 적용 시작 대기" : result.Success ? "적용 완료" : $"실패: {result.Message}");
 
             if (result.Success && result.RestartScheduled)
             {

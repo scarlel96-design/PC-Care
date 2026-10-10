@@ -53,9 +53,11 @@ public sealed partial class UpdateStatusPage : Page
 
     private void RefreshPendingUpdatePanel()
     {
-        PendingUpdatePanel.Visibility = File.Exists(UpdatePaths.PendingState)
-            ? Visibility.Visible
-            : Visibility.Collapsed;
+        var legacyPending = File.Exists(UpdatePaths.PendingState);
+        PendingUpdatePanel.Visibility = legacyPending ? Visibility.Visible : Visibility.Collapsed;
+        PendingResumeButton.IsEnabled = false;
+        if (legacyPending)
+            PendingUpdateMessage.Text = "이전 업데이트 대기 기록은 발행자 인증이 없어 앱에서 다시 적용할 수 없습니다. 공식 설치 파일로 업데이트해 주세요.";
     }
 
     private void ResumePendingUpdate(object sender, RoutedEventArgs e)
@@ -66,14 +68,7 @@ public sealed partial class UpdateStatusPage : Page
             return;
         }
 
-        if (!UpdateInstallerService.LaunchPendingRestart())
-        {
-            PendingUpdateMessage.Text = "마무리 프로그램을 시작하지 못했습니다. 로그를 확인한 뒤 다시 시도하세요.";
-            return;
-        }
-
-        PendingUpdateMessage.Text = "업데이트를 마무리합니다. 확인 창이 나타나면 허용해 주세요.";
-        App.ExitForUpdateHandoff();
+        PendingUpdateMessage.Text = "이전 업데이트 대기 기록은 발행자 인증이 없어 앱에서 다시 적용할 수 없습니다. 공식 설치 파일로 업데이트해 주세요.";
     }
 
     private async void PickUpdateFile(object sender, RoutedEventArgs e) => await ExecutePickUpdateFileAsync();

@@ -29,6 +29,8 @@ $required = @(
     "engine\smart_performance_doctor_repair_helper.exe",
     "engine\AegisRecoveryHelper.exe",
     "engine\AegisRecoveryService.exe",
+    "engine\SmartPerformanceDoctor.UpdateHelper.exe",
+    "engine\SmartPerformanceDoctor.UpdateEngine.dll",
     "content",
     "Microsoft.WinUI.dll",
     "Views\UnifiedCarePage.xbf",

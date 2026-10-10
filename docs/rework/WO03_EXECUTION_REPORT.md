@@ -1,0 +1,9 @@
+# WO03 execution report
+
+Base: `codex/pccare-rework-phase1-closure` at `bbdfe4301fa3e8b6b448596b5cd3a954c3eb0d3c`. Work branch: `codex/pccare-rework-phase1-transactional-updater`. The detached baseline Windows test run reproduced 752 total, 641 pass, 111 skip, 0 fail. Its literal log is `evidence/wo03/BASELINE_TEST.log`.
+
+The source change adds `SmartPerformanceDoctor.UpdateEngine` (signed v2 ZIP verification and a journaled transaction), `SmartPerformanceDoctor.UpdateHelper` (restricted elevated apply/recover), application inspection and handoff wiring, separated runtime trust decisions, installation layout requirements, a Windows updater workflow and isolated negative/rollback tests. It retains unsigned v1 inspection but never allows v1 in-app application. The official publisher root remains empty, so production apply is blocked until key governance and signed package verification. No private signing key was generated or added.
+
+The installer and publish scripts now include the helper. The helper derives its target from its installed location; it cannot accept a caller-supplied install root or command. Package extraction is allowlist based, staged in a protected ProgramData directory and checked before application. A backup and journal support rollback and restart recovery; a damaged backup produces RecoveryRequired. Neither this implementation nor synthetic tests establish crash-atomicity across every Windows filesystem condition.
+
+Evidence and status are in `evidence/wo03/VERIFICATION.txt`, the `*_RESULT.txt` records and the two raw test logs. Source rollback is in `evidence/wo03/ROLLBACK.sh` and was tested on an independent copy. The current branch is for review; main and official releases are unchanged. Phase 1 production readiness remains NO-GO as detailed in `WO03_RELEASE_READINESS.md`.

@@ -8,17 +8,37 @@ public enum RuntimeTrustLevel
     Failed
 }
 
+public enum CryptographicVerificationResult { Verified, Unsigned, Failed, NotChecked }
+public enum PublisherTrustResult { Trusted, Untrusted, Unknown }
+public enum ExecutionPolicyDecision { Allowed, Blocked }
+
+public static class RuntimeTrustPolicy
+{
+    public static ExecutionPolicyDecision Decide(CryptographicVerificationResult cryptographic,
+        PublisherTrustResult publisher, bool localDevelopment)
+    {
+        if (cryptographic == CryptographicVerificationResult.Verified &&
+            publisher == PublisherTrustResult.Trusted) return ExecutionPolicyDecision.Allowed;
+        if (localDevelopment && cryptographic == CryptographicVerificationResult.Unsigned)
+            return ExecutionPolicyDecision.Allowed;
+        return ExecutionPolicyDecision.Blocked;
+    }
+}
+
 public static class RuntimeTrustState
 {
     private static bool _initialized;
     private static RuntimeTrustLevel _level = RuntimeTrustLevel.Unverified;
     private static string _summary = "not-checked";
     private static IReadOnlyList<string> _unsignedFiles = Array.Empty<string>();
+    public static CryptographicVerificationResult CryptographicVerification { get; private set; } =
+        CryptographicVerificationResult.NotChecked;
+    public static PublisherTrustResult PublisherTrust { get; private set; } = PublisherTrustResult.Unknown;
+    public static ExecutionPolicyDecision ExecutionPolicy { get; private set; } = ExecutionPolicyDecision.Blocked;
 
     public static RuntimeTrustLevel Level => _level;
     public static bool IsFullyTrusted => Level == RuntimeTrustLevel.Verified;
-    public static bool IsOperationallyAllowed =>
-        Level is RuntimeTrustLevel.Verified or RuntimeTrustLevel.UnsignedAllowed;
+    public static bool IsOperationallyAllowed => ExecutionPolicy == ExecutionPolicyDecision.Allowed;
     public static string Summary => _summary;
     public static IReadOnlyList<string> UnsignedFiles => _unsignedFiles;
 
@@ -30,16 +50,28 @@ public static class RuntimeTrustState
         }
 
         _initialized = true;
-        if (ShouldSkipSignatureCheck())
-        {
-            _level = RuntimeTrustLevel.UnsignedAllowed;
-            _summary = "unsigned-allowed-signature-not-verified";
-            return;
-        }
-
         var (level, summary, unsigned) = RuntimeAuthenticodeVerifier.EvaluateInstallRoot(RuntimePaths.InstallRoot);
-        _level = level;
-        _summary = summary;
+        CryptographicVerification = level switch
+        {
+            RuntimeTrustLevel.Verified => CryptographicVerificationResult.Verified,
+            RuntimeTrustLevel.Failed => CryptographicVerificationResult.Failed,
+            _ when unsigned.Any(x => x.EndsWith(":unsigned", StringComparison.Ordinal)) => CryptographicVerificationResult.Unsigned,
+            _ when unsigned.Any(x => x.EndsWith(":publisher-unpinned", StringComparison.Ordinal)) => CryptographicVerificationResult.Verified,
+            _ => CryptographicVerificationResult.NotChecked
+        };
+        PublisherTrust = level == RuntimeTrustLevel.Verified ? PublisherTrustResult.Trusted :
+            level == RuntimeTrustLevel.Failed ? PublisherTrustResult.Unknown : PublisherTrustResult.Untrusted;
+        // Only a Debug build outside Program Files receives the development execution allowance.
+#if DEBUG
+        var localDevelopment = !IsProgramFiles(RuntimePaths.InstallRoot);
+#else
+        const bool localDevelopment = false;
+#endif
+        ExecutionPolicy = RuntimeTrustPolicy.Decide(CryptographicVerification, PublisherTrust, localDevelopment);
+        _level = level == RuntimeTrustLevel.Unverified && ExecutionPolicy == ExecutionPolicyDecision.Allowed
+            ? RuntimeTrustLevel.UnsignedAllowed : level;
+        _summary = _level == RuntimeTrustLevel.UnsignedAllowed
+            ? summary + ";development-execution-only" : summary;
         _unsignedFiles = unsigned;
     }
 
@@ -47,22 +79,13 @@ public static class RuntimeTrustState
         $"{featureTitle} 기능은 실행 파일 코드 서명 검증이 완료되지 않아 일시 비활성화되었습니다.\n" +
         "설치를 복구하거나 공식 설치 패키지로 재설치한 뒤 다시 시도하세요.";
 
-    private static bool ShouldSkipSignatureCheck()
+    private static bool IsProgramFiles(string root)
     {
-        if (SmartProtectionDefaults.SilentConsumerMode)
-        {
-            return true;
-        }
-
-        var flag = Environment.GetEnvironmentVariable("PCCARE_SKIP_SIGNATURE_CHECK");
-        if (string.Equals(flag, "1", StringComparison.Ordinal)
-            || string.Equals(flag, "true", StringComparison.OrdinalIgnoreCase))
-        {
-            return true;
-        }
-
-        var root = RuntimePaths.InstallRoot;
-        return !root.Contains(@"\Program Files\", StringComparison.OrdinalIgnoreCase)
-            && !root.Contains(@"\Program Files (x86)\", StringComparison.OrdinalIgnoreCase);
+        var full = Path.GetFullPath(root).TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+        return new[] { Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+            Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) }
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Any(x => full.StartsWith(Path.GetFullPath(x).TrimEnd(Path.DirectorySeparatorChar) +
+                Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase));
     }
 }

@@ -98,6 +98,8 @@ internal static class EmbeddedInstallerPayload
             Path.Combine(layoutDir, "hostpolicy.dll"),
             Path.Combine(layoutDir, "engine", "smart_performance_doctor_core.exe"),
             Path.Combine(layoutDir, "engine", "smart_performance_doctor_repair_helper.exe"),
+            Path.Combine(layoutDir, "engine", "SmartPerformanceDoctor.UpdateHelper.exe"),
+            Path.Combine(layoutDir, "engine", "SmartPerformanceDoctor.UpdateEngine.dll"),
             Path.Combine(layoutDir, "App.xbf"),
             Path.Combine(layoutDir, "MainWindow.xbf"),
             Path.Combine(layoutDir, "Microsoft.UI.Xaml", "Themes", "themeresources.xbf"),

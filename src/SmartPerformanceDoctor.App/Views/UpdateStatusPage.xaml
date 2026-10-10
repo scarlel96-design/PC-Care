@@ -61,7 +61,7 @@
                                    Text="관리자 권한이 필요한 업데이트입니다. 준비가 되었을 때 직접 마무리하세요."
                                    Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
                     </StackPanel>
-                    <Button Grid.Column="1" Content="업데이트 마무리" Style="{StaticResource PremiumPrimaryButtonStyle}"
+                    <Button x:Name="PendingResumeButton" Grid.Column="1" Content="업데이트 마무리" Style="{StaticResource PremiumPrimaryButtonStyle}"
                             Click="ResumePendingUpdate" VerticalAlignment="Center"/>
                 </Grid>
             </Border>
