@@ -1,0 +1,66 @@
+WORK ITEM: WO06 implementation and validation
+STATUS: PARTIAL; PHASE_1=NO-GO
+BASELINE SHA: 291f84daf1e950ba9cb74af0c8fea8879a11174e
+BASELINE TREE: 33d084c1253a5b042c158600086db263f09faf89
+FINAL SHA: 5647b352cf41082def74bef2701b6fe707c51cc0 (validated source)
+SOURCE TREE: e2e5452f31d8550050d7560899f409486e10dbb1
+BRANCH: codex/pccare-rework-phase1-bootstrap-recovery
+FINAL EVIDENCE HEAD: Resolve from final local/remote receipt; source tests refer to FINAL SHA above.
+ROOT CAUSE: Installed updater locks its own runtime; legacy journals lack identities; journal/new-file crash gaps; signer path reread.
+CHANGED FILES: CHANGED_FILES.txt (18 implementation files); docs-only evidence follows.
+IMPLEMENTATION: Protected bootstrap, readonly legacy receipts, previous journal generation, transaction-specific temporary targets, same-provider Authenticode.
+
+ORIGINAL_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo06\UpdateTransaction.original.cs
+ORIGINAL_SHA256: 63A4AD13AB5A4B105C4B438DD4DC25E3F1449AE918EBA005946103DC77871C94
+MODIFIED_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo06\UpdateTransaction.modified.cs
+MODIFIED_SHA256: 0E04527306FFE4A0D8512E11BD4B2EB889A09B8002996BC8E26903E884B5D79F
+DIFF_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo06\DIFF_FILE.patch
+VERIFICATION: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo06\VERIFICATION.txt
+ROLLBACK: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo06\ROLLBACK.sh
+SOURCE_ROLLBACK_BACKEND: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo06\SourceRollback.ps1
+CHANGED_FIELDS: TemporaryPath, TemporaryReady, journal.previous.json; UpdateBootstrap binding; WinTrust hFile/provider state.
+
+BASELINE COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests' --logger 'trx;LogFileName=wo06-baseline-clean.trx' -v:minimal
+BASELINE CWD: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\artifacts\wo06-baseline
+BASELINE INPUT: baseline source test project; synthetic fixture data
+BASELINE OUTPUT: 통과!  - 실패:     0, 통과:    91, 건너뜀:     0, 전체:    91, 기간: 12 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+BASELINE EXIT CODE: 0
+
+MODIFIED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests|FullyQualifiedName~WO06' --logger 'trx;LogFileName=wo06-updater-built.trx' -v:minimal
+MODIFIED CWD: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care
+MODIFIED INPUT: updated source test project; synthetic fixture data; copied Microsoft dotnet.exe
+MODIFIED OUTPUT: 통과!  - 실패:     0, 통과:   128, 건너뜀:     0, 전체:   128, 기간: 20 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+MODIFIED EXIT CODE: 0
+
+ROLLBACK COMMAND: & 'C:/Program Files/Git/bin/bash.exe' docs/rework/evidence/wo06/ROLLBACK.sh 'C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/artifacts/wo06-source-rollback'
+ROLLBACK INPUT: marked independent copy of UpdateTransaction.modified.cs
+ROLLBACK OUTPUT: SOURCE_ROLLBACK=PASS; RESTORED_SHA256=63A4AD13AB5A4B105C4B438DD4DC25E3F1449AE918EBA005946103DC77871C94
+ROLLBACK EXIT CODE: 0
+RESTORED STATUS: independent source copy equals original SHA-256. Modified artifact and working source remain changed.
+RESTORED BEHAVIOR: baseline source-copy bytes restored; baseline 91-test result remains separate. No real installation rollback claim.
+
+INSTALLATION_RECOVERY_COMMANDS: PROCESS_COMMANDS.json
+INSTALLATION_RECOVERY_RESULT: synthetic separate-process recovery, old app content and vault-marker confirmed.
+PROCESS SUMMARY: 121 commands; 81 exit 0; 37 expected termination -1; 3 expected failures 5.
+FULL COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo06-full-final.trx' -v:minimal
+FULL OUTPUT: 통과!  - 실패:     0, 통과:   769, 건너뜀:   111, 전체:   880, 기간: 2 m 16 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+FULL EXIT CODE: 0
+SECURITYLAB COMMAND: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release --no-build --no-restore --logger 'trx;LogFileName=wo06-securitylab.trx' -v:minimal
+SECURITYLAB OUTPUT: 통과!  - 실패:     0, 통과:    36, 건너뜀:     0, 전체:    36, 기간: 35 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+SECURITYLAB EXIT CODE: 0
+BUILD COMMAND: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 -v:minimal
+BUILD RESULT: 경고 0개; 오류 0개; EXIT=0
+
+VAULT CLI COMMAND: tools/SmartPerformanceDoctor.VaultRecovery/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.VaultRecovery.exe artifacts/wo06-vault-cli2/vault artifacts/wo06-vault-cli2/recovered
+VAULT INPUT: synthetic Lab v5, one encrypted synthetic file; interactive PTY; no secret in arguments/logs
+VAULT OUTPUT: EXPORTED=1; SOURCE=READ-ONLY; FORMAT=LAB-V4-V5
+VAULT EXIT CODE: 0
+VAULT HASH RESULT: VAULT_SOURCE=UNCHANGED; EXPORT_SHA256=11630EF3F23673269819F72EF686E436FB55802B1A2F4E9E5A8A20D016A9A7ED
+VAULT HASH EXIT CODE: 0
+VAULT HASH INPUTS: vault-source-before.json and vault-source-after.json
+LAB V4 INTERACTIVE CLI: NOT TESTED in this work order
+
+SAFETY: No real user installation/vault mutation, host signing certificate, shutdown or reboot. Production gates preserved.
+REMAINING RISKS: ID-less orphan; reviewed legacy administrator recovery; WO05 initial migration; signed bootstrap VM E2E; protected ACL; reboot/power loss; official signer/key lifecycle.
+ROLLBACK PROCEDURE: Source-copy rollback as above. Installation rollback uses trusted elevated --recover, with originals and evidence preserved on failure.
+BASELINE LINE ENDINGS: Preserved pre-edit working-file hash is 63A4AD13AB5A4B105C4B438DD4DC25E3F1449AE918EBA005946103DC77871C94. Detached baseline checkout hash is FBD97C31328C0E775FF1945DBC80340E91BBC19C1D60AFFA0ACBF6AAAE599F52. Git blob hash is 0A04E1C5C158F1991C10219919D9924EF362AD1D4E3EDE05BF22CC66D6A59E45. LF-normalized content matches all three. Source-copy rollback restores preserved original bytes, without normalization.

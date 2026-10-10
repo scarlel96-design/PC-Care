@@ -1,0 +1,46 @@
+WORK ITEM: WO06 remote validation and evidence upload
+STATUS: PASS for implementation upload and Windows CI; overall WO06 PARTIAL; PHASE_1=NO-GO
+BRANCH: codex/pccare-rework-phase1-bootstrap-recovery
+BASELINE SHA: 291f84daf1e950ba9cb74af0c8fea8879a11174e
+BASELINE TREE: 33d084c1253a5b042c158600086db263f09faf89
+FINAL SHA: 5647b352cf41082def74bef2701b6fe707c51cc0 (validated implementation source)
+SOURCE TREE: e2e5452f31d8550050d7560899f409486e10dbb1
+LOCAL SOURCE HEAD: 5647b352cf41082def74bef2701b6fe707c51cc0
+REMOTE SOURCE HEAD: 5647b352cf41082def74bef2701b6fe707c51cc0
+FINAL EVIDENCE COMMIT: docs-only descendant. Resolve the branch HEAD with git ls-remote and the final delivery receipt.
+ROOT CAUSE: The WO05 installed helper could lock its own runtime. Journal and signer boundaries also needed validation.
+CHANGED FILES: CHANGED_FILES.txt lists 18 implementation paths. Nine reports and evidence follow in a docs-only commit.
+IMPLEMENTATION: Protected bootstrap, legacy diagnosis, journal generations, temporary targets, pinned Authenticode verification.
+
+TEST COMMAND: gh run view 38054469100 --repo scarlel96-design/PC-Care --json status,conclusion,headSha,url,jobs
+INPUT: Windows CI run 38054469100; job 114219984076; source 5647b352cf41082def74bef2701b6fe707c51cc0
+OUTPUT: status=completed; conclusion=success; headSha=5647b352cf41082def74bef2701b6fe707c51cc0
+EXIT CODE: 0
+URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38054469100
+COMPLETED UTC: 2026-10-10T13:15:01Z
+
+TEST COMMAND: gh run download 38054469100 --repo scarlel96-design/PC-Care -D artifacts/wo06-ci-38054469100
+INPUT: wo06-windows-trx artifact
+OUTPUT: no console output; three TRX files and process-results.json downloaded and reopened
+EXIT CODE: 0
+
+TEST COMMAND: gh run view 38054469100 --repo scarlel96-design/PC-Care --log
+INPUT: successful Windows CI run
+OUTPUT FILE: CI_LOG.txt
+EXIT CODE: 0
+CI BUILD OUTPUT: Build succeeded.; 0 Warning(s); 0 Error(s)
+CI UPDATER OUTPUT: Passed!  - Failed:     0, Passed:   128, Skipped:     0, Total:   128, Duration: 1 m 5 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+CI FULL OUTPUT: Passed!  - Failed:     0, Passed:   769, Skipped:   111, Total:   880, Duration: 3 m - SmartPerformanceDoctor.Tests.dll (net10.0)
+CI SECURITYLAB OUTPUT: Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 47 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+CI PROCESS OUTPUT: WINDOWS_SYNTHETIC_PROCESS=PASS; VM_E2E=NOT_TESTED; UNKNOWN_ORPHAN=PRESERVED
+CI PROCESS COUNTS: 121 commands; 81 exit 0; 37 expected termination -1; 3 expected failure 5
+CI PROFILE OUTPUT: PRODUCTION_PROFILE=PASS; TEST_ROOT=ABSENT
+TRX NOTE: Full-test Counters.notExecuted reports 0. Individual UnitTestResult entries contain 111 NotExecuted results, matching the console summary.
+PRIOR CI: 38053004305 success for f57214b9cb7c4912042962f2fde4ff0ad2402917; 122 related tests
+PRIOR CI: 38053938744 success for 42efee1c7ddab589329e532997f9d30c856291e4; 128 related tests
+WO05 CI: 38049619408 success for 0389bd3a79f9bcb08981cabb8514055b76240376
+
+SAFETY: No main merge, official release, user installation mutation, host certificate installation, shutdown or reboot.
+REMAINING RISKS: Unrecorded temporary-file identity, first WO05 transition, reviewed legacy recovery, protected ACL, VM/UAC/reboot and official signing.
+ROLLBACK PROCEDURE: ROLLBACK.sh restores a marked independent source copy. Trusted elevated --recover restores installation transactions.
+RESTORED STATUS: Source-copy SHA-256 and synthetic installation recovery have separate evidence in VERIFICATION.txt.

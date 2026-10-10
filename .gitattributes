@@ -5,3 +5,10 @@ docs/rework/evidence/ROLLBACK.sh text eol=lf
 /docs/rework/evidence/wo05/UpdateTransaction.modified.cs -text whitespace=cr-at-eol
 /docs/rework/evidence/wo05/ROLLBACK.sh text eol=lf
 /docs/rework/evidence/wo05/SOURCE_CHANGES.patch -text whitespace=-blank-at-eol
+/docs/rework/evidence/wo06/UpdateTransaction.original.cs -text whitespace=cr-at-eol
+/docs/rework/evidence/wo06/UpdateTransaction.modified.cs -text whitespace=cr-at-eol
+/docs/rework/evidence/wo06/DIFF_FILE.patch -text whitespace=-blank-at-eol
+/docs/rework/evidence/wo06/ROLLBACK.sh text eol=lf
+/docs/rework/evidence/wo06/CI_LOG.txt -text whitespace=-blank-at-eol
+/docs/rework/evidence/wo06/*.trx -text
+/docs/rework/evidence/wo06/*.trx -text whitespace=cr-at-eol

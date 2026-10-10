@@ -1,0 +1,17 @@
+WORK ITEM: Separate-process recovery
+STATUS: PARTIAL
+BASELINE SHA: 291f84daf1e950ba9cb74af0c8fea8879a11174e
+FINAL SHA: 5647b352cf41082def74bef2701b6fe707c51cc0 (validated source; docs-only evidence HEAD follows)
+SOURCE TREE: e2e5452f31d8550050d7560899f409486e10dbb1
+BRANCH: codex/pccare-rework-phase1-bootstrap-recovery
+ROOT CAUSE: WO05 implementation did not cover detached helper execution, legacy terminal journals, or same-state signer extraction.
+CHANGED FILES: see CHANGED_FILES.txt and DIFF_FILE.patch
+IMPLEMENTATION: Journal generations and unique pending files; conservative orphan preservation.
+TEST COMMAND: ./scripts/wo06-process-validation.ps1 -OutputDirectory artifacts/wo06-process-run5
+INPUT: 11 apply crash points, 12 additional recovery crash scenarios, rollback reentry and lock fixtures. PROCESS_COMMANDS.json records all 121 commands.
+OUTPUT:
+WINDOWS_SYNTHETIC_PROCESS=PASS; VM_E2E=NOT_TESTED; UNKNOWN_ORPHAN=PRESERVED
+EXIT CODE: 0
+SAFETY: Synthetic data only. Host user installation and vault unchanged.
+REMAINING RISKS: ID-less pending file retains RecoveryRequired. Reboot and power loss BLOCKED.
+ROLLBACK PROCEDURE: SourceRollback.ps1/ROLLBACK.sh restore a marked independent source copy. UpdateHelper --recover restores installation transactions only after trust and elevation checks.

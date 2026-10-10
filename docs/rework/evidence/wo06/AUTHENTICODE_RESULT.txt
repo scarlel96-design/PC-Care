@@ -1,0 +1,34 @@
+WORK ITEM: Same-object Windows signer verification
+STATUS: PARTIAL
+BASELINE SHA: 291f84daf1e950ba9cb74af0c8fea8879a11174e
+FINAL SHA: 5647b352cf41082def74bef2701b6fe707c51cc0 (validated source; docs-only evidence HEAD follows)
+SOURCE TREE: e2e5452f31d8550050d7560899f409486e10dbb1
+BRANCH: codex/pccare-rework-phase1-bootstrap-recovery
+ROOT CAUSE: WO05 implementation did not cover detached helper execution, legacy terminal journals, or same-state signer extraction.
+CHANGED FILES: see CHANGED_FILES.txt and DIFF_FILE.patch
+IMPLEMENTATION: Pinned file; WinVerifyTrust hFile; same provider-state certificate; immutable publisher pins.
+TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests|FullyQualifiedName~WO06' --logger 'trx;LogFileName=wo06-updater-built.trx' -v:minimal
+INPUT: WO06AuthenticodeTests; embedded Microsoft signature on copied dotnet.exe; unsigned UpdateEngine; malformed/foreign paths
+OUTPUT:
+SmartPerformanceDoctor.AstraVault -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.AstraVault\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.dll
+  SmartPerformanceDoctor.Data -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.Data\bin\x64\Release\net10.0\SmartPerformanceDoctor.Data.dll
+  SmartPerformanceDoctor.Contracts -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.Contracts\bin\x64\Release\net10.0\SmartPerformanceDoctor.Contracts.dll
+  SmartPerformanceDoctor.Aegis -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.Aegis\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.Aegis.dll
+  SmartPerformanceDoctor.SecurityLab -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+  SmartPerformanceDoctor.UpdateEngine -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+  SmartPerformanceDoctor.UpdateHelper -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.UpdateHelper\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryHelper -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryHelper\bin\x64\Release\net10.0-windows\AegisRecoveryHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryService -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryService\bin\x64\Release\net10.0-windows\AegisRecoveryService.dll
+  SmartPerformanceDoctor.App -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.dll
+  SmartPerformanceDoctor.Tests -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll
+  SmartPerformanceDoctor.AstraVault.KillWorker -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.AstraVault.KillWorker\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.KillWorker.dll
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+경고: 결과 파일을 덮어쓰는 중: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo06-updater-built.trx
+결과 파일: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo06-updater-built.trx
+
+통과!  - 실패:     0, 통과:   128, 건너뜀:     0, 전체:   128, 기간: 20 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+EXIT CODE: 0
+SAFETY: Synthetic data only. Host user installation and vault unchanged.
+REMAINING RISKS: Production signer absent; catalog signatures and all API fault permutations NOT TESTED.
+ROLLBACK PROCEDURE: SourceRollback.ps1/ROLLBACK.sh restore a marked independent source copy. UpdateHelper --recover restores installation transactions only after trust and elevation checks.

@@ -1,0 +1,1921 @@
+diff --git a/.github/workflows/wo06-windows-validation.yml b/.github/workflows/wo06-windows-validation.yml
+new file mode 100644
+index 0000000..22486f5
+--- /dev/null
++++ b/.github/workflows/wo06-windows-validation.yml
+@@ -0,0 +1,90 @@
++name: WO06 Windows bootstrap recovery
++
++on:
++  push:
++    branches:
++      - codex/pccare-rework-phase1-bootstrap-recovery
++    paths-ignore:
++      - 'docs/**'
++      - '.gitattributes'
++  pull_request:
++
++jobs:
++  windows-validation:
++    runs-on: windows-latest
++    timeout-minutes: 55
++    permissions:
++      contents: read
++    steps:
++      - uses: actions/checkout@v4
++      - uses: actions/setup-dotnet@v4
++        with:
++          dotnet-version: '10.0.x'
++      - name: Restore
++        run: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
++      - name: Release build
++        run: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
++      - name: Signed package, publisher, transaction, recovery and staging tests
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests|FullyQualifiedName~WO06' --logger 'trx;LogFileName=wo06-signed-updater.trx' -v:minimal
++      - name: Separate-process termination and recovery
++        shell: pwsh
++        run: |
++          dotnet build tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          ./scripts/wo06-process-validation.ps1 -OutputDirectory artifacts/wo06-ci-process
++      - name: Production profile and isolated test profile
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'test kit build failed' }
++          dotnet build tools/SmartPerformanceDoctor.VaultRecovery/SmartPerformanceDoctor.VaultRecovery.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'data recovery build failed' }
++          $kit = 'tools/SmartPerformanceDoctor.VMTestKit/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.VMTestKit.exe'
++          $engine = 'src/SmartPerformanceDoctor.UpdateEngine/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateEngine.dll'
++          & $kit audit-production $engine
++          if ($LASTEXITCODE -ne 0) { throw 'test trust leaked into production' }
++          & $kit audit-production 'src/SmartPerformanceDoctor.App/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.dll'
++          if ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production app' }
++          & $kit audit-production 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.dll'
++          if ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production helper' }
++          $profile = Join-Path $env:RUNNER_TEMP 'wo06-test-profile'
++          & $kit fixture-profile $profile ('0' * 40)
++          if ($LASTEXITCODE -ne 0) { throw 'profile generation failed' }
++          $source = Join-Path $profile 'TestVmTrust.g.cs'
++          dotnet build src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -o (Join-Path $profile 'output') -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'test profile build failed' }
++          & $kit audit-production (Join-Path $profile 'output/SmartPerformanceDoctor.UpdateEngine.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test artifact' }
++          dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -m:1 -o (Join-Path $profile 'app-output') -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'VM Release application profile build failed' }
++          & $kit audit-production (Join-Path $profile 'app-output/SmartPerformanceDoctor.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test application' }
++          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateHelper.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'VM application copied a production update helper' }
++          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateEngine.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'VM helper copied a production update engine' }
++          exit 0
++      - name: Full application regression
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo06-full.trx' -v:minimal
++      - name: SecurityLab regression
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo06-securitylab.trx' -v:minimal
++      - name: Reject unsupported helper verb
++        shell: pwsh
++        run: |
++          $helper = 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe'
++          $process = Start-Process -FilePath $helper -ArgumentList @('--exec', 'arbitrary') -Wait -PassThru -NoNewWindow
++          if ($process.ExitCode -ne 2) { throw "Unexpected helper exit code: $($process.ExitCode)" }
++      - name: Upload test evidence
++        if: always()
++        uses: actions/upload-artifact@v4
++        with:
++          name: wo06-windows-trx
++          path: |
++            tests/SmartPerformanceDoctor.Tests/TestResults/*.trx
++            tests/SmartPerformanceDoctor.SecurityLab.Tests/TestResults/*.trx
++            artifacts/wo06-ci-process/process-results.json
+diff --git a/scripts/wo06-process-validation.ps1 b/scripts/wo06-process-validation.ps1
+new file mode 100644
+index 0000000..824738a
+--- /dev/null
++++ b/scripts/wo06-process-validation.ps1
+@@ -0,0 +1,91 @@
++param([Parameter(Mandatory)][string]$OutputDirectory)
++$ErrorActionPreference = 'Stop'
++$PSNativeCommandUseErrorActionPreference = $false
++$repo = Split-Path $PSScriptRoot -Parent
++$output = [IO.Path]::GetFullPath($OutputDirectory)
++$allowed = [IO.Path]::GetFullPath((Join-Path $repo 'artifacts')) + [IO.Path]::DirectorySeparatorChar
++if (!$output.StartsWith($allowed, [StringComparison]::OrdinalIgnoreCase) -or (Test-Path -LiteralPath $output)) {
++    throw 'Use a new directory under repository artifacts.'
++}
++New-Item -ItemType Directory -Path $output | Out-Null
++$probe = Join-Path $repo 'tests/SmartPerformanceDoctor.UpdateRecoveryProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateRecoveryProbe.exe'
++$records = [Collections.Generic.List[object]]::new()
++function Invoke-Probe([string]$Verb,[string]$Fixture,[string]$Expected) {
++    $lines = @(& $probe $Verb $Fixture 2>&1 | ForEach-Object { $_.ToString() })
++    $code = $LASTEXITCODE
++    $records.Add([pscustomobject]@{Command="$probe $Verb $Fixture";Input=$Fixture;Output=$lines;ExitCode=$code;Expected=$Expected})
++    if (($Expected -eq 'ZERO' -and $code -ne 0) -or ($Expected -eq 'NONZERO' -and $code -eq 0)) {
++        throw "Unexpected result for $Verb : $code"
++    }
++}
++try {
++    $points = @('AfterNewFileIntent','AfterNewFileCreated','AfterNewFileIdentity','BeforeNewFileRename','AfterNewFileRename',
++        'JournalTempCreated','JournalPartialWrite','JournalFlushed','JournalBeforeReplace','JournalAfterReplace','BeforeCommittedJournal')
++    foreach ($point in $points) {
++        $fixture = Join-Path $output $point
++        Invoke-Probe 'prepare' $fixture 'ZERO'
++        Invoke-Probe ('kill:'+$point) $fixture 'NONZERO'
++        if ($point -eq 'AfterNewFileCreated') {
++            Invoke-Probe 'recover' $fixture 'NONZERO'
++            Invoke-Probe 'verify-orphan' $fixture 'ZERO'
++        } else {
++            Invoke-Probe 'recover' $fixture 'ZERO'
++            Invoke-Probe 'verify' $fixture 'ZERO'
++        }
++    }
++    $fixture = Join-Path $output 'rollback-reentry'
++    Invoke-Probe 'prepare' $fixture 'ZERO'
++    Invoke-Probe 'apply-kill' $fixture 'NONZERO'
++    Invoke-Probe 'recover-kill' $fixture 'NONZERO'
++    Invoke-Probe 'recover' $fixture 'ZERO'
++    Invoke-Probe 'verify' $fixture 'ZERO'
++
++    $journalPoints = @('JournalTempCreated','JournalPartialWrite','JournalFlushed','JournalBeforeReplace','JournalAfterReplace')
++    foreach ($point in @('AfterRollbackStarted','BeforeRestoredJournal') + $journalPoints) {
++        $fixture = Join-Path $output ('recovery-'+$point)
++        Invoke-Probe 'prepare' $fixture 'ZERO'
++        Invoke-Probe 'apply-kill' $fixture 'NONZERO'
++        Invoke-Probe ('recover-kill:'+$point) $fixture 'NONZERO'
++        Invoke-Probe 'recover' $fixture 'ZERO'
++        Invoke-Probe 'verify' $fixture 'ZERO'
++    }
++    foreach ($point in $journalPoints) {
++        $fixture = Join-Path $output ('restored-journal-'+$point)
++        Invoke-Probe 'prepare' $fixture 'ZERO'
++        Invoke-Probe 'apply-kill' $fixture 'NONZERO'
++        Invoke-Probe ('recover-final-kill:'+$point) $fixture 'NONZERO'
++        Invoke-Probe 'recover' $fixture 'ZERO'
++        Invoke-Probe 'verify' $fixture 'ZERO'
++    }
++
++    $fixture = Join-Path $output 'detached-image'
++    Invoke-Probe 'prepare-self' $fixture 'ZERO'
++    $holderPath = Join-Path $fixture 'install/engine/SmartPerformanceDoctor.UpdateRecoveryProbe.exe'
++    $holder = Start-Process -FilePath $holderPath -ArgumentList @('hold',('"'+$fixture+'"')) -WindowStyle Hidden -PassThru
++    try {
++        $ready = Join-Path $fixture 'holder.pid'
++        for ($index=0; $index -lt 100 -and !(Test-Path -LiteralPath $ready); $index++) { Start-Sleep -Milliseconds 100 }
++        if (!(Test-Path -LiteralPath $ready)) { throw 'Synthetic image holder did not start.' }
++        Invoke-Probe 'apply' $fixture 'NONZERO'
++        if ([IO.File]::ReadAllText((Join-Path $fixture 'install/app.txt')) -ne 'old') { throw 'Locked image changed the installation.' }
++    } finally {
++        if (!$holder.HasExited) { $holder.Kill(); $holder.WaitForExit() }
++        $holder.Dispose()
++    }
++    Invoke-Probe 'recover' $fixture 'ZERO'
++    Invoke-Probe 'verify' $fixture 'ZERO'
++    Invoke-Probe 'apply' $fixture 'ZERO'
++    Invoke-Probe 'verify-updated' $fixture 'ZERO'
++
++    $fixture = Join-Path $output 'dll-handle-lock'
++    Invoke-Probe 'prepare-self' $fixture 'ZERO'
++    $locked = [IO.File]::Open((Join-Path $fixture 'install/engine/SmartPerformanceDoctor.UpdateRecoveryProbe.dll'), 'Open','Read','Read')
++    try { Invoke-Probe 'apply' $fixture 'NONZERO' } finally { $locked.Dispose() }
++    Invoke-Probe 'recover' $fixture 'ZERO'
++    Invoke-Probe 'verify' $fixture 'ZERO'
++    Invoke-Probe 'apply' $fixture 'ZERO'
++    Invoke-Probe 'verify-updated' $fixture 'ZERO'
++    'WINDOWS_SYNTHETIC_PROCESS=PASS; VM_E2E=NOT_TESTED; UNKNOWN_ORPHAN=PRESERVED'
++} finally {
++    $records | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $output 'process-results.json') -Encoding utf8
++}
+diff --git a/scripts/wo06-vm-harness.ps1 b/scripts/wo06-vm-harness.ps1
+new file mode 100644
+index 0000000..2c40e20
+--- /dev/null
++++ b/scripts/wo06-vm-harness.ps1
+@@ -0,0 +1,91 @@
++param(
++    [Parameter(Mandatory)][string]$EvidenceDirectory,
++    [Parameter(Mandatory)][string]$SnapshotId,
++    [Parameter(Mandatory)][ValidateSet('prepare','capture','apply','recover','acl-write-probe')][string]$Action,
++    [string]$InstallRoot,
++    [string]$PackagePath,
++    [string]$ExpectedVersion,
++    [string]$Outcome = 'NOT TESTED'
++)
++$ErrorActionPreference = 'Stop'
++$evidence = (Resolve-Path -LiteralPath $EvidenceDirectory).Path
++if (!(Test-Path -LiteralPath (Join-Path $evidence '.wo05-disposable-vm'))) { throw 'BLOCKED: disposable VM marker missing.' }
++if (!$SnapshotId.Trim()) { throw 'BLOCKED: record the VM snapshot ID.' }
++$machine = Get-CimInstance Win32_ComputerSystem
++if (($machine.Manufacturer + ' ' + $machine.Model) -notmatch 'VMware|VirtualBox|Virtual Machine|KVM|QEMU|Xen|Parallels') {
++    throw 'BLOCKED: a disposable VM was not identified.'
++}
++$principal = [Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
++$elevated = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
++$repo = Split-Path $PSScriptRoot -Parent
++$state = [ordered]@{ Utc=[DateTime]::UtcNow.ToString('o'); SnapshotId=$SnapshotId; Action=$Action;
++    Outcome=$Outcome; Elevated=$elevated; Manufacturer=$machine.Manufacturer; Model=$machine.Model }
++if ($Action -eq 'prepare') {
++    $cert = New-SelfSignedCertificate -Subject 'CN=PC-Care WO06 VM TEST ONLY' -Type CodeSigningCert -CertStoreLocation Cert:\CurrentUser\My -KeyExportPolicy NonExportable
++    $publicCert = Join-Path $evidence 'wo05-test.cer'
++    Export-Certificate -Cert $cert -FilePath $publicCert | Out-Null
++    Import-Certificate -FilePath $publicCert -CertStoreLocation Cert:\CurrentUser\Root | Out-Null
++    Import-Certificate -FilePath $publicCert -CertStoreLocation Cert:\CurrentUser\TrustedPublisher | Out-Null
++    $kit = Join-Path $repo 'tools/SmartPerformanceDoctor.VMTestKit/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.VMTestKit.exe'
++    & $kit vm-profile (Join-Path $evidence 'trust') $cert.Thumbprint
++    if ($LASTEXITCODE -ne 0) { throw 'Test profile creation failed.' }
++    $trust = Join-Path $evidence 'trust'
++    $acl = Get-Acl -LiteralPath $trust
++    $acl.SetAccessRuleProtection($true,$false)
++    $acl.SetAccessRule([Security.AccessControl.FileSystemAccessRule]::new([Security.Principal.WindowsIdentity]::GetCurrent().User,'FullControl','ContainerInherit,ObjectInherit','None','Allow'))
++    Set-Acl -LiteralPath $trust -AclObject $acl
++    $state.TestCertificateThumbprint=$cert.Thumbprint
++} else {
++    $install = (Resolve-Path -LiteralPath $InstallRoot).Path
++    if ((Split-Path $install -Leaf) -ne 'PC-Care-WO05-Lab') { throw 'Use the dedicated PC-Care-WO05-Lab installation.' }
++    if ($Action -in @('apply','recover')) {
++        if ($elevated) { throw 'Launch UAC from the standard-user VM session.' }
++        $helper = Join-Path $install 'engine/SmartPerformanceDoctor.UpdateHelper.exe'
++        $arguments = if ($Action -eq 'apply') { @('--apply',('"'+(Resolve-Path -LiteralPath $PackagePath).Path+'"'),'--wait-pid','2147483647') } else { @('--recover') }
++        try {
++            $process = Start-Process -FilePath $helper -ArgumentList $arguments -Verb RunAs -WindowStyle Hidden -Wait -PassThru
++            $state.ExitCode=$process.ExitCode
++            $state.Outcome=if($process.ExitCode -eq 0){'PARTIAL: BOOTSTRAP-LAUNCHED'}else{'FAIL'}
++            if ($process.ExitCode -eq 0) {
++                $protected = Join-Path $env:ProgramData 'PC-Care/UpdateTransactions'
++                $receipts = @()
++                for ($index=0; $index -lt 120 -and $receipts.Count -eq 0; $index++) {
++                    $receipts = @(Get-ChildItem -LiteralPath $protected -Filter 'outcome-*.json' -File -Recurse -ErrorAction SilentlyContinue |
++                        Where-Object LastWriteTimeUtc -ge ([DateTime]::Parse($state.Utc).ToUniversalTime()))
++                    if ($receipts.Count -eq 0) { Start-Sleep -Seconds 1 }
++                }
++                $state.BootstrapOutcomes=@($receipts | ForEach-Object { Get-Content -LiteralPath $_.FullName -Raw | ConvertFrom-Json } |
++                    Where-Object InstallRoot -eq $install)
++                $committed=@($state.BootstrapOutcomes | Where-Object { $_.StageName -eq 'Committed' -and $_.Code -eq 'COMMITTED' -and $_.ExitCode -eq 0 })
++                $restored=@($state.BootstrapOutcomes | Where-Object { $_.StageName -eq 'Restored' -and $_.ExitCode -eq 0 })
++                $state.InstalledVersion=(Get-Item -LiteralPath (Join-Path $install 'PCCare.exe')).VersionInfo.FileVersion
++                if ($Action -eq 'apply' -and $ExpectedVersion -and $committed.Count -gt 0 -and
++                    ([version]$state.InstalledVersion -eq [version]$ExpectedVersion)) { $state.Outcome='PASS: COMMITTED AND VERSION VERIFIED' }
++                elseif ($Action -eq 'recover' -and $restored.Count -gt 0) { $state.Outcome='PASS: RESTORED RECEIPT VERIFIED' }
++            }
++        } catch [ComponentModel.Win32Exception] {
++            $state.ExitCode=$_.Exception.NativeErrorCode
++            $state.Outcome=if($_.Exception.NativeErrorCode -eq 1223){'UAC-CANCELLED'}else{'FAIL'}
++        }
++    }
++    $state.Files=@(Get-ChildItem -LiteralPath $install -File -Recurse | ForEach-Object {
++        [pscustomobject]@{Path=$_.FullName.Substring($install.Length); Sha256=(Get-FileHash -LiteralPath $_.FullName).Hash}
++    })
++    $protected = Join-Path $env:ProgramData 'PC-Care/UpdateTransactions'
++    if (Test-Path -LiteralPath $protected) {
++        $aclEntries=@(Get-Item -LiteralPath $protected) + @(Get-ChildItem -LiteralPath $protected -Recurse -Force | Select-Object -First 500)
++        $state.Acl=@($aclEntries | ForEach-Object {
++            $acl=Get-Acl -LiteralPath $_.FullName
++            [pscustomobject]@{Path=$_.FullName;Owner=$acl.Owner;Sddl=$acl.Sddl;Protected=$acl.AreAccessRulesProtected}
++        })
++        if ($Action -eq 'acl-write-probe') {
++            if ($elevated) { throw 'Run the write probe as a standard user.' }
++            $probe=Join-Path $protected ('wo05-probe-'+[Guid]::NewGuid().ToString('N'))
++            try { [IO.File]::WriteAllText($probe,'synthetic'); $state.Outcome='FAIL: standard-user write permitted' }
++            catch [UnauthorizedAccessException] { $state.Outcome='PASS: standard-user write denied' }
++        }
++    }
++}
++$state | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $evidence ($Action+'-'+[DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss')+'.json')) -Encoding utf8
++$state.Outcome
++# Reboot and force termination require manual VM actions. This script never reboots the host.
+diff --git a/src/SmartPerformanceDoctor.App/Services/RuntimeAuthenticodeVerifier.cs b/src/SmartPerformanceDoctor.App/Services/RuntimeAuthenticodeVerifier.cs
+index ba45952..3764461 100644
+--- a/src/SmartPerformanceDoctor.App/Services/RuntimeAuthenticodeVerifier.cs
++++ b/src/SmartPerformanceDoctor.App/Services/RuntimeAuthenticodeVerifier.cs
+@@ -1,11 +1,7 @@
+-using System.Runtime.InteropServices;
+-using System.Security.Cryptography.X509Certificates;
+-
+ namespace SmartPerformanceDoctor.App.Services;
+ 
+ internal static class RuntimeAuthenticodeVerifier
+ {
+-    private static readonly Guid GenericVerifyV2 = new("00AAC56B-CD44-11d0-8CC2-00C04FC295EE");
+     private const int TrustENoSignature = unchecked((int)0x800B0100);
+ 
+     // Release publisher pins must be provisioned through a reviewed release process.
+@@ -19,36 +15,6 @@ internal static class RuntimeAuthenticodeVerifier
+     }
+ #endif
+ 
+-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+-    private struct WinTrustFileInfo
+-    {
+-        public uint Size;
+-        [MarshalAs(UnmanagedType.LPWStr)] public string FilePath;
+-        public IntPtr FileHandle;
+-        public IntPtr KnownSubject;
+-    }
+-
+-    [StructLayout(LayoutKind.Sequential)]
+-    private struct WinTrustData
+-    {
+-        public uint Size;
+-        public IntPtr PolicyCallbackData;
+-        public IntPtr SipClientData;
+-        public uint UiChoice;
+-        public uint RevocationChecks;
+-        public uint UnionChoice;
+-        public IntPtr FileInfo;
+-        public uint StateAction;
+-        public IntPtr StateData;
+-        public IntPtr UrlReference;
+-        public uint ProviderFlags;
+-        public uint UiContext;
+-        public IntPtr SignatureSettings;
+-    }
+-
+-    [DllImport("wintrust.dll", ExactSpelling = true, PreserveSig = true)]
+-    private static extern int WinVerifyTrust(IntPtr window, ref Guid action, ref WinTrustData data);
+-
+     public static (RuntimeTrustLevel Level, string Summary, IReadOnlyList<string> UnsignedFiles)
+         EvaluateInstallRoot(string root)
+     {
+@@ -100,59 +66,10 @@ internal static class RuntimeAuthenticodeVerifier
+ 
+     private static int Verify(string path, out string? thumbprint)
+     {
+-        thumbprint = null;
+-        if (!OperatingSystem.IsWindows() || !File.Exists(path))
+-            return -1;
+-
+-        var fileInfo = new WinTrustFileInfo
+-        {
+-            Size = (uint)Marshal.SizeOf<WinTrustFileInfo>(),
+-            FilePath = path,
+-            FileHandle = IntPtr.Zero,
+-            KnownSubject = IntPtr.Zero
+-        };
+-        var pointer = Marshal.AllocHGlobal(Marshal.SizeOf<WinTrustFileInfo>());
+-        try
+-        {
+-            Marshal.StructureToPtr(fileInfo, pointer, fDeleteOld: false);
+-            var data = new WinTrustData
+-            {
+-                Size = (uint)Marshal.SizeOf<WinTrustData>(),
+-                UiChoice = 2, // WTD_UI_NONE
+-                RevocationChecks = 1, // WTD_REVOKE_WHOLECHAIN
+-                UnionChoice = 1, // WTD_CHOICE_FILE
+-                FileInfo = pointer,
+-                ProviderFlags = 0x40 // WTD_REVOCATION_CHECK_CHAIN
+-            };
+-            var action = GenericVerifyV2;
+-            var result = WinVerifyTrust(IntPtr.Zero, ref action, ref data);
+-            if (result == 0)
+-            {
+-                try
+-                {
+-#pragma warning disable SYSLIB0057
+-                    using var certificate = new X509Certificate2(X509Certificate.CreateFromSignedFile(path));
+-#pragma warning restore SYSLIB0057
+-                    thumbprint = certificate.Thumbprint;
+-                }
+-                catch
+-                {
+-                    // A catalog-signed file can pass policy without an embedded signer.
+-                }
+-            }
+-            return result;
+-        }
+-        catch
+-        {
+-            return -1;
+-        }
+-        finally
+-        {
+-            Marshal.DestroyStructure<WinTrustFileInfo>(pointer);
+-            Marshal.FreeHGlobal(pointer);
+-        }
++        var result = SmartPerformanceDoctor.UpdateEngine.AuthenticodeBoundary.Verify(path);
++        thumbprint = result.Thumbprint;
++        return result.Code;
+     }
+-
+     private static IEnumerable<string> EnumerateCriticalBinaries()
+     {
+         yield return "PCCare.exe";
+diff --git a/src/SmartPerformanceDoctor.App/Services/Update/UpdateInstallerService.cs b/src/SmartPerformanceDoctor.App/Services/Update/UpdateInstallerService.cs
+index d8c40ad..1246c04 100644
+--- a/src/SmartPerformanceDoctor.App/Services/Update/UpdateInstallerService.cs
++++ b/src/SmartPerformanceDoctor.App/Services/Update/UpdateInstallerService.cs
+@@ -107,18 +107,15 @@ public sealed class UpdateInstallerService
+         if (package is null) return false;
+         var helper = Path.Combine(UpdatePaths.AppInstallDirectory, "engine", "SmartPerformanceDoctor.UpdateHelper.exe");
+         if (!File.Exists(helper) || (File.GetAttributes(helper) & FileAttributes.ReparsePoint) != 0) return false;
+-        var info = new ProcessStartInfo(helper) { UseShellExecute = true, Verb = "runas" };
+-        info.ArgumentList.Add("--apply");
+-        info.ArgumentList.Add(package);
+-        info.ArgumentList.Add("--wait-pid");
+-        info.ArgumentList.Add(Environment.ProcessId.ToString());
+         try
+         {
+-            if (Process.Start(info) is null) return false;
++            if (UpdateBootstrap.LaunchInstalled(UpdatePaths.AppInstallDirectory, "--apply", package, Environment.ProcessId) is null) return false;
+             _pendingSignedPackage = null;
+             return true;
+         }
+         catch (Win32Exception) { return false; }
+         catch (InvalidOperationException) { return false; }
++        catch (IOException) { return false; }
++        catch (UnauthorizedAccessException) { return false; }
+     }
+ }
+diff --git a/src/SmartPerformanceDoctor.App/Services/Update/UpdateRecoveryCoordinator.cs b/src/SmartPerformanceDoctor.App/Services/Update/UpdateRecoveryCoordinator.cs
+index 88c1de7..0869d3a 100644
+--- a/src/SmartPerformanceDoctor.App/Services/Update/UpdateRecoveryCoordinator.cs
++++ b/src/SmartPerformanceDoctor.App/Services/Update/UpdateRecoveryCoordinator.cs
+@@ -20,16 +20,20 @@ public static class UpdateRecoveryCoordinator
+     {
+         var helper = Path.Combine(UpdatePaths.AppInstallDirectory, "engine",
+             "SmartPerformanceDoctor.UpdateHelper.exe");
+-        if (!File.Exists(helper) || (File.GetAttributes(helper) & FileAttributes.ReparsePoint) != 0)
+-            return RecoveryLaunchResult.HelperMissing;
+-        var info = new ProcessStartInfo(helper) { UseShellExecute = true, Verb = "runas" };
+-        info.ArgumentList.Add("--recover");
+-        info.ArgumentList.Add("--wait-pid");
+-        info.ArgumentList.Add(Environment.ProcessId.ToString());
+-        try { return Process.Start(info) is null ? RecoveryLaunchResult.Failed : RecoveryLaunchResult.Launched; }
++        try
++        {
++            try
++            {
++                if (File.Exists(helper) && UpdateBootstrap.LaunchInstalled(UpdatePaths.AppInstallDirectory, "--recover", "", Environment.ProcessId) is not null)
++                    return RecoveryLaunchResult.Launched;
++            }
++            catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException) { }
++            return UpdateBootstrap.LaunchSnapshotRecovery(UpdatePaths.AppInstallDirectory, Environment.ProcessId) is null
++                ? RecoveryLaunchResult.HelperMissing : RecoveryLaunchResult.Launched;
++        }
+         catch (Win32Exception ex) when (ex.NativeErrorCode == 1223)
+         { return RecoveryLaunchResult.Cancelled; }
+-        catch (Exception ex) when (ex is Win32Exception or InvalidOperationException)
++        catch (Exception ex) when (ex is Win32Exception or InvalidOperationException or IOException or InvalidDataException or UnauthorizedAccessException)
+         { return RecoveryLaunchResult.Failed; }
+     }
+ }
+diff --git a/src/SmartPerformanceDoctor.UpdateEngine/AuthenticodeBoundary.cs b/src/SmartPerformanceDoctor.UpdateEngine/AuthenticodeBoundary.cs
+new file mode 100644
+index 0000000..41b963e
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.UpdateEngine/AuthenticodeBoundary.cs
+@@ -0,0 +1,89 @@
++using System.Runtime.InteropServices;
++using System.Security.Cryptography.X509Certificates;
++
++namespace SmartPerformanceDoctor.UpdateEngine;
++
++public sealed record AuthenticodeResult(int Code, string? Thumbprint, string Identity, string Hash);
++
++/// <summary>Read the signer from the retained WinVerifyTrust provider state.</summary>
++public static class AuthenticodeBoundary
++{
++    public static AuthenticodeResult Verify(string path, Action? whilePinned = null)
++    {
++        try
++        {
++            var full = Path.GetFullPath(path);
++            using var file = WindowsFileBoundary.OpenRead(Path.GetDirectoryName(full)!, Path.GetFileName(full));
++            var hash = file.Hash();
++            whilePinned?.Invoke();
++            var result = VerifyOpened(full, file);
++            file.Validate();
++            if (file.Hash() != hash) return new(-1, null, file.Identity, hash);
++            return new(result.Code, result.Thumbprint, file.Identity, hash);
++        }
++        catch { return new(-1, null, "", ""); }
++    }
++
++    public static bool IsBuildPublisher(AuthenticodeResult result) => result.Code == 0 &&
++        result.Thumbprint is not null && BuildPublisherTrust.ExecutableThumbprints.Contains(result.Thumbprint);
++
++    private static (int Code, string? Thumbprint) VerifyOpened(string path, WindowsFileBoundary.FileLease file)
++    {
++        var info = new FileInfoData { Size = (uint)Marshal.SizeOf<FileInfoData>(), Path = path,
++            Handle = file.Stream.SafeFileHandle.DangerousGetHandle() };
++        var pointer = Marshal.AllocHGlobal(Marshal.SizeOf<FileInfoData>());
++        var data = new TrustData { Size = (uint)Marshal.SizeOf<TrustData>(), Ui = 2, Revocation = 1,
++            Choice = 1, File = pointer, StateAction = 1, Flags = 0x40 };
++        var action = new Guid("00AAC56B-CD44-11d0-8CC2-00C04FC295EE");
++        try
++        {
++            Marshal.StructureToPtr(info, pointer, false);
++            file.Validate();
++            var code = WinVerifyTrust(IntPtr.Zero, ref action, ref data);
++            file.Validate();
++            if (code != 0) return (code, null);
++            var provider = WTHelperProvDataFromStateData(data.State);
++            var signer = provider == IntPtr.Zero ? IntPtr.Zero : WTHelperGetProvSignerFromChain(provider, 0, false, 0);
++            if (signer == IntPtr.Zero) return (-1, null);
++            var signerData = Marshal.PtrToStructure<SignerData>(signer);
++            if (signerData.Error != 0 || signerData.Count == 0) return (-1, null);
++            var cert = WTHelperGetProvCertFromChain(signer, 0);
++            if (cert == IntPtr.Zero) return (-1, null);
++            // CRYPT_PROVIDER_CERT starts with cbStruct and aligned PCCERT_CONTEXT.
++            var context = Marshal.ReadIntPtr(cert, IntPtr.Size == 8 ? 8 : 4);
++            if (context == IntPtr.Zero) return (-1, null);
++#pragma warning disable SYSLIB0057
++            using var certificate = new X509Certificate2(context);
++#pragma warning restore SYSLIB0057
++            file.Validate();
++            return (0, certificate.Thumbprint);
++        }
++        finally
++        {
++            data.StateAction = 2;
++            WinVerifyTrust(IntPtr.Zero, ref action, ref data);
++            Marshal.DestroyStructure<FileInfoData>(pointer);
++            Marshal.FreeHGlobal(pointer);
++        }
++    }
++
++    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
++    private struct FileInfoData { public uint Size; [MarshalAs(UnmanagedType.LPWStr)] public string Path;
++        public IntPtr Handle, Subject; }
++    [StructLayout(LayoutKind.Sequential)]
++    private struct TrustData { public uint Size; public IntPtr Callback, Sip; public uint Ui, Revocation, Choice;
++        public IntPtr File; public uint StateAction; public IntPtr State, Url; public uint Flags, Context;
++        public IntPtr Settings; }
++    [StructLayout(LayoutKind.Sequential)]
++    private struct SignerData { public uint Size; public System.Runtime.InteropServices.ComTypes.FILETIME Time;
++        public uint Count; public IntPtr Chain; public uint Type; public IntPtr Signer; public uint Error, CounterCount;
++        public IntPtr Counters, ChainContext; }
++    [DllImport("wintrust.dll", ExactSpelling = true)]
++    private static extern int WinVerifyTrust(IntPtr window, ref Guid action, ref TrustData data);
++    [DllImport("wintrust.dll", ExactSpelling = true)]
++    private static extern IntPtr WTHelperProvDataFromStateData(IntPtr state);
++    [DllImport("wintrust.dll", ExactSpelling = true)]
++    private static extern IntPtr WTHelperGetProvSignerFromChain(IntPtr provider, uint signer, [MarshalAs(UnmanagedType.Bool)] bool counter, uint index);
++    [DllImport("wintrust.dll", ExactSpelling = true)]
++    private static extern IntPtr WTHelperGetProvCertFromChain(IntPtr signer, uint index);
++}
+diff --git a/src/SmartPerformanceDoctor.UpdateEngine/BuildPublisherTrust.cs b/src/SmartPerformanceDoctor.UpdateEngine/BuildPublisherTrust.cs
+index 09eb6ed..f0d0e78 100644
+--- a/src/SmartPerformanceDoctor.UpdateEngine/BuildPublisherTrust.cs
++++ b/src/SmartPerformanceDoctor.UpdateEngine/BuildPublisherTrust.cs
+@@ -1,8 +1,19 @@
++using System.Collections.Frozen;
++
+ namespace SmartPerformanceDoctor.UpdateEngine;
+ 
+ /// <summary>Select a trust root at compilation. Runtime environment variables do not change this policy.</summary>
+ public static class BuildPublisherTrust
+ {
++    public static IReadOnlySet<string> ExecutableThumbprints { get; } = CreateExecutablePins();
++    private static IReadOnlySet<string> CreateExecutablePins()
++    {
++        var pins = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
++#if PCCARE_VM_TEST
++        pins.Add(TestVmTrustData.SignerThumbprint);
++#endif
++        return pins.ToFrozenSet(StringComparer.OrdinalIgnoreCase);
++    }
+ #if PCCARE_VM_TEST
+     public const bool IsVmTest = true;
+     public static string SignerThumbprint => TestVmTrustData.SignerThumbprint;
+diff --git a/src/SmartPerformanceDoctor.UpdateEngine/UpdateBootstrap.cs b/src/SmartPerformanceDoctor.UpdateEngine/UpdateBootstrap.cs
+new file mode 100644
+index 0000000..9edfca1
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.UpdateEngine/UpdateBootstrap.cs
+@@ -0,0 +1,226 @@
++using System.Diagnostics;
++using System.Security.AccessControl;
++using System.Text.Json;
++
++namespace SmartPerformanceDoctor.UpdateEngine;
++
++public sealed record BootstrapFile(string Name, string Identity, long Length, string Hash);
++public sealed record BootstrapBinding(string Id, string InstallRoot, string InstallIdentity,
++    string ExecutionIdentity, string Verb, string Package, int CallerPid, int ParentPid, List<BootstrapFile> Files);
++
++public static class UpdateBootstrap
++{
++    private static readonly string[] RuntimeFiles = ["SmartPerformanceDoctor.UpdateHelper.exe",
++        "SmartPerformanceDoctor.UpdateHelper.dll", "SmartPerformanceDoctor.UpdateEngine.dll",
++        "SmartPerformanceDoctor.UpdateHelper.deps.json", "SmartPerformanceDoctor.UpdateHelper.runtimeconfig.json"];
++    public static string WorkRoot => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
++        "PC-Care", "UpdateTransactions");
++
++    public static string Prepare(string installRoot, string verb, string package, int callerPid)
++    {
++        if (verb is not ("--apply" or "--recover") || callerPid <= 0) throw new InvalidDataException("BOOTSTRAP-COMMAND");
++        ValidateInstallRoot(installRoot);
++        new UpdateTransaction(BuildPublisherTrust.Current, WorkRoot, true).InitializeProtectedRoot();
++        using var rootPin = WindowsFileBoundary.PinDirectory(installRoot);
++        var engine = Path.Combine(installRoot, "engine");
++        var id = Guid.NewGuid().ToString("N");
++        var directory = Path.Combine(WorkRoot, "bootstrap-" + id);
++        Directory.CreateDirectory(directory);
++        using var executionPin = WindowsFileBoundary.PinDirectory(directory);
++        ValidateAcl(directory);
++        var files = new List<BootstrapFile>();
++        foreach (var name in RuntimeFiles)
++        {
++            using var source = WindowsFileBoundary.OpenRead(engine, name);
++            UpdateTransaction.ValidateProtectedSecurity(source.ReadSecurity(), false);
++            VerifyPublisher(engine, name, source);
++            using var target = WindowsFileBoundary.OpenWrite(directory, name, true);
++            target.CopyFrom(source);
++            target.Verify(source.Stream.Length, source.Hash());
++            files.Add(new(name, target.Identity, target.Stream.Length, target.Hash()));
++        }
++        var binding = new BootstrapBinding(id, Path.GetFullPath(installRoot), rootPin.Identity,
++            executionPin.Identity, verb, package, callerPid, Environment.ProcessId, files);
++        using (var output = WindowsFileBoundary.OpenWrite(directory, "binding.json", true))
++        { output.Stream.Write(JsonSerializer.SerializeToUtf8Bytes(binding)); output.Stream.Flush(true); }
++        Validate(directory, id);
++        return directory;
++    }
++
++    public static BootstrapBinding Validate(string directory, string id)
++    {
++        if (!Guid.TryParseExact(id, "N", out _) || !string.Equals(Path.GetFullPath(directory),
++            Path.Combine(WorkRoot, "bootstrap-" + id), StringComparison.OrdinalIgnoreCase))
++            throw new InvalidDataException("BOOTSTRAP-LOCATION");
++        UpdateTransaction.ValidateProtectedSecurity(new DirectoryInfo(WorkRoot).GetAccessControl(), true);
++        ValidateAcl(directory);
++        using var execution = WindowsFileBoundary.PinDirectory(directory);
++        using var record = WindowsFileBoundary.OpenRead(directory, "binding.json");
++        UpdateTransaction.ValidateProtectedSecurity(record.ReadSecurity(), false);
++        if (record.Stream.Length > 16384) throw new InvalidDataException("BOOTSTRAP-BINDING-SIZE");
++        using var document = JsonDocument.Parse(record.Stream);
++        RejectDuplicateFields(document.RootElement);
++        var binding = document.RootElement.Deserialize<BootstrapBinding>(
++            new JsonSerializerOptions { UnmappedMemberHandling = System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow })
++            ?? throw new InvalidDataException("BOOTSTRAP-BINDING");
++        if (string.IsNullOrWhiteSpace(binding.InstallRoot) || binding.Package is null ||
++            binding.Files is null || binding.Files.Any(f => f is null || string.IsNullOrWhiteSpace(f.Name) ||
++                string.IsNullOrWhiteSpace(f.Identity) || f.Length < 0 || f.Hash is null ||
++                f.Hash.Length != 64 || !f.Hash.All(Uri.IsHexDigit)))
++            throw new InvalidDataException("BOOTSTRAP-BINDING-FIELDS");
++        ValidateInstallRoot(binding.InstallRoot);
++        using var install = WindowsFileBoundary.PinDirectory(binding.InstallRoot);
++        if (binding.Id != id || binding.ExecutionIdentity != execution.Identity || binding.InstallIdentity != install.Identity ||
++            binding.Verb is not ("--apply" or "--recover") || binding.CallerPid <= 0 || binding.ParentPid <= 0 ||
++            binding.Files is null || binding.Files.Count != RuntimeFiles.Length ||
++            !binding.Files.Select(f => f.Name).Order().SequenceEqual(RuntimeFiles.Order()))
++            throw new InvalidDataException("BOOTSTRAP-BINDING-MISMATCH");
++        foreach (var item in binding.Files)
++        {
++            using var file = WindowsFileBoundary.OpenRead(directory, item.Name);
++            UpdateTransaction.ValidateProtectedSecurity(file.ReadSecurity(), false);
++            file.Verify(item.Length, item.Hash, item.Identity);
++            VerifyPublisher(directory, item.Name, file);
++        }
++        return binding;
++    }
++
++    public static void ValidateInstallRoot(string installRoot)
++    {
++        var full = Path.GetFullPath(installRoot).TrimEnd(Path.DirectorySeparatorChar);
++        if (!new[] { Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
++                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) }
++            .Any(root => !string.IsNullOrWhiteSpace(root) && full.StartsWith(root.TrimEnd('\\') + "\\", StringComparison.OrdinalIgnoreCase)))
++            throw new InvalidDataException("BOOTSTRAP-INSTALL-LOCATION");
++        using var pin = WindowsFileBoundary.PinDirectory(full);
++        ValidateAcl(full);
++        ValidateAcl(Path.Combine(full, "engine"));
++    }
++
++    public static Process? Launch(string directory, string id)
++    {
++        var binding = Validate(directory, id);
++        using var install = WindowsFileBoundary.PinDirectory(binding.InstallRoot);
++        using var execution = WindowsFileBoundary.PinDirectory(directory);
++        var leases = PinRuntime(directory, binding);
++        try
++        {
++        var start = new ProcessStartInfo(Path.Combine(directory, RuntimeFiles[0]))
++            { UseShellExecute = false, CreateNoWindow = true, WorkingDirectory = directory };
++        start.ArgumentList.Add("--bootstrap"); start.ArgumentList.Add(id);
++        return Process.Start(start);
++        }
++        finally { foreach (var file in leases) file.Dispose(); }
++    }
++
++    public static Process? LaunchSnapshotRecovery(string installRoot, int callerPid)
++    {
++        if (callerPid <= 0) throw new InvalidDataException("BOOTSTRAP-COMMAND");
++        ValidateInstallRoot(installRoot);
++        if (!Directory.Exists(WorkRoot)) return null;
++        ValidateAcl(WorkRoot);
++        using var install = WindowsFileBoundary.PinDirectory(installRoot);
++        using var work = WindowsFileBoundary.PinDirectory(WorkRoot);
++        foreach (var directory in Directory.EnumerateDirectories(WorkRoot, "bootstrap-*").OrderByDescending(p => p, StringComparer.Ordinal))
++        {
++            BootstrapBinding binding;
++            try { binding = Validate(directory, Path.GetFileName(directory)[10..]); }
++            catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException or JsonException) { continue; }
++            if (binding.InstallIdentity != install.Identity ||
++                !string.Equals(binding.InstallRoot, Path.GetFullPath(installRoot), StringComparison.OrdinalIgnoreCase)) continue;
++            using var execution = WindowsFileBoundary.PinDirectory(directory);
++            var leases = PinRuntime(directory, binding);
++            try
++            {
++                var start = new ProcessStartInfo(Path.Combine(directory, RuntimeFiles[0]))
++                    { UseShellExecute = true, Verb = "runas", WorkingDirectory = directory };
++                start.ArgumentList.Add("--bootstrap-recover"); start.ArgumentList.Add(binding.Id);
++                start.ArgumentList.Add("--wait-pid"); start.ArgumentList.Add(callerPid.ToString());
++                return Process.Start(start);
++            }
++            finally { foreach (var file in leases) file.Dispose(); }
++        }
++        return null;
++    }
++
++    public static void RecordOutcome(string directory, string id, TransactionResult result, int exitCode)
++    {
++        var binding = Validate(directory, id);
++        using var execution = WindowsFileBoundary.PinDirectory(directory);
++        using var record = WindowsFileBoundary.OpenWrite(directory, "outcome-" + Guid.NewGuid().ToString("N") + ".json", true);
++        UpdateTransaction.ValidateProtectedSecurity(record.ReadSecurity(), false);
++        record.Stream.Write(JsonSerializer.SerializeToUtf8Bytes(new { binding.Id, binding.InstallRoot,
++            binding.InstallIdentity, Utc = DateTimeOffset.UtcNow, result.Stage, StageName = result.Stage.ToString(), result.Code, result.TransactionId,
++            result.FilesApplied, result.Failure, ExitCode = exitCode }));
++        record.Stream.Flush(true);
++    }
++
++    private static List<WindowsFileBoundary.FileLease> PinRuntime(string directory, BootstrapBinding binding)
++    {
++        var files = new List<WindowsFileBoundary.FileLease>();
++        try
++        {
++            foreach (var name in RuntimeFiles)
++            {
++                var file = WindowsFileBoundary.OpenRead(directory, name); files.Add(file);
++                UpdateTransaction.ValidateProtectedSecurity(file.ReadSecurity(), false);
++                var expected = binding.Files.Single(item => item.Name == name);
++                file.Verify(expected.Length, expected.Hash, expected.Identity);
++                VerifyPublisher(directory, name, file);
++            }
++            return files;
++        }
++        catch { foreach (var file in files) file.Dispose(); throw; }
++    }
++
++    public static Process? LaunchInstalled(string installRoot, string verb, string package, int callerPid)
++    {
++        if (verb is not ("--apply" or "--recover") || callerPid <= 0)
++            throw new InvalidDataException("BOOTSTRAP-COMMAND");
++        ValidateInstallRoot(installRoot);
++        var engine = Path.Combine(installRoot, "engine");
++        using var installPin = WindowsFileBoundary.PinDirectory(installRoot);
++        var leases = new List<WindowsFileBoundary.FileLease>();
++        try
++        {
++            foreach (var name in RuntimeFiles)
++            {
++                var lease = WindowsFileBoundary.OpenRead(engine, name);
++                leases.Add(lease);
++                UpdateTransaction.ValidateProtectedSecurity(lease.ReadSecurity(), false);
++                VerifyPublisher(engine, name, lease);
++            }
++            var start = new ProcessStartInfo(Path.Combine(engine, RuntimeFiles[0]))
++                { UseShellExecute = true, Verb = "runas", WorkingDirectory = engine };
++            start.ArgumentList.Add(verb);
++            if (verb == "--apply") start.ArgumentList.Add(Path.GetFullPath(package));
++            start.ArgumentList.Add("--wait-pid"); start.ArgumentList.Add(callerPid.ToString());
++            installPin.Validate();
++            foreach (var lease in leases) lease.Validate();
++            return Process.Start(start);
++        }
++        finally { foreach (var lease in leases) lease.Dispose(); }
++    }
++    private static void ValidateAcl(string path) => UpdateTransaction.ValidateProtectedSecurity(new DirectoryInfo(path).GetAccessControl(), false);
++    private static void RejectDuplicateFields(JsonElement value)
++    {
++        if (value.ValueKind == JsonValueKind.Object)
++        {
++            var names = new HashSet<string>(StringComparer.Ordinal);
++            foreach (var property in value.EnumerateObject())
++            {
++                if (!names.Add(property.Name)) throw new InvalidDataException("BOOTSTRAP-DUPLICATE-FIELD");
++                RejectDuplicateFields(property.Value);
++            }
++        }
++        else if (value.ValueKind == JsonValueKind.Array)
++            foreach (var item in value.EnumerateArray()) RejectDuplicateFields(item);
++    }
++    private static void VerifyPublisher(string root, string name, WindowsFileBoundary.FileLease file)
++    {
++        if (!name.EndsWith(".exe", StringComparison.Ordinal) && !name.EndsWith(".dll", StringComparison.Ordinal)) return;
++        var signature = AuthenticodeBoundary.Verify(Path.Combine(root, name));
++        if (!AuthenticodeBoundary.IsBuildPublisher(signature) || signature.Identity != file.Identity || signature.Hash != file.Hash())
++            throw new InvalidDataException("BOOTSTRAP-PUBLISHER-UNVERIFIED:" + name);
++    }
++}
+diff --git a/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs b/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
+index 6e6276b..d3d9a83 100644
+--- a/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
++++ b/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
+@@ -32,6 +32,8 @@ public sealed class UpdateFileJournal
+     public string OriginalIdentity { get; set; } = "";
+     public string BackupIdentity { get; set; } = "";
+     public string InstalledIdentity { get; set; } = "";
++    public string TemporaryPath { get; set; } = "";
++    public bool TemporaryReady { get; set; }
+     public string Path { get; set; } = "";
+     public bool Existed { get; set; }
+     public long OriginalLength { get; set; }
+@@ -58,16 +60,24 @@ public enum UpdateFaultPoint
+     DuringBackupCreation, AfterBackupVerification, AfterApplyingJournal,
+     AfterFirstReplacement, BeforeReplacement, AfterLastReplacement,
+     DuringPostApplyVerification, BeforeCommittedJournal, AfterRollbackStarted,
+-    DuringRollbackCopy, BeforeRestoredJournal, BeforeFailureJournal
++    DuringRollbackCopy, BeforeRestoredJournal, BeforeFailureJournal,
++    AfterNewFileIntent, AfterNewFileCreated, AfterNewFileIdentity, BeforeNewFileRename, AfterNewFileRename,
++    JournalTempCreated, JournalPartialWrite, JournalFlushed, JournalBeforeReplace, JournalAfterReplace
+ }
+ 
+ public sealed record UpdateRecoveryStatus(UpdateRecoveryState State, string Code, string TransactionId);
+ 
++public sealed record LegacyFileObservation(string Path, string InstalledState, string InstalledIdentity,
++    string InstalledHash, string BackupState, string BackupIdentity, string BackupHash);
++public sealed record LegacyJournalDiagnostic(string TransactionId, string Stage, string JournalHash,
++    string InstallIdentity, string TransactionIdentity, string Code, List<LegacyFileObservation> Files);
++
+ public sealed class UpdateTransaction
+ {
+     private readonly PublisherTrustPolicy _policy;
+     private readonly string _workRoot;
+     private readonly bool _strictAcl;
++    private Action<UpdateFaultPoint>? _journalFault;
+     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
+     private const int MaxJournalFiles = 4096;
+     private const int MaxJournalBytes = 1024 * 1024;
+@@ -80,10 +90,102 @@ public sealed class UpdateTransaction
+         _strictAcl = strictAcl;
+     }
+ 
++    public void InitializeProtectedRoot()
++    {
++        if (!_strictAcl) throw new InvalidOperationException("protected mode required");
++        SecureWorkRoot();
++    }
++
++    /// <summary>Observe legacy files without granting restore or delete authority.</summary>
++    public IReadOnlyList<LegacyJournalDiagnostic> DiagnoseLegacy(string installRoot)
++    {
++        installRoot = Path.GetFullPath(installRoot);
++        EnsureRoot(installRoot);
++        using var install = WindowsFileBoundary.PinDirectory(installRoot);
++        if (!Directory.Exists(_workRoot)) return [];
++        EnsureRoot(_workRoot);
++        if (_strictAcl) VerifyProtectedAcl(_workRoot);
++        using var work = WindowsFileBoundary.PinDirectory(_workRoot);
++        var results = new List<LegacyJournalDiagnostic>();
++        foreach (var directory in Directory.EnumerateDirectories(_workRoot, "tx-*").Order(StringComparer.Ordinal))
++        {
++            var id = Path.GetFileName(directory)[3..];
++            var hash = ""; var transactionIdentity = ""; var stage = "UNKNOWN";
++            var observations = new List<LegacyFileObservation>();
++            try
++            {
++                if (!Guid.TryParseExact(id, "N", out _)) throw new InvalidDataException("LEGACY-ID");
++                EnsureRoot(directory);
++                if (_strictAcl) VerifyProtectedAcl(directory);
++                using var transaction = WindowsFileBoundary.PinDirectory(directory);
++                transactionIdentity = transaction.Identity;
++                using var record = WindowsFileBoundary.OpenRead(directory, "journal.json");
++                VerifyProtectedFile(record, directory);
++                hash = record.Hash();
++                var journal = ReadJournalFile(directory, "journal.json");
++                if (journal is null || journal.SchemaVersion != 1) continue;
++                stage = journal.Stage.ToString();
++                if (journal.TransactionId != id || !Enum.IsDefined(journal.Stage) ||
++                    !string.Equals(journal.InstallRoot, installRoot, StringComparison.OrdinalIgnoreCase) ||
++                    journal.Files is null || journal.Files.Count > MaxJournalFiles ||
++                    journal.InstallIdentity != "" || journal.TransactionIdentity != "")
++                    throw new InvalidDataException("LEGACY-BINDING");
++                var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
++                foreach (var entry in journal.Files)
++                {
++                    if (entry is null || string.IsNullOrWhiteSpace(entry.Path) ||
++                        !SignedPackage.SafeRelativePath(entry.Path) || !seen.Add(entry.Path) ||
++                        !IsSha256(entry.NewSha256) || entry.OriginalIdentity != "" ||
++                        entry.BackupIdentity != "" || entry.InstalledIdentity != "" ||
++                        (entry.Existed && (!IsSha256(entry.OriginalSha256) || entry.OriginalLength < 0)))
++                        throw new InvalidDataException("LEGACY-FILE");
++                }
++                foreach (var entry in journal.Files)
++                {
++                    var target = ObserveLegacyFile(installRoot, Relative(entry.Path), entry);
++                    var backup = entry.Existed
++                        ? ObserveLegacyFile(Path.Combine(directory, "backup"), Relative(entry.Path), entry, true)
++                        : (State: "NOT-REQUIRED", Identity: "", Hash: "");
++                    observations.Add(new(entry.Path, target.State, target.Identity, target.Hash,
++                        backup.State, backup.Identity, backup.Hash));
++                }
++                install.Validate(); work.Validate(); transaction.Validate(); record.Validate();
++                results.Add(new(id, stage, hash, install.Identity, transactionIdentity,
++                    "READONLY-MANUAL-REVIEW; AUTOMATIC-RECOVERY-DENIED", observations));
++            }
++            catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException or JsonException or InvalidOperationException)
++            {
++                results.Add(new(id, stage, hash, install.Identity, transactionIdentity,
++                    "READONLY-DIAGNOSIS-REJECTED", []));
++            }
++        }
++        return results;
++    }
++
++    private (string State, string Identity, string Hash) ObserveLegacyFile(string root, string relative,
++        UpdateFileJournal entry, bool backup = false)
++    {
++        try
++        {
++            using var file = WindowsFileBoundary.OpenRead(root, relative);
++            if (backup) VerifyProtectedFile(file, root);
++            var hash = file.Hash();
++            var original = entry.Existed && file.Stream.Length == entry.OriginalLength && hash == entry.OriginalSha256;
++            var state = backup ? (original ? "ORIGINAL-MATCH" : "HASH-MISMATCH") :
++                original ? "ORIGINAL-MATCH" : hash == entry.NewSha256 ? "UPDATED-MATCH" : "UNKNOWN-CONTENT";
++            return (state, file.Identity, hash);
++        }
++        catch (FileNotFoundException) { return ("MISSING", "", ""); }
++        catch (DirectoryNotFoundException) { return ("MISSING", "", ""); }
++        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
++        { return ("BOUNDARY-REJECTED", "", ""); }
++    }
++
+     public TransactionResult Apply(string packagePath, string installRoot, string currentVersion,
+         Action<int>? afterFileApplied = null, Func<string, bool>? postApplyVersionCheck = null,
+         Action<UpdateFaultPoint>? faultInjector = null)
+     {
++        _journalFault = faultInjector;
+         installRoot = Path.GetFullPath(installRoot);
+         EnsureRoot(installRoot);
+         if (_strictAcl) SecureWorkRoot();
+@@ -101,6 +203,7 @@ public sealed class UpdateTransaction
+             if (_strictAcl) { VerifyProtectedAcl(dir); AllowReadOnlyInspection(dir); }
+             if (prior.Stage is not (UpdateStage.Committed or UpdateStage.Restored))
+                 return new(UpdateStage.RecoveryRequired, "PRIOR-TRANSACTION", prior.TransactionId, 0);
++            if (prior.SchemaVersion == 1) ArchiveLegacyTerminal(dir, installRoot);
+             priorJournals.Add(prior);
+         }
+ 
+@@ -217,11 +320,21 @@ public sealed class UpdateTransaction
+                 retained.Add(sourceLease);
+                 VerifyProtectedFile(sourceLease, Path.GetDirectoryName(Resolve(stageDir, relative))!);
+                 sourceLease.Verify(expected.Length, expected.Sha256);
+-                var targetLease = WindowsFileBoundary.OpenWrite(installRoot, relative, create: !entry.Existed);
++                if (!entry.Existed)
++                {
++                    entry.TemporaryPath = Path.Combine(Path.GetDirectoryName(relative) ?? "",
++                        ".pccare-" + id + "-" + Guid.NewGuid().ToString("N") + ".pending");
++                    WriteJournal(txDir, journal);
++                    faultInjector?.Invoke(UpdateFaultPoint.AfterNewFileIntent);
++                }
++                var targetLease = WindowsFileBoundary.OpenWrite(installRoot,
++                    entry.Existed ? relative : entry.TemporaryPath, create: !entry.Existed, deletable: !entry.Existed);
+                 retained.Add(targetLease);
++                if (!entry.Existed) faultInjector?.Invoke(UpdateFaultPoint.AfterNewFileCreated);
+                 if (entry.Existed) targetLease.Verify(entry.OriginalLength, entry.OriginalSha256, entry.OriginalIdentity);
+                 entry.InstalledIdentity = targetLease.Identity;
+                 WriteJournal(txDir, journal); // Record new-file identity before writing its content.
++                if (!entry.Existed) faultInjector?.Invoke(UpdateFaultPoint.AfterNewFileIdentity);
+                 prepared.Add(entry.Path, (sourceLease, targetLease));
+             }
+             // Acquire every destination before changing any existing file.
+@@ -233,6 +346,14 @@ public sealed class UpdateTransaction
+                 faultInjector?.Invoke(UpdateFaultPoint.BeforeReplacement);
+                 targetLease.CopyFrom(sourceLease);
+                 targetLease.Verify(expected.Length, expected.Sha256);
++                if (!entry.Existed)
++                {
++                    entry.TemporaryReady = true;
++                    WriteJournal(txDir, journal);
++                    faultInjector?.Invoke(UpdateFaultPoint.BeforeNewFileRename);
++                    targetLease.RenameOpenedFile(Resolve(installRoot, Relative(entry.Path)));
++                    faultInjector?.Invoke(UpdateFaultPoint.AfterNewFileRename);
++                }
+                 entry.Applied = true;
+                 WriteJournal(txDir, journal);
+                 count++;
+@@ -290,6 +411,7 @@ public sealed class UpdateTransaction
+ 
+     public TransactionResult Recover(string installRoot, Action<UpdateFaultPoint>? faultInjector = null)
+     {
++        _journalFault = faultInjector;
+         installRoot = Path.GetFullPath(installRoot);
+         EnsureRoot(installRoot);
+         if (_strictAcl) SecureWorkRoot();
+@@ -305,7 +427,11 @@ public sealed class UpdateTransaction
+                 return new(UpdateStage.RecoveryRequired, reason, "", 0);
+             if (_strictAcl) { VerifyProtectedAcl(dir); AllowReadOnlyInspection(dir); }
+             if (journal is null) return new(UpdateStage.RecoveryRequired, "JOURNAL-MISSING", "", 0);
+-            if (journal.Stage is UpdateStage.Committed or UpdateStage.Restored) continue;
++            if (journal.Stage is UpdateStage.Committed or UpdateStage.Restored)
++            {
++                if (journal.SchemaVersion == 1) ArchiveLegacyTerminal(dir, installRoot);
++                continue;
++            }
+             if (journal.Stage < UpdateStage.Applying)
+             {
+                 journal.Stage = UpdateStage.Restored;
+@@ -381,7 +507,8 @@ public sealed class UpdateTransaction
+             if (!name.StartsWith("tx-", StringComparison.Ordinal) ||
+                 !Guid.TryParseExact(name[3..], "N", out _)) return false;
+             var path = Path.Combine(directory, "journal.json");
+-            if (!File.Exists(path) || (File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0)
++            if ((!File.Exists(path) && !File.Exists(Path.Combine(directory, "journal.previous.json"))) ||
++                (File.Exists(path) && (File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0))
+             {
+                 reason = "JOURNAL-MISSING";
+                 return false;
+@@ -392,6 +519,7 @@ public sealed class UpdateTransaction
+                 !Enum.IsDefined(journal.Stage) || journal.Files is null || journal.Files.Count > MaxJournalFiles ||
+                 journal.Failure is null || journal.Failure.Length > MaxFailureCharacters)
+                 return false;
++            if (journal.SchemaVersion == 1) return ValidateLegacyTerminal(directory, installRoot, journal, out reason);
+             if (journal.SchemaVersion != 2 || journal.InstallIdentity != DirectoryIdentity(installRoot) ||
+                 journal.TransactionIdentity != DirectoryIdentity(directory))
+             {
+@@ -409,6 +537,11 @@ public sealed class UpdateTransaction
+                     entry.InstalledIdentity is null ||
+                     (entry.InstalledIdentity.Length != 0 && !IsIdentity(entry.InstalledIdentity)))
+                     return false;
++                if (entry.TemporaryPath is null || (entry.TemporaryPath.Length != 0 &&
++                    (entry.Existed || !SignedPackage.SafeRelativePath("payload/" + entry.TemporaryPath.Replace('\\', '/')) ||
++                     !Path.GetFileName(entry.TemporaryPath).StartsWith(".pccare-" + journal.TransactionId + "-", StringComparison.Ordinal) ||
++                     !entry.TemporaryPath.EndsWith(".pending", StringComparison.Ordinal) ||
++                     Path.GetDirectoryName(entry.TemporaryPath) != Path.GetDirectoryName(Relative(entry.Path))))) return false;
+             }
+             var backup = Path.Combine(directory, "backup");
+             if (Directory.Exists(backup))
+@@ -430,6 +563,74 @@ public sealed class UpdateTransaction
+     private static bool IsSha256(string? value) => value is { Length: 64 } &&
+         value.All(c => Uri.IsHexDigit(c));
+ 
++    private bool ValidateLegacyTerminal(string directory, string installRoot, UpdateJournal journal, out string reason)
++    {
++        reason = "LEGACY-RECOVERY-REQUIRED";
++        if (journal.Stage is not (UpdateStage.Committed or UpdateStage.Restored)) return false;
++        if (journal.InstallIdentity is null || journal.TransactionIdentity is null ||
++            journal.InstallIdentity.Length != 0 || journal.TransactionIdentity.Length != 0 || journal.Files.Count == 0)
++            return false;
++        if (_strictAcl) VerifyProtectedAcl(directory);
++        var receiptPath = Path.Combine(directory, "legacy-terminal.receipt");
++        if (File.Exists(receiptPath))
++        {
++            using var receipt = WindowsFileBoundary.OpenRead(directory, "legacy-terminal.receipt");
++            VerifyProtectedFile(receipt, directory);
++            if (receipt.Stream.Length > 256) return false;
++            using var reader = new StreamReader(receipt.Stream);
++            if (reader.ReadToEnd() != LegacyFingerprint(directory, installRoot)) return false;
++            reason = "LEGACY-ARCHIVED-READONLY";
++            return true;
++        }
++        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
++        foreach (var entry in journal.Files)
++        {
++            if (entry is null || entry.OriginalIdentity is null || entry.BackupIdentity is null || entry.InstalledIdentity is null ||
++                string.IsNullOrWhiteSpace(entry.Path) || !SignedPackage.SafeRelativePath(entry.Path) || !seen.Add(entry.Path) || !IsSha256(entry.NewSha256) ||
++                entry.InstalledIdentity.Length != 0 || entry.OriginalIdentity.Length != 0 || entry.BackupIdentity.Length != 0)
++                return false;
++            var relative = Relative(entry.Path);
++            if (entry.Existed)
++            {
++                if (!IsSha256(entry.OriginalSha256) || entry.OriginalLength < 0) return false;
++                using var backup = WindowsFileBoundary.OpenRead(Path.Combine(directory, "backup"), relative);
++                VerifyProtectedFile(backup, Path.Combine(directory, "backup"));
++                backup.Verify(entry.OriginalLength, entry.OriginalSha256);
++            }
++            if (journal.Stage == UpdateStage.Restored && !entry.Existed)
++            { if (File.Exists(Resolve(installRoot, relative))) return false; }
++            else
++            {
++                using var target = WindowsFileBoundary.OpenRead(installRoot, relative);
++                if (target.Hash() != (journal.Stage == UpdateStage.Committed ? entry.NewSha256 : entry.OriginalSha256)) return false;
++            }
++        }
++        reason = "LEGACY-TERMINAL-READONLY";
++        return true;
++    }
++
++    private string LegacyFingerprint(string directory, string installRoot)
++    {
++        using var original = WindowsFileBoundary.OpenRead(directory, "journal.json");
++        VerifyProtectedFile(original, directory);
++        return original.Hash() + "|" + DirectoryIdentity(installRoot) + "|" + DirectoryIdentity(directory);
++    }
++
++    private void ArchiveLegacyTerminal(string directory, string installRoot)
++    {
++        if (File.Exists(Path.Combine(directory, "legacy-terminal.receipt"))) return;
++        using var parent = WindowsFileBoundary.PinDirectory(directory);
++        var name = "legacy-" + Guid.NewGuid().ToString("N") + ".new";
++        using (var receipt = WindowsFileBoundary.OpenWrite(directory, name, true))
++        {
++            VerifyProtectedFile(receipt, directory);
++            receipt.Stream.Write(System.Text.Encoding.UTF8.GetBytes(LegacyFingerprint(directory, installRoot)));
++            receipt.Stream.Flush(true);
++        }
++        parent.Validate();
++        File.Move(Path.Combine(directory, name), Path.Combine(directory, "legacy-terminal.receipt"));
++    }
++
+     private static bool IsIdentity(string? value) => value is { Length: 49 } && value[16] == ':' &&
+         value.Where((_, index) => index != 16).All(Uri.IsHexDigit);
+ 
+@@ -473,9 +674,17 @@ public sealed class UpdateTransaction
+                         if (!IsIdentity(entry.InstalledIdentity)) throw new InvalidDataException("DELETE-IDENTITY-MISSING");
+                         target = WindowsFileBoundary.OpenWrite(installRoot, relative, deletable: true);
+                         target.Validate(entry.InstalledIdentity);
+-                        if (entry.Applied && target.Hash() != entry.NewSha256)
++                        if ((entry.Applied || entry.TemporaryReady) && target.Hash() != entry.NewSha256)
+                             throw new InvalidDataException("DELETE-TARGET-CONTENT-CHANGED");
+                     }
++                    else if (entry.TemporaryPath.Length != 0 && File.Exists(Resolve(installRoot, entry.TemporaryPath)))
++                    {
++                        if (!IsIdentity(entry.InstalledIdentity)) throw new InvalidDataException("TEMPORARY-IDENTITY-MISSING");
++                        target = WindowsFileBoundary.OpenWrite(installRoot, entry.TemporaryPath, deletable: true);
++                        target.Validate(entry.InstalledIdentity);
++                        if (entry.TemporaryReady && target.Hash() != entry.NewSha256)
++                            throw new InvalidDataException("TEMPORARY-CONTENT-CHANGED");
++                    }
+                     leases.Add((entry, backup, target));
+                 }
+                 catch { backup?.Dispose(); target?.Dispose(); throw; }
+@@ -663,13 +872,31 @@ public sealed class UpdateTransaction
+ 
+     private UpdateJournal? ReadJournal(string directory)
+     {
+-        using var file = WindowsFileBoundary.OpenRead(directory, "journal.json");
++        try { return ReadJournalFile(directory, "journal.json"); }
++        catch (Exception ex) when (ex is JsonException ||
++            (ex is IOException && !File.Exists(Path.Combine(directory, "journal.json"))))
++        {
++            // Recover only parse loss or an absent primary. Semantic rejection never selects an older record.
++            return ReadJournalFile(directory, "journal.previous.json");
++        }
++    }
++
++    private UpdateJournal? ReadJournalFile(string directory, string name)
++    {
++        using var file = WindowsFileBoundary.OpenRead(directory, name);
+         VerifyProtectedFile(file, directory);
+         if (file.Stream.Length > MaxJournalBytes) throw new InvalidDataException("journal exceeds size limit");
+         using var document = JsonDocument.Parse(file.Stream);
+         ValidateJsonProperties(document.RootElement);
+-        return document.RootElement.Deserialize<UpdateJournal>(new JsonSerializerOptions
+-            { UnmappedMemberHandling = System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow });
++        var known = typeof(UpdateJournal).GetProperties().Select(p => p.Name).ToHashSet(StringComparer.Ordinal);
++        if (document.RootElement.EnumerateObject().Any(p => !known.Contains(p.Name)))
++            throw new InvalidDataException("unknown journal property");
++        UpdateJournal? journal;
++        try { journal = document.RootElement.Deserialize<UpdateJournal>(new JsonSerializerOptions
++            { UnmappedMemberHandling = System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow }); }
++        catch (JsonException ex) { throw new InvalidDataException("journal schema invalid", ex); }
++        if (journal is not null && !document.RootElement.TryGetProperty("SchemaVersion", out _)) journal.SchemaVersion = 1;
++        return journal;
+     }
+ 
+     private static void ValidateJsonProperties(JsonElement element)
+@@ -693,6 +920,12 @@ public sealed class UpdateTransaction
+         if (journal.TransactionIdentity != parent.Identity) throw new IOException("JOURNAL-DIRECTORY-IDENTITY");
+         var path = Path.Combine(directory, "journal.json");
+         var relative = "journal-" + Guid.NewGuid().ToString("N") + ".new";
++        if (File.Exists(Path.Combine(directory, "journal.previous.json")))
++        {
++            using var previous = WindowsFileBoundary.OpenRead(directory, "journal.previous.json");
++            VerifyProtectedFile(previous, directory);
++            previous.Validate();
++        }
+         if (journal.Failure.Length > MaxFailureCharacters) journal.Failure = journal.Failure[..MaxFailureCharacters];
+         var bytes = JsonSerializer.SerializeToUtf8Bytes(journal, JsonOptions);
+         if (journal.Files.Count > MaxJournalFiles || bytes.Length > MaxJournalBytes)
+@@ -706,14 +939,23 @@ public sealed class UpdateTransaction
+         using (var file = WindowsFileBoundary.OpenWrite(directory, relative, create: true))
+         {
+             VerifyProtectedFile(file, directory);
+-            file.Stream.Write(bytes);
++            _journalFault?.Invoke(UpdateFaultPoint.JournalTempCreated);
++            var midpoint = bytes.Length / 2;
++            file.Stream.Write(bytes.AsSpan(0, midpoint));
++            _journalFault?.Invoke(UpdateFaultPoint.JournalPartialWrite);
++            file.Stream.Write(bytes.AsSpan(midpoint));
+             file.Stream.Flush(flushToDisk: true);
++            _journalFault?.Invoke(UpdateFaultPoint.JournalFlushed);
+             file.Validate();
+         }
+         parent.Validate();
+         // The protected parent ACL excludes unprivileged journal replacement.
+         // Administrators remain inside the trust boundary during this rename.
+-        File.Move(Path.Combine(directory, relative), path, overwrite: true);
++        _journalFault?.Invoke(UpdateFaultPoint.JournalBeforeReplace);
++        if (File.Exists(path))
++            File.Replace(Path.Combine(directory, relative), path, Path.Combine(directory, "journal.previous.json"));
++        else File.Move(Path.Combine(directory, relative), path);
++        _journalFault?.Invoke(UpdateFaultPoint.JournalAfterReplace);
+     }
+ 
+     private void VerifyProtectedFile(WindowsFileBoundary.FileLease file, string directory)
+@@ -747,6 +989,7 @@ public sealed class UpdateTransaction
+                 Path = file.Path, Existed = true, OriginalLength = long.MaxValue,
+                 OriginalSha256 = new string('F', 64), NewSha256 = file.Sha256,
+                 OriginalIdentity = new string('F', 49), BackupIdentity = new string('F', 49), InstalledIdentity = new string('F', 49),
++                TemporaryPath = Path.Combine(Path.GetDirectoryName(Relative(file.Path)) ?? "", ".pccare-" + new string('f', 32) + "-" + new string('f', 32) + ".pending"),
+                 Applied = false, Restored = false
+             }).ToList()
+         };
+diff --git a/src/SmartPerformanceDoctor.UpdateEngine/WindowsFileBoundary.cs b/src/SmartPerformanceDoctor.UpdateEngine/WindowsFileBoundary.cs
+index aba36b3..fa2afe8 100644
+--- a/src/SmartPerformanceDoctor.UpdateEngine/WindowsFileBoundary.cs
++++ b/src/SmartPerformanceDoctor.UpdateEngine/WindowsFileBoundary.cs
+@@ -70,7 +70,7 @@ public static class WindowsFileBoundary
+     public sealed class FileLease : IDisposable
+     {
+         private readonly DirectoryPin _parent;
+-        private readonly string _path;
++        private string _path;
+         public FileStream Stream { get; }
+         public string Identity { get; }
+ 
+@@ -151,6 +151,29 @@ public static class WindowsFileBoundary
+                 throw Error("FILE-DELETE");
+         }
+ 
++        public void RenameOpenedFile(string destination)
++        {
++            Validate();
++            var full = Path.GetFullPath(destination);
++            if (!string.Equals(Path.GetDirectoryName(full), Path.GetDirectoryName(_path), StringComparison.OrdinalIgnoreCase))
++                throw new IOException("RENAME-PARENT-MISMATCH");
++            var name = Encoding.Unicode.GetBytes(full);
++            var offset = IntPtr.Size == 8 ? 20 : 12;
++            var size = offset + name.Length + 2;
++            var buffer = Marshal.AllocHGlobal(size);
++            try
++            {
++                for (var i = 0; i < size; i++) Marshal.WriteByte(buffer, i, 0);
++                Marshal.WriteInt32(buffer, IntPtr.Size == 8 ? 16 : 8, name.Length);
++                Marshal.Copy(name, 0, buffer + offset, name.Length);
++                if (!SetFileInformationByHandle(Stream.SafeFileHandle, 3, buffer, (uint)size))
++                    throw Error("FILE-RENAME");
++                _path = full;
++                Validate();
++            }
++            finally { Marshal.FreeHGlobal(buffer); }
++        }
++
+         public void Dispose() { Stream.Dispose(); _parent.Dispose(); }
+     }
+ 
+@@ -173,7 +196,7 @@ public static class WindowsFileBoundary
+         var actual = buffer.ToString();
+         if (actual.StartsWith("\\\\?\\", StringComparison.Ordinal)) actual = actual[4..];
+         if (!string.Equals(actual.TrimEnd('\\'), Path.GetFullPath(expected).TrimEnd('\\'), StringComparison.OrdinalIgnoreCase))
+-            throw new IOException("FINAL-PATH-MISMATCH");
++            throw new IOException("FINAL-PATH-MISMATCH: " + actual + " != " + expected);
+         return $"{id.Volume:X16}:{id.Low:X16}{id.High:X16}";
+     }
+ 
+@@ -196,4 +219,6 @@ public static class WindowsFileBoundary
+     [DllImport("kernel32.dll", CharSet = CharSet.Unicode)] private static extern uint GetDriveTypeW(string root);
+     [DllImport("kernel32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]
+     private static extern bool SetFileInformationByHandle(SafeFileHandle handle, int type, ref int info, uint size);
++    [DllImport("kernel32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)]
++    private static extern bool SetFileInformationByHandle(SafeFileHandle handle, int type, IntPtr info, uint size);
+ }
+diff --git a/src/SmartPerformanceDoctor.UpdateHelper/Program.cs b/src/SmartPerformanceDoctor.UpdateHelper/Program.cs
+index bfc97f5..1ccea7e 100644
+--- a/src/SmartPerformanceDoctor.UpdateHelper/Program.cs
++++ b/src/SmartPerformanceDoctor.UpdateHelper/Program.cs
+@@ -2,26 +2,56 @@ using System.Diagnostics;
+ using System.Security.Principal;
+ using SmartPerformanceDoctor.UpdateEngine;
+ 
+-// This elevated binary has only two fixed verbs and derives its target from its own installed location.
+-if (args.Length < 1 || args[0] is not ("--apply" or "--recover")) return 2;
+-if (!OperatingSystem.IsWindows() || !new WindowsPrincipal(WindowsIdentity.GetCurrent())
+-    .IsInRole(WindowsBuiltInRole.Administrator)) return 3;
+-var engineDirectory = Path.GetFullPath(AppContext.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar));
+-if (!string.Equals(Path.GetFileName(engineDirectory), "engine", StringComparison.OrdinalIgnoreCase)) return 4;
+-var installRoot = Directory.GetParent(engineDirectory)?.FullName;
+-if (installRoot is null || !Directory.Exists(installRoot) ||
+-    (File.GetAttributes(installRoot) & FileAttributes.ReparsePoint) != 0) return 5;
+-var programFiles = new[]
++// Apply files only from the authenticated protected snapshot.
++if (args.Length < 1 || args[0] is not ("--apply" or "--recover" or "--bootstrap" or "--bootstrap-recover")) return 2;
++if (!OperatingSystem.IsWindows() || !new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator)) return 3;
++var executionDirectory = Path.GetFullPath(AppContext.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar));
++string installRoot;
++string? bootstrapId = null;
++if (args[0] is "--bootstrap" or "--bootstrap-recover")
+ {
+-    Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+-    Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86)
+-};
+-if (!programFiles.Any(root => !string.IsNullOrWhiteSpace(root) && installRoot.StartsWith(
+-        root.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar,
+-        StringComparison.OrdinalIgnoreCase))) return 6;
++    var recoveryLaunch = args[0] == "--bootstrap-recover";
++    if (recoveryLaunch ? args.Length != 4 || args[2] != "--wait-pid" : args.Length != 2) return 9;
++    try
++    {
++        var binding = UpdateBootstrap.Validate(executionDirectory, args[1]);
++        var recoveryPid = 0;
++        if (recoveryLaunch && (!int.TryParse(args[3], out recoveryPid) || recoveryPid <= 0)) return 9;
++        foreach (var waitPid in recoveryLaunch ? new[] { recoveryPid } : new[] { binding.ParentPid, binding.CallerPid })
++        {
++            try { if (!Process.GetProcessById(waitPid).WaitForExit(TimeSpan.FromSeconds(90))) return 12; }
++            catch (ArgumentException) { }
++        }
++        binding = UpdateBootstrap.Validate(executionDirectory, args[1]);
++        bootstrapId = binding.Id;
++        installRoot = binding.InstallRoot;
++        args = !recoveryLaunch && binding.Verb == "--apply" ? ["--apply", binding.Package, "--wait-pid", binding.CallerPid.ToString()] : ["--recover"];
++    }
++    catch (Exception ex) { Console.Error.WriteLine("BOOTSTRAP-REJECTED: " + ex.Message); return 14; }
++}
++else
++{
++    if (!string.Equals(Path.GetFileName(executionDirectory), "engine", StringComparison.OrdinalIgnoreCase)) return 4;
++    installRoot = Directory.GetParent(executionDirectory)!.FullName;
++    var validApply = args.Length == 4 && args[0] == "--apply" && args[2] == "--wait-pid";
++    var validRecover = args[0] == "--recover" && args.Length is 1 or 3;
++    if (!validApply && !validRecover) return 9;
++    if (args.Length == 3 && args[1] != "--wait-pid") return 9;
++    var callerPid = int.MaxValue;
++    if (args.Length > 1 && (!int.TryParse(args[^1], out callerPid) || callerPid <= 0)) return 9;
++    try
++    {
++        var directory = UpdateBootstrap.Prepare(installRoot, args[0], validApply ? args[1] : "", callerPid);
++        using var child = UpdateBootstrap.Launch(directory, Path.GetFileName(directory)[10..]);
++        if (child is null) return 15;
++        Console.WriteLine("BOOTSTRAP-LAUNCHED " + child.Id);
++        return 0;
++    }
++    catch (Exception ex) { Console.Error.WriteLine("BOOTSTRAP-REJECTED: " + ex.Message); return 14; }
++}
++var engineDirectory = Path.Combine(installRoot, "engine");
+ var mainExe = Path.Combine(installRoot, "PCCare.exe");
+-var workRoot = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+-    "PC-Care", "UpdateTransactions");
++var workRoot = UpdateBootstrap.WorkRoot;
+ try
+ {
+     var coordinator = new UpdateTransaction(BuildPublisherTrust.Current, workRoot, strictAcl: true);
+@@ -72,9 +102,11 @@ try
+     }
+     else return 9;
+     Console.WriteLine($"{result.Stage} {result.Code} {result.TransactionId}");
+-    return args[0] == "--recover"
++    var exitCode = args[0] == "--recover"
+         ? result.Stage == UpdateStage.Restored ? 0 : 10
+         : result.Stage == UpdateStage.Committed ? 0 : 10;
++    UpdateBootstrap.RecordOutcome(executionDirectory, bootstrapId!, result, exitCode);
++    return exitCode;
+ }
+ catch (Exception ex)
+ {
+diff --git a/tests/SmartPerformanceDoctor.Tests/WO06AuthenticodeTests.cs b/tests/SmartPerformanceDoctor.Tests/WO06AuthenticodeTests.cs
+new file mode 100644
+index 0000000..a5ee7e0
+--- /dev/null
++++ b/tests/SmartPerformanceDoctor.Tests/WO06AuthenticodeTests.cs
+@@ -0,0 +1,69 @@
++using SmartPerformanceDoctor.UpdateEngine;
++using Xunit;
++
++namespace SmartPerformanceDoctor.Tests;
++
++public sealed class WO06AuthenticodeTests
++{
++    [Fact]
++    public void UnsignedBinaryIsNotVerified()
++    {
++        var result = AuthenticodeBoundary.Verify(typeof(UpdateTransaction).Assembly.Location);
++        Assert.NotEqual(0, result.Code);
++        Assert.Null(result.Thumbprint);
++        Assert.False(AuthenticodeBoundary.IsBuildPublisher(result));
++    }
++
++    [Fact]
++    public void MissingFileAndExtractionFailureRemainUnverified()
++    {
++        var result = AuthenticodeBoundary.Verify(Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".exe"));
++        Assert.NotEqual(0, result.Code);
++        Assert.False(AuthenticodeBoundary.IsBuildPublisher(result));
++    }
++
++    [Fact]
++    public void PinnedVerificationRejectsPathReplacementAndDeletion()
++    {
++        var directory = Path.Combine(Path.GetTempPath(), "pccare-wo06-auth-" + Guid.NewGuid().ToString("N"));
++        Directory.CreateDirectory(directory);
++        try
++        {
++            var path = Path.Combine(directory, "signed.exe");
++            File.Copy(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "dotnet", "dotnet.exe"), path);
++            var blocked = 0;
++            var result = AuthenticodeBoundary.Verify(path, () =>
++            {
++                try { File.Delete(path); } catch (IOException) { blocked++; }
++                try { File.WriteAllBytes(path, [0]); } catch (IOException) { blocked++; }
++            });
++            Assert.Equal(2, blocked);
++            Assert.Equal(0, result.Code);
++            Assert.NotNull(result.Thumbprint);
++            Assert.Equal(49, result.Identity.Length);
++            Assert.Equal(64, result.Hash.Length);
++            Assert.False(AuthenticodeBoundary.IsBuildPublisher(result));
++            using (var edit = new FileStream(path, FileMode.Open, FileAccess.ReadWrite))
++            { edit.Position = 512; var value = edit.ReadByte(); edit.Position = 512; edit.WriteByte((byte)(value ^ 1)); }
++            Assert.NotEqual(0, AuthenticodeBoundary.Verify(path).Code);
++        }
++        finally { Directory.Delete(directory, true); }
++    }
++
++    [Theory]
++    [InlineData("--exec")]
++    [InlineData("--apply")]
++    [InlineData("--recover")]
++    public void ExternalBootstrapAndInstallLocationsAreRejected(string verb)
++    {
++        Assert.Throws<InvalidDataException>(() => UpdateBootstrap.Validate(Path.GetTempPath(), Guid.NewGuid().ToString("N")));
++        Assert.Throws<InvalidDataException>(() => UpdateBootstrap.LaunchInstalled(Path.GetTempPath(), verb, "synthetic.spdup", 1));
++    }
++
++    [Fact]
++    public void ProductionExecutablePinsRemainImmutableAndEmpty()
++    {
++        Assert.Empty(BuildPublisherTrust.ExecutableThumbprints);
++        Assert.False(BuildPublisherTrust.ExecutableThumbprints is HashSet<string>);
++    }
++}
+diff --git a/tests/SmartPerformanceDoctor.Tests/WO06RecoveryTests.cs b/tests/SmartPerformanceDoctor.Tests/WO06RecoveryTests.cs
+new file mode 100644
+index 0000000..ffc581c
+--- /dev/null
++++ b/tests/SmartPerformanceDoctor.Tests/WO06RecoveryTests.cs
+@@ -0,0 +1,227 @@
++using System.Security.Cryptography;
++using System.Text.Json;
++using System.Text.Json.Nodes;
++using SmartPerformanceDoctor.UpdateEngine;
++using Xunit;
++
++namespace SmartPerformanceDoctor.Tests;
++
++public sealed class WO06RecoveryTests
++{
++    [Theory]
++    [InlineData(UpdateFaultPoint.AfterNewFileIntent, UpdateStage.Restored)]
++    [InlineData(UpdateFaultPoint.AfterNewFileCreated, UpdateStage.RecoveryRequired)]
++    [InlineData(UpdateFaultPoint.AfterNewFileIdentity, UpdateStage.Restored)]
++    [InlineData(UpdateFaultPoint.BeforeNewFileRename, UpdateStage.Restored)]
++    [InlineData(UpdateFaultPoint.AfterNewFileRename, UpdateStage.Restored)]
++    public void NewFileInterruptionPreservesOriginal(UpdateFaultPoint point, UpdateStage expected)
++    {
++        using var f = new SignedUpdateTests.Fixture();
++        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
++        var fired = false;
++        var result = f.Transaction.Apply(f.Package(), f.Install, "51.0.4", faultInjector: current =>
++        { if (current == point && !fired) { fired = true; throw new IOException("WO06 injected interruption"); } });
++        Assert.True(fired);
++        Assert.Equal(expected, result.Stage);
++        Assert.Equal("old", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
++        Assert.False(File.Exists(Path.Combine(f.Install, "second.txt")));
++        if (expected == UpdateStage.RecoveryRequired)
++        {
++            Assert.Single(Directory.GetFiles(f.Install, ".pccare-*.pending"));
++            Assert.Equal(expected, f.Transaction.Recover(f.Install).Stage);
++        }
++        else Assert.Empty(Directory.GetFiles(f.Install, ".pccare-*.pending"));
++    }
++
++    [Theory]
++    [InlineData(UpdateFaultPoint.JournalTempCreated)]
++    [InlineData(UpdateFaultPoint.JournalPartialWrite)]
++    [InlineData(UpdateFaultPoint.JournalFlushed)]
++    [InlineData(UpdateFaultPoint.JournalBeforeReplace)]
++    [InlineData(UpdateFaultPoint.JournalAfterReplace)]
++    public void JournalWriteFailureHasRecoverablePreviousGeneration(UpdateFaultPoint point)
++    {
++        using var f = new SignedUpdateTests.Fixture();
++        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
++        var armed = false; var fired = false;
++        var result = f.Transaction.Apply(f.Package(), f.Install, "51.0.4", faultInjector: current =>
++        {
++            if (current == UpdateFaultPoint.AfterApplyingJournal) armed = true;
++            if (armed && !fired && current == point) { fired = true; throw new IOException("WO06 journal interruption"); }
++        });
++        Assert.True(fired);
++        Assert.Equal(UpdateStage.Restored, result.Stage);
++        Assert.Equal("old", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
++        Assert.Equal(UpdateStage.Restored, f.Transaction.Recover(f.Install).Stage);
++        Assert.True(File.Exists(Path.Combine(Directory.GetDirectories(f.Work, "tx-*").Single(), "journal.previous.json")));
++    }
++
++    [Theory]
++    [InlineData(false)]
++    [InlineData(true)]
++    public void TruncatedOrMissingPrimaryRecoversUsingPreviousGeneration(bool missing)
++    {
++        using var f = new SignedUpdateTests.Fixture();
++        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
++        Assert.Equal(UpdateStage.Committed, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
++        var path = JournalPath(f);
++        if (missing) File.Delete(path); else File.WriteAllText(path, "{\"Stage\":");
++        Assert.Equal(UpdateStage.Restored, f.Transaction.Recover(f.Install).Stage);
++        Assert.Equal("old", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
++        Assert.False(File.Exists(Path.Combine(f.Install, "second.txt")));
++    }
++
++    [Fact]
++    public void ValidJsonWithForgedIdentityDoesNotUsePreviousGeneration()
++    {
++        using var f = new SignedUpdateTests.Fixture();
++        Assert.Equal(UpdateStage.Committed, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
++        var node = JsonNode.Parse(File.ReadAllText(JournalPath(f)))!;
++        node["InstallIdentity"] = new string('0', 16) + ":" + new string('0', 32);
++        File.WriteAllText(JournalPath(f), node.ToJsonString());
++        Assert.Equal(UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
++        Assert.Equal("new", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
++    }
++
++    [Theory]
++    [InlineData(UpdateStage.Committed)]
++    [InlineData(UpdateStage.Restored)]
++    public void LegacyTerminalReceiptPreservesOriginalAndAllowsLaterUpdates(UpdateStage terminal)
++    {
++        using var f = new SignedUpdateTests.Fixture();
++        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
++        var result = f.Transaction.Apply(f.Package(), f.Install, "51.0.4", faultInjector: point =>
++        { if (terminal == UpdateStage.Restored && point == UpdateFaultPoint.BeforeCommittedJournal) throw new IOException("restore fixture"); });
++        Assert.Equal(terminal, result.Stage);
++        MakeLegacy(f, terminal);
++        var originalHash = Hash(JournalPath(f));
++        Assert.Equal(UpdateStage.Restored, f.Transaction.Recover(f.Install).Stage);
++        Assert.Equal(originalHash, Hash(JournalPath(f)));
++        var receipt = Path.Combine(Path.GetDirectoryName(JournalPath(f))!, "legacy-terminal.receipt");
++        Assert.True(File.Exists(receipt));
++        Assert.Equal(UpdateStage.Committed, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
++        Assert.Equal(UpdateStage.Committed, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
++        Assert.Equal(originalHash, Hash(Directory.GetFiles(f.Work, "journal.json", SearchOption.AllDirectories)
++            .Single(path => Path.GetDirectoryName(path) == Path.GetDirectoryName(receipt))));
++    }
++
++    [Theory]
++    [InlineData(UpdateStage.Prepared)]
++    [InlineData(UpdateStage.Applying)]
++    [InlineData(UpdateStage.RollbackPending)]
++    [InlineData(UpdateStage.RollingBack)]
++    public void LegacyIncompleteJournalRemainsReadOnly(UpdateStage stage)
++    {
++        using var f = new SignedUpdateTests.Fixture();
++        Assert.Equal(UpdateStage.Committed, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
++        MakeLegacy(f, stage);
++        var hash = Hash(JournalPath(f));
++        Assert.Equal(UpdateRecoveryState.RecoveryRequired, f.Transaction.InspectRecovery(f.Install).State);
++        Assert.Equal(UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
++        Assert.Equal(hash, Hash(JournalPath(f)));
++        Assert.Equal("new", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
++    }
++
++    [Fact]
++    public void LegacyReceiptRejectsChangedJournal()
++    {
++        using var f = new SignedUpdateTests.Fixture();
++        Assert.Equal(UpdateStage.Committed, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
++        MakeLegacy(f, UpdateStage.Committed);
++        Assert.Equal(UpdateStage.Restored, f.Transaction.Recover(f.Install).Stage);
++        File.AppendAllText(JournalPath(f), " ");
++        Assert.Equal(UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
++    }
++
++    [Fact]
++    public void NewFileNameCollisionPreservesUserFile()
++    {
++        using var f = new SignedUpdateTests.Fixture();
++        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
++        var result = f.Transaction.Apply(f.Package(), f.Install, "51.0.4", faultInjector: point =>
++        { if (point == UpdateFaultPoint.BeforeNewFileRename) File.WriteAllText(Path.Combine(f.Install, "second.txt"), "user-created"); });
++        Assert.Equal(UpdateStage.RecoveryRequired, result.Stage);
++        Assert.Equal("user-created", File.ReadAllText(Path.Combine(f.Install, "second.txt")));
++        Assert.Equal(UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
++    }
++
++    [Theory]
++    [InlineData("null-identity")]
++    [InlineData("foreign-root")]
++    [InlineData("null-file")]
++    public void MalformedLegacyTerminalIsRejectedWithoutChangingFiles(string mutation)
++    {
++        using var f = new SignedUpdateTests.Fixture();
++        Assert.Equal(UpdateStage.Committed, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
++        MakeLegacy(f, UpdateStage.Committed);
++        var node = JsonNode.Parse(File.ReadAllText(JournalPath(f)))!;
++        if (mutation == "null-identity") node["InstallIdentity"] = null;
++        if (mutation == "foreign-root") node["InstallRoot"] = f.Work;
++        if (mutation == "null-file") node["Files"]!.AsArray()[0] = null;
++        File.WriteAllText(JournalPath(f), node.ToJsonString());
++        var before = Hash(JournalPath(f));
++        Assert.Equal(UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
++        Assert.Equal(before, Hash(JournalPath(f)));
++        Assert.Equal("new", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
++    }
++
++    private static string JournalPath(SignedUpdateTests.Fixture f) =>
++        Path.Combine(Directory.GetDirectories(f.Work, "tx-*").Single(), "journal.json");
++
++    [Theory]
++    [InlineData(UpdateStage.Prepared)]
++    [InlineData(UpdateStage.Applying)]
++    [InlineData(UpdateStage.RollbackPending)]
++    [InlineData(UpdateStage.RollingBack)]
++    public void IncompleteLegacyDiagnosisMeasuresFilesWithoutWriting(UpdateStage stage)
++    {
++        using var f = new SignedUpdateTests.Fixture();
++        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
++        Assert.Equal(UpdateStage.Committed, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
++        MakeLegacy(f, stage);
++        var before = Directory.GetFiles(f.Work, "*", SearchOption.AllDirectories).ToDictionary(p => p, Hash);
++        var report = Assert.Single(f.Transaction.DiagnoseLegacy(f.Install));
++        Assert.Contains("AUTOMATIC-RECOVERY-DENIED", report.Code);
++        var entry = Assert.Single(report.Files, p => p.Path.EndsWith("app.txt", StringComparison.Ordinal));
++        Assert.Equal("UPDATED-MATCH", entry.InstalledState);
++        Assert.Equal("ORIGINAL-MATCH", entry.BackupState);
++        Assert.Equal(before.Count, Directory.GetFiles(f.Work, "*", SearchOption.AllDirectories).Length);
++        foreach (var item in before) Assert.Equal(item.Value, Hash(item.Key));
++        Assert.Equal(UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
++    }
++
++    [Theory]
++    [InlineData(false)]
++    [InlineData(true)]
++    public void LegacyDiagnosisReportsDamagedBackupOrRejectsForeignRoot(bool foreignRoot)
++    {
++        using var f = new SignedUpdateTests.Fixture();
++        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
++        Assert.Equal(UpdateStage.Committed, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
++        MakeLegacy(f, UpdateStage.Applying);
++        if (foreignRoot)
++        {
++            var node = JsonNode.Parse(File.ReadAllText(JournalPath(f)))!;
++            node["InstallRoot"] = f.Work;
++            File.WriteAllText(JournalPath(f), node.ToJsonString());
++        }
++        else File.WriteAllText(Path.Combine(Path.GetDirectoryName(JournalPath(f))!, "backup", "app.txt"), "damaged");
++        var before = Hash(JournalPath(f));
++        var report = Assert.Single(f.Transaction.DiagnoseLegacy(f.Install));
++        if (foreignRoot) { Assert.Equal("READONLY-DIAGNOSIS-REJECTED", report.Code); Assert.Empty(report.Files); }
++        else Assert.Equal("HASH-MISMATCH", report.Files.Single(p => p.Path.EndsWith("app.txt", StringComparison.Ordinal)).BackupState);
++        Assert.Equal(before, Hash(JournalPath(f)));
++        Assert.Equal("new", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
++    }
++    private static string Hash(string path) => Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(path)));
++    private static void MakeLegacy(SignedUpdateTests.Fixture f, UpdateStage stage)
++    {
++        var node = JsonNode.Parse(File.ReadAllText(JournalPath(f)))!;
++        node["SchemaVersion"] = 1; node["Stage"] = (int)stage;
++        node.AsObject().Remove("InstallIdentity"); node.AsObject().Remove("TransactionIdentity");
++        foreach (var file in node["Files"]!.AsArray())
++            foreach (var field in new[] { "OriginalIdentity", "BackupIdentity", "InstalledIdentity", "TemporaryPath", "TemporaryReady" })
++                file!.AsObject().Remove(field);
++        File.WriteAllText(JournalPath(f), node.ToJsonString());
++    }
++}
+diff --git a/tests/SmartPerformanceDoctor.Tests/WindowsFileBoundaryTests.cs b/tests/SmartPerformanceDoctor.Tests/WindowsFileBoundaryTests.cs
+index 53b47b8..b3e4b72 100644
+--- a/tests/SmartPerformanceDoctor.Tests/WindowsFileBoundaryTests.cs
++++ b/tests/SmartPerformanceDoctor.Tests/WindowsFileBoundaryTests.cs
+@@ -189,8 +189,8 @@ public sealed class WindowsFileBoundaryTests
+         }
+         if (mutation is not ("duplicate-property" or "unknown-property" or "truncated"))
+             File.WriteAllText(path, JsonSerializer.Serialize(journal));
+-        Assert.Equal(UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
+-        Assert.Equal("new", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
++        Assert.Equal(mutation == "truncated" ? UpdateStage.Restored : UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
++        Assert.Equal(mutation == "truncated" ? "old" : "new", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
+     }
+ 
+     [Fact]
+diff --git a/tests/SmartPerformanceDoctor.UpdateRecoveryProbe/Program.cs b/tests/SmartPerformanceDoctor.UpdateRecoveryProbe/Program.cs
+index b9207af..d9ee5fc 100644
+--- a/tests/SmartPerformanceDoctor.UpdateRecoveryProbe/Program.cs
++++ b/tests/SmartPerformanceDoctor.UpdateRecoveryProbe/Program.cs
+@@ -3,7 +3,10 @@ using System.Security.Cryptography;
+ using System.Text.Json;
+ using SmartPerformanceDoctor.UpdateEngine;
+ 
+-if (args.Length != 2 || args[0] is not ("prepare" or "apply-kill" or "recover-kill" or "recover" or "verify")) return 2;
++if (args.Length != 2 || (args[0] is not ("prepare" or "prepare-self" or "hold" or "verify-updated" or "apply" or "apply-kill" or "recover-kill" or "recover" or "verify" or "verify-orphan") &&
++    !args[0].StartsWith("kill:", StringComparison.Ordinal) &&
++    !args[0].StartsWith("recover-kill:", StringComparison.Ordinal) &&
++    !args[0].StartsWith("recover-final-kill:", StringComparison.Ordinal))) return 2;
+ var root = Path.GetFullPath(args[1]);
+ var install = Path.Combine(root, "install");
+ var work = Path.Combine(root, "work");
+@@ -11,7 +14,13 @@ var packagePath = Path.Combine(root, "update.spdup");
+ var publicKeyPath = Path.Combine(root, "test-public-key.bin");
+ try
+ {
+-    if (args[0] == "prepare")
++    if (args[0] == "hold")
++    {
++        File.WriteAllText(Path.Combine(root, "holder.pid"), Environment.ProcessId.ToString());
++        for (var index = 0; index < 600; index++) await Task.Delay(100);
++        return 0;
++    }
++    if (args[0] is "prepare" or "prepare-self")
+     {
+         if (Directory.Exists(root)) return 3;
+         Directory.CreateDirectory(install);
+@@ -21,14 +30,31 @@ try
+         using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
+         File.WriteAllBytes(publicKeyPath, key.ExportSubjectPublicKeyInfo());
+         var payload = "new"u8.ToArray();
++        var selfPayloads = new Dictionary<string, byte[]>();
++        if (args[0] == "prepare-self")
++        {
++            var engine = Path.Combine(install, "engine");
++            Directory.CreateDirectory(engine);
++            foreach (var file in Directory.GetFiles(AppContext.BaseDirectory))
++                File.Copy(file, Path.Combine(engine, Path.GetFileName(file)));
++            foreach (var name in new[] { "SmartPerformanceDoctor.UpdateRecoveryProbe.exe", "SmartPerformanceDoctor.UpdateRecoveryProbe.dll" })
++            {
++                var original = File.ReadAllBytes(Path.Combine(engine, name));
++                selfPayloads["payload/engine/" + name] = original.Concat(new byte[] { 0x57 }).ToArray();
++            }
++        }
+         var manifest = new SignedManifest
+         {
+             Publisher = "WO04-Isolated-Test", KeyId = "ephemeral", PackageId = Guid.NewGuid().ToString("N"),
+             FromVersion = "51.0.4", ToVersion = "51.0.5", MinimumSupportedVersion = "51.0.0",
+             CreatedAt = DateTimeOffset.UtcNow.AddMinutes(-1), ExpiresAt = DateTimeOffset.UtcNow.AddHours(2),
+             Files = [new SignedFile { Path = "payload/app.txt", Length = payload.Length,
++                Sha256 = Convert.ToHexString(SHA256.HashData(payload)) },
++                new SignedFile { Path = "payload/new.txt", Length = payload.Length,
+                 Sha256 = Convert.ToHexString(SHA256.HashData(payload)) }]
+         };
++        manifest.Files.AddRange(selfPayloads.Select(item => new SignedFile { Path = item.Key,
++            Length = item.Value.LongLength, Sha256 = Convert.ToHexString(SHA256.HashData(item.Value)) }));
+         var signature = key.SignData(SignedPackage.CanonicalBytes(manifest), HashAlgorithmName.SHA256,
+             DSASignatureFormat.IeeeP1363FixedFieldConcatenation);
+         using var stream = File.Create(packagePath);
+@@ -37,18 +63,50 @@ try
+         Add(archive, SignedPackage.SignatureName,
+             JsonSerializer.SerializeToUtf8Bytes(new SignatureEnvelope { Signature = Convert.ToBase64String(signature) }));
+         Add(archive, "payload/app.txt", payload);
++        Add(archive, "payload/new.txt", payload);
++        foreach (var item in selfPayloads) Add(archive, item.Key, item.Value);
+         Console.WriteLine("PREPARED old vault-marker");
+         return 0;
+     }
+     var trust = new PublisherTrustPolicy([new TrustedPublisherKey("WO04-Isolated-Test", "ephemeral", "stable",
+         File.ReadAllBytes(publicKeyPath))]);
+     var transaction = new UpdateTransaction(trust, work, strictAcl: false);
++    if (args[0] == "verify-updated")
++    {
++        var verified = SignedPackage.Verify(packagePath, "51.0.4", trust);
++        if (!verified.CanApply || verified.Manifest is null) return 8;
++        foreach (var file in verified.Manifest.Files)
++        {
++            var path = Path.Combine(install, file.Path[8..].Replace('/', Path.DirectorySeparatorChar));
++            if (Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(path))) != file.Sha256) return 8;
++        }
++        var preserved = File.ReadAllText(Path.Combine(install, "synthetic-vault.txt")) == "vault-marker";
++        Console.WriteLine("DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=" + (preserved ? "PRESERVED" : "CHANGED"));
++        return preserved ? 0 : 8;
++    }
++    if (args[0] == "apply")
++    {
++        var result = transaction.Apply(packagePath, install, "51.0.4");
++        Console.WriteLine($"RESULT={result.Stage}:{result.Code} FAILURE={result.Failure}");
++        return result.Stage == UpdateStage.Committed ? 0 : 5;
++    }
++    if (args[0].StartsWith("kill:", StringComparison.Ordinal))
++    {
++        if (!Enum.TryParse<UpdateFaultPoint>(args[0][5..], out var target) || !Enum.IsDefined(target)) return 2;
++        var armed = false;
++        transaction.Apply(packagePath, install, "51.0.4", faultInjector: point =>
++        {
++            if (point == UpdateFaultPoint.AfterApplyingJournal) armed = true;
++            if (armed && point == target) Crash("WO06 fixture process termination: " + point);
++        });
++        return 4;
++    }
+     if (args[0] == "apply-kill")
+     {
+         transaction.Apply(packagePath, install, "51.0.4", faultInjector: point =>
+         {
+             if (point == UpdateFaultPoint.AfterFirstReplacement)
+-                Environment.FailFast("WO04 isolated synthetic process termination");
++                Crash("WO04 isolated synthetic process termination");
+         });
+         return 4;
+     }
+@@ -59,20 +117,41 @@ try
+         Console.WriteLine($"BEFORE={before.State}:{before.Code} RESULT={result.Stage}:{result.Code}");
+         return result.Stage == UpdateStage.Restored ? 0 : 5;
+     }
++    if (args[0].StartsWith("recover-kill:", StringComparison.Ordinal) ||
++        args[0].StartsWith("recover-final-kill:", StringComparison.Ordinal))
++    {
++        var finalJournal = args[0].StartsWith("recover-final-kill:", StringComparison.Ordinal);
++        var prefix = finalJournal ? "recover-final-kill:" : "recover-kill:";
++        if (!Enum.TryParse<UpdateFaultPoint>(args[0][prefix.Length..], out var target) || !Enum.IsDefined(target)) return 2;
++        var armed = !finalJournal;
++        transaction.Recover(install, faultInjector: point =>
++        {
++            if (point == UpdateFaultPoint.BeforeRestoredJournal) armed = true;
++            if (armed && point == target) Crash("WO06 synthetic recovery termination: " + point);
++        });
++        return 4;
++    }
+     if (args[0] == "recover-kill")
+     {
+         transaction.Recover(install, faultInjector: point =>
+         {
+             if (point == UpdateFaultPoint.DuringRollbackCopy)
+-                Environment.FailFast("WO05 synthetic termination during rollback copy");
++                Crash("WO05 synthetic termination during rollback copy");
+         });
+         return 4;
+     }
+     var app = File.ReadAllText(Path.Combine(install, "app.txt"));
+     var vault = File.ReadAllText(Path.Combine(install, "synthetic-vault.txt"));
+     var status = transaction.InspectRecovery(install);
++    if (args[0] == "verify-orphan")
++    {
++        var orphans = Directory.GetFiles(install, ".pccare-*.pending").Length;
++        Console.WriteLine($"APP={app} VAULT={vault} STATUS={status.State} ORPHANS={orphans}");
++        return app == "old" && vault == "vault-marker" && status.State == UpdateRecoveryState.RecoveryFailed &&
++            orphans == 1 && !File.Exists(Path.Combine(install, "new.txt")) ? 0 : 6;
++    }
+     Console.WriteLine($"APP={app} VAULT={vault} STATUS={status.State}");
+-    return app == "old" && vault == "vault-marker" && status.State == UpdateRecoveryState.RecoveryCompleted
++    return app == "old" && vault == "vault-marker" && !File.Exists(Path.Combine(install, "new.txt")) && status.State == UpdateRecoveryState.RecoveryCompleted
+         ? 0 : 6;
+ }
+ catch (Exception ex)
+@@ -81,6 +160,13 @@ catch (Exception ex)
+     return 7;
+ }
+ 
++static void Crash(string message)
++{
++    Console.Error.WriteLine(message);
++    System.Diagnostics.Process.GetCurrentProcess().Kill();
++    Thread.Sleep(Timeout.Infinite);
++}
++
+ static void Add(ZipArchive archive, string name, byte[] data)
+ {
+     using var output = archive.CreateEntry(name).Open();
+diff --git a/tools/SmartPerformanceDoctor.VMTestKit/Program.cs b/tools/SmartPerformanceDoctor.VMTestKit/Program.cs
+index 2930f6e..58b4bc9 100644
+--- a/tools/SmartPerformanceDoctor.VMTestKit/Program.cs
++++ b/tools/SmartPerformanceDoctor.VMTestKit/Program.cs
+@@ -6,6 +6,27 @@ using SmartPerformanceDoctor.UpdateEngine;
+ 
+ try
+ {
++    if (args.Length == 2 && args[0] == "diagnose-legacy")
++    {
++        UpdateBootstrap.ValidateInstallRoot(args[1]);
++        var reports = new UpdateTransaction(BuildPublisherTrust.Current, UpdateBootstrap.WorkRoot, true).DiagnoseLegacy(args[1]);
++        Console.WriteLine(JsonSerializer.Serialize(reports, new JsonSerializerOptions { WriteIndented = true }));
++        return 0;
++    }
++    if (args.Length == 2 && args[0] == "fixture-vault")
++    {
++        var directory = Path.GetFullPath(args[1]);
++        if (Directory.Exists(directory)) return 3;
++        Directory.CreateDirectory(directory);
++        var source = Path.Combine(directory, "synthetic.txt");
++        File.WriteAllText(source, "WO06-SYNTHETIC-CLI");
++        using var vault = new SmartPerformanceDoctor.SecurityLab.VaultV4.LabVaultService(Path.Combine(directory, "vault"));
++        const string fixturePassword = "WO06-Synthetic-Only-42!";
++        if (!vault.Create(fixturePassword, SmartPerformanceDoctor.SecurityLab.VaultV4.LabKdfProfile.LabFast).Success ||
++            !vault.Unlock(fixturePassword).Success || !vault.ImportFile(source).Success) return 10;
++        Console.WriteLine("ENCRYPTED_LAB_FIXTURE=CREATED; SOURCE_SHA256=" + Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(source))));
++        return 0;
++    }
+     if (args.Length == 3 && args[0] is "fixture-profile" or "vm-profile")
+     {
+         var directory = Path.GetFullPath(args[1]);
+diff --git a/tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj b/tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj
+index 981111f..b9b59b3 100644
+--- a/tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj
++++ b/tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj
+@@ -7,5 +7,6 @@
+   </PropertyGroup>
+   <ItemGroup>
+     <ProjectReference Include="../../src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj" />
++    <ProjectReference Include="../../src/SmartPerformanceDoctor.SecurityLab/SmartPerformanceDoctor.SecurityLab.csproj" />
+   </ItemGroup>
+ </Project>

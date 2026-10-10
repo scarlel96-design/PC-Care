@@ -1,0 +1,1091 @@
+[
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileIntent",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileIntent",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileIntent C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileIntent",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileIntent",
+    "Output": [
+      "WO06 fixture process termination: AfterNewFileIntent"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileIntent",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileIntent",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileIntent",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileIntent",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileCreated",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileCreated C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileCreated",
+    "Output": [
+      "WO06 fixture process termination: AfterNewFileCreated"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileCreated",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=RecoveryRequired:ROLLBACK-FAIL"
+    ],
+    "ExitCode": 5,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-orphan C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileCreated",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryFailed ORPHANS=1"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileIdentity",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileIdentity",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileIdentity C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileIdentity",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileIdentity",
+    "Output": [
+      "WO06 fixture process termination: AfterNewFileIdentity"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileIdentity",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileIdentity",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileIdentity",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileIdentity",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\BeforeNewFileRename",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\BeforeNewFileRename",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:BeforeNewFileRename C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\BeforeNewFileRename",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\BeforeNewFileRename",
+    "Output": [
+      "WO06 fixture process termination: BeforeNewFileRename"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\BeforeNewFileRename",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\BeforeNewFileRename",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\BeforeNewFileRename",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\BeforeNewFileRename",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileRename",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileRename",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileRename C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileRename",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileRename",
+    "Output": [
+      "WO06 fixture process termination: AfterNewFileRename"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileRename",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileRename",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileRename",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\AfterNewFileRename",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalTempCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalTempCreated",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalTempCreated C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalTempCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalTempCreated",
+    "Output": [
+      "WO06 fixture process termination: JournalTempCreated"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalTempCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalTempCreated",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalTempCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalTempCreated",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalPartialWrite",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalPartialWrite",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalPartialWrite C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalPartialWrite",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalPartialWrite",
+    "Output": [
+      "WO06 fixture process termination: JournalPartialWrite"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalPartialWrite",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalPartialWrite",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalPartialWrite",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalPartialWrite",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalFlushed",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalFlushed",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalFlushed C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalFlushed",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalFlushed",
+    "Output": [
+      "WO06 fixture process termination: JournalFlushed"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalFlushed",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalFlushed",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalFlushed",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalFlushed",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalBeforeReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalBeforeReplace",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalBeforeReplace C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalBeforeReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalBeforeReplace",
+    "Output": [
+      "WO06 fixture process termination: JournalBeforeReplace"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalBeforeReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalBeforeReplace",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalBeforeReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalBeforeReplace",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalAfterReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalAfterReplace",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalAfterReplace C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalAfterReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalAfterReplace",
+    "Output": [
+      "WO06 fixture process termination: JournalAfterReplace"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalAfterReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalAfterReplace",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalAfterReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\JournalAfterReplace",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\BeforeCommittedJournal",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\BeforeCommittedJournal",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:BeforeCommittedJournal C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\BeforeCommittedJournal",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\BeforeCommittedJournal",
+    "Output": [
+      "WO06 fixture process termination: BeforeCommittedJournal"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\BeforeCommittedJournal",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\BeforeCommittedJournal",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\BeforeCommittedJournal",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\BeforeCommittedJournal",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\rollback-reentry",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\rollback-reentry",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\rollback-reentry",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\rollback-reentry",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\rollback-reentry",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\rollback-reentry",
+    "Output": [
+      "WO05 synthetic termination during rollback copy"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\rollback-reentry",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\rollback-reentry",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\rollback-reentry",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\rollback-reentry",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-AfterRollbackStarted",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-AfterRollbackStarted",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-AfterRollbackStarted",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-AfterRollbackStarted",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:AfterRollbackStarted C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-AfterRollbackStarted",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-AfterRollbackStarted",
+    "Output": [
+      "WO06 synthetic recovery termination: AfterRollbackStarted"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-AfterRollbackStarted",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-AfterRollbackStarted",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-AfterRollbackStarted",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-AfterRollbackStarted",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-BeforeRestoredJournal",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-BeforeRestoredJournal",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-BeforeRestoredJournal",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-BeforeRestoredJournal",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:BeforeRestoredJournal C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-BeforeRestoredJournal",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-BeforeRestoredJournal",
+    "Output": [
+      "WO06 synthetic recovery termination: BeforeRestoredJournal"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-BeforeRestoredJournal",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-BeforeRestoredJournal",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-BeforeRestoredJournal",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-BeforeRestoredJournal",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalTempCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalTempCreated",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalTempCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalTempCreated",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalTempCreated C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalTempCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalTempCreated",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalTempCreated"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalTempCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalTempCreated",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalTempCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalTempCreated",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalPartialWrite",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalPartialWrite",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalPartialWrite",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalPartialWrite",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalPartialWrite C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalPartialWrite",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalPartialWrite",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalPartialWrite"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalPartialWrite",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalPartialWrite",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalPartialWrite",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalPartialWrite",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalFlushed",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalFlushed",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalFlushed",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalFlushed",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalFlushed C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalFlushed",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalFlushed",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalFlushed"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalFlushed",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalFlushed",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalFlushed",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalFlushed",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalBeforeReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalBeforeReplace",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalBeforeReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalBeforeReplace",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalBeforeReplace C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalBeforeReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalBeforeReplace",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalBeforeReplace"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalBeforeReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalBeforeReplace",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalBeforeReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalBeforeReplace",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalAfterReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalAfterReplace",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalAfterReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalAfterReplace",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalAfterReplace C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalAfterReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalAfterReplace",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalAfterReplace"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalAfterReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalAfterReplace",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalAfterReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\recovery-JournalAfterReplace",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalTempCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalTempCreated",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalTempCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalTempCreated",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalTempCreated C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalTempCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalTempCreated",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalTempCreated"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalTempCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalTempCreated",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalTempCreated",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalTempCreated",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalPartialWrite",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalPartialWrite",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalPartialWrite",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalPartialWrite",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalPartialWrite C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalPartialWrite",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalPartialWrite",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalPartialWrite"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalPartialWrite",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalPartialWrite",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalPartialWrite",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalPartialWrite",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalFlushed",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalFlushed",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalFlushed",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalFlushed",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalFlushed C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalFlushed",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalFlushed",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalFlushed"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalFlushed",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalFlushed",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalFlushed",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalFlushed",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalBeforeReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalBeforeReplace",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalBeforeReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalBeforeReplace",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalBeforeReplace C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalBeforeReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalBeforeReplace",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalBeforeReplace"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalBeforeReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalBeforeReplace",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalBeforeReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalBeforeReplace",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalAfterReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalAfterReplace",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalAfterReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalAfterReplace",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalAfterReplace C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalAfterReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalAfterReplace",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalAfterReplace"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalAfterReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalAfterReplace",
+    "Output": [
+      "BEFORE=RecoveryCompleted:RESTORED RESULT=Restored:NO-PENDING"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalAfterReplace",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\restored-journal-JournalAfterReplace",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\detached-image",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\detached-image",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\detached-image",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\detached-image",
+    "Output": [
+      "RESULT=RecoveryRequired:ROLLBACK-FAIL FAILURE=IOException: FILE-OPEN: 다른 프로세스가 파일을 사용 중이기 때문에 프로세스가 액세스 할 수 없습니다.; rollback: IOException: FILE-OPEN: 다른 프로세스가 파일을 사용 중이기 때문에 프로세스가 액세스 할 수 없습니다."
+    ],
+    "ExitCode": 5,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\detached-image",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\detached-image",
+    "Output": [
+      "BEFORE=RecoveryFailed:ROLLBACK-FAIL RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\detached-image",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\detached-image",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\detached-image",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\detached-image",
+    "Output": [
+      "RESULT=Committed:COMMITTED FAILURE="
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\detached-image",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\detached-image",
+    "Output": [
+      "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\dll-handle-lock",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\dll-handle-lock",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\dll-handle-lock",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\dll-handle-lock",
+    "Output": [
+      "RESULT=RecoveryRequired:ROLLBACK-FAIL FAILURE=IOException: FILE-OPEN: 다른 프로세스가 파일을 사용 중이기 때문에 프로세스가 액세스 할 수 없습니다.; rollback: IOException: FILE-OPEN: 다른 프로세스가 파일을 사용 중이기 때문에 프로세스가 액세스 할 수 없습니다."
+    ],
+    "ExitCode": 5,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\dll-handle-lock",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\dll-handle-lock",
+    "Output": [
+      "BEFORE=RecoveryFailed:ROLLBACK-FAIL RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\dll-handle-lock",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\dll-handle-lock",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\dll-handle-lock",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\dll-handle-lock",
+    "Output": [
+      "RESULT=Committed:COMMITTED FAILURE="
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\dll-handle-lock",
+    "Input": "C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\artifacts\\wo06-process-run5\\dll-handle-lock",
+    "Output": [
+      "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  }
+]

@@ -1,0 +1,26 @@
+  SmartPerformanceDoctor.AstraVault -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.AstraVault\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.dll
+  SmartPerformanceDoctor.Data -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.Data\bin\x64\Release\net10.0\SmartPerformanceDoctor.Data.dll
+  SmartPerformanceDoctor.Contracts -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.Contracts\bin\x64\Release\net10.0\SmartPerformanceDoctor.Contracts.dll
+  SmartPerformanceDoctor.Aegis -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.Aegis\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.Aegis.dll
+  SmartPerformanceDoctor.SecurityLab -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+  SmartPerformanceDoctor.UpdateEngine -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+  SmartPerformanceDoctor.UpdateHelper -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.UpdateHelper\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryHelper -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryHelper\bin\x64\Release\net10.0-windows\AegisRecoveryHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryService -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryService\bin\x64\Release\net10.0-windows\AegisRecoveryService.dll
+  SmartPerformanceDoctor.App -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.dll
+  SmartPerformanceDoctor.Tests -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll
+  SmartPerformanceDoctor.AstraVault.KillWorker -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.AstraVault.KillWorker\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.KillWorker.dll
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+  실패 SmartPerformanceDoctor.Tests.WO06RecoveryTests.LegacyDiagnosisReportsDamagedBackupOrRejectsForeignRoot(foreignRoot: True) [848 ms]
+  오류 메시지:
+   System.IO.InvalidDataException : LEGACY-BINDING
+  스택 추적:
+     at SmartPerformanceDoctor.UpdateEngine.UpdateTransaction.DiagnoseLegacy(String installRoot) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\UpdateTransaction.cs:line 132
+   at SmartPerformanceDoctor.Tests.WO06RecoveryTests.LegacyDiagnosisReportsDamagedBackupOrRejectsForeignRoot(Boolean foreignRoot) in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\WO06RecoveryTests.cs:line 210
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+경고: 결과 파일을 덮어쓰는 중: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo06-updater-built.trx
+결과 파일: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo06-updater-built.trx
+
+실패!  - 실패:     1, 통과:   127, 건너뜀:     0, 전체:   128, 기간: 19 s - SmartPerformanceDoctor.Tests.dll (net10.0)

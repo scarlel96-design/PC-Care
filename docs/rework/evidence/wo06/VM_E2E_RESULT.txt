@@ -1,0 +1,17 @@
+WORK ITEM: Actual disposable VM installation
+STATUS: BLOCKED
+BASELINE SHA: 291f84daf1e950ba9cb74af0c8fea8879a11174e
+FINAL SHA: 5647b352cf41082def74bef2701b6fe707c51cc0 (validated source; docs-only evidence HEAD follows)
+SOURCE TREE: e2e5452f31d8550050d7560899f409486e10dbb1
+BRANCH: codex/pccare-rework-phase1-bootstrap-recovery
+ROOT CAUSE: WO05 implementation did not cover detached helper execution, legacy terminal journals, or same-state signer extraction.
+CHANGED FILES: see CHANGED_FILES.txt and DIFF_FILE.patch
+IMPLEMENTATION: VM harness with marker, snapshot, UAC result, outcome and ACL capture.
+TEST COMMAND: ./scripts/wo06-vm-harness.ps1 -EvidenceDirectory artifacts/wo06-vault-cli -SnapshotId unavailable -Action capture
+INPUT: Host folder without disposable VM marker
+OUTPUT:
+BLOCKED: disposable VM marker missing.
+EXIT CODE: 1
+SAFETY: Synthetic data only. Host user installation and vault unchanged.
+REMAINING RISKS: VM installation, UAC, ACL, reboot, self-update E2E and production signing not executed.
+ROLLBACK PROCEDURE: SourceRollback.ps1/ROLLBACK.sh restore a marked independent source copy. UpdateHelper --recover restores installation transactions only after trust and elevation checks.

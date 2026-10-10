@@ -1,0 +1,1091 @@
+[
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileIntent D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+    "Output": [
+      "WO06 fixture process termination: AfterNewFileIntent"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileCreated D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+    "Output": [
+      "WO06 fixture process termination: AfterNewFileCreated"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=RecoveryRequired:ROLLBACK-FAIL"
+    ],
+    "ExitCode": 5,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-orphan D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryFailed ORPHANS=1"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileIdentity D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+    "Output": [
+      "WO06 fixture process termination: AfterNewFileIdentity"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:BeforeNewFileRename D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+    "Output": [
+      "WO06 fixture process termination: BeforeNewFileRename"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileRename D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+    "Output": [
+      "WO06 fixture process termination: AfterNewFileRename"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalTempCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalTempCreated",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalTempCreated D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalTempCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalTempCreated",
+    "Output": [
+      "WO06 fixture process termination: JournalTempCreated"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalTempCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalTempCreated",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalTempCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalTempCreated",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalPartialWrite D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+    "Output": [
+      "WO06 fixture process termination: JournalPartialWrite"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalFlushed",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalFlushed",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalFlushed D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalFlushed",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalFlushed",
+    "Output": [
+      "WO06 fixture process termination: JournalFlushed"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalFlushed",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalFlushed",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalFlushed",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalFlushed",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalBeforeReplace D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+    "Output": [
+      "WO06 fixture process termination: JournalBeforeReplace"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalAfterReplace D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+    "Output": [
+      "WO06 fixture process termination: JournalAfterReplace"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:BeforeCommittedJournal D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+    "Output": [
+      "WO06 fixture process termination: BeforeCommittedJournal"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\rollback-reentry",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\rollback-reentry",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\rollback-reentry",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\rollback-reentry",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\rollback-reentry",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\rollback-reentry",
+    "Output": [
+      "WO05 synthetic termination during rollback copy"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\rollback-reentry",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\rollback-reentry",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\rollback-reentry",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\rollback-reentry",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:AfterRollbackStarted D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+    "Output": [
+      "WO06 synthetic recovery termination: AfterRollbackStarted"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:BeforeRestoredJournal D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+    "Output": [
+      "WO06 synthetic recovery termination: BeforeRestoredJournal"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalTempCreated D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalTempCreated"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalPartialWrite D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalPartialWrite"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalFlushed D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalFlushed"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalBeforeReplace D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalBeforeReplace"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalAfterReplace D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalAfterReplace"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalTempCreated D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalTempCreated"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalPartialWrite D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalPartialWrite"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalFlushed D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalFlushed"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalBeforeReplace D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalBeforeReplace"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+    "Output": [
+      "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+    "Output": [
+      "WO04 isolated synthetic process termination"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalAfterReplace D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+    "Output": [
+      "WO06 synthetic recovery termination: JournalAfterReplace"
+    ],
+    "ExitCode": -1,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+    "Output": [
+      "BEFORE=RecoveryCompleted:RESTORED RESULT=Restored:NO-PENDING"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\detached-image",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\detached-image",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\detached-image",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\detached-image",
+    "Output": [
+      "RESULT=RecoveryRequired:ROLLBACK-FAIL FAILURE=IOException: FILE-OPEN: The process cannot access the file because it is being used by another process.; rollback: IOException: FILE-OPEN: The process cannot access the file because it is being used by another process."
+    ],
+    "ExitCode": 5,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\detached-image",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\detached-image",
+    "Output": [
+      "BEFORE=RecoveryFailed:ROLLBACK-FAIL RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\detached-image",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\detached-image",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\detached-image",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\detached-image",
+    "Output": [
+      "RESULT=Committed:COMMITTED FAILURE="
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\detached-image",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\detached-image",
+    "Output": [
+      "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\dll-handle-lock",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\dll-handle-lock",
+    "Output": [
+      "PREPARED old vault-marker"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\dll-handle-lock",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\dll-handle-lock",
+    "Output": [
+      "RESULT=RecoveryRequired:ROLLBACK-FAIL FAILURE=IOException: FILE-OPEN: The process cannot access the file because it is being used by another process.; rollback: IOException: FILE-OPEN: The process cannot access the file because it is being used by another process."
+    ],
+    "ExitCode": 5,
+    "Expected": "NONZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\dll-handle-lock",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\dll-handle-lock",
+    "Output": [
+      "BEFORE=RecoveryFailed:ROLLBACK-FAIL RESULT=Restored:ROLLED-BACK"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\dll-handle-lock",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\dll-handle-lock",
+    "Output": [
+      "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\dll-handle-lock",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\dll-handle-lock",
+    "Output": [
+      "RESULT=Committed:COMMITTED FAILURE="
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  },
+  {
+    "Command": "D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\dll-handle-lock",
+    "Input": "D:\\a\\PC-Care\\PC-Care\\artifacts\\wo06-ci-process\\dll-handle-lock",
+    "Output": [
+      "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+    ],
+    "ExitCode": 0,
+    "Expected": "ZERO"
+  }
+]
