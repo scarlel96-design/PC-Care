@@ -1,0 +1,19 @@
+WORK ITEM: WO-07 branch publication
+STATUS: PASS for source upload and Windows CI
+BRANCH: codex/pccare-performance-diagnostics-foundation
+BASELINE SHA: f793cbabcbf8beb4355a7538c28b1e26ad4517b3
+VALIDATED SOURCE SHA: 68a220739bd0249ec0b6ba3df765baf7f0802489
+VALIDATED SOURCE TREE: e361aa65796301fead03635078e13d6987fe9335
+REMOTE SOURCE HEAD: 68a220739bd0249ec0b6ba3df765baf7f0802489
+FINAL EVIDENCE SHA: The commit containing this file. Resolve the branch HEAD after evidence publication.
+FINAL SOURCE SHA: 68a220739bd0249ec0b6ba3df765baf7f0802489; the subsequent commit changes documentation and evidence only.
+CI RUN: 38081909285
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38081909285
+CI CONCLUSION: success
+CI COMMAND: gh run watch 38081909285 --repo scarlel96-design/PC-Care --exit-status --interval 30
+CI INPUT: final source commit on Windows-hosted runner
+CI OUTPUT: success; details in CI_RESULT.txt and CI_LOG.txt
+CI EXIT CODE: 0
+ARTIFACT: wo07-windows-evidence; downloaded and reopened locally
+PUBLICATION: No main merge or official release. Phase 1 NO-GO.
+FINAL REMOTE CHECK: See local artifacts/WO07_FINAL_REMOTE_RECEIPT.txt and the final user report.

@@ -1,22 +1,30 @@
-STATUS: PASS for measured nonadmin probe; PARTIAL for overall resource qualification
-COMMAND: dotnet run --project tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-build --no-restore -- 30 docs/rework/evidence/wo07/final-measurement-N.json
-INPUT: live read-only Windows counters; N=1,2,3; no user files
-EXIT CODE: 0 for each capture
+STATUS: PASS for measured nonadmin fallback budgets; PARTIAL for general resource qualification
+COMMAND: dotnet run --project tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-build --no-restore -- 30 docs/rework/evidence/wo07/final-source-measurement.json
+INPUT: live read-only Windows counters; final source; no user files
+EXIT CODE: 0
+REPEATED CAPTURES: Same command with final-measurement-1.json, final-measurement-2.json, final-measurement-3.json before the ETW-start-order fix; each exit 0.
 OUTPUT:
 [
   {
     "file": "final-measurement-1.json",
-    "utc": "2026-10-10T19:44:10.4255783+00:00",
-    "durationSeconds": 30.0725859,
+    "utc": "2026-10-10T19:54:53.765383+00:00",
+    "durationSeconds": 30.0712051,
     "samples": 24,
-    "cpuMedian": 40.794809376042494,
-    "cpuP95": 91.33358204671985,
-    "availableMemoryMedian": 26.075613748269383,
-    "machineCpuCostPercent": 0.30308611848817874,
-    "peakProbeMiB": 57.453125,
-    "analysisMilliseconds": 56.2971,
-    "diskMeasuredSamples": 24,
-    "logicalCpuMeasured": 24,
+    "cpu": {
+      "Median": 65.97630305424558,
+      "P95": 91.37898963913902,
+      "Count": 24
+    },
+    "availableMemory": {
+      "Median": 26.546946322951108,
+      "P95": 31.398866018867746,
+      "Count": 24
+    },
+    "machineCpuCostPercent": 0.4806300562926226,
+    "peakProbeMiB": 56.3359375,
+    "analysisMilliseconds": 33.085,
+    "eventsReceived": 0,
+    "eventsLost": 0,
     "errors": [
       {
         "Provider": "Process",
@@ -30,21 +38,43 @@ OUTPUT:
         "Provider": "ETW",
         "Code": "PermissionDenied"
       }
-    ]
+    ],
+    "measurements": {
+      "CpuPercent": {
+        "Median": 65.97630305424558,
+        "P95": 91.37898963913902,
+        "Count": 24
+      },
+      "DiskLatencyMilliseconds": {
+        "Median": 0.29471862481463973,
+        "P95": 0.638166068047556,
+        "Count": 24
+      },
+      "ObservedMemoryPressureSeconds": 0,
+      "Processes": []
+    },
+    "remainingOwnedSessions": null
   },
   {
     "file": "final-measurement-2.json",
-    "utc": "2026-10-10T19:44:45.775151+00:00",
-    "durationSeconds": 30.0700552,
-    "samples": 25,
-    "cpuMedian": 50.439698492462306,
-    "cpuP95": 88.04896421845572,
-    "availableMemoryMedian": 23.57535555474774,
-    "machineCpuCostPercent": 0.48714368505715283,
-    "peakProbeMiB": 57.2265625,
-    "analysisMilliseconds": 19.9282,
-    "diskMeasuredSamples": 25,
-    "logicalCpuMeasured": 24,
+    "utc": "2026-10-10T19:55:24.263873+00:00",
+    "durationSeconds": 30.0337713,
+    "samples": 28,
+    "cpu": {
+      "Median": 16.951339736134752,
+      "P95": 32.185432816537464,
+      "Count": 28
+    },
+    "availableMemory": {
+      "Median": 31.924708120950605,
+      "P95": 32.34944729734577,
+      "Count": 28
+    },
+    "machineCpuCostPercent": 0.21676986887979222,
+    "peakProbeMiB": 56.703125,
+    "analysisMilliseconds": 15.5348,
+    "eventsReceived": 0,
+    "eventsLost": 0,
     "errors": [
       {
         "Provider": "Process",
@@ -58,21 +88,43 @@ OUTPUT:
         "Provider": "ETW",
         "Code": "PermissionDenied"
       }
-    ]
+    ],
+    "measurements": {
+      "CpuPercent": {
+        "Median": 16.951339736134752,
+        "P95": 32.185432816537464,
+        "Count": 28
+      },
+      "DiskLatencyMilliseconds": {
+        "Median": 0.17462118380062303,
+        "P95": 0.5270282854361016,
+        "Count": 28
+      },
+      "ObservedMemoryPressureSeconds": 0,
+      "Processes": []
+    },
+    "remainingOwnedSessions": null
   },
   {
     "file": "final-measurement-3.json",
-    "utc": "2026-10-10T19:45:17.5114862+00:00",
-    "durationSeconds": 30.0276527,
+    "utc": "2026-10-10T19:55:54.488852+00:00",
+    "durationSeconds": 30.022088,
     "samples": 28,
-    "cpuMedian": 16.80618158403091,
-    "cpuP95": 28.894502724543127,
-    "availableMemoryMedian": 22.227428890856004,
-    "machineCpuCostPercent": 0.20163705636571452,
-    "peakProbeMiB": 57.3984375,
-    "analysisMilliseconds": 15.3378,
-    "diskMeasuredSamples": 28,
-    "logicalCpuMeasured": 24,
+    "cpu": {
+      "Median": 13.465339736497246,
+      "P95": 26.57538289824024,
+      "Count": 28
+    },
+    "availableMemory": {
+      "Median": 29.359215438359637,
+      "P95": 29.523014852928398,
+      "Count": 28
+    },
+    "machineCpuCostPercent": 0.1561350429723609,
+    "peakProbeMiB": 56.53125,
+    "analysisMilliseconds": 15.2506,
+    "eventsReceived": 0,
+    "eventsLost": 0,
     "errors": [
       {
         "Provider": "Process",
@@ -86,7 +138,135 @@ OUTPUT:
         "Provider": "ETW",
         "Code": "PermissionDenied"
       }
-    ]
+    ],
+    "measurements": {
+      "CpuPercent": {
+        "Median": 13.465339736497246,
+        "P95": 26.57538289824024,
+        "Count": 28
+      },
+      "DiskLatencyMilliseconds": {
+        "Median": 0.1827336269162736,
+        "P95": 0.8174650872434008,
+        "Count": 28
+      },
+      "ObservedMemoryPressureSeconds": 0,
+      "Processes": []
+    },
+    "remainingOwnedSessions": null
+  },
+  {
+    "file": "final-source-measurement.json",
+    "utc": "2026-10-10T19:59:12.5123024+00:00",
+    "durationSeconds": 30.0466024,
+    "samples": 25,
+    "cpu": {
+      "Median": 60.674846625766875,
+      "P95": 89.37871122831567,
+      "Count": 25
+    },
+    "availableMemory": {
+      "Median": 25.43213410366885,
+      "P95": 26.64664031848923,
+      "Count": 25
+    },
+    "machineCpuCostPercent": 0.511358426779506,
+    "peakProbeMiB": 56.1015625,
+    "analysisMilliseconds": 25.9188,
+    "eventsReceived": 0,
+    "eventsLost": 0,
+    "errors": [
+      {
+        "Provider": "Process",
+        "Code": "PartialAccessOrExited"
+      },
+      {
+        "Provider": "ProcessBudget",
+        "Code": "Truncated"
+      },
+      {
+        "Provider": "ETW",
+        "Code": "PermissionDenied"
+      }
+    ],
+    "measurements": {
+      "CpuPercent": {
+        "Median": 60.674846625766875,
+        "P95": 89.37871122831567,
+        "Count": 25
+      },
+      "DiskLatencyMilliseconds": {
+        "Median": 0.16464475347661187,
+        "P95": 0.48358823816208524,
+        "Count": 25
+      },
+      "ObservedMemoryPressureSeconds": 0,
+      "Processes": []
+    },
+    "remainingOwnedSessions": null
+  },
+  {
+    "file": "max-window-measurement.json",
+    "utc": "2026-10-10T20:06:44.4961447+00:00",
+    "durationSeconds": 120.0318015,
+    "samples": 117,
+    "cpu": {
+      "Median": 9.691629955947134,
+      "P95": 25.519794112189462,
+      "Count": 117
+    },
+    "availableMemory": {
+      "Median": 27.954907494497288,
+      "P95": 34.89588602025922,
+      "Count": 117
+    },
+    "machineCpuCostPercent": 0.08895212102047251,
+    "peakProbeMiB": 60.37109375,
+    "analysisMilliseconds": 28.8994,
+    "eventsReceived": 0,
+    "eventsLost": 0,
+    "errors": [
+      {
+        "Provider": "Process",
+        "Code": "PartialAccessOrExited"
+      },
+      {
+        "Provider": "ProcessBudget",
+        "Code": "Truncated"
+      },
+      {
+        "Provider": "ETW",
+        "Code": "PermissionDenied"
+      }
+    ],
+    "measurements": {
+      "CpuPercent": {
+        "Median": 9.691629955947134,
+        "P95": 25.519794112189462,
+        "Count": 117
+      },
+      "DiskLatencyMilliseconds": {
+        "Median": 0.5676760481099656,
+        "P95": 2.1858330161301103,
+        "Count": 117
+      },
+      "ObservedMemoryPressureSeconds": 0,
+      "Processes": []
+    },
+    "remainingOwnedSessions": null
   }
 ]
-No isolated idle workload. ETW permission denied. Probe RSS is not incremental app RSS.
+Machine CPU cost = collector CPU seconds / duration / logical processor count * 100.
+Probe RSS includes the .NET runtime. It is not incremental WinUI memory cost.
+The host was not reserved for idle measurements. No performance improvement is claimed.
+Final-source fallback target: below 1% machine CPU and below 128 MiB sampled probe working set.
+
+MAXIMUM-WINDOW STATUS: PASS for nonadmin Windows fallback
+COMMAND: dotnet run --project tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-build --no-restore -- 120 docs/rework/evidence/wo07/max-window-measurement.json
+INPUT: final source; live read-only counters; maximum policy duration
+OUTPUT: duration 120.0318015 seconds; 117 samples; machine CPU cost 0.08895212102047251%; peak 60.37109375 MiB
+EXIT CODE: 0
+CI ETW OUTPUT: 30.064777 seconds; 141992 received; 27304 lost; 0 owned sessions remain; machine CPU cost 1.000443974688387%; peak 59.46875 MiB
+CI ETW BUDGET STATUS: PARTIAL. The provisional below-1% target applies to nonadmin fallback, not elevated ETW.
+LOSS LIMIT: The bounded queue detected losses. Detailed ETW attribution is incomplete.
+LONG DURATION: A 120-second fallback boundary passed. Multi-hour and elevated maximum-duration tests remain NOT TESTED.

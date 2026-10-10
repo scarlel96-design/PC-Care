@@ -1,9 +1,9 @@
 diff --git a/.github/workflows/wo07-windows-validation.yml b/.github/workflows/wo07-windows-validation.yml
 new file mode 100644
-index 0000000..abb7ebd
+index 0000000..5c84cfc
 --- /dev/null
 +++ b/.github/workflows/wo07-windows-validation.yml
-@@ -0,0 +1,103 @@
+@@ -0,0 +1,109 @@
 +name: WO07 Windows performance diagnostics
 +
 +on:
@@ -46,6 +46,12 @@ index 0000000..abb7ebd
 +          New-Item -ItemType Directory -Force artifacts/wo07-ci | Out-Null
 +          dotnet run --project tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-build --no-restore -- 30 artifacts/wo07-ci/measurement.json
 +          if ($LASTEXITCODE -ne 0) { throw 'CPU or memory collector unavailable' }
++          $measurement = Get-Content artifacts/wo07-ci/measurement.json -Raw | ConvertFrom-Json
++          if ($measurement.environment.elevated) {
++            if ($measurement.snapshot.Errors.Where({ $_.Provider.StartsWith('ETW') }).Count -gt 0) { throw 'Elevated ETW collection failed' }
++            if ($measurement.snapshot.EventsReceived -le 0) { throw 'Elevated ETW delivered no events' }
++            if ($null -eq $measurement.remainingOwnedSessions -or $measurement.remainingOwnedSessions -ne 0) { throw 'ETW session cleanup not verified' }
++          }
 +      - name: Separate-process termination and recovery
 +        shell: pwsh
 +        run: |
@@ -355,10 +361,10 @@ index 0000000..adc16af
 +}
 diff --git a/src/SmartPerformanceDoctor.Diagnostics/BottleneckAnalyzer.cs b/src/SmartPerformanceDoctor.Diagnostics/BottleneckAnalyzer.cs
 new file mode 100644
-index 0000000..c0f5c2a
+index 0000000..69ee6da
 --- /dev/null
 +++ b/src/SmartPerformanceDoctor.Diagnostics/BottleneckAnalyzer.cs
-@@ -0,0 +1,63 @@
+@@ -0,0 +1,67 @@
 +namespace SmartPerformanceDoctor.Diagnostics;
 +
 +public static class BottleneckAnalyzer
@@ -378,8 +384,12 @@ index 0000000..c0f5c2a
 +            var span = samples.Count > 1 ? samples[^1].Seconds - samples[0].Seconds : 0;
 +            var confidence = Math.Clamp(coverage * Math.Min(1, count / 20d) * Math.Min(1, span / 20d), 0, 1);
 +            if (!validTime) confidence = 0;
++            var provider = snapshot.SourceProvider == "Synthetic" ? "Synthetic" :
++                category.Contains("CpuSaturation", StringComparison.Ordinal) ? "CsWin32.GetSystemTimes" :
++                category.Contains("MemoryPressure", StringComparison.Ordinal) ? "CsWin32.GlobalMemoryStatusEx+GetPerformanceInfo" :
++                category.Contains("DiskIoPressure", StringComparison.Ordinal) ? "CsWin32.PDH" : "System.Diagnostics.Process";
 +            results.Add(new("perf." + category, category, evidence, $"{snapshot.StartedUtc:O} + {snapshot.DurationSeconds:F2}s", count,
-+                snapshot.SourceProvider, confidence, severity, baseLimits.ToArray(), "Repeat measurement and identify the active workload; no automatic repair."));
++                provider, confidence, severity, baseLimits.ToArray(), "Repeat measurement and identify the active workload; no automatic repair."));
 +        }
 +        bool Check(string category, Func<PerformanceSample, double?> select, Func<double, bool> predicate, Func<double, bool> valid)
 +        {
@@ -510,10 +520,10 @@ index 0000000..e4f348f
 +}
 diff --git a/src/SmartPerformanceDoctor.Diagnostics/EtwCollector.cs b/src/SmartPerformanceDoctor.Diagnostics/EtwCollector.cs
 new file mode 100644
-index 0000000..3503572
+index 0000000..b962f30
 --- /dev/null
 +++ b/src/SmartPerformanceDoctor.Diagnostics/EtwCollector.cs
-@@ -0,0 +1,64 @@
+@@ -0,0 +1,73 @@
 +using Microsoft.Diagnostics.Tracing;
 +using Microsoft.Diagnostics.Tracing.Parsers;
 +using Microsoft.Diagnostics.Tracing.Parsers.Kernel;
@@ -536,23 +546,32 @@ index 0000000..3503572
 +    {
 +        if (_session is not null || _worker is not null) throw new InvalidOperationException("SessionAlreadyStarted");
 +        if (TraceEventSession.IsElevated() != true) { Error = new("ETW", "PermissionDenied"); return; }
++        var stage = "Create";
 +        try
 +        {
 +            // Never attach to, restart, or stop a session owned by another collector.
 +            _session = new TraceEventSession("PCCare.Diagnostics." + Guid.NewGuid().ToString("N"), TraceEventSessionOptions.NoRestartOnCreate)
 +                { StopOnDispose = true, BufferSizeMB = 8 };
++            // Enable the kernel provider before Source creates a non-kernel session.
++            stage = "EnableKernelProvider";
++            _session.EnableKernelProvider(KernelTraceEventParser.Keywords.DiskIO | KernelTraceEventParser.Keywords.MemoryHardFaults
++                | KernelTraceEventParser.Keywords.Profile | KernelTraceEventParser.Keywords.Process | KernelTraceEventParser.Keywords.Thread | KernelTraceEventParser.Keywords.ContextSwitch);
++            stage = "Subscribe";
 +            void Disk(DiskIOTraceData data, bool write) => _buffer.Offer(new(data.DiskNumber, data.TransferSize, write, data.ElapsedTimeMSec, false, data.ProcessID));
 +            _session.Source.Kernel.DiskIORead += d => Disk(d, false);
 +            _session.Source.Kernel.DiskIOWrite += d => Disk(d, true);
 +            _session.Source.Kernel.MemoryHardFault += _ => _buffer.Offer(new(0, 0, false, 0, true));
 +            _session.Source.Kernel.PerfInfoSample += d => _buffer.Offer(new(0, 0, false, 0, false, d.ProcessID, CpuSample: true));
 +            _session.Source.Kernel.ThreadCSwitch += d => _buffer.Offer(new(0, 0, false, 0, false, d.ProcessID, ContextSwitch: true));
-+            _session.EnableKernelProvider(KernelTraceEventParser.Keywords.DiskIO | KernelTraceEventParser.Keywords.MemoryHardFaults
-+                | KernelTraceEventParser.Keywords.Profile | KernelTraceEventParser.Keywords.Process | KernelTraceEventParser.Keywords.Thread | KernelTraceEventParser.Keywords.ContextSwitch);
 +            var source = _session.Source;
-+            _worker = Task.Run(() => { try { source.Process(); } catch (Exception e) { Error = new("ETW", e.GetType().Name); } });
++            _worker = Task.Run(() => { try { source.Process(); } catch (Exception e) { Error = new("ETW.Process", e.GetType().Name + ":0x" + e.HResult.ToString("X8")); } });
 +        }
-+        catch (Exception e) { Error = new("ETW", e.GetType().Name); _session?.Dispose(); _session = null; }
++        catch (Exception e)
++        {
++            Error = new("ETW." + stage, e.GetType().Name + ":0x" + e.HResult.ToString("X8"));
++            try { _session?.Dispose(); } catch (Exception cleanup) { Error = ErrorReporter.From("ETW.Stop", cleanup); }
++            _session = null;
++        }
 +    }
 +    public (IReadOnlyList<DiskMetric> Disks, int Faults, IReadOnlyList<EtwProcessMetric> Processes, int Switches) Drain()
 +    {
@@ -618,6 +637,38 @@ index 0000000..9fb1171
 +{
 +    public static CollectionError From(string provider, Exception error) => new(provider, error is UnauthorizedAccessException ? "PermissionDenied" : error.GetType().Name);
 +}
+diff --git a/src/SmartPerformanceDoctor.Diagnostics/MeasurementSummary.cs b/src/SmartPerformanceDoctor.Diagnostics/MeasurementSummary.cs
+new file mode 100644
+index 0000000..7c9ca10
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.Diagnostics/MeasurementSummary.cs
+@@ -0,0 +1,26 @@
++namespace SmartPerformanceDoctor.Diagnostics;
++
++public sealed record ProcessDistribution(string Identifier, Distribution CpuPercent, Distribution WorkingSetBytes);
++public sealed record MeasurementSummary(Distribution CpuPercent, Distribution DiskLatencyMilliseconds,
++    double ObservedMemoryPressureSeconds, IReadOnlyList<ProcessDistribution> Processes)
++{
++    public static MeasurementSummary From(DiagnosticSnapshot snapshot)
++    {
++        var samples = snapshot.Samples.Select(Normalizer.Normalize).ToArray();
++        static bool Pressured(PerformanceSample sample) => sample.AvailableMemoryPercent.HasValue && sample.CommitPercent.HasValue
++            && Math.Max(100 - sample.AvailableMemoryPercent.Value, sample.CommitPercent.Value) >= 90;
++        // Count only adjacent observed intervals. Do not interpolate across missing measurements.
++        var pressureSeconds = samples.Zip(samples.Skip(1))
++            .Where(p => double.IsFinite(p.First.Seconds) && double.IsFinite(p.Second.Seconds)
++                && p.First.Seconds > 0 && p.Second.Seconds <= snapshot.DurationSeconds + .5
++                && p.Second.Seconds > p.First.Seconds && p.Second.Seconds - p.First.Seconds <= 5.5
++                && Pressured(p.First) && Pressured(p.Second))
++            .Sum(p => p.Second.Seconds - p.First.Seconds);
++        var processes = samples.SelectMany(s => s.Processes).GroupBy(p => p.Identifier)
++            .Select(g => new ProcessDistribution(g.Key, Statistics.Describe(g.Select(p => Normalizer.Bounded(p.CpuPercent, 0, 100))),
++                Statistics.Describe(g.Select(p => p.WorkingSetBytes >= 0 ? (double?)p.WorkingSetBytes : null))))
++            .OrderByDescending(p => p.CpuPercent.Median).Take(128).ToArray();
++        return new(Statistics.Describe(samples.Select(s => s.CpuPercent)),
++            Statistics.Describe(samples.Select(s => s.DiskLatencyMilliseconds)), pressureSeconds, processes);
++    }
++}
 diff --git a/src/SmartPerformanceDoctor.Diagnostics/NativeMethods.json b/src/SmartPerformanceDoctor.Diagnostics/NativeMethods.json
 new file mode 100644
 index 0000000..f3e0f48
@@ -641,10 +692,10 @@ index 0000000..a039efa
 +GetPerformanceInfo
 diff --git a/src/SmartPerformanceDoctor.Diagnostics/Normalizer.cs b/src/SmartPerformanceDoctor.Diagnostics/Normalizer.cs
 new file mode 100644
-index 0000000..39ddadb
+index 0000000..6487f2c
 --- /dev/null
 +++ b/src/SmartPerformanceDoctor.Diagnostics/Normalizer.cs
-@@ -0,0 +1,16 @@
+@@ -0,0 +1,20 @@
 +namespace SmartPerformanceDoctor.Diagnostics;
 +
 +public static class Normalizer
@@ -658,7 +709,11 @@ index 0000000..39ddadb
 +        DiskQueue = Bounded(s.DiskQueue, 0, 1000000), ReadBytesPerSecond = Bounded(s.ReadBytesPerSecond, 0, 1e15),
 +        WriteBytesPerSecond = Bounded(s.WriteBytesPerSecond, 0, 1e15), IoPerSecond = Bounded(s.IoPerSecond, 0, 1e12),
 +        PageReadsPerSecond = Bounded(s.PageReadsPerSecond, 0, 1e12),
-+        LogicalCpu = s.LogicalCpu.ToDictionary(p => p.Key, p => Bounded(p.Value, 0, 100))
++        LogicalCpu = s.LogicalCpu.ToDictionary(p => p.Key, p => Bounded(p.Value, 0, 100)),
++        TotalMemoryBytes = s.TotalMemoryBytes > 0 ? s.TotalMemoryBytes : null,
++        AvailableMemoryBytes = s.TotalMemoryBytes > 0 && s.AvailableMemoryBytes <= s.TotalMemoryBytes ? s.AvailableMemoryBytes : null,
++        CommitLimitBytes = s.CommitLimitBytes > 0 ? s.CommitLimitBytes : null,
++        CommitBytes = s.CommitLimitBytes > 0 && s.CommitBytes <= s.CommitLimitBytes ? s.CommitBytes : null
 +    };
 +}
 diff --git a/src/SmartPerformanceDoctor.Diagnostics/PerformanceCollector.cs b/src/SmartPerformanceDoctor.Diagnostics/PerformanceCollector.cs
@@ -863,10 +918,10 @@ index 284d3d9..ecef683 100644
      <PackageReference Include="xunit" />
 diff --git a/tests/SmartPerformanceDoctor.Tests/WO07PerformanceTests.cs b/tests/SmartPerformanceDoctor.Tests/WO07PerformanceTests.cs
 new file mode 100644
-index 0000000..39f0a75
+index 0000000..f272163
 --- /dev/null
 +++ b/tests/SmartPerformanceDoctor.Tests/WO07PerformanceTests.cs
-@@ -0,0 +1,58 @@
+@@ -0,0 +1,85 @@
 +using SmartPerformanceDoctor.Diagnostics;
 +using SmartPerformanceDoctor.App.Services.SystemCare;
 +using Xunit;
@@ -896,9 +951,36 @@ index 0000000..39f0a75
 +    [Fact] public void SparseMeasurementsAreInsufficient() => Assert.Contains(BottleneckAnalyzer.Analyze(Fixture(i => S(i, i < 5 ? 95 : null))), f => f.Category == "InsufficientEvidence.CpuSaturation");
 +    [Fact] public void LongMissingGapDoesNotBecomeSustained() => Assert.DoesNotContain(BottleneckAnalyzer.Analyze(Fixture(i => S(i, i % 5 == 0 ? null : 95))), f => f.Category == "CpuSaturation");
 +    [Fact] public void AdapterNeverProvidesRepair() => Assert.All(PerformanceFindingAdapter.Convert(Fixture(i => S(i, 95))), f => { Assert.False(f.CanAutoApply); Assert.Null(f.TargetPath); Assert.NotEmpty(f.Evidence); });
++    [Fact] public void MemoryDurationCountsObservedIntervals()
++    {
++        var summary = MeasurementSummary.From(Fixture(i => S(i, available: i <= 10 ? 5 : 60, commit: 40)));
++        Assert.Equal(9, summary.ObservedMemoryPressureSeconds);
++        var missing = MeasurementSummary.From(Fixture(i => S(i, available: i % 2 == 0 ? null : 5, commit: 95)));
++        Assert.Equal(0, missing.ObservedMemoryPressureSeconds);
++    }
++    [Fact] public void DiskDistributionUsesActualLatencyWithoutPressureFilter()
++    {
++        var summary = MeasurementSummary.From(Fixture(i => S(i, latency: i, queue: 0)));
++        Assert.Equal(15.5, summary.DiskLatencyMilliseconds.Median);
++        Assert.Equal(28.55, summary.DiskLatencyMilliseconds.P95!.Value, 5);
++    }
 +    [Fact] public void ResourcePolicyRejectsUnboundedSettings() => Assert.Throws<ArgumentOutOfRangeException>(() => new SamplingPolicy(DurationSeconds: 121).Validate());
 +    [Fact] public void StatisticsUseInterpolation() { var d = Statistics.Describe([1, 2, 3, 4]); Assert.Equal(2.5, d.Median); Assert.Equal(3.85, d.P95!.Value, 5); }
 +    [Fact] public void EmptyDistributionIsUnknown() => Assert.Null(Statistics.Describe([]).Median);
++    [Fact] public void FailedByteMeasurementsRemainUnknown()
++    {
++        var sample = Normalizer.Normalize(S(1) with { TotalMemoryBytes = 0, AvailableMemoryBytes = 0, CommitBytes = 0, CommitLimitBytes = 0 });
++        Assert.Null(sample.TotalMemoryBytes); Assert.Null(sample.AvailableMemoryBytes);
++        Assert.Null(sample.CommitBytes); Assert.Null(sample.CommitLimitBytes);
++        Assert.Null(Normalizer.Normalize(S(1) with { TotalMemoryBytes = 10, AvailableMemoryBytes = 11 }).AvailableMemoryBytes);
++    }
++    [Fact] public void FindingProviderIdentifiesActualMeasurement()
++    {
++        var findings = BottleneckAnalyzer.Analyze(Fixture(i => S(i)) with { SourceProvider = "CsWin32.SystemSnapshot+PDH+TraceEvent" });
++        Assert.Equal("CsWin32.GetSystemTimes", findings.Single(f => f.Category.EndsWith("CpuSaturation")).SourceProvider);
++        Assert.Equal("CsWin32.PDH", findings.Single(f => f.Category.EndsWith("DiskIoPressure")).SourceProvider);
++        Assert.DoesNotContain(findings, f => f.SourceProvider.Contains("TraceEvent"));
++    }
 +    [Fact] public void QueueOverflowIsMeasured() { var buffer = new EventBuffer(32); for (var i = 0; i < 40; i++) buffer.Offer(new(0, 1, false, 1, false)); Assert.Equal(40, buffer.Received); Assert.Equal(8, buffer.Dropped); Assert.Equal(32, buffer.Drain().Count); }
 +    [Fact] public void MalformedEventsAreDropped() { var buffer = new EventBuffer(32); buffer.Offer(new(0, -1, false, double.NaN, false)); Assert.Empty(buffer.Drain()); Assert.Equal(1, buffer.Dropped); }
 +    [Fact] public void NormalizerRejectsCounterSentinels() { var sample = Normalizer.Normalize(S(1, double.NaN, latency: -1) with { ReadBytesPerSecond = double.PositiveInfinity }); Assert.Null(sample.CpuPercent); Assert.Null(sample.DiskLatencyMilliseconds); Assert.Null(sample.ReadBytesPerSecond); }
@@ -927,23 +1009,30 @@ index 0000000..39f0a75
 +}
 diff --git a/tools/SmartPerformanceDoctor.DiagnosticsProbe/Program.cs b/tools/SmartPerformanceDoctor.DiagnosticsProbe/Program.cs
 new file mode 100644
-index 0000000..81b7ffb
+index 0000000..201ba21
 --- /dev/null
 +++ b/tools/SmartPerformanceDoctor.DiagnosticsProbe/Program.cs
-@@ -0,0 +1,20 @@
+@@ -0,0 +1,27 @@
 +using SmartPerformanceDoctor.Diagnostics;
 +using Microsoft.Diagnostics.Tracing.Session;
 +using System.Text.Json;
 +var seconds = args.Length > 0 && int.TryParse(args[0], out var duration) ? duration : 10;
++HashSet<string>? sessionBaseline = null;
++if (TraceEventSession.IsElevated() == true)
++    try { sessionBaseline = TraceEventSession.GetActiveSessionNames().ToHashSet(StringComparer.Ordinal); } catch { }
 +var collector = new PerformanceCollector();
 +var result = await collector.CollectAsync(new(DurationSeconds: seconds), CancellationToken.None);
++int? remainingOwnedSessions = null;
++if (sessionBaseline is not null)
++    try { remainingOwnedSessions = TraceEventSession.GetActiveSessionNames().Count(n => n.StartsWith("PCCare.Diagnostics.", StringComparison.Ordinal) && !sessionBaseline.Contains(n)); } catch { }
 +var analysisClock = System.Diagnostics.Stopwatch.StartNew();
 +var findings = BottleneckAnalyzer.Analyze(result);
++var measurements = MeasurementSummary.From(result);
 +analysisClock.Stop();
 +var json = JsonSerializer.Serialize(new {
 +    environment = new { os = Environment.OSVersion.ToString(), logicalProcessors = Environment.ProcessorCount,
 +        traceEvent = typeof(TraceEventSession).Assembly.GetName().Version?.ToString(), elevated = TraceEventSession.IsElevated() },
-+    snapshot = result, findings, analysisMilliseconds = analysisClock.Elapsed.TotalMilliseconds,
++    snapshot = result, findings, measurements, remainingOwnedSessions, analysisMilliseconds = analysisClock.Elapsed.TotalMilliseconds,
 +    cpu = Statistics.Describe(result.Samples.Select(s => s.CpuPercent)),
 +    memory = Statistics.Describe(result.Samples.Select(s => s.AvailableMemoryPercent)),
 +    overheadPercentOfMachine = 100 * result.CollectorCpuSeconds / result.DurationSeconds / Environment.ProcessorCount

@@ -59,3 +59,33 @@ Elevated kernel ETW execution remains BLOCKED on the available nonadmin host.
 No production trust gate, updater, vault writer, deletion engine, or user settings changed.
 
 The existing application declares Windows 11 minimum build 22000. Windows 10 product support is not established by this work.
+
+## Final source validation
+
+Validated source: 68a220739bd0249ec0b6ba3df765baf7f0802489.
+Validated source tree: e361aa65796301fead03635078e13d6987fe9335.
+Branch: codex/pccare-performance-diagnostics-foundation.
+Local Release tests: 805 passed, 0 failed, 111 skipped, 916 total.
+New performance tests: 36 passed, 0 failed, 0 skipped. These are included in the application total.
+Preserved updater tests: 128 passed. Separate SecurityLab tests: 36 passed.
+The baseline had 769 passed and 111 skipped. The increase is 36 performance cases.
+See GITHUB_RESULT.txt for the final evidence commit and Windows CI status.
+Phase 1 remains NO-GO. Real-world causal accuracy has not been independently measured.
+
+MeasurementSummary stores CPU and disk latency distributions, observed memory-pressure duration, and process CPU/RSS distributions.
+Memory-pressure duration counts adjacent valid pressure observations. Missing intervals are not interpolated.
+Normalizer rejects zero byte limits and inconsistent memory byte pairs.
+Each finding identifies its actual provider. A fallback CPU finding does not claim ETW evidence.
+
+## Windows CI execution
+
+CI run [38081909285](https://github.com/scarlel96-design/PC-Care/actions/runs/38081909285) completed successfully for source 68a220739bd0249ec0b6ba3df765baf7f0802489.
+The hosted Windows runner reported elevated=true. It received 141992 numeric ETW records.
+Its combined event-loss count was 27304. Zero newly owned ETW sessions remained after collection.
+The snapshot reported no ETW startup, processing, loss-query, or cleanup error.
+The capture lasted 30.064777 seconds with 29 polling samples.
+The probe used 1.000444% whole-machine CPU and 59.468750 MiB sampled peak working set.
+The nonadmin local host remains unable to execute kernel ETW. Its fallback measurement was verified separately.
+The hosted runner smoke is not a disposable-VM UAC, reboot, GUI, or independent PerfView validation.
+Event delivery and cleanup do not establish accurate causal attribution.
+Event loss occurred. ETW event totals and per-process contributions are incomplete.

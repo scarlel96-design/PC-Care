@@ -1,11 +1,14 @@
-STATUS: PARTIAL
-IMPLEMENTATION: TraceEvent session controller and bounded numeric parser
-ACTUAL WINDOWS INPUT: 3 nonadmin 30-second captures
-ACTUAL OUTPUT: ETW PermissionDenied; native and PDH measurements retained; hard faults and context switches null
-EXIT CODE: 0 for capture probe
-SYNTHETIC INPUT: 40 events; queue capacity 32
-SYNTHETIC OUTPUT: 32 retained; 8 drops
-PERFORMANCE TESTS: 32 passed; 0 failed; 0 skipped
-ELEVATED KERNEL ETW: BLOCKED
-INDEPENDENT PERFVIEW COMPARISON: NOT TESTED
-WINDOWS 10 / GUI: NOT TESTED
+STATUS: PARTIAL until independent accuracy and long-duration qualification
+SOURCE: 68a220739bd0249ec0b6ba3df765baf7f0802489
+COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter FullyQualifiedName~WO07 --logger 'trx;LogFileName=performance.trx' --results-directory artifacts/wo07-tests -v:minimal
+INPUT: synthetic performance and collector-boundary fixtures
+LITERAL RESULT: 통과!  - 실패: 0, 통과: 36, 건너뜀: 0, 전체: 36
+EXIT CODE: 0
+ACTUAL LOCAL CAPTURE: final-source-measurement.json; ETW PermissionDenied; native and PDH observations retained; exit 0
+FIRST CI: 38081271482; elevated=true; no kernel events; ETW generic Exception; not qualified
+FINAL CI: 38081909285; see GITHUB_RESULT.txt and ci-measurement.json for verified delivery and cleanup
+INDEPENDENT REFERENCE ACCURACY: NOT TESTED
+
+WINDOWS CI: PASS; run 38081909285; tested source 68a220739bd0249ec0b6ba3df765baf7f0802489
+CI OUTPUT: CI_RESULT.txt; CI_LOG.txt; CI_RUN.json; ci-measurement.json; ci-*.trx
+CI EXIT CODE: 0

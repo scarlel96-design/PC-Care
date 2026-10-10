@@ -1,0 +1,63 @@
+STATUS: PASS for automated CI and 30-second hosted Windows ETW smoke
+RUN: 38081909285
+SOURCE: 68a220739bd0249ec0b6ba3df765baf7f0802489
+URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38081909285
+OUTPUT:
+{
+  "environment": {
+    "os": "Microsoft Windows NT 10.0.26100.0",
+    "logicalProcessors": 4,
+    "traceEvent": "3.2.8.0",
+    "elevated": true
+  },
+  "durationSeconds": 30.064777,
+  "samples": 29,
+  "eventsReceived": 141992,
+  "eventsLost": 27304,
+  "remainingOwnedSessions": 0,
+  "machineCpuCostPercent": 1.000443974688387,
+  "peakProbeMiB": 59.46875,
+  "analysisMilliseconds": 19.2766,
+  "errors": [
+    {
+      "Provider": "Process",
+      "Code": "PartialAccessOrExited"
+    },
+    {
+      "Provider": "ProcessBudget",
+      "Code": "Truncated"
+    }
+  ],
+  "tests": [
+    {
+      "file": "ci-wo06-full.trx",
+      "total": 916,
+      "passed": 805,
+      "failed": 0,
+      "skipped": 111
+    },
+    {
+      "file": "ci-wo06-signed-updater.trx",
+      "total": 128,
+      "passed": 128,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "ci-wo07-performance.trx",
+      "total": 36,
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "file": "ci-wo06-securitylab.trx",
+      "total": 36,
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0
+    }
+  ]
+}
+EXIT CODE: 0
+Actual VM, independent accuracy, and production deployment are separate qualifications.

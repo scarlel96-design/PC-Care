@@ -1,0 +1,91 @@
+WORK ITEM: WO-07 read-only performance diagnostics
+STATUS: PARTIAL
+BRANCH: codex/pccare-performance-diagnostics-foundation
+BASELINE SHA: f793cbabcbf8beb4355a7538c28b1e26ad4517b3
+BASELINE TREE: e1ddfde08a5333e42630189991ed7a100f5b57a6
+VALIDATED SOURCE SHA: 68a220739bd0249ec0b6ba3df765baf7f0802489
+SOURCE TREE: e361aa65796301fead03635078e13d6987fe9335
+FINAL SHA: Resolve the final evidence commit from GitHub branch; see GITHUB_RESULT.txt.
+FIELD: TraceEvent 3.2.8 / CsWin32 0.3.358 package references
+ORIGINAL SHA-256: 57bf92034e88c12cd4f91afb801e6f3ea0ee1abbdb32b9805c7e10ce5303a1e4
+MODIFIED SHA-256: b3cd4082de13e77fbd2f211bc09c2b36789e1a9f643ae01615242910f4047b59
+MODIFIED_FILE: C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo07/MODIFIED_FILE.props
+DIFF_FILE: C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo07/DIFF_FILE.patch
+VERIFICATION: C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo07/VERIFICATION.txt
+ROLLBACK: C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo07/ROLLBACK.sh
+
+BASELINE COMMAND: & 'C:\Users\scarl\AppData\Local\Programs\Python\Python314\python.exe' docs/rework/evidence/wo07/manifest-check.py docs/rework/evidence/wo07/ORIGINAL_FILE.props BASELINE
+BASELINE INPUT: ORIGINAL_FILE.props; preserved baseline package-manifest bytes
+BASELINE OUTPUT: BASELINE: TraceEvent absent; CsWin32 absent
+BASELINE EXIT CODE: 0
+MODIFIED COMMAND: & 'C:\Users\scarl\AppData\Local\Programs\Python\Python314\python.exe' docs/rework/evidence/wo07/manifest-check.py docs/rework/evidence/wo07/MODIFIED_FILE.props MODIFIED
+MODIFIED INPUT: MODIFIED_FILE.props; changed package-manifest copy
+MODIFIED OUTPUT: MODIFIED: TraceEvent 3.2.8; CsWin32 0.3.358
+MODIFIED EXIT CODE: 0
+ROLLBACK PREPARATION: Copy-Item docs/rework/evidence/wo07/MODIFIED_FILE.props docs/rework/evidence/wo07/ROLLBACK_COPY.props
+ROLLBACK COMMAND: & 'C:\Program Files\Git\bin\bash.exe' docs/rework/evidence/wo07/ROLLBACK.sh 'C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo07/ROLLBACK_COPY.props'
+ROLLBACK INPUT: independent ROLLBACK_COPY.props; expected modified SHA-256
+ROLLBACK OUTPUT: ROLLBACK: original SHA-256 restored on independent source copy
+ROLLBACK EXIT CODE: 0
+RESTORED CHECK COMMAND: & 'C:\Users\scarl\AppData\Local\Programs\Python\Python314\python.exe' docs/rework/evidence/wo07/manifest-check.py docs/rework/evidence/wo07/ROLLBACK_COPY.props ROLLBACK
+RESTORED OUTPUT: ROLLBACK: TraceEvent absent; CsWin32 absent
+RESTORED EXIT CODE: 0
+RESTORED STATUS: PASS for independent source-copy restoration; original SHA-256 matched
+MODIFIED STATUS: The actual package manifest and MODIFIED_FILE.props remain changed.
+ROLLBACK LIMIT: This source-copy test is not an installation or updater transaction recovery test.
+
+BUILD COMMAND: dotnet build tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+BUILD INPUT: final source
+BUILD OUTPUT: 경고 0개 / 오류 0개; final-build.log
+BUILD EXIT CODE: 0
+FULL TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo07-full.trx' --results-directory artifacts/wo07-tests -v:minimal
+FULL TEST INPUT: final direct x64 Release build and synthetic fixtures
+FULL TEST OUTPUT: 통과!  - 실패:     0, 통과:   805, 건너뜀:   111, 전체:   916, 기간: 2 m 45 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+FULL TEST EXIT CODE: 0
+OTHER TESTS: Performance 36/36; updater 128/128; separate SecurityLab 36/36; exit 0 each
+BASELINE TESTS: 769 passed / 111 skipped; original full command not retained verbatim; rerun command in FULL_TEST_RESULT.txt
+SOURCE CHANGED FILES:
+.github/workflows/wo07-windows-validation.yml
+Directory.Packages.props
+SmartPerformanceDoctor.sln
+src/SmartPerformanceDoctor.App/Services/AppNavigationService.cs
+src/SmartPerformanceDoctor.App/Services/SystemCare/PerformanceFindingAdapter.cs
+src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj
+src/SmartPerformanceDoctor.App/Views/AppDiagnosticsPage.xaml
+src/SmartPerformanceDoctor.App/Views/AppDiagnosticsPage.xaml.cs
+src/SmartPerformanceDoctor.App/Views/PerformanceDiagnosticsPage.xaml
+src/SmartPerformanceDoctor.App/Views/PerformanceDiagnosticsPage.xaml.cs
+src/SmartPerformanceDoctor.Diagnostics/BottleneckAnalyzer.cs
+src/SmartPerformanceDoctor.Diagnostics/Contracts.cs
+src/SmartPerformanceDoctor.Diagnostics/CounterProbe.cs
+src/SmartPerformanceDoctor.Diagnostics/EtwCollector.cs
+src/SmartPerformanceDoctor.Diagnostics/EventBuffer.cs
+src/SmartPerformanceDoctor.Diagnostics/MeasurementSummary.cs
+src/SmartPerformanceDoctor.Diagnostics/NativeMethods.json
+src/SmartPerformanceDoctor.Diagnostics/NativeMethods.txt
+src/SmartPerformanceDoctor.Diagnostics/Normalizer.cs
+src/SmartPerformanceDoctor.Diagnostics/PerformanceCollector.cs
+src/SmartPerformanceDoctor.Diagnostics/SmartPerformanceDoctor.Diagnostics.csproj
+src/SmartPerformanceDoctor.Diagnostics/SystemSnapshotProbe.cs
+tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj
+tests/SmartPerformanceDoctor.Tests/WO07PerformanceTests.cs
+tools/SmartPerformanceDoctor.DiagnosticsProbe/Program.cs
+tools/SmartPerformanceDoctor.DiagnosticsProbe/SmartPerformanceDoctor.DiagnosticsProbe.csproj
+
+SAFETY: Read-only counters; no user-file scan, system mutation, driver installation, or security-gate change.
+REMAINING RISKS: Independent accuracy, hardware calibration, process lifetime attribution, startup/service cause, ETL replay, GUI interaction, Windows 10, and low-spec qualification remain open.
+RELEASE: Phase 1 NO-GO. No main merge or official release.
+SOURCE REVERSAL: Revert the source commits on a separate branch, then run the baseline tests. Preserve unrelated changes.
+
+WINDOWS CI: PASS; run 38081909285; tested source 68a220739bd0249ec0b6ba3df765baf7f0802489
+CI OUTPUT: CI_RESULT.txt; CI_LOG.txt; CI_RUN.json; ci-measurement.json; ci-*.trx
+CI EXIT CODE: 0
+
+MAXIMUM WINDOW COMMAND: dotnet run --project tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-build --no-restore -- 120 docs/rework/evidence/wo07/max-window-measurement.json
+MAXIMUM WINDOW OUTPUT: 120.0318015 seconds; 117 samples; cost 0.08895212102047251% machine CPU; 60.37109375 MiB peak probe working set
+MAXIMUM WINDOW EXIT CODE: 0
+ETW ACTUAL OUTPUT: 141992 received, 27304 lost, 0 newly owned sessions remaining; no ETW error
+ETW LIMIT: Loss prevents complete ETW attribution. Independent causal accuracy remains NOT TESTED.
+ROLLBACK SANDBOX RETRY: Restricted Git Bash failed before script execution with NtCreateDirectoryObject 0xC0000022.
+ROLLBACK RETRY OUTPUT: ROLLBACK: original SHA-256 restored on independent source copy
+ROLLBACK RETRY EXIT CODE: 0 after execution restriction escalation

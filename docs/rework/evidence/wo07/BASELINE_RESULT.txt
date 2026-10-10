@@ -1,3 +1,10 @@
-f793cbabcbf8beb4355a7538c28b1e26ad4517b3 e1ddfde08a5333e42630189991ed7a100f5b57a6
-EXIT CODE: 1
-RETRY EXIT CODE: 0
+STATUS: PASS for baseline identity and completed regression
+COMMAND: git show -s --format='%H %T' f793cbabcbf8beb4355a7538c28b1e26ad4517b3
+INPUT: preserved local WO-06 Git object
+OUTPUT: f793cbabcbf8beb4355a7538c28b1e26ad4517b3 e1ddfde08a5333e42630189991ed7a100f5b57a6
+EXIT CODE: 0
+BASELINE TEST OUTPUT: 769 passed / 0 failed / 111 skipped / 880 total
+BASELINE INITIAL TEST EXIT CODE: 1; restricted test-host connection failed
+BASELINE RETRY EXIT CODE: 0 after execution restriction escalation
+BASELINE LOG: baseline.log
+BASELINE ORIGINAL TEST COMMAND: Not retained verbatim; rerun command is recorded in FULL_TEST_RESULT.txt.

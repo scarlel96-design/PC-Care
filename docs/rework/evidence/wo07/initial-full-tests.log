@@ -1,4 +1,4 @@
-C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+WORKSPACE\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
 지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
 [xUnit.net 00:00:00.31]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_DecisionGate_NotProductionEnable [SKIP]
 [xUnit.net 00:00:00.34]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenAnchorMissing [SKIP]
@@ -184,7 +184,7 @@ C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\P
    Assert.Contains() Failure: Filter not matched in collection
 Collection: [CollectionError { Provider = ETW, Code = PermissionDenied }, CollectionError { Provider = PDH.Disk, Code = Unavailable }, CollectionError { Provider = PDH.LogicalCpu, Code = Unavailable }]
   스택 추적:
-     at SmartPerformanceDoctor.Tests.WO07PerformanceTests.CollectorExceptionPreservesEvidence() in C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\WO07PerformanceTests.cs:line 39
+     at SmartPerformanceDoctor.Tests.WO07PerformanceTests.CollectorExceptionPreservesEvidence() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO07PerformanceTests.cs:line 39
 --- End of stack trace from previous location ---
 [xUnit.net 00:00:10.27]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_NonHarnessProductionRouteStillDenied [SKIP]
 [xUnit.net 00:00:10.27]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444 [SKIP]
@@ -230,6 +230,6 @@ Collection: [CollectionError { Provider = ETW, Code = PermissionDenied }, Collec
   건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_EqualGenerationDifferentRoot_CorruptBlocked [1 ms]
 [xUnit.net 00:00:38.45]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked [SKIP]
   건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked [1 ms]
-결과 파일: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\artifacts\wo07-tests\wo07-full.trx
+결과 파일: WORKSPACE\artifacts\wo07-tests\wo07-full.trx
 
 실패!  - 실패:     1, 통과:   797, 건너뜀:   111, 전체:   909, 기간: 2 m 43 s - SmartPerformanceDoctor.Tests.dll (net10.0)

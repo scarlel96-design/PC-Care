@@ -1,0 +1,34 @@
+STATUS: PARTIAL for initial elevated ETW smoke
+RUN: 38081271482
+SOURCE: 879ca9b19e46cd02c4ee9b238770ef2689375ae5
+Automated CI succeeded, but ETW delivered no events.
+OUTPUT:
+{
+  "environment": {
+    "os": "Microsoft Windows NT 10.0.26100.0",
+    "logicalProcessors": 4,
+    "traceEvent": "3.2.8.0",
+    "elevated": true
+  },
+  "durationSeconds": 30.0063371,
+  "sampleCount": 29,
+  "eventsReceived": 0,
+  "eventsLost": 0,
+  "errors": [
+    {
+      "Provider": "Process",
+      "Code": "PartialAccessOrExited"
+    },
+    {
+      "Provider": "ProcessBudget",
+      "Code": "Truncated"
+    },
+    {
+      "Provider": "ETW",
+      "Code": "Exception"
+    }
+  ],
+  "machineCpuCostPercent": 0.33847016935632573,
+  "peakProbeMiB": 49.90625
+}
+The final source corrected kernel-provider startup order.

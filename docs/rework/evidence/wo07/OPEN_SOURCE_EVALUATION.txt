@@ -70,3 +70,49 @@ The adapter reuses CareFinding and CareFindingQualityGate. It always disables au
 - https://learn.microsoft.com/en-us/windows/win32/etw/configuring-and-starting-an-event-tracing-session
 
 The existing application declares Windows 11 minimum build 22000. Windows 10 product support is not established by this work.
+
+## Final source validation
+
+Validated source: 68a220739bd0249ec0b6ba3df765baf7f0802489.
+Validated source tree: e361aa65796301fead03635078e13d6987fe9335.
+Branch: codex/pccare-performance-diagnostics-foundation.
+Local Release tests: 805 passed, 0 failed, 111 skipped, 916 total.
+New performance tests: 36 passed, 0 failed, 0 skipped. These are included in the application total.
+Preserved updater tests: 128 passed. Separate SecurityLab tests: 36 passed.
+The baseline had 769 passed and 111 skipped. The increase is 36 performance cases.
+See GITHUB_RESULT.txt for the final evidence commit and Windows CI status.
+Phase 1 remains NO-GO. Real-world causal accuracy has not been independently measured.
+
+## Candidate-specific qualification
+
+| Dimension | TraceEvent 3.2.8 | CsWin32 0.3.358 | LibreHardwareMonitor 0.9.6 |
+|---|---|---|---|
+| Stable release and maintenance | Official v3.2.8; active upstream | Official v0.3.358; active upstream | Official v0.9.6; active upstream |
+| License | MIT | MIT | MPL-2.0; preserve applicable source notices |
+| Security | Zero listed public advisories; no absence guarantee | Zero listed public advisories; build-only exposure | Zero listed public advisories; driver boundary needs review |
+| .NET 10 | Package load and builds executed | Generated bindings compiled | Runtime integration NOT TESTED |
+| Windows 10/11 | Windows 11 executed; Windows 10 NOT TESTED | Reviewed APIs support Windows; app minimum is Windows 11 | Sensor and driver qualification NOT TESTED |
+| Privilege | Kernel capture uses existing admin token | Selected APIs work with nonadmin token | Some sensor access needs drivers or elevation |
+| CPU and memory cost | Measure with runner capture | Included in measured fallback probe cost | NOT TESTED |
+| Long-duration stability | 30-second captures; long stress NOT TESTED | Counters disposed; long stress NOT TESTED | NOT TESTED |
+| Errors and cancellation | Typed errors; owned session disposal | Nullable failures; collector cancellation | NOT TESTED |
+| Privacy | Numeric events only; salted identifiers | No paths or process command lines | Sensor identifiers require review |
+| Integration cost | New collector and bounded numeric queue | Eight reviewed generated user-mode bindings | Deferred driver and sensor policy |
+
+LibreHardwareMonitor 0.9.6 includes PawnIO 2.2 and installer changes.
+This work does not automatically install PawnIO or another hardware driver.
+PDH supplies existing Windows counters. WPR and PerfView remain independent comparison tools.
+The application uses no raw ETL persistence or external upload.
+
+## Windows CI execution
+
+CI run [38081909285](https://github.com/scarlel96-design/PC-Care/actions/runs/38081909285) completed successfully for source 68a220739bd0249ec0b6ba3df765baf7f0802489.
+The hosted Windows runner reported elevated=true. It received 141992 numeric ETW records.
+Its combined event-loss count was 27304. Zero newly owned ETW sessions remained after collection.
+The snapshot reported no ETW startup, processing, loss-query, or cleanup error.
+The capture lasted 30.064777 seconds with 29 polling samples.
+The probe used 1.000444% whole-machine CPU and 59.468750 MiB sampled peak working set.
+The nonadmin local host remains unable to execute kernel ETW. Its fallback measurement was verified separately.
+The hosted runner smoke is not a disposable-VM UAC, reboot, GUI, or independent PerfView validation.
+Event delivery and cleanup do not establish accurate causal attribution.
+Event loss occurred. ETW event totals and per-process contributions are incomplete.
