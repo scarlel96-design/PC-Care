@@ -55,7 +55,8 @@ if ($Action -eq 'prepare') {
     })
     $protected = Join-Path $env:ProgramData 'PC-Care/UpdateTransactions'
     if (Test-Path -LiteralPath $protected) {
-        $state.Acl=@(Get-ChildItem -LiteralPath $protected -Recurse -Force | Select-Object -First 500 | ForEach-Object {
+        $aclEntries=@(Get-Item -LiteralPath $protected) + @(Get-ChildItem -LiteralPath $protected -Recurse -Force | Select-Object -First 500)
+        $state.Acl=@($aclEntries | ForEach-Object {
             $acl=Get-Acl -LiteralPath $_.FullName
             [pscustomobject]@{Path=$_.FullName;Owner=$acl.Owner;Sddl=$acl.Sddl;Protected=$acl.AreAccessRulesProtected}
         })

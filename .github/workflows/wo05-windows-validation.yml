@@ -71,6 +71,10 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'VM Release application profile build failed' }
           & $kit audit-production (Join-Path $profile 'app-output/SmartPerformanceDoctor.dll')
           if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test application' }
+          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateHelper.dll')
+          if ($LASTEXITCODE -ne 6) { throw 'VM application copied a production update helper' }
+          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateEngine.dll')
+          if ($LASTEXITCODE -ne 6) { throw 'VM helper copied a production update engine' }
           exit 0
       - name: Full application regression
         env:
