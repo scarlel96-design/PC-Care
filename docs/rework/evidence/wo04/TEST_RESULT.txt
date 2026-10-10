@@ -1,0 +1,20 @@
+STATUS: PARTIAL (targeted automatic PASS; full and CI results recorded in next evidence update)
+BASELINE COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --filter FullyQualifiedName~SignedUpdateTests --logger 'trx;LogFileName=baseline.trx' -v:minimal
+BASELINE INPUT: independent source checkout at 14b1a8151a742db577e92a586969a18625c06270
+BASELINE EXIT: 0
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care-WO04-baseline\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+결과 파일: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care-WO04-baseline\tests\SmartPerformanceDoctor.Tests\TestResults\baseline.trx
+
+통과!  - 실패:     0, 통과:    20, 건너뜀:     0, 전체:    20, 기간: 1 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+MODIFIED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --filter FullyQualifiedName~SignedUpdateTests --logger 'trx;LogFileName=wo04-signed.trx' -v:minimal
+MODIFIED INPUT: WO04 source, synthetic signed packages/transactions
+MODIFIED EXIT: 0
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+경고: 결과 파일을 덮어쓰는 중: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo04-signed.trx
+결과 파일: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo04-signed.trx
+
+통과!  - 실패:     0, 통과:    49, 건너뜀:     0, 전체:    49, 기간: 4 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+DELTA: signed updater 20 -> 49 (+29)
+INITIAL STALE X64 BINARY: 37 PASS/1 FAIL/38; rebuilt final49/49.

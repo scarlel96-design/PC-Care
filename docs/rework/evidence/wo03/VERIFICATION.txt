@@ -1,7 +1,9 @@
 WORK ITEM: PC-Care WO03 signed transactional updater
 STATUS: PARTIAL; production release NO-GO
 BASELINE SHA: bbdfe4301fa3e8b6b448596b5cd3a954c3eb0d3c
-FINAL SHA: 2bcfc7b91ea87c493b29aa956672fece16560545
+FINAL REMOTE SHA: 14b1a8151a742db577e92a586969a18625c06270
+FINAL LOCAL SHA: 9ba71ebb769c782508fb102df72fd7e8babdcee0
+FINAL SHARED TREE: 5c104a5b0fff21e7fff75aa226d3e289504e0f77
 CHANGED BRANCH: codex/pccare-rework-phase1-transactional-updater
 CHANGED FIELD: UpdateInstallerService routes v2 publisher-verified packages to the restricted transactional helper; production trust has no official key.
 
@@ -41,8 +43,8 @@ IMPLEMENTATION: Signed v2 package verifier; publisher policy; protected stage; r
 SAFETY MEASURES: Production publisher key list is empty; legacy v1 remains blocked; development key is isolated to tests; installed user PC was not changed.
 TEST COMMAND: See BASELINE, MODIFIED and ROLLBACK commands above, plus BUILD_RESULT.txt and SIGNATURE_TEST_RESULT.txt.
 TEST INPUT: Source snapshots and synthetic package/transaction fixtures.
-TEST OUTPUT: Baseline 641/752; modified 661/772; Windows CI run 38023655159 passed targeted signed-update 20/20, full application 661 passed/111 skipped/772 total, SecurityLab 36/36, helper invalid-verb check and artifact upload; rollback copy baseline hash restored. The first CI run 38023131532 failed at the helper exit-code harness step; the corrected second run completed successfully.
+TEST OUTPUT: Baseline 641/752; modified 661/772; final Windows CI run 38024249499 passed targeted signed-update 20/20, full application 661 passed/111 skipped/772 total, SecurityLab 36/36, helper invalid-verb check and artifact upload; rollback copy baseline hash restored. Earlier CI attempts preceded the final source commit.
 EXIT CODE: 0 for passing final commands.
-WINDOWS CI: https://github.com/scarlel96-design/PC-Care/actions/runs/38023655159; status completed; conclusion success; implementation tree d43a8d3f22d5c80aa2f1e008ec5a475a478faf2c.
+WINDOWS CI: https://github.com/scarlel96-design/PC-Care/actions/runs/38024249499; status completed; conclusion success; source commit 14b1a8151a742db577e92a586969a18625c06270; implementation tree 5c104a5b0fff21e7fff75aa226d3e289504e0f77.
 REMAINING RISKS: No official key/public-root governance, production-signed package, protected ACL/UAC/reboot/installed-build VM E2E or independent power-loss recovery evidence.
 ROLLBACK PROCEDURE: ROLLBACK.sh restores the installer-service source on a chosen copy; revert the implementation commit for the entire branch change.

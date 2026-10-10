@@ -147,10 +147,157 @@ public sealed class SignedUpdateTests
         var journal = JsonSerializer.Deserialize<UpdateJournal>(File.ReadAllText(journalPath))!;
         journal.Stage = UpdateStage.Applying;
         File.WriteAllText(journalPath, JsonSerializer.Serialize(journal));
+        Assert.Equal(UpdateRecoveryState.RecoveryAvailable, f.Transaction.InspectRecovery(f.Install).State);
         var recovery = f.Transaction.Recover(f.Install);
         Assert.Equal(UpdateStage.Restored, recovery.Stage);
         Assert.Equal("old", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
         Assert.False(File.Exists(Path.Combine(f.Install, "second.txt")));
+        Assert.Equal(UpdateRecoveryState.RecoveryCompleted, f.Transaction.InspectRecovery(f.Install).State);
+    }
+
+    [Theory]
+    [InlineData("id")]
+    [InlineData("root")]
+    [InlineData("path")]
+    [InlineData("hash")]
+    [InlineData("missing-root")]
+    [InlineData("duplicate")]
+    [InlineData("null-files")]
+    public void TamperedJournalCannotDriveRecovery(string mutation)
+    {
+        using var f = new Fixture();
+        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
+        Assert.Equal(UpdateStage.Committed, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
+        var dir = Directory.GetDirectories(f.Work, "tx-*").Single();
+        var journalPath = Path.Combine(dir, "journal.json");
+        var journal = JsonSerializer.Deserialize<UpdateJournal>(File.ReadAllText(journalPath))!;
+        journal.Stage = UpdateStage.Applying;
+        switch (mutation)
+        {
+            case "id": journal.TransactionId = Guid.NewGuid().ToString("N"); break;
+            case "root": journal.InstallRoot = f.Work; break;
+            case "path": journal.Files[0].Path = "payload/../outside.txt"; break;
+            case "hash": journal.Files[0].OriginalSha256 = "bad"; break;
+            case "missing-root": journal.InstallRoot = ""; break;
+            case "duplicate": journal.Files.Add(journal.Files[0]); break;
+            case "null-files": journal.Files = null!; break;
+        }
+        File.WriteAllText(journalPath, JsonSerializer.Serialize(journal));
+        Assert.Equal(UpdateRecoveryState.RecoveryRequired, f.Transaction.InspectRecovery(f.Install).State);
+        Assert.Equal(UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
+        Assert.Equal("new", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
+    }
+
+    [Theory]
+    [InlineData(UpdateFaultPoint.AfterPackageVerification)]
+    [InlineData(UpdateFaultPoint.AfterStagingCreated)]
+    [InlineData(UpdateFaultPoint.DuringStageExtraction)]
+    [InlineData(UpdateFaultPoint.DuringBackupCreation)]
+    [InlineData(UpdateFaultPoint.AfterBackupVerification)]
+    [InlineData(UpdateFaultPoint.AfterApplyingJournal)]
+    [InlineData(UpdateFaultPoint.AfterFirstReplacement)]
+    [InlineData(UpdateFaultPoint.BeforeReplacement)]
+    [InlineData(UpdateFaultPoint.AfterLastReplacement)]
+    [InlineData(UpdateFaultPoint.DuringPostApplyVerification)]
+    [InlineData(UpdateFaultPoint.BeforeCommittedJournal)]
+    public void FaultBeforeCommitLeavesOriginalInstallation(UpdateFaultPoint point)
+    {
+        using var f = new Fixture();
+        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
+        var package = f.Package();
+        var injected = false;
+        TransactionResult? result = null;
+        try
+        {
+            result = f.Transaction.Apply(package, f.Install, "51.0.4", faultInjector: reached =>
+            {
+                if (reached != point || injected) return;
+                injected = true;
+                throw new IOException("WO04 synthetic fault at " + point);
+            });
+        }
+        catch (IOException) when (point == UpdateFaultPoint.AfterPackageVerification) { }
+        Assert.True(injected);
+        if (result is not null) Assert.Equal(UpdateStage.Restored, result.Stage);
+        Assert.Equal("old", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
+        Assert.False(File.Exists(Path.Combine(f.Install, "second.txt")));
+    }
+
+    [Theory]
+    [InlineData(UpdateFaultPoint.AfterRollbackStarted)]
+    [InlineData(UpdateFaultPoint.DuringRollbackCopy)]
+    [InlineData(UpdateFaultPoint.BeforeRestoredJournal)]
+    public void InterruptedRollbackCanBeRetried(UpdateFaultPoint point)
+    {
+        using var f = new Fixture();
+        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
+        var injected = false;
+        var first = f.Transaction.Apply(f.Package(), f.Install, "51.0.4",
+            afterFileApplied: _ => throw new IOException("primary synthetic failure"),
+            faultInjector: reached =>
+            {
+                if (reached != point || injected) return;
+                injected = true;
+                throw new IOException("WO04 rollback fault at " + point);
+            });
+        Assert.True(injected);
+        Assert.Equal(UpdateStage.RecoveryRequired, first.Stage);
+        Assert.Equal(UpdateRecoveryState.RecoveryFailed, f.Transaction.InspectRecovery(f.Install).State);
+        var second = f.Transaction.Recover(f.Install);
+        Assert.Equal(UpdateStage.Restored, second.Stage);
+        Assert.Equal("old", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
+        Assert.False(File.Exists(Path.Combine(f.Install, "second.txt")));
+    }
+
+    [Fact]
+    public void CorruptBackupPreventsAllRollbackMutations()
+    {
+        using var f = new Fixture();
+        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
+        Assert.Equal(UpdateStage.Committed, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
+        var dir = Directory.GetDirectories(f.Work, "tx-*").Single();
+        var path = Path.Combine(dir, "journal.json");
+        var journal = JsonSerializer.Deserialize<UpdateJournal>(File.ReadAllText(path))!;
+        journal.Stage = UpdateStage.Applying;
+        File.WriteAllText(path, JsonSerializer.Serialize(journal));
+        File.WriteAllText(Path.Combine(dir, "backup", "app.txt"), "corrupt");
+        Assert.Equal(UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
+        Assert.Equal("new", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
+        Assert.Equal("second", File.ReadAllText(Path.Combine(f.Install, "second.txt")));
+        Assert.Equal(UpdateRecoveryState.RecoveryFailed, f.Transaction.InspectRecovery(f.Install).State);
+    }
+
+    [Fact]
+    public void ConcurrentApplyAndRecoverAreBlockedByExclusiveLock()
+    {
+        using var f = new Fixture();
+        var package = f.Package();
+        using var gate = new FileStream(Path.Combine(f.Work, "update.lock"), FileMode.Create,
+            FileAccess.ReadWrite, FileShare.None);
+        Assert.Equal(UpdateRecoveryState.RecoveryInProgress, f.Transaction.InspectRecovery(f.Install).State);
+        Assert.Throws<IOException>(() => f.Transaction.Apply(package, f.Install, "51.0.4"));
+        Assert.Throws<IOException>(() => f.Transaction.Recover(f.Install));
+        Assert.Empty(Directory.EnumerateDirectories(f.Work, "tx-*"));
+    }
+
+    [Theory]
+    [InlineData("payload/CON.txt")]
+    [InlineData("payload/a:stream")]
+    [InlineData("payload/../escape")]
+    [InlineData("payload/name.")]
+    [InlineData("payload/LPT1/file")]
+    public void WindowsUnsafePathBoundariesAreRejected(string path)
+        => Assert.False(SignedPackage.SafeRelativePath(path));
+
+    [Fact]
+    public void OversizedJournalFailsClosed()
+    {
+        using var f = new Fixture();
+        var dir = Path.Combine(f.Work, "tx-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(dir);
+        File.WriteAllText(Path.Combine(dir, "journal.json"), new string(' ', 1024 * 1024 + 1));
+        Assert.Equal(UpdateRecoveryState.RecoveryRequired, f.Transaction.InspectRecovery(f.Install).State);
+        Assert.Equal(UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
     }
 
     [Fact]

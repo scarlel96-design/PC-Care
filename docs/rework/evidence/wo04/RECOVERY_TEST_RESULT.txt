@@ -1,0 +1,25 @@
+STATUS: PASS (synthetic separate-process only)
+COMMAND: $probe='tests/SmartPerformanceDoctor.UpdateRecoveryProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateRecoveryProbe.exe'; $fixture=Join-Path (Get-Location).Path '.wo04-final-fixture'; & $probe prepare $fixture; & $probe apply-kill $fixture; & $probe recover $fixture; & $probe verify $fixture
+INPUT: ephemeral ECDSA signed v2, app old/new, synthetic-vault.txt vault-marker, strictAcl=false
+ACTUAL OUTPUT:
+PREPARED old vault-marker
+PREPARE_EXIT=0
+Process terminated.
+WO04 isolated synthetic process termination
+   at System.Environment.FailFast(System.Runtime.CompilerServices.StackCrawlMarkHandle, System.String, System.Runtime.CompilerServices.ObjectHandleOnStack, System.String)
+   at System.Environment.FailFast(System.Threading.StackCrawlMark ByRef, System.String, System.Exception, System.String)
+   at System.Environment.FailFast(System.String)
+   at Program+<>c.<<Main>$>b__0_1(SmartPerformanceDoctor.UpdateEngine.UpdateFaultPoint)
+   at SmartPerformanceDoctor.UpdateEngine.UpdateTransaction.Apply(System.String, System.String, System.String, System.Action`1<Int32>, System.Func`2<System.String,Boolean>, System.Action`1<SmartPerformanceDoctor.UpdateEngine.UpdateFaultPoint>)
+   at Program.<Main>$(System.String[])
+KILL_EXIT=-2146232797
+BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK
+RECOVER_EXIT=0
+APP=old VAULT=vault-marker STATUS=RecoveryCompleted
+VERIFY_EXIT=0
+WORKER EXIT: -2146232797 expected FailFast
+RECOVER EXIT: 0
+VERIFY EXIT: 0
+APP restored SHA256=CBA06B5736FAF67E54B07B561EAE94395E774C517A7D910A54369E1263CCFBD4
+SYNTHETIC marker SHA256=7010F7FC3856863CF8673D65B76A4D7C7035C803A6B8800A4C1279E8F9D09DE9
+NOT A WINDOWS REBOOT/UAC/ACTUAL VAULT TEST.

@@ -1,0 +1,47 @@
+STATUS: PARTIAL; RELEASE NO-GO
+CHANGED BRANCH: codex/pccare-rework-phase1-final-validation
+CHANGED FIELD/PATH: recovery state/journal InstallRoot, FilesApplied increment, backup preflight, protected ACL read-only inspection
+MODIFIED_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\UpdateTransaction.cs
+DIFF_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo04\DIFF_FILE.patch
+VERIFICATION: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo04\VERIFICATION.txt
+ROLLBACK: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo04\ROLLBACK.sh
+ORIGINAL SHA256: 5BA25D5372C348F14FEFCAF8C95A7D4290083E5511A7B08256502DBB52B1AAB4
+MODIFIED SHA256: 3A6D8C95F8BDE17F185540102D4B20A9C42FA4465EB32D149F061137177D3521
+
+BASELINE COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --filter FullyQualifiedName~SignedUpdateTests --logger 'trx;LogFileName=baseline.trx' -v:minimal
+WORKDIR: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care-WO04-baseline
+INPUT: base commit synthetic signed updater tests
+LITERAL OUTPUT:
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care-WO04-baseline\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+결과 파일: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care-WO04-baseline\tests\SmartPerformanceDoctor.Tests\TestResults\baseline.trx
+
+통과!  - 실패:     0, 통과:    20, 건너뜀:     0, 전체:    20, 기간: 1 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+EXIT: 0
+
+MODIFIED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --filter FullyQualifiedName~SignedUpdateTests --logger 'trx;LogFileName=wo04-signed.trx' -v:minimal
+WORKDIR: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care
+INPUT: modified source synthetic fixtures,29 added cases
+LITERAL OUTPUT:
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+경고: 결과 파일을 덮어쓰는 중: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo04-signed.trx
+결과 파일: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo04-signed.trx
+
+통과!  - 실패:     0, 통과:    49, 건너뜀:     0, 전체:    49, 기간: 4 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+EXIT: 0
+
+ROLLBACK COMMAND: Copy-Item src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs docs/rework/evidence/wo04/rollback-test-copy.cs; & 'C:/Program Files/Git/bin/bash.exe' docs/rework/evidence/wo04/ROLLBACK.sh docs/rework/evidence/wo04/rollback-test-copy.cs
+INPUT: independent modified source copy only
+LITERAL OUTPUT:
+RESTORED 5BA25D5372C348F14FEFCAF8C95A7D4290083E5511A7B08256502DBB52B1AAB4
+ROLLBACK_EXIT=0
+COPY_SHA=5BA25D5372C348F14FEFCAF8C95A7D4290083E5511A7B08256502DBB52B1AAB4
+MODIFIED_SHA=3A6D8C95F8BDE17F185540102D4B20A9C42FA4465EB32D149F061137177D3521
+EXIT: 0
+RESTORED STATUS: copy hash equals baseline; MODIFIED_FILE retains changed hash. Source restoration only. Installation transaction recovery separately passed synthetic FailFast/recover/verify; see RECOVERY_TEST_RESULT.txt.
+
+EARLIER INFRASTRUCTURE FAILURES: sandbox VSTest90/300sec timeout exit1; Git fetch getaddrinfo exit1; Bash named object denied exit-1073741502; independent baseline worker assets NETSDK1004 exit1. Retried outside constrained execution where authorized.
+HELPER invalid verb --exec arbitrary: exit2.
+REMAINING P0: handle/path TOCTOU; actual protected ACL/UAC/reboot VM; production signer/key roots; consumer data-recovery compatibility.
+FULL/CI results: TEST_RESULT.txt and CI_RESULT.txt.

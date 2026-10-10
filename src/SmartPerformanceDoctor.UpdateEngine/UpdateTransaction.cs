@@ -15,6 +15,7 @@ public enum UpdateStage
 public sealed class UpdateJournal
 {
     public string TransactionId { get; set; } = "";
+    public string InstallRoot { get; set; } = "";
     public string PackageId { get; set; } = "";
     public string FromVersion { get; set; } = "";
     public string ToVersion { get; set; } = "";
@@ -36,6 +37,23 @@ public sealed class UpdateFileJournal
 
 public sealed record TransactionResult(UpdateStage Stage, string Code, string TransactionId, int FilesApplied);
 
+public enum UpdateRecoveryState
+{
+    NoPendingTransaction, RecoveryAvailable, RecoveryInProgress,
+    RecoveryCompleted, RecoveryRequired, RecoveryFailed
+}
+
+public enum UpdateFaultPoint
+{
+    AfterPackageVerification, AfterStagingCreated, DuringStageExtraction,
+    DuringBackupCreation, AfterBackupVerification, AfterApplyingJournal,
+    AfterFirstReplacement, BeforeReplacement, AfterLastReplacement,
+    DuringPostApplyVerification, BeforeCommittedJournal, AfterRollbackStarted,
+    DuringRollbackCopy, BeforeRestoredJournal
+}
+
+public sealed record UpdateRecoveryStatus(UpdateRecoveryState State, string Code, string TransactionId);
+
 public sealed class UpdateTransaction
 {
     private readonly PublisherTrustPolicy _policy;
@@ -51,7 +69,8 @@ public sealed class UpdateTransaction
     }
 
     public TransactionResult Apply(string packagePath, string installRoot, string currentVersion,
-        Action<int>? afterFileApplied = null, Func<string, bool>? postApplyVersionCheck = null)
+        Action<int>? afterFileApplied = null, Func<string, bool>? postApplyVersionCheck = null,
+        Action<UpdateFaultPoint>? faultInjector = null)
     {
         installRoot = Path.GetFullPath(installRoot);
         EnsureRoot(installRoot);
@@ -60,26 +79,34 @@ public sealed class UpdateTransaction
         EnsureRoot(_workRoot);
         using var gate = new FileStream(Path.Combine(_workRoot, "update.lock"), FileMode.OpenOrCreate,
             FileAccess.ReadWrite, FileShare.None);
-        if (Directory.EnumerateDirectories(_workRoot, "tx-*").Any(dir =>
-            ReadJournal(dir)?.Stage is not (UpdateStage.Committed or UpdateStage.Restored)))
-            return new(UpdateStage.RecoveryRequired, "PRIOR-TRANSACTION", "", 0);
+        var priorJournals = new List<UpdateJournal>();
+        foreach (var dir in Directory.EnumerateDirectories(_workRoot, "tx-*"))
+        {
+            if (!TryReadTrustedJournal(dir, installRoot, out var prior, out var reason) || prior is null)
+                return new(UpdateStage.RecoveryRequired, reason, "", 0);
+            if (_strictAcl) { VerifyProtectedAcl(dir); AllowReadOnlyInspection(dir); }
+            if (prior.Stage is not (UpdateStage.Committed or UpdateStage.Restored))
+                return new(UpdateStage.RecoveryRequired, "PRIOR-TRANSACTION", prior.TransactionId, 0);
+            priorJournals.Add(prior);
+        }
 
         var source = SignedPackage.Verify(packagePath, currentVersion, _policy);
         if (!source.CanApply || source.Manifest is null)
             return new(UpdateStage.Prepared, source.Code, "", 0);
-        if (Directory.EnumerateDirectories(_workRoot, "tx-*").Any(dir =>
-            ReadJournal(dir) is { Stage: UpdateStage.Committed } prior &&
+        faultInjector?.Invoke(UpdateFaultPoint.AfterPackageVerification);
+        if (priorJournals.Any(prior => prior.Stage == UpdateStage.Committed &&
             string.Equals(prior.PackageId, source.Manifest.PackageId, StringComparison.OrdinalIgnoreCase)))
             return new(UpdateStage.Prepared, "REPLAY", "", 0);
 
         var id = Guid.NewGuid().ToString("N");
         var txDir = Path.Combine(_workRoot, "tx-" + id);
         Directory.CreateDirectory(txDir);
+        EnsureRoot(txDir);
         if (_strictAcl) SetProtectedAcl(txDir);
         var journal = new UpdateJournal
         {
             TransactionId = id, PackageId = source.Manifest.PackageId,
-            FromVersion = currentVersion, Stage = UpdateStage.Prepared
+            InstallRoot = installRoot, FromVersion = currentVersion, Stage = UpdateStage.Prepared
         };
         WriteJournal(txDir, journal);
         var packageCopy = Path.Combine(txDir, "package.spdup");
@@ -87,6 +114,7 @@ public sealed class UpdateTransaction
         var backupDir = Path.Combine(txDir, "backup");
         try
         {
+            faultInjector?.Invoke(UpdateFaultPoint.AfterStagingCreated);
             File.Copy(packagePath, packageCopy, overwrite: false);
             var stagedVerification = SignedPackage.Verify(packageCopy, currentVersion, _policy);
             if (!stagedVerification.CanApply || stagedVerification.Manifest is null)
@@ -118,6 +146,7 @@ public sealed class UpdateTransaction
                         output.Flush(flushToDisk: true);
                     }
                     VerifyFile(stageFile, item.Length, item.Sha256);
+                    faultInjector?.Invoke(UpdateFaultPoint.DuringStageExtraction);
                 }
             }
             journal.Stage = UpdateStage.Staged;
@@ -136,14 +165,17 @@ public sealed class UpdateTransaction
                     entry.OriginalSha256 = Hash(target);
                     Directory.CreateDirectory(Path.GetDirectoryName(backup)!);
                     File.Copy(target, backup, overwrite: false);
+                    faultInjector?.Invoke(UpdateFaultPoint.DuringBackupCreation);
                     VerifyFile(backup, entry.OriginalLength, entry.OriginalSha256);
                 }
                 journal.Files.Add(entry);
             }
             journal.Stage = UpdateStage.BackupVerified;
             WriteJournal(txDir, journal);
+            faultInjector?.Invoke(UpdateFaultPoint.AfterBackupVerification);
             journal.Stage = UpdateStage.Applying;
             WriteJournal(txDir, journal); // durable before the first file mutation
+            faultInjector?.Invoke(UpdateFaultPoint.AfterApplyingJournal);
             var count = 0;
             foreach (var entry in journal.Files)
             {
@@ -153,6 +185,7 @@ public sealed class UpdateTransaction
                 var target = Resolve(installRoot, relative);
                 var expected = manifest.Files.Single(f => f.Path == entry.Path);
                 VerifyFile(sourceFile, expected.Length, expected.Sha256); // immediately before privileged read
+                faultInjector?.Invoke(UpdateFaultPoint.BeforeReplacement);
                 Directory.CreateDirectory(Path.GetDirectoryName(target)!);
                 var temp = target + ".pccare-" + id + ".tmp";
                 using (var input = new FileStream(sourceFile, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -166,14 +199,21 @@ public sealed class UpdateTransaction
                 File.Move(temp, target, overwrite: true);
                 entry.Applied = true;
                 WriteJournal(txDir, journal);
-                afterFileApplied?.Invoke(++count);
+                count++;
+                afterFileApplied?.Invoke(count);
+                if (count == 1) faultInjector?.Invoke(UpdateFaultPoint.AfterFirstReplacement);
             }
+            faultInjector?.Invoke(UpdateFaultPoint.AfterLastReplacement);
             journal.Stage = UpdateStage.PostApplyVerification;
             WriteJournal(txDir, journal);
             foreach (var item in manifest.Files)
+            {
+                faultInjector?.Invoke(UpdateFaultPoint.DuringPostApplyVerification);
                 VerifyFile(Resolve(installRoot, Relative(item.Path)), item.Length, item.Sha256);
+            }
             if (postApplyVersionCheck is not null && !postApplyVersionCheck(manifest.ToVersion))
                 throw new InvalidDataException("installed version postcondition");
+            faultInjector?.Invoke(UpdateFaultPoint.BeforeCommittedJournal);
             journal.Stage = UpdateStage.Committed;
             WriteJournal(txDir, journal);
             try { File.Delete(packageCopy); } catch (Exception) { /* retain evidence */ }
@@ -184,11 +224,11 @@ public sealed class UpdateTransaction
             journal.Failure = ex.GetType().Name + ": " + ex.Message;
             journal.Stage = UpdateStage.RollbackPending;
             WriteJournal(txDir, journal);
-            return RollbackCore(txDir, installRoot, journal);
+            return RollbackCore(txDir, installRoot, journal, faultInjector);
         }
     }
 
-    public TransactionResult Recover(string installRoot)
+    public TransactionResult Recover(string installRoot, Action<UpdateFaultPoint>? faultInjector = null)
     {
         installRoot = Path.GetFullPath(installRoot);
         EnsureRoot(installRoot);
@@ -199,7 +239,9 @@ public sealed class UpdateTransaction
             FileAccess.ReadWrite, FileShare.None);
         foreach (var dir in Directory.EnumerateDirectories(_workRoot, "tx-*").OrderBy(x => x, StringComparer.Ordinal))
         {
-            var journal = ReadJournal(dir);
+            if (!TryReadTrustedJournal(dir, installRoot, out var journal, out var reason))
+                return new(UpdateStage.RecoveryRequired, reason, "", 0);
+            if (_strictAcl) { VerifyProtectedAcl(dir); AllowReadOnlyInspection(dir); }
             if (journal is null) return new(UpdateStage.RecoveryRequired, "JOURNAL-MISSING", "", 0);
             if (journal.Stage is UpdateStage.Committed or UpdateStage.Restored) continue;
             if (journal.Stage < UpdateStage.Applying)
@@ -208,17 +250,140 @@ public sealed class UpdateTransaction
                 WriteJournal(dir, journal);
                 continue;
             }
-            return RollbackCore(dir, installRoot, journal);
+            return RollbackCore(dir, installRoot, journal, faultInjector);
         }
         return new(UpdateStage.Restored, "NO-PENDING", "", 0);
     }
 
-    private static TransactionResult RollbackCore(string txDir, string installRoot, UpdateJournal journal)
+    /// <summary>Read-only startup probe. It never creates a lock, journal, or directory.</summary>
+    public UpdateRecoveryStatus InspectRecovery(string installRoot)
+    {
+        installRoot = Path.GetFullPath(installRoot);
+        if (!Directory.Exists(_workRoot))
+            return new(UpdateRecoveryState.NoPendingTransaction, "NO-PENDING", "");
+        try
+        {
+            EnsureRoot(_workRoot);
+            if (_strictAcl) VerifyProtectedAcl(_workRoot);
+            var lockPath = Path.Combine(_workRoot, "update.lock");
+            if (File.Exists(lockPath))
+            {
+                try
+                {
+                    using var probe = new FileStream(lockPath, FileMode.Open, FileAccess.Read, FileShare.None);
+                }
+                catch (IOException)
+                {
+                    return new(UpdateRecoveryState.RecoveryInProgress, "LOCKED", "");
+                }
+            }
+            var completed = false;
+            foreach (var dir in Directory.EnumerateDirectories(_workRoot, "tx-*")
+                         .OrderBy(x => x, StringComparer.Ordinal))
+            {
+                if (!TryReadTrustedJournal(dir, installRoot, out var journal, out var reason))
+                    return new(UpdateRecoveryState.RecoveryRequired, reason, "");
+                if (_strictAcl) VerifyProtectedAcl(dir);
+                if (journal is null)
+                    return new(UpdateRecoveryState.RecoveryRequired, "JOURNAL-MISSING", "");
+                if (journal.Stage == UpdateStage.Restored) completed = true;
+                else if (journal.Stage == UpdateStage.RecoveryRequired &&
+                         (journal.Failure?.Contains("rollback:", StringComparison.OrdinalIgnoreCase) ?? false))
+                    return new(UpdateRecoveryState.RecoveryFailed, "ROLLBACK-FAIL", journal.TransactionId);
+                else if (journal.Stage != UpdateStage.Committed)
+                    return new(UpdateRecoveryState.RecoveryAvailable, "PENDING", journal.TransactionId);
+            }
+            return completed
+                ? new(UpdateRecoveryState.RecoveryCompleted, "RESTORED", "")
+                : new(UpdateRecoveryState.NoPendingTransaction, "NO-PENDING", "");
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return new(UpdateRecoveryState.RecoveryRequired, "INSPECTION-ACCESS-DENIED", "");
+        }
+        catch (Exception ex) when (ex is IOException or InvalidDataException or JsonException)
+        {
+            return new(UpdateRecoveryState.RecoveryRequired, "INSPECTION-FAIL", "");
+        }
+    }
+
+    private static bool TryReadTrustedJournal(string directory, string installRoot,
+        out UpdateJournal? journal, out string reason)
+    {
+        journal = null;
+        reason = "JOURNAL-INVALID";
+        try
+        {
+            EnsureRoot(directory);
+            var name = Path.GetFileName(directory);
+            if (!name.StartsWith("tx-", StringComparison.Ordinal) ||
+                !Guid.TryParseExact(name[3..], "N", out _)) return false;
+            var path = Path.Combine(directory, "journal.json");
+            if (!File.Exists(path) || (File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0)
+            {
+                reason = "JOURNAL-MISSING";
+                return false;
+            }
+            journal = ReadJournal(directory);
+            if (journal is null || !string.Equals(name, "tx-" + journal.TransactionId, StringComparison.Ordinal) ||
+                !string.Equals(journal.InstallRoot, installRoot, StringComparison.OrdinalIgnoreCase) ||
+                !Enum.IsDefined(journal.Stage) || journal.Files is null || journal.Files.Count > 4096)
+                return false;
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var entry in journal.Files)
+            {
+                if (entry is null || string.IsNullOrWhiteSpace(entry.Path) ||
+                    !SignedPackage.SafeRelativePath(entry.Path) || !seen.Add(entry.Path) ||
+                    !IsSha256(entry.NewSha256) ||
+                    (entry.Existed && (!IsSha256(entry.OriginalSha256) || entry.OriginalLength < 0)))
+                    return false;
+            }
+            var backup = Path.Combine(directory, "backup");
+            if (Directory.Exists(backup))
+            {
+                EnsureRoot(backup);
+                foreach (var entry in journal.Files.Where(x => x.Existed))
+                    GuardExistingPath(backup, Relative(entry.Path));
+            }
+            reason = "OK";
+            return true;
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException or InvalidDataException)
+        {
+            reason = "JOURNAL-INVALID";
+            return false;
+        }
+    }
+
+    private static bool IsSha256(string? value) => value is { Length: 64 } &&
+        value.All(c => Uri.IsHexDigit(c));
+
+    private static TransactionResult RollbackCore(string txDir, string installRoot, UpdateJournal journal,
+        Action<UpdateFaultPoint>? faultInjector = null)
     {
         try
         {
+            // Validate every backup before any restore/delete so a damaged backup cannot
+            // cause a partially restored installation to be changed further.
+            foreach (var entry in journal.Files)
+            {
+                var relative = Relative(entry.Path);
+                GuardExistingPath(installRoot, relative);
+                if (entry.Existed)
+                {
+                    var backupRoot = Path.Combine(txDir, "backup");
+                    GuardExistingPath(backupRoot, relative);
+                    VerifyFile(Resolve(backupRoot, relative), entry.OriginalLength, entry.OriginalSha256);
+                }
+                else
+                {
+                    var target = Resolve(installRoot, relative);
+                    if (File.Exists(target)) VerifyFile(target, new FileInfo(target).Length, entry.NewSha256);
+                }
+            }
             journal.Stage = UpdateStage.RollingBack;
             WriteJournal(txDir, journal);
+            faultInjector?.Invoke(UpdateFaultPoint.AfterRollbackStarted);
             foreach (var entry in journal.Files.AsEnumerable().Reverse())
             {
                 var relative = Relative(entry.Path);
@@ -228,8 +393,9 @@ public sealed class UpdateTransaction
                 {
                     var backup = Resolve(Path.Combine(txDir, "backup"), relative);
                     VerifyFile(backup, entry.OriginalLength, entry.OriginalSha256);
-                    var temp = target + ".pccare-restore-" + journal.TransactionId + ".tmp";
+                    var temp = target + ".pccare-restore-" + Guid.NewGuid().ToString("N") + ".tmp";
                     File.Copy(backup, temp, overwrite: false);
+                    faultInjector?.Invoke(UpdateFaultPoint.DuringRollbackCopy);
                     VerifyFile(temp, entry.OriginalLength, entry.OriginalSha256);
                     File.Move(temp, target, overwrite: true);
                 }
@@ -242,6 +408,7 @@ public sealed class UpdateTransaction
                 entry.Restored = true;
                 WriteJournal(txDir, journal);
             }
+            faultInjector?.Invoke(UpdateFaultPoint.BeforeRestoredJournal);
             journal.Stage = UpdateStage.Restored;
             WriteJournal(txDir, journal);
             return new(UpdateStage.Restored, "ROLLED-BACK", journal.TransactionId, journal.Files.Count(f => f.Applied));
@@ -271,6 +438,7 @@ public sealed class UpdateTransaction
         }
         EnsureRoot(productRoot);
         VerifyProtectedAcl(productRoot);
+        AllowReadOnlyInspection(productRoot);
         if (!Directory.Exists(_workRoot))
         {
             Directory.CreateDirectory(_workRoot);
@@ -280,6 +448,7 @@ public sealed class UpdateTransaction
         }
         EnsureRoot(_workRoot);
         VerifyProtectedAcl(_workRoot);
+        AllowReadOnlyInspection(_workRoot);
     }
 
     private static void VerifyProtectedAcl(string directory)
@@ -291,12 +460,13 @@ public sealed class UpdateTransaction
         if (!security.AreAccessRulesProtected || owner is null ||
             (!owner.Equals(admins) && !owner.Equals(system)))
             throw new UnauthorizedAccessException("untrusted staging ACL or owner");
-        foreach (FileSystemAccessRule rule in security.GetAccessRules(true, false, typeof(SecurityIdentifier)))
+        foreach (FileSystemAccessRule rule in security.GetAccessRules(true, true, typeof(SecurityIdentifier)))
         {
             if (rule.AccessControlType == AccessControlType.Allow &&
                 !rule.IdentityReference.Equals(admins) && !rule.IdentityReference.Equals(system) &&
-                (rule.FileSystemRights & (FileSystemRights.Write | FileSystemRights.Modify |
-                                          FileSystemRights.Delete | FileSystemRights.ChangePermissions |
+                (rule.FileSystemRights & (FileSystemRights.WriteData | FileSystemRights.AppendData |
+                                          FileSystemRights.WriteAttributes | FileSystemRights.WriteExtendedAttributes |
+                                          FileSystemRights.Delete | FileSystemRights.DeleteSubdirectoriesAndFiles | FileSystemRights.ChangePermissions |
                                           FileSystemRights.TakeOwnership)) != 0)
                 throw new UnauthorizedAccessException("staging writable by non-admin identity");
         }
@@ -313,7 +483,24 @@ public sealed class UpdateTransaction
             security.AddAccessRule(new FileSystemAccessRule(sid, FileSystemRights.FullControl,
                 InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
                 PropagationFlags.None, AccessControlType.Allow));
+        security.AddAccessRule(new FileSystemAccessRule(
+            new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null), FileSystemRights.ReadAndExecute,
+            InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
+            PropagationFlags.None, AccessControlType.Allow));
         new DirectoryInfo(directory).SetAccessControl(security);
+    }
+
+    private static void AllowReadOnlyInspection(string directory)
+    {
+        // Called only by the elevated strict-ACL path, after owner/DACL validation.
+        // Existing WO03 roots remain fail-closed until the user approves this helper.
+        var security = new DirectoryInfo(directory).GetAccessControl();
+        security.SetAccessRule(new FileSystemAccessRule(
+            new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null), FileSystemRights.ReadAndExecute,
+            InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
+            PropagationFlags.None, AccessControlType.Allow));
+        new DirectoryInfo(directory).SetAccessControl(security);
+        VerifyProtectedAcl(directory);
     }
 
     private static string Relative(string path)
@@ -364,6 +551,8 @@ public sealed class UpdateTransaction
     private static UpdateJournal? ReadJournal(string directory)
     {
         var path = Path.Combine(directory, "journal.json");
+        if (File.Exists(path) && new FileInfo(path).Length > 1024 * 1024)
+            throw new InvalidDataException("journal exceeds size limit");
         return File.Exists(path) ? JsonSerializer.Deserialize<UpdateJournal>(File.ReadAllText(path)) : null;
     }
 

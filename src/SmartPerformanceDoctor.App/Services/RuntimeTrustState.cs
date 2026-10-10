@@ -60,7 +60,8 @@ public static class RuntimeTrustState
             _ => CryptographicVerificationResult.NotChecked
         };
         PublisherTrust = level == RuntimeTrustLevel.Verified ? PublisherTrustResult.Trusted :
-            level == RuntimeTrustLevel.Failed ? PublisherTrustResult.Unknown : PublisherTrustResult.Untrusted;
+            CryptographicVerification == CryptographicVerificationResult.Verified
+                ? PublisherTrustResult.Untrusted : PublisherTrustResult.Unknown;
         // Only a Debug build outside Program Files receives the development execution allowance.
 #if DEBUG
         var localDevelopment = !IsProgramFiles(RuntimePaths.InstallRoot);
@@ -76,8 +77,8 @@ public static class RuntimeTrustState
     }
 
     public static string BuildDegradedFeatureMessage(string featureTitle) =>
-        $"{featureTitle} 기능은 실행 파일 코드 서명 검증이 완료되지 않아 일시 비활성화되었습니다.\n" +
-        "설치를 복구하거나 공식 설치 패키지로 재설치한 뒤 다시 시도하세요.";
+        $"{featureTitle} 기능은 실행 파일의 서명과 발행자 신뢰가 확인되지 않아 비활성화되었습니다.\n" +
+        "현재 설치본의 신뢰 상태를 확인하고, 검증된 발행자 빌드가 제공된 뒤 다시 시도하세요.";
 
     private static bool IsProgramFiles(string root)
     {

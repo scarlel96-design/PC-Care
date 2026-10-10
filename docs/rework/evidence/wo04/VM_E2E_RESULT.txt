@@ -1,0 +1,10 @@
+STATUS: BLOCKED
+vmrun=False; VBoxManage=False; qemu-system-x86_64=False; Get-VM=False
+HOST_TOKEN_ELEVATED=False
+PROTECTED_ROOT_EXISTS=False
+No disposable Windows11 VM/snapshot/isolated Authenticode Release build.
+All16 actual installation/UAC/reboot scenarios unexecuted.
+Executable synthetic engine probe and read-only VM hash/ACL collector provided.
+Production signer pins and production ECDSA roots empty.
+USER INSTALL/DATA MODIFIED: no
+HOST REBOOT/SHUTDOWN: no

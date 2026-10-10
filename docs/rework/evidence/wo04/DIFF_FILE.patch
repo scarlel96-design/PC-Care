@@ -1,0 +1,1039 @@
+diff --git a/.github/workflows/wo04-windows-validation.yml b/.github/workflows/wo04-windows-validation.yml
+new file mode 100644
+index 0000000..f6cd17a
+--- /dev/null
++++ b/.github/workflows/wo04-windows-validation.yml
+@@ -0,0 +1,63 @@
++name: WO04 Windows final validation
++
++on:
++  push:
++    branches:
++      - codex/pccare-rework-phase1-final-validation
++  pull_request:
++
++jobs:
++  windows-validation:
++    runs-on: windows-latest
++    timeout-minutes: 55
++    permissions:
++      contents: read
++    steps:
++      - uses: actions/checkout@v4
++      - uses: actions/setup-dotnet@v4
++        with:
++          dotnet-version: '10.0.x'
++      - name: Restore
++        run: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
++      - name: Release build
++        run: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
++      - name: Signed package, publisher, transaction, recovery and staging tests
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests' --logger 'trx;LogFileName=wo04-signed-updater.trx' -v:minimal
++      - name: Separate-process termination and recovery
++        shell: pwsh
++        run: |
++          dotnet build tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          $probe = 'tests/SmartPerformanceDoctor.UpdateRecoveryProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateRecoveryProbe.exe'
++          $fixture = Join-Path $env:RUNNER_TEMP 'wo04-synthetic-recovery'
++          & $probe prepare $fixture
++          if ($LASTEXITCODE -ne 0) { throw 'prepare failed' }
++          & $probe apply-kill $fixture
++          if ($LASTEXITCODE -eq 0) { throw 'process did not terminate at injection point' }
++          & $probe recover $fixture
++          if ($LASTEXITCODE -ne 0) { throw 'separate-process recovery failed' }
++          & $probe verify $fixture
++          if ($LASTEXITCODE -ne 0) { throw 'restored content verification failed' }
++      - name: Full application regression
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo04-full.trx' -v:minimal
++      - name: SecurityLab regression
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo04-securitylab.trx' -v:minimal
++      - name: Reject unsupported helper verb
++        shell: pwsh
++        run: |
++          $helper = 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe'
++          $process = Start-Process -FilePath $helper -ArgumentList @('--exec', 'arbitrary') -Wait -PassThru -NoNewWindow
++          if ($process.ExitCode -ne 2) { throw "Unexpected helper exit code: $($process.ExitCode)" }
++      - name: Upload test evidence
++        if: always()
++        uses: actions/upload-artifact@v4
++        with:
++          name: wo04-windows-trx
++          path: |
++            tests/SmartPerformanceDoctor.Tests/TestResults/*.trx
++            tests/SmartPerformanceDoctor.SecurityLab.Tests/TestResults/*.trx
+diff --git a/scripts/wo04-vm-evidence.ps1 b/scripts/wo04-vm-evidence.ps1
+new file mode 100644
+index 0000000..eb9d0b6
+--- /dev/null
++++ b/scripts/wo04-vm-evidence.ps1
+@@ -0,0 +1,32 @@
++param(
++    [Parameter(Mandatory=$true)][string]$InstallRoot,
++    [Parameter(Mandatory=$true)][string]$EvidenceDirectory,
++    [Parameter(Mandatory=$true)][string]$SnapshotId,
++    [Parameter(Mandatory=$true)][ValidateSet('before','after')][string]$Phase
++)
++$ErrorActionPreference = 'Stop'
++$install = (Resolve-Path -LiteralPath $InstallRoot).Path
++$evidence = (Resolve-Path -LiteralPath $EvidenceDirectory).Path
++if (!(Test-Path -LiteralPath (Join-Path $evidence '.wo04-disposable-vm'))) {
++    throw 'Missing disposable VM marker; run only inside the prepared test VM.'
++}
++if (!$SnapshotId.Trim()) { throw 'Snapshot evidence is required.' }
++if (Get-ChildItem -LiteralPath $install -Recurse -Force | Where-Object {
++    $_.Attributes -band [IO.FileAttributes]::ReparsePoint
++}) { throw 'Reparse path found; stop and preserve evidence.' }
++$files = @(Get-ChildItem -LiteralPath $install -File -Recurse -Force | ForEach-Object {
++    [pscustomobject]@{ Path=$_.FullName.Substring($install.Length); Length=$_.Length;
++        Sha256=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash }
++})
++$state = [pscustomobject]@{ Phase=$Phase; SnapshotId=$SnapshotId; Utc=[DateTime]::UtcNow.ToString('o');
++    InstallRoot=$install; WindowsVersion=[Environment]::OSVersion.Version.ToString();
++    Elevated=([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(
++        [Security.Principal.WindowsBuiltInRole]::Administrator); Files=$files }
++$state | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $evidence "$Phase-files.json") -Encoding utf8
++$protected = Join-Path $env:ProgramData 'PC-Care/UpdateTransactions'
++if (Test-Path -LiteralPath $protected) {
++    Get-Acl -LiteralPath $protected | Format-List Owner,Sddl,AccessToString |
++        Out-File -LiteralPath (Join-Path $evidence "$Phase-acl.txt") -Encoding utf8
++}
++Write-Output "CAPTURED phase=$Phase files=$($files.Count) snapshot=$SnapshotId"
++# This collector does not install, delete, reboot, approve UAC, or certify test results.
+diff --git a/src/SmartPerformanceDoctor.App/App.xaml.cs b/src/SmartPerformanceDoctor.App/App.xaml.cs
+index add90ec..6399c0f 100644
+--- a/src/SmartPerformanceDoctor.App/App.xaml.cs
++++ b/src/SmartPerformanceDoctor.App/App.xaml.cs
+@@ -179,6 +179,20 @@ public partial class App : Application
+ 
+     private void RunDeferredStartupWork()
+     {
++        var recovery = Services.Update.UpdateRecoveryCoordinator.Inspect();
++        StartupDiagnostics.Write("signed-update-recovery", $"{recovery.State}:{recovery.Code}:{recovery.TransactionId}");
++        if (recovery.State is SmartPerformanceDoctor.UpdateEngine.UpdateRecoveryState.RecoveryAvailable or
++            SmartPerformanceDoctor.UpdateEngine.UpdateRecoveryState.RecoveryRequired or
++            SmartPerformanceDoctor.UpdateEngine.UpdateRecoveryState.RecoveryFailed)
++        {
++            Shell?.SetStatusMessage("중단된 업데이트 복구가 필요합니다. 설정의 업데이트 화면에서 복구를 시작하세요.");
++            return;
++        }
++        if (recovery.State == SmartPerformanceDoctor.UpdateEngine.UpdateRecoveryState.RecoveryInProgress)
++        {
++            Shell?.SetStatusMessage("업데이트 또는 복구 작업이 진행 중입니다. 완료 후 앱을 다시 실행하세요.");
++            return;
++        }
+         var pending = new Services.Update.UpdatePendingApplier().TryApplyOnStartup();
+         StartupDiagnostics.Write("on-launched", "update-pending");
+         if (!string.IsNullOrWhiteSpace(pending.Message))
+diff --git a/src/SmartPerformanceDoctor.App/Services/RuntimeTrustState.cs b/src/SmartPerformanceDoctor.App/Services/RuntimeTrustState.cs
+index c1a2f88..fcec7a1 100644
+--- a/src/SmartPerformanceDoctor.App/Services/RuntimeTrustState.cs
++++ b/src/SmartPerformanceDoctor.App/Services/RuntimeTrustState.cs
+@@ -60,7 +60,8 @@ public static class RuntimeTrustState
+             _ => CryptographicVerificationResult.NotChecked
+         };
+         PublisherTrust = level == RuntimeTrustLevel.Verified ? PublisherTrustResult.Trusted :
+-            level == RuntimeTrustLevel.Failed ? PublisherTrustResult.Unknown : PublisherTrustResult.Untrusted;
++            CryptographicVerification == CryptographicVerificationResult.Verified
++                ? PublisherTrustResult.Untrusted : PublisherTrustResult.Unknown;
+         // Only a Debug build outside Program Files receives the development execution allowance.
+ #if DEBUG
+         var localDevelopment = !IsProgramFiles(RuntimePaths.InstallRoot);
+@@ -76,8 +77,8 @@ public static class RuntimeTrustState
+     }
+ 
+     public static string BuildDegradedFeatureMessage(string featureTitle) =>
+-        $"{featureTitle} 기능은 실행 파일 코드 서명 검증이 완료되지 않아 일시 비활성화되었습니다.\n" +
+-        "설치를 복구하거나 공식 설치 패키지로 재설치한 뒤 다시 시도하세요.";
++        $"{featureTitle} 기능은 실행 파일의 서명과 발행자 신뢰가 확인되지 않아 비활성화되었습니다.\n" +
++        "현재 설치본의 신뢰 상태를 확인하고, 검증된 발행자 빌드가 제공된 뒤 다시 시도하세요.";
+ 
+     private static bool IsProgramFiles(string root)
+     {
+diff --git a/src/SmartPerformanceDoctor.App/Services/Update/UpdateInstallerService.cs b/src/SmartPerformanceDoctor.App/Services/Update/UpdateInstallerService.cs
+index ba96dd8..3b48aac 100644
+--- a/src/SmartPerformanceDoctor.App/Services/Update/UpdateInstallerService.cs
++++ b/src/SmartPerformanceDoctor.App/Services/Update/UpdateInstallerService.cs
+@@ -22,6 +22,12 @@ public sealed class UpdateInstallerService
+     private UpdatePackageInspection InspectCore(string packagePath, IProgress<UpdateProgressReport>? progress,
+         CancellationToken cancellationToken)
+     {
++        var recovery = UpdateRecoveryCoordinator.Inspect();
++        if (recovery.State is UpdateRecoveryState.RecoveryAvailable or UpdateRecoveryState.RecoveryRequired or
++            UpdateRecoveryState.RecoveryInProgress or UpdateRecoveryState.RecoveryFailed)
++            return new UpdatePackageInspection(false, packagePath, null, "RECOVERY-REQUIRED",
++                "이전 업데이트 복구가 필요합니다. 복구를 완료한 뒤 새 업데이트를 시작하세요.",
++                false, false, false, UpdatePublisherTrustLevel.Unverified);
+         if (!IsV2(packagePath)) return _legacyInspector.Inspect(packagePath, AppInfo.Version, progress, cancellationToken);
+         var result = SignedPackage.Verify(packagePath, AppInfo.Version, PublisherTrustPolicy.Production,
+             cancellationToken: cancellationToken);
+diff --git a/src/SmartPerformanceDoctor.App/Services/Update/UpdateRecoveryCoordinator.cs b/src/SmartPerformanceDoctor.App/Services/Update/UpdateRecoveryCoordinator.cs
+new file mode 100644
+index 0000000..dc2be01
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.App/Services/Update/UpdateRecoveryCoordinator.cs
+@@ -0,0 +1,35 @@
++using System.ComponentModel;
++using System.Diagnostics;
++using SmartPerformanceDoctor.UpdateEngine;
++
++namespace SmartPerformanceDoctor.App.Services.Update;
++
++public enum RecoveryLaunchResult { Launched, Cancelled, HelperMissing, Failed }
++
++public static class UpdateRecoveryCoordinator
++{
++    public static string WorkRoot => Path.Combine(
++        Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
++        "PC-Care", "UpdateTransactions");
++
++    public static UpdateRecoveryStatus Inspect() =>
++        new UpdateTransaction(PublisherTrustPolicy.Production, WorkRoot, strictAcl: false)
++            .InspectRecovery(UpdatePaths.AppInstallDirectory);
++
++    public static RecoveryLaunchResult LaunchElevatedRecovery()
++    {
++        var helper = Path.Combine(UpdatePaths.AppInstallDirectory, "engine",
++            "SmartPerformanceDoctor.UpdateHelper.exe");
++        if (!File.Exists(helper) || (File.GetAttributes(helper) & FileAttributes.ReparsePoint) != 0)
++            return RecoveryLaunchResult.HelperMissing;
++        var info = new ProcessStartInfo(helper) { UseShellExecute = true, Verb = "runas" };
++        info.ArgumentList.Add("--recover");
++        info.ArgumentList.Add("--wait-pid");
++        info.ArgumentList.Add(Environment.ProcessId.ToString());
++        try { return Process.Start(info) is null ? RecoveryLaunchResult.Failed : RecoveryLaunchResult.Launched; }
++        catch (Win32Exception ex) when (ex.NativeErrorCode == 1223)
++        { return RecoveryLaunchResult.Cancelled; }
++        catch (Exception ex) when (ex is Win32Exception or InvalidOperationException)
++        { return RecoveryLaunchResult.Failed; }
++    }
++}
+diff --git a/src/SmartPerformanceDoctor.App/Views/UpdateStatusPage.xaml b/src/SmartPerformanceDoctor.App/Views/UpdateStatusPage.xaml
+index 64f6a76..3eaaeed 100644
+--- a/src/SmartPerformanceDoctor.App/Views/UpdateStatusPage.xaml
++++ b/src/SmartPerformanceDoctor.App/Views/UpdateStatusPage.xaml
+@@ -8,7 +8,7 @@
+             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                 <StackPanel Spacing="4">
+                     <TextBlock Text="업데이트" Style="{StaticResource MacPageTitleStyle}"/>
+-                    <TextBlock Text="한 번 확인하면 변경점을 안내하고, 승인 후 다운로드·검증·적용을 자동으로 이어갑니다\."
++                    <TextBlock Text="변경점을 확인하고 다운로드·발행자 검증·관리자 승인·설치를 진행합니다."
+                                Style="{StaticResource MacInlineStatusTextStyle}"/>
+                 </StackPanel>
+                 <Button Grid.Column="1" Content="새로 고침" Style="{StaticResource MacToolbarButtonStyle}" Click="RefreshStatus"/>
+@@ -19,7 +19,7 @@
+                     <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20">
+                         <StackPanel Spacing="6">
+                             <TextBlock Text="PC케어를 최신 상태로 유지하세요" Style="{StaticResource MacSectionHeaderStyle}"/>
+-                            <TextBlock Text="Luma Fetch와 같은 단순한 흐름입니다. 새 버전을 확인한 뒤 한 번만 승인하면 다운로드, 보안 검증, 설치가 자동으로 이어집니다\."
++                            <TextBlock Text="서명된 v2 패키지만 자동 설치합니다. 이전 v1 패키지는 공식 설치 파일을 사용하세요."
+                                        TextWrapping="Wrap" Style="{StaticResource MacInlineStatusTextStyle}"/>
+                         </StackPanel>
+                         <Button x:Name="CheckForUpdateButton" Grid.Column="1" Content="업데이트 확인"
+diff --git a/src/SmartPerformanceDoctor.App/Views/UpdateStatusPage.xaml.cs b/src/SmartPerformanceDoctor.App/Views/UpdateStatusPage.xaml.cs
+index 5a43725..54be1aa 100644
+--- a/src/SmartPerformanceDoctor.App/Views/UpdateStatusPage.xaml.cs
++++ b/src/SmartPerformanceDoctor.App/Views/UpdateStatusPage.xaml.cs
+@@ -6,6 +6,7 @@ using SmartPerformanceDoctor.App.Services;
+ using SmartPerformanceDoctor.App.Services.Pickers;
+ using SmartPerformanceDoctor.App.Services.Update;
+ using SmartPerformanceDoctor.App.ViewModels;
++using SmartPerformanceDoctor.UpdateEngine;
+ 
+ namespace SmartPerformanceDoctor.App.Views;
+ 
+@@ -53,15 +54,55 @@ public sealed partial class UpdateStatusPage : Page
+ 
+     private void RefreshPendingUpdatePanel()
+     {
++        var recovery = UpdateRecoveryCoordinator.Inspect();
++        if (recovery.State is UpdateRecoveryState.RecoveryAvailable or UpdateRecoveryState.RecoveryRequired or
++            UpdateRecoveryState.RecoveryInProgress or UpdateRecoveryState.RecoveryFailed)
++        {
++            PendingUpdatePanel.Visibility = Visibility.Visible;
++            PendingResumeButton.IsEnabled = recovery.State != UpdateRecoveryState.RecoveryInProgress;
++            PendingResumeButton.Content = "복구 시작";
++            PendingUpdateMessage.Text = recovery.State switch
++            {
++                UpdateRecoveryState.RecoveryAvailable => "중단된 업데이트를 발견했습니다. 관리자 권한으로 기존 설치 파일을 복구하세요.",
++                UpdateRecoveryState.RecoveryInProgress => "업데이트 또는 복구 작업이 진행 중입니다.",
++                UpdateRecoveryState.RecoveryFailed => "이전 복구가 실패했습니다. 원본과 증거를 보존했습니다. 관리자 권한으로 다시 복구하세요.",
++                _ => $"복구 상태를 확인해야 합니다 ({recovery.Code}). 관리자 권한으로 검증 및 복구하세요."
++            };
++            return;
++        }
++        if (recovery.State == UpdateRecoveryState.RecoveryCompleted)
++        {
++            PendingUpdatePanel.Visibility = Visibility.Visible;
++            PendingResumeButton.IsEnabled = false;
++            PendingResumeButton.Content = "복구 완료";
++            PendingUpdateMessage.Text = "중단된 업데이트의 기존 설치 파일 복원이 완료됐습니다.";
++            return;
++        }
+         var legacyPending = File.Exists(UpdatePaths.PendingState);
+         PendingUpdatePanel.Visibility = legacyPending ? Visibility.Visible : Visibility.Collapsed;
+         PendingResumeButton.IsEnabled = false;
++        PendingResumeButton.Content = "업데이트 마무리";
+         if (legacyPending)
+             PendingUpdateMessage.Text = "이전 업데이트 대기 기록은 발행자 인증이 없어 앱에서 다시 적용할 수 없습니다. 공식 설치 파일로 업데이트해 주세요.";
+     }
+ 
+     private void ResumePendingUpdate(object sender, RoutedEventArgs e)
+     {
++        var recovery = UpdateRecoveryCoordinator.Inspect();
++        if (recovery.State is UpdateRecoveryState.RecoveryAvailable or UpdateRecoveryState.RecoveryRequired or
++            UpdateRecoveryState.RecoveryFailed)
++        {
++            var launched = UpdateRecoveryCoordinator.LaunchElevatedRecovery();
++            PendingUpdateMessage.Text = launched switch
++            {
++                RecoveryLaunchResult.Launched => "관리자 복구 도우미가 시작됐습니다. 앱을 종료하고 복구 결과를 기다립니다.",
++                RecoveryLaunchResult.Cancelled => "관리자 권한 요청이 취소됐습니다. 업데이트는 복구 대기 상태입니다.",
++                RecoveryLaunchResult.HelperMissing => "복구 도우미가 설치되지 않았습니다. 공식 설치 파일로 복구하세요.",
++                _ => "복구 도우미를 시작하지 못했습니다. 업데이트는 복구 대기 상태입니다."
++            };
++            if (launched == RecoveryLaunchResult.Launched) App.ExitForUpdateHandoff();
++            return;
++        }
+         if (!File.Exists(UpdatePaths.PendingState))
+         {
+             RefreshPendingUpdatePanel();
+@@ -162,7 +203,7 @@ public sealed partial class UpdateStatusPage : Page
+         });
+         content.Children.Add(new TextBlock
+         {
+-            Text = "지금 업데이트를 누르면 다운로드 후 SHA-256 무결성을 확인하고 자동으로 적용합니다.",
++            Text = "다운로드 후 파일 무결성과 발행자 서명을 검증합니다. 검증이 통과하면 관리자 권한 승인을 요청합니다.",
+             TextWrapping = TextWrapping.Wrap
+         });
+ 
+@@ -195,7 +236,7 @@ public sealed partial class UpdateStatusPage : Page
+ 
+         content.Children.Add(new TextBlock
+         {
+-            Text = "1 다운로드  ·  2 보안 검증  ·  3 자동 적용",
++            Text = "다운로드  ·  발행자 검증  ·  관리자 승인  ·  설치",
+             Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["SpdMutedTextBrush"],
+             Margin = new Thickness(0, 6, 0, 0)
+         });
+diff --git a/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs b/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
+index 508d552..5b424c1 100644
+--- a/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
++++ b/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
+@@ -15,6 +15,7 @@ public enum UpdateStage
+ public sealed class UpdateJournal
+ {
+     public string TransactionId { get; set; } = "";
++    public string InstallRoot { get; set; } = "";
+     public string PackageId { get; set; } = "";
+     public string FromVersion { get; set; } = "";
+     public string ToVersion { get; set; } = "";
+@@ -36,6 +37,23 @@ public sealed class UpdateFileJournal
+ 
+ public sealed record TransactionResult(UpdateStage Stage, string Code, string TransactionId, int FilesApplied);
+ 
++public enum UpdateRecoveryState
++{
++    NoPendingTransaction, RecoveryAvailable, RecoveryInProgress,
++    RecoveryCompleted, RecoveryRequired, RecoveryFailed
++}
++
++public enum UpdateFaultPoint
++{
++    AfterPackageVerification, AfterStagingCreated, DuringStageExtraction,
++    DuringBackupCreation, AfterBackupVerification, AfterApplyingJournal,
++    AfterFirstReplacement, BeforeReplacement, AfterLastReplacement,
++    DuringPostApplyVerification, BeforeCommittedJournal, AfterRollbackStarted,
++    DuringRollbackCopy, BeforeRestoredJournal
++}
++
++public sealed record UpdateRecoveryStatus(UpdateRecoveryState State, string Code, string TransactionId);
++
+ public sealed class UpdateTransaction
+ {
+     private readonly PublisherTrustPolicy _policy;
+@@ -51,7 +69,8 @@ public sealed class UpdateTransaction
+     }
+ 
+     public TransactionResult Apply(string packagePath, string installRoot, string currentVersion,
+-        Action<int>? afterFileApplied = null, Func<string, bool>? postApplyVersionCheck = null)
++        Action<int>? afterFileApplied = null, Func<string, bool>? postApplyVersionCheck = null,
++        Action<UpdateFaultPoint>? faultInjector = null)
+     {
+         installRoot = Path.GetFullPath(installRoot);
+         EnsureRoot(installRoot);
+@@ -60,26 +79,34 @@ public sealed class UpdateTransaction
+         EnsureRoot(_workRoot);
+         using var gate = new FileStream(Path.Combine(_workRoot, "update.lock"), FileMode.OpenOrCreate,
+             FileAccess.ReadWrite, FileShare.None);
+-        if (Directory.EnumerateDirectories(_workRoot, "tx-*").Any(dir =>
+-            ReadJournal(dir)?.Stage is not (UpdateStage.Committed or UpdateStage.Restored)))
+-            return new(UpdateStage.RecoveryRequired, "PRIOR-TRANSACTION", "", 0);
++        var priorJournals = new List<UpdateJournal>();
++        foreach (var dir in Directory.EnumerateDirectories(_workRoot, "tx-*"))
++        {
++            if (!TryReadTrustedJournal(dir, installRoot, out var prior, out var reason) || prior is null)
++                return new(UpdateStage.RecoveryRequired, reason, "", 0);
++            if (_strictAcl) { VerifyProtectedAcl(dir); AllowReadOnlyInspection(dir); }
++            if (prior.Stage is not (UpdateStage.Committed or UpdateStage.Restored))
++                return new(UpdateStage.RecoveryRequired, "PRIOR-TRANSACTION", prior.TransactionId, 0);
++            priorJournals.Add(prior);
++        }
+ 
+         var source = SignedPackage.Verify(packagePath, currentVersion, _policy);
+         if (!source.CanApply || source.Manifest is null)
+             return new(UpdateStage.Prepared, source.Code, "", 0);
+-        if (Directory.EnumerateDirectories(_workRoot, "tx-*").Any(dir =>
+-            ReadJournal(dir) is { Stage: UpdateStage.Committed } prior &&
++        faultInjector?.Invoke(UpdateFaultPoint.AfterPackageVerification);
++        if (priorJournals.Any(prior => prior.Stage == UpdateStage.Committed &&
+             string.Equals(prior.PackageId, source.Manifest.PackageId, StringComparison.OrdinalIgnoreCase)))
+             return new(UpdateStage.Prepared, "REPLAY", "", 0);
+ 
+         var id = Guid.NewGuid().ToString("N");
+         var txDir = Path.Combine(_workRoot, "tx-" + id);
+         Directory.CreateDirectory(txDir);
++        EnsureRoot(txDir);
+         if (_strictAcl) SetProtectedAcl(txDir);
+         var journal = new UpdateJournal
+         {
+             TransactionId = id, PackageId = source.Manifest.PackageId,
+-            FromVersion = currentVersion, Stage = UpdateStage.Prepared
++            InstallRoot = installRoot, FromVersion = currentVersion, Stage = UpdateStage.Prepared
+         };
+         WriteJournal(txDir, journal);
+         var packageCopy = Path.Combine(txDir, "package.spdup");
+@@ -87,6 +114,7 @@ public sealed class UpdateTransaction
+         var backupDir = Path.Combine(txDir, "backup");
+         try
+         {
++            faultInjector?.Invoke(UpdateFaultPoint.AfterStagingCreated);
+             File.Copy(packagePath, packageCopy, overwrite: false);
+             var stagedVerification = SignedPackage.Verify(packageCopy, currentVersion, _policy);
+             if (!stagedVerification.CanApply || stagedVerification.Manifest is null)
+@@ -118,6 +146,7 @@ public sealed class UpdateTransaction
+                         output.Flush(flushToDisk: true);
+                     }
+                     VerifyFile(stageFile, item.Length, item.Sha256);
++                    faultInjector?.Invoke(UpdateFaultPoint.DuringStageExtraction);
+                 }
+             }
+             journal.Stage = UpdateStage.Staged;
+@@ -136,14 +165,17 @@ public sealed class UpdateTransaction
+                     entry.OriginalSha256 = Hash(target);
+                     Directory.CreateDirectory(Path.GetDirectoryName(backup)!);
+                     File.Copy(target, backup, overwrite: false);
++                    faultInjector?.Invoke(UpdateFaultPoint.DuringBackupCreation);
+                     VerifyFile(backup, entry.OriginalLength, entry.OriginalSha256);
+                 }
+                 journal.Files.Add(entry);
+             }
+             journal.Stage = UpdateStage.BackupVerified;
+             WriteJournal(txDir, journal);
++            faultInjector?.Invoke(UpdateFaultPoint.AfterBackupVerification);
+             journal.Stage = UpdateStage.Applying;
+             WriteJournal(txDir, journal); // durable before the first file mutation
++            faultInjector?.Invoke(UpdateFaultPoint.AfterApplyingJournal);
+             var count = 0;
+             foreach (var entry in journal.Files)
+             {
+@@ -153,6 +185,7 @@ public sealed class UpdateTransaction
+                 var target = Resolve(installRoot, relative);
+                 var expected = manifest.Files.Single(f => f.Path == entry.Path);
+                 VerifyFile(sourceFile, expected.Length, expected.Sha256); // immediately before privileged read
++                faultInjector?.Invoke(UpdateFaultPoint.BeforeReplacement);
+                 Directory.CreateDirectory(Path.GetDirectoryName(target)!);
+                 var temp = target + ".pccare-" + id + ".tmp";
+                 using (var input = new FileStream(sourceFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+@@ -166,14 +199,21 @@ public sealed class UpdateTransaction
+                 File.Move(temp, target, overwrite: true);
+                 entry.Applied = true;
+                 WriteJournal(txDir, journal);
+-                afterFileApplied?.Invoke(++count);
++                count++;
++                afterFileApplied?.Invoke(count);
++                if (count == 1) faultInjector?.Invoke(UpdateFaultPoint.AfterFirstReplacement);
+             }
++            faultInjector?.Invoke(UpdateFaultPoint.AfterLastReplacement);
+             journal.Stage = UpdateStage.PostApplyVerification;
+             WriteJournal(txDir, journal);
+             foreach (var item in manifest.Files)
++            {
++                faultInjector?.Invoke(UpdateFaultPoint.DuringPostApplyVerification);
+                 VerifyFile(Resolve(installRoot, Relative(item.Path)), item.Length, item.Sha256);
++            }
+             if (postApplyVersionCheck is not null && !postApplyVersionCheck(manifest.ToVersion))
+                 throw new InvalidDataException("installed version postcondition");
++            faultInjector?.Invoke(UpdateFaultPoint.BeforeCommittedJournal);
+             journal.Stage = UpdateStage.Committed;
+             WriteJournal(txDir, journal);
+             try { File.Delete(packageCopy); } catch (Exception) { /* retain evidence */ }
+@@ -184,11 +224,11 @@ public sealed class UpdateTransaction
+             journal.Failure = ex.GetType().Name + ": " + ex.Message;
+             journal.Stage = UpdateStage.RollbackPending;
+             WriteJournal(txDir, journal);
+-            return RollbackCore(txDir, installRoot, journal);
++            return RollbackCore(txDir, installRoot, journal, faultInjector);
+         }
+     }
+ 
+-    public TransactionResult Recover(string installRoot)
++    public TransactionResult Recover(string installRoot, Action<UpdateFaultPoint>? faultInjector = null)
+     {
+         installRoot = Path.GetFullPath(installRoot);
+         EnsureRoot(installRoot);
+@@ -199,7 +239,9 @@ public sealed class UpdateTransaction
+             FileAccess.ReadWrite, FileShare.None);
+         foreach (var dir in Directory.EnumerateDirectories(_workRoot, "tx-*").OrderBy(x => x, StringComparer.Ordinal))
+         {
+-            var journal = ReadJournal(dir);
++            if (!TryReadTrustedJournal(dir, installRoot, out var journal, out var reason))
++                return new(UpdateStage.RecoveryRequired, reason, "", 0);
++            if (_strictAcl) { VerifyProtectedAcl(dir); AllowReadOnlyInspection(dir); }
+             if (journal is null) return new(UpdateStage.RecoveryRequired, "JOURNAL-MISSING", "", 0);
+             if (journal.Stage is UpdateStage.Committed or UpdateStage.Restored) continue;
+             if (journal.Stage < UpdateStage.Applying)
+@@ -208,17 +250,140 @@ public sealed class UpdateTransaction
+                 WriteJournal(dir, journal);
+                 continue;
+             }
+-            return RollbackCore(dir, installRoot, journal);
++            return RollbackCore(dir, installRoot, journal, faultInjector);
+         }
+         return new(UpdateStage.Restored, "NO-PENDING", "", 0);
+     }
+ 
+-    private static TransactionResult RollbackCore(string txDir, string installRoot, UpdateJournal journal)
++    /// <summary>Read-only startup probe. It never creates a lock, journal, or directory.</summary>
++    public UpdateRecoveryStatus InspectRecovery(string installRoot)
++    {
++        installRoot = Path.GetFullPath(installRoot);
++        if (!Directory.Exists(_workRoot))
++            return new(UpdateRecoveryState.NoPendingTransaction, "NO-PENDING", "");
++        try
++        {
++            EnsureRoot(_workRoot);
++            if (_strictAcl) VerifyProtectedAcl(_workRoot);
++            var lockPath = Path.Combine(_workRoot, "update.lock");
++            if (File.Exists(lockPath))
++            {
++                try
++                {
++                    using var probe = new FileStream(lockPath, FileMode.Open, FileAccess.Read, FileShare.None);
++                }
++                catch (IOException)
++                {
++                    return new(UpdateRecoveryState.RecoveryInProgress, "LOCKED", "");
++                }
++            }
++            var completed = false;
++            foreach (var dir in Directory.EnumerateDirectories(_workRoot, "tx-*")
++                         .OrderBy(x => x, StringComparer.Ordinal))
++            {
++                if (!TryReadTrustedJournal(dir, installRoot, out var journal, out var reason))
++                    return new(UpdateRecoveryState.RecoveryRequired, reason, "");
++                if (_strictAcl) VerifyProtectedAcl(dir);
++                if (journal is null)
++                    return new(UpdateRecoveryState.RecoveryRequired, "JOURNAL-MISSING", "");
++                if (journal.Stage == UpdateStage.Restored) completed = true;
++                else if (journal.Stage == UpdateStage.RecoveryRequired &&
++                         (journal.Failure?.Contains("rollback:", StringComparison.OrdinalIgnoreCase) ?? false))
++                    return new(UpdateRecoveryState.RecoveryFailed, "ROLLBACK-FAIL", journal.TransactionId);
++                else if (journal.Stage != UpdateStage.Committed)
++                    return new(UpdateRecoveryState.RecoveryAvailable, "PENDING", journal.TransactionId);
++            }
++            return completed
++                ? new(UpdateRecoveryState.RecoveryCompleted, "RESTORED", "")
++                : new(UpdateRecoveryState.NoPendingTransaction, "NO-PENDING", "");
++        }
++        catch (UnauthorizedAccessException)
++        {
++            return new(UpdateRecoveryState.RecoveryRequired, "INSPECTION-ACCESS-DENIED", "");
++        }
++        catch (Exception ex) when (ex is IOException or InvalidDataException or JsonException)
++        {
++            return new(UpdateRecoveryState.RecoveryRequired, "INSPECTION-FAIL", "");
++        }
++    }
++
++    private static bool TryReadTrustedJournal(string directory, string installRoot,
++        out UpdateJournal? journal, out string reason)
+     {
++        journal = null;
++        reason = "JOURNAL-INVALID";
+         try
+         {
++            EnsureRoot(directory);
++            var name = Path.GetFileName(directory);
++            if (!name.StartsWith("tx-", StringComparison.Ordinal) ||
++                !Guid.TryParseExact(name[3..], "N", out _)) return false;
++            var path = Path.Combine(directory, "journal.json");
++            if (!File.Exists(path) || (File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0)
++            {
++                reason = "JOURNAL-MISSING";
++                return false;
++            }
++            journal = ReadJournal(directory);
++            if (journal is null || !string.Equals(name, "tx-" + journal.TransactionId, StringComparison.Ordinal) ||
++                !string.Equals(journal.InstallRoot, installRoot, StringComparison.OrdinalIgnoreCase) ||
++                !Enum.IsDefined(journal.Stage) || journal.Files is null || journal.Files.Count > 4096)
++                return false;
++            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
++            foreach (var entry in journal.Files)
++            {
++                if (entry is null || string.IsNullOrWhiteSpace(entry.Path) ||
++                    !SignedPackage.SafeRelativePath(entry.Path) || !seen.Add(entry.Path) ||
++                    !IsSha256(entry.NewSha256) ||
++                    (entry.Existed && (!IsSha256(entry.OriginalSha256) || entry.OriginalLength < 0)))
++                    return false;
++            }
++            var backup = Path.Combine(directory, "backup");
++            if (Directory.Exists(backup))
++            {
++                EnsureRoot(backup);
++                foreach (var entry in journal.Files.Where(x => x.Existed))
++                    GuardExistingPath(backup, Relative(entry.Path));
++            }
++            reason = "OK";
++            return true;
++        }
++        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException or InvalidDataException)
++        {
++            reason = "JOURNAL-INVALID";
++            return false;
++        }
++    }
++
++    private static bool IsSha256(string? value) => value is { Length: 64 } &&
++        value.All(c => Uri.IsHexDigit(c));
++
++    private static TransactionResult RollbackCore(string txDir, string installRoot, UpdateJournal journal,
++        Action<UpdateFaultPoint>? faultInjector = null)
++    {
++        try
++        {
++            // Validate every backup before any restore/delete so a damaged backup cannot
++            // cause a partially restored installation to be changed further.
++            foreach (var entry in journal.Files)
++            {
++                var relative = Relative(entry.Path);
++                GuardExistingPath(installRoot, relative);
++                if (entry.Existed)
++                {
++                    var backupRoot = Path.Combine(txDir, "backup");
++                    GuardExistingPath(backupRoot, relative);
++                    VerifyFile(Resolve(backupRoot, relative), entry.OriginalLength, entry.OriginalSha256);
++                }
++                else
++                {
++                    var target = Resolve(installRoot, relative);
++                    if (File.Exists(target)) VerifyFile(target, new FileInfo(target).Length, entry.NewSha256);
++                }
++            }
+             journal.Stage = UpdateStage.RollingBack;
+             WriteJournal(txDir, journal);
++            faultInjector?.Invoke(UpdateFaultPoint.AfterRollbackStarted);
+             foreach (var entry in journal.Files.AsEnumerable().Reverse())
+             {
+                 var relative = Relative(entry.Path);
+@@ -228,8 +393,9 @@ public sealed class UpdateTransaction
+                 {
+                     var backup = Resolve(Path.Combine(txDir, "backup"), relative);
+                     VerifyFile(backup, entry.OriginalLength, entry.OriginalSha256);
+-                    var temp = target + ".pccare-restore-" + journal.TransactionId + ".tmp";
++                    var temp = target + ".pccare-restore-" + Guid.NewGuid().ToString("N") + ".tmp";
+                     File.Copy(backup, temp, overwrite: false);
++                    faultInjector?.Invoke(UpdateFaultPoint.DuringRollbackCopy);
+                     VerifyFile(temp, entry.OriginalLength, entry.OriginalSha256);
+                     File.Move(temp, target, overwrite: true);
+                 }
+@@ -242,6 +408,7 @@ public sealed class UpdateTransaction
+                 entry.Restored = true;
+                 WriteJournal(txDir, journal);
+             }
++            faultInjector?.Invoke(UpdateFaultPoint.BeforeRestoredJournal);
+             journal.Stage = UpdateStage.Restored;
+             WriteJournal(txDir, journal);
+             return new(UpdateStage.Restored, "ROLLED-BACK", journal.TransactionId, journal.Files.Count(f => f.Applied));
+@@ -271,6 +438,7 @@ public sealed class UpdateTransaction
+         }
+         EnsureRoot(productRoot);
+         VerifyProtectedAcl(productRoot);
++        AllowReadOnlyInspection(productRoot);
+         if (!Directory.Exists(_workRoot))
+         {
+             Directory.CreateDirectory(_workRoot);
+@@ -280,6 +448,7 @@ public sealed class UpdateTransaction
+         }
+         EnsureRoot(_workRoot);
+         VerifyProtectedAcl(_workRoot);
++        AllowReadOnlyInspection(_workRoot);
+     }
+ 
+     private static void VerifyProtectedAcl(string directory)
+@@ -291,12 +460,13 @@ public sealed class UpdateTransaction
+         if (!security.AreAccessRulesProtected || owner is null ||
+             (!owner.Equals(admins) && !owner.Equals(system)))
+             throw new UnauthorizedAccessException("untrusted staging ACL or owner");
+-        foreach (FileSystemAccessRule rule in security.GetAccessRules(true, false, typeof(SecurityIdentifier)))
++        foreach (FileSystemAccessRule rule in security.GetAccessRules(true, true, typeof(SecurityIdentifier)))
+         {
+             if (rule.AccessControlType == AccessControlType.Allow &&
+                 !rule.IdentityReference.Equals(admins) && !rule.IdentityReference.Equals(system) &&
+-                (rule.FileSystemRights & (FileSystemRights.Write | FileSystemRights.Modify |
+-                                          FileSystemRights.Delete | FileSystemRights.ChangePermissions |
++                (rule.FileSystemRights & (FileSystemRights.WriteData | FileSystemRights.AppendData |
++                                          FileSystemRights.WriteAttributes | FileSystemRights.WriteExtendedAttributes |
++                                          FileSystemRights.Delete | FileSystemRights.DeleteSubdirectoriesAndFiles | FileSystemRights.ChangePermissions |
+                                           FileSystemRights.TakeOwnership)) != 0)
+                 throw new UnauthorizedAccessException("staging writable by non-admin identity");
+         }
+@@ -313,7 +483,24 @@ public sealed class UpdateTransaction
+             security.AddAccessRule(new FileSystemAccessRule(sid, FileSystemRights.FullControl,
+                 InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
+                 PropagationFlags.None, AccessControlType.Allow));
++        security.AddAccessRule(new FileSystemAccessRule(
++            new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null), FileSystemRights.ReadAndExecute,
++            InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
++            PropagationFlags.None, AccessControlType.Allow));
++        new DirectoryInfo(directory).SetAccessControl(security);
++    }
++
++    private static void AllowReadOnlyInspection(string directory)
++    {
++        // Called only by the elevated strict-ACL path, after owner/DACL validation.
++        // Existing WO03 roots remain fail-closed until the user approves this helper.
++        var security = new DirectoryInfo(directory).GetAccessControl();
++        security.SetAccessRule(new FileSystemAccessRule(
++            new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null), FileSystemRights.ReadAndExecute,
++            InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
++            PropagationFlags.None, AccessControlType.Allow));
+         new DirectoryInfo(directory).SetAccessControl(security);
++        VerifyProtectedAcl(directory);
+     }
+ 
+     private static string Relative(string path)
+@@ -364,6 +551,8 @@ public sealed class UpdateTransaction
+     private static UpdateJournal? ReadJournal(string directory)
+     {
+         var path = Path.Combine(directory, "journal.json");
++        if (File.Exists(path) && new FileInfo(path).Length > 1024 * 1024)
++            throw new InvalidDataException("journal exceeds size limit");
+         return File.Exists(path) ? JsonSerializer.Deserialize<UpdateJournal>(File.ReadAllText(path)) : null;
+     }
+ 
+diff --git a/src/SmartPerformanceDoctor.UpdateHelper/Program.cs b/src/SmartPerformanceDoctor.UpdateHelper/Program.cs
+index 06f2858..f0635ed 100644
+--- a/src/SmartPerformanceDoctor.UpdateHelper/Program.cs
++++ b/src/SmartPerformanceDoctor.UpdateHelper/Program.cs
+@@ -26,11 +26,28 @@ try
+ {
+     var coordinator = new UpdateTransaction(PublisherTrustPolicy.Production, workRoot, strictAcl: true);
+     TransactionResult result;
+-    if (args[0] == "--recover" && args.Length == 1)
++    if (args[0] == "--recover" && args.Length is 1 or 3)
++    {
++        if (args.Length == 3)
++        {
++            if (args[1] != "--wait-pid" || !int.TryParse(args[2], out var recoveryPid) || recoveryPid <= 0)
++                return 9;
++            try
++            {
++                if (!Process.GetProcessById(recoveryPid).WaitForExit(TimeSpan.FromSeconds(90))) return 12;
++            }
++            catch (ArgumentException) { /* caller already exited */ }
++        }
+         result = coordinator.Recover(installRoot);
++    }
+     else if (args[0] == "--apply" && args.Length == 4 && args[2] == "--wait-pid" &&
+              int.TryParse(args[3], out var pid) && pid > 0)
+     {
++        try
++        {
++            if (!Process.GetProcessById(pid).WaitForExit(TimeSpan.FromSeconds(90))) return 12;
++        }
++        catch (ArgumentException) { /* caller already exited */ }
+         var recovery = coordinator.Recover(installRoot);
+         if (recovery.Stage == UpdateStage.RecoveryRequired) return 10;
+         if (recovery.Code == "ROLLED-BACK")
+@@ -41,11 +58,6 @@ try
+         if (!File.Exists(mainExe)) return 7;
+         var currentVersion = FileVersionInfo.GetVersionInfo(mainExe).FileVersion;
+         if (string.IsNullOrWhiteSpace(currentVersion)) return 8;
+-        try
+-        {
+-            if (!Process.GetProcessById(pid).WaitForExit(TimeSpan.FromSeconds(90))) return 12;
+-        }
+-        catch (ArgumentException) { /* caller already exited */ }
+         result = coordinator.Apply(args[1], installRoot, currentVersion,
+             postApplyVersionCheck: expected =>
+             {
+diff --git a/tests/SmartPerformanceDoctor.Tests/SignedUpdateTests.cs b/tests/SmartPerformanceDoctor.Tests/SignedUpdateTests.cs
+index 7693376..30a76c9 100644
+--- a/tests/SmartPerformanceDoctor.Tests/SignedUpdateTests.cs
++++ b/tests/SmartPerformanceDoctor.Tests/SignedUpdateTests.cs
+@@ -147,10 +147,157 @@ public sealed class SignedUpdateTests
+         var journal = JsonSerializer.Deserialize<UpdateJournal>(File.ReadAllText(journalPath))!;
+         journal.Stage = UpdateStage.Applying;
+         File.WriteAllText(journalPath, JsonSerializer.Serialize(journal));
++        Assert.Equal(UpdateRecoveryState.RecoveryAvailable, f.Transaction.InspectRecovery(f.Install).State);
+         var recovery = f.Transaction.Recover(f.Install);
+         Assert.Equal(UpdateStage.Restored, recovery.Stage);
+         Assert.Equal("old", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
+         Assert.False(File.Exists(Path.Combine(f.Install, "second.txt")));
++        Assert.Equal(UpdateRecoveryState.RecoveryCompleted, f.Transaction.InspectRecovery(f.Install).State);
++    }
++
++    [Theory]
++    [InlineData("id")]
++    [InlineData("root")]
++    [InlineData("path")]
++    [InlineData("hash")]
++    [InlineData("missing-root")]
++    [InlineData("duplicate")]
++    [InlineData("null-files")]
++    public void TamperedJournalCannotDriveRecovery(string mutation)
++    {
++        using var f = new Fixture();
++        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
++        Assert.Equal(UpdateStage.Committed, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
++        var dir = Directory.GetDirectories(f.Work, "tx-*").Single();
++        var journalPath = Path.Combine(dir, "journal.json");
++        var journal = JsonSerializer.Deserialize<UpdateJournal>(File.ReadAllText(journalPath))!;
++        journal.Stage = UpdateStage.Applying;
++        switch (mutation)
++        {
++            case "id": journal.TransactionId = Guid.NewGuid().ToString("N"); break;
++            case "root": journal.InstallRoot = f.Work; break;
++            case "path": journal.Files[0].Path = "payload/../outside.txt"; break;
++            case "hash": journal.Files[0].OriginalSha256 = "bad"; break;
++            case "missing-root": journal.InstallRoot = ""; break;
++            case "duplicate": journal.Files.Add(journal.Files[0]); break;
++            case "null-files": journal.Files = null!; break;
++        }
++        File.WriteAllText(journalPath, JsonSerializer.Serialize(journal));
++        Assert.Equal(UpdateRecoveryState.RecoveryRequired, f.Transaction.InspectRecovery(f.Install).State);
++        Assert.Equal(UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
++        Assert.Equal("new", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
++    }
++
++    [Theory]
++    [InlineData(UpdateFaultPoint.AfterPackageVerification)]
++    [InlineData(UpdateFaultPoint.AfterStagingCreated)]
++    [InlineData(UpdateFaultPoint.DuringStageExtraction)]
++    [InlineData(UpdateFaultPoint.DuringBackupCreation)]
++    [InlineData(UpdateFaultPoint.AfterBackupVerification)]
++    [InlineData(UpdateFaultPoint.AfterApplyingJournal)]
++    [InlineData(UpdateFaultPoint.AfterFirstReplacement)]
++    [InlineData(UpdateFaultPoint.BeforeReplacement)]
++    [InlineData(UpdateFaultPoint.AfterLastReplacement)]
++    [InlineData(UpdateFaultPoint.DuringPostApplyVerification)]
++    [InlineData(UpdateFaultPoint.BeforeCommittedJournal)]
++    public void FaultBeforeCommitLeavesOriginalInstallation(UpdateFaultPoint point)
++    {
++        using var f = new Fixture();
++        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
++        var package = f.Package();
++        var injected = false;
++        TransactionResult? result = null;
++        try
++        {
++            result = f.Transaction.Apply(package, f.Install, "51.0.4", faultInjector: reached =>
++            {
++                if (reached != point || injected) return;
++                injected = true;
++                throw new IOException("WO04 synthetic fault at " + point);
++            });
++        }
++        catch (IOException) when (point == UpdateFaultPoint.AfterPackageVerification) { }
++        Assert.True(injected);
++        if (result is not null) Assert.Equal(UpdateStage.Restored, result.Stage);
++        Assert.Equal("old", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
++        Assert.False(File.Exists(Path.Combine(f.Install, "second.txt")));
++    }
++
++    [Theory]
++    [InlineData(UpdateFaultPoint.AfterRollbackStarted)]
++    [InlineData(UpdateFaultPoint.DuringRollbackCopy)]
++    [InlineData(UpdateFaultPoint.BeforeRestoredJournal)]
++    public void InterruptedRollbackCanBeRetried(UpdateFaultPoint point)
++    {
++        using var f = new Fixture();
++        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
++        var injected = false;
++        var first = f.Transaction.Apply(f.Package(), f.Install, "51.0.4",
++            afterFileApplied: _ => throw new IOException("primary synthetic failure"),
++            faultInjector: reached =>
++            {
++                if (reached != point || injected) return;
++                injected = true;
++                throw new IOException("WO04 rollback fault at " + point);
++            });
++        Assert.True(injected);
++        Assert.Equal(UpdateStage.RecoveryRequired, first.Stage);
++        Assert.Equal(UpdateRecoveryState.RecoveryFailed, f.Transaction.InspectRecovery(f.Install).State);
++        var second = f.Transaction.Recover(f.Install);
++        Assert.Equal(UpdateStage.Restored, second.Stage);
++        Assert.Equal("old", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
++        Assert.False(File.Exists(Path.Combine(f.Install, "second.txt")));
++    }
++
++    [Fact]
++    public void CorruptBackupPreventsAllRollbackMutations()
++    {
++        using var f = new Fixture();
++        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
++        Assert.Equal(UpdateStage.Committed, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
++        var dir = Directory.GetDirectories(f.Work, "tx-*").Single();
++        var path = Path.Combine(dir, "journal.json");
++        var journal = JsonSerializer.Deserialize<UpdateJournal>(File.ReadAllText(path))!;
++        journal.Stage = UpdateStage.Applying;
++        File.WriteAllText(path, JsonSerializer.Serialize(journal));
++        File.WriteAllText(Path.Combine(dir, "backup", "app.txt"), "corrupt");
++        Assert.Equal(UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
++        Assert.Equal("new", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
++        Assert.Equal("second", File.ReadAllText(Path.Combine(f.Install, "second.txt")));
++        Assert.Equal(UpdateRecoveryState.RecoveryFailed, f.Transaction.InspectRecovery(f.Install).State);
++    }
++
++    [Fact]
++    public void ConcurrentApplyAndRecoverAreBlockedByExclusiveLock()
++    {
++        using var f = new Fixture();
++        var package = f.Package();
++        using var gate = new FileStream(Path.Combine(f.Work, "update.lock"), FileMode.Create,
++            FileAccess.ReadWrite, FileShare.None);
++        Assert.Equal(UpdateRecoveryState.RecoveryInProgress, f.Transaction.InspectRecovery(f.Install).State);
++        Assert.Throws<IOException>(() => f.Transaction.Apply(package, f.Install, "51.0.4"));
++        Assert.Throws<IOException>(() => f.Transaction.Recover(f.Install));
++        Assert.Empty(Directory.EnumerateDirectories(f.Work, "tx-*"));
++    }
++
++    [Theory]
++    [InlineData("payload/CON.txt")]
++    [InlineData("payload/a:stream")]
++    [InlineData("payload/../escape")]
++    [InlineData("payload/name.")]
++    [InlineData("payload/LPT1/file")]
++    public void WindowsUnsafePathBoundariesAreRejected(string path)
++        => Assert.False(SignedPackage.SafeRelativePath(path));
++
++    [Fact]
++    public void OversizedJournalFailsClosed()
++    {
++        using var f = new Fixture();
++        var dir = Path.Combine(f.Work, "tx-" + Guid.NewGuid().ToString("N"));
++        Directory.CreateDirectory(dir);
++        File.WriteAllText(Path.Combine(dir, "journal.json"), new string(' ', 1024 * 1024 + 1));
++        Assert.Equal(UpdateRecoveryState.RecoveryRequired, f.Transaction.InspectRecovery(f.Install).State);
++        Assert.Equal(UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
+     }
+ 
+     [Fact]
+diff --git a/tests/SmartPerformanceDoctor.UpdateRecoveryProbe/Program.cs b/tests/SmartPerformanceDoctor.UpdateRecoveryProbe/Program.cs
+new file mode 100644
+index 0000000..2516e14
+--- /dev/null
++++ b/tests/SmartPerformanceDoctor.UpdateRecoveryProbe/Program.cs
+@@ -0,0 +1,79 @@
++using System.IO.Compression;
++using System.Security.Cryptography;
++using System.Text.Json;
++using SmartPerformanceDoctor.UpdateEngine;
++
++if (args.Length != 2 || args[0] is not ("prepare" or "apply-kill" or "recover" or "verify")) return 2;
++var root = Path.GetFullPath(args[1]);
++var install = Path.Combine(root, "install");
++var work = Path.Combine(root, "work");
++var packagePath = Path.Combine(root, "update.spdup");
++var publicKeyPath = Path.Combine(root, "test-public-key.bin");
++try
++{
++    if (args[0] == "prepare")
++    {
++        if (Directory.Exists(root)) return 3;
++        Directory.CreateDirectory(install);
++        Directory.CreateDirectory(work);
++        File.WriteAllText(Path.Combine(install, "app.txt"), "old");
++        File.WriteAllText(Path.Combine(install, "synthetic-vault.txt"), "vault-marker");
++        using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
++        File.WriteAllBytes(publicKeyPath, key.ExportSubjectPublicKeyInfo());
++        var payload = "new"u8.ToArray();
++        var manifest = new SignedManifest
++        {
++            Publisher = "WO04-Isolated-Test", KeyId = "ephemeral", PackageId = Guid.NewGuid().ToString("N"),
++            FromVersion = "51.0.4", ToVersion = "51.0.5", MinimumSupportedVersion = "51.0.0",
++            CreatedAt = DateTimeOffset.UtcNow.AddMinutes(-1), ExpiresAt = DateTimeOffset.UtcNow.AddHours(2),
++            Files = [new SignedFile { Path = "payload/app.txt", Length = payload.Length,
++                Sha256 = Convert.ToHexString(SHA256.HashData(payload)) }]
++        };
++        var signature = key.SignData(SignedPackage.CanonicalBytes(manifest), HashAlgorithmName.SHA256,
++            DSASignatureFormat.IeeeP1363FixedFieldConcatenation);
++        using var stream = File.Create(packagePath);
++        using var archive = new ZipArchive(stream, ZipArchiveMode.Create);
++        Add(archive, SignedPackage.ManifestName, JsonSerializer.SerializeToUtf8Bytes(manifest));
++        Add(archive, SignedPackage.SignatureName,
++            JsonSerializer.SerializeToUtf8Bytes(new SignatureEnvelope { Signature = Convert.ToBase64String(signature) }));
++        Add(archive, "payload/app.txt", payload);
++        Console.WriteLine("PREPARED old vault-marker");
++        return 0;
++    }
++    var trust = new PublisherTrustPolicy([new TrustedPublisherKey("WO04-Isolated-Test", "ephemeral", "stable",
++        File.ReadAllBytes(publicKeyPath))]);
++    var transaction = new UpdateTransaction(trust, work, strictAcl: false);
++    if (args[0] == "apply-kill")
++    {
++        transaction.Apply(packagePath, install, "51.0.4", faultInjector: point =>
++        {
++            if (point == UpdateFaultPoint.AfterFirstReplacement)
++                Environment.FailFast("WO04 isolated synthetic process termination");
++        });
++        return 4;
++    }
++    if (args[0] == "recover")
++    {
++        var before = transaction.InspectRecovery(install);
++        var result = transaction.Recover(install);
++        Console.WriteLine($"BEFORE={before.State}:{before.Code} RESULT={result.Stage}:{result.Code}");
++        return result.Stage == UpdateStage.Restored ? 0 : 5;
++    }
++    var app = File.ReadAllText(Path.Combine(install, "app.txt"));
++    var vault = File.ReadAllText(Path.Combine(install, "synthetic-vault.txt"));
++    var status = transaction.InspectRecovery(install);
++    Console.WriteLine($"APP={app} VAULT={vault} STATUS={status.State}");
++    return app == "old" && vault == "vault-marker" && status.State == UpdateRecoveryState.RecoveryCompleted
++        ? 0 : 6;
++}
++catch (Exception ex)
++{
++    Console.Error.WriteLine(ex.GetType().Name + ": " + ex.Message);
++    return 7;
++}
++
++static void Add(ZipArchive archive, string name, byte[] data)
++{
++    using var output = archive.CreateEntry(name).Open();
++    output.Write(data);
++}
+diff --git a/tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj b/tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj
+new file mode 100644
+index 0000000..981111f
+--- /dev/null
++++ b/tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj
+@@ -0,0 +1,11 @@
++<Project Sdk="Microsoft.NET.Sdk">
++  <PropertyGroup>
++    <OutputType>Exe</OutputType>
++    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
++    <Nullable>enable</Nullable>
++    <ImplicitUsings>enable</ImplicitUsings>
++  </PropertyGroup>
++  <ItemGroup>
++    <ProjectReference Include="../../src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj" />
++  </ItemGroup>
++</Project>

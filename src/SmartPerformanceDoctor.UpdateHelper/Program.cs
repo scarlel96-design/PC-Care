@@ -26,11 +26,28 @@ try
 {
     var coordinator = new UpdateTransaction(PublisherTrustPolicy.Production, workRoot, strictAcl: true);
     TransactionResult result;
-    if (args[0] == "--recover" && args.Length == 1)
+    if (args[0] == "--recover" && args.Length is 1 or 3)
+    {
+        if (args.Length == 3)
+        {
+            if (args[1] != "--wait-pid" || !int.TryParse(args[2], out var recoveryPid) || recoveryPid <= 0)
+                return 9;
+            try
+            {
+                if (!Process.GetProcessById(recoveryPid).WaitForExit(TimeSpan.FromSeconds(90))) return 12;
+            }
+            catch (ArgumentException) { /* caller already exited */ }
+        }
         result = coordinator.Recover(installRoot);
+    }
     else if (args[0] == "--apply" && args.Length == 4 && args[2] == "--wait-pid" &&
              int.TryParse(args[3], out var pid) && pid > 0)
     {
+        try
+        {
+            if (!Process.GetProcessById(pid).WaitForExit(TimeSpan.FromSeconds(90))) return 12;
+        }
+        catch (ArgumentException) { /* caller already exited */ }
         var recovery = coordinator.Recover(installRoot);
         if (recovery.Stage == UpdateStage.RecoveryRequired) return 10;
         if (recovery.Code == "ROLLED-BACK")
@@ -41,11 +58,6 @@ try
         if (!File.Exists(mainExe)) return 7;
         var currentVersion = FileVersionInfo.GetVersionInfo(mainExe).FileVersion;
         if (string.IsNullOrWhiteSpace(currentVersion)) return 8;
-        try
-        {
-            if (!Process.GetProcessById(pid).WaitForExit(TimeSpan.FromSeconds(90))) return 12;
-        }
-        catch (ArgumentException) { /* caller already exited */ }
         result = coordinator.Apply(args[1], installRoot, currentVersion,
             postApplyVersionCheck: expected =>
             {

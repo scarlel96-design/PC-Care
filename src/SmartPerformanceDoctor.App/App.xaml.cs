@@ -179,6 +179,20 @@ public partial class App : Application
 
     private void RunDeferredStartupWork()
     {
+        var recovery = Services.Update.UpdateRecoveryCoordinator.Inspect();
+        StartupDiagnostics.Write("signed-update-recovery", $"{recovery.State}:{recovery.Code}:{recovery.TransactionId}");
+        if (recovery.State is SmartPerformanceDoctor.UpdateEngine.UpdateRecoveryState.RecoveryAvailable or
+            SmartPerformanceDoctor.UpdateEngine.UpdateRecoveryState.RecoveryRequired or
+            SmartPerformanceDoctor.UpdateEngine.UpdateRecoveryState.RecoveryFailed)
+        {
+            Shell?.SetStatusMessage("중단된 업데이트 복구가 필요합니다. 설정의 업데이트 화면에서 복구를 시작하세요.");
+            return;
+        }
+        if (recovery.State == SmartPerformanceDoctor.UpdateEngine.UpdateRecoveryState.RecoveryInProgress)
+        {
+            Shell?.SetStatusMessage("업데이트 또는 복구 작업이 진행 중입니다. 완료 후 앱을 다시 실행하세요.");
+            return;
+        }
         var pending = new Services.Update.UpdatePendingApplier().TryApplyOnStartup();
         StartupDiagnostics.Write("on-launched", "update-pending");
         if (!string.IsNullOrWhiteSpace(pending.Message))
