@@ -41,7 +41,8 @@ IMPLEMENTATION: Signed v2 package verifier; publisher policy; protected stage; r
 SAFETY MEASURES: Production publisher key list is empty; legacy v1 remains blocked; development key is isolated to tests; installed user PC was not changed.
 TEST COMMAND: See BASELINE, MODIFIED and ROLLBACK commands above, plus BUILD_RESULT.txt and SIGNATURE_TEST_RESULT.txt.
 TEST INPUT: Source snapshots and synthetic package/transaction fixtures.
-TEST OUTPUT: Baseline 641/752; modified 661/772; Windows CI SecurityLab 36/36 in run 38023131532; rollback copy baseline hash restored. The first CI run failed later at its helper exit-code harness step; a corrected harness is being rerun.
+TEST OUTPUT: Baseline 641/752; modified 661/772; Windows CI run 38023655159 passed targeted signed-update 20/20, full application 661 passed/111 skipped/772 total, SecurityLab 36/36, helper invalid-verb check and artifact upload; rollback copy baseline hash restored. The first CI run 38023131532 failed at the helper exit-code harness step; the corrected second run completed successfully.
 EXIT CODE: 0 for passing final commands.
+WINDOWS CI: https://github.com/scarlel96-design/PC-Care/actions/runs/38023655159; status completed; conclusion success; implementation tree d43a8d3f22d5c80aa2f1e008ec5a475a478faf2c.
 REMAINING RISKS: No official key/public-root governance, production-signed package, protected ACL/UAC/reboot/installed-build VM E2E or independent power-loss recovery evidence.
 ROLLBACK PROCEDURE: ROLLBACK.sh restores the installer-service source on a chosen copy; revert the implementation commit for the entire branch change.
