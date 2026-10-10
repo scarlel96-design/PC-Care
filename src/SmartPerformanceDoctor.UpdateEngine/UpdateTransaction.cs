@@ -60,6 +60,9 @@ public sealed class UpdateTransaction
     private readonly string _workRoot;
     private readonly bool _strictAcl;
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
+    private const int MaxJournalFiles = 4096;
+    private const int MaxJournalBytes = 1024 * 1024;
+    private const int MaxFailureCharacters = 2048;
 
     public UpdateTransaction(PublisherTrustPolicy policy, string workRoot, bool strictAcl)
     {
@@ -93,6 +96,8 @@ public sealed class UpdateTransaction
         var source = SignedPackage.Verify(packagePath, currentVersion, _policy);
         if (!source.CanApply || source.Manifest is null)
             return new(UpdateStage.Prepared, source.Code, "", 0);
+        if (!FitsRecoveryJournal(source.Manifest, installRoot, currentVersion))
+            return new(UpdateStage.Prepared, "RECOVERY-JOURNAL-LIMIT", "", 0);
         faultInjector?.Invoke(UpdateFaultPoint.AfterPackageVerification);
         if (priorJournals.Any(prior => prior.Stage == UpdateStage.Committed &&
             string.Equals(prior.PackageId, source.Manifest.PackageId, StringComparison.OrdinalIgnoreCase)))
@@ -125,6 +130,8 @@ public sealed class UpdateTransaction
                 return new(UpdateStage.Restored, "STAGED-PACKAGE-FAIL", id, 0);
             }
             var manifest = stagedVerification.Manifest;
+            if (!FitsRecoveryJournal(manifest, installRoot, currentVersion))
+                throw new InvalidDataException("RECOVERY-JOURNAL-LIMIT");
             journal.ToVersion = manifest.ToVersion;
             journal.Stage = UpdateStage.PublisherVerified;
             WriteJournal(txDir, journal);
@@ -327,7 +334,8 @@ public sealed class UpdateTransaction
             journal = ReadJournal(directory);
             if (journal is null || !string.Equals(name, "tx-" + journal.TransactionId, StringComparison.Ordinal) ||
                 !string.Equals(journal.InstallRoot, installRoot, StringComparison.OrdinalIgnoreCase) ||
-                !Enum.IsDefined(journal.Stage) || journal.Files is null || journal.Files.Count > 4096)
+                !Enum.IsDefined(journal.Stage) || journal.Files is null || journal.Files.Count > MaxJournalFiles ||
+                journal.Failure is null || journal.Failure.Length > MaxFailureCharacters)
                 return false;
             var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var entry in journal.Files)
@@ -551,7 +559,7 @@ public sealed class UpdateTransaction
     private static UpdateJournal? ReadJournal(string directory)
     {
         var path = Path.Combine(directory, "journal.json");
-        if (File.Exists(path) && new FileInfo(path).Length > 1024 * 1024)
+        if (File.Exists(path) && new FileInfo(path).Length > MaxJournalBytes)
             throw new InvalidDataException("journal exceeds size limit");
         return File.Exists(path) ? JsonSerializer.Deserialize<UpdateJournal>(File.ReadAllText(path)) : null;
     }
@@ -560,7 +568,11 @@ public sealed class UpdateTransaction
     {
         var path = Path.Combine(directory, "journal.json");
         var temp = path + ".new";
+        if (journal.Failure.Length > MaxFailureCharacters)
+            journal.Failure = journal.Failure[..MaxFailureCharacters];
         var bytes = JsonSerializer.SerializeToUtf8Bytes(journal, JsonOptions);
+        if (journal.Files.Count > MaxJournalFiles || bytes.Length > MaxJournalBytes)
+            throw new InvalidDataException("journal exceeds recovery limits");
         using (var file = new FileStream(temp, FileMode.Create, FileAccess.Write,
                    FileShare.None, 4096, FileOptions.WriteThrough))
         {
@@ -568,5 +580,24 @@ public sealed class UpdateTransaction
             file.Flush(flushToDisk: true);
         }
         File.Move(temp, path, overwrite: true);
+    }
+
+    private static bool FitsRecoveryJournal(SignedManifest manifest, string installRoot, string currentVersion)
+    {
+        if (manifest.Files.Count > MaxJournalFiles) return false;
+        // Reserve the largest backup metadata and escaped failure text before changing installation files.
+        var projected = new UpdateJournal
+        {
+            TransactionId = new string('f', 32), InstallRoot = installRoot,
+            PackageId = manifest.PackageId, FromVersion = currentVersion, ToVersion = manifest.ToVersion,
+            Stage = UpdateStage.PostApplyVerification, Failure = new string('\u0001', MaxFailureCharacters),
+            Files = manifest.Files.Select(file => new UpdateFileJournal
+            {
+                Path = file.Path, Existed = true, OriginalLength = long.MaxValue,
+                OriginalSha256 = new string('F', 64), NewSha256 = file.Sha256,
+                Applied = false, Restored = false
+            }).ToList()
+        };
+        return JsonSerializer.SerializeToUtf8Bytes(projected, JsonOptions).Length <= MaxJournalBytes;
     }
 }

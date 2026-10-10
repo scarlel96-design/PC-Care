@@ -163,6 +163,8 @@ public sealed class SignedUpdateTests
     [InlineData("missing-root")]
     [InlineData("duplicate")]
     [InlineData("null-files")]
+    [InlineData("null-failure")]
+    [InlineData("oversized-failure")]
     public void TamperedJournalCannotDriveRecovery(string mutation)
     {
         using var f = new Fixture();
@@ -181,6 +183,8 @@ public sealed class SignedUpdateTests
             case "missing-root": journal.InstallRoot = ""; break;
             case "duplicate": journal.Files.Add(journal.Files[0]); break;
             case "null-files": journal.Files = null!; break;
+            case "null-failure": journal.Failure = null!; break;
+            case "oversized-failure": journal.Failure = new string('a', 2049); break;
         }
         File.WriteAllText(journalPath, JsonSerializer.Serialize(journal));
         Assert.Equal(UpdateRecoveryState.RecoveryRequired, f.Transaction.InspectRecovery(f.Install).State);
@@ -330,6 +334,23 @@ public sealed class SignedUpdateTests
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool CreateHardLink(string newFileName, string existingFileName, IntPtr securityAttributes);
 
+    [Theory]
+    [InlineData("file-count-limit")]
+    [InlineData("journal-size-limit")]
+    public void ValidPackageBeyondRecoveryCapacityIsRejectedBeforeInstallationChanges(string mutation)
+    {
+        using var f = new Fixture();
+        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
+        var package = f.Package(mutation);
+        Assert.True(SignedPackage.Verify(package, "51.0.4", f.Policy, Clock).CanApply);
+        var result = f.Transaction.Apply(package, f.Install, "51.0.4");
+        Assert.Equal(UpdateStage.Prepared, result.Stage);
+        Assert.Equal("RECOVERY-JOURNAL-LIMIT", result.Code);
+        Assert.Equal("old", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
+        Assert.Empty(Directory.GetDirectories(f.Work, "tx-*"));
+        Assert.Single(Directory.GetFiles(f.Install));
+    }
+
     private sealed class Fixture : IDisposable
     {
         private readonly ECDsa _key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
@@ -365,6 +386,15 @@ public sealed class SignedUpdateTests
                         Sha256 = Convert.ToHexString(SHA256.HashData(second)) }
                 ]
             };
+            if (mutation is "file-count-limit" or "journal-size-limit")
+            {
+                var fileCount = mutation == "file-count-limit" ? 4097 : 4096;
+                manifest.Files = Enumerable.Range(0, fileCount).Select(index => new SignedFile
+                {
+                    Path = $"payload/{index:D5}-" + new string('a', 64) + ".txt",
+                    Length = first.Length, Sha256 = Convert.ToHexString(SHA256.HashData(first))
+                }).ToList();
+            }
             var signature = _key.SignData(SignedPackage.CanonicalBytes(manifest), HashAlgorithmName.SHA256,
                 DSASignatureFormat.IeeeP1363FixedFieldConcatenation);
             if (mutation == "bad-signature") signature[0] ^= 0x80;
@@ -375,8 +405,13 @@ public sealed class SignedUpdateTests
             Add(archive, SignedPackage.ManifestName, JsonSerializer.SerializeToUtf8Bytes(manifest));
             Add(archive, SignedPackage.SignatureName,
                 JsonSerializer.SerializeToUtf8Bytes(new SignatureEnvelope { Signature = Convert.ToBase64String(signature) }));
-            Add(archive, manifest.Files[0].Path, mutation == "content-tamper" ? "bad"u8.ToArray() : first);
-            if (mutation != "missing-file") Add(archive, manifest.Files[1].Path, second);
+            if (mutation is "file-count-limit" or "journal-size-limit")
+                foreach (var item in manifest.Files) Add(archive, item.Path, first);
+            else
+            {
+                Add(archive, manifest.Files[0].Path, mutation == "content-tamper" ? "bad"u8.ToArray() : first);
+                if (mutation != "missing-file") Add(archive, manifest.Files[1].Path, second);
+            }
             if (mutation == "extra-file") Add(archive, "payload/extra.txt", "extra"u8.ToArray());
             if (mutation == "duplicate-entry") Add(archive, manifest.Files[0].Path, first);
             return package;
