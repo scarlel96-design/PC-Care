@@ -27,13 +27,13 @@ public static class UpdateRecoveryCoordinator
                 if (File.Exists(helper) && UpdateBootstrap.LaunchInstalled(UpdatePaths.AppInstallDirectory, "--recover", "", Environment.ProcessId) is not null)
                     return RecoveryLaunchResult.Launched;
             }
-            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { }
+            catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException) { }
             return UpdateBootstrap.LaunchSnapshotRecovery(UpdatePaths.AppInstallDirectory, Environment.ProcessId) is null
                 ? RecoveryLaunchResult.HelperMissing : RecoveryLaunchResult.Launched;
         }
         catch (Win32Exception ex) when (ex.NativeErrorCode == 1223)
         { return RecoveryLaunchResult.Cancelled; }
-        catch (Exception ex) when (ex is Win32Exception or InvalidOperationException or IOException or UnauthorizedAccessException)
+        catch (Exception ex) when (ex is Win32Exception or InvalidOperationException or IOException or InvalidDataException or UnauthorizedAccessException)
         { return RecoveryLaunchResult.Failed; }
     }
 }

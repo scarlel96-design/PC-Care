@@ -167,6 +167,52 @@ public sealed class WO06RecoveryTests
 
     private static string JournalPath(SignedUpdateTests.Fixture f) =>
         Path.Combine(Directory.GetDirectories(f.Work, "tx-*").Single(), "journal.json");
+
+    [Theory]
+    [InlineData(UpdateStage.Prepared)]
+    [InlineData(UpdateStage.Applying)]
+    [InlineData(UpdateStage.RollbackPending)]
+    [InlineData(UpdateStage.RollingBack)]
+    public void IncompleteLegacyDiagnosisMeasuresFilesWithoutWriting(UpdateStage stage)
+    {
+        using var f = new SignedUpdateTests.Fixture();
+        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
+        Assert.Equal(UpdateStage.Committed, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
+        MakeLegacy(f, stage);
+        var before = Directory.GetFiles(f.Work, "*", SearchOption.AllDirectories).ToDictionary(p => p, Hash);
+        var report = Assert.Single(f.Transaction.DiagnoseLegacy(f.Install));
+        Assert.Contains("AUTOMATIC-RECOVERY-DENIED", report.Code);
+        var entry = Assert.Single(report.Files, p => p.Path.EndsWith("app.txt", StringComparison.Ordinal));
+        Assert.Equal("UPDATED-MATCH", entry.InstalledState);
+        Assert.Equal("ORIGINAL-MATCH", entry.BackupState);
+        Assert.Equal(before.Count, Directory.GetFiles(f.Work, "*", SearchOption.AllDirectories).Length);
+        foreach (var item in before) Assert.Equal(item.Value, Hash(item.Key));
+        Assert.Equal(UpdateStage.RecoveryRequired, f.Transaction.Recover(f.Install).Stage);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void LegacyDiagnosisReportsDamagedBackupOrRejectsForeignRoot(bool foreignRoot)
+    {
+        using var f = new SignedUpdateTests.Fixture();
+        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
+        Assert.Equal(UpdateStage.Committed, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
+        MakeLegacy(f, UpdateStage.Applying);
+        if (foreignRoot)
+        {
+            var node = JsonNode.Parse(File.ReadAllText(JournalPath(f)))!;
+            node["InstallRoot"] = f.Work;
+            File.WriteAllText(JournalPath(f), node.ToJsonString());
+        }
+        else File.WriteAllText(Path.Combine(Path.GetDirectoryName(JournalPath(f))!, "backup", "app.txt"), "damaged");
+        var before = Hash(JournalPath(f));
+        var report = Assert.Single(f.Transaction.DiagnoseLegacy(f.Install));
+        if (foreignRoot) { Assert.Equal("READONLY-DIAGNOSIS-REJECTED", report.Code); Assert.Empty(report.Files); }
+        else Assert.Equal("HASH-MISMATCH", report.Files.Single(p => p.Path.EndsWith("app.txt", StringComparison.Ordinal)).BackupState);
+        Assert.Equal(before, Hash(JournalPath(f)));
+        Assert.Equal("new", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
+    }
     private static string Hash(string path) => Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(path)));
     private static void MakeLegacy(SignedUpdateTests.Fixture f, UpdateStage stage)
     {

@@ -6,6 +6,13 @@ using SmartPerformanceDoctor.UpdateEngine;
 
 try
 {
+    if (args.Length == 2 && args[0] == "diagnose-legacy")
+    {
+        UpdateBootstrap.ValidateInstallRoot(args[1]);
+        var reports = new UpdateTransaction(BuildPublisherTrust.Current, UpdateBootstrap.WorkRoot, true).DiagnoseLegacy(args[1]);
+        Console.WriteLine(JsonSerializer.Serialize(reports, new JsonSerializerOptions { WriteIndented = true }));
+        return 0;
+    }
     if (args.Length == 2 && args[0] == "fixture-vault")
     {
         var directory = Path.GetFullPath(args[1]);

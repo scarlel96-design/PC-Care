@@ -67,6 +67,11 @@ public enum UpdateFaultPoint
 
 public sealed record UpdateRecoveryStatus(UpdateRecoveryState State, string Code, string TransactionId);
 
+public sealed record LegacyFileObservation(string Path, string InstalledState, string InstalledIdentity,
+    string InstalledHash, string BackupState, string BackupIdentity, string BackupHash);
+public sealed record LegacyJournalDiagnostic(string TransactionId, string Stage, string JournalHash,
+    string InstallIdentity, string TransactionIdentity, string Code, List<LegacyFileObservation> Files);
+
 public sealed class UpdateTransaction
 {
     private readonly PublisherTrustPolicy _policy;
@@ -89,6 +94,91 @@ public sealed class UpdateTransaction
     {
         if (!_strictAcl) throw new InvalidOperationException("protected mode required");
         SecureWorkRoot();
+    }
+
+    /// <summary>Observe legacy files without granting restore or delete authority.</summary>
+    public IReadOnlyList<LegacyJournalDiagnostic> DiagnoseLegacy(string installRoot)
+    {
+        installRoot = Path.GetFullPath(installRoot);
+        EnsureRoot(installRoot);
+        using var install = WindowsFileBoundary.PinDirectory(installRoot);
+        if (!Directory.Exists(_workRoot)) return [];
+        EnsureRoot(_workRoot);
+        if (_strictAcl) VerifyProtectedAcl(_workRoot);
+        using var work = WindowsFileBoundary.PinDirectory(_workRoot);
+        var results = new List<LegacyJournalDiagnostic>();
+        foreach (var directory in Directory.EnumerateDirectories(_workRoot, "tx-*").Order(StringComparer.Ordinal))
+        {
+            var id = Path.GetFileName(directory)[3..];
+            var hash = ""; var transactionIdentity = ""; var stage = "UNKNOWN";
+            var observations = new List<LegacyFileObservation>();
+            try
+            {
+                if (!Guid.TryParseExact(id, "N", out _)) throw new InvalidDataException("LEGACY-ID");
+                EnsureRoot(directory);
+                if (_strictAcl) VerifyProtectedAcl(directory);
+                using var transaction = WindowsFileBoundary.PinDirectory(directory);
+                transactionIdentity = transaction.Identity;
+                using var record = WindowsFileBoundary.OpenRead(directory, "journal.json");
+                VerifyProtectedFile(record, directory);
+                hash = record.Hash();
+                var journal = ReadJournalFile(directory, "journal.json");
+                if (journal is null || journal.SchemaVersion != 1) continue;
+                stage = journal.Stage.ToString();
+                if (journal.TransactionId != id || !Enum.IsDefined(journal.Stage) ||
+                    !string.Equals(journal.InstallRoot, installRoot, StringComparison.OrdinalIgnoreCase) ||
+                    journal.Files is null || journal.Files.Count > MaxJournalFiles ||
+                    journal.InstallIdentity != "" || journal.TransactionIdentity != "")
+                    throw new InvalidDataException("LEGACY-BINDING");
+                var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var entry in journal.Files)
+                {
+                    if (entry is null || string.IsNullOrWhiteSpace(entry.Path) ||
+                        !SignedPackage.SafeRelativePath(entry.Path) || !seen.Add(entry.Path) ||
+                        !IsSha256(entry.NewSha256) || entry.OriginalIdentity != "" ||
+                        entry.BackupIdentity != "" || entry.InstalledIdentity != "" ||
+                        (entry.Existed && (!IsSha256(entry.OriginalSha256) || entry.OriginalLength < 0)))
+                        throw new InvalidDataException("LEGACY-FILE");
+                }
+                foreach (var entry in journal.Files)
+                {
+                    var target = ObserveLegacyFile(installRoot, Relative(entry.Path), entry);
+                    var backup = entry.Existed
+                        ? ObserveLegacyFile(Path.Combine(directory, "backup"), Relative(entry.Path), entry, true)
+                        : (State: "NOT-REQUIRED", Identity: "", Hash: "");
+                    observations.Add(new(entry.Path, target.State, target.Identity, target.Hash,
+                        backup.State, backup.Identity, backup.Hash));
+                }
+                install.Validate(); work.Validate(); transaction.Validate(); record.Validate();
+                results.Add(new(id, stage, hash, install.Identity, transactionIdentity,
+                    "READONLY-MANUAL-REVIEW; AUTOMATIC-RECOVERY-DENIED", observations));
+            }
+            catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException or JsonException or InvalidOperationException)
+            {
+                results.Add(new(id, stage, hash, install.Identity, transactionIdentity,
+                    "READONLY-DIAGNOSIS-REJECTED", []));
+            }
+        }
+        return results;
+    }
+
+    private (string State, string Identity, string Hash) ObserveLegacyFile(string root, string relative,
+        UpdateFileJournal entry, bool backup = false)
+    {
+        try
+        {
+            using var file = WindowsFileBoundary.OpenRead(root, relative);
+            if (backup) VerifyProtectedFile(file, root);
+            var hash = file.Hash();
+            var original = entry.Existed && file.Stream.Length == entry.OriginalLength && hash == entry.OriginalSha256;
+            var state = backup ? (original ? "ORIGINAL-MATCH" : "HASH-MISMATCH") :
+                original ? "ORIGINAL-MATCH" : hash == entry.NewSha256 ? "UPDATED-MATCH" : "UNKNOWN-CONTENT";
+            return (state, file.Identity, hash);
+        }
+        catch (FileNotFoundException) { return ("MISSING", "", ""); }
+        catch (DirectoryNotFoundException) { return ("MISSING", "", ""); }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        { return ("BOUNDARY-REJECTED", "", ""); }
     }
 
     public TransactionResult Apply(string packagePath, string installRoot, string currentVersion,

@@ -125,7 +125,7 @@ public static class UpdateBootstrap
         {
             BootstrapBinding binding;
             try { binding = Validate(directory, Path.GetFileName(directory)[10..]); }
-            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException) { continue; }
+            catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException or JsonException) { continue; }
             if (binding.InstallIdentity != install.Identity ||
                 !string.Equals(binding.InstallRoot, Path.GetFullPath(installRoot), StringComparison.OrdinalIgnoreCase)) continue;
             using var execution = WindowsFileBoundary.PinDirectory(directory);
