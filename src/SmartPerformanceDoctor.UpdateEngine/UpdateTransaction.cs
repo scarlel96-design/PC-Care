@@ -590,7 +590,7 @@ public sealed class UpdateTransaction
         {
             TransactionId = new string('f', 32), InstallRoot = installRoot,
             PackageId = manifest.PackageId, FromVersion = currentVersion, ToVersion = manifest.ToVersion,
-            Stage = UpdateStage.PostApplyVerification, Failure = new string('\u0001', MaxFailureCharacters),
+            Stage = UpdateStage.RecoveryRequired, Failure = new string('\u0001', MaxFailureCharacters),
             Files = manifest.Files.Select(file => new UpdateFileJournal
             {
                 Path = file.Path, Existed = true, OriginalLength = long.MaxValue,

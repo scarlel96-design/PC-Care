@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - codex/pccare-rework-phase1-final-validation
+    paths-ignore:
+      - 'docs/**'
+      - '.gitattributes'
   pull_request:
 
 jobs:
