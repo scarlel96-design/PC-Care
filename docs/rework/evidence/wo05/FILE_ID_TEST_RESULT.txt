@@ -1,0 +1,37 @@
+작업 브랜치: `codex/pccare-rework-phase1-filesystem-hardening`
+기준 커밋: `155537b721e3eb266b2a0a3fb801a4b35fbbff56`
+기준 트리: `581bdaf0bf50a787ea1ca346140065c733e56b12`
+검증 소스 커밋·원격 CI: `evidence/wo05/GITHUB_RESULT.txt`.
+최종 증거 커밋은 검증 소스 커밋과 구분한다.
+실행 위치: `C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care`.
+환경: Windows NT 10.0.26200.0, x64, .NET SDK 10.0.401, runtime 10.0.12.
+전용 VM 및 스냅샷: 미제공.
+
+STATUS: PASS for listed automated cases. Real VM ACL and privileged race tests remain BLOCKED / NOT TESTED.
+COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests' --logger 'trx;LogFileName=wo05-targeted-final.trx' -v:minimal
+INPUT: isolated synthetic local Windows folders or constructed ACL descriptors.
+EXIT: 0
+OUTPUT:
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.AncestorJunctionCannotEscapeBoundary
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.BackupAndTargetsRemainLockedUntilCommit
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.BackupSameHashDifferentIdIsRejected
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.CommittedPackageCleanupPreservesBackupAndJournal
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.ExistingFileKeepsIdentityThroughApplyAndRecovery
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.FileAclIsReadFromTheRetainedHandle
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.HardlinkLeafIsRejectedBeforeWriting
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.IdentityAndJsonJournalTamperingFailsClosed(mutation: "BackupIdentity")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.IdentityAndJsonJournalTamperingFailsClosed(mutation: "InstallIdentity")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.IdentityAndJsonJournalTamperingFailsClosed(mutation: "OriginalIdentity")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.IdentityAndJsonJournalTamperingFailsClosed(mutation: "TransactionIdentity")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.IdentityAndJsonJournalTamperingFailsClosed(mutation: "duplicate-property")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.IdentityAndJsonJournalTamperingFailsClosed(mutation: "legacy")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.IdentityAndJsonJournalTamperingFailsClosed(mutation: "truncated")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.IdentityAndJsonJournalTamperingFailsClosed(mutation: "unknown-property")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.LockedLaterDestinationStopsBeforeExistingContentChanges
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.NewFileIdentitySwapCannotDeleteUserFile
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.OpenHandleBlocksWriteDeleteAndParentRename
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.PrimaryAndFailureJournalErrorsAreBothPreserved
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.RollbackAndFailureJournalErrorsAreBothPreserved
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.SameContentDifferentFileIdCannotDriveRestore
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.SameIdUserContentChangeStopsAllRestoreOperations
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.VerifiedInputPackageCannotBeSwappedBeforeStaging

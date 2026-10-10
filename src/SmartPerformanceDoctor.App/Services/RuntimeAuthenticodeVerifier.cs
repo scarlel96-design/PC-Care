@@ -12,6 +12,13 @@ internal static class RuntimeAuthenticodeVerifier
     // An arbitrary valid Authenticode signer is not the PC-Care publisher.
     private static readonly HashSet<string> TrustedPublisherThumbprints = new(StringComparer.OrdinalIgnoreCase);
 
+#if PCCARE_VM_TEST
+    static RuntimeAuthenticodeVerifier()
+    {
+        TrustedPublisherThumbprints.Add(SmartPerformanceDoctor.UpdateEngine.BuildPublisherTrust.SignerThumbprint);
+    }
+#endif
+
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     private struct WinTrustFileInfo
     {
@@ -77,7 +84,11 @@ internal static class RuntimeAuthenticodeVerifier
             return (RuntimeTrustLevel.Failed, $"signature-failed:{failed.Count}", failed);
         if (unverified.Count > 0 || checkedCount == 0)
             return (RuntimeTrustLevel.Unverified, $"publisher-unverified:{unverified.Count}", unverified);
+#if PCCARE_VM_TEST
+        return (RuntimeTrustLevel.Verified, "WO05 VM TEST ONLY: test Authenticode verified; not an official publisher", Array.Empty<string>());
+#else
         return (RuntimeTrustLevel.Verified, "authenticode-and-publisher-verified", Array.Empty<string>());
+#endif
     }
 
     public static bool TryVerifyAuthenticode(string path, out string? subject)

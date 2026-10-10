@@ -1,0 +1,51 @@
+작업 브랜치: `codex/pccare-rework-phase1-filesystem-hardening`
+기준 커밋: `155537b721e3eb266b2a0a3fb801a4b35fbbff56`
+기준 트리: `581bdaf0bf50a787ea1ca346140065c733e56b12`
+검증 소스 커밋·원격 CI: `evidence/wo05/GITHUB_RESULT.txt`.
+최종 증거 커밋은 검증 소스 커밋과 구분한다.
+실행 위치: `C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care`.
+환경: Windows NT 10.0.26200.0, x64, .NET SDK 10.0.401, runtime 10.0.12.
+전용 VM 및 스냅샷: 미제공.
+
+PROBE=tests/SmartPerformanceDoctor.UpdateRecoveryProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateRecoveryProbe.exe
+INPUT=artifacts/wo05-crash-final; fresh synthetic installation, ephemeral test package; private key not saved.
+COMMANDS=& $probe prepare $fixture; & $probe apply-kill $fixture; & $probe recover $fixture; & $probe verify $fixture
+EXITS=prepare 0, apply-kill -2146232797 (expected FailFast), recover 0, verify 0
+OUTPUT:
+PREPARED old vault-marker
+Process terminated.
+WO04 isolated synthetic process termination
+   at System.Environment.FailFast(System.Runtime.CompilerServices.StackCrawlMarkHandle, System.String, System.Runtime.CompilerServices.ObjectHandleOnStack, System.String)
+   at System.Environment.FailFast(System.Threading.StackCrawlMark ByRef, System.String, System.Exception, System.String)
+   at System.Environment.FailFast(System.String)
+   at Program+<>c.<<Main>$>b__0_1(SmartPerformanceDoctor.UpdateEngine.UpdateFaultPoint)
+   at SmartPerformanceDoctor.UpdateEngine.UpdateTransaction.Apply(System.String, System.String, System.String, System.Action`1<Int32>, System.Func`2<System.String,Boolean>, System.Action`1<SmartPerformanceDoctor.UpdateEngine.UpdateFaultPoint>)
+   at Program.<Main>$(System.String[])
+BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK
+APP=old VAULT=vault-marker STATUS=RecoveryCompleted
+
+DOUBLE-CRASH INPUT=artifacts/wo05-double-crash-final; fresh synthetic installation.
+COMMANDS=& $probe prepare $fixture; & $probe apply-kill $fixture; & $probe recover-kill $fixture; & $probe recover $fixture; & $probe verify $fixture
+EXITS=prepare 0, apply-kill -2146232797, recover-kill -2146232797, recover 0, verify 0
+OUTPUT:
+PREPARED old vault-marker
+Process terminated.
+WO04 isolated synthetic process termination
+   at System.Environment.FailFast(System.Runtime.CompilerServices.StackCrawlMarkHandle, System.String, System.Runtime.CompilerServices.ObjectHandleOnStack, System.String)
+   at System.Environment.FailFast(System.Threading.StackCrawlMark ByRef, System.String, System.Exception, System.String)
+   at System.Environment.FailFast(System.String)
+   at Program+<>c.<<Main>$>b__0_1(SmartPerformanceDoctor.UpdateEngine.UpdateFaultPoint)
+   at SmartPerformanceDoctor.UpdateEngine.UpdateTransaction.Apply(System.String, System.String, System.String, System.Action`1<Int32>, System.Func`2<System.String,Boolean>, System.Action`1<SmartPerformanceDoctor.UpdateEngine.UpdateFaultPoint>)
+   at Program.<Main>$(System.String[])
+Process terminated.
+WO05 synthetic termination during rollback copy
+   at System.Environment.FailFast(System.Runtime.CompilerServices.StackCrawlMarkHandle, System.String, System.Runtime.CompilerServices.ObjectHandleOnStack, System.String)
+   at System.Environment.FailFast(System.Threading.StackCrawlMark ByRef, System.String, System.Exception, System.String)
+   at System.Environment.FailFast(System.String)
+   at Program+<>c.<<Main>$>b__0_2(SmartPerformanceDoctor.UpdateEngine.UpdateFaultPoint)
+   at SmartPerformanceDoctor.UpdateEngine.UpdateTransaction.RollbackCore(System.String, System.String, SmartPerformanceDoctor.UpdateEngine.UpdateJournal, System.Action`1<SmartPerformanceDoctor.UpdateEngine.UpdateFaultPoint>)
+   at SmartPerformanceDoctor.UpdateEngine.UpdateTransaction.Recover(System.String, System.Action`1<SmartPerformanceDoctor.UpdateEngine.UpdateFaultPoint>)
+   at Program.<Main>$(System.String[])
+BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK
+APP=old VAULT=vault-marker STATUS=RecoveryCompleted
+STATUS: PASS, separate-process synthetic recovery. Windows reboot: BLOCKED.

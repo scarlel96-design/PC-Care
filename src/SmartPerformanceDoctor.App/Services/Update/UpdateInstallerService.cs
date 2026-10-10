@@ -29,7 +29,7 @@ public sealed class UpdateInstallerService
                 "이전 업데이트 복구가 필요합니다. 복구를 완료한 뒤 새 업데이트를 시작하세요.",
                 false, false, false, UpdatePublisherTrustLevel.Unverified);
         if (!IsV2(packagePath)) return _legacyInspector.Inspect(packagePath, AppInfo.Version, progress, cancellationToken);
-        var result = SignedPackage.Verify(packagePath, AppInfo.Version, PublisherTrustPolicy.Production,
+        var result = SignedPackage.Verify(packagePath, AppInfo.Version, SmartPerformanceDoctor.UpdateEngine.BuildPublisherTrust.Current,
             cancellationToken: cancellationToken);
         var legacy = result.Manifest is null ? null : new UpdateManifestDocument
         {

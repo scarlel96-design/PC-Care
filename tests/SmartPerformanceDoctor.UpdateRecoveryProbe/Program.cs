@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using SmartPerformanceDoctor.UpdateEngine;
 
-if (args.Length != 2 || args[0] is not ("prepare" or "apply-kill" or "recover" or "verify")) return 2;
+if (args.Length != 2 || args[0] is not ("prepare" or "apply-kill" or "recover-kill" or "recover" or "verify")) return 2;
 var root = Path.GetFullPath(args[1]);
 var install = Path.Combine(root, "install");
 var work = Path.Combine(root, "work");
@@ -58,6 +58,15 @@ try
         var result = transaction.Recover(install);
         Console.WriteLine($"BEFORE={before.State}:{before.Code} RESULT={result.Stage}:{result.Code}");
         return result.Stage == UpdateStage.Restored ? 0 : 5;
+    }
+    if (args[0] == "recover-kill")
+    {
+        transaction.Recover(install, faultInjector: point =>
+        {
+            if (point == UpdateFaultPoint.DuringRollbackCopy)
+                Environment.FailFast("WO05 synthetic termination during rollback copy");
+        });
+        return 4;
     }
     var app = File.ReadAllText(Path.Combine(install, "app.txt"));
     var vault = File.ReadAllText(Path.Combine(install, "synthetic-vault.txt"));

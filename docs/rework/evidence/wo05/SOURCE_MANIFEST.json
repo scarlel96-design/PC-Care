@@ -1,0 +1,106 @@
+{
+  "base": "155537b721e3eb266b2a0a3fb801a4b35fbbff56",
+  "hash_scope": "local working-file bytes; staged Git blob SHA is listed separately",
+  "files": [
+    {
+      "path": ".github/workflows/wo05-windows-validation.yml",
+      "sha256": "2A0A9CD8EC6126AE6C37B250E1E7D390A6463A8F0791D3F3717A17C802333F4A",
+      "git_blob": "345da446f223cd835602a8131099d8422c2bbdf2"
+    },
+    {
+      "path": "Directory.Build.targets",
+      "sha256": "FC8C2A21F94375974EB8CD1589AE43A5D49A2A5A271A341F54D0DCA38C3DDC78",
+      "git_blob": "39ee42866af4c861bd9fafbaf2f19d94fe62d065"
+    },
+    {
+      "path": "scripts/wo05-vm-harness.ps1",
+      "sha256": "AC949DB00B9DE8DA0FA6C0C2F82B19516AAE81320C222F7E48FE2D02AAAA490E",
+      "git_blob": "c05f722575e816f2852c70ebf3d6d9760b373a86"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/RuntimeAuthenticodeVerifier.cs",
+      "sha256": "0EFDF32CAA1F387F0EAC03DEB107ED77696CA733723716CE2045EAF759D5DA4C",
+      "git_blob": "ba4595278867cedc147a8bedd16551c07f78ef59"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Update/UpdateInstallerService.cs",
+      "sha256": "8B6F815BBB543C513A8D6D1C5E77E030A5888AD79E0D3DCAB3325A6D3773D49D",
+      "git_blob": "d8c40adfa00964705f806ec95e8b217217138776"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Update/UpdateRecoveryCoordinator.cs",
+      "sha256": "C9FC33AADEDCD2854B02F34691C9D4AB73A00604041759357552B1FB7DF8820C",
+      "git_blob": "88c1de7240d2c772c5891401f84b25f22f25567a"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/VaultSnapshotRecovery.cs",
+      "sha256": "F326DC240B9BEDD41020C4BAD00937BDBFC545FFF2B05FEE5A57D494DC519704",
+      "git_blob": "aa58e266ea5d1299ecc8c0059afb555754826ce2"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.UpdateEngine/BuildPublisherTrust.cs",
+      "sha256": "C9CF201509395CEB3ABEB43325C3DD5900B28383F8E764B80590BB4CCAF05674",
+      "git_blob": "09eb6ed5534aada450ef2c5411e1f82a19d0d3df"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.UpdateEngine/SignedPackage.cs",
+      "sha256": "7C22B8704D06796246115D033C881D34E54AC93EF0AF984C0A7461067086A035",
+      "git_blob": "6d2624a6965ba00f2d2160769e9d24fef55a5fda"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs",
+      "sha256": "63A4AD13AB5A4B105C4B438DD4DC25E3F1449AE918EBA005946103DC77871C94",
+      "git_blob": "6e6276bddd7a61b3578fc98277f9e5b945746679"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.UpdateEngine/WindowsFileBoundary.cs",
+      "sha256": "2CE81AF6162E4F4C685F93124460457B6C3796FB2D7353ED3527ED744913B538",
+      "git_blob": "aba36b300d9b1dd00ac496e34fde8ea956c7e29f"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.UpdateHelper/Program.cs",
+      "sha256": "1BCC30C29213D10FCD0E31C79B19E117BF1F06BBD0606F939A5837660173C127",
+      "git_blob": "bfc97f5788d39b3ba5642af5961455d820d556af"
+    },
+    {
+      "path": "tests/SmartPerformanceDoctor.Tests/SignedUpdateTests.cs",
+      "sha256": "B5B5DCB3B77BA7A6DA0ADCE7072A18F6666B5145EDBF345C9D30AFD346D11A86",
+      "git_blob": "4680c65b213458b19e0cf899692391b9ff151546"
+    },
+    {
+      "path": "tests/SmartPerformanceDoctor.Tests/WO05CompatibilityTests.cs",
+      "sha256": "80D7927CC7EFA48604698F09D81C34F85C4569917FC8E0F8C8497FB29171A3E1",
+      "git_blob": "017a11065e84600959e870dad3b73fa629150659"
+    },
+    {
+      "path": "tests/SmartPerformanceDoctor.Tests/WindowsFileBoundaryTests.cs",
+      "sha256": "FA281ACBB894D93C84445E21B26BDEE0132FAD5B1D9024D59B9167E6717F6830",
+      "git_blob": "53b47b8501327d32861e6bbe983c0a7649f1ded6"
+    },
+    {
+      "path": "tests/SmartPerformanceDoctor.UpdateRecoveryProbe/Program.cs",
+      "sha256": "83F829A7967D8F37FF91A1799AAF328DF8715984CD2631E4336EF9934A5B8952",
+      "git_blob": "b9207af05ccf30129f40efdd407967e4bda7fbc0"
+    },
+    {
+      "path": "tools/SmartPerformanceDoctor.VMTestKit/Program.cs",
+      "sha256": "9C7F701107828E5927F645EC3595E95463924462F4EDE4BD8B06777F5CBCEFB4",
+      "git_blob": "2930f6edac6af22a666d2ee1534d986953078f9a"
+    },
+    {
+      "path": "tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj",
+      "sha256": "DBE6FB24655B9AF68F19F30E74B85F0C56189A8B6A77ABD11AC7E8AF50DB9BC2",
+      "git_blob": "981111f2548c3b31fd4393d367dc6fb2e9141cb1"
+    },
+    {
+      "path": "tools/SmartPerformanceDoctor.VaultRecovery/Program.cs",
+      "sha256": "EF8A4909B05F703388D53E6F39CC86CC4693E0F88EF0FD531EC0B108F775C70B",
+      "git_blob": "cf979b9f87b611ebf9cc9eba15738346fd07be63"
+    },
+    {
+      "path": "tools/SmartPerformanceDoctor.VaultRecovery/SmartPerformanceDoctor.VaultRecovery.csproj",
+      "sha256": "F62531C8610B678ED8BE54EBEDD0328933DDCA23856A9F858CC00E0A672C60C9",
+      "git_blob": "e6657af482adb02740a83922460bf400b925a8f0"
+    }
+  ]
+}

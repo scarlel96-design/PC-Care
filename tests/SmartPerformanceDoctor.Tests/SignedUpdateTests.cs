@@ -305,7 +305,7 @@ public sealed class SignedUpdateTests
     }
 
     [Fact]
-    public void MissingBackupLeavesRecoveryRequired()
+    public void BackupDeletionDuringApplyIsBlockedAndRollbackRestoresOriginal()
     {
         using var f = new Fixture();
         File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
@@ -316,7 +316,8 @@ public sealed class SignedUpdateTests
             File.Delete(Path.Combine(dir, "backup", "app.txt"));
             throw new IOException("synthetic power loss");
         });
-        Assert.Equal(UpdateStage.RecoveryRequired, result.Stage);
+        Assert.Equal(UpdateStage.Restored, result.Stage);
+        Assert.Equal("old", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
     }
 
     [Fact]
@@ -326,7 +327,7 @@ public sealed class SignedUpdateTests
         var outside = Path.Combine(f.Work, "outside.txt");
         File.WriteAllText(outside, "old");
         Assert.True(CreateHardLink(Path.Combine(f.Install, "app.txt"), outside, IntPtr.Zero));
-        Assert.Equal(UpdateStage.Committed, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
+        Assert.Equal(UpdateStage.Restored, f.Transaction.Apply(f.Package(), f.Install, "51.0.4").Stage);
         Assert.Equal("old", File.ReadAllText(outside));
     }
 
@@ -351,7 +352,7 @@ public sealed class SignedUpdateTests
         Assert.Single(Directory.GetFiles(f.Install));
     }
 
-    private sealed class Fixture : IDisposable
+    internal sealed class Fixture : IDisposable
     {
         private readonly ECDsa _key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
         private readonly string _root = Path.Combine(Path.GetTempPath(), "pccare-wo03-" + Guid.NewGuid().ToString("N"));

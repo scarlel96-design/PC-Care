@@ -14,6 +14,9 @@ public enum UpdateStage
 
 public sealed class UpdateJournal
 {
+    public int SchemaVersion { get; set; } = 2;
+    public string InstallIdentity { get; set; } = "";
+    public string TransactionIdentity { get; set; } = "";
     public string TransactionId { get; set; } = "";
     public string InstallRoot { get; set; } = "";
     public string PackageId { get; set; } = "";
@@ -26,6 +29,9 @@ public sealed class UpdateJournal
 
 public sealed class UpdateFileJournal
 {
+    public string OriginalIdentity { get; set; } = "";
+    public string BackupIdentity { get; set; } = "";
+    public string InstalledIdentity { get; set; } = "";
     public string Path { get; set; } = "";
     public bool Existed { get; set; }
     public long OriginalLength { get; set; }
@@ -35,7 +41,10 @@ public sealed class UpdateFileJournal
     public bool Restored { get; set; }
 }
 
-public sealed record TransactionResult(UpdateStage Stage, string Code, string TransactionId, int FilesApplied);
+public sealed record TransactionResult(UpdateStage Stage, string Code, string TransactionId, int FilesApplied)
+{
+    public string Failure { get; init; } = "";
+}
 
 public enum UpdateRecoveryState
 {
@@ -49,7 +58,7 @@ public enum UpdateFaultPoint
     DuringBackupCreation, AfterBackupVerification, AfterApplyingJournal,
     AfterFirstReplacement, BeforeReplacement, AfterLastReplacement,
     DuringPostApplyVerification, BeforeCommittedJournal, AfterRollbackStarted,
-    DuringRollbackCopy, BeforeRestoredJournal
+    DuringRollbackCopy, BeforeRestoredJournal, BeforeFailureJournal
 }
 
 public sealed record UpdateRecoveryStatus(UpdateRecoveryState State, string Code, string TransactionId);
@@ -80,8 +89,10 @@ public sealed class UpdateTransaction
         if (_strictAcl) SecureWorkRoot();
         else Directory.CreateDirectory(_workRoot);
         EnsureRoot(_workRoot);
-        using var gate = new FileStream(Path.Combine(_workRoot, "update.lock"), FileMode.OpenOrCreate,
-            FileAccess.ReadWrite, FileShare.None);
+        using var installPin = WindowsFileBoundary.PinDirectory(installRoot);
+        using var workPin = WindowsFileBoundary.PinDirectory(_workRoot);
+        using var gate = WindowsFileBoundary.OpenExclusive(_workRoot, "update.lock", !File.Exists(Path.Combine(_workRoot, "update.lock")));
+        VerifyProtectedFile(gate, _workRoot);
         var priorJournals = new List<UpdateJournal>();
         foreach (var dir in Directory.EnumerateDirectories(_workRoot, "tx-*"))
         {
@@ -93,7 +104,9 @@ public sealed class UpdateTransaction
             priorJournals.Add(prior);
         }
 
-        var source = SignedPackage.Verify(packagePath, currentVersion, _policy);
+        var fullPackage = Path.GetFullPath(packagePath);
+        using var inputPackage = WindowsFileBoundary.OpenRead(Path.GetDirectoryName(fullPackage)!, Path.GetFileName(fullPackage));
+        var source = SignedPackage.Verify(inputPackage.Stream, currentVersion, _policy);
         if (!source.CanApply || source.Manifest is null)
             return new(UpdateStage.Prepared, source.Code, "", 0);
         if (!FitsRecoveryJournal(source.Manifest, installRoot, currentVersion))
@@ -111,17 +124,24 @@ public sealed class UpdateTransaction
         var journal = new UpdateJournal
         {
             TransactionId = id, PackageId = source.Manifest.PackageId,
-            InstallRoot = installRoot, FromVersion = currentVersion, Stage = UpdateStage.Prepared
+            InstallRoot = installRoot, InstallIdentity = installPin.Identity,
+            TransactionIdentity = DirectoryIdentity(txDir), FromVersion = currentVersion, Stage = UpdateStage.Prepared
         };
         WriteJournal(txDir, journal);
         var packageCopy = Path.Combine(txDir, "package.spdup");
         var stageDir = Path.Combine(txDir, "stage");
         var backupDir = Path.Combine(txDir, "backup");
+        var retained = new List<WindowsFileBoundary.FileLease>();
+        var packageIdentity = "";
         try
         {
             faultInjector?.Invoke(UpdateFaultPoint.AfterStagingCreated);
-            File.Copy(packagePath, packageCopy, overwrite: false);
-            var stagedVerification = SignedPackage.Verify(packageCopy, currentVersion, _policy);
+            using (var outputPackage = WindowsFileBoundary.OpenWrite(txDir, "package.spdup", create: true))
+                outputPackage.CopyFrom(inputPackage);
+            using var packageLease = WindowsFileBoundary.OpenRead(txDir, "package.spdup");
+            VerifyProtectedFile(packageLease, txDir);
+            packageIdentity = packageLease.Identity;
+            var stagedVerification = SignedPackage.Verify(packageLease.Stream, currentVersion, _policy);
             if (!stagedVerification.CanApply || stagedVerification.Manifest is null)
             {
                 journal.Stage = UpdateStage.Restored;
@@ -137,20 +157,19 @@ public sealed class UpdateTransaction
             WriteJournal(txDir, journal);
             Directory.CreateDirectory(stageDir);
             Directory.CreateDirectory(backupDir);
-            using (var package = new FileStream(packageCopy, FileMode.Open, FileAccess.Read, FileShare.Read))
-            using (var archive = new ZipArchive(package, ZipArchiveMode.Read))
+            packageLease.Stream.Position = 0;
+            using (var archive = new ZipArchive(packageLease.Stream, ZipArchiveMode.Read, leaveOpen: true))
             {
                 foreach (var item in manifest.Files)
                 {
                     var relative = Relative(item.Path);
                     var stageFile = Resolve(stageDir, relative);
-                    Directory.CreateDirectory(Path.GetDirectoryName(stageFile)!);
                     using (var input = archive.GetEntry(item.Path)!.Open())
-                    using (var output = new FileStream(stageFile, FileMode.CreateNew, FileAccess.Write,
-                               FileShare.None, 128 * 1024, FileOptions.WriteThrough))
+                    using (var output = WindowsFileBoundary.OpenWrite(stageDir, relative, create: true))
                     {
-                        input.CopyTo(output);
-                        output.Flush(flushToDisk: true);
+                        input.CopyTo(output.Stream);
+                        output.Stream.Flush(flushToDisk: true);
+                        output.Verify(item.Length, item.Sha256);
                     }
                     VerifyFile(stageFile, item.Length, item.Sha256);
                     faultInjector?.Invoke(UpdateFaultPoint.DuringStageExtraction);
@@ -168,14 +187,19 @@ public sealed class UpdateTransaction
                 if (File.Exists(target))
                 {
                     entry.Existed = true;
-                    entry.OriginalLength = new FileInfo(target).Length;
-                    entry.OriginalSha256 = Hash(target);
-                    Directory.CreateDirectory(Path.GetDirectoryName(backup)!);
-                    File.Copy(target, backup, overwrite: false);
+                    using var original = WindowsFileBoundary.OpenRead(installRoot, relative);
+                    entry.OriginalIdentity = original.Identity;
+                    entry.OriginalLength = original.Stream.Length;
+                    entry.OriginalSha256 = original.Hash();
+                    using var backupLease = WindowsFileBoundary.OpenWrite(backupDir, relative, create: true);
+                    VerifyProtectedFile(backupLease, Path.GetDirectoryName(backup)!);
+                    backupLease.CopyFrom(original);
+                    entry.BackupIdentity = backupLease.Identity;
                     faultInjector?.Invoke(UpdateFaultPoint.DuringBackupCreation);
-                    VerifyFile(backup, entry.OriginalLength, entry.OriginalSha256);
+                    backupLease.Verify(entry.OriginalLength, entry.OriginalSha256);
                 }
                 journal.Files.Add(entry);
+                if (entry.Existed) retained.Add(WindowsFileBoundary.OpenRead(backupDir, relative));
             }
             journal.Stage = UpdateStage.BackupVerified;
             WriteJournal(txDir, journal);
@@ -183,27 +207,32 @@ public sealed class UpdateTransaction
             journal.Stage = UpdateStage.Applying;
             WriteJournal(txDir, journal); // durable before the first file mutation
             faultInjector?.Invoke(UpdateFaultPoint.AfterApplyingJournal);
-            var count = 0;
+            var prepared = new Dictionary<string, (WindowsFileBoundary.FileLease Source, WindowsFileBoundary.FileLease Target)>();
             foreach (var entry in journal.Files)
             {
                 var relative = Relative(entry.Path);
                 GuardExistingPath(installRoot, relative);
-                var sourceFile = Resolve(stageDir, relative);
-                var target = Resolve(installRoot, relative);
                 var expected = manifest.Files.Single(f => f.Path == entry.Path);
-                VerifyFile(sourceFile, expected.Length, expected.Sha256); // immediately before privileged read
+                var sourceLease = WindowsFileBoundary.OpenRead(stageDir, relative);
+                retained.Add(sourceLease);
+                VerifyProtectedFile(sourceLease, Path.GetDirectoryName(Resolve(stageDir, relative))!);
+                sourceLease.Verify(expected.Length, expected.Sha256);
+                var targetLease = WindowsFileBoundary.OpenWrite(installRoot, relative, create: !entry.Existed);
+                retained.Add(targetLease);
+                if (entry.Existed) targetLease.Verify(entry.OriginalLength, entry.OriginalSha256, entry.OriginalIdentity);
+                entry.InstalledIdentity = targetLease.Identity;
+                WriteJournal(txDir, journal); // Record new-file identity before writing its content.
+                prepared.Add(entry.Path, (sourceLease, targetLease));
+            }
+            // Acquire every destination before changing any existing file.
+            var count = 0;
+            foreach (var entry in journal.Files)
+            {
+                var (sourceLease, targetLease) = prepared[entry.Path];
+                var expected = manifest.Files.Single(file => file.Path == entry.Path);
                 faultInjector?.Invoke(UpdateFaultPoint.BeforeReplacement);
-                Directory.CreateDirectory(Path.GetDirectoryName(target)!);
-                var temp = target + ".pccare-" + id + ".tmp";
-                using (var input = new FileStream(sourceFile, FileMode.Open, FileAccess.Read, FileShare.Read))
-                using (var output = new FileStream(temp, FileMode.CreateNew, FileAccess.Write,
-                           FileShare.None, 128 * 1024, FileOptions.WriteThrough))
-                {
-                    input.CopyTo(output);
-                    output.Flush(flushToDisk: true);
-                }
-                VerifyFile(temp, expected.Length, expected.Sha256);
-                File.Move(temp, target, overwrite: true);
+                targetLease.CopyFrom(sourceLease);
+                targetLease.Verify(expected.Length, expected.Sha256);
                 entry.Applied = true;
                 WriteJournal(txDir, journal);
                 count++;
@@ -216,22 +245,46 @@ public sealed class UpdateTransaction
             foreach (var item in manifest.Files)
             {
                 faultInjector?.Invoke(UpdateFaultPoint.DuringPostApplyVerification);
-                VerifyFile(Resolve(installRoot, Relative(item.Path)), item.Length, item.Sha256);
+                retained.Single(file => file.Identity == journal.Files.Single(entry => entry.Path == item.Path).InstalledIdentity)
+                    .Verify(item.Length, item.Sha256);
             }
             if (postApplyVersionCheck is not null && !postApplyVersionCheck(manifest.ToVersion))
                 throw new InvalidDataException("installed version postcondition");
             faultInjector?.Invoke(UpdateFaultPoint.BeforeCommittedJournal);
             journal.Stage = UpdateStage.Committed;
             WriteJournal(txDir, journal);
-            try { File.Delete(packageCopy); } catch (Exception) { /* retain evidence */ }
+            // Keep the package handle pinned through commit. Cleanup occurs after it closes.
             return new(UpdateStage.Committed, "COMMITTED", id, count);
         }
         catch (Exception ex)
         {
+            foreach (var file in retained) file.Dispose();
+            retained.Clear();
             journal.Failure = ex.GetType().Name + ": " + ex.Message;
             journal.Stage = UpdateStage.RollbackPending;
-            WriteJournal(txDir, journal);
+            try { faultInjector?.Invoke(UpdateFaultPoint.BeforeFailureJournal); WriteJournal(txDir, journal); }
+            catch (Exception journalError)
+            {
+                return FailureResult(journal, ex, journalError);
+            }
             return RollbackCore(txDir, installRoot, journal, faultInjector);
+        }
+        finally
+        {
+            foreach (var file in retained) file.Dispose();
+            if (journal.Stage == UpdateStage.Committed && packageIdentity.Length != 0)
+            {
+                try
+                {
+                    using var cleanup = WindowsFileBoundary.OpenWrite(txDir, "package.spdup", deletable: true);
+                    cleanup.Validate(packageIdentity);
+                    cleanup.DeleteOpenedFile();
+                }
+                catch (Exception cleanupError)
+                {
+                    Console.Error.WriteLine("UPDATE-CLEANUP-FAIL: " + cleanupError.Message);
+                }
+            }
         }
     }
 
@@ -242,8 +295,10 @@ public sealed class UpdateTransaction
         if (_strictAcl) SecureWorkRoot();
         else Directory.CreateDirectory(_workRoot);
         EnsureRoot(_workRoot);
-        using var gate = new FileStream(Path.Combine(_workRoot, "update.lock"), FileMode.OpenOrCreate,
-            FileAccess.ReadWrite, FileShare.None);
+        using var installPin = WindowsFileBoundary.PinDirectory(installRoot);
+        using var workPin = WindowsFileBoundary.PinDirectory(_workRoot);
+        using var gate = WindowsFileBoundary.OpenExclusive(_workRoot, "update.lock", !File.Exists(Path.Combine(_workRoot, "update.lock")));
+        VerifyProtectedFile(gate, _workRoot);
         foreach (var dir in Directory.EnumerateDirectories(_workRoot, "tx-*").OrderBy(x => x, StringComparer.Ordinal))
         {
             if (!TryReadTrustedJournal(dir, installRoot, out var journal, out var reason))
@@ -314,7 +369,7 @@ public sealed class UpdateTransaction
         }
     }
 
-    private static bool TryReadTrustedJournal(string directory, string installRoot,
+    private bool TryReadTrustedJournal(string directory, string installRoot,
         out UpdateJournal? journal, out string reason)
     {
         journal = null;
@@ -337,13 +392,22 @@ public sealed class UpdateTransaction
                 !Enum.IsDefined(journal.Stage) || journal.Files is null || journal.Files.Count > MaxJournalFiles ||
                 journal.Failure is null || journal.Failure.Length > MaxFailureCharacters)
                 return false;
+            if (journal.SchemaVersion != 2 || journal.InstallIdentity != DirectoryIdentity(installRoot) ||
+                journal.TransactionIdentity != DirectoryIdentity(directory))
+            {
+                reason = "JOURNAL-IDENTITY";
+                return false;
+            }
             var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var entry in journal.Files)
             {
                 if (entry is null || string.IsNullOrWhiteSpace(entry.Path) ||
                     !SignedPackage.SafeRelativePath(entry.Path) || !seen.Add(entry.Path) ||
                     !IsSha256(entry.NewSha256) ||
-                    (entry.Existed && (!IsSha256(entry.OriginalSha256) || entry.OriginalLength < 0)))
+                    (entry.Existed && (!IsSha256(entry.OriginalSha256) || entry.OriginalLength < 0 ||
+                        !IsIdentity(entry.OriginalIdentity) || !IsIdentity(entry.BackupIdentity))) ||
+                    entry.InstalledIdentity is null ||
+                    (entry.InstalledIdentity.Length != 0 && !IsIdentity(entry.InstalledIdentity)))
                     return false;
             }
             var backup = Path.Combine(directory, "backup");
@@ -366,67 +430,92 @@ public sealed class UpdateTransaction
     private static bool IsSha256(string? value) => value is { Length: 64 } &&
         value.All(c => Uri.IsHexDigit(c));
 
-    private static TransactionResult RollbackCore(string txDir, string installRoot, UpdateJournal journal,
+    private static bool IsIdentity(string? value) => value is { Length: 49 } && value[16] == ':' &&
+        value.Where((_, index) => index != 16).All(Uri.IsHexDigit);
+
+    private static string DirectoryIdentity(string directory)
+    {
+        using var pin = WindowsFileBoundary.PinDirectory(directory);
+        return pin.Identity;
+    }
+
+    private static TransactionResult FailureResult(UpdateJournal journal, Exception primary, Exception secondary) =>
+        new(UpdateStage.RecoveryRequired, "FAILURE-JOURNAL-FAIL", journal.TransactionId, journal.Files.Count(f => f.Applied))
+        { Failure = journal.Failure + "; primary: " + primary.Message + "; journal: " + secondary.Message };
+
+    private TransactionResult RollbackCore(string txDir, string installRoot, UpdateJournal journal,
         Action<UpdateFaultPoint>? faultInjector = null)
     {
+        var leases = new List<(UpdateFileJournal Entry, WindowsFileBoundary.FileLease? Backup, WindowsFileBoundary.FileLease? Target)>();
         try
         {
-            // Validate every backup before any restore/delete so a damaged backup cannot
-            // cause a partially restored installation to be changed further.
+            // Keep every validated handle open until all restore operations end.
             foreach (var entry in journal.Files)
             {
                 var relative = Relative(entry.Path);
-                GuardExistingPath(installRoot, relative);
-                if (entry.Existed)
+                WindowsFileBoundary.FileLease? backup = null;
+                WindowsFileBoundary.FileLease? target = null;
+                try
                 {
-                    var backupRoot = Path.Combine(txDir, "backup");
-                    GuardExistingPath(backupRoot, relative);
-                    VerifyFile(Resolve(backupRoot, relative), entry.OriginalLength, entry.OriginalSha256);
+                    if (entry.Existed)
+                    {
+                        backup = WindowsFileBoundary.OpenRead(Path.Combine(txDir, "backup"), relative);
+                        VerifyProtectedFile(backup, Path.GetDirectoryName(Resolve(Path.Combine(txDir, "backup"), relative))!);
+                        backup.Verify(entry.OriginalLength, entry.OriginalSha256, entry.BackupIdentity);
+                        target = WindowsFileBoundary.OpenWrite(installRoot, relative);
+                        target.Validate(entry.OriginalIdentity);
+                        var hash = target.Hash();
+                        if (entry.Applied && hash != entry.NewSha256 && hash != entry.OriginalSha256)
+                            throw new InvalidDataException("RESTORE-TARGET-CONTENT-CHANGED");
+                    }
+                    else if (File.Exists(Resolve(installRoot, relative)))
+                    {
+                        if (!IsIdentity(entry.InstalledIdentity)) throw new InvalidDataException("DELETE-IDENTITY-MISSING");
+                        target = WindowsFileBoundary.OpenWrite(installRoot, relative, deletable: true);
+                        target.Validate(entry.InstalledIdentity);
+                        if (entry.Applied && target.Hash() != entry.NewSha256)
+                            throw new InvalidDataException("DELETE-TARGET-CONTENT-CHANGED");
+                    }
+                    leases.Add((entry, backup, target));
                 }
-                else
-                {
-                    var target = Resolve(installRoot, relative);
-                    if (File.Exists(target)) VerifyFile(target, new FileInfo(target).Length, entry.NewSha256);
-                }
+                catch { backup?.Dispose(); target?.Dispose(); throw; }
             }
             journal.Stage = UpdateStage.RollingBack;
             WriteJournal(txDir, journal);
             faultInjector?.Invoke(UpdateFaultPoint.AfterRollbackStarted);
-            foreach (var entry in journal.Files.AsEnumerable().Reverse())
+            foreach (var item in leases.AsEnumerable().Reverse())
             {
-                var relative = Relative(entry.Path);
-                GuardExistingPath(installRoot, relative);
-                var target = Resolve(installRoot, relative);
-                if (entry.Existed)
+                if (item.Entry.Existed)
                 {
-                    var backup = Resolve(Path.Combine(txDir, "backup"), relative);
-                    VerifyFile(backup, entry.OriginalLength, entry.OriginalSha256);
-                    var temp = target + ".pccare-restore-" + Guid.NewGuid().ToString("N") + ".tmp";
-                    File.Copy(backup, temp, overwrite: false);
+                    item.Target!.CopyFrom(item.Backup!);
                     faultInjector?.Invoke(UpdateFaultPoint.DuringRollbackCopy);
-                    VerifyFile(temp, entry.OriginalLength, entry.OriginalSha256);
-                    File.Move(temp, target, overwrite: true);
+                    item.Target.Verify(item.Entry.OriginalLength, item.Entry.OriginalSha256, item.Entry.OriginalIdentity);
                 }
-                else if (File.Exists(target))
+                else if (item.Target is not null)
                 {
-                    // A newly created file may be removed only while it still has the expected update hash.
-                    VerifyFile(target, new FileInfo(target).Length, entry.NewSha256);
-                    File.Delete(target);
+                    item.Target.DeleteOpenedFile();
                 }
-                entry.Restored = true;
+                item.Entry.Restored = true;
                 WriteJournal(txDir, journal);
             }
             faultInjector?.Invoke(UpdateFaultPoint.BeforeRestoredJournal);
             journal.Stage = UpdateStage.Restored;
             WriteJournal(txDir, journal);
-            return new(UpdateStage.Restored, "ROLLED-BACK", journal.TransactionId, journal.Files.Count(f => f.Applied));
+            return new(UpdateStage.Restored, "ROLLED-BACK", journal.TransactionId, journal.Files.Count(f => f.Applied))
+                { Failure = journal.Failure };
         }
         catch (Exception ex)
         {
             journal.Stage = UpdateStage.RecoveryRequired;
             journal.Failure += "; rollback: " + ex.GetType().Name + ": " + ex.Message;
-            WriteJournal(txDir, journal);
-            return new(UpdateStage.RecoveryRequired, "ROLLBACK-FAIL", journal.TransactionId, journal.Files.Count(f => f.Applied));
+            try { faultInjector?.Invoke(UpdateFaultPoint.BeforeFailureJournal); WriteJournal(txDir, journal); }
+            catch (Exception journalError) { return FailureResult(journal, ex, journalError); }
+            return new(UpdateStage.RecoveryRequired, "ROLLBACK-FAIL", journal.TransactionId, journal.Files.Count(f => f.Applied))
+                { Failure = journal.Failure };
+        }
+        finally
+        {
+            foreach (var item in leases) { item.Target?.Dispose(); item.Backup?.Dispose(); }
         }
     }
 
@@ -437,9 +526,10 @@ public sealed class UpdateTransaction
         if (!string.Equals(_workRoot, Path.Combine(productRoot, "UpdateTransactions"),
                 StringComparison.OrdinalIgnoreCase))
             throw new UnauthorizedAccessException("unexpected protected staging location");
-        if (!Directory.Exists(productRoot))
+        var productExisted = Directory.Exists(productRoot);
+        using var productPin = WindowsFileBoundary.PinDirectory(productRoot, create: true);
+        if (!productExisted)
         {
-            Directory.CreateDirectory(productRoot);
             if (Directory.EnumerateFileSystemEntries(productRoot).Any())
                 throw new UnauthorizedAccessException("staging parent raced");
             SetProtectedAcl(productRoot);
@@ -447,9 +537,10 @@ public sealed class UpdateTransaction
         EnsureRoot(productRoot);
         VerifyProtectedAcl(productRoot);
         AllowReadOnlyInspection(productRoot);
-        if (!Directory.Exists(_workRoot))
+        var workExisted = Directory.Exists(_workRoot);
+        using var workPin = WindowsFileBoundary.PinDirectory(_workRoot, create: true);
+        if (!workExisted)
         {
-            Directory.CreateDirectory(_workRoot);
             if (Directory.EnumerateFileSystemEntries(_workRoot).Any())
                 throw new UnauthorizedAccessException("staging root raced");
             SetProtectedAcl(_workRoot);
@@ -462,14 +553,28 @@ public sealed class UpdateTransaction
     private static void VerifyProtectedAcl(string directory)
     {
         var security = new DirectoryInfo(directory).GetAccessControl();
+        ValidateProtectedSecurity(security, requireProtected: true);
+    }
+
+    public static void ValidateProtectedSecurity(FileSystemSecurity security, bool requireProtected)
+    {
         var owner = security.GetOwner(typeof(SecurityIdentifier)) as SecurityIdentifier;
         var admins = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
         var system = new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null);
-        if (!security.AreAccessRulesProtected || owner is null ||
+        if ((requireProtected && !security.AreAccessRulesProtected) || owner is null ||
             (!owner.Equals(admins) && !owner.Equals(system)))
             throw new UnauthorizedAccessException("untrusted staging ACL or owner");
+        var adminControl = false;
+        var systemControl = false;
         foreach (FileSystemAccessRule rule in security.GetAccessRules(true, true, typeof(SecurityIdentifier)))
         {
+            if (rule.AccessControlType == AccessControlType.Deny)
+                throw new UnauthorizedAccessException("unexpected staging deny ACE");
+            if ((rule.FileSystemRights & FileSystemRights.FullControl) == FileSystemRights.FullControl)
+            {
+                if (rule.IdentityReference.Equals(admins)) adminControl = true;
+                if (rule.IdentityReference.Equals(system)) systemControl = true;
+            }
             if (rule.AccessControlType == AccessControlType.Allow &&
                 !rule.IdentityReference.Equals(admins) && !rule.IdentityReference.Equals(system) &&
                 (rule.FileSystemRights & (FileSystemRights.WriteData | FileSystemRights.AppendData |
@@ -478,6 +583,13 @@ public sealed class UpdateTransaction
                                           FileSystemRights.TakeOwnership)) != 0)
                 throw new UnauthorizedAccessException("staging writable by non-admin identity");
         }
+        if (!adminControl || !systemControl) throw new UnauthorizedAccessException("staging administrative access missing");
+    }
+
+    public static void ValidateProtectedDirectory(string directory)
+    {
+        using var pin = WindowsFileBoundary.PinDirectory(directory);
+        VerifyProtectedAcl(directory);
     }
 
     private static void SetProtectedAcl(string directory)
@@ -543,45 +655,83 @@ public sealed class UpdateTransaction
         }
     }
 
-    private static string Hash(string path)
-    {
-        using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-        return Convert.ToHexString(SHA256.HashData(stream));
-    }
-
     private static void VerifyFile(string path, long length, string hash)
     {
-        if (!File.Exists(path) || new FileInfo(path).Length != length ||
-            !Hash(path).Equals(hash, StringComparison.OrdinalIgnoreCase))
-            throw new InvalidDataException("file integrity: " + path);
+        using var file = WindowsFileBoundary.OpenRead(Path.GetDirectoryName(path)!, Path.GetFileName(path));
+        file.Verify(length, hash);
     }
 
-    private static UpdateJournal? ReadJournal(string directory)
+    private UpdateJournal? ReadJournal(string directory)
     {
-        var path = Path.Combine(directory, "journal.json");
-        if (File.Exists(path) && new FileInfo(path).Length > MaxJournalBytes)
-            throw new InvalidDataException("journal exceeds size limit");
-        return File.Exists(path) ? JsonSerializer.Deserialize<UpdateJournal>(File.ReadAllText(path)) : null;
+        using var file = WindowsFileBoundary.OpenRead(directory, "journal.json");
+        VerifyProtectedFile(file, directory);
+        if (file.Stream.Length > MaxJournalBytes) throw new InvalidDataException("journal exceeds size limit");
+        using var document = JsonDocument.Parse(file.Stream);
+        ValidateJsonProperties(document.RootElement);
+        return document.RootElement.Deserialize<UpdateJournal>(new JsonSerializerOptions
+            { UnmappedMemberHandling = System.Text.Json.Serialization.JsonUnmappedMemberHandling.Disallow });
     }
 
-    private static void WriteJournal(string directory, UpdateJournal journal)
+    private static void ValidateJsonProperties(JsonElement element)
     {
+        if (element.ValueKind == JsonValueKind.Object)
+        {
+            var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var property in element.EnumerateObject())
+            {
+                if (!names.Add(property.Name)) throw new InvalidDataException("duplicate journal property");
+                ValidateJsonProperties(property.Value);
+            }
+        }
+        else if (element.ValueKind == JsonValueKind.Array)
+            foreach (var item in element.EnumerateArray()) ValidateJsonProperties(item);
+    }
+
+    private void WriteJournal(string directory, UpdateJournal journal)
+    {
+        using var parent = WindowsFileBoundary.PinDirectory(directory);
+        if (journal.TransactionIdentity != parent.Identity) throw new IOException("JOURNAL-DIRECTORY-IDENTITY");
         var path = Path.Combine(directory, "journal.json");
-        var temp = path + ".new";
-        if (journal.Failure.Length > MaxFailureCharacters)
-            journal.Failure = journal.Failure[..MaxFailureCharacters];
+        var relative = "journal-" + Guid.NewGuid().ToString("N") + ".new";
+        if (journal.Failure.Length > MaxFailureCharacters) journal.Failure = journal.Failure[..MaxFailureCharacters];
         var bytes = JsonSerializer.SerializeToUtf8Bytes(journal, JsonOptions);
         if (journal.Files.Count > MaxJournalFiles || bytes.Length > MaxJournalBytes)
             throw new InvalidDataException("journal exceeds recovery limits");
-        using (var file = new FileStream(temp, FileMode.Create, FileAccess.Write,
-                   FileShare.None, 4096, FileOptions.WriteThrough))
+        if (File.Exists(path))
         {
-            file.Write(bytes);
-            file.Flush(flushToDisk: true);
+            using var existing = WindowsFileBoundary.OpenRead(directory, "journal.json");
+            VerifyProtectedFile(existing, directory);
+            existing.Validate();
         }
-        File.Move(temp, path, overwrite: true);
+        using (var file = WindowsFileBoundary.OpenWrite(directory, relative, create: true))
+        {
+            VerifyProtectedFile(file, directory);
+            file.Stream.Write(bytes);
+            file.Stream.Flush(flushToDisk: true);
+            file.Validate();
+        }
+        parent.Validate();
+        // The protected parent ACL excludes unprivileged journal replacement.
+        // Administrators remain inside the trust boundary during this rename.
+        File.Move(Path.Combine(directory, relative), path, overwrite: true);
     }
 
+    private void VerifyProtectedFile(WindowsFileBoundary.FileLease file, string directory)
+    {
+        if (!_strictAcl) return;
+        ValidateProtectedSecurity(file.ReadSecurity(), requireProtected: false);
+        var current = Path.GetFullPath(directory);
+        var root = _workRoot.TrimEnd(Path.DirectorySeparatorChar);
+        while (current.StartsWith(root + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+        {
+            using var pin = WindowsFileBoundary.PinDirectory(current);
+            ValidateProtectedSecurity(new DirectoryInfo(current).GetAccessControl(), requireProtected: false);
+            current = Path.GetDirectoryName(current)!;
+        }
+        if (!string.Equals(current, root, StringComparison.OrdinalIgnoreCase))
+            throw new UnauthorizedAccessException("protected file outside staging root");
+        VerifyProtectedAcl(root);
+    }
     private static bool FitsRecoveryJournal(SignedManifest manifest, string installRoot, string currentVersion)
     {
         if (manifest.Files.Count > MaxJournalFiles) return false;
@@ -589,12 +739,14 @@ public sealed class UpdateTransaction
         var projected = new UpdateJournal
         {
             TransactionId = new string('f', 32), InstallRoot = installRoot,
+            InstallIdentity = new string('F', 49), TransactionIdentity = new string('F', 49),
             PackageId = manifest.PackageId, FromVersion = currentVersion, ToVersion = manifest.ToVersion,
             Stage = UpdateStage.RecoveryRequired, Failure = new string('\u0001', MaxFailureCharacters),
             Files = manifest.Files.Select(file => new UpdateFileJournal
             {
                 Path = file.Path, Existed = true, OriginalLength = long.MaxValue,
                 OriginalSha256 = new string('F', 64), NewSha256 = file.Sha256,
+                OriginalIdentity = new string('F', 49), BackupIdentity = new string('F', 49), InstalledIdentity = new string('F', 49),
                 Applied = false, Restored = false
             }).ToList()
         };

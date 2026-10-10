@@ -1,0 +1,22 @@
+작업 브랜치: `codex/pccare-rework-phase1-filesystem-hardening`
+기준 커밋: `155537b721e3eb266b2a0a3fb801a4b35fbbff56`
+기준 트리: `581bdaf0bf50a787ea1ca346140065c733e56b12`
+검증 소스 커밋·원격 CI: `evidence/wo05/GITHUB_RESULT.txt`.
+최종 증거 커밋은 검증 소스 커밋과 구분한다.
+실행 위치: `C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care`.
+환경: Windows NT 10.0.26200.0, x64, .NET SDK 10.0.401, runtime 10.0.12.
+전용 VM 및 스냅샷: 미제공.
+
+STATUS: PASS for listed automated cases. Real VM ACL and privileged race tests remain BLOCKED / NOT TESTED.
+COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests' --logger 'trx;LogFileName=wo05-targeted-final.trx' -v:minimal
+INPUT: isolated synthetic local Windows folders or constructed ACL descriptors.
+EXIT: 0
+OUTPUT:
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "admins-missing")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "deny")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "inheritance")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "owner")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "system-missing")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "users-write")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "valid")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.FileAclIsReadFromTheRetainedHandle

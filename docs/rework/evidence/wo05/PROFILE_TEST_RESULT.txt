@@ -1,0 +1,41 @@
+작업 브랜치: `codex/pccare-rework-phase1-filesystem-hardening`
+기준 커밋: `155537b721e3eb266b2a0a3fb801a4b35fbbff56`
+기준 트리: `581bdaf0bf50a787ea1ca346140065c733e56b12`
+검증 소스 커밋·원격 CI: `evidence/wo05/GITHUB_RESULT.txt`.
+최종 증거 커밋은 검증 소스 커밋과 구분한다.
+실행 위치: `C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care`.
+환경: Windows NT 10.0.26200.0, x64, .NET SDK 10.0.401, runtime 10.0.12.
+전용 VM 및 스냅샷: 미제공.
+
+COMMAND: VMTestKit.exe audit-production ENGINE_DLL / APP_DLL / HELPER_DLL (three separate executions)
+INPUT: normal Release binaries in src/*/bin/x64/Release
+OUTPUT: PRODUCTION_PROFILE=PASS; TEST_ROOT=ABSENT (each invocation)
+EXIT: 0 (each invocation)
+COMMAND: VMTestKit.exe fixture-profile artifacts/wo05-final-profile ('0'*40)
+OUTPUT: PROFILE=WO05-VM-TEST; PRIVATE_KEY=NOT-SAVED
+EXIT: 0
+COMMAND: dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=ARTIFACT_PROFILE/TestVmTrust.g.cs" -p:NuGetAudit=false --no-restore -m:1 -o ARTIFACT_PROFILE/app-output -v:minimal
+ARTIFACT_PROFILE=C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\artifacts\wo05-final-profile
+OUTPUT:
+SmartPerformanceDoctor.AstraVault -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\artifacts\wo05-final-profile\app-output\SmartPerformanceDoctor.AstraVault.dll
+  SmartPerformanceDoctor.Aegis -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\artifacts\wo05-final-profile\app-output\SmartPerformanceDoctor.Aegis.dll
+  SmartPerformanceDoctor.Contracts -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\artifacts\wo05-final-profile\app-output\SmartPerformanceDoctor.Contracts.dll
+  SmartPerformanceDoctor.Data -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\artifacts\wo05-final-profile\app-output\SmartPerformanceDoctor.Data.dll
+  SmartPerformanceDoctor.SecurityLab -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\artifacts\wo05-final-profile\app-output\SmartPerformanceDoctor.SecurityLab.dll
+  SmartPerformanceDoctor.UpdateEngine -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\artifacts\wo05-final-profile\app-output\SmartPerformanceDoctor.UpdateEngine.dll
+  SmartPerformanceDoctor.UpdateHelper -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\artifacts\wo05-final-profile\app-output\SmartPerformanceDoctor.UpdateHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryHelper -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\artifacts\wo05-final-profile\app-output\AegisRecoveryHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryService -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\artifacts\wo05-final-profile\app-output\AegisRecoveryService.dll
+  SmartPerformanceDoctor.App -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\artifacts\wo05-final-profile\app-output\SmartPerformanceDoctor.dll
+
+빌드했습니다.
+    경고 0개
+    오류 0개
+
+경과 시간: 00:01:02.83
+EXIT: 0
+COMMAND: VMTestKit.exe audit-production ARTIFACT_PROFILE/app-output/SmartPerformanceDoctor.dll
+COMMAND: VMTestKit.exe audit-production ARTIFACT_PROFILE/app-output/SmartPerformanceDoctor.UpdateEngine.dll
+OUTPUT: no console output
+EXIT: 6 for each test-profile binary (expected rejection)
+AUTHENTICODE VM TEST: BLOCKED; zero thumbprint is a compile-only fixture, not a trusted real signer.

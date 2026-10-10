@@ -1,0 +1,93 @@
+COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests' --logger 'trx;LogFileName=wo05-targeted-final.trx' -v:minimal
+EXIT: 0
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.BackupDeletionDuringApplyIsBlockedAndRollbackRestoresOriginal
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.CommittedPackageIdCannotBeReplayed
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.ConcurrentApplyAndRecoverAreBlockedByExclusiveLock
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.ConcurrentWorkLockIsRejected
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.CorruptBackupPreventsAllRollbackMutations
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.DevelopmentKeyIsRejectedByProductionPolicy
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.ExistingHardlinkOutsideInstallIsNotModified
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.FailedInstalledVersionPostconditionRestoresOriginal
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.FaultBeforeCommitLeavesOriginalInstallation(point: AfterApplyingJournal)
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.FaultBeforeCommitLeavesOriginalInstallation(point: AfterBackupVerification)
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.FaultBeforeCommitLeavesOriginalInstallation(point: AfterFirstReplacement)
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.FaultBeforeCommitLeavesOriginalInstallation(point: AfterLastReplacement)
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.FaultBeforeCommitLeavesOriginalInstallation(point: AfterPackageVerification)
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.FaultBeforeCommitLeavesOriginalInstallation(point: AfterStagingCreated)
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.FaultBeforeCommitLeavesOriginalInstallation(point: BeforeCommittedJournal)
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.FaultBeforeCommitLeavesOriginalInstallation(point: BeforeReplacement)
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.FaultBeforeCommitLeavesOriginalInstallation(point: DuringBackupCreation)
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.FaultBeforeCommitLeavesOriginalInstallation(point: DuringPostApplyVerification)
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.FaultBeforeCommitLeavesOriginalInstallation(point: DuringStageExtraction)
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.InterruptedRollbackCanBeRetried(point: AfterRollbackStarted)
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.InterruptedRollbackCanBeRetried(point: BeforeRestoredJournal)
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.InterruptedRollbackCanBeRetried(point: DuringRollbackCopy)
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.NegativePackagesFailClosed(mutation: "bad-signature", code: "SIGNATURE-FAIL")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.NegativePackagesFailClosed(mutation: "content-tamper", code: "CONTENT-HASH")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.NegativePackagesFailClosed(mutation: "downgrade", code: "POLICY")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.NegativePackagesFailClosed(mutation: "duplicate-entry", code: "ENTRY-PATH")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.NegativePackagesFailClosed(mutation: "extra-file", code: "ALLOWLIST")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.NegativePackagesFailClosed(mutation: "manifest-tamper", code: "SIGNATURE-FAIL")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.NegativePackagesFailClosed(mutation: "missing-file", code: "ALLOWLIST")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.NegativePackagesFailClosed(mutation: "other-publisher", code: "UNKNOWN-PUBLISHER")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.NegativePackagesFailClosed(mutation: "traversal", code: "ALLOWLIST")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.OversizedJournalFailsClosed
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.PartialApplyFailureRestoresOriginal
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.RestartRecoveryReplaysIncompleteApplyingJournal
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.RuntimeExecutionPolicyKeepsThreeTrustDimensionsSeparate
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.StagingTamperRollsBackOriginalAndNewFiles
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.TamperedJournalCannotDriveRecovery(mutation: "duplicate")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.TamperedJournalCannotDriveRecovery(mutation: "hash")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.TamperedJournalCannotDriveRecovery(mutation: "id")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.TamperedJournalCannotDriveRecovery(mutation: "missing-root")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.TamperedJournalCannotDriveRecovery(mutation: "null-failure")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.TamperedJournalCannotDriveRecovery(mutation: "null-files")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.TamperedJournalCannotDriveRecovery(mutation: "oversized-failure")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.TamperedJournalCannotDriveRecovery(mutation: "path")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.TamperedJournalCannotDriveRecovery(mutation: "root")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.TransactionAppliesAllowlistAndPreservesUnlistedData
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.ValidPackageBeyondRecoveryCapacityIsRejectedBeforeInstallationChanges(mutation: "file-count-limit")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.ValidPackageBeyondRecoveryCapacityIsRejectedBeforeInstallationChanges(mutation: "journal-size-limit")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.WindowsUnsafePathBoundariesAreRejected(path: "payload/../escape")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.WindowsUnsafePathBoundariesAreRejected(path: "payload/CON.txt")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.WindowsUnsafePathBoundariesAreRejected(path: "payload/LPT1/file")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.WindowsUnsafePathBoundariesAreRejected(path: "payload/a:stream")
+Passed: SmartPerformanceDoctor.Tests.SignedUpdateTests.WindowsUnsafePathBoundariesAreRejected(path: "payload/name.")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "admins-missing")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "deny")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "inheritance")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "owner")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "system-missing")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "users-write")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "valid")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AdditionalWindowsDeviceNamesAreRejected(path: "payload/COM¹.txt")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AdditionalWindowsDeviceNamesAreRejected(path: "payload/CONIN$")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AdditionalWindowsDeviceNamesAreRejected(path: "payload/CONOUT$")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AdditionalWindowsDeviceNamesAreRejected(path: "payload/LPT².txt")
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.ProductionBuildHasNoVmTrustRoot
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.VaultAndSettingsSurviveUpdateOrRollbackAndSnapshotExport(rollback: False)
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.VaultAndSettingsSurviveUpdateOrRollbackAndSnapshotExport(rollback: True)
+Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.WrongPasswordSnapshotExportPreservesSource
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.AncestorJunctionCannotEscapeBoundary
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.BackupAndTargetsRemainLockedUntilCommit
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.BackupSameHashDifferentIdIsRejected
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.CommittedPackageCleanupPreservesBackupAndJournal
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.ExistingFileKeepsIdentityThroughApplyAndRecovery
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.FileAclIsReadFromTheRetainedHandle
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.HardlinkLeafIsRejectedBeforeWriting
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.IdentityAndJsonJournalTamperingFailsClosed(mutation: "BackupIdentity")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.IdentityAndJsonJournalTamperingFailsClosed(mutation: "InstallIdentity")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.IdentityAndJsonJournalTamperingFailsClosed(mutation: "OriginalIdentity")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.IdentityAndJsonJournalTamperingFailsClosed(mutation: "TransactionIdentity")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.IdentityAndJsonJournalTamperingFailsClosed(mutation: "duplicate-property")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.IdentityAndJsonJournalTamperingFailsClosed(mutation: "legacy")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.IdentityAndJsonJournalTamperingFailsClosed(mutation: "truncated")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.IdentityAndJsonJournalTamperingFailsClosed(mutation: "unknown-property")
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.LockedLaterDestinationStopsBeforeExistingContentChanges
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.NewFileIdentitySwapCannotDeleteUserFile
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.OpenHandleBlocksWriteDeleteAndParentRename
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.PrimaryAndFailureJournalErrorsAreBothPreserved
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.RollbackAndFailureJournalErrorsAreBothPreserved
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.SameContentDifferentFileIdCannotDriveRestore
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.SameIdUserContentChangeStopsAllRestoreOperations
+Passed: SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.VerifiedInputPackageCannotBeSwappedBeforeStaging

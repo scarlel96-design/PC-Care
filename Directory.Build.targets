@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup Condition="'$(WO05VMTest)' == 'true'">
+    <DefineConstants>$(DefineConstants);PCCARE_VM_TEST</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(WO05VMTest)' == 'true' and '$(MSBuildProjectName)' == 'SmartPerformanceDoctor.UpdateEngine'">
+    <Compile Include="$(WO05TestTrustSource)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(WO05VMTest)' == 'true'">
+    <AssemblyMetadata Include="PC-Care.BuildProfile" Value="WO05-VM-TEST-NOT-FOR-DISTRIBUTION" />
+  </ItemGroup>
+  <Target Name="ValidateWO05VMProfile" BeforeTargets="CoreCompile" Condition="'$(WO05VMTest)' == 'true'">
+    <Error Condition="'$(Configuration)' != 'Release'" Text="WO05 VM profile requires Release." />
+    <Error Condition="!Exists('$(WO05TestTrustSource)')" Text="Supply an explicit generated VM public trust source." />
+  </Target>
+</Project>

@@ -1,0 +1,22 @@
+작업 브랜치: `codex/pccare-rework-phase1-filesystem-hardening`
+기준 커밋: `155537b721e3eb266b2a0a3fb801a4b35fbbff56`
+기준 트리: `581bdaf0bf50a787ea1ca346140065c733e56b12`
+검증 소스 커밋·원격 CI: `evidence/wo05/GITHUB_RESULT.txt`.
+최종 증거 커밋은 검증 소스 커밋과 구분한다.
+실행 위치: `C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care`.
+환경: Windows NT 10.0.26200.0, x64, .NET SDK 10.0.401, runtime 10.0.12.
+전용 VM 및 스냅샷: 미제공.
+
+BASELINE COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --filter FullyQualifiedName~SignedUpdateTests --logger 'trx;LogFileName=wo05-baseline.trx' -v:minimal
+OUTPUT: 통과!  - 실패:     0, 통과:    53, 건너뜀:     0, 전체:    53, 기간: 7 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+EXIT: 0
+MODIFIED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests' --logger 'trx;LogFileName=wo05-targeted-final.trx' -v:minimal
+OUTPUT: 통과!  - 실패:     0, 통과:    91, 건너뜀:     0, 전체:    91, 기간: 23 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+EXIT: 0
+FULL COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo05-full-final.trx' -v:minimal
+OUTPUT: 통과!  - 실패:     0, 통과:   732, 건너뜀:   111, 전체:   843, 기간: 4 m 21 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+EXIT: 0
+SECURITYLAB COMMAND: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo05-securitylab-final.trx' -v:minimal
+OUTPUT: 통과!  - 실패:     0, 통과:    36, 건너뜀:     0, 전체:    36, 기간: 2 m 3 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+EXIT: 0
+DELTA: +38 passed; 111 pre-existing skipped tests unchanged.

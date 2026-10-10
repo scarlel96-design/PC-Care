@@ -24,7 +24,7 @@ var workRoot = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.
     "PC-Care", "UpdateTransactions");
 try
 {
-    var coordinator = new UpdateTransaction(PublisherTrustPolicy.Production, workRoot, strictAcl: true);
+    var coordinator = new UpdateTransaction(BuildPublisherTrust.Current, workRoot, strictAcl: true);
     TransactionResult result;
     if (args[0] == "--recover" && args.Length is 1 or 3)
     {

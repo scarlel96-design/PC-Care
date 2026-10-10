@@ -1,3 +1,7 @@
 docs/rework/evidence/ROLLBACK.sh text eol=lf
 /docs/rework/evidence/wo04/UpdateTransaction.original.cs -text
 /docs/rework/evidence/wo04/ROLLBACK.sh text eol=lf
+/docs/rework/evidence/wo05/UpdateTransaction.original.cs -text
+/docs/rework/evidence/wo05/UpdateTransaction.modified.cs -text
+/docs/rework/evidence/wo05/ROLLBACK.sh text eol=lf
+/docs/rework/evidence/wo05/SOURCE_CHANGES.patch -text whitespace=-blank-at-eol

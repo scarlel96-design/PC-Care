@@ -1,0 +1,25 @@
+작업 브랜치: `codex/pccare-rework-phase1-filesystem-hardening`
+기준 커밋: `155537b721e3eb266b2a0a3fb801a4b35fbbff56`
+기준 트리: `581bdaf0bf50a787ea1ca346140065c733e56b12`
+검증 소스 커밋·원격 CI: `evidence/wo05/GITHUB_RESULT.txt`.
+최종 증거 커밋은 검증 소스 커밋과 구분한다.
+실행 위치: `C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care`.
+환경: Windows NT 10.0.26200.0, x64, .NET SDK 10.0.401, runtime 10.0.12.
+전용 VM 및 스냅샷: 미제공.
+
+COMMAND: PowerShell Parser.ParseFile(scripts/wo05-vm-harness.ps1)
+INPUT: harness source
+OUTPUT: VM_HARNESS_PARSE=PASS
+EXIT: 0
+COMMAND: ./scripts/wo05-vm-harness.ps1 -EvidenceDirectory ./docs/rework/evidence/wo05 -SnapshotId NOT-PROVIDED -Action prepare
+INPUT: ordinary host evidence folder without disposable-VM marker
+OUTPUT: BLOCKED: disposable VM marker missing.
+RESULT: expected guard exception caught by the test wrapper; wrapper exit 0; no host mutations.
+COMMAND: UpdateHelper.exe --exec arbitrary
+OUTPUT: no console output
+EXIT: 2 (expected unsupported verb rejection)
+ACTUAL VM INSTALLATION: BLOCKED
+UAC APPROVAL/DENIAL: BLOCKED
+VM REBOOT: BLOCKED
+ACTUAL PROGRAMDATA ACL: BLOCKED
+OFFICIAL SIGNING: BLOCKED

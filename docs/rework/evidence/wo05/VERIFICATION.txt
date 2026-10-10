@@ -1,0 +1,32 @@
+작업 브랜치: `codex/pccare-rework-phase1-filesystem-hardening`
+기준 커밋: `155537b721e3eb266b2a0a3fb801a4b35fbbff56`
+기준 트리: `581bdaf0bf50a787ea1ca346140065c733e56b12`
+검증 소스 커밋·원격 CI: `evidence/wo05/GITHUB_RESULT.txt`.
+최종 증거 커밋은 검증 소스 커밋과 구분한다.
+실행 위치: `C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care`.
+환경: Windows NT 10.0.26200.0, x64, .NET SDK 10.0.401, runtime 10.0.12.
+전용 VM 및 스냅샷: 미제공.
+
+CHANGED FIELDS: SchemaVersion=2, InstallIdentity, TransactionIdentity, OriginalIdentity, BackupIdentity, InstalledIdentity; retained file/ancestor handles; strict file ACL.
+MODIFIED_FILE=C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo05\UpdateTransaction.modified.cs
+DIFF_FILE=C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo05\SOURCE_CHANGES.patch
+VERIFICATION=C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo05\VERIFICATION.txt
+ROLLBACK=C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo05\ROLLBACK.sh
+ORIGINAL_SHA256=3B3E198CE830BA48AB0F11F31F0CCF9F0ACCB44E0D47F8A6527CEF2298532067
+BASELINE COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --filter FullyQualifiedName~SignedUpdateTests --logger 'trx;LogFileName=wo05-baseline.trx' -v:minimal
+BASELINE INPUT: base Release test assembly; SignedUpdateTests synthetic files and ephemeral signatures.
+BASELINE OUTPUT: 통과!  - 실패:     0, 통과:    53, 건너뜀:     0, 전체:    53, 기간: 7 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+BASELINE EXIT: 0
+MODIFIED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests' --logger 'trx;LogFileName=wo05-targeted-final.trx' -v:minimal
+MODIFIED INPUT: final Release source; SignedUpdateTests, WindowsFileBoundaryTests, WO05CompatibilityTests; synthetic files only.
+MODIFIED OUTPUT: 통과!  - 실패:     0, 통과:    91, 건너뜀:     0, 전체:    91, 기간: 23 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+MODIFIED EXIT: 0
+ROLLBACK COMMAND: & 'C:\Program Files\Git\bin\bash.exe' docs/rework/evidence/wo05/ROLLBACK.sh (Join-Path $PWD 'artifacts/wo05-source-rollback-final')
+ROLLBACK INPUT: artifacts/wo05-source-rollback-final/UpdateTransaction.cs, independent modified source copy with fixture marker.
+ROLLBACK OUTPUT: SOURCE_ROLLBACK=PASS; ORIGINAL_SHA256=3B3E198CE830BA48AB0F11F31F0CCF9F0ACCB44E0D47F8A6527CEF2298532067; INSTALL_TRANSACTION=NOT_EXECUTED
+ROLLBACK EXIT: 0
+RESTORED SOURCE STATUS: baseline bytes and SHA-256 match; actual modified engine source remains changed.
+INSTALLATION ROLLBACK: independent evidence below. Source-copy rollback does not prove installation restoration.
+RELEASE: NO-GO / PARTIAL.
+VM/UAC/REBOOT/REAL ACL: BLOCKED.
+PRODUCTION SIGNING: BLOCKED.

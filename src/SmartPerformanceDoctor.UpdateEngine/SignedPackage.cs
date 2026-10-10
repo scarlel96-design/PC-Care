@@ -99,10 +99,22 @@ public static class SignedPackage
     {
         try
         {
-            using var file = new FileStream(packagePath, FileMode.Open, FileAccess.Read, FileShare.Read,
-                128 * 1024, FileOptions.SequentialScan);
+            var path = Path.GetFullPath(packagePath);
+            using var lease = WindowsFileBoundary.OpenRead(Path.GetDirectoryName(path)!, Path.GetFileName(path));
+            return Verify(lease.Stream, currentVersion, policy, now, cancellationToken);
+        }
+        catch (OperationCanceledException) { throw; }
+        catch (Exception ex) { return Fail("VERIFY-FAIL", ex.GetType().Name); }
+    }
+
+    public static PackageVerification Verify(Stream file, string currentVersion,
+        PublisherTrustPolicy policy, DateTimeOffset? now = null, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            file.Position = 0;
             if (file.Length > MaxTotalLength) return Fail("PACKAGE-LIMIT");
-            using var archive = new ZipArchive(file, ZipArchiveMode.Read, leaveOpen: false);
+            using var archive = new ZipArchive(file, ZipArchiveMode.Read, leaveOpen: true);
             if (archive.Entries.Count is < 3 or > 10_002) return Fail("ENTRY-LIMIT");
             var entries = new Dictionary<string, ZipArchiveEntry>(StringComparer.OrdinalIgnoreCase);
             foreach (var entry in archive.Entries)
@@ -227,8 +239,9 @@ public static class SignedPackage
             if (part.Length == 0 || part is "." or ".." || part.EndsWith(' ') || part.EndsWith('.') ||
                 part.IndexOfAny(['<', '>', '"', '|', '?', '*']) >= 0) return false;
             var stem = part.Split('.')[0].ToUpperInvariant();
-            if (stem is "CON" or "PRN" or "AUX" or "NUL" ||
-                (stem.Length == 4 && (stem.StartsWith("COM") || stem.StartsWith("LPT")) && stem[3] is >= '1' and <= '9')) return false;
+            if (stem is "CON" or "PRN" or "AUX" or "NUL" or "CONIN$" or "CONOUT$" ||
+                (stem.Length == 4 && (stem.StartsWith("COM") || stem.StartsWith("LPT")) &&
+                    (stem[3] is >= '1' and <= '9' or '\u00b9' or '\u00b2' or '\u00b3'))) return false;
         }
         return true;
     }
