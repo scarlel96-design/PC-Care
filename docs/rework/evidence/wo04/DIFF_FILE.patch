@@ -1,15 +1,26 @@
+diff --git a/.gitattributes b/.gitattributes
+index 3c29f70..a6efd9e 100644
+--- a/.gitattributes
++++ b/.gitattributes
+@@ -1 +1,3 @@
+ docs/rework/evidence/ROLLBACK.sh text eol=lf
++/docs/rework/evidence/wo04/UpdateTransaction.original.cs -text
++/docs/rework/evidence/wo04/ROLLBACK.sh text eol=lf
 diff --git a/.github/workflows/wo04-windows-validation.yml b/.github/workflows/wo04-windows-validation.yml
 new file mode 100644
-index 0000000..f6cd17a
+index 0000000..835c5f9
 --- /dev/null
 +++ b/.github/workflows/wo04-windows-validation.yml
-@@ -0,0 +1,63 @@
+@@ -0,0 +1,66 @@
 +name: WO04 Windows final validation
 +
 +on:
 +  push:
 +    branches:
 +      - codex/pccare-rework-phase1-final-validation
++    paths-ignore:
++      - 'docs/**'
++      - '.gitattributes'
 +  pull_request:
 +
 +jobs:
@@ -322,7 +333,7 @@ index 5a43725..54be1aa 100644
              Margin = new Thickness(0, 6, 0, 0)
          });
 diff --git a/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs b/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
-index 508d552..5b424c1 100644
+index 508d552..feb6056 100644
 --- a/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
 +++ b/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
 @@ -15,6 +15,7 @@ public enum UpdateStage
@@ -333,7 +344,7 @@ index 508d552..5b424c1 100644
      public string PackageId { get; set; } = "";
      public string FromVersion { get; set; } = "";
      public string ToVersion { get; set; } = "";
-@@ -36,6 +37,23 @@ public sealed class UpdateFileJournal
+@@ -36,12 +37,32 @@ public sealed class UpdateFileJournal
  
  public sealed record TransactionResult(UpdateStage Stage, string Code, string TransactionId, int FilesApplied);
  
@@ -357,7 +368,16 @@ index 508d552..5b424c1 100644
  public sealed class UpdateTransaction
  {
      private readonly PublisherTrustPolicy _policy;
-@@ -51,7 +69,8 @@ public sealed class UpdateTransaction
+     private readonly string _workRoot;
+     private readonly bool _strictAcl;
+     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
++    private const int MaxJournalFiles = 4096;
++    private const int MaxJournalBytes = 1024 * 1024;
++    private const int MaxFailureCharacters = 2048;
+ 
+     public UpdateTransaction(PublisherTrustPolicy policy, string workRoot, bool strictAcl)
+     {
+@@ -51,7 +72,8 @@ public sealed class UpdateTransaction
      }
  
      public TransactionResult Apply(string packagePath, string installRoot, string currentVersion,
@@ -367,7 +387,7 @@ index 508d552..5b424c1 100644
      {
          installRoot = Path.GetFullPath(installRoot);
          EnsureRoot(installRoot);
-@@ -60,26 +79,34 @@ public sealed class UpdateTransaction
+@@ -60,26 +82,36 @@ public sealed class UpdateTransaction
          EnsureRoot(_workRoot);
          using var gate = new FileStream(Path.Combine(_workRoot, "update.lock"), FileMode.OpenOrCreate,
              FileAccess.ReadWrite, FileShare.None);
@@ -390,6 +410,8 @@ index 508d552..5b424c1 100644
              return new(UpdateStage.Prepared, source.Code, "", 0);
 -        if (Directory.EnumerateDirectories(_workRoot, "tx-*").Any(dir =>
 -            ReadJournal(dir) is { Stage: UpdateStage.Committed } prior &&
++        if (!FitsRecoveryJournal(source.Manifest, installRoot, currentVersion))
++            return new(UpdateStage.Prepared, "RECOVERY-JOURNAL-LIMIT", "", 0);
 +        faultInjector?.Invoke(UpdateFaultPoint.AfterPackageVerification);
 +        if (priorJournals.Any(prior => prior.Stage == UpdateStage.Committed &&
              string.Equals(prior.PackageId, source.Manifest.PackageId, StringComparison.OrdinalIgnoreCase)))
@@ -408,7 +430,7 @@ index 508d552..5b424c1 100644
          };
          WriteJournal(txDir, journal);
          var packageCopy = Path.Combine(txDir, "package.spdup");
-@@ -87,6 +114,7 @@ public sealed class UpdateTransaction
+@@ -87,6 +119,7 @@ public sealed class UpdateTransaction
          var backupDir = Path.Combine(txDir, "backup");
          try
          {
@@ -416,7 +438,16 @@ index 508d552..5b424c1 100644
              File.Copy(packagePath, packageCopy, overwrite: false);
              var stagedVerification = SignedPackage.Verify(packageCopy, currentVersion, _policy);
              if (!stagedVerification.CanApply || stagedVerification.Manifest is null)
-@@ -118,6 +146,7 @@ public sealed class UpdateTransaction
+@@ -97,6 +130,8 @@ public sealed class UpdateTransaction
+                 return new(UpdateStage.Restored, "STAGED-PACKAGE-FAIL", id, 0);
+             }
+             var manifest = stagedVerification.Manifest;
++            if (!FitsRecoveryJournal(manifest, installRoot, currentVersion))
++                throw new InvalidDataException("RECOVERY-JOURNAL-LIMIT");
+             journal.ToVersion = manifest.ToVersion;
+             journal.Stage = UpdateStage.PublisherVerified;
+             WriteJournal(txDir, journal);
+@@ -118,6 +153,7 @@ public sealed class UpdateTransaction
                          output.Flush(flushToDisk: true);
                      }
                      VerifyFile(stageFile, item.Length, item.Sha256);
@@ -424,7 +455,7 @@ index 508d552..5b424c1 100644
                  }
              }
              journal.Stage = UpdateStage.Staged;
-@@ -136,14 +165,17 @@ public sealed class UpdateTransaction
+@@ -136,14 +172,17 @@ public sealed class UpdateTransaction
                      entry.OriginalSha256 = Hash(target);
                      Directory.CreateDirectory(Path.GetDirectoryName(backup)!);
                      File.Copy(target, backup, overwrite: false);
@@ -442,7 +473,7 @@ index 508d552..5b424c1 100644
              var count = 0;
              foreach (var entry in journal.Files)
              {
-@@ -153,6 +185,7 @@ public sealed class UpdateTransaction
+@@ -153,6 +192,7 @@ public sealed class UpdateTransaction
                  var target = Resolve(installRoot, relative);
                  var expected = manifest.Files.Single(f => f.Path == entry.Path);
                  VerifyFile(sourceFile, expected.Length, expected.Sha256); // immediately before privileged read
@@ -450,7 +481,7 @@ index 508d552..5b424c1 100644
                  Directory.CreateDirectory(Path.GetDirectoryName(target)!);
                  var temp = target + ".pccare-" + id + ".tmp";
                  using (var input = new FileStream(sourceFile, FileMode.Open, FileAccess.Read, FileShare.Read))
-@@ -166,14 +199,21 @@ public sealed class UpdateTransaction
+@@ -166,14 +206,21 @@ public sealed class UpdateTransaction
                  File.Move(temp, target, overwrite: true);
                  entry.Applied = true;
                  WriteJournal(txDir, journal);
@@ -473,7 +504,7 @@ index 508d552..5b424c1 100644
              journal.Stage = UpdateStage.Committed;
              WriteJournal(txDir, journal);
              try { File.Delete(packageCopy); } catch (Exception) { /* retain evidence */ }
-@@ -184,11 +224,11 @@ public sealed class UpdateTransaction
+@@ -184,11 +231,11 @@ public sealed class UpdateTransaction
              journal.Failure = ex.GetType().Name + ": " + ex.Message;
              journal.Stage = UpdateStage.RollbackPending;
              WriteJournal(txDir, journal);
@@ -487,7 +518,7 @@ index 508d552..5b424c1 100644
      {
          installRoot = Path.GetFullPath(installRoot);
          EnsureRoot(installRoot);
-@@ -199,7 +239,9 @@ public sealed class UpdateTransaction
+@@ -199,7 +246,9 @@ public sealed class UpdateTransaction
              FileAccess.ReadWrite, FileShare.None);
          foreach (var dir in Directory.EnumerateDirectories(_workRoot, "tx-*").OrderBy(x => x, StringComparer.Ordinal))
          {
@@ -498,7 +529,7 @@ index 508d552..5b424c1 100644
              if (journal is null) return new(UpdateStage.RecoveryRequired, "JOURNAL-MISSING", "", 0);
              if (journal.Stage is UpdateStage.Committed or UpdateStage.Restored) continue;
              if (journal.Stage < UpdateStage.Applying)
-@@ -208,17 +250,140 @@ public sealed class UpdateTransaction
+@@ -208,17 +257,141 @@ public sealed class UpdateTransaction
                  WriteJournal(dir, journal);
                  continue;
              }
@@ -563,11 +594,11 @@ index 508d552..5b424c1 100644
 +
 +    private static bool TryReadTrustedJournal(string directory, string installRoot,
 +        out UpdateJournal? journal, out string reason)
-     {
++    {
 +        journal = null;
 +        reason = "JOURNAL-INVALID";
-         try
-         {
++        try
++        {
 +            EnsureRoot(directory);
 +            var name = Path.GetFileName(directory);
 +            if (!name.StartsWith("tx-", StringComparison.Ordinal) ||
@@ -581,7 +612,8 @@ index 508d552..5b424c1 100644
 +            journal = ReadJournal(directory);
 +            if (journal is null || !string.Equals(name, "tx-" + journal.TransactionId, StringComparison.Ordinal) ||
 +                !string.Equals(journal.InstallRoot, installRoot, StringComparison.OrdinalIgnoreCase) ||
-+                !Enum.IsDefined(journal.Stage) || journal.Files is null || journal.Files.Count > 4096)
++                !Enum.IsDefined(journal.Stage) || journal.Files is null || journal.Files.Count > MaxJournalFiles ||
++                journal.Failure is null || journal.Failure.Length > MaxFailureCharacters)
 +                return false;
 +            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 +            foreach (var entry in journal.Files)
@@ -614,9 +646,9 @@ index 508d552..5b424c1 100644
 +
 +    private static TransactionResult RollbackCore(string txDir, string installRoot, UpdateJournal journal,
 +        Action<UpdateFaultPoint>? faultInjector = null)
-+    {
-+        try
-+        {
+     {
+         try
+         {
 +            // Validate every backup before any restore/delete so a damaged backup cannot
 +            // cause a partially restored installation to be changed further.
 +            foreach (var entry in journal.Files)
@@ -641,7 +673,7 @@ index 508d552..5b424c1 100644
              foreach (var entry in journal.Files.AsEnumerable().Reverse())
              {
                  var relative = Relative(entry.Path);
-@@ -228,8 +393,9 @@ public sealed class UpdateTransaction
+@@ -228,8 +401,9 @@ public sealed class UpdateTransaction
                  {
                      var backup = Resolve(Path.Combine(txDir, "backup"), relative);
                      VerifyFile(backup, entry.OriginalLength, entry.OriginalSha256);
@@ -652,7 +684,7 @@ index 508d552..5b424c1 100644
                      VerifyFile(temp, entry.OriginalLength, entry.OriginalSha256);
                      File.Move(temp, target, overwrite: true);
                  }
-@@ -242,6 +408,7 @@ public sealed class UpdateTransaction
+@@ -242,6 +416,7 @@ public sealed class UpdateTransaction
                  entry.Restored = true;
                  WriteJournal(txDir, journal);
              }
@@ -660,7 +692,7 @@ index 508d552..5b424c1 100644
              journal.Stage = UpdateStage.Restored;
              WriteJournal(txDir, journal);
              return new(UpdateStage.Restored, "ROLLED-BACK", journal.TransactionId, journal.Files.Count(f => f.Applied));
-@@ -271,6 +438,7 @@ public sealed class UpdateTransaction
+@@ -271,6 +446,7 @@ public sealed class UpdateTransaction
          }
          EnsureRoot(productRoot);
          VerifyProtectedAcl(productRoot);
@@ -668,7 +700,7 @@ index 508d552..5b424c1 100644
          if (!Directory.Exists(_workRoot))
          {
              Directory.CreateDirectory(_workRoot);
-@@ -280,6 +448,7 @@ public sealed class UpdateTransaction
+@@ -280,6 +456,7 @@ public sealed class UpdateTransaction
          }
          EnsureRoot(_workRoot);
          VerifyProtectedAcl(_workRoot);
@@ -676,7 +708,7 @@ index 508d552..5b424c1 100644
      }
  
      private static void VerifyProtectedAcl(string directory)
-@@ -291,12 +460,13 @@ public sealed class UpdateTransaction
+@@ -291,12 +468,13 @@ public sealed class UpdateTransaction
          if (!security.AreAccessRulesProtected || owner is null ||
              (!owner.Equals(admins) && !owner.Equals(system)))
              throw new UnauthorizedAccessException("untrusted staging ACL or owner");
@@ -693,7 +725,7 @@ index 508d552..5b424c1 100644
                                            FileSystemRights.TakeOwnership)) != 0)
                  throw new UnauthorizedAccessException("staging writable by non-admin identity");
          }
-@@ -313,7 +483,24 @@ public sealed class UpdateTransaction
+@@ -313,9 +491,26 @@ public sealed class UpdateTransaction
              security.AddAccessRule(new FileSystemAccessRule(sid, FileSystemRights.FullControl,
                  InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
                  PropagationFlags.None, AccessControlType.Allow));
@@ -701,9 +733,9 @@ index 508d552..5b424c1 100644
 +            new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null), FileSystemRights.ReadAndExecute,
 +            InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
 +            PropagationFlags.None, AccessControlType.Allow));
-+        new DirectoryInfo(directory).SetAccessControl(security);
-+    }
-+
+         new DirectoryInfo(directory).SetAccessControl(security);
+     }
+ 
 +    private static void AllowReadOnlyInspection(string directory)
 +    {
 +        // Called only by the elevated strict-ACL path, after owner/DACL validation.
@@ -713,20 +745,58 @@ index 508d552..5b424c1 100644
 +            new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null), FileSystemRights.ReadAndExecute,
 +            InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
 +            PropagationFlags.None, AccessControlType.Allow));
-         new DirectoryInfo(directory).SetAccessControl(security);
++        new DirectoryInfo(directory).SetAccessControl(security);
 +        VerifyProtectedAcl(directory);
-     }
- 
++    }
++
      private static string Relative(string path)
-@@ -364,6 +551,8 @@ public sealed class UpdateTransaction
+     {
+         if (!SignedPackage.SafeRelativePath(path)) throw new InvalidDataException("unsafe path");
+@@ -364,6 +559,8 @@ public sealed class UpdateTransaction
      private static UpdateJournal? ReadJournal(string directory)
      {
          var path = Path.Combine(directory, "journal.json");
-+        if (File.Exists(path) && new FileInfo(path).Length > 1024 * 1024)
++        if (File.Exists(path) && new FileInfo(path).Length > MaxJournalBytes)
 +            throw new InvalidDataException("journal exceeds size limit");
          return File.Exists(path) ? JsonSerializer.Deserialize<UpdateJournal>(File.ReadAllText(path)) : null;
      }
  
+@@ -371,7 +568,11 @@ public sealed class UpdateTransaction
+     {
+         var path = Path.Combine(directory, "journal.json");
+         var temp = path + ".new";
++        if (journal.Failure.Length > MaxFailureCharacters)
++            journal.Failure = journal.Failure[..MaxFailureCharacters];
+         var bytes = JsonSerializer.SerializeToUtf8Bytes(journal, JsonOptions);
++        if (journal.Files.Count > MaxJournalFiles || bytes.Length > MaxJournalBytes)
++            throw new InvalidDataException("journal exceeds recovery limits");
+         using (var file = new FileStream(temp, FileMode.Create, FileAccess.Write,
+                    FileShare.None, 4096, FileOptions.WriteThrough))
+         {
+@@ -380,4 +581,23 @@ public sealed class UpdateTransaction
+         }
+         File.Move(temp, path, overwrite: true);
+     }
++
++    private static bool FitsRecoveryJournal(SignedManifest manifest, string installRoot, string currentVersion)
++    {
++        if (manifest.Files.Count > MaxJournalFiles) return false;
++        // Reserve the largest backup metadata and escaped failure text before changing installation files.
++        var projected = new UpdateJournal
++        {
++            TransactionId = new string('f', 32), InstallRoot = installRoot,
++            PackageId = manifest.PackageId, FromVersion = currentVersion, ToVersion = manifest.ToVersion,
++            Stage = UpdateStage.RecoveryRequired, Failure = new string('\u0001', MaxFailureCharacters),
++            Files = manifest.Files.Select(file => new UpdateFileJournal
++            {
++                Path = file.Path, Existed = true, OriginalLength = long.MaxValue,
++                OriginalSha256 = new string('F', 64), NewSha256 = file.Sha256,
++                Applied = false, Restored = false
++            }).ToList()
++        };
++        return JsonSerializer.SerializeToUtf8Bytes(projected, JsonOptions).Length <= MaxJournalBytes;
++    }
+ }
 diff --git a/src/SmartPerformanceDoctor.UpdateHelper/Program.cs b/src/SmartPerformanceDoctor.UpdateHelper/Program.cs
 index 06f2858..f0635ed 100644
 --- a/src/SmartPerformanceDoctor.UpdateHelper/Program.cs
@@ -774,10 +844,10 @@ index 06f2858..f0635ed 100644
              postApplyVersionCheck: expected =>
              {
 diff --git a/tests/SmartPerformanceDoctor.Tests/SignedUpdateTests.cs b/tests/SmartPerformanceDoctor.Tests/SignedUpdateTests.cs
-index 7693376..30a76c9 100644
+index 7693376..df5b31b 100644
 --- a/tests/SmartPerformanceDoctor.Tests/SignedUpdateTests.cs
 +++ b/tests/SmartPerformanceDoctor.Tests/SignedUpdateTests.cs
-@@ -147,10 +147,157 @@ public sealed class SignedUpdateTests
+@@ -147,10 +147,161 @@ public sealed class SignedUpdateTests
          var journal = JsonSerializer.Deserialize<UpdateJournal>(File.ReadAllText(journalPath))!;
          journal.Stage = UpdateStage.Applying;
          File.WriteAllText(journalPath, JsonSerializer.Serialize(journal));
@@ -797,6 +867,8 @@ index 7693376..30a76c9 100644
 +    [InlineData("missing-root")]
 +    [InlineData("duplicate")]
 +    [InlineData("null-files")]
++    [InlineData("null-failure")]
++    [InlineData("oversized-failure")]
 +    public void TamperedJournalCannotDriveRecovery(string mutation)
 +    {
 +        using var f = new Fixture();
@@ -815,6 +887,8 @@ index 7693376..30a76c9 100644
 +            case "missing-root": journal.InstallRoot = ""; break;
 +            case "duplicate": journal.Files.Add(journal.Files[0]); break;
 +            case "null-files": journal.Files = null!; break;
++            case "null-failure": journal.Failure = null!; break;
++            case "oversized-failure": journal.Failure = new string('a', 2049); break;
 +        }
 +        File.WriteAllText(journalPath, JsonSerializer.Serialize(journal));
 +        Assert.Equal(UpdateRecoveryState.RecoveryRequired, f.Transaction.InspectRecovery(f.Install).State);
@@ -935,6 +1009,62 @@ index 7693376..30a76c9 100644
      }
  
      [Fact]
+@@ -183,6 +334,23 @@ public sealed class SignedUpdateTests
+     [return: MarshalAs(UnmanagedType.Bool)]
+     private static extern bool CreateHardLink(string newFileName, string existingFileName, IntPtr securityAttributes);
+ 
++    [Theory]
++    [InlineData("file-count-limit")]
++    [InlineData("journal-size-limit")]
++    public void ValidPackageBeyondRecoveryCapacityIsRejectedBeforeInstallationChanges(string mutation)
++    {
++        using var f = new Fixture();
++        File.WriteAllText(Path.Combine(f.Install, "app.txt"), "old");
++        var package = f.Package(mutation);
++        Assert.True(SignedPackage.Verify(package, "51.0.4", f.Policy, Clock).CanApply);
++        var result = f.Transaction.Apply(package, f.Install, "51.0.4");
++        Assert.Equal(UpdateStage.Prepared, result.Stage);
++        Assert.Equal("RECOVERY-JOURNAL-LIMIT", result.Code);
++        Assert.Equal("old", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
++        Assert.Empty(Directory.GetDirectories(f.Work, "tx-*"));
++        Assert.Single(Directory.GetFiles(f.Install));
++    }
++
+     private sealed class Fixture : IDisposable
+     {
+         private readonly ECDsa _key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
+@@ -218,6 +386,15 @@ public sealed class SignedUpdateTests
+                         Sha256 = Convert.ToHexString(SHA256.HashData(second)) }
+                 ]
+             };
++            if (mutation is "file-count-limit" or "journal-size-limit")
++            {
++                var fileCount = mutation == "file-count-limit" ? 4097 : 4096;
++                manifest.Files = Enumerable.Range(0, fileCount).Select(index => new SignedFile
++                {
++                    Path = $"payload/{index:D5}-" + new string('a', 64) + ".txt",
++                    Length = first.Length, Sha256 = Convert.ToHexString(SHA256.HashData(first))
++                }).ToList();
++            }
+             var signature = _key.SignData(SignedPackage.CanonicalBytes(manifest), HashAlgorithmName.SHA256,
+                 DSASignatureFormat.IeeeP1363FixedFieldConcatenation);
+             if (mutation == "bad-signature") signature[0] ^= 0x80;
+@@ -228,8 +405,13 @@ public sealed class SignedUpdateTests
+             Add(archive, SignedPackage.ManifestName, JsonSerializer.SerializeToUtf8Bytes(manifest));
+             Add(archive, SignedPackage.SignatureName,
+                 JsonSerializer.SerializeToUtf8Bytes(new SignatureEnvelope { Signature = Convert.ToBase64String(signature) }));
+-            Add(archive, manifest.Files[0].Path, mutation == "content-tamper" ? "bad"u8.ToArray() : first);
+-            if (mutation != "missing-file") Add(archive, manifest.Files[1].Path, second);
++            if (mutation is "file-count-limit" or "journal-size-limit")
++                foreach (var item in manifest.Files) Add(archive, item.Path, first);
++            else
++            {
++                Add(archive, manifest.Files[0].Path, mutation == "content-tamper" ? "bad"u8.ToArray() : first);
++                if (mutation != "missing-file") Add(archive, manifest.Files[1].Path, second);
++            }
+             if (mutation == "extra-file") Add(archive, "payload/extra.txt", "extra"u8.ToArray());
+             if (mutation == "duplicate-entry") Add(archive, manifest.Files[0].Path, first);
+             return package;
 diff --git a/tests/SmartPerformanceDoctor.UpdateRecoveryProbe/Program.cs b/tests/SmartPerformanceDoctor.UpdateRecoveryProbe/Program.cs
 new file mode 100644
 index 0000000..2516e14

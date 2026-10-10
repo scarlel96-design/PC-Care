@@ -1,4 +1,18 @@
 RESTORED 5BA25D5372C348F14FEFCAF8C95A7D4290083E5511A7B08256502DBB52B1AAB4
 ROLLBACK_EXIT=0
 COPY_SHA=5BA25D5372C348F14FEFCAF8C95A7D4290083E5511A7B08256502DBB52B1AAB4
-MODIFIED_SHA=3A6D8C95F8BDE17F185540102D4B20A9C42FA4465EB32D149F061137177D3521
+MODIFIED_SHA=3B3E198CE830BA48AB0F11F31F0CCF9F0ACCB44E0D47F8A6527CEF2298532067
+
+GIT CHECKOUT ROLLBACK VALIDATION
+INPUT: Git index blobs in an independent checkout-shaped fixture.
+COMMAND: & 'C:/Program Files/Git/bin/bash.exe' docs/rework/evidence/wo04/checkout-rollback/docs/rework/evidence/wo04/ROLLBACK.sh docs/rework/evidence/wo04/checkout-rollback/independent-copy.cs
+OUTPUT: RESTORED 5BA25D5372C348F14FEFCAF8C95A7D4290083E5511A7B08256502DBB52B1AAB4
+CHECKOUT_ROLLBACK_EXIT=0
+GUARD COMMAND: & 'C:/Program Files/Git/bin/bash.exe' docs/rework/evidence/wo04/checkout-rollback/docs/rework/evidence/wo04/ROLLBACK.sh docs/rework/evidence/wo04/checkout-rollback/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
+OUTPUT: REFUSE_TO_REPLACE_MODIFIED_FILE
+GUARD_EXIT=3
+MODIFIED_SOURCE_SHA256=3B3E198CE830BA48AB0F11F31F0CCF9F0ACCB44E0D47F8A6527CEF2298532067
+The independent copy returned to the baseline hash. The modified source retained its changed hash.
+The original index blob preserves CRLF bytes. The executable rollback script preserves LF bytes.
+An earlier nested fixture had the wrong repository depth. Its realpath diagnostic did not establish source-path protection.
+The checkout-shaped retest verified restoration and source-path rejection.

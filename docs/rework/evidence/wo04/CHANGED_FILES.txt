@@ -1,3 +1,4 @@
+.gitattributes
 .github/workflows/wo04-windows-validation.yml
 docs/rework/WO04_EXECUTION_REPORT.md
 docs/rework/WO04_PROTECTED_ACL_VALIDATION.md
@@ -8,8 +9,14 @@ docs/rework/WO04_TRANSACTION_FAULT_MATRIX.md
 docs/rework/WO04_WINDOWS_VM_E2E_REPORT.md
 docs/rework/evidence/wo03/VERIFICATION.txt
 docs/rework/evidence/wo04/BUILD_RESULT.txt
+docs/rework/evidence/wo04/CHANGED_FILES.txt
 docs/rework/evidence/wo04/CI_RESULT.txt
+docs/rework/evidence/wo04/CI_RUN_METADATA.json
+docs/rework/evidence/wo04/CI_SOURCE_0929.txt
+docs/rework/evidence/wo04/CI_SOURCE_940.txt
+docs/rework/evidence/wo04/DIFF_FILE.patch
 docs/rework/evidence/wo04/RECOVERY_TEST_RESULT.txt
+docs/rework/evidence/wo04/RELEASE_SIGNATURE_RESULT.txt
 docs/rework/evidence/wo04/ROLLBACK.sh
 docs/rework/evidence/wo04/ROLLBACK_RESULT.txt
 docs/rework/evidence/wo04/SOURCE_IDENTITY.txt

@@ -1,0 +1,7 @@
+INPUT: local x64 Release artifacts; no application launch
+COMMAND: Get-AuthenticodeSignature -LiteralPath 'src/SmartPerformanceDoctor.App/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.dll'; Get-FileHash -LiteralPath 'src/SmartPerformanceDoctor.App/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.dll' -Algorithm SHA256
+FILE=src/SmartPerformanceDoctor.App/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.dll STATUS=NotSigned SHA256=A3613F0C647E5CE92562393F3AED00C6D48AB291A68DCA525C48E587836CCD7B
+RESULT: completed; PowerShell process exit=0
+COMMAND: Get-AuthenticodeSignature -LiteralPath 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe'; Get-FileHash -LiteralPath 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe' -Algorithm SHA256
+FILE=src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe STATUS=NotSigned SHA256=09D751011049A144246DB9FEDA2294D5DCC08725DC62CE27A79EEAC11EA1FBCD
+RESULT: completed; PowerShell process exit=0

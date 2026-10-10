@@ -1,0 +1,13 @@
+STATUS: PASS (automatic Windows CI only)
+RUN: 38033346472
+LOG COMMAND: gh run view 38033346472 --log
+EXIT: 0
+ACTUAL LOG EXCERPTS:
+windows-validation	Release build	2026-10-10T07:09:43.5980794Z Build succeeded.
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-10T07:10:13.8351391Z Passed!  - Failed:     0, Passed:    53, Skipped:     0, Total:    53, Duration: 6 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Separate-process termination and recovery	2026-10-10T07:10:16.7937379Z Build succeeded.
+windows-validation	Separate-process termination and recovery	2026-10-10T07:10:17.3095326Z PREPARED old vault-marker
+windows-validation	Separate-process termination and recovery	2026-10-10T07:10:17.8951934Z BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK
+windows-validation	Separate-process termination and recovery	2026-10-10T07:10:18.0309023Z APP=old VAULT=vault-marker STATUS=RecoveryCompleted
+windows-validation	Full application regression	2026-10-10T07:13:31.9880849Z Passed!  - Failed:     0, Passed:   694, Skipped:   111, Total:   805, Duration: 3 m 11 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	SecurityLab regression	2026-10-10T07:15:12.2780262Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 37 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)

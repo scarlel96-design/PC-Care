@@ -23,3 +23,72 @@ VERIFY EXIT: 0
 APP restored SHA256=CBA06B5736FAF67E54B07B561EAE94395E774C517A7D910A54369E1263CCFBD4
 SYNTHETIC marker SHA256=7010F7FC3856863CF8673D65B76A4D7C7035C803A6B8800A4C1279E8F9D09DE9
 NOT A WINDOWS REBOOT/UAC/ACTUAL VAULT TEST.
+
+FINAL SOURCE RETEST: 9403874c1d32507156fd31a60b2e0b0b07bf812f
+COMMAND: $probe='tests/SmartPerformanceDoctor.UpdateRecoveryProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateRecoveryProbe.exe'; $wo04Fixture=Join-Path (Get-Location).Path '.wo04-final-fixture-9403874'; & $probe prepare $wo04Fixture; & $probe apply-kill $wo04Fixture; & $probe recover $wo04Fixture; & $probe verify $wo04Fixture
+INPUT: synthetic app and marker; ephemeral test signing key; strictAcl=false
+OUTPUT: PREPARED old vault-marker
+PREPARE_EXIT=0
+OUTPUT: Process terminated. / WO04 isolated synthetic process termination
+LOCAL OBSERVATION: FailFast emitted its message but the process remained present.
+EXTERNAL TERMINATION COMMAND: Stop-Process -Id 4396 -Force
+IDENTITY CHECK: PID4396 ExecutablePath matched UpdateRecoveryProbe; CommandLine matched apply-kill and .wo04-final-fixture-9403874.
+EXTERNAL TERMINATION OUTPUT: TERMINATED_SYNTHETIC_PROBE_PID=4396
+EXTERNAL TERMINATION EXIT: 0
+KILL_EXIT=-1
+OUTPUT: BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK
+RECOVER_EXIT=0
+OUTPUT: APP=old VAULT=vault-marker STATUS=RecoveryCompleted
+VERIFY_EXIT=0
+RESTORED STATUS: original app and synthetic marker were preserved.
+This retest used external termination after the FailFast message. It is not a clean FailFast exit or Windows reboot test.
+The cause of the local termination delay is UNVERIFIED.
+
+FINAL SOURCE CI SEPARATE-PROCESS RECOVERY
+SOURCE: 082a65ec55c1879d02ea807bd3efb04abc17c026
+RUN: 38033748493
+COMMAND: UpdateRecoveryProbe prepare/apply-kill/recover/verify; exact script is .github/workflows/wo04-windows-validation.yml
+INPUT: RUNNER_TEMP/wo04-synthetic-recovery; strictAcl=false; signed synthetic v2
+ACTUAL STEP LOG:
+windows-validation	Separate-process termination and recovery	﻿2026-10-10T07:16:49.8017313Z ##[group]Run dotnet build tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:49.8018465Z ^[[36;1mdotnet build tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj -c Release -p:Platform=x64 -m:1 -v:minimal^[[0m
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:49.8019407Z ^[[36;1m$probe = 'tests/SmartPerformanceDoctor.UpdateRecoveryProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateRecoveryProbe.exe'^[[0m
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:49.8020011Z ^[[36;1m$fixture = Join-Path $env:RUNNER_TEMP 'wo04-synthetic-recovery'^[[0m
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:49.8020300Z ^[[36;1m& $probe prepare $fixture^[[0m
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:49.8020555Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'prepare failed' }^[[0m
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:49.8020825Z ^[[36;1m& $probe apply-kill $fixture^[[0m
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:49.8021138Z ^[[36;1mif ($LASTEXITCODE -eq 0) { throw 'process did not terminate at injection point' }^[[0m
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:49.8021511Z ^[[36;1m& $probe recover $fixture^[[0m
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:49.8021794Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'separate-process recovery failed' }^[[0m
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:49.8022117Z ^[[36;1m& $probe verify $fixture^[[0m
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:49.8022406Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'restored content verification failed' }^[[0m
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:49.8078638Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:49.8078926Z env:
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:49.8079092Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:49.8079296Z ##[endgroup]
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:50.6234337Z   Determining projects to restore...
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:51.0931250Z   Restored D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.UpdateRecoveryProbe\SmartPerformanceDoctor.UpdateRecoveryProbe.csproj (in 186 ms).
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:51.0953029Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\SmartPerformanceDoctor.UpdateEngine.csproj (in 176 ms).
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:51.4603387Z   SmartPerformanceDoctor.UpdateEngine -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:51.6665008Z   SmartPerformanceDoctor.UpdateRecoveryProbe -> D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.UpdateRecoveryProbe\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateRecoveryProbe.dll
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:51.6753028Z
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:51.6758967Z Build succeeded.
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:51.6759857Z     0 Warning(s)
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:51.6760530Z     0 Error(s)
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:51.6761672Z
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:51.6761860Z Time Elapsed 00:00:01.41
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.1450260Z PREPARED old vault-marker
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.2910710Z Process terminated.
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.2911142Z WO04 isolated synthetic process termination
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.2957414Z    at System.Environment.FailFast(System.Runtime.CompilerServices.StackCrawlMarkHandle, System.String, System.Runtime.CompilerServices.ObjectHandleOnStack, System.String)
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.2958958Z    at System.Environment.FailFast(System.Threading.StackCrawlMark ByRef, System.String, System.Exception, System.String)
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.2959739Z    at System.Environment.FailFast(System.String)
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.2960381Z    at Program+<>c.<<Main>$>b__0_1(SmartPerformanceDoctor.UpdateEngine.UpdateFaultPoint)
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.2961960Z    at SmartPerformanceDoctor.UpdateEngine.UpdateTransaction.Apply(System.String, System.String, System.String, System.Action`1<Int32>, System.Func`2<System.String,Boolean>, System.Action`1<SmartPerformanceDoctor.UpdateEngine.UpdateFaultPoint>)
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.2963442Z    at Program.<Main>$(System.String[])
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.6208082Z BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.7353899Z APP=old VAULT=vault-marker STATUS=RecoveryCompleted
+STEP EXIT: 0
+RECOVER/VERIFY EXIT: 0 (checked by CI script)
+FAILFAST NUMERIC EXIT: NOT RECORDED; nonzero was checked.
+RESTORED STATUS: APP=old VAULT=vault-marker STATUS=RecoveryCompleted

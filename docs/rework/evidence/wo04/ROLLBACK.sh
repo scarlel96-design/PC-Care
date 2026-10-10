@@ -7,7 +7,8 @@ target="${1:?pass an independent copy of UpdateTransaction.cs}"
 repo_source="$here/../../../../src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs"
 
 [[ -f "$source_file" && -f "$target" ]] || { echo 'MISSING_INPUT' >&2; exit 2; }
-[[ "$(realpath -- "$target")" != "$(realpath -- "$repo_source")" ]] || {
+[[ -f "$repo_source" ]] || { echo 'MISSING_REPOSITORY_SOURCE' >&2; exit 2; }
+[[ ! "$target" -ef "$repo_source" && "$(realpath -- "$target")" != "$(realpath -- "$repo_source")" ]] || {
   echo 'REFUSE_TO_REPLACE_MODIFIED_FILE' >&2
   exit 3
 }

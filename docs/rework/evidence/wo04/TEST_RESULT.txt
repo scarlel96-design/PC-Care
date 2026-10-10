@@ -1,4 +1,13 @@
-STATUS: PARTIAL (targeted automatic PASS; full and CI results recorded in next evidence update)
+FINAL CI: PASS; source082a65ec55c1879d02ea807bd3efb04abc17c026; updater53/53; app694 passed+111 skipped/805; SecurityLab36/36; failed0.
+FINAL SOURCE: 082a65ec55c1879d02ea807bd3efb04abc17c026
+FINAL LOCAL UPDATER: 53/53, failed0, skipped0, exit0.
+Final full regression and SecurityLab CI results are in CI_RESULT.txt.
+
+INTERMEDIATE LOCAL SOURCE: 9403874c1d32507156fd31a60b2e0b0b07bf812f
+INTERMEDIATE LOCAL SUMMARY: updater53/53; full694 passed+111 skipped/805; failed0.
+Previous runs below retain their source scope.
+
+STATUS: PASS (local automatic tests only; VM/production remain separate)
 BASELINE COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --filter FullyQualifiedName~SignedUpdateTests --logger 'trx;LogFileName=baseline.trx' -v:minimal
 BASELINE INPUT: independent source checkout at 14b1a8151a742db577e92a586969a18625c06270
 BASELINE EXIT: 0
@@ -18,3 +27,574 @@ C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\P
 통과!  - 실패:     0, 통과:    49, 건너뜀:     0, 전체:    49, 기간: 4 s - SmartPerformanceDoctor.Tests.dll (net10.0)
 DELTA: signed updater 20 -> 49 (+29)
 INITIAL STALE X64 BINARY: 37 PASS/1 FAIL/38; rebuilt final49/49.
+
+FULL COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo04-full.trx' -v:minimal
+INPUT: synthetic application regression fixtures
+EXIT: 0
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+[xUnit.net 00:00:00.48]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:00.49]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_NonHarnessCommitSession_Blocked [SKIP]
+[xUnit.net 00:00:00.49]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_DecisionGate_NotProductionEnable [SKIP]
+[xUnit.net 00:00:00.51]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenAnchorMissing [SKIP]
+[xUnit.net 00:00:00.51]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_StabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:00.51]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ExternalReviewCompletedCodeRemainsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_NonHarnessCommitSession_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_DecisionGate_NotProductionEnable [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenAnchorMissing [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_StabilityRepeat_Skipped [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ExternalReviewCompletedCodeRemainsFalse [1 ms]
+[xUnit.net 00:00:00.52]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:00.53]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_TrustedAnchorSignoff_PreflightEvidenceCurrent [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_TrustedAnchorSignoff_PreflightEvidenceCurrent [1 ms]
+[xUnit.net 00:00:00.54]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenXChaCha24Missing [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenXChaCha24Missing [1 ms]
+[xUnit.net 00:00:00.54]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenSClassUnsatisfied [SKIP]
+[xUnit.net 00:00:00.54]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:00.54]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ProductionWriterStillNotAuthorized [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenSClassUnsatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ProductionWriterStillNotAuthorized [1 ms]
+[xUnit.net 00:00:00.55]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:00.55]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SClassStillNotSatisfied [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SClassStillNotSatisfied [1 ms]
+[xUnit.net 00:00:00.56]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_DiskDurabilityStillOpen [SKIP]
+[xUnit.net 00:00:00.56]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SpdVaultUnchanged_NoMigration [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_DiskDurabilityStillOpen [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SpdVaultUnchanged_NoMigration [1 ms]
+[xUnit.net 00:00:01.25]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:01.25]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionRouteDenied [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionRouteDenied [1 ms]
+[xUnit.net 00:00:01.25]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ReadOnlyValidatorComplete [SKIP]
+[xUnit.net 00:00:01.25]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:01.25]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_PreflightEvidenceCurrent [SKIP]
+[xUnit.net 00:00:01.26]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SpdVaultUnchangedNoMigration [SKIP]
+[xUnit.net 00:00:01.30]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_HarnessProvider_Signed [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ReadOnlyValidatorComplete [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_PreflightEvidenceCurrent [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SpdVaultUnchangedNoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_HarnessProvider_Signed [1 ms]
+[xUnit.net 00:00:01.30]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionAnchorImplemented_RemainsFalse [SKIP]
+[xUnit.net 00:00:01.30]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:01.30]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionEnableAuthorized_RemainsFalse [SKIP]
+[xUnit.net 00:00:01.30]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_XChaCha24Implemented_RemainsFalseSignedCandidate [SKIP]
+[xUnit.net 00:00:01.30]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+[xUnit.net 00:00:01.30]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalWitnessStub_SignedButNotProductionLive [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionAnchorImplemented_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionEnableAuthorized_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_XChaCha24Implemented_RemainsFalseSignedCandidate [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalWitnessStub_SignedButNotProductionLive [1 ms]
+[xUnit.net 00:00:01.31]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_AnchorDesign_NotImplemented [SKIP]
+[xUnit.net 00:00:01.31]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable [SKIP]
+[xUnit.net 00:00:01.31]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.PhaseGate_E5_ProductionWriterDesign_NotWriterEnable [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_AnchorDesign_NotImplemented [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.PhaseGate_E5_ProductionWriterDesign_NotWriterEnable [1 ms]
+[xUnit.net 00:00:01.35]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_Preflight_CurrentEvidenceSourceOfTruthMatchesActual [SKIP]
+[xUnit.net 00:00:01.35]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenActualDiskDurabilityMissing [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_Preflight_CurrentEvidenceSourceOfTruthMatchesActual [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenActualDiskDurabilityMissing [1 ms]
+[xUnit.net 00:00:01.45]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityReview_PreflightEvidenceCurrent [SKIP]
+[xUnit.net 00:00:01.46]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SClassStillNotSatisfied [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityReview_PreflightEvidenceCurrent [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SClassStillNotSatisfied [1 ms]
+[xUnit.net 00:00:01.46]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionEnableAuthorized_RemainsFalse [SKIP]
+[xUnit.net 00:00:01.46]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionAnchorImplemented_RemainsFalse [SKIP]
+[xUnit.net 00:00:01.48]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+[xUnit.net 00:00:01.48]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:01.48]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_DiskDurabilityStillOpen [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionEnableAuthorized_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionAnchorImplemented_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_DiskDurabilityStillOpen [1 ms]
+[xUnit.net 00:00:01.49]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:01.49]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_AnchorSignoff_HarnessCandidateOnly_NotProductionImplemented [SKIP]
+[xUnit.net 00:00:01.49]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_XChaCha24StillOpen [SKIP]
+[xUnit.net 00:00:01.49]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_TrustedMonotonicAnchorRequired_ForFullVaultRollbackClosure [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_AnchorSignoff_HarnessCandidateOnly_NotProductionImplemented [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_XChaCha24StillOpen [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_TrustedMonotonicAnchorRequired_ForFullVaultRollbackClosure [1 ms]
+[xUnit.net 00:00:01.59]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SClassStillNotSatisfied [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SClassStillNotSatisfied [1 ms]
+[xUnit.net 00:00:01.62]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SpdVaultUnchanged_NoMigration [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SpdVaultUnchanged_NoMigration [1 ms]
+[xUnit.net 00:00:01.63]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityInvariant_StabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:01.65]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityInvariant_StabilityRepeat_Skipped [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:03.47]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_ProductionWriterGate_RemainsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_ProductionWriterGate_RemainsFalse [1 ms]
+[xUnit.net 00:00:03.82]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Implemented_RemainsFalseUntilSignoff [SKIP]
+[xUnit.net 00:00:03.88]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.PhaseGate_E62_ReviewFixes_ProductionStillDisabled [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Implemented_RemainsFalseUntilSignoff [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.PhaseGate_E62_ReviewFixes_ProductionStillDisabled [1 ms]
+[xUnit.net 00:00:04.06]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionAnchorImplemented_RemainsFalse [SKIP]
+[xUnit.net 00:00:04.06]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SpdVaultUnchanged_NoMigration [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionAnchorImplemented_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SpdVaultUnchanged_NoMigration [1 ms]
+[xUnit.net 00:00:04.07]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ReadOnlyValidator_XChaCha24_Pass [SKIP]
+[xUnit.net 00:00:04.07]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionEnableAuthorized_RemainsFalse [SKIP]
+[xUnit.net 00:00:04.07]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ReadOnlyValidator_XChaCha24_Pass [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionEnableAuthorized_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+[xUnit.net 00:00:05.05]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Recovery_EqualGenerationConflictingRoot_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Recovery_EqualGenerationConflictingRoot_CorruptBlocked [1 ms]
+[xUnit.net 00:00:06.36]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_E6Recovery_EqualGenerationConflictingRoot_CorruptBlocked [SKIP]
+[xUnit.net 00:00:06.36]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_Rollback_PreviousRootMismatch_MatchesE4_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_E6Recovery_EqualGenerationConflictingRoot_CorruptBlocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_Rollback_PreviousRootMismatch_MatchesE4_CorruptBlocked [1 ms]
+[xUnit.net 00:00:06.47]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_CommitThreeCopyAsync_Production_Blocked [SKIP]
+[xUnit.net 00:00:06.47]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_DenyMigrationRoute_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_CommitThreeCopyAsync_Production_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_DenyMigrationRoute_Blocked [1 ms]
+[xUnit.net 00:00:06.47]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_TryOpenProductionSession_Blocked [SKIP]
+[xUnit.net 00:00:06.48]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.PhaseGate_E71_ReviewFixes_AllEnableFlagsFalse [SKIP]
+[xUnit.net 00:00:06.49]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_JournalWriterGate_False [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_TryOpenProductionSession_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.PhaseGate_E71_ReviewFixes_AllEnableFlagsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_JournalWriterGate_False [1 ms]
+[xUnit.net 00:00:06.56]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_NonHarnessProductionRouteStillDenied [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_NonHarnessProductionRouteStillDenied [1 ms]
+[xUnit.net 00:00:06.56]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444 [SKIP]
+[xUnit.net 00:00:06.57]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_StabilityRepeat_Skipped [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444 [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_StabilityRepeat_Skipped [1 ms]
+[xUnit.net 00:00:06.58]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:06.58]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:07.79]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_DecisionRecord_NotProductionEnable [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_DecisionRecord_NotProductionEnable [1 ms]
+[xUnit.net 00:00:07.83]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:07.84]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:08.02]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:08.02]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_FullRollbackMatrix_StabilityRepeat_Skipped [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_FullRollbackMatrix_StabilityRepeat_Skipped [1 ms]
+[xUnit.net 00:00:08.13]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorStabilityRepeat_Skipped [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorStabilityRepeat_Skipped [1 ms]
+[xUnit.net 00:00:08.18]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OrchestratorCommitAsync_Blocked [SKIP]
+[xUnit.net 00:00:08.18]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ConcurrentCommit_SecondBlocked [SKIP]
+[xUnit.net 00:00:08.18]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OpenWriteSessionAsync_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OrchestratorCommitAsync_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ConcurrentCommit_SecondBlocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OpenWriteSessionAsync_Blocked [1 ms]
+[xUnit.net 00:00:08.25]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_M01M02Closed_CurrentEvidenceConsistent [SKIP]
+[xUnit.net 00:00:08.25]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_ExternalReviewCompletedCodeRemainsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_M01M02Closed_CurrentEvidenceConsistent [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_ExternalReviewCompletedCodeRemainsFalse [1 ms]
+[xUnit.net 00:00:08.34]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SpdVaultUnchanged_NoMigration [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SpdVaultUnchanged_NoMigration [1 ms]
+[xUnit.net 00:00:08.63]     SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse [1 ms]
+[xUnit.net 00:00:10.02]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:10.10]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:10.12]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.JournalRecorder_ProductionRoute_Fails_WhenJournalDisabled [SKIP]
+[xUnit.net 00:00:10.12]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.PhaseGate_E6_DisabledProductionWriter_NotAuthorized [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.JournalRecorder_ProductionRoute_Fails_WhenJournalDisabled [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.PhaseGate_E6_DisabledProductionWriter_NotAuthorized [1 ms]
+[xUnit.net 00:00:11.64]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionOpenSession_Throws_Blocked [SKIP]
+[xUnit.net 00:00:11.64]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.DurableStore_RelativePathEscape_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionOpenSession_Throws_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.DurableStore_RelativePathEscape_Blocked [1 ms]
+[xUnit.net 00:00:11.85]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_WritePolicy_ProductionDisabled [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_WritePolicy_ProductionDisabled [1 ms]
+[xUnit.net 00:00:12.19]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ReentrantCommit_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ReentrantCommit_Blocked [1 ms]
+[xUnit.net 00:00:12.19]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_FactoryProductionCreate_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_FactoryProductionCreate_Blocked [1 ms]
+[xUnit.net 00:00:13.46]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.PhaseGate_E7_PreEnableHardening_EnableFlagsFalse [SKIP]
+[xUnit.net 00:00:13.46]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_DuplicateTransactionId_Blocked [SKIP]
+[xUnit.net 00:00:13.46]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_ProductionDurableStore_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.PhaseGate_E7_PreEnableHardening_EnableFlagsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_DuplicateTransactionId_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_ProductionDurableStore_Blocked [1 ms]
+[xUnit.net 00:00:13.48]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_JournalRecorderProductionRoute_Blocked [SKIP]
+[xUnit.net 00:00:13.48]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_TransactionCoordinator_NonHarness_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_JournalRecorderProductionRoute_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_TransactionCoordinator_NonHarness_Blocked [1 ms]
+[xUnit.net 00:00:17.11]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionCommit_Throws_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionCommit_Throws_Blocked [1 ms]
+[xUnit.net 00:00:17.94]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_ProductionRoute_AppHostViewModel_NoWriter [SKIP]
+[xUnit.net 00:00:17.94]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DurableStore_RootEscape_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_ProductionRoute_AppHostViewModel_NoWriter [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DurableStore_RootEscape_Blocked [1 ms]
+[xUnit.net 00:00:18.44]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.WriterFactory_ProductionCreate_Fails_WhenProductionWriterDisabled [SKIP]
+[xUnit.net 00:00:19.01]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_HeaderConflict_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.WriterFactory_ProductionCreate_Fails_WhenProductionWriterDisabled [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_HeaderConflict_CorruptBlocked [1 ms]
+[xUnit.net 00:00:21.14]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NonHarnessWriterInvocation_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NonHarnessWriterInvocation_Blocked [1 ms]
+[xUnit.net 00:00:22.99]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.PhaseGate_E8_LimitedDryRun_EnableFlagsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.PhaseGate_E8_LimitedDryRun_EnableFlagsFalse [1 ms]
+[xUnit.net 00:00:32.46]     SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.PhaseGate_E3_ActualKillHarness_DocumentationOnly [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.PhaseGate_E3_ActualKillHarness_DocumentationOnly [1 ms]
+[xUnit.net 00:00:33.71]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.WriterEnableChecklist_State_NoGo [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.WriterEnableChecklist_State_NoGo [1 ms]
+[xUnit.net 00:00:33.91]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.PhaseGate_E4_HighRiskClosure_NotWriterEnable [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.PhaseGate_E4_HighRiskClosure_NotWriterEnable [1 ms]
+[xUnit.net 00:00:35.02]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R9_Migration_RemainsDisabled_NoWriterCollision [SKIP]
+[xUnit.net 00:00:35.76]     SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_Conflict_CorruptBlocked [SKIP]
+[xUnit.net 00:00:36.18]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_EqualGenerationDifferentRoot_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R9_Migration_RemainsDisabled_NoWriterCollision [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_Conflict_CorruptBlocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_EqualGenerationDifferentRoot_CorruptBlocked [1 ms]
+[xUnit.net 00:00:36.78]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked [1 ms]
+결과 파일: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo04-full.trx
+
+통과!  - 실패:     0, 통과:   690, 건너뜀:   111, 전체:   801, 기간: 3 m 4 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+
+SECURITYLAB COMMAND: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 --logger 'trx;LogFileName=wo04-securitylab.trx' -v:minimal
+INPUT: SecurityLab synthetic security fixtures
+EXIT: 0
+  SmartPerformanceDoctor.SecurityLab -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+  SmartPerformanceDoctor.SecurityLab.Tests -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+결과 파일: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.SecurityLab.Tests\TestResults\wo04-securitylab.trx
+
+통과!  - 실패:     0, 통과:    36, 건너뜀:     0, 전체:    36, 기간: 1 m 12 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+
+FINAL SIGNED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 --filter FullyQualifiedName~SignedUpdateTests --logger 'trx;LogFileName=wo04-signed-final.trx' -v:minimal
+INPUT: synthetic ECDSA signed packages and journals
+  SmartPerformanceDoctor.AstraVault -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.AstraVault\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.dll
+  SmartPerformanceDoctor.Data -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.Data\bin\x64\Release\net10.0\SmartPerformanceDoctor.Data.dll
+  SmartPerformanceDoctor.Contracts -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.Contracts\bin\x64\Release\net10.0\SmartPerformanceDoctor.Contracts.dll
+  SmartPerformanceDoctor.Aegis -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.Aegis\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.Aegis.dll
+  SmartPerformanceDoctor.SecurityLab -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+  SmartPerformanceDoctor.UpdateEngine -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+  SmartPerformanceDoctor.UpdateHelper -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.UpdateHelper\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryHelper -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryHelper\bin\x64\Release\net10.0-windows\AegisRecoveryHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryService -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryService\bin\x64\Release\net10.0-windows\AegisRecoveryService.dll
+  SmartPerformanceDoctor.App -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.dll
+  SmartPerformanceDoctor.Tests -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll
+  SmartPerformanceDoctor.AstraVault.KillWorker -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.AstraVault.KillWorker\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.KillWorker.dll
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+결과 파일: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo04-signed-final.trx
+
+통과!  - 실패:     0, 통과:    53, 건너뜀:     0, 전체:    53, 기간: 5 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+
+EXIT: 0
+
+FINAL FULL COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo04-full-final.trx' -v:minimal
+INPUT: final x64 Release test assembly and synthetic fixtures
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+[xUnit.net 00:00:00.55]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_DecisionRecord_NotProductionEnable [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_DecisionRecord_NotProductionEnable [1 ms]
+[xUnit.net 00:00:00.63]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:00.63]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:00.67]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:00.67]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SClassStillNotSatisfied [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SClassStillNotSatisfied [1 ms]
+[xUnit.net 00:00:00.79]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SpdVaultUnchanged_NoMigration [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SpdVaultUnchanged_NoMigration [1 ms]
+[xUnit.net 00:00:00.79]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_FullRollbackMatrix_StabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:00.79]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:00.79]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_FullRollbackMatrix_StabilityRepeat_Skipped [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:01.26]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OrchestratorCommitAsync_Blocked [SKIP]
+[xUnit.net 00:00:01.26]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ConcurrentCommit_SecondBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OrchestratorCommitAsync_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ConcurrentCommit_SecondBlocked [1 ms]
+[xUnit.net 00:00:01.26]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OpenWriteSessionAsync_Blocked [SKIP]
+[xUnit.net 00:00:01.33]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_M01M02Closed_CurrentEvidenceConsistent [SKIP]
+[xUnit.net 00:00:01.33]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_ExternalReviewCompletedCodeRemainsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OpenWriteSessionAsync_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_M01M02Closed_CurrentEvidenceConsistent [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_ExternalReviewCompletedCodeRemainsFalse [1 ms]
+[xUnit.net 00:00:01.33]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:01.33]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_StabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:01.33]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_TrustedAnchorSignoff_PreflightEvidenceCurrent [SKIP]
+[xUnit.net 00:00:01.34]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_DiskDurabilityStillOpen [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_StabilityRepeat_Skipped [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_TrustedAnchorSignoff_PreflightEvidenceCurrent [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_DiskDurabilityStillOpen [1 ms]
+[xUnit.net 00:00:01.34]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SpdVaultUnchanged_NoMigration [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SpdVaultUnchanged_NoMigration [1 ms]
+[xUnit.net 00:00:01.67]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_HarnessProvider_Signed [SKIP]
+[xUnit.net 00:00:01.67]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionAnchorImplemented_RemainsFalse [SKIP]
+[xUnit.net 00:00:01.67]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:01.67]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionEnableAuthorized_RemainsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_HarnessProvider_Signed [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionAnchorImplemented_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionEnableAuthorized_RemainsFalse [1 ms]
+[xUnit.net 00:00:01.67]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_XChaCha24Implemented_RemainsFalseSignedCandidate [SKIP]
+[xUnit.net 00:00:01.68]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+[xUnit.net 00:00:01.68]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalWitnessStub_SignedButNotProductionLive [SKIP]
+[xUnit.net 00:00:01.71]     SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_XChaCha24Implemented_RemainsFalseSignedCandidate [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalWitnessStub_SignedButNotProductionLive [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse [1 ms]
+[xUnit.net 00:00:01.77]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorStabilityRepeat_Skipped [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorStabilityRepeat_Skipped [1 ms]
+[xUnit.net 00:00:01.84]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:01.90]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:01.93]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SpdVaultUnchanged_NoMigration [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SpdVaultUnchanged_NoMigration [1 ms]
+[xUnit.net 00:00:02.27]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityReview_PreflightEvidenceCurrent [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityReview_PreflightEvidenceCurrent [1 ms]
+[xUnit.net 00:00:02.43]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SClassStillNotSatisfied [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SClassStillNotSatisfied [1 ms]
+[xUnit.net 00:00:02.46]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SpdVaultUnchanged_NoMigration [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SpdVaultUnchanged_NoMigration [1 ms]
+[xUnit.net 00:00:02.47]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityInvariant_StabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:02.48]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityInvariant_StabilityRepeat_Skipped [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:03.33]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_ProductionWriterGate_RemainsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_ProductionWriterGate_RemainsFalse [1 ms]
+[xUnit.net 00:00:03.35]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:03.36]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionRouteDenied [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionRouteDenied [1 ms]
+[xUnit.net 00:00:03.36]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ReadOnlyValidatorComplete [SKIP]
+[xUnit.net 00:00:03.37]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:03.37]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_PreflightEvidenceCurrent [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ReadOnlyValidatorComplete [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_PreflightEvidenceCurrent [1 ms]
+[xUnit.net 00:00:03.37]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SpdVaultUnchangedNoMigration [SKIP]
+[xUnit.net 00:00:03.41]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_NonHarnessCommitSession_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SpdVaultUnchangedNoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_NonHarnessCommitSession_Blocked [1 ms]
+[xUnit.net 00:00:03.43]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Implemented_RemainsFalseUntilSignoff [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Implemented_RemainsFalseUntilSignoff [1 ms]
+[xUnit.net 00:00:03.63]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionAnchorImplemented_RemainsFalse [SKIP]
+[xUnit.net 00:00:03.63]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SpdVaultUnchanged_NoMigration [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionAnchorImplemented_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SpdVaultUnchanged_NoMigration [1 ms]
+[xUnit.net 00:00:03.63]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ReadOnlyValidator_XChaCha24_Pass [SKIP]
+[xUnit.net 00:00:03.64]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionEnableAuthorized_RemainsFalse [SKIP]
+[xUnit.net 00:00:03.64]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ReadOnlyValidator_XChaCha24_Pass [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionEnableAuthorized_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+[xUnit.net 00:00:03.73]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.PhaseGate_E62_ReviewFixes_ProductionStillDisabled [SKIP]
+[xUnit.net 00:00:04.07]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_AnchorDesign_NotImplemented [SKIP]
+[xUnit.net 00:00:04.07]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable [SKIP]
+[xUnit.net 00:00:04.07]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.PhaseGate_E5_ProductionWriterDesign_NotWriterEnable [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.PhaseGate_E62_ReviewFixes_ProductionStillDisabled [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_AnchorDesign_NotImplemented [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.PhaseGate_E5_ProductionWriterDesign_NotWriterEnable [1 ms]
+[xUnit.net 00:00:04.72]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Recovery_EqualGenerationConflictingRoot_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Recovery_EqualGenerationConflictingRoot_CorruptBlocked [1 ms]
+[xUnit.net 00:00:05.13]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:05.14]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionEnableAuthorized_RemainsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionEnableAuthorized_RemainsFalse [1 ms]
+[xUnit.net 00:00:05.14]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionAnchorImplemented_RemainsFalse [SKIP]
+[xUnit.net 00:00:05.15]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+[xUnit.net 00:00:05.15]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:05.15]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_DiskDurabilityStillOpen [SKIP]
+[xUnit.net 00:00:05.15]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:05.15]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_AnchorSignoff_HarnessCandidateOnly_NotProductionImplemented [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionAnchorImplemented_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_DiskDurabilityStillOpen [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_AnchorSignoff_HarnessCandidateOnly_NotProductionImplemented [1 ms]
+[xUnit.net 00:00:05.15]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_XChaCha24StillOpen [SKIP]
+[xUnit.net 00:00:05.15]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_TrustedMonotonicAnchorRequired_ForFullVaultRollbackClosure [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_XChaCha24StillOpen [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_TrustedMonotonicAnchorRequired_ForFullVaultRollbackClosure [1 ms]
+[xUnit.net 00:00:05.22]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_NonHarnessProductionRouteStillDenied [SKIP]
+[xUnit.net 00:00:05.22]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444 [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_NonHarnessProductionRouteStillDenied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444 [1 ms]
+[xUnit.net 00:00:05.22]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_StabilityRepeat_Skipped [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_StabilityRepeat_Skipped [1 ms]
+[xUnit.net 00:00:05.88]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_E6Recovery_EqualGenerationConflictingRoot_CorruptBlocked [SKIP]
+[xUnit.net 00:00:05.88]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_Rollback_PreviousRootMismatch_MatchesE4_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_E6Recovery_EqualGenerationConflictingRoot_CorruptBlocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_Rollback_PreviousRootMismatch_MatchesE4_CorruptBlocked [1 ms]
+[xUnit.net 00:00:06.11]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ReentrantCommit_Blocked [SKIP]
+[xUnit.net 00:00:06.11]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_FactoryProductionCreate_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ReentrantCommit_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_FactoryProductionCreate_Blocked [1 ms]
+[xUnit.net 00:00:06.71]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.JournalRecorder_ProductionRoute_Fails_WhenJournalDisabled [SKIP]
+[xUnit.net 00:00:06.71]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.PhaseGate_E6_DisabledProductionWriter_NotAuthorized [SKIP]
+[xUnit.net 00:00:06.75]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_DecisionGate_NotProductionEnable [SKIP]
+[xUnit.net 00:00:06.75]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenAnchorMissing [SKIP]
+[xUnit.net 00:00:06.75]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ExternalReviewCompletedCodeRemainsFalse [SKIP]
+[xUnit.net 00:00:06.75]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.JournalRecorder_ProductionRoute_Fails_WhenJournalDisabled [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.PhaseGate_E6_DisabledProductionWriter_NotAuthorized [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_DecisionGate_NotProductionEnable [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenAnchorMissing [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ExternalReviewCompletedCodeRemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:06.76]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenXChaCha24Missing [SKIP]
+[xUnit.net 00:00:06.76]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenSClassUnsatisfied [SKIP]
+[xUnit.net 00:00:06.76]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:06.76]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ProductionWriterStillNotAuthorized [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenXChaCha24Missing [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenSClassUnsatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ProductionWriterStillNotAuthorized [1 ms]
+[xUnit.net 00:00:07.02]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_Preflight_CurrentEvidenceSourceOfTruthMatchesActual [SKIP]
+[xUnit.net 00:00:07.07]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_CommitThreeCopyAsync_Production_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_Preflight_CurrentEvidenceSourceOfTruthMatchesActual [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_CommitThreeCopyAsync_Production_Blocked [1 ms]
+[xUnit.net 00:00:07.07]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_DenyMigrationRoute_Blocked [SKIP]
+[xUnit.net 00:00:07.07]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_TryOpenProductionSession_Blocked [SKIP]
+[xUnit.net 00:00:07.07]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenActualDiskDurabilityMissing [SKIP]
+[xUnit.net 00:00:07.07]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.PhaseGate_E71_ReviewFixes_AllEnableFlagsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_DenyMigrationRoute_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_TryOpenProductionSession_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenActualDiskDurabilityMissing [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.PhaseGate_E71_ReviewFixes_AllEnableFlagsFalse [1 ms]
+[xUnit.net 00:00:07.08]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_JournalWriterGate_False [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_JournalWriterGate_False [1 ms]
+[xUnit.net 00:00:08.14]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.PhaseGate_E7_PreEnableHardening_EnableFlagsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.PhaseGate_E7_PreEnableHardening_EnableFlagsFalse [1 ms]
+[xUnit.net 00:00:08.14]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_DuplicateTransactionId_Blocked [SKIP]
+[xUnit.net 00:00:08.14]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_ProductionDurableStore_Blocked [SKIP]
+[xUnit.net 00:00:08.15]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_JournalRecorderProductionRoute_Blocked [SKIP]
+[xUnit.net 00:00:08.15]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_TransactionCoordinator_NonHarness_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_DuplicateTransactionId_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_ProductionDurableStore_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_JournalRecorderProductionRoute_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_TransactionCoordinator_NonHarness_Blocked [1 ms]
+[xUnit.net 00:00:08.29]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionOpenSession_Throws_Blocked [SKIP]
+[xUnit.net 00:00:08.30]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.DurableStore_RelativePathEscape_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionOpenSession_Throws_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.DurableStore_RelativePathEscape_Blocked [1 ms]
+[xUnit.net 00:00:08.50]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_WritePolicy_ProductionDisabled [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_WritePolicy_ProductionDisabled [1 ms]
+[xUnit.net 00:00:14.32]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionCommit_Throws_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionCommit_Throws_Blocked [1 ms]
+[xUnit.net 00:00:15.03]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_ProductionRoute_AppHostViewModel_NoWriter [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_ProductionRoute_AppHostViewModel_NoWriter [1 ms]
+[xUnit.net 00:00:15.03]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DurableStore_RootEscape_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DurableStore_RootEscape_Blocked [1 ms]
+[xUnit.net 00:00:15.36]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.WriterFactory_ProductionCreate_Fails_WhenProductionWriterDisabled [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.WriterFactory_ProductionCreate_Fails_WhenProductionWriterDisabled [1 ms]
+[xUnit.net 00:00:15.84]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_HeaderConflict_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_HeaderConflict_CorruptBlocked [1 ms]
+[xUnit.net 00:00:19.34]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NonHarnessWriterInvocation_Blocked [SKIP]
+[xUnit.net 00:00:19.76]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.PhaseGate_E8_LimitedDryRun_EnableFlagsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NonHarnessWriterInvocation_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.PhaseGate_E8_LimitedDryRun_EnableFlagsFalse [1 ms]
+[xUnit.net 00:00:27.37]     SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.PhaseGate_E3_ActualKillHarness_DocumentationOnly [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.PhaseGate_E3_ActualKillHarness_DocumentationOnly [1 ms]
+[xUnit.net 00:00:29.08]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.WriterEnableChecklist_State_NoGo [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.WriterEnableChecklist_State_NoGo [1 ms]
+[xUnit.net 00:00:29.32]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.PhaseGate_E4_HighRiskClosure_NotWriterEnable [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.PhaseGate_E4_HighRiskClosure_NotWriterEnable [1 ms]
+[xUnit.net 00:00:30.40]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R9_Migration_RemainsDisabled_NoWriterCollision [SKIP]
+[xUnit.net 00:00:30.80]     SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_Conflict_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R9_Migration_RemainsDisabled_NoWriterCollision [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_Conflict_CorruptBlocked [1 ms]
+[xUnit.net 00:00:31.32]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_EqualGenerationDifferentRoot_CorruptBlocked [SKIP]
+[xUnit.net 00:00:31.86]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_EqualGenerationDifferentRoot_CorruptBlocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked [1 ms]
+결과 파일: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo04-full-final.trx
+
+통과!  - 실패:     0, 통과:   694, 건너뜀:   111, 전체:   805, 기간: 2 m 36 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+
+EXIT: 0
+
+FINAL SOURCE LOCAL COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 --filter FullyQualifiedName~SignedUpdateTests --logger 'trx;LogFileName=wo04-signed-final.trx' -v:minimal
+INPUT: synthetic signed package/journal fixtures
+  SmartPerformanceDoctor.AstraVault -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.AstraVault\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.dll
+  SmartPerformanceDoctor.Data -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.Data\bin\x64\Release\net10.0\SmartPerformanceDoctor.Data.dll
+  SmartPerformanceDoctor.Contracts -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.Contracts\bin\x64\Release\net10.0\SmartPerformanceDoctor.Contracts.dll
+  SmartPerformanceDoctor.Aegis -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.Aegis\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.Aegis.dll
+  SmartPerformanceDoctor.SecurityLab -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+  SmartPerformanceDoctor.UpdateEngine -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+  SmartPerformanceDoctor.UpdateHelper -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.UpdateHelper\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryHelper -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryHelper\bin\x64\Release\net10.0-windows\AegisRecoveryHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryService -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryService\bin\x64\Release\net10.0-windows\AegisRecoveryService.dll
+  SmartPerformanceDoctor.App -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.dll
+  SmartPerformanceDoctor.Tests -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll
+  SmartPerformanceDoctor.AstraVault.KillWorker -> C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.AstraVault.KillWorker\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.KillWorker.dll
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+경고: 결과 파일을 덮어쓰는 중: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo04-signed-final.trx
+결과 파일: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo04-signed-final.trx
+
+통과!  - 실패:     0, 통과:    53, 건너뜀:     0, 전체:    53, 기간: 4 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+
+EXIT: 0
+
+FINAL CI RESULT
+STATUS: PASS (automatic Windows CI only)
+SOURCE: 082a65ec55c1879d02ea807bd3efb04abc17c026
+SOURCE_TREE: f883aa1475beb03ede8aacfb5bc679caae79602c
+BRANCH: codex/pccare-rework-phase1-final-validation
+RUN: 38033748493
+URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38033748493
+READ COMMAND: gh run view 38033748493 --log
+READ EXIT: 0
+ARTIFACT COMMAND: gh run download 38033748493 -n wo04-windows-trx -D docs/rework/evidence/wo04/ci-artifacts-final
+ARTIFACT EXIT: 0
+INPUT: final Release source; synthetic packages, journals, installation directories and existing regression fixtures.
+JOB: 114159812254
+JOB_STARTED: 2026-10-10T07:14:41Z
+JOB_COMPLETED: 2026-10-10T07:20:18Z
+STEP: Set up job STATUS=completed CONCLUSION=success
+STEP: Run actions/checkout@v4 STATUS=completed CONCLUSION=success
+STEP: Run actions/setup-dotnet@v4 STATUS=completed CONCLUSION=success
+STEP: Restore STATUS=completed CONCLUSION=success
+STEP: Release build STATUS=completed CONCLUSION=success
+STEP: Signed package, publisher, transaction, recovery and staging tests STATUS=completed CONCLUSION=success
+STEP: Separate-process termination and recovery STATUS=completed CONCLUSION=success
+STEP: Full application regression STATUS=completed CONCLUSION=success
+STEP: SecurityLab regression STATUS=completed CONCLUSION=success
+STEP: Reject unsupported helper verb STATUS=completed CONCLUSION=success
+STEP: Upload test evidence STATUS=completed CONCLUSION=success
+STEP: Post Run actions/setup-dotnet@v4 STATUS=completed CONCLUSION=success
+STEP: Post Run actions/checkout@v4 STATUS=completed CONCLUSION=success
+STEP: Complete job STATUS=completed CONCLUSION=success
+TEST COMMANDS:
+dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests' --logger 'trx;LogFileName=wo04-signed-updater.trx' -v:minimal
+dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo04-full.trx' -v:minimal
+dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo04-securitylab.trx' -v:minimal
+COMMAND EXIT: 0 for each successful CI step. Unsupported helper child exit: 2, checked by the step.
+ACTUAL LOG EXCERPTS:
+windows-validation	Release build	2026-10-10T07:16:23.4154291Z Build succeeded.
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-10T07:16:49.3893180Z Passed!  - Failed:     0, Passed:    53, Skipped:     0, Total:    53, Duration: 7 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:51.6758967Z Build succeeded.
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.1450260Z PREPARED old vault-marker
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.6208082Z BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.7353899Z APP=old VAULT=vault-marker STATUS=RecoveryCompleted
+windows-validation	Full application regression	2026-10-10T07:19:23.9240130Z Passed!  - Failed:     0, Passed:   694, Skipped:   111, Total:   805, Duration: 2 m 29 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	SecurityLab regression	2026-10-10T07:20:13.9621261Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 47 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+TRX: wo04-securitylab.trx; total=36; passed=36; skipped=0; failed=0; SHA256=0DA4AE0B0131084D4C3C4AC679D4EFEBBBEB3127BAF36A51791425C2CFDB9D66
+TRX: wo04-full.trx; total=805; passed=694; skipped=111; failed=0; SHA256=5A0985DA35C710C46F475F3A52CA6E9FF80BF245AD10A9ED63E472AC5E16E874
+TRX: wo04-signed-updater.trx; total=53; passed=53; skipped=0; failed=0; SHA256=E09ED70C436AF62BD2D9B952CAE21670F6C0E077FB6AAB835B86E972DF393FB7
+SCOPE: synthetic separate-process recovery PASS. Actual installed UI/UAC/reboot/ACL VM BLOCKED. Production signing and roots BLOCKED.
+FailFast child numeric exit was not printed by the CI script. The script checked a nonzero exit before recovery.
+The local final termination delay is recorded in RECOVERY_TEST_RESULT.txt; its cause remains UNVERIFIED.
+Previous runs: 38032646531 / source0929ece / updater49/full690+111/801/SecurityLab36; 38033346472 / source9403874 / updater53/full694+111/805/SecurityLab36.

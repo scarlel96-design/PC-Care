@@ -1,12 +1,12 @@
 STATUS: PARTIAL; RELEASE NO-GO
 CHANGED BRANCH: codex/pccare-rework-phase1-final-validation
-CHANGED FIELD/PATH: recovery state/journal InstallRoot, FilesApplied increment, backup preflight, protected ACL read-only inspection
+CHANGED FIELD/PATH: recovery state/journal InstallRoot, FilesApplied increment, backup preflight, protected ACL read-only inspection, pre-install recovery capacity check
 MODIFIED_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\UpdateTransaction.cs
 DIFF_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo04\DIFF_FILE.patch
 VERIFICATION: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo04\VERIFICATION.txt
 ROLLBACK: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo04\ROLLBACK.sh
 ORIGINAL SHA256: 5BA25D5372C348F14FEFCAF8C95A7D4290083E5511A7B08256502DBB52B1AAB4
-MODIFIED SHA256: 3A6D8C95F8BDE17F185540102D4B20A9C42FA4465EB32D149F061137177D3521
+MODIFIED SHA256: 3B3E198CE830BA48AB0F11F31F0CCF9F0ACCB44E0D47F8A6527CEF2298532067
 
 BASELINE COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --filter FullyQualifiedName~SignedUpdateTests --logger 'trx;LogFileName=baseline.trx' -v:minimal
 WORKDIR: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care-WO04-baseline
@@ -19,16 +19,16 @@ C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\P
 통과!  - 실패:     0, 통과:    20, 건너뜀:     0, 전체:    20, 기간: 1 s - SmartPerformanceDoctor.Tests.dll (net10.0)
 EXIT: 0
 
-MODIFIED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --filter FullyQualifiedName~SignedUpdateTests --logger 'trx;LogFileName=wo04-signed.trx' -v:minimal
+MODIFIED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 --filter FullyQualifiedName~SignedUpdateTests --logger 'trx;LogFileName=wo04-signed-final.trx' -v:minimal
 WORKDIR: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care
-INPUT: modified source synthetic fixtures,29 added cases
+INPUT: signed synthetic fixtures; 53 cases, 33 additions from baseline
 LITERAL OUTPUT:
 C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
 지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
-경고: 결과 파일을 덮어쓰는 중: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo04-signed.trx
-결과 파일: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo04-signed.trx
+경고: 결과 파일을 덮어쓰는 중: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo04-signed-final.trx
+결과 파일: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo04-signed-final.trx
 
-통과!  - 실패:     0, 통과:    49, 건너뜀:     0, 전체:    49, 기간: 4 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+통과!  - 실패:     0, 통과:    53, 건너뜀:     0, 전체:    53, 기간: 4 s - SmartPerformanceDoctor.Tests.dll (net10.0)
 EXIT: 0
 
 ROLLBACK COMMAND: Copy-Item src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs docs/rework/evidence/wo04/rollback-test-copy.cs; & 'C:/Program Files/Git/bin/bash.exe' docs/rework/evidence/wo04/ROLLBACK.sh docs/rework/evidence/wo04/rollback-test-copy.cs
@@ -37,7 +37,7 @@ LITERAL OUTPUT:
 RESTORED 5BA25D5372C348F14FEFCAF8C95A7D4290083E5511A7B08256502DBB52B1AAB4
 ROLLBACK_EXIT=0
 COPY_SHA=5BA25D5372C348F14FEFCAF8C95A7D4290083E5511A7B08256502DBB52B1AAB4
-MODIFIED_SHA=3A6D8C95F8BDE17F185540102D4B20A9C42FA4465EB32D149F061137177D3521
+MODIFIED_SHA=3B3E198CE830BA48AB0F11F31F0CCF9F0ACCB44E0D47F8A6527CEF2298532067
 EXIT: 0
 RESTORED STATUS: copy hash equals baseline; MODIFIED_FILE retains changed hash. Source restoration only. Installation transaction recovery separately passed synthetic FailFast/recover/verify; see RECOVERY_TEST_RESULT.txt.
 
@@ -45,3 +45,28 @@ EARLIER INFRASTRUCTURE FAILURES: sandbox VSTest90/300sec timeout exit1; Git fetc
 HELPER invalid verb --exec arbitrary: exit2.
 REMAINING P0: handle/path TOCTOU; actual protected ACL/UAC/reboot VM; production signer/key roots; consumer data-recovery compatibility.
 FULL/CI results: TEST_RESULT.txt and CI_RESULT.txt.
+
+VERIFIED SOURCE: 082a65ec55c1879d02ea807bd3efb04abc17c026
+SOURCE TREE: f883aa1475beb03ede8aacfb5bc679caae79602c
+INTERMEDIATE LOCAL FULL (source9403874): 694 passed, 111 skipped, 805 total, 0 failed; exit0.
+FINAL SOURCE CI: 38033748493; see CI_RESULT.txt for observed status.
+
+GIT CHECKOUT ROLLBACK VALIDATION
+INPUT: Git index blobs in an independent checkout-shaped fixture.
+COMMAND: & 'C:/Program Files/Git/bin/bash.exe' docs/rework/evidence/wo04/checkout-rollback/docs/rework/evidence/wo04/ROLLBACK.sh docs/rework/evidence/wo04/checkout-rollback/independent-copy.cs
+OUTPUT: RESTORED 5BA25D5372C348F14FEFCAF8C95A7D4290083E5511A7B08256502DBB52B1AAB4
+CHECKOUT_ROLLBACK_EXIT=0
+GUARD COMMAND: & 'C:/Program Files/Git/bin/bash.exe' docs/rework/evidence/wo04/checkout-rollback/docs/rework/evidence/wo04/ROLLBACK.sh docs/rework/evidence/wo04/checkout-rollback/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
+OUTPUT: REFUSE_TO_REPLACE_MODIFIED_FILE
+GUARD_EXIT=3
+MODIFIED_SOURCE_SHA256=3B3E198CE830BA48AB0F11F31F0CCF9F0ACCB44E0D47F8A6527CEF2298532067
+The independent copy returned to the baseline hash. The modified source retained its changed hash.
+The original index blob preserves CRLF bytes. The executable rollback script preserves LF bytes.
+An earlier nested fixture had the wrong repository depth. Its realpath diagnostic did not establish source-path protection.
+The checkout-shaped retest verified restoration and source-path rejection.
+
+FINAL WINDOWS CI: PASS; run38033748493; source082a65ec55c1879d02ea807bd3efb04abc17c026.
+FINAL SOURCE FULL: 694 passed,111 skipped,805 total,0 failed; exit0.
+FINAL SOURCE SECURITYLAB: 36/36,0 failed; exit0.
+CI independent-process recovery: APP=old VAULT=vault-marker STATUS=RecoveryCompleted; step exit0.
+VM/UAC/reboot/production: BLOCKED. Phase1 remains PARTIAL/NO-GO.

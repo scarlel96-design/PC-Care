@@ -1,3 +1,50 @@
-STATUS: NOT TESTED
-New WO04 workflow prepared; remote run to be recorded after push.
-Prior WO03 run38024249499 belongs to source14b1a8151a742db577e92a586969a18625c06270, not WO04.
+STATUS: PASS (automatic Windows CI only)
+SOURCE: 082a65ec55c1879d02ea807bd3efb04abc17c026
+SOURCE_TREE: f883aa1475beb03ede8aacfb5bc679caae79602c
+BRANCH: codex/pccare-rework-phase1-final-validation
+RUN: 38033748493
+URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38033748493
+READ COMMAND: gh run view 38033748493 --log
+READ EXIT: 0
+ARTIFACT COMMAND: gh run download 38033748493 -n wo04-windows-trx -D docs/rework/evidence/wo04/ci-artifacts-final
+ARTIFACT EXIT: 0
+INPUT: final Release source; synthetic packages, journals, installation directories and existing regression fixtures.
+JOB: 114159812254
+JOB_STARTED: 2026-10-10T07:14:41Z
+JOB_COMPLETED: 2026-10-10T07:20:18Z
+STEP: Set up job STATUS=completed CONCLUSION=success
+STEP: Run actions/checkout@v4 STATUS=completed CONCLUSION=success
+STEP: Run actions/setup-dotnet@v4 STATUS=completed CONCLUSION=success
+STEP: Restore STATUS=completed CONCLUSION=success
+STEP: Release build STATUS=completed CONCLUSION=success
+STEP: Signed package, publisher, transaction, recovery and staging tests STATUS=completed CONCLUSION=success
+STEP: Separate-process termination and recovery STATUS=completed CONCLUSION=success
+STEP: Full application regression STATUS=completed CONCLUSION=success
+STEP: SecurityLab regression STATUS=completed CONCLUSION=success
+STEP: Reject unsupported helper verb STATUS=completed CONCLUSION=success
+STEP: Upload test evidence STATUS=completed CONCLUSION=success
+STEP: Post Run actions/setup-dotnet@v4 STATUS=completed CONCLUSION=success
+STEP: Post Run actions/checkout@v4 STATUS=completed CONCLUSION=success
+STEP: Complete job STATUS=completed CONCLUSION=success
+TEST COMMANDS:
+dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests' --logger 'trx;LogFileName=wo04-signed-updater.trx' -v:minimal
+dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo04-full.trx' -v:minimal
+dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo04-securitylab.trx' -v:minimal
+COMMAND EXIT: 0 for each successful CI step. Unsupported helper child exit: 2, checked by the step.
+ACTUAL LOG EXCERPTS:
+windows-validation	Release build	2026-10-10T07:16:23.4154291Z Build succeeded.
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-10T07:16:49.3893180Z Passed!  - Failed:     0, Passed:    53, Skipped:     0, Total:    53, Duration: 7 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:51.6758967Z Build succeeded.
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.1450260Z PREPARED old vault-marker
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.6208082Z BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK
+windows-validation	Separate-process termination and recovery	2026-10-10T07:16:52.7353899Z APP=old VAULT=vault-marker STATUS=RecoveryCompleted
+windows-validation	Full application regression	2026-10-10T07:19:23.9240130Z Passed!  - Failed:     0, Passed:   694, Skipped:   111, Total:   805, Duration: 2 m 29 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	SecurityLab regression	2026-10-10T07:20:13.9621261Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 47 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+TRX: wo04-securitylab.trx; total=36; passed=36; skipped=0; failed=0; SHA256=0DA4AE0B0131084D4C3C4AC679D4EFEBBBEB3127BAF36A51791425C2CFDB9D66
+TRX: wo04-full.trx; total=805; passed=694; skipped=111; failed=0; SHA256=5A0985DA35C710C46F475F3A52CA6E9FF80BF245AD10A9ED63E472AC5E16E874
+TRX: wo04-signed-updater.trx; total=53; passed=53; skipped=0; failed=0; SHA256=E09ED70C436AF62BD2D9B952CAE21670F6C0E077FB6AAB835B86E972DF393FB7
+SCOPE: synthetic separate-process recovery PASS. Actual installed UI/UAC/reboot/ACL VM BLOCKED. Production signing and roots BLOCKED.
+FailFast child numeric exit was not printed by the CI script. The script checked a nonzero exit before recovery.
+The local final termination delay is recorded in RECOVERY_TEST_RESULT.txt; its cause remains UNVERIFIED.
+Previous runs: 38032646531 / source0929ece / updater49/full690+111/801/SecurityLab36; 38033346472 / source9403874 / updater53/full694+111/805/SecurityLab36.
