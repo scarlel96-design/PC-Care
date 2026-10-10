@@ -32,10 +32,14 @@ SmartPerformanceDoctor.AstraVault -> C:\Users\scarl\Documents\Codex\2026-07-18\c
     경고 0개
     오류 0개
 
-경과 시간: 00:01:02.83
+경과 시간: 00:00:43.16
 EXIT: 0
 COMMAND: VMTestKit.exe audit-production ARTIFACT_PROFILE/app-output/SmartPerformanceDoctor.dll
 COMMAND: VMTestKit.exe audit-production ARTIFACT_PROFILE/app-output/SmartPerformanceDoctor.UpdateEngine.dll
 OUTPUT: no console output
 EXIT: 6 for each test-profile binary (expected rejection)
+ADDITIONAL COMMAND: VMTestKit.exe audit-production ARTIFACT_PROFILE/app-output/engine/SmartPerformanceDoctor.UpdateHelper.dll
+ADDITIONAL COMMAND: VMTestKit.exe audit-production ARTIFACT_PROFILE/app-output/engine/SmartPerformanceDoctor.UpdateEngine.dll
+ADDITIONAL OUTPUT: no console output
+ADDITIONAL EXIT: 6 for each packaged helper-profile binary (expected rejection)
 AUTHENTICODE VM TEST: BLOCKED; zero thumbprint is a compile-only fixture, not a trusted real signer.

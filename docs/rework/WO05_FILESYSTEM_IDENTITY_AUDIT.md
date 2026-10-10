@@ -38,3 +38,7 @@ References:
 - [GetFinalPathNameByHandleW](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfinalpathnamebyhandlew)
 
 Evidence: FILE_ID_TEST_RESULT.txt and TOCTOU_TEST_RESULT.txt.
+
+RuntimeAuthenticodeVerifier still verifies a path and extracts its certificate through a separate path read.
+WO05 does not bind these reads to one retained handle.
+Production publisher pins remain empty. Real installed ACL and runtime signature-race validation remain open.

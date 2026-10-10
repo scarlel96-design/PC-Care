@@ -1,11 +1,17 @@
 {
   "base": "155537b721e3eb266b2a0a3fb801a4b35fbbff56",
-  "hash_scope": "local working-file bytes; staged Git blob SHA is listed separately",
+  "validated_source": "0389bd3a79f9bcb08981cabb8514055b76240376",
+  "hash_scope": "local working-file bytes; committed Git blob SHA listed separately",
   "files": [
     {
+      "path": ".gitattributes",
+      "sha256": "22AFAFDA20F8D374036455FCEE122419A71FD92DF9226C115F3970B15BFEE280",
+      "git_blob": "c8457ecb48e5c475d49a06de6fa8c74f521aa0e0"
+    },
+    {
       "path": ".github/workflows/wo05-windows-validation.yml",
-      "sha256": "2A0A9CD8EC6126AE6C37B250E1E7D390A6463A8F0791D3F3717A17C802333F4A",
-      "git_blob": "345da446f223cd835602a8131099d8422c2bbdf2"
+      "sha256": "52933E3CE720E194DA6626BE0B7A8FBE8C9313883BC4F3238A80CBE42C15DE07",
+      "git_blob": "a48644877a2efd25e259db1457399b604ee936d1"
     },
     {
       "path": "Directory.Build.targets",
@@ -14,8 +20,8 @@
     },
     {
       "path": "scripts/wo05-vm-harness.ps1",
-      "sha256": "AC949DB00B9DE8DA0FA6C0C2F82B19516AAE81320C222F7E48FE2D02AAAA490E",
-      "git_blob": "c05f722575e816f2852c70ebf3d6d9760b373a86"
+      "sha256": "4D2D1C6EB40A77921B84D42CA12A478CB07C223261C6E36932843B3633BDD08C",
+      "git_blob": "f8ce151df170e122789cd0de2501688a34fc13bd"
     },
     {
       "path": "src/SmartPerformanceDoctor.App/Services/RuntimeAuthenticodeVerifier.cs",
@@ -36,6 +42,11 @@
       "path": "src/SmartPerformanceDoctor.App/Services/VaultSnapshotRecovery.cs",
       "sha256": "F326DC240B9BEDD41020C4BAD00937BDBFC545FFF2B05FEE5A57D494DC519704",
       "git_blob": "aa58e266ea5d1299ecc8c0059afb555754826ce2"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj",
+      "sha256": "F53C10BAE114D7752612DFED1BD4FB50A4B63CFBFDADE5A2F2DF74A8C65F7084",
+      "git_blob": "423db72171140fd9b1cbefc2f1c8c876f06bcc69"
     },
     {
       "path": "src/SmartPerformanceDoctor.UpdateEngine/BuildPublisherTrust.cs",

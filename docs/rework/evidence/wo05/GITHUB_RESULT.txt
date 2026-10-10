@@ -1,0 +1,51 @@
+BRANCH=codex/pccare-rework-phase1-filesystem-hardening
+BASE_COMMIT=155537b721e3eb266b2a0a3fb801a4b35fbbff56
+BASE_TREE=581bdaf0bf50a787ea1ca346140065c733e56b12
+VALIDATED_SOURCE_COMMIT=0389bd3a79f9bcb08981cabb8514055b76240376
+VALIDATED_SOURCE_TREE=abf030fc7471758b6422999cb7dc2429da68345b
+CI_RUN=38049619408
+CI_URL=https://github.com/scarlel96-design/PC-Care/actions/runs/38049619408
+CI_STATUS=completed
+CI_CONCLUSION=success
+CI_HEAD_SHA=0389bd3a79f9bcb08981cabb8514055b76240376
+CI_JOB=114205937240
+COMMAND=gh run watch 38049619408 --repo scarlel96-design/PC-Care --interval 30 --exit-status
+EXIT=0
+TRX_DOWNLOAD_COMMAND=gh run download 38049619408 --repo scarlel96-design/PC-Care --name wo05-windows-trx --dir artifacts/wo05-ci-38049619408
+TRX_DOWNLOAD_EXIT=0
+TRX_VERIFICATION=PASS; counters checked against downloaded XML artifacts
+TRX_RESULTS:
+wo05-signed-updater.trx: TOTAL=91 PASS=91 FAIL=0 SKIP=0
+wo05-full.trx: TOTAL=843 PASS=732 FAIL=0 SKIP=111
+wo05-securitylab.trx: TOTAL=36 PASS=36 FAIL=0 SKIP=0
+PREVIOUS_RUN=38049426341; cancelled after source corrections; not final validation
+EVIDENCE_COMMIT=The final documentation commit follows VALIDATED_SOURCE_COMMIT. It changes docs only.
+FINAL_HEAD_RECEIPT=artifacts/wo05-final-receipt.json; contains final local and remote HEAD after push
+FINAL_HEAD_COMMAND=git rev-parse HEAD
+FINAL_REMOTE_COMMAND=git ls-remote origin refs/heads/codex/pccare-rework-phase1-filesystem-hardening
+MERGE=not performed
+OFFICIAL_RELEASE=not performed
+PHASE_1=NO-GO
+WO05=PARTIAL
+LITERAL_CI_LOG_EXCERPTS:
+windows-validation	Release build	2026-10-10T11:49:29.0144341Z     0 Warning(s)
+windows-validation	Release build	2026-10-10T11:49:29.0144699Z     0 Error(s)
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-10T11:50:11.4099945Z Passed!  - Failed:     0, Passed:    91, Skipped:     0, Total:    91, Duration: 22 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Separate-process termination and recovery	2026-10-10T11:50:13.8748854Z     0 Warning(s)
+windows-validation	Separate-process termination and recovery	2026-10-10T11:50:13.8749451Z     0 Error(s)
+windows-validation	Separate-process termination and recovery	2026-10-10T11:50:15.5492511Z BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK
+windows-validation	Separate-process termination and recovery	2026-10-10T11:50:15.7014029Z APP=old VAULT=vault-marker STATUS=RecoveryCompleted
+windows-validation	Production profile and isolated test profile	2026-10-10T11:50:17.6595289Z     0 Warning(s)
+windows-validation	Production profile and isolated test profile	2026-10-10T11:50:17.6595610Z     0 Error(s)
+windows-validation	Production profile and isolated test profile	2026-10-10T11:50:19.8623507Z     0 Warning(s)
+windows-validation	Production profile and isolated test profile	2026-10-10T11:50:19.8623735Z     0 Error(s)
+windows-validation	Production profile and isolated test profile	2026-10-10T11:50:20.4692205Z PRODUCTION_PROFILE=PASS; TEST_ROOT=ABSENT
+windows-validation	Production profile and isolated test profile	2026-10-10T11:50:20.5296753Z PRODUCTION_PROFILE=PASS; TEST_ROOT=ABSENT
+windows-validation	Production profile and isolated test profile	2026-10-10T11:50:20.5867763Z PRODUCTION_PROFILE=PASS; TEST_ROOT=ABSENT
+windows-validation	Production profile and isolated test profile	2026-10-10T11:50:20.7005129Z PROFILE=WO05-VM-TEST; PRIVATE_KEY=NOT-SAVED
+windows-validation	Production profile and isolated test profile	2026-10-10T11:50:21.7395482Z     0 Warning(s)
+windows-validation	Production profile and isolated test profile	2026-10-10T11:50:21.7395853Z     0 Error(s)
+windows-validation	Production profile and isolated test profile	2026-10-10T11:50:43.3075203Z     0 Warning(s)
+windows-validation	Production profile and isolated test profile	2026-10-10T11:50:43.3075411Z     0 Error(s)
+windows-validation	Full application regression	2026-10-10T11:53:40.0306417Z Passed!  - Failed:     0, Passed:   732, Skipped:   111, Total:   843, Duration: 2 m 54 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	SecurityLab regression	2026-10-10T11:54:34.4102234Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 51 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)

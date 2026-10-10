@@ -40,8 +40,8 @@ Run these commands inside the VM repository.
 dotnet build tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj -c Release -p:Platform=x64
 ./scripts/wo05-vm-harness.ps1 -EvidenceDirectory C:\WO05-Evidence -SnapshotId VM_SNAPSHOT_ID -Action prepare
 $trustSource = 'C:\WO05-Evidence\trust\TestVmTrust.g.cs'
-dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$trustSource" -p:Version=51.0.4 -m:1 -o C:\WO05-Baseline
-dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$trustSource" -p:Version=51.0.5 -m:1 -o C:\WO05-Next
+dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$trustSource" -p:Version=51.0.4 -p:FileVersion=51.0.4 -p:AssemblyVersion=51.0.4 -m:1 -o C:\WO05-Baseline
+dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$trustSource" -p:Version=51.0.5 -p:FileVersion=51.0.5 -p:AssemblyVersion=51.0.5 -m:1 -o C:\WO05-Next
 ```
 
 Package the baseline layout using the existing installer pipeline in the VM.

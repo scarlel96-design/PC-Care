@@ -11,7 +11,8 @@ STATUS: PASS for listed automated cases. Real VM ACL and privileged race tests r
 COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests' --logger 'trx;LogFileName=wo05-targeted-final.trx' -v:minimal
 INPUT: isolated synthetic local Windows folders or constructed ACL descriptors.
 EXIT: 0
-OUTPUT:
+OUTPUT SOURCE: tests/SmartPerformanceDoctor.Tests/TestResults/wo05-targeted-final.trx
+TRX OUTCOME AND TEST NAME:
 Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "admins-missing")
 Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "deny")
 Passed: SmartPerformanceDoctor.Tests.WO05CompatibilityTests.AclPolicyRejectsUnsafeDescriptors(mutation: "inheritance")

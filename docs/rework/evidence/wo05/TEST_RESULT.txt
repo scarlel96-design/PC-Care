@@ -11,7 +11,7 @@ BASELINE COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanc
 OUTPUT: 통과!  - 실패:     0, 통과:    53, 건너뜀:     0, 전체:    53, 기간: 7 s - SmartPerformanceDoctor.Tests.dll (net10.0)
 EXIT: 0
 MODIFIED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 -p:NuGetAudit=false --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests' --logger 'trx;LogFileName=wo05-targeted-final.trx' -v:minimal
-OUTPUT: 통과!  - 실패:     0, 통과:    91, 건너뜀:     0, 전체:    91, 기간: 23 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+OUTPUT: 통과!  - 실패:     0, 통과:    91, 건너뜀:     0, 전체:    91, 기간: 17 s - SmartPerformanceDoctor.Tests.dll (net10.0)
 EXIT: 0
 FULL COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo05-full-final.trx' -v:minimal
 OUTPUT: 통과!  - 실패:     0, 통과:   732, 건너뜀:   111, 전체:   843, 기간: 4 m 21 s - SmartPerformanceDoctor.Tests.dll (net10.0)
@@ -20,3 +20,9 @@ SECURITYLAB COMMAND: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/
 OUTPUT: 통과!  - 실패:     0, 통과:    36, 건너뜀:     0, 전체:    36, 기간: 2 m 3 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
 EXIT: 0
 DELTA: +38 passed; 111 pre-existing skipped tests unchanged.
+
+CI: 38049619408 SUCCESS; HEAD=0389bd3a79f9bcb08981cabb8514055b76240376; downloaded TRX counters verified.
+wo05-signed-updater.trx: TOTAL=91 PASS=91 FAIL=0 SKIP=0
+wo05-full.trx: TOTAL=843 PASS=732 FAIL=0 SKIP=111
+wo05-securitylab.trx: TOTAL=36 PASS=36 FAIL=0 SKIP=0
+See CI_RUN.json, CI_TRX_MANIFEST.json and GITHUB_RESULT.txt.

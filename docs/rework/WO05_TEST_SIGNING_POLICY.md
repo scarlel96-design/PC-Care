@@ -32,7 +32,7 @@ The generated public-key build source is not committed.
 audit-production rejects test metadata or TestVmTrustData with exit 6.
 It rejects IsVmTest=true with exit 7.
 Actual normal app, helper and engine audits return exit 0.
-Actual VM app and engine audits return exit 6 as expected.
+Actual VM app, engine and packaged helper audits return exit 6 as expected.
 The complete VM Release application profile compiles without errors or warnings.
 No Authenticode signing, certificate trust registration or UAC test ran on this host.
 
