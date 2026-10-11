@@ -1,0 +1,196 @@
+{
+  "status": "PASS",
+  "baselineSha": "7e4dc94c7c8ed9260e203f99dbf57f5a1e753e20",
+  "verifiedSourceSha": "c23802b2adc7be63c8c15ab6cd313ec9be0a05db",
+  "command": "git ls-tree -r --name-only BASELINE; git rev-parse BASELINE:PATH; git rev-parse SOURCE:PATH",
+  "exitCode": 0,
+  "fileCount": 31,
+  "files": [
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Commercial/ForensicSecureDeleteEngine.cs",
+      "baselineBlob": "c7389573e0962f8bcee45fca6bb9be7d7e89398c",
+      "sourceBlob": "c7389573e0962f8bcee45fca6bb9be7d7e89398c",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Commercial/ProfessionalSecureDeleteService.cs",
+      "baselineBlob": "f5e6c6b20ab19ac834ec3fe29b8b8a07d27c016a",
+      "sourceBlob": "f5e6c6b20ab19ac834ec3fe29b8b8a07d27c016a",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/FeatureGateService.cs",
+      "baselineBlob": "e9e623e96d11aaa0c502f01254401eba7098daae",
+      "sourceBlob": "e9e623e96d11aaa0c502f01254401eba7098daae",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/RuntimeAuthenticodeVerifier.cs",
+      "baselineBlob": "376446182dff1a999c6da5f2432e5a2f7ecbb661",
+      "sourceBlob": "376446182dff1a999c6da5f2432e5a2f7ecbb661",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/RuntimeTrustState.cs",
+      "baselineBlob": "fcec7a1edc3927219c34dfe3bdd052a4c1f30544",
+      "sourceBlob": "fcec7a1edc3927219c34dfe3bdd052a4c1f30544",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/AstraVaultHostService.cs",
+      "baselineBlob": "6dcefc478e3036fe446796b863a353c054560d97",
+      "sourceBlob": "6dcefc478e3036fe446796b863a353c054560d97",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultAclHelper.cs",
+      "baselineBlob": "72ad515d42636fc3a62d908c59622bf14356d584",
+      "sourceBlob": "72ad515d42636fc3a62d908c59622bf14356d584",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultAuditVerifier.cs",
+      "baselineBlob": "a69ef81dc94b3929216296cdcdc0fa99d8d41d4c",
+      "sourceBlob": "a69ef81dc94b3929216296cdcdc0fa99d8d41d4c",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultCrypto.cs",
+      "baselineBlob": "d1b989437ee6fe5998528269de5b319c570a722a",
+      "sourceBlob": "d1b989437ee6fe5998528269de5b319c570a722a",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultLabBackend.cs",
+      "baselineBlob": "e08ae83c754c069e0375954f1eed0bca3ff2f63e",
+      "sourceBlob": "e08ae83c754c069e0375954f1eed0bca3ff2f63e",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultManifest.cs",
+      "baselineBlob": "6e380931a1e9670cfd3d71d1b73c118b8cc61d4b",
+      "sourceBlob": "6e380931a1e9670cfd3d71d1b73c118b8cc61d4b",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultOriginSealService.cs",
+      "baselineBlob": "a8749ec4944f1641cb86b6fb3c9192b6c6cf3cf5",
+      "sourceBlob": "a8749ec4944f1641cb86b6fb3c9192b6c6cf3cf5",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultPasswordPolicy.cs",
+      "baselineBlob": "2c0aade1343b1fbe59f2cb5fd5143759be8e9ba6",
+      "sourceBlob": "2c0aade1343b1fbe59f2cb5fd5143759be8e9ba6",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultPathHelper.cs",
+      "baselineBlob": "8354d136bedadb6fe7452097936014ba706d4ec0",
+      "sourceBlob": "8354d136bedadb6fe7452097936014ba706d4ec0",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultPaths.cs",
+      "baselineBlob": "a6a1e8f1adf6ce57835fe2bfcd0c2b72e4905d44",
+      "sourceBlob": "a6a1e8f1adf6ce57835fe2bfcd0c2b72e4905d44",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultRateLimiter.cs",
+      "baselineBlob": "6aae50fef4003391355dd62405820879fbb99955",
+      "sourceBlob": "6aae50fef4003391355dd62405820879fbb99955",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultSealIconService.cs",
+      "baselineBlob": "6e13662bdf820d8a06b7848069571409b92c2048",
+      "sourceBlob": "6e13662bdf820d8a06b7848069571409b92c2048",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultService.cs",
+      "baselineBlob": "f576fa07911049efd065ad2581bc4ff2408aa3c6",
+      "sourceBlob": "f576fa07911049efd065ad2581bc4ff2408aa3c6",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultTreeBuilder.cs",
+      "baselineBlob": "8798b49bc34ae46c0f03446d34194691605cd39b",
+      "sourceBlob": "8798b49bc34ae46c0f03446d34194691605cd39b",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/VaultImportPathValidator.cs",
+      "baselineBlob": "55318fbcbe4ee1cfa4f859be8652e3112c7f4ca3",
+      "sourceBlob": "55318fbcbe4ee1cfa4f859be8652e3112c7f4ca3",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/VaultKdfParameters.cs",
+      "baselineBlob": "73b608d592253ec6876b096a6c8de5ca41b60dde",
+      "sourceBlob": "73b608d592253ec6876b096a6c8de5ca41b60dde",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/VaultSessionLockCoordinator.cs",
+      "baselineBlob": "f87d5cfba5072f959d14b4589e958a71ccdb4f47",
+      "sourceBlob": "f87d5cfba5072f959d14b4589e958a71ccdb4f47",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.UpdateEngine/AuthenticodeBoundary.cs",
+      "baselineBlob": "41b963e47b2e3a7c9d3abf8a3e41dfe2658ce88f",
+      "sourceBlob": "41b963e47b2e3a7c9d3abf8a3e41dfe2658ce88f",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.UpdateEngine/BuildPublisherTrust.cs",
+      "baselineBlob": "f0d0e78b711d6cc2bd286e660dfeff4d5aa5b5ec",
+      "sourceBlob": "f0d0e78b711d6cc2bd286e660dfeff4d5aa5b5ec",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.UpdateEngine/SignedPackage.cs",
+      "baselineBlob": "6d2624a6965ba00f2d2160769e9d24fef55a5fda",
+      "sourceBlob": "6d2624a6965ba00f2d2160769e9d24fef55a5fda",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj",
+      "baselineBlob": "a0d657b7c1008a62fd0ba5221b54b1cae9a11795",
+      "sourceBlob": "a0d657b7c1008a62fd0ba5221b54b1cae9a11795",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.UpdateEngine/UpdateBootstrap.cs",
+      "baselineBlob": "9edfca1099860f02ffd44ff1f0b9bdc1d11dde7d",
+      "sourceBlob": "9edfca1099860f02ffd44ff1f0b9bdc1d11dde7d",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs",
+      "baselineBlob": "d3d9a83aa14eb07fdf706a317e582345f2b6b862",
+      "sourceBlob": "d3d9a83aa14eb07fdf706a317e582345f2b6b862",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.UpdateEngine/WindowsFileBoundary.cs",
+      "baselineBlob": "fa2afe8e8342fbe28aa570c4ddeab1d30b5a7fa1",
+      "sourceBlob": "fa2afe8e8342fbe28aa570c4ddeab1d30b5a7fa1",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.UpdateHelper/Program.cs",
+      "baselineBlob": "1ccea7ea0a460bf12ac2913ea17a15f99de31d45",
+      "sourceBlob": "1ccea7ea0a460bf12ac2913ea17a15f99de31d45",
+      "unchanged": true
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.UpdateHelper/SmartPerformanceDoctor.UpdateHelper.csproj",
+      "baselineBlob": "51532596fcccf05c5cc3bc2aac663564f52638d2",
+      "sourceBlob": "51532596fcccf05c5cc3bc2aac663564f52638d2",
+      "unchanged": true
+    }
+  ]
+}

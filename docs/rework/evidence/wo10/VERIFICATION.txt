@@ -1,0 +1,50 @@
+WORK ITEM: WO-10 verification
+STATUS: PARTIAL
+BRANCH: codex/pccare-reference-correction-safe-recovery
+BASELINE SHA: 7e4dc94c7c8ed9260e203f99dbf57f5a1e753e20
+VERIFIED SOURCE SHA: c23802b2adc7be63c8c15ab6cd313ec9be0a05db
+SOURCE TREE: 752a647f89d6cced6637c1224e5e2dcae9618776
+CHANGED FIELD: ReferenceComparison InsufficientEvidence category precedence before Severity Unknown.
+ENVIRONMENT: Windows 10.0.26200.0; .NET SDK 10.0.401; x64 Release; 24 logical processors; normal application token.
+ORIGINAL SHA256: 4F73E92B626E0654B0A1BDB86423ED1E03CB180D395D5E9855109AD286B9BBAE
+MODIFIED SHA256: 26688B129E9AF8839954929CD2AE4B2725F7DD9CFAE1E6083A977680D4A78F72
+MODIFIED_FILE: C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo10/MODIFIED_FILE.cs
+DIFF_FILE: C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo10/DIFF_FILE.patch
+VERIFICATION: C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo10/VERIFICATION.txt
+ROLLBACK: C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo10/ROLLBACK.sh
+
+BASELINE COMMAND: dotnet run --project artifacts/wo10/baseline-copy/CopyFixture.csproj
+INPUT: COPY_FIXTURE.cs; production classifier baseline; InsufficientEvidence.CpuSaturation, Severity Unknown.
+LITERAL OUTPUT: InsufficientEvidence=0;Unknown=1;TrueNegative=0
+EXIT CODE: 0
+MODIFIED COMMAND: dotnet run --project artifacts/wo10/modified-copy/CopyFixture.csproj
+INPUT: Same fixture and corrected ReferenceComparison.cs.
+LITERAL OUTPUT: InsufficientEvidence=1;Unknown=0;TrueNegative=0
+EXIT CODE: 0
+ROLLBACK COMMAND: & 'C:/Program Files/Git/bin/bash.exe' docs/rework/evidence/wo10/ROLLBACK.sh 'C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/artifacts/wo10/rollback-copy'
+INPUT: Independent rollback-copy with modified hash.
+LITERAL OUTPUT: SOURCE_COPY_RESTORED;PRODUCT_SOURCE_UNCHANGED
+EXIT CODE: 0
+RESTORED COMMAND: dotnet run --project artifacts/wo10/rollback-copy/CopyFixture.csproj
+LITERAL OUTPUT: InsufficientEvidence=0;Unknown=1;TrueNegative=0
+EXIT CODE: 0
+RESTORED STATUS: Source copy baseline behavior restored. Product source and MODIFIED_FILE remain corrected.
+
+ACTUAL FILESYSTEM ROLLBACK COMMAND: ./scripts/wo10-sandbox-validation.ps1 -OutputDirectory artifacts/wo10-sandbox
+INPUT: Six synthetic roots, 4096-byte fixtures, separate-process forced termination.
+LITERAL OUTPUT: WO10_SANDBOX_PASS crashScenarios=6 hardLinkRejected=1 bytesRestored=6
+EXIT CODE: 0
+RESTORED STATUS: Restored; BytesVerified=true; before/after SHA256 match in LOCAL_SANDBOX.json.
+
+APPLICATION TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --logger "trx;LogFileName=wo10-full-final.trx" -v:minimal
+LITERAL OUTPUT: 통과!  - 실패:     0, 통과:   957, 건너뜀:   111, 전체:  1068, 기간: 3 m 7 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+EXIT CODE: 0
+SECURITYLAB: 36 PASS / 0 SKIP / 0 FAIL; exit 0.
+SAFETY: Product executor absent. No user settings, vault, secure deletion or installed application changed.
+REMAINING RISKS: Unqualified independent CPU semantics; WPA comparison absent; actual GUI NOT TESTED; physical power loss NOT TESTED.
+ROLLBACK PROCEDURE: Use SOURCE_ROLLBACK.ps1 only for the independent copy. Use verified Recover only for synthetic fixtures. Use reviewed git revert for repository source.
+
+WINDOWS CI: 38113296563; SUCCESS; verified source c23802b2adc7be63c8c15ab6cd313ec9be0a05db.
+Application 957 PASS / 111 SKIP / 0 FAIL. Performance 188 PASS, updater 128 PASS, included above. SecurityLab 36 PASS / 0 SKIP / 0 FAIL.
+Synthetic crash recovery 6/6; hardlink, junction and symbolic link rejection PASS. GUI status remains NOT TESTED.
+See CI_LOG.txt, CI_TEST_COUNTS.json and ci/*.json for literal evidence.

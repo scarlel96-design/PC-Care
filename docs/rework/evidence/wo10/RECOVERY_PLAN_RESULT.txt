@@ -1,0 +1,13 @@
+WORK ITEM: WO-10 RECOVERY_PLAN_RESULT.txt
+STATUS: PASS
+BASELINE SHA: 7e4dc94c7c8ed9260e203f99dbf57f5a1e753e20
+VERIFIED SOURCE SHA: c23802b2adc7be63c8c15ab6cd313ec9be0a05db
+SOURCE TREE: 752a647f89d6cced6637c1224e5e2dcae9618776
+BRANCH: codex/pccare-reference-correction-safe-recovery
+ENVIRONMENT: Windows 10.0.26200.0; .NET SDK 10.0.401; x64 Release; 24 logical processors; normal application token.
+TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter FullyQualifiedName~WO10 --logger "trx;LogFileName=wo10-final-42.trx" -v:minimal
+INPUT: Synthetic plans, production assembly graph, consent, identities, collisions, journal faults
+OUTPUT:
+통과!  - 실패:     0, 통과:    42, 건너뜀:     0, 전체:    42, 기간: 2 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+ProductAssemblyHasNoSandboxExecutionDependency: PASS. Planner remains PlannedOnly. DryRun ExecutionEnabled=False; SystemMutations=0.
+EXIT CODE: 0

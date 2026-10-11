@@ -1,0 +1,18 @@
+WORK ITEM: WO-10 GitHub verification
+STATUS: PASS for executable source and Windows CI; report publication is finalized by the branch HEAD.
+BRANCH: codex/pccare-reference-correction-safe-recovery
+BASELINE SHA: 7e4dc94c7c8ed9260e203f99dbf57f5a1e753e20
+VERIFIED SOURCE SHA: c23802b2adc7be63c8c15ab6cd313ec9be0a05db
+VERIFIED SOURCE TREE: 752a647f89d6cced6637c1224e5e2dcae9618776
+CI: https://github.com/scarlel96-design/PC-Care/actions/runs/38113296563
+CI RUN: 38113296563
+CI CONCLUSION: success
+COMMAND: gh run view 38113296563 --repo scarlel96-design/PC-Care --json status,conclusion,headSha,jobs,url
+INPUT: exact workflow run
+OUTPUT: status=completed; conclusion=success; headSha=c23802b2adc7be63c8c15ab6cd313ec9be0a05db
+EXIT CODE: 0
+COMMAND: gh run download 38113296563 --repo scarlel96-design/PC-Care --name wo10-windows-evidence --dir artifacts/wo10-ci-download
+OUTPUT: artifact files downloaded; exit 0; parsed counts match CI_LOG.txt
+EXIT CODE: 0
+FINAL SHA: Resolve the publication commit containing this file. Executable source remains c23802b2adc7be63c8c15ab6cd313ec9be0a05db.
+No main merge or official release occurred. Phase 1 remains NO-GO.

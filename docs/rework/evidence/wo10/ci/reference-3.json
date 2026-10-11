@@ -1,0 +1,953 @@
+{
+  "status": "PARTIAL",
+  "analyzer": "Microsoft.Windows.EventTracing.Processing.All 1.12.10",
+  "etlSha256": "A158C17C787379830A6CFBEC001EC4686E58060604416DB52B2287C3394A558A",
+  "rawTracePublished": false,
+  "traceWindow": {
+    "StartTime": "2026-10-11T05:06:57.1960065+00:00",
+    "StopTime": "2026-10-11T05:07:29.0276304+00:00"
+  },
+  "reference": {
+    "Analyzer": "Microsoft.TraceProcessing",
+    "IndependentParser": true,
+    "LostEvents": 0,
+    "LostBuffers": 0,
+    "CpuGaps": 125353,
+    "Window": {
+      "StartUtc": "2026-10-11T05:06:59+00:00",
+      "EndUtc": "2026-10-11T05:07:27+00:00",
+      "Seconds": 28,
+      "Valid": true
+    },
+    "Cpu": [
+      {
+        "EndUtc": "2026-10-11T05:07:00+00:00",
+        "CpuPercent": 100.00000000000017
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:01+00:00",
+        "CpuPercent": 99.99999999999993
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:02+00:00",
+        "CpuPercent": 100.0000000000004
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:03+00:00",
+        "CpuPercent": 100.00000000000027
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:04+00:00",
+        "CpuPercent": 100.00000000000004
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:05+00:00",
+        "CpuPercent": 99.99996000000012
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:06+00:00",
+        "CpuPercent": 99.99996750000022
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:07+00:00",
+        "CpuPercent": 100.00000000000036
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:08+00:00",
+        "CpuPercent": 99.99996000000002
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:09+00:00",
+        "CpuPercent": 100.00000000000009
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:10+00:00",
+        "CpuPercent": 100.00000000000009
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:11+00:00",
+        "CpuPercent": 99.99984500000004
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:12+00:00",
+        "CpuPercent": 100.0000000000002
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:13+00:00",
+        "CpuPercent": 99.99993000000009
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:14+00:00",
+        "CpuPercent": 100.00000000000007
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:15+00:00",
+        "CpuPercent": 99.99996000000017
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:16+00:00",
+        "CpuPercent": 100.00000000000023
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:17+00:00",
+        "CpuPercent": 99.99996500000017
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:18+00:00",
+        "CpuPercent": 100.00000000000028
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:19+00:00",
+        "CpuPercent": 100.00000000000009
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:20+00:00",
+        "CpuPercent": 99.99996500000016
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:21+00:00",
+        "CpuPercent": 100.00000000000007
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:22+00:00",
+        "CpuPercent": 99.99990000000076
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:23+00:00",
+        "CpuPercent": 99.99996750000024
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:24+00:00",
+        "CpuPercent": 99.99996500000017
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:25+00:00",
+        "CpuPercent": 100.00000000000013
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:26+00:00",
+        "CpuPercent": 100.00000000000011
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:27+00:00",
+        "CpuPercent": 100.00000000000017
+      }
+    ],
+    "SemanticsQualified": false
+  },
+  "qualification": {
+    "Status": "NOT TESTED",
+    "Window": {
+      "StartUtc": "2026-10-11T05:06:59+00:00",
+      "EndUtc": "2026-10-11T05:07:27+00:00",
+      "Seconds": 28,
+      "Valid": true
+    },
+    "Metrics": {
+      "Status": "NOT TESTED",
+      "TruePositive": 0,
+      "FalsePositive": 0,
+      "FalseNegative": 0,
+      "TrueNegative": 0,
+      "Unknown": 3,
+      "InsufficientEvidence": 0,
+      "ReferenceMismatch": 0,
+      "Precision": null,
+      "Recall": null
+    },
+    "Exclusions": [
+      "ReferenceSemanticsNotQualified",
+      "ReferenceLossOrUnknownLoss"
+    ],
+    "CpuMedianAbsoluteError": null,
+    "PressureState": "Unknown"
+  },
+  "legacyReference": {
+    "Analyzer": "Microsoft.TraceProcessing",
+    "IndependentParser": true,
+    "LostEvents": 0,
+    "LostBuffers": 0,
+    "CpuGaps": 125353,
+    "Window": {
+      "StartUtc": "2026-10-11T05:06:59+00:00",
+      "EndUtc": "2026-10-11T05:07:27+00:00",
+      "Seconds": 28,
+      "Valid": true
+    },
+    "Cpu": [
+      {
+        "EndUtc": "2026-10-11T05:07:00+00:00",
+        "CpuPercent": 100.01057750000054
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:01+00:00",
+        "CpuPercent": 75.18194500000028
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:02+00:00",
+        "CpuPercent": 95.14808000000042
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:03+00:00",
+        "CpuPercent": 100.00999250000018
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:04+00:00",
+        "CpuPercent": 87.70465750000017
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:05+00:00",
+        "CpuPercent": 100.01000000000053
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:06+00:00",
+        "CpuPercent": 99.90999000000042
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:07+00:00",
+        "CpuPercent": 100.0100175000006
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:08+00:00",
+        "CpuPercent": 100.01001000000069
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:09+00:00",
+        "CpuPercent": 100.00998000000074
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:10+00:00",
+        "CpuPercent": 99.99430000000064
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:11+00:00",
+        "CpuPercent": 100.00997250000061
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:12+00:00",
+        "CpuPercent": 100.00999500000071
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:13+00:00",
+        "CpuPercent": 100.0100200000006
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:14+00:00",
+        "CpuPercent": 100.0099900000006
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:15+00:00",
+        "CpuPercent": 100.01001000000065
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:16+00:00",
+        "CpuPercent": 99.90998000000059
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:17+00:00",
+        "CpuPercent": 100.01000000000072
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:18+00:00",
+        "CpuPercent": 100.01000500000043
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:19+00:00",
+        "CpuPercent": 100.01003500000085
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:20+00:00",
+        "CpuPercent": 100.00994500000036
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:21+00:00",
+        "CpuPercent": 100.01056250000082
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:22+00:00",
+        "CpuPercent": 100.00945250000053
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:23+00:00",
+        "CpuPercent": 100.00999500000039
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:24+00:00",
+        "CpuPercent": 100.00999750000057
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:25+00:00",
+        "CpuPercent": 100.01005750000054
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:26+00:00",
+        "CpuPercent": 99.90994750000061
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:27+00:00",
+        "CpuPercent": 100.01002250000045
+      }
+    ],
+    "SemanticsQualified": true
+  },
+  "legacyQualification": {
+    "Status": "NOT TESTED",
+    "Window": {
+      "StartUtc": "2026-10-11T05:06:59+00:00",
+      "EndUtc": "2026-10-11T05:07:27+00:00",
+      "Seconds": 28,
+      "Valid": true
+    },
+    "Metrics": {
+      "Status": "NOT TESTED",
+      "TruePositive": 0,
+      "FalsePositive": 0,
+      "FalseNegative": 0,
+      "TrueNegative": 0,
+      "Unknown": 3,
+      "InsufficientEvidence": 0,
+      "ReferenceMismatch": 0,
+      "Precision": null,
+      "Recall": null
+    },
+    "Exclusions": [
+      "ReferenceLossOrUnknownLoss"
+    ],
+    "CpuMedianAbsoluteError": null,
+    "PressureState": "Unknown"
+  },
+  "lifetimes": [
+    {
+      "id": "0334EA19EB28D7B815543557",
+      "startedUtc": "2026-10-11T05:06:57.2594898+00:00",
+      "endedUtc": "2026-10-11T05:07:27.3801434+00:00"
+    },
+    {
+      "id": "A04D521D12F8E4FC901E13EC",
+      "startedUtc": "2026-10-11T05:06:57.261298+00:00",
+      "endedUtc": "2026-10-11T05:07:28.8222604+00:00"
+    },
+    {
+      "id": "D25D0757C7D0C820E194CEC3",
+      "startedUtc": "2026-10-11T05:06:57.2618325+00:00",
+      "endedUtc": "2026-10-11T05:07:27.3823893+00:00"
+    },
+    {
+      "id": "28BB209EAAD145930B1EC544",
+      "startedUtc": "2026-10-11T05:07:08.5679312+00:00",
+      "endedUtc": "2026-10-11T05:07:08.8168467+00:00"
+    },
+    {
+      "id": "40925E40EB4F4F097D992FC6",
+      "startedUtc": "2026-10-11T05:07:08.5501408+00:00",
+      "endedUtc": "2026-10-11T05:07:08.8503841+00:00"
+    },
+    {
+      "id": "F3D221710DB3CAD20B96FE2D",
+      "startedUtc": "2026-10-11T05:07:28.8304524+00:00",
+      "endedUtc": null
+    }
+  ],
+  "schedulingSummary": {
+    "ProcessorCount": 4,
+    "Window": {
+      "StartUtc": "2026-10-11T05:06:59+00:00",
+      "EndUtc": "2026-10-11T05:07:27+00:00",
+      "Seconds": 28,
+      "Valid": true
+    },
+    "Bins": [
+      {
+        "EndUtc": "2026-10-11T05:07:00+00:00",
+        "BusySeconds": 4.000000000000007,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 100.00000000000017
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:01+00:00",
+        "BusySeconds": 3.9999999999999973,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 99.99999999999993
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:02+00:00",
+        "BusySeconds": 4.000000000000016,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 100.0000000000004
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:03+00:00",
+        "BusySeconds": 4.000000000000011,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 100.00000000000027
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:04+00:00",
+        "BusySeconds": 4.000000000000002,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 100.00000000000004
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:05+00:00",
+        "BusySeconds": 3.9999984000000044,
+        "IdleSeconds": 1.6E-06,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 99.99996000000012
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:06+00:00",
+        "BusySeconds": 3.9999987000000092,
+        "IdleSeconds": 1.3E-06,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 99.99996750000022
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:07+00:00",
+        "BusySeconds": 4.000000000000014,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 100.00000000000036
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:08+00:00",
+        "BusySeconds": 3.9999984000000004,
+        "IdleSeconds": 1.6E-06,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 99.99996000000002
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:09+00:00",
+        "BusySeconds": 4.0000000000000036,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 100.00000000000009
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:10+00:00",
+        "BusySeconds": 4.0000000000000036,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 100.00000000000009
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:11+00:00",
+        "BusySeconds": 3.9999938000000013,
+        "IdleSeconds": 6.2E-06,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 99.99984500000004
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:12+00:00",
+        "BusySeconds": 4.000000000000008,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 100.0000000000002
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:13+00:00",
+        "BusySeconds": 3.9999972000000037,
+        "IdleSeconds": 2.8E-06,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 99.99993000000009
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:14+00:00",
+        "BusySeconds": 4.000000000000003,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 100.00000000000007
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:15+00:00",
+        "BusySeconds": 3.9999984000000066,
+        "IdleSeconds": 1.6E-06,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 99.99996000000017
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:16+00:00",
+        "BusySeconds": 4.000000000000009,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 100.00000000000023
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:17+00:00",
+        "BusySeconds": 3.9999986000000067,
+        "IdleSeconds": 1.4E-06,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 99.99996500000017
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:18+00:00",
+        "BusySeconds": 4.0000000000000115,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 100.00000000000028
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:19+00:00",
+        "BusySeconds": 4.0000000000000036,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 100.00000000000009
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:20+00:00",
+        "BusySeconds": 3.9999986000000063,
+        "IdleSeconds": 1.4E-06,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 99.99996500000016
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:21+00:00",
+        "BusySeconds": 4.000000000000003,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 100.00000000000007
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:22+00:00",
+        "BusySeconds": 3.9999960000000305,
+        "IdleSeconds": 4E-06,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 99.99990000000076
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:23+00:00",
+        "BusySeconds": 3.9999987000000097,
+        "IdleSeconds": 1.3E-06,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 99.99996750000024
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:24+00:00",
+        "BusySeconds": 3.9999986000000067,
+        "IdleSeconds": 1.4E-06,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 99.99996500000017
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:25+00:00",
+        "BusySeconds": 4.000000000000005,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 100.00000000000013
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:26+00:00",
+        "BusySeconds": 4.000000000000004,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 100.00000000000011
+      },
+      {
+        "EndUtc": "2026-10-11T05:07:27+00:00",
+        "BusySeconds": 4.000000000000007,
+        "IdleSeconds": 0,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 100.00000000000017
+      }
+    ],
+    "InvalidIntervals": 0,
+    "Status": "CompleteSchedulingCoverage"
+  },
+  "schedulingQualification": {
+    "status": "ReferenceIncomplete",
+    "reason": "DPC/ISR time and WPA agreement are not independently qualified. Scheduling observations are not accuracy ground truth."
+  },
+  "cpuParserDiagnostics": {
+    "sampleCount": 125349,
+    "invalidTimestamp": 0,
+    "partialTimestamp": 125349,
+    "partialWeight": 125349,
+    "invalidWeight": 0,
+    "missingProcess": 0,
+    "validSamplesInCommonWindow": 110309,
+    "unknownSamplesInCommonWindow": 0,
+    "estimatedUnaccountedSamplingPeriods": 125353,
+    "schedulingTimeSliceCount": 47629,
+    "sampledIdle": 6337,
+    "sampledMissingThread": 0,
+    "schedulingInvalidTimes": 0,
+    "schedulingUnknownThreads": 0,
+    "interpretation": "Weight is estimated time to the next sample. CpuGaps are estimated unaccounted sampling periods, not native lost events. Scheduling bins separately preserve idle, missing, unknown and overlapping time. The original sampled zero-gap gate remains in force."
+  },
+  "processCpuSemantics": "Legacy sampled weight estimate; not qualified running time or ground truth",
+  "processCpu": [
+    {
+      "id": "0334EA19EB28D7B815543557",
+      "cpuSeconds": 107.0258249999451,
+      "wholeMachinePercent": 95.55877232137956
+    },
+    {
+      "id": "A04D521D12F8E4FC901E13EC",
+      "cpuSeconds": 0.4528353000000004,
+      "wholeMachinePercent": 0.40431723214285753
+    },
+    {
+      "id": "28BB209EAAD145930B1EC544",
+      "cpuSeconds": 0.017036500000000003,
+      "wholeMachinePercent": 0.015211160714285717
+    },
+    {
+      "id": "40925E40EB4F4F097D992FC6",
+      "cpuSeconds": 0.012017199999999999,
+      "wholeMachinePercent": 0.010729642857142856
+    }
+  ],
+  "unlinkedCpu": 2811,
+  "unlinkedIo": 193,
+  "disk": [
+    {
+      "sessionDiskNumber": 0,
+      "identityStatus": "TraceLocalNumberOnly",
+      "operations": 182,
+      "readBytes": 213504,
+      "writeBytes": 6246400,
+      "latency": {
+        "Median": 2.9663500000000003,
+        "P95": 8.984045,
+        "Count": 182
+      }
+    },
+    {
+      "sessionDiskNumber": 1,
+      "identityStatus": "TraceLocalNumberOnly",
+      "operations": 11,
+      "readBytes": 0,
+      "writeBytes": 176128,
+      "latency": {
+        "Median": 0.6881,
+        "P95": 1.45875,
+        "Count": 11
+      }
+    }
+  ],
+  "processIo": [
+    {
+      "id": null,
+      "operations": 193,
+      "bytes": 6636032
+    }
+  ],
+  "resource": {
+    "elapsedMilliseconds": 639.8114,
+    "peakWorkingSetBytes": 138301440
+  },
+  "plans": [
+    {
+      "plan": {
+        "PlanId": "D65D4452EDF29FF49DED6208",
+        "FindingId": "perf.CpuSaturation",
+        "EvidenceReferences": [
+          "perf.CpuSaturation",
+          "2026-10-11T05:06:57.6165366\u002B00:00 \u002B 30.04s",
+          "CsWin32.GetSystemTimes"
+        ],
+        "ProblemDescription": "CPU \uBD80\uD558",
+        "ProposedAction": 6,
+        "Eligibility": "ReviewOnly",
+        "ConfidenceLimitations": [
+          "Resource pressure does not prove abnormal software.",
+          "Repeat the same workload before planning a repair.",
+          "Clock, temperature, boot attribution and service correlation are not measured.",
+          "Collection errors: Process:PartialAccessOrExited,ProcessBudget:Truncated",
+          "\uADFC\uBCF8 \uC6D0\uC778\uACFC \uC2E4\uC81C \uAC1C\uC120 \uD6A8\uACFC\uB294 \uBBF8\uD655\uC778\uC785\uB2C8\uB2E4."
+        ],
+        "RiskLevel": "ReviewOnly;ExecutionRiskNotAssessed",
+        "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+        "ExpectedEffect": "Unknown",
+        "EstimatedResourceCost": "UnknownUntilTargetInspection",
+        "UserConsentRequired": true,
+        "PreflightChecks": [
+          "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+          "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+          "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+          "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+        ],
+        "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+        "RollbackPlan": "\uBBF8\uB9AC\uBCF4\uAE30\uB294 \uC0C1\uD0DC\uB97C \uBCC0\uACBD\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. \uC2E4\uD589 \uB2E8\uACC4\uC5D0\uC11C \uC870\uCE58\uBCC4 \uC6D0\uBCF5\uC744 \uC124\uACC4\uD558\uC138\uC694.",
+        "VerificationMetrics": [
+          "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+          "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+          "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+          "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+        ],
+        "ExecutionState": "PlannedOnly"
+      },
+      "dryRun": {
+        "PlanId": "D65D4452EDF29FF49DED6208",
+        "Status": "PreviewAvailable",
+        "Target": "ExactTargetNotSelected;ReviewApplicationLoad",
+        "Preconditions": [
+          "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+          "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+          "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+          "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+        ],
+        "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+        "Risk": "ReviewOnly;ExecutionRiskNotAssessed",
+        "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+        "VerificationMetrics": [
+          "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+          "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+          "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+          "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+        ],
+        "ExecutionEnabled": false,
+        "SystemMutations": 0
+      }
+    },
+    {
+      "plan": {
+        "PlanId": "9CC1CF6B88860BB388FD35D7",
+        "FindingId": "perf.ProcessContribution.34997496A3617B027EDD7954",
+        "EvidenceReferences": [
+          "perf.ProcessContribution.34997496A3617B027EDD7954",
+          "2026-10-11T05:06:57.6165366\u002B00:00 \u002B 30.04s",
+          "System.Diagnostics.Process"
+        ],
+        "ProblemDescription": "\uD504\uB85C\uC138\uC2A4 \uC790\uC6D0 \uAE30\uC5EC",
+        "ProposedAction": 6,
+        "Eligibility": "Blocked:UnsupportedEvidence",
+        "ConfidenceLimitations": [
+          "Resource pressure does not prove abnormal software.",
+          "Repeat the same workload before planning a repair.",
+          "Clock, temperature, boot attribution and service correlation are not measured.",
+          "Collection errors: Process:PartialAccessOrExited,ProcessBudget:Truncated",
+          "\uADFC\uBCF8 \uC6D0\uC778\uACFC \uC2E4\uC81C \uAC1C\uC120 \uD6A8\uACFC\uB294 \uBBF8\uD655\uC778\uC785\uB2C8\uB2E4."
+        ],
+        "RiskLevel": "ReviewOnly;ExecutionRiskNotAssessed",
+        "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+        "ExpectedEffect": "Unknown",
+        "EstimatedResourceCost": "UnknownUntilTargetInspection",
+        "UserConsentRequired": true,
+        "PreflightChecks": [
+          "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+          "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+          "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+          "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+        ],
+        "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+        "RollbackPlan": "\uBBF8\uB9AC\uBCF4\uAE30\uB294 \uC0C1\uD0DC\uB97C \uBCC0\uACBD\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. \uC2E4\uD589 \uB2E8\uACC4\uC5D0\uC11C \uC870\uCE58\uBCC4 \uC6D0\uBCF5\uC744 \uC124\uACC4\uD558\uC138\uC694.",
+        "VerificationMetrics": [
+          "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+          "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+          "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+          "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+        ],
+        "ExecutionState": "PlannedOnly"
+      },
+      "dryRun": {
+        "PlanId": "9CC1CF6B88860BB388FD35D7",
+        "Status": "Blocked:UnsupportedEvidence",
+        "Target": "ExactTargetNotSelected;ReviewApplicationLoad",
+        "Preconditions": [
+          "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+          "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+          "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+          "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+        ],
+        "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+        "Risk": "ReviewOnly;ExecutionRiskNotAssessed",
+        "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+        "VerificationMetrics": [
+          "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+          "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+          "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+          "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+        ],
+        "ExecutionEnabled": false,
+        "SystemMutations": 0
+      }
+    },
+    {
+      "plan": {
+        "PlanId": "9D6E9113BC3E4BF966D1C37F",
+        "FindingId": "perf.ResourceConsumer.34997496A3617B027EDD7954",
+        "EvidenceReferences": [
+          "perf.ResourceConsumer.34997496A3617B027EDD7954",
+          "2026-10-11T05:06:57.6165366\u002B00:00 \u002B 30.04s",
+          "System.Diagnostics.Process"
+        ],
+        "ProblemDescription": "\uD504\uB85C\uC138\uC2A4 \uC790\uC6D0 \uAE30\uC5EC",
+        "ProposedAction": 6,
+        "Eligibility": "Blocked:UnsupportedEvidence",
+        "ConfidenceLimitations": [
+          "Resource pressure does not prove abnormal software.",
+          "Repeat the same workload before planning a repair.",
+          "Clock, temperature, boot attribution and service correlation are not measured.",
+          "Collection errors: Process:PartialAccessOrExited,ProcessBudget:Truncated",
+          "\uADFC\uBCF8 \uC6D0\uC778\uACFC \uC2E4\uC81C \uAC1C\uC120 \uD6A8\uACFC\uB294 \uBBF8\uD655\uC778\uC785\uB2C8\uB2E4."
+        ],
+        "RiskLevel": "ReviewOnly;ExecutionRiskNotAssessed",
+        "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+        "ExpectedEffect": "Unknown",
+        "EstimatedResourceCost": "UnknownUntilTargetInspection",
+        "UserConsentRequired": true,
+        "PreflightChecks": [
+          "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+          "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+          "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+          "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+        ],
+        "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+        "RollbackPlan": "\uBBF8\uB9AC\uBCF4\uAE30\uB294 \uC0C1\uD0DC\uB97C \uBCC0\uACBD\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. \uC2E4\uD589 \uB2E8\uACC4\uC5D0\uC11C \uC870\uCE58\uBCC4 \uC6D0\uBCF5\uC744 \uC124\uACC4\uD558\uC138\uC694.",
+        "VerificationMetrics": [
+          "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+          "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+          "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+          "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+        ],
+        "ExecutionState": "PlannedOnly"
+      },
+      "dryRun": {
+        "PlanId": "9D6E9113BC3E4BF966D1C37F",
+        "Status": "Blocked:UnsupportedEvidence",
+        "Target": "ExactTargetNotSelected;ReviewApplicationLoad",
+        "Preconditions": [
+          "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+          "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+          "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+          "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+        ],
+        "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+        "Risk": "ReviewOnly;ExecutionRiskNotAssessed",
+        "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+        "VerificationMetrics": [
+          "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+          "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+          "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+          "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+        ],
+        "ExecutionEnabled": false,
+        "SystemMutations": 0
+      }
+    },
+    {
+      "plan": {
+        "PlanId": "C6F985B1DFFDF18C36C1B3C3",
+        "FindingId": "perf.ResourceConsumer.4CAA8BF56A26E11FF94F2E26",
+        "EvidenceReferences": [
+          "perf.ResourceConsumer.4CAA8BF56A26E11FF94F2E26",
+          "2026-10-11T05:06:57.6165366\u002B00:00 \u002B 30.04s",
+          "System.Diagnostics.Process"
+        ],
+        "ProblemDescription": "\uD504\uB85C\uC138\uC2A4 \uC790\uC6D0 \uAE30\uC5EC",
+        "ProposedAction": 6,
+        "Eligibility": "Blocked:UnsupportedEvidence",
+        "ConfidenceLimitations": [
+          "Resource pressure does not prove abnormal software.",
+          "Repeat the same workload before planning a repair.",
+          "Clock, temperature, boot attribution and service correlation are not measured.",
+          "Collection errors: Process:PartialAccessOrExited,ProcessBudget:Truncated",
+          "\uADFC\uBCF8 \uC6D0\uC778\uACFC \uC2E4\uC81C \uAC1C\uC120 \uD6A8\uACFC\uB294 \uBBF8\uD655\uC778\uC785\uB2C8\uB2E4."
+        ],
+        "RiskLevel": "ReviewOnly;ExecutionRiskNotAssessed",
+        "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+        "ExpectedEffect": "Unknown",
+        "EstimatedResourceCost": "UnknownUntilTargetInspection",
+        "UserConsentRequired": true,
+        "PreflightChecks": [
+          "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+          "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+          "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+          "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+        ],
+        "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+        "RollbackPlan": "\uBBF8\uB9AC\uBCF4\uAE30\uB294 \uC0C1\uD0DC\uB97C \uBCC0\uACBD\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. \uC2E4\uD589 \uB2E8\uACC4\uC5D0\uC11C \uC870\uCE58\uBCC4 \uC6D0\uBCF5\uC744 \uC124\uACC4\uD558\uC138\uC694.",
+        "VerificationMetrics": [
+          "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+          "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+          "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+          "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+        ],
+        "ExecutionState": "PlannedOnly"
+      },
+      "dryRun": {
+        "PlanId": "C6F985B1DFFDF18C36C1B3C3",
+        "Status": "Blocked:UnsupportedEvidence",
+        "Target": "ExactTargetNotSelected;ReviewApplicationLoad",
+        "Preconditions": [
+          "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+          "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+          "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+          "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+        ],
+        "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+        "Risk": "ReviewOnly;ExecutionRiskNotAssessed",
+        "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+        "VerificationMetrics": [
+          "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+          "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+          "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+          "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+        ],
+        "ExecutionEnabled": false,
+        "SystemMutations": 0
+      }
+    }
+  ]
+}

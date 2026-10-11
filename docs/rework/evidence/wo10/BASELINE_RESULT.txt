@@ -1,0 +1,13 @@
+WORK ITEM: WO-10 BASELINE_RESULT.txt
+STATUS: PASS
+BASELINE SHA: 7e4dc94c7c8ed9260e203f99dbf57f5a1e753e20
+VERIFIED SOURCE SHA: c23802b2adc7be63c8c15ab6cd313ec9be0a05db
+SOURCE TREE: 752a647f89d6cced6637c1224e5e2dcae9618776
+BRANCH: codex/pccare-reference-correction-safe-recovery
+ENVIRONMENT: Windows 10.0.26200.0; .NET SDK 10.0.401; x64 Release; 24 logical processors; normal application token.
+TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore --logger "trx;LogFileName=wo10-baseline-retry.trx" -v:minimal
+INPUT: WO-09 baseline checkout; VSTEST_CONNECTION_TIMEOUT=300; authorized testhost IPC
+OUTPUT:
+통과!  - 실패:     0, 통과:   915, 건너뜀:   111, 전체:  1026, 기간: 2 m 40 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+WO-09 remote CI 38105566632 SUCCESS. Baseline tree 41303c5a3ded4b3dcc96f8f960ce5af46b2ace22.
+EXIT CODE: 0

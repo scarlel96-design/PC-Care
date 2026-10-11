@@ -29,3 +29,13 @@ docs/rework/evidence/wo08/CI_LOG.txt -text whitespace=-blank-at-eol
 /docs/rework/evidence/wo09/ROLLBACK.sh text eol=lf
 /docs/rework/evidence/wo09/DIFF_FILE.patch -text -whitespace
 /docs/rework/evidence/wo09/*.trx -text whitespace=cr-at-eol
+
+# Preserve WO-10 fixture bytes and rollback shell execution.
+/docs/rework/evidence/wo10/*.cs -text whitespace=cr-at-eol
+/docs/rework/evidence/wo10/ROLLBACK.sh text eol=lf
+/docs/rework/evidence/wo10/DIFF_FILE.patch -text -whitespace
+/docs/rework/evidence/wo10/*.trx -text whitespace=cr-at-eol
+/docs/rework/evidence/wo10/CI_LOG.txt -text whitespace=-blank-at-eol
+/docs/rework/WO10_*.md -text whitespace=cr-at-eol
+/docs/rework/evidence/wo10/** -text -whitespace
+/docs/rework/evidence/wo10/ROLLBACK.sh text eol=lf

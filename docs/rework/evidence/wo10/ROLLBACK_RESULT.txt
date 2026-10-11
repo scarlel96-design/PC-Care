@@ -1,0 +1,19 @@
+WORK ITEM: WO-10 ROLLBACK_RESULT.txt
+STATUS: PASS
+BASELINE SHA: 7e4dc94c7c8ed9260e203f99dbf57f5a1e753e20
+VERIFIED SOURCE SHA: c23802b2adc7be63c8c15ab6cd313ec9be0a05db
+SOURCE TREE: 752a647f89d6cced6637c1224e5e2dcae9618776
+BRANCH: codex/pccare-reference-correction-safe-recovery
+ENVIRONMENT: Windows 10.0.26200.0; .NET SDK 10.0.401; x64 Release; 24 logical processors; normal application token.
+TEST COMMAND: ./scripts/wo10-sandbox-validation.ps1 -OutputDirectory artifacts/wo10-sandbox
+INPUT: Separate-process recovery after six forced terminations
+OUTPUT:
+WO10_SANDBOX_PASS crashScenarios=6 hardLinkRejected=1 bytesRestored=6
+Before and after SHA256: 0FCCC690DC9BE2CE29BA17504BDB68E81B8210D8893A29A7858639158E92298A
+Recovery state: Restored. BytesVerified: true. Repeat recovery does not add a mutation.
+EXIT CODE: 0
+
+WINDOWS CI: 38113296563; SUCCESS; verified source c23802b2adc7be63c8c15ab6cd313ec9be0a05db.
+Application 957 PASS / 111 SKIP / 0 FAIL. Performance 188 PASS, updater 128 PASS, included above. SecurityLab 36 PASS / 0 SKIP / 0 FAIL.
+Synthetic crash recovery 6/6; hardlink, junction and symbolic link rejection PASS. GUI status remains NOT TESTED.
+See CI_LOG.txt, CI_TEST_COUNTS.json and ci/*.json for literal evidence.

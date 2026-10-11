@@ -1,0 +1,173 @@
+WORK ITEM: WO-10 PERFORMANCE_BUDGET_RESULT.txt
+STATUS: PARTIAL
+BASELINE SHA: 7e4dc94c7c8ed9260e203f99dbf57f5a1e753e20
+VERIFIED SOURCE SHA: c23802b2adc7be63c8c15ab6cd313ec9be0a05db
+SOURCE TREE: 752a647f89d6cced6637c1224e5e2dcae9618776
+BRANCH: codex/pccare-reference-correction-safe-recovery
+ENVIRONMENT: Windows 10.0.26200.0; .NET SDK 10.0.401; x64 Release; 24 logical processors; normal application token.
+TEST COMMAND: dotnet run --project tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-build --no-restore -- 30 artifacts/wo10/local-measurement-final.json General
+INPUT: Read-only 30-second normal-token observation concurrent with regressions
+OUTPUT:
+(stdout empty; structured JSON written)
+{
+  "environment": {
+    "os": "Microsoft Windows NT 10.0.26200.0",
+    "logicalProcessors": 24,
+    "traceEvent": "3.2.8.0",
+    "elevated": false
+  },
+  "analysisMilliseconds": 51.2934,
+  "cpu": {
+    "Median": 46.79196370706416,
+    "P95": 59.1877709633076,
+    "Count": 29
+  },
+  "memory": {
+    "Median": 30.972076340541967,
+    "P95": 32.06767631367539,
+    "Count": 29
+  },
+  "overheadPercentOfMachine": 0.08021476396278072,
+  "remainingOwnedSessions": null,
+  "pdhCpu": {
+    "status": "Unknown",
+    "startedUtc": "2026-10-11T04:59:55.8589365+00:00",
+    "cpu": [
+      {
+        "EndUtc": "2026-10-11T04:59:56.8747558+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T04:59:57.8825707+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T04:59:58.8969009+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T04:59:59.9044681+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:00.9096682+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:01.9234883+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:02.9268512+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:03.9390325+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:04.9534697+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:05.9558826+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:06.9575354+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:07.9594662+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:08.9749026+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:09.9871486+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:10.9889088+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:12.0012249+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:13.0037371+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:14.0182042+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:15.030681+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:16.0346776+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:17.0486978+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:18.0508577+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:19.0661258+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:20.0807323+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:21.0873181+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:22.0919388+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:23.0919289+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:24.0938676+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:25.1058015+00:00",
+        "CpuPercent": null
+      },
+      {
+        "EndUtc": "2026-10-11T05:00:26.1073893+00:00",
+        "CpuPercent": null
+      }
+    ],
+    "error": "NoValidPdhCpuSamples"
+  },
+  "sourceSha": "c23802b2adc7be63c8c15ab6cd313ec9be0a05db",
+  "snapshotResources": {
+    "CollectorCpuSeconds": 0.578125,
+    "PeakWorkingSetBytes": 44331008,
+    "ManagedAllocatedBytes": 775448,
+    "EventsReceived": 0
+  },
+  "limitations": [
+    "Concurrent regression tests affected the observation.",
+    "PDH CPU returned no valid samples.",
+    "ETW required administrator access.",
+    "Low-end hardware and GUI cost were not tested."
+  ]
+}
+EXIT CODE: 0

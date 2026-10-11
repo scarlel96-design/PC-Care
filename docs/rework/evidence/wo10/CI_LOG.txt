@@ -1,0 +1,725 @@
+windows-validation	Set up job	﻿2026-10-11T04:58:55.1467065Z Current runner version: '2.337.0'
+windows-validation	Set up job	2026-10-11T04:58:55.1504746Z ##[group]Runner Image Provisioner
+windows-validation	Set up job	2026-10-11T04:58:55.1505255Z Hosted Compute Agent
+windows-validation	Set up job	2026-10-11T04:58:55.1505557Z Version: 20260901.588
+windows-validation	Set up job	2026-10-11T04:58:55.1505873Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+windows-validation	Set up job	2026-10-11T04:58:55.1506308Z Build Date: 2026-09-01T19:56:44Z
+windows-validation	Set up job	2026-10-11T04:58:55.1506652Z Worker ID: {91b81ac9-e051-40b0-a50f-8cf3318328a5}
+windows-validation	Set up job	2026-10-11T04:58:55.1507017Z Azure Region: centralus
+windows-validation	Set up job	2026-10-11T04:58:55.1507345Z ##[endgroup]
+windows-validation	Set up job	2026-10-11T04:58:55.1508045Z ##[group]Operating System
+windows-validation	Set up job	2026-10-11T04:58:55.1508365Z Microsoft Windows Server 2025
+windows-validation	Set up job	2026-10-11T04:58:55.1508674Z 10.0.26100
+windows-validation	Set up job	2026-10-11T04:58:55.1508955Z Datacenter
+windows-validation	Set up job	2026-10-11T04:58:55.1509229Z ##[endgroup]
+windows-validation	Set up job	2026-10-11T04:58:55.1509528Z ##[group]Runner Image
+windows-validation	Set up job	2026-10-11T04:58:55.1509859Z Image: windows-2025-vs2026
+windows-validation	Set up job	2026-10-11T04:58:55.1510167Z Version: 20260925.250.1
+windows-validation	Set up job	2026-10-11T04:58:55.1510769Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20260925.250/images/windows/Windows2025-VS2026-Readme.md
+windows-validation	Set up job	2026-10-11T04:58:55.1511904Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20260925.250
+windows-validation	Set up job	2026-10-11T04:58:55.1512454Z ##[endgroup]
+windows-validation	Set up job	2026-10-11T04:58:55.1513034Z ##[group]GITHUB_TOKEN Permissions
+windows-validation	Set up job	2026-10-11T04:58:55.1514148Z Contents: read
+windows-validation	Set up job	2026-10-11T04:58:55.1514441Z Metadata: read
+windows-validation	Set up job	2026-10-11T04:58:55.1514715Z ##[endgroup]
+windows-validation	Set up job	2026-10-11T04:58:55.1515942Z Secret source: Actions
+windows-validation	Set up job	2026-10-11T04:58:55.1516400Z Cache mode: write
+windows-validation	Set up job	2026-10-11T04:58:55.1516783Z Prepare workflow directory
+windows-validation	Set up job	2026-10-11T04:58:55.1747589Z Prepare all required actions
+windows-validation	Set up job	2026-10-11T04:58:55.1778227Z Getting action download info
+windows-validation	Set up job	2026-10-11T04:58:55.3936691Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+windows-validation	Set up job	2026-10-11T04:58:55.4725140Z Download action repository 'actions/setup-dotnet@v4' (SHA:67a3573c9a986a3f9c594539f4ab511d57bb3ce9)
+windows-validation	Set up job	2026-10-11T04:58:55.8507493Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+windows-validation	Set up job	2026-10-11T04:58:56.0977213Z Complete job name: windows-validation
+windows-validation	Run actions/checkout@v4	﻿2026-10-11T04:58:56.2159842Z ##[group]Run actions/checkout@v4
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.2160534Z with:
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.2160756Z   repository: scarlel96-design/PC-Care
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.2162839Z   token: ***
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.2163041Z   ssh-strict: true
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.2163250Z   ssh-user: git
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.2163458Z   persist-credentials: true
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.2163686Z   clean: true
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.2163898Z   sparse-checkout-cone-mode: true
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.2164150Z   fetch-depth: 1
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.2164351Z   fetch-tags: false
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.2164560Z   show-progress: true
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.2164770Z   lfs: false
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.2164963Z   submodules: false
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.2165176Z   set-safe-directory: true
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.2165417Z   allow-unsafe-pr-checkout: false
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.2165744Z ##[endgroup]
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.3107815Z Syncing repository: scarlel96-design/PC-Care
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.3109051Z ##[group]Getting Git version info
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.3109435Z Working directory is 'CI_WORKSPACE'
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.3751568Z [command]"C:\Program Files\Git\bin\git.exe" version
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.7272160Z git version 2.55.0.windows.5
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.7314852Z ##[endgroup]
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.7328873Z Temporarily overriding HOME='D:\a\_temp\4dd76ee9-7183-49a8-8db2-908e4223002c' before making global git config changes
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.7330468Z Adding repository directory to the temporary git global config as a safe directory
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.7342698Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory CI_WORKSPACE
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.7861090Z Deleting the contents of 'CI_WORKSPACE'
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.7864861Z ##[group]Initializing the repository
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.7870507Z [command]"C:\Program Files\Git\bin\git.exe" init CI_WORKSPACE
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.8578605Z Initialized empty Git repository in D:/a/PC-Care/PC-Care/.git/
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.8609322Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/scarlel96-design/PC-Care
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.9096467Z ##[endgroup]
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.9097459Z ##[group]Disabling automatic garbage collection
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.9102351Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.9280022Z ##[endgroup]
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.9280924Z ##[group]Setting up auth
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.9288214Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:56.9469143Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:58.1514336Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:58.1708395Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:58.5018396Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:58.5204678Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:58.8607086Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:58.8792455Z ##[endgroup]
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:58.8792887Z ##[group]Fetching the repository
+windows-validation	Run actions/checkout@v4	2026-10-11T04:58:58.8801034Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +c23802b2adc7be63c8c15ab6cd313ec9be0a05db:refs/remotes/origin/codex/pccare-reference-correction-safe-recovery
+windows-validation	Run actions/checkout@v4	2026-10-11T04:59:00.9450831Z From https://github.com/scarlel96-design/PC-Care
+windows-validation	Run actions/checkout@v4	2026-10-11T04:59:00.9452111Z  * [new ref]         c23802b2adc7be63c8c15ab6cd313ec9be0a05db -> origin/codex/pccare-reference-correction-safe-recovery
+windows-validation	Run actions/checkout@v4	2026-10-11T04:59:00.9485585Z ##[endgroup]
+windows-validation	Run actions/checkout@v4	2026-10-11T04:59:00.9486060Z ##[group]Determining the checkout info
+windows-validation	Run actions/checkout@v4	2026-10-11T04:59:00.9486999Z ##[endgroup]
+windows-validation	Run actions/checkout@v4	2026-10-11T04:59:00.9495794Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+windows-validation	Run actions/checkout@v4	2026-10-11T04:59:00.9869543Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+windows-validation	Run actions/checkout@v4	2026-10-11T04:59:01.0016300Z ##[group]Checking out the ref
+windows-validation	Run actions/checkout@v4	2026-10-11T04:59:01.0022888Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B codex/pccare-reference-correction-safe-recovery refs/remotes/origin/codex/pccare-reference-correction-safe-recovery
+windows-validation	Run actions/checkout@v4	2026-10-11T04:59:01.2884179Z Switched to a new branch 'codex/pccare-reference-correction-safe-recovery'
+windows-validation	Run actions/checkout@v4	2026-10-11T04:59:01.2942284Z branch 'codex/pccare-reference-correction-safe-recovery' set up to track 'origin/codex/pccare-reference-correction-safe-recovery'.
+windows-validation	Run actions/checkout@v4	2026-10-11T04:59:01.2991246Z ##[endgroup]
+windows-validation	Run actions/checkout@v4	2026-10-11T04:59:01.3290744Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+windows-validation	Run actions/checkout@v4	2026-10-11T04:59:01.3454373Z c23802b2adc7be63c8c15ab6cd313ec9be0a05db
+windows-validation	Run actions/setup-dotnet@v4	﻿2026-10-11T04:59:01.3750157Z ##[group]Run actions/setup-dotnet@v4
+windows-validation	Run actions/setup-dotnet@v4	2026-10-11T04:59:01.3750365Z with:
+windows-validation	Run actions/setup-dotnet@v4	2026-10-11T04:59:01.3750475Z   dotnet-version: 10.0.x
+windows-validation	Run actions/setup-dotnet@v4	2026-10-11T04:59:01.3750603Z   cache: false
+windows-validation	Run actions/setup-dotnet@v4	2026-10-11T04:59:01.3750704Z ##[endgroup]
+windows-validation	Run actions/setup-dotnet@v4	2026-10-11T04:59:01.4779023Z (node:8908) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+windows-validation	Run actions/setup-dotnet@v4	2026-10-11T04:59:01.4779484Z (Use `node --trace-deprecation ...` to show where the warning was created)
+windows-validation	Run actions/setup-dotnet@v4	2026-10-11T04:59:01.5363346Z [command]"C:\Program Files\PowerShell\7\pwsh.exe" -NoLogo -Sta -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command & 'D:\a\_actions\actions\setup-dotnet\v4\externals\install-dotnet.ps1' -SkipNonVersionedFiles -Runtime dotnet -Channel LTS
+windows-validation	Run actions/setup-dotnet@v4	2026-10-11T04:59:02.7083348Z dotnet-install: .NET Core Runtime with version '10.0.12' is already installed.
+windows-validation	Run actions/setup-dotnet@v4	2026-10-11T04:59:02.7913009Z [command]"C:\Program Files\PowerShell\7\pwsh.exe" -NoLogo -Sta -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command & 'D:\a\_actions\actions\setup-dotnet\v4\externals\install-dotnet.ps1' -SkipNonVersionedFiles -Channel 10.0
+windows-validation	Run actions/setup-dotnet@v4	2026-10-11T04:59:03.4759111Z dotnet-install: .NET Core SDK with version '10.0.401' is already installed.
+windows-validation	Restore	﻿2026-10-11T04:59:03.5522321Z ##[group]Run dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
+windows-validation	Restore	2026-10-11T04:59:03.5522814Z ^[[36;1mdotnet restore SmartPerformanceDoctor.sln -p:Platform=x64^[[0m
+windows-validation	Restore	2026-10-11T04:59:03.5880181Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	Restore	2026-10-11T04:59:03.5880404Z env:
+windows-validation	Restore	2026-10-11T04:59:03.5880524Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	Restore	2026-10-11T04:59:03.5880659Z ##[endgroup]
+windows-validation	Restore	2026-10-11T04:59:10.2401266Z   Determining projects to restore...
+windows-validation	Restore	2026-10-11T04:59:12.3356235Z   Restored CI_WORKSPACE\src\SmartPerformanceDoctor.Setup\SmartPerformanceDoctor.Setup.csproj (in 233 ms).
+windows-validation	Restore	2026-10-11T04:59:12.3412444Z CI_WORKSPACE\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj : warning NU1510: PackageReference System.IO.Pipes.AccessControl will not be pruned. This package is automatically available and does not need to be referenced explicitly. Remove the PackageReference item. [CI_WORKSPACE\SmartPerformanceDoctor.sln]
+windows-validation	Restore	2026-10-11T04:59:12.3415082Z CI_WORKSPACE\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj : warning NU1510: PackageReference System.Security.Cryptography.ProtectedData will not be pruned. This package is automatically available and does not need to be referenced explicitly. Remove the PackageReference item. [CI_WORKSPACE\SmartPerformanceDoctor.sln]
+windows-validation	Restore	2026-10-11T04:59:12.3417484Z CI_WORKSPACE\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj : warning NU1510: PackageReference System.Drawing.Common will not be pruned. This package is automatically available and does not need to be referenced explicitly. Remove the PackageReference item. [CI_WORKSPACE\SmartPerformanceDoctor.sln]
+windows-validation	Restore	2026-10-11T04:59:17.1177425Z   Restored CI_WORKSPACE\src\SmartPerformanceDoctor.SecurityLab\SmartPerformanceDoctor.SecurityLab.csproj (in 5.28 sec).
+windows-validation	Restore	2026-10-11T04:59:27.0341499Z   Restored CI_WORKSPACE\src\SmartPerformanceDoctor.Aegis\SmartPerformanceDoctor.Aegis.csproj (in 9.89 sec).
+windows-validation	Restore	2026-10-11T04:59:48.3301297Z   Restored CI_WORKSPACE\src\SmartPerformanceDoctor.UpdateEngine\SmartPerformanceDoctor.UpdateEngine.csproj (in 35.78 sec).
+windows-validation	Restore	2026-10-11T04:59:48.4435957Z   Restored CI_WORKSPACE\tools\SmartPerformanceDoctor.DiagnosticsProbe\SmartPerformanceDoctor.DiagnosticsProbe.csproj (in 35.8 sec).
+windows-validation	Restore	2026-10-11T04:59:48.6646074Z   Restored CI_WORKSPACE\src\SmartPerformanceDoctor.AegisRecoveryHelper\SmartPerformanceDoctor.AegisRecoveryHelper.csproj (in 3 ms).
+windows-validation	Restore	2026-10-11T05:00:22.5060888Z   Restored CI_WORKSPACE\src\SmartPerformanceDoctor.AegisRecoveryService\SmartPerformanceDoctor.AegisRecoveryService.csproj (in 55.41 sec).
+windows-validation	Restore	2026-10-11T05:00:36.4140558Z   Restored CI_WORKSPACE\tests\SmartPerformanceDoctor.SecurityLab.Tests\SmartPerformanceDoctor.SecurityLab.Tests.csproj (in 47.75 sec).
+windows-validation	Restore	2026-10-11T05:00:36.4214194Z   Restored CI_WORKSPACE\tools\SmartPerformanceDoctor.SecurityLab.Cli\SmartPerformanceDoctor.SecurityLab.Cli.csproj (in 1 ms).
+windows-validation	Restore	2026-10-11T05:00:45.2921202Z   Restored CI_WORKSPACE\tools\SmartPerformanceDoctor.ReferenceProbe\SmartPerformanceDoctor.ReferenceProbe.csproj (in 8.87 sec).
+windows-validation	Restore	2026-10-11T05:00:45.2950328Z   Restored CI_WORKSPACE\src\SmartPerformanceDoctor.UpdateHelper\SmartPerformanceDoctor.UpdateHelper.csproj (in 1 ms).
+windows-validation	Restore	2026-10-11T05:00:55.0882620Z   Restored CI_WORKSPACE\tests\SmartPerformanceDoctor.AstraVault.KillWorker\SmartPerformanceDoctor.AstraVault.KillWorker.csproj (in 32.58 sec).
+windows-validation	Restore	2026-10-11T05:00:55.0953353Z   Restored CI_WORKSPACE\src\SmartPerformanceDoctor.Data\SmartPerformanceDoctor.Data.csproj (in 5 ms).
+windows-validation	Restore	2026-10-11T05:00:55.0975952Z   Restored CI_WORKSPACE\src\SmartPerformanceDoctor.Contracts\SmartPerformanceDoctor.Contracts.csproj (in 0.5 ms).
+windows-validation	Restore	2026-10-11T05:00:55.0999426Z   Restored CI_WORKSPACE\src\SmartPerformanceDoctor.AstraVault\SmartPerformanceDoctor.AstraVault.csproj (in 0.6 ms).
+windows-validation	Restore	2026-10-11T05:00:55.4070080Z   Restored CI_WORKSPACE\src\SmartPerformanceDoctor.Diagnostics\SmartPerformanceDoctor.Diagnostics.csproj (in 10.11 sec).
+windows-validation	Restore	2026-10-11T05:00:58.3071566Z   Restored CI_WORKSPACE\tests\SmartPerformanceDoctor.Tests\SmartPerformanceDoctor.Tests.csproj (in 1.16 min).
+windows-validation	Restore	2026-10-11T05:00:58.3201843Z   Restored CI_WORKSPACE\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj (in 1.77 min).
+windows-validation	Release build	﻿2026-10-11T05:00:58.4356412Z ##[group]Run dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+windows-validation	Release build	2026-10-11T05:00:58.4356923Z ^[[36;1mdotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal^[[0m
+windows-validation	Release build	2026-10-11T05:00:58.4413465Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	Release build	2026-10-11T05:00:58.4413680Z env:
+windows-validation	Release build	2026-10-11T05:00:58.4413808Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	Release build	2026-10-11T05:00:58.4413967Z ##[endgroup]
+windows-validation	Release build	2026-10-11T05:01:08.3046829Z   SmartPerformanceDoctor.Diagnostics -> CI_WORKSPACE\src\SmartPerformanceDoctor.Diagnostics\bin\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Diagnostics.dll
+windows-validation	Release build	2026-10-11T05:01:08.6522910Z   SmartPerformanceDoctor.Aegis -> CI_WORKSPACE\src\SmartPerformanceDoctor.Aegis\bin\Release\net10.0-windows\SmartPerformanceDoctor.Aegis.dll
+windows-validation	Release build	2026-10-11T05:01:08.7868313Z   SmartPerformanceDoctor.Contracts -> CI_WORKSPACE\src\SmartPerformanceDoctor.Contracts\bin\Release\net10.0\SmartPerformanceDoctor.Contracts.dll
+windows-validation	Release build	2026-10-11T05:01:08.9126097Z   SmartPerformanceDoctor.Data -> CI_WORKSPACE\src\SmartPerformanceDoctor.Data\bin\Release\net10.0\SmartPerformanceDoctor.Data.dll
+windows-validation	Release build	2026-10-11T05:01:09.3339812Z   SmartPerformanceDoctor.SecurityLab -> CI_WORKSPACE\src\SmartPerformanceDoctor.SecurityLab\bin\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+windows-validation	Release build	2026-10-11T05:01:09.9027991Z   SmartPerformanceDoctor.AstraVault -> CI_WORKSPACE\src\SmartPerformanceDoctor.AstraVault\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.dll
+windows-validation	Release build	2026-10-11T05:01:10.1338796Z   SmartPerformanceDoctor.UpdateEngine -> CI_WORKSPACE\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	Release build	2026-10-11T05:01:10.2934243Z   SmartPerformanceDoctor.UpdateHelper -> CI_WORKSPACE\src\SmartPerformanceDoctor.UpdateHelper\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateHelper.dll
+windows-validation	Release build	2026-10-11T05:01:10.4043825Z   SmartPerformanceDoctor.AegisRecoveryHelper -> CI_WORKSPACE\src\SmartPerformanceDoctor.AegisRecoveryHelper\bin\x64\Release\net10.0-windows\AegisRecoveryHelper.dll
+windows-validation	Release build	2026-10-11T05:01:10.6222460Z   SmartPerformanceDoctor.AegisRecoveryService -> CI_WORKSPACE\src\SmartPerformanceDoctor.AegisRecoveryService\bin\x64\Release\net10.0-windows\AegisRecoveryService.dll
+windows-validation	Release build	2026-10-11T05:01:30.8211536Z   SmartPerformanceDoctor.App -> CI_WORKSPACE\src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.dll
+windows-validation	Release build	2026-10-11T05:01:34.4459214Z   SmartPerformanceDoctor.Tests -> CI_WORKSPACE\tests\SmartPerformanceDoctor.Tests\bin\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll
+windows-validation	Release build	2026-10-11T05:01:34.5853222Z   SmartPerformanceDoctor.AstraVault.KillWorker -> CI_WORKSPACE\tests\SmartPerformanceDoctor.AstraVault.KillWorker\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.KillWorker.dll
+windows-validation	Release build	2026-10-11T05:01:34.9623570Z   SmartPerformanceDoctor.Setup -> CI_WORKSPACE\src\SmartPerformanceDoctor.Setup\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.Setup.dll
+windows-validation	Release build	2026-10-11T05:01:35.2644917Z   SmartPerformanceDoctor.SecurityLab.Tests -> CI_WORKSPACE\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll
+windows-validation	Release build	2026-10-11T05:01:35.4946450Z   SmartPerformanceDoctor.SecurityLab.Cli -> CI_WORKSPACE\tools\SmartPerformanceDoctor.SecurityLab.Cli\bin\Release\net10.0-windows\SecurityLab.Cli.dll
+windows-validation	Release build	2026-10-11T05:01:35.7924495Z   SmartPerformanceDoctor.DiagnosticsProbe -> CI_WORKSPACE\tools\SmartPerformanceDoctor.DiagnosticsProbe\bin\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.DiagnosticsProbe.dll
+windows-validation	Release build	2026-10-11T05:01:36.2256131Z   SmartPerformanceDoctor.ReferenceProbe -> CI_WORKSPACE\tools\SmartPerformanceDoctor.ReferenceProbe\bin\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.ReferenceProbe.dll
+windows-validation	Release build	2026-10-11T05:01:36.2380791Z 
+windows-validation	Release build	2026-10-11T05:01:36.2387604Z Build succeeded.
+windows-validation	Release build	2026-10-11T05:01:36.2388581Z     0 Warning(s)
+windows-validation	Release build	2026-10-11T05:01:36.2389196Z     0 Error(s)
+windows-validation	Release build	2026-10-11T05:01:36.2389305Z 
+windows-validation	Release build	2026-10-11T05:01:36.2389533Z Time Elapsed 00:00:37.37
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	﻿2026-10-11T05:01:36.6312570Z ##[group]Run dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests|FullyQualifiedName~WO06' --logger 'trx;LogFileName=wo06-signed-updater.trx' -v:minimal
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:36.6314169Z ^[[36;1mdotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests|FullyQualifiedName~WO06' --logger 'trx;LogFileName=wo06-signed-updater.trx' -v:minimal^[[0m
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:36.6359685Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:36.6359878Z env:
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:36.6359996Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:36.6360145Z   VSTEST_CONNECTION_TIMEOUT: 300
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:36.6360335Z ##[endgroup]
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:38.3233525Z   SmartPerformanceDoctor.Diagnostics -> CI_WORKSPACE\src\SmartPerformanceDoctor.Diagnostics\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Diagnostics.dll
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:38.3773847Z   SmartPerformanceDoctor.AstraVault -> CI_WORKSPACE\src\SmartPerformanceDoctor.AstraVault\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.dll
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:38.4917545Z   SmartPerformanceDoctor.Data -> CI_WORKSPACE\src\SmartPerformanceDoctor.Data\bin\x64\Release\net10.0\SmartPerformanceDoctor.Data.dll
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:38.6122383Z   SmartPerformanceDoctor.Contracts -> CI_WORKSPACE\src\SmartPerformanceDoctor.Contracts\bin\x64\Release\net10.0\SmartPerformanceDoctor.Contracts.dll
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:38.8163215Z   SmartPerformanceDoctor.Aegis -> CI_WORKSPACE\src\SmartPerformanceDoctor.Aegis\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.Aegis.dll
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:39.0880016Z   SmartPerformanceDoctor.SecurityLab -> CI_WORKSPACE\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:39.1312710Z   SmartPerformanceDoctor.UpdateEngine -> CI_WORKSPACE\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:39.1708467Z   SmartPerformanceDoctor.UpdateHelper -> CI_WORKSPACE\src\SmartPerformanceDoctor.UpdateHelper\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateHelper.dll
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:39.2716272Z   SmartPerformanceDoctor.AegisRecoveryHelper -> CI_WORKSPACE\src\SmartPerformanceDoctor.AegisRecoveryHelper\bin\x64\Release\net10.0-windows\AegisRecoveryHelper.dll
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:39.4033902Z   SmartPerformanceDoctor.AegisRecoveryService -> CI_WORKSPACE\src\SmartPerformanceDoctor.AegisRecoveryService\bin\x64\Release\net10.0-windows\AegisRecoveryService.dll
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:47.8207838Z   SmartPerformanceDoctor.App -> CI_WORKSPACE\src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.dll
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:50.1016772Z   SmartPerformanceDoctor.Tests -> CI_WORKSPACE\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:50.2869038Z   SmartPerformanceDoctor.AstraVault.KillWorker -> CI_WORKSPACE\tests\SmartPerformanceDoctor.AstraVault.KillWorker\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.KillWorker.dll
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:50.2927013Z Test run for CI_WORKSPACE\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll (.NETCoreApp,Version=v10.0)
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:01:50.8904273Z A total of 1 test files matched the specified pattern.
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:02:35.9561079Z Results File: CI_WORKSPACE\tests\SmartPerformanceDoctor.Tests\TestResults\wo06-signed-updater.trx
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:02:35.9565036Z 
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-11T05:02:35.9592064Z Passed!  - Failed:     0, Passed:   128, Skipped:     0, Total:   128, Duration: 44 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Performance diagnostics scenarios	﻿2026-10-11T05:02:36.3422927Z ##[group]Run dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO07|FullyQualifiedName~WO08|FullyQualifiedName~WO09|FullyQualifiedName~WO10' --logger 'trx;LogFileName=wo09-performance.trx' -v:minimal
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:36.3424154Z ^[[36;1mdotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO07|FullyQualifiedName~WO08|FullyQualifiedName~WO09|FullyQualifiedName~WO10' --logger 'trx;LogFileName=wo09-performance.trx' -v:minimal^[[0m
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:36.3470970Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:36.3471220Z env:
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:36.3471374Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:36.3471567Z   VSTEST_CONNECTION_TIMEOUT: 300
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:36.3471742Z ##[endgroup]
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:37.2941284Z   SmartPerformanceDoctor.Diagnostics -> CI_WORKSPACE\src\SmartPerformanceDoctor.Diagnostics\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Diagnostics.dll
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:37.3314384Z   SmartPerformanceDoctor.AstraVault -> CI_WORKSPACE\src\SmartPerformanceDoctor.AstraVault\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.dll
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:37.3711586Z   SmartPerformanceDoctor.Data -> CI_WORKSPACE\src\SmartPerformanceDoctor.Data\bin\x64\Release\net10.0\SmartPerformanceDoctor.Data.dll
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:37.3896414Z   SmartPerformanceDoctor.Contracts -> CI_WORKSPACE\src\SmartPerformanceDoctor.Contracts\bin\x64\Release\net10.0\SmartPerformanceDoctor.Contracts.dll
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:37.4644220Z   SmartPerformanceDoctor.Aegis -> CI_WORKSPACE\src\SmartPerformanceDoctor.Aegis\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.Aegis.dll
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:37.4912054Z   SmartPerformanceDoctor.SecurityLab -> CI_WORKSPACE\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:37.5114602Z   SmartPerformanceDoctor.UpdateEngine -> CI_WORKSPACE\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:37.5574497Z   SmartPerformanceDoctor.UpdateHelper -> CI_WORKSPACE\src\SmartPerformanceDoctor.UpdateHelper\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateHelper.dll
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:37.5834212Z   SmartPerformanceDoctor.AegisRecoveryHelper -> CI_WORKSPACE\src\SmartPerformanceDoctor.AegisRecoveryHelper\bin\x64\Release\net10.0-windows\AegisRecoveryHelper.dll
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:37.6142295Z   SmartPerformanceDoctor.AegisRecoveryService -> CI_WORKSPACE\src\SmartPerformanceDoctor.AegisRecoveryService\bin\x64\Release\net10.0-windows\AegisRecoveryService.dll
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:38.6217127Z   SmartPerformanceDoctor.App -> CI_WORKSPACE\src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.dll
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:39.1402585Z   SmartPerformanceDoctor.Tests -> CI_WORKSPACE\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:39.2461302Z   SmartPerformanceDoctor.AstraVault.KillWorker -> CI_WORKSPACE\tests\SmartPerformanceDoctor.AstraVault.KillWorker\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.KillWorker.dll
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:39.2513163Z Test run for CI_WORKSPACE\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll (.NETCoreApp,Version=v10.0)
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:39.3804086Z A total of 1 test files matched the specified pattern.
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:44.7855336Z Results File: CI_WORKSPACE\tests\SmartPerformanceDoctor.Tests\TestResults\wo09-performance.trx
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:44.7858719Z 
+windows-validation	Performance diagnostics scenarios	2026-10-11T05:02:44.7888533Z Passed!  - Failed:     0, Passed:   188, Skipped:     0, Total:   188, Duration: 4 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Read-only Windows collector smoke	﻿2026-10-11T05:02:45.1781564Z ##[group]Run dotnet build tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-restore -v:minimal
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:45.1782176Z ^[[36;1mdotnet build tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-restore -v:minimal^[[0m
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:45.1782565Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'probe build failed' }^[[0m
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:45.1782864Z ^[[36;1mNew-Item -ItemType Directory -Force artifacts/wo07-ci | Out-Null^[[0m
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:45.1783317Z ^[[36;1mdotnet run --project tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-build --no-restore -- 30 artifacts/wo07-ci/measurement.json^[[0m
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:45.1783778Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'CPU or memory collector unavailable' }^[[0m
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:45.1784129Z ^[[36;1m$measurement = Get-Content artifacts/wo07-ci/measurement.json -Raw | ConvertFrom-Json^[[0m
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:45.1784435Z ^[[36;1mif ($measurement.environment.elevated) {^[[0m
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:45.1784869Z ^[[36;1m  if ($measurement.snapshot.Errors.Where({ $_.Provider.StartsWith('ETW') }).Count -gt 0) { throw 'Elevated ETW collection failed' }^[[0m
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:45.1785365Z ^[[36;1m  if ($measurement.snapshot.EventsReceived -le 0) { throw 'Elevated ETW delivered no events' }^[[0m
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:45.1785847Z ^[[36;1m  if ($null -eq $measurement.remainingOwnedSessions -or $measurement.remainingOwnedSessions -ne 0) { throw 'ETW session cleanup not verified' }^[[0m
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:45.1786457Z ^[[36;1m}^[[0m
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:45.1833931Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:45.1834151Z env:
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:45.1834291Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:45.1834452Z ##[endgroup]
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:46.0287327Z   SmartPerformanceDoctor.Diagnostics -> CI_WORKSPACE\src\SmartPerformanceDoctor.Diagnostics\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Diagnostics.dll
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:46.2345190Z   SmartPerformanceDoctor.DiagnosticsProbe -> CI_WORKSPACE\tools\SmartPerformanceDoctor.DiagnosticsProbe\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.DiagnosticsProbe.dll
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:46.2438647Z 
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:46.2443185Z Build succeeded.
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:46.2443738Z     0 Warning(s)
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:46.2444469Z     0 Error(s)
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:46.2445010Z 
+windows-validation	Read-only Windows collector smoke	2026-10-11T05:02:46.2445196Z Time Elapsed 00:00:00.71
+windows-validation	Diagnostic profiles and controlled workloads	﻿2026-10-11T05:03:17.4175259Z ##[group]Run dotnet build tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-restore -v:minimal
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:17.4175804Z ^[[36;1mdotnet build tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-restore -v:minimal^[[0m
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:17.4176145Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'Reference analyzer build failed' }^[[0m
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:17.4176552Z ^[[36;1mdotnet run --project tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-build --no-restore -- --verify-time-contract^[[0m
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:17.4176958Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'SDK converted timestamp contract failed' }^[[0m
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:17.4177276Z ^[[36;1m./scripts/wo08-measurement.ps1 -OutputDirectory artifacts/wo08-ci -RunControlledWorkloads^[[0m
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:17.4177599Z ^[[36;1m./scripts/wo09-disk-identity.ps1 -OutputDirectory artifacts/wo09-ci^[[0m
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:17.4177925Z ^[[36;1m./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner^[[0m
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:17.4220678Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:17.4220864Z env:
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:17.4220979Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:17.4221119Z ##[endgroup]
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:18.3419306Z   SmartPerformanceDoctor.Diagnostics -> CI_WORKSPACE\src\SmartPerformanceDoctor.Diagnostics\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Diagnostics.dll
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:18.6022565Z   SmartPerformanceDoctor.ReferenceProbe -> CI_WORKSPACE\tools\SmartPerformanceDoctor.ReferenceProbe\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.ReferenceProbe.dll
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:18.6128668Z 
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:18.6133936Z Build succeeded.
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:18.6134654Z     0 Warning(s)
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:18.6134865Z     0 Error(s)
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:18.6136111Z 
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:18.6136298Z Time Elapsed 00:00:00.82
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:03:19.2610290Z SDK_TIME_CONTRACT passed=10 failed=0 roundedConvertedValues=Accepted rawValue=Unused
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:05:45.0664392Z WO08_MEASUREMENT_COMPLETED
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:05:47.3588384Z DISK_IDENTITY_OBSERVED devices=2
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:05:48.6004815Z DISK_IDENTITY_OBSERVED devices=2
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:05:48.6079473Z READ_ONLY_DISK_IDENTITY_COMPLETED trials=2 rawStorageIdsPublished=False
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:06:23.1084909Z REFERENCE_ANALYZED lostEvents=0 lostBuffers=0 cpuGaps=122424 status=NOT TESTED
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:06:57.0984880Z REFERENCE_ANALYZED lostEvents=0 lostBuffers=0 cpuGaps=122600 status=NOT TESTED
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:07:30.8434383Z REFERENCE_ANALYZED lostEvents=0 lostBuffers=0 cpuGaps=125353 status=NOT TESTED
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:08:05.1897830Z REFERENCE_ANALYZED lostEvents=0 lostBuffers=0 cpuGaps=122785 status=NOT TESTED
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:08:38.8085003Z REFERENCE_ANALYZED lostEvents=0 lostBuffers=0 cpuGaps=125720 status=NOT TESTED
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:09:12.4115571Z REFERENCE_ANALYZED lostEvents=0 lostBuffers=0 cpuGaps=124492 status=NOT TESTED
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:09:45.9894586Z REFERENCE_ANALYZED lostEvents=0 lostBuffers=0 cpuGaps=125004 status=NOT TESTED
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:10:20.7592741Z REFERENCE_ANALYZED lostEvents=0 lostBuffers=0 cpuGaps=128944 status=NOT TESTED
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:10:53.3538667Z REFERENCE_ANALYZED lostEvents=0 lostBuffers=0 cpuGaps=122764 status=NOT TESTED
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:11:26.5290087Z REFERENCE_ANALYZED lostEvents=0 lostBuffers=0 cpuGaps=124844 status=NOT TESTED
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:11:59.0728661Z REFERENCE_ANALYZED lostEvents=0 lostBuffers=0 cpuGaps=122604 status=NOT TESTED
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:12:32.7504642Z REFERENCE_ANALYZED lostEvents=0 lostBuffers=0 cpuGaps=122356 status=NOT TESTED
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-11T05:12:32.8227150Z WO10_REFERENCE_ANALYSIS_COMPLETED trials=12 rawTracePublished=False
+windows-validation	Synthetic recovery and UI Automation harness	﻿2026-10-11T05:12:32.8648834Z ##[group]Run dotnet build tools/SmartPerformanceDoctor.RecoverySandbox -c Release -p:Platform=x64 -m:1 -v:minimal
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:32.8649621Z ^[[36;1mdotnet build tools/SmartPerformanceDoctor.RecoverySandbox -c Release -p:Platform=x64 -m:1 -v:minimal^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:32.8649990Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw "sandbox build failed" }^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:32.8650342Z ^[[36;1m./scripts/wo10-sandbox-validation.ps1 -OutputDirectory artifacts/wo10-sandbox^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:32.8650730Z ^[[36;1mdotnet build tools/SmartPerformanceDoctor.GuiProbe -c Release -p:Platform=x64 -v:minimal^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:32.8651079Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw "UIA harness build failed" }^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:32.8651596Z ^[[36;1m& tools/SmartPerformanceDoctor.GuiProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.GuiProbe.exe | Set-Content artifacts/wo10-sandbox/gui-status.json^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:32.8701587Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:32.8702007Z env:
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:32.8702179Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:32.8702391Z ##[endgroup]
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:33.4437526Z   Determining projects to restore...
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:33.7805663Z   Restored CI_WORKSPACE\tools\SmartPerformanceDoctor.RecoverySandbox\SmartPerformanceDoctor.RecoverySandbox.csproj (in 141 ms).
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:33.7806684Z   Restored CI_WORKSPACE\src\SmartPerformanceDoctor.UpdateEngine\SmartPerformanceDoctor.UpdateEngine.csproj (in 135 ms).
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:34.0407237Z   SmartPerformanceDoctor.UpdateEngine -> CI_WORKSPACE\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:34.2137245Z   SmartPerformanceDoctor.RecoverySandbox -> CI_WORKSPACE\tools\SmartPerformanceDoctor.RecoverySandbox\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.RecoverySandbox.dll
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:34.2214577Z 
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:34.2218884Z Build succeeded.
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:34.2219704Z     0 Warning(s)
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:34.2219929Z     0 Error(s)
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:34.2220580Z 
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:34.2220715Z Time Elapsed 00:00:01.02
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:37.8745933Z WO10_SANDBOX_PASS crashScenarios=6 hardLinkRejected=1 bytesRestored=6
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:38.3547963Z   Determining projects to restore...
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:38.6091733Z   Restored CI_WORKSPACE\tools\SmartPerformanceDoctor.GuiProbe\SmartPerformanceDoctor.GuiProbe.csproj (in 66 ms).
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:38.9368981Z   SmartPerformanceDoctor.GuiProbe -> CI_WORKSPACE\tools\SmartPerformanceDoctor.GuiProbe\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.GuiProbe.dll
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:38.9460942Z 
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:38.9467257Z Build succeeded.
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:38.9467919Z     0 Warning(s)
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:38.9468160Z     0 Error(s)
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:38.9469761Z 
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-11T05:12:38.9469925Z Time Elapsed 00:00:00.88
+windows-validation	Separate-process termination and recovery	﻿2026-10-11T05:12:39.2358003Z ##[group]Run dotnet build tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:39.2358846Z ^[[36;1mdotnet build tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj -c Release -p:Platform=x64 -m:1 -v:minimal^[[0m
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:39.2359371Z ^[[36;1m./scripts/wo06-process-validation.ps1 -OutputDirectory artifacts/wo06-ci-process^[[0m
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:39.2404206Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:39.2404452Z env:
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:39.2404623Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:39.2404819Z ##[endgroup]
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:39.8929656Z   Determining projects to restore...
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:40.2299390Z   Restored CI_WORKSPACE\tests\SmartPerformanceDoctor.UpdateRecoveryProbe\SmartPerformanceDoctor.UpdateRecoveryProbe.csproj (in 137 ms).
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:40.2322245Z   1 of 2 projects are up-to-date for restore.
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:40.4835610Z   SmartPerformanceDoctor.UpdateEngine -> CI_WORKSPACE\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:40.6714682Z   SmartPerformanceDoctor.UpdateRecoveryProbe -> CI_WORKSPACE\tests\SmartPerformanceDoctor.UpdateRecoveryProbe\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateRecoveryProbe.dll
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:40.6786707Z 
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:40.6790743Z Build succeeded.
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:40.6790990Z     0 Warning(s)
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:40.6791224Z     0 Error(s)
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:40.6792114Z 
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:40.6792228Z Time Elapsed 00:00:01.10
+windows-validation	Separate-process termination and recovery	2026-10-11T05:12:56.5407575Z WINDOWS_SYNTHETIC_PROCESS=PASS; VM_E2E=NOT_TESTED; UNKNOWN_ORPHAN=PRESERVED
+windows-validation	Production profile and isolated test profile	﻿2026-10-11T05:12:56.5857966Z ##[group]Run dotnet build tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5858648Z ^[[36;1mdotnet build tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj -c Release -p:Platform=x64 -m:1 -v:minimal^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5859048Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'test kit build failed' }^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5859447Z ^[[36;1mdotnet build tools/SmartPerformanceDoctor.VaultRecovery/SmartPerformanceDoctor.VaultRecovery.csproj -c Release -p:Platform=x64 -m:1 -v:minimal^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5859854Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'data recovery build failed' }^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5860220Z ^[[36;1m$kit = 'tools/SmartPerformanceDoctor.VMTestKit/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.VMTestKit.exe'^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5860720Z ^[[36;1m$engine = 'src/SmartPerformanceDoctor.UpdateEngine/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateEngine.dll'^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5861090Z ^[[36;1m& $kit audit-production $engine^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5861294Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'test trust leaked into production' }^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5861660Z ^[[36;1m& $kit audit-production 'src/SmartPerformanceDoctor.App/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.dll'^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5862034Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production app' }^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5862557Z ^[[36;1m& $kit audit-production 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.dll'^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5862979Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production helper' }^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5863240Z ^[[36;1m$profile = Join-Path $env:RUNNER_TEMP 'wo06-test-profile'^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5863436Z ^[[36;1m& $kit fixture-profile $profile ('0' * 40)^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5863636Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'profile generation failed' }^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5863847Z ^[[36;1m$source = Join-Path $profile 'TestVmTrust.g.cs'^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5864383Z ^[[36;1mdotnet build src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -o (Join-Path $profile 'output') -v:minimal^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5864950Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'test profile build failed' }^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5865253Z ^[[36;1m& $kit audit-production (Join-Path $profile 'output/SmartPerformanceDoctor.UpdateEngine.dll')^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5865578Z ^[[36;1mif ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test artifact' }^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5866141Z ^[[36;1mdotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -m:1 -o (Join-Path $profile 'app-output') -v:minimal^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5866692Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'VM Release application profile build failed' }^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5866996Z ^[[36;1m& $kit audit-production (Join-Path $profile 'app-output/SmartPerformanceDoctor.dll')^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5867459Z ^[[36;1mif ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test application' }^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5867811Z ^[[36;1m& $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateHelper.dll')^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5868162Z ^[[36;1mif ($LASTEXITCODE -ne 6) { throw 'VM application copied a production update helper' }^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5868509Z ^[[36;1m& $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateEngine.dll')^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5868846Z ^[[36;1mif ($LASTEXITCODE -ne 6) { throw 'VM helper copied a production update engine' }^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5869052Z ^[[36;1mexit 0^[[0m
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5919161Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5919356Z env:
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5921100Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:56.5921266Z ##[endgroup]
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:57.2577172Z   Determining projects to restore...
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:57.6653984Z   Restored CI_WORKSPACE\tools\SmartPerformanceDoctor.VMTestKit\SmartPerformanceDoctor.VMTestKit.csproj (in 168 ms).
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:57.6656001Z   Restored CI_WORKSPACE\src\SmartPerformanceDoctor.SecurityLab\SmartPerformanceDoctor.SecurityLab.csproj (in 168 ms).
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:57.6678484Z   1 of 3 projects are up-to-date for restore.
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:57.9340349Z   SmartPerformanceDoctor.UpdateEngine -> CI_WORKSPACE\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:57.9982152Z   SmartPerformanceDoctor.SecurityLab -> CI_WORKSPACE\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:58.1923442Z   SmartPerformanceDoctor.VMTestKit -> CI_WORKSPACE\tools\SmartPerformanceDoctor.VMTestKit\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.VMTestKit.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:58.1992365Z 
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:58.1996539Z Build succeeded.
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:58.1997026Z     0 Warning(s)
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:58.1997297Z     0 Error(s)
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:58.1998142Z 
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:58.1998309Z Time Elapsed 00:00:01.23
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:58.7099419Z   Determining projects to restore...
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:59.1096641Z   Restored CI_WORKSPACE\tools\SmartPerformanceDoctor.VaultRecovery\SmartPerformanceDoctor.VaultRecovery.csproj (in 170 ms).
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:59.1121473Z   2 of 3 projects are up-to-date for restore.
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:59.4964324Z   SmartPerformanceDoctor.UpdateEngine -> CI_WORKSPACE\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:59.5432353Z   SmartPerformanceDoctor.SecurityLab -> CI_WORKSPACE\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:59.7195670Z   SmartPerformanceDoctor.VaultRecovery -> CI_WORKSPACE\tools\SmartPerformanceDoctor.VaultRecovery\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.VaultRecovery.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:59.7269609Z 
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:59.7274128Z Build succeeded.
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:59.7274466Z     0 Warning(s)
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:59.7274785Z     0 Error(s)
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:59.7275687Z 
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:59.7275848Z Time Elapsed 00:00:01.28
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:59.8015786Z PRODUCTION_PROFILE=PASS; TEST_ROOT=ABSENT
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:59.8451194Z PRODUCTION_PROFILE=PASS; TEST_ROOT=ABSENT
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:59.8974340Z PRODUCTION_PROFILE=PASS; TEST_ROOT=ABSENT
+windows-validation	Production profile and isolated test profile	2026-10-11T05:12:59.9899116Z PROFILE=WO05-VM-TEST; PRIVATE_KEY=NOT-SAVED
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:00.7866112Z   SmartPerformanceDoctor.UpdateEngine -> D:\a\_temp\wo06-test-profile\output\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:00.7994274Z 
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:00.8000363Z Build succeeded.
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:00.8000817Z     0 Warning(s)
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:00.8001414Z     0 Error(s)
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:00.8001956Z 
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:00.8002197Z Time Elapsed 00:00:00.62
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:01.9930060Z   SmartPerformanceDoctor.Diagnostics -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.Diagnostics.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:02.3226474Z   SmartPerformanceDoctor.AstraVault -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.AstraVault.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:02.4510409Z   SmartPerformanceDoctor.Aegis -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.Aegis.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:02.5503233Z   SmartPerformanceDoctor.Contracts -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.Contracts.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:02.6388054Z   SmartPerformanceDoctor.Data -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.Data.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:02.8531992Z   SmartPerformanceDoctor.SecurityLab -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.SecurityLab.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:02.8898953Z   SmartPerformanceDoctor.UpdateEngine -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:03.0543306Z   SmartPerformanceDoctor.UpdateHelper -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.UpdateHelper.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:03.1548083Z   SmartPerformanceDoctor.AegisRecoveryHelper -> D:\a\_temp\wo06-test-profile\app-output\AegisRecoveryHelper.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:03.2663838Z   SmartPerformanceDoctor.AegisRecoveryService -> D:\a\_temp\wo06-test-profile\app-output\AegisRecoveryService.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:16.4446395Z   SmartPerformanceDoctor.App -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.dll
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:17.1426634Z 
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:17.1430803Z Build succeeded.
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:17.1431188Z     0 Warning(s)
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:17.1431412Z     0 Error(s)
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:17.1432367Z 
+windows-validation	Production profile and isolated test profile	2026-10-11T05:13:17.1432534Z Time Elapsed 00:00:16.04
+windows-validation	Full application regression	﻿2026-10-11T05:13:17.3768554Z ##[group]Run dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo06-full.trx' -v:minimal
+windows-validation	Full application regression	2026-10-11T05:13:17.3769560Z ^[[36;1mdotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo06-full.trx' -v:minimal^[[0m
+windows-validation	Full application regression	2026-10-11T05:13:17.3814847Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	Full application regression	2026-10-11T05:13:17.3815123Z env:
+windows-validation	Full application regression	2026-10-11T05:13:17.3815292Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	Full application regression	2026-10-11T05:13:17.3815493Z   VSTEST_CONNECTION_TIMEOUT: 300
+windows-validation	Full application regression	2026-10-11T05:13:17.3815683Z ##[endgroup]
+windows-validation	Full application regression	2026-10-11T05:13:18.0171879Z Test run for CI_WORKSPACE\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll (.NETCoreApp,Version=v10.0)
+windows-validation	Full application regression	2026-10-11T05:13:18.1541903Z A total of 1 test files matched the specified pattern.
+windows-validation	Full application regression	2026-10-11T05:13:19.4116571Z [xUnit.net 00:00:01.01]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_AnchorDesign_NotImplemented [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:19.4117759Z [xUnit.net 00:00:01.01]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:19.4118838Z [xUnit.net 00:00:01.01]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.PhaseGate_E5_ProductionWriterDesign_NotWriterEnable [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:19.4146623Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_AnchorDesign_NotImplemented [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:19.4147147Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:19.4148026Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.PhaseGate_E5_ProductionWriterDesign_NotWriterEnable [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:19.5249091Z [xUnit.net 00:00:01.13]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OrchestratorCommitAsync_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:19.5264592Z [xUnit.net 00:00:01.13]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ConcurrentCommit_SecondBlocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:19.5276071Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OrchestratorCommitAsync_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:19.5276897Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ConcurrentCommit_SecondBlocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:19.5277858Z [xUnit.net 00:00:01.13]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OpenWriteSessionAsync_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:21.0620636Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OpenWriteSessionAsync_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:22.2948162Z [xUnit.net 00:00:03.90]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ReentrantCommit_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:22.2969796Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ReentrantCommit_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:22.2970704Z [xUnit.net 00:00:03.90]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_FactoryProductionCreate_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:23.3586257Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_FactoryProductionCreate_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:23.3601712Z [xUnit.net 00:00:04.95]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.PhaseGate_E7_PreEnableHardening_EnableFlagsFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:23.3603243Z [xUnit.net 00:00:04.95]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_DuplicateTransactionId_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:23.3633320Z [xUnit.net 00:00:04.95]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_ProductionDurableStore_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:23.3634459Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.PhaseGate_E7_PreEnableHardening_EnableFlagsFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:23.3635280Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_DuplicateTransactionId_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:23.3638242Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_ProductionDurableStore_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:23.3639201Z [xUnit.net 00:00:04.96]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_JournalRecorderProductionRoute_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:23.3640162Z [xUnit.net 00:00:04.96]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_TransactionCoordinator_NonHarness_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:23.3641176Z [xUnit.net 00:00:04.96]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_DecisionGate_NotProductionEnable [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:23.3642158Z [xUnit.net 00:00:04.96]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenAnchorMissing [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:23.3643140Z [xUnit.net 00:00:04.97]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ExternalReviewCompletedCodeRemainsFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:23.3644092Z [xUnit.net 00:00:04.97]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_EnableFlagsRemainFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:23.3733261Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_JournalRecorderProductionRoute_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:23.3865387Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_TransactionCoordinator_NonHarness_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:23.3871512Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_DecisionGate_NotProductionEnable [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:23.3872346Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenAnchorMissing [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:23.3873343Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ExternalReviewCompletedCodeRemainsFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:23.3874080Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_EnableFlagsRemainFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:23.3874935Z [xUnit.net 00:00:04.97]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenXChaCha24Missing [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:23.3875978Z [xUnit.net 00:00:04.97]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenSClassUnsatisfied [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:23.3877202Z [xUnit.net 00:00:04.97]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_SpdVaultUnchanged_NoMigration [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:23.3878020Z [xUnit.net 00:00:04.97]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ProductionWriterStillNotAuthorized [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:23.4790436Z [xUnit.net 00:00:05.06]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_Preflight_CurrentEvidenceSourceOfTruthMatchesActual [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:23.4795961Z [xUnit.net 00:00:05.06]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenActualDiskDurabilityMissing [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:23.4868006Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenXChaCha24Missing [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:23.4887472Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenSClassUnsatisfied [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:23.4991464Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_SpdVaultUnchanged_NoMigration [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:23.5122682Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ProductionWriterStillNotAuthorized [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:23.5255803Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_Preflight_CurrentEvidenceSourceOfTruthMatchesActual [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:23.5416919Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenActualDiskDurabilityMissing [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:25.4251747Z [xUnit.net 00:00:07.03]     SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:25.4278051Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8177464Z [xUnit.net 00:00:31.42]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SClassStillNotSatisfied [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8249714Z [xUnit.net 00:00:31.42]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionEnableAuthorized_RemainsFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8265968Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SClassStillNotSatisfied [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8267786Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionEnableAuthorized_RemainsFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8268931Z [xUnit.net 00:00:31.42]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionAnchorImplemented_RemainsFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8270166Z [xUnit.net 00:00:31.42]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8270969Z [xUnit.net 00:00:31.42]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_EnableFlagsRemainFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8273521Z [xUnit.net 00:00:31.42]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_DiskDurabilityStillOpen [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8274311Z [xUnit.net 00:00:31.42]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SpdVaultUnchanged_NoMigration [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8275312Z [xUnit.net 00:00:31.42]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_AnchorSignoff_HarnessCandidateOnly_NotProductionImplemented [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8276384Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionAnchorImplemented_RemainsFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8277316Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8278193Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_EnableFlagsRemainFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8278991Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_DiskDurabilityStillOpen [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8279839Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SpdVaultUnchanged_NoMigration [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8281114Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_AnchorSignoff_HarnessCandidateOnly_NotProductionImplemented [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8282125Z [xUnit.net 00:00:31.42]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_XChaCha24StillOpen [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8282996Z [xUnit.net 00:00:31.42]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_TrustedMonotonicAnchorRequired_ForFullVaultRollbackClosure [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8301562Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_XChaCha24StillOpen [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8302441Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_TrustedMonotonicAnchorRequired_ForFullVaultRollbackClosure [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8356167Z [xUnit.net 00:00:31.44]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SClassStillNotSatisfied [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8363308Z [xUnit.net 00:00:31.44]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_StabilityRepeat_Skipped [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8375926Z [xUnit.net 00:00:31.44]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_TrustedAnchorSignoff_PreflightEvidenceCurrent [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8395087Z [xUnit.net 00:00:31.44]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_DiskDurabilityStillOpen [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8396474Z [xUnit.net 00:00:31.44]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SpdVaultUnchanged_NoMigration [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8402664Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SClassStillNotSatisfied [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8403430Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_StabilityRepeat_Skipped [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8404094Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_TrustedAnchorSignoff_PreflightEvidenceCurrent [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8404825Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_DiskDurabilityStillOpen [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8405971Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SpdVaultUnchanged_NoMigration [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8668159Z [xUnit.net 00:00:31.47]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_HarnessProvider_Signed [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8680461Z [xUnit.net 00:00:31.47]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionAnchorImplemented_RemainsFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8681173Z [xUnit.net 00:00:31.47]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_EnableFlagsRemainFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8681670Z [xUnit.net 00:00:31.47]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionEnableAuthorized_RemainsFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8682643Z [xUnit.net 00:00:31.47]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_XChaCha24Implemented_RemainsFalseSignedCandidate [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8683114Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_HarnessProvider_Signed [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8683589Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionAnchorImplemented_RemainsFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8684018Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_EnableFlagsRemainFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8684434Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionEnableAuthorized_RemainsFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8684907Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_XChaCha24Implemented_RemainsFalseSignedCandidate [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.8685420Z [xUnit.net 00:00:31.47]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.8685945Z [xUnit.net 00:00:31.47]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalWitnessStub_SignedButNotProductionLive [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.9147743Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.9148710Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalWitnessStub_SignedButNotProductionLive [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:49.9157031Z [xUnit.net 00:00:31.52]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SpdVaultUnchanged_NoMigration [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:49.9157577Z [xUnit.net 00:00:31.52]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_FullRollbackMatrix_StabilityRepeat_Skipped [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:50.2061385Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SpdVaultUnchanged_NoMigration [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:50.2062224Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_FullRollbackMatrix_StabilityRepeat_Skipped [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:50.4542347Z [xUnit.net 00:00:32.06]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_EnableFlagsRemainFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:50.4640003Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_EnableFlagsRemainFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:50.4641425Z [xUnit.net 00:00:32.07]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SClassStillNotSatisfied [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:50.5059755Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SClassStillNotSatisfied [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:50.6821556Z [xUnit.net 00:00:32.29]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SClassStillNotSatisfied [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:50.6823881Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SClassStillNotSatisfied [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:50.6824627Z [xUnit.net 00:00:32.29]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_EnableFlagsRemainFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:50.8243982Z [xUnit.net 00:00:32.43]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorStabilityRepeat_Skipped [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:50.8247167Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_EnableFlagsRemainFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:50.8247816Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorStabilityRepeat_Skipped [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:50.8679948Z [xUnit.net 00:00:32.47]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SpdVaultUnchanged_NoMigration [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:50.9407266Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SpdVaultUnchanged_NoMigration [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:51.2689755Z [xUnit.net 00:00:32.87]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_EnableFlagsRemainFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:51.2690679Z [xUnit.net 00:00:32.87]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionRouteDenied [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:51.2700402Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_EnableFlagsRemainFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:51.2701521Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionRouteDenied [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:51.2702324Z [xUnit.net 00:00:32.87]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ReadOnlyValidatorComplete [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:51.2703218Z [xUnit.net 00:00:32.87]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SClassStillNotSatisfied [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:51.2704037Z [xUnit.net 00:00:32.87]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_PreflightEvidenceCurrent [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:51.2707426Z [xUnit.net 00:00:32.87]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SpdVaultUnchangedNoMigration [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:51.4312886Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ReadOnlyValidatorComplete [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:51.4314067Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SClassStillNotSatisfied [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:51.4314941Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_PreflightEvidenceCurrent [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:51.4315760Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SpdVaultUnchangedNoMigration [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:54.7850735Z [xUnit.net 00:00:36.39]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_NonHarnessCommitSession_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:54.8771227Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_NonHarnessCommitSession_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:56.9411251Z [xUnit.net 00:00:38.54]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_CommitThreeCopyAsync_Production_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:56.9413984Z [xUnit.net 00:00:38.55]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_DenyMigrationRoute_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:56.9420863Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_CommitThreeCopyAsync_Production_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:56.9421387Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_DenyMigrationRoute_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:56.9421930Z [xUnit.net 00:00:38.55]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_TryOpenProductionSession_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:56.9429044Z [xUnit.net 00:00:38.55]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.PhaseGate_E71_ReviewFixes_AllEnableFlagsFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:56.9439267Z [xUnit.net 00:00:38.55]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_JournalWriterGate_False [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:56.9445398Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_TryOpenProductionSession_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:56.9446174Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.PhaseGate_E71_ReviewFixes_AllEnableFlagsFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:56.9447078Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_JournalWriterGate_False [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:59.3688145Z [xUnit.net 00:00:40.97]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.PhaseGate_E62_ReviewFixes_ProductionStillDisabled [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:59.8785074Z [xUnit.net 00:00:41.48]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_E6Recovery_EqualGenerationConflictingRoot_CorruptBlocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:59.8786141Z [xUnit.net 00:00:41.48]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_Rollback_PreviousRootMismatch_MatchesE4_CorruptBlocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:13:59.8789569Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.PhaseGate_E62_ReviewFixes_ProductionStillDisabled [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:59.8790155Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_E6Recovery_EqualGenerationConflictingRoot_CorruptBlocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:13:59.8790669Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_Rollback_PreviousRootMismatch_MatchesE4_CorruptBlocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:01.2301995Z [xUnit.net 00:00:42.83]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_ProductionRoute_AppHostViewModel_NoWriter [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:01.2304839Z [xUnit.net 00:00:42.83]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DurableStore_RootEscape_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:01.3993815Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_ProductionRoute_AppHostViewModel_NoWriter [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:01.3994495Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DurableStore_RootEscape_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:01.3995088Z [xUnit.net 00:00:43.00]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_DecisionRecord_NotProductionEnable [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:01.3995802Z [xUnit.net 00:00:43.00]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_SpdVaultUnchanged_NoMigration [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:01.3997720Z [xUnit.net 00:00:43.00]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_EnableFlagsRemainFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:01.5013874Z [xUnit.net 00:00:43.10]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_M01M02Closed_CurrentEvidenceConsistent [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:01.5014819Z [xUnit.net 00:00:43.11]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_ExternalReviewCompletedCodeRemainsFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:01.5022388Z   Skipped SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_DecisionRecord_NotProductionEnable [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:01.5026084Z   Skipped SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_SpdVaultUnchanged_NoMigration [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:01.5026756Z   Skipped SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_EnableFlagsRemainFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:01.5029897Z   Skipped SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_M01M02Closed_CurrentEvidenceConsistent [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:01.5030917Z   Skipped SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_ExternalReviewCompletedCodeRemainsFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:03.9484651Z [xUnit.net 00:00:45.55]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.PhaseGate_E8_LimitedDryRun_EnableFlagsFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:04.5611853Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.PhaseGate_E8_LimitedDryRun_EnableFlagsFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:08.5064626Z [xUnit.net 00:00:50.11]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_NonHarnessProductionRouteStillDenied [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:08.5066425Z [xUnit.net 00:00:50.11]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444 [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:08.5067005Z [xUnit.net 00:00:50.11]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_StabilityRepeat_Skipped [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:08.5224550Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_NonHarnessProductionRouteStillDenied [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:08.5225541Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444 [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:08.5237485Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_StabilityRepeat_Skipped [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:10.3715884Z [xUnit.net 00:00:51.97]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityReview_PreflightEvidenceCurrent [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:10.4919068Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityReview_PreflightEvidenceCurrent [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:10.4939793Z [xUnit.net 00:00:52.10]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SClassStillNotSatisfied [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:10.4952723Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SClassStillNotSatisfied [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:10.5596516Z [xUnit.net 00:00:52.16]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SpdVaultUnchanged_NoMigration [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:10.5612289Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SpdVaultUnchanged_NoMigration [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:10.5617098Z [xUnit.net 00:00:52.16]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityInvariant_StabilityRepeat_Skipped [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:10.5625964Z [xUnit.net 00:00:52.17]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_EnableFlagsRemainFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:10.5669736Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityInvariant_StabilityRepeat_Skipped [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:10.5670388Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_EnableFlagsRemainFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:15.1792900Z [xUnit.net 00:00:56.78]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.JournalRecorder_ProductionRoute_Fails_WhenJournalDisabled [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:15.1795650Z [xUnit.net 00:00:56.78]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.PhaseGate_E6_DisabledProductionWriter_NotAuthorized [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:15.1813215Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.JournalRecorder_ProductionRoute_Fails_WhenJournalDisabled [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:15.1814013Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.PhaseGate_E6_DisabledProductionWriter_NotAuthorized [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:15.7569981Z [xUnit.net 00:00:57.36]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionOpenSession_Throws_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:15.7573717Z [xUnit.net 00:00:57.36]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.DurableStore_RelativePathEscape_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:15.7927525Z [xUnit.net 00:00:57.40]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_WritePolicy_ProductionDisabled [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:16.6924237Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionOpenSession_Throws_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:16.6925061Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.DurableStore_RelativePathEscape_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:16.6925699Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_WritePolicy_ProductionDisabled [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:17.7288020Z [xUnit.net 00:00:59.33]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionCommit_Throws_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:17.7325473Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionCommit_Throws_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:18.2481919Z [xUnit.net 00:00:59.85]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.WriterFactory_ProductionCreate_Fails_WhenProductionWriterDisabled [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:18.3180167Z [xUnit.net 00:00:59.92]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_HeaderConflict_CorruptBlocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:18.3218846Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.WriterFactory_ProductionCreate_Fails_WhenProductionWriterDisabled [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:18.3219599Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_HeaderConflict_CorruptBlocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:25.2849233Z [xUnit.net 00:01:06.89]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.WriterEnableChecklist_State_NoGo [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:25.3192148Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.WriterEnableChecklist_State_NoGo [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:25.3226802Z [xUnit.net 00:01:06.93]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.PhaseGate_E4_HighRiskClosure_NotWriterEnable [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:25.3264852Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.PhaseGate_E4_HighRiskClosure_NotWriterEnable [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:25.5695061Z [xUnit.net 00:01:07.17]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R9_Migration_RemainsDisabled_NoWriterCollision [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:26.0256889Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R9_Migration_RemainsDisabled_NoWriterCollision [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:26.0257933Z [xUnit.net 00:01:07.62]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_EqualGenerationDifferentRoot_CorruptBlocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:26.2453336Z [xUnit.net 00:01:07.85]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:26.2483189Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_EqualGenerationDifferentRoot_CorruptBlocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:26.2483670Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:26.4459118Z [xUnit.net 00:01:08.05]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_ProductionWriterGate_RemainsFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:26.4471626Z   Skipped SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_ProductionWriterGate_RemainsFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:26.6744818Z [xUnit.net 00:01:08.28]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Recovery_EqualGenerationConflictingRoot_CorruptBlocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:26.7486072Z   Skipped SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Recovery_EqualGenerationConflictingRoot_CorruptBlocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:28.4291170Z [xUnit.net 00:01:10.03]     SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.PhaseGate_E3_ActualKillHarness_DocumentationOnly [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:28.6570910Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.PhaseGate_E3_ActualKillHarness_DocumentationOnly [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:29.1894300Z [xUnit.net 00:01:10.79]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NonHarnessWriterInvocation_Blocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:29.2163137Z   Skipped SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NonHarnessWriterInvocation_Blocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:29.2163994Z [xUnit.net 00:01:10.82]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_EnableFlagsRemainFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:29.2164662Z [xUnit.net 00:01:10.82]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SClassStillNotSatisfied [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:29.8510646Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_EnableFlagsRemainFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:29.8511323Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SClassStillNotSatisfied [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:29.9171092Z [xUnit.net 00:01:11.52]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Implemented_RemainsFalseUntilSignoff [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:29.9445884Z [xUnit.net 00:01:11.55]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionAnchorImplemented_RemainsFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:29.9453401Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Implemented_RemainsFalseUntilSignoff [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:29.9454042Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionAnchorImplemented_RemainsFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:29.9454500Z [xUnit.net 00:01:11.55]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SpdVaultUnchanged_NoMigration [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:29.9458906Z [xUnit.net 00:01:11.55]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ReadOnlyValidator_XChaCha24_Pass [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:29.9462007Z [xUnit.net 00:01:11.55]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionEnableAuthorized_RemainsFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:29.9465837Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SpdVaultUnchanged_NoMigration [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:29.9466500Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ReadOnlyValidator_XChaCha24_Pass [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:29.9467238Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionEnableAuthorized_RemainsFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:29.9467724Z [xUnit.net 00:01:11.55]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:30.0181331Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+windows-validation	Full application regression	2026-10-11T05:14:31.4249533Z [xUnit.net 00:01:13.03]     SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_Conflict_CorruptBlocked [SKIP]
+windows-validation	Full application regression	2026-10-11T05:14:32.8751540Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_Conflict_CorruptBlocked [1 ms]
+windows-validation	Full application regression	2026-10-11T05:16:10.1152650Z Results File: CI_WORKSPACE\tests\SmartPerformanceDoctor.Tests\TestResults\wo06-full.trx
+windows-validation	Full application regression	2026-10-11T05:16:10.1158121Z 
+windows-validation	Full application regression	2026-10-11T05:16:10.1204398Z Passed!  - Failed:     0, Passed:   957, Skipped:   111, Total:  1068, Duration: 2 m 51 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	SecurityLab regression	﻿2026-10-11T05:16:10.2652035Z ##[group]Run dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo06-securitylab.trx' -v:minimal
+windows-validation	SecurityLab regression	2026-10-11T05:16:10.2653069Z ^[[36;1mdotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo06-securitylab.trx' -v:minimal^[[0m
+windows-validation	SecurityLab regression	2026-10-11T05:16:10.2706508Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	SecurityLab regression	2026-10-11T05:16:10.2706759Z env:
+windows-validation	SecurityLab regression	2026-10-11T05:16:10.2706921Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	SecurityLab regression	2026-10-11T05:16:10.2707100Z   VSTEST_CONNECTION_TIMEOUT: 300
+windows-validation	SecurityLab regression	2026-10-11T05:16:10.2707273Z ##[endgroup]
+windows-validation	SecurityLab regression	2026-10-11T05:16:11.3821297Z   SmartPerformanceDoctor.SecurityLab -> CI_WORKSPACE\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+windows-validation	SecurityLab regression	2026-10-11T05:16:11.6415077Z   SmartPerformanceDoctor.SecurityLab.Tests -> CI_WORKSPACE\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll
+windows-validation	SecurityLab regression	2026-10-11T05:16:11.6489066Z Test run for CI_WORKSPACE\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll (.NETCoreApp,Version=v10.0)
+windows-validation	SecurityLab regression	2026-10-11T05:16:11.7898770Z A total of 1 test files matched the specified pattern.
+windows-validation	SecurityLab regression	2026-10-11T05:16:45.9119537Z Results File: CI_WORKSPACE\tests\SmartPerformanceDoctor.SecurityLab.Tests\TestResults\wo06-securitylab.trx
+windows-validation	SecurityLab regression	2026-10-11T05:16:45.9121269Z 
+windows-validation	SecurityLab regression	2026-10-11T05:16:45.9146874Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 33 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+windows-validation	Reject unsupported helper verb	﻿2026-10-11T05:16:46.0346058Z ##[group]Run $helper = 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe'
+windows-validation	Reject unsupported helper verb	2026-10-11T05:16:46.0347164Z ^[[36;1m$helper = 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe'^[[0m
+windows-validation	Reject unsupported helper verb	2026-10-11T05:16:46.0348007Z ^[[36;1m$process = Start-Process -FilePath $helper -ArgumentList @('--exec', 'arbitrary') -Wait -PassThru -NoNewWindow^[[0m
+windows-validation	Reject unsupported helper verb	2026-10-11T05:16:46.0348635Z ^[[36;1mif ($process.ExitCode -ne 2) { throw "Unexpected helper exit code: $($process.ExitCode)" }^[[0m
+windows-validation	Reject unsupported helper verb	2026-10-11T05:16:46.0404380Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	Reject unsupported helper verb	2026-10-11T05:16:46.0404625Z env:
+windows-validation	Reject unsupported helper verb	2026-10-11T05:16:46.0404784Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	Reject unsupported helper verb	2026-10-11T05:16:46.0404972Z ##[endgroup]
+windows-validation	Upload test evidence	﻿2026-10-11T05:16:46.3660238Z ##[group]Run actions/upload-artifact@v4
+windows-validation	Upload test evidence	2026-10-11T05:16:46.3660468Z with:
+windows-validation	Upload test evidence	2026-10-11T05:16:46.3660579Z   name: wo10-windows-evidence
+windows-validation	Upload test evidence	2026-10-11T05:16:46.3661422Z   path: tests/SmartPerformanceDoctor.Tests/TestResults/*.trx
+windows-validation	Upload test evidence	tests/SmartPerformanceDoctor.SecurityLab.Tests/TestResults/*.trx
+windows-validation	Upload test evidence	artifacts/wo06-ci-process/process-results.json
+windows-validation	Upload test evidence	artifacts/wo07-ci/measurement.json
+windows-validation	Upload test evidence	artifacts/wo08-ci/**/*.json
+windows-validation	Upload test evidence	artifacts/wo09-ci/**/*.json
+windows-validation	Upload test evidence	artifacts/wo10-ci/**/*.json
+windows-validation	Upload test evidence	artifacts/wo10-sandbox/sandbox-results.json
+windows-validation	Upload test evidence	artifacts/wo10-sandbox/gui-status.json
+windows-validation	Upload test evidence	
+windows-validation	Upload test evidence	2026-10-11T05:16:46.3662196Z   if-no-files-found: warn
+windows-validation	Upload test evidence	2026-10-11T05:16:46.3662320Z   compression-level: 6
+windows-validation	Upload test evidence	2026-10-11T05:16:46.3662437Z   overwrite: false
+windows-validation	Upload test evidence	2026-10-11T05:16:46.3662552Z   include-hidden-files: false
+windows-validation	Upload test evidence	2026-10-11T05:16:46.3662673Z env:
+windows-validation	Upload test evidence	2026-10-11T05:16:46.3662781Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	Upload test evidence	2026-10-11T05:16:46.3662925Z ##[endgroup]
+windows-validation	Upload test evidence	2026-10-11T05:16:51.9530454Z (node:1764) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+windows-validation	Upload test evidence	2026-10-11T05:16:51.9535432Z (Use `node --trace-deprecation ...` to show where the warning was created)
+windows-validation	Upload test evidence	2026-10-11T05:16:52.1535116Z Multiple search paths detected. Calculating the least common ancestor of all paths
+windows-validation	Upload test evidence	2026-10-11T05:16:52.1537877Z The least common ancestor is CI_WORKSPACE. This will be the root directory of the artifact
+windows-validation	Upload test evidence	2026-10-11T05:16:52.1538375Z With the provided path, there will be 66 files uploaded
+windows-validation	Upload test evidence	2026-10-11T05:16:52.1542527Z Artifact name is valid!
+windows-validation	Upload test evidence	2026-10-11T05:16:52.1543540Z Root directory input is valid!
+windows-validation	Upload test evidence	2026-10-11T05:16:53.5994111Z Beginning upload of artifact content to blob storage
+windows-validation	Upload test evidence	2026-10-11T05:16:53.9144612Z (node:1764) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+windows-validation	Upload test evidence	2026-10-11T05:16:54.3772844Z Uploaded bytes 1047043
+windows-validation	Upload test evidence	2026-10-11T05:16:54.4310096Z Finished uploading artifact content to blob storage!
+windows-validation	Upload test evidence	2026-10-11T05:16:54.4310815Z SHA256 digest of uploaded artifact zip is 7a1b7285ed620831e3fc08f044b5e5c947829304c259901d4c79a19d3893c737
+windows-validation	Upload test evidence	2026-10-11T05:16:54.4311332Z Finalizing artifact upload
+windows-validation	Upload test evidence	2026-10-11T05:16:54.6628123Z Artifact wo10-windows-evidence.zip successfully finalized. Artifact ID 11693460381
+windows-validation	Upload test evidence	2026-10-11T05:16:54.6629277Z Artifact wo10-windows-evidence has been successfully uploaded! Final size is 1047043 bytes. Artifact ID is 11693460381
+windows-validation	Upload test evidence	2026-10-11T05:16:54.6813477Z Artifact download URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38113296563/artifacts/11693460381
+windows-validation	Post Run actions/setup-dotnet@v4	﻿2026-10-11T05:16:54.8188146Z Post job cleanup.
+windows-validation	Post Run actions/setup-dotnet@v4	2026-10-11T05:16:54.9557017Z (node:4360) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+windows-validation	Post Run actions/setup-dotnet@v4	2026-10-11T05:16:54.9557496Z (Use `node --trace-deprecation ...` to show where the warning was created)
+windows-validation	Post Run actions/checkout@v4	﻿2026-10-11T05:16:54.9827652Z Post job cleanup.
+windows-validation	Post Run actions/checkout@v4	2026-10-11T05:16:55.1372504Z [command]"C:\Program Files\Git\bin\git.exe" version
+windows-validation	Post Run actions/checkout@v4	2026-10-11T05:16:55.7487771Z git version 2.55.0.windows.5
+windows-validation	Post Run actions/checkout@v4	2026-10-11T05:16:55.7582203Z Temporarily overriding HOME='D:\a\_temp\a39ddfe8-8d46-4071-b1f8-522c325b9dbb' before making global git config changes
+windows-validation	Post Run actions/checkout@v4	2026-10-11T05:16:55.7582701Z Adding repository directory to the temporary git global config as a safe directory
+windows-validation	Post Run actions/checkout@v4	2026-10-11T05:16:55.7589912Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory CI_WORKSPACE
+windows-validation	Post Run actions/checkout@v4	2026-10-11T05:16:55.8419180Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+windows-validation	Post Run actions/checkout@v4	2026-10-11T05:16:55.8854651Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+windows-validation	Post Run actions/checkout@v4	2026-10-11T05:16:57.4600426Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+windows-validation	Post Run actions/checkout@v4	2026-10-11T05:16:57.4852870Z http.https://github.com/.extraheader
+windows-validation	Post Run actions/checkout@v4	2026-10-11T05:16:57.4895458Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+windows-validation	Post Run actions/checkout@v4	2026-10-11T05:16:57.5146655Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+windows-validation	Post Run actions/checkout@v4	2026-10-11T05:16:57.9470304Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+windows-validation	Post Run actions/checkout@v4	2026-10-11T05:16:57.9665729Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+windows-validation	Complete job	﻿2026-10-11T05:16:58.4088859Z Cleaning up orphan processes
+windows-validation	Complete job	2026-10-11T05:16:58.4620129Z Terminate orphan process: pid (7524) (VBCSCompiler)
+windows-validation	Complete job	2026-10-11T05:16:58.4657260Z Terminate orphan process: pid (6076) (conhost)
+windows-validation	Complete job	2026-10-11T05:16:58.7807715Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-dotnet@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

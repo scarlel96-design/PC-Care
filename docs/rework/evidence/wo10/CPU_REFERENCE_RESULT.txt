@@ -1,0 +1,27 @@
+WORK ITEM: WO-10 CPU reference
+STATUS: PARTIAL
+SOURCE SHA: c23802b2adc7be63c8c15ab6cd313ec9be0a05db
+SOURCE TREE: 752a647f89d6cced6637c1224e5e2dcae9618776
+ENVIRONMENT: Windows CI build 26100; .NET 10; four logical processors; elevated token
+COMMAND: ./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner
+INPUT: counterbalanced modes; each 30 seconds; common window 28 seconds
+OUTPUT: WO10_REFERENCE_ANALYSIS_COMPLETED trials=12 rawTracePublished=False
+EXIT CODE: 0
+
+trial mode GST PDH scheduling legacy gaps nativeLost
+1 idle 1.953125 2.083428 1.755604 1.750668 122424 0
+2 medium 4.615385 5.227217 4.407484 4.213612 122600 0
+3 cpu 100.000000 100.000000 100.000000 100.009995 125353 0
+4 peak 4.687500 3.203302 3.122965 3.076484 122785 0
+5 mixed 100.000000 100.000000 100.000000 99.999999 125720 0
+6 expected-high 100.000000 100.000000 100.000000 100.009990 124492 0
+7 expected-high 100.000000 100.000000 99.999984 100.009996 125004 0
+8 mixed 100.000000 100.000000 99.999970 100.009978 128944 0
+9 peak 2.692308 2.457631 2.189052 2.162336 122764 0
+10 cpu 100.000000 100.000000 100.000000 100.009998 124844 0
+11 medium 1.923077 1.773234 1.796990 1.800101 122604 0
+12 idle 3.076923 2.866549 2.498085 2.513780 122356 0
+
+GST and PDH use complete common-window samples. Values are observational medians, not qualified accuracy.
+QualifiedReference=0/12. Precision=null. Recall=null. WPA agreement remains NOT TESTED.
+See CPU_GAP_DIAGNOSIS.json for exact intervals, losses, resource costs, and exclusions.

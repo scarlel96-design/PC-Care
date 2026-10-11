@@ -1,0 +1,884 @@
+{
+  "status": "PARTIAL",
+  "analyzer": "Microsoft.Windows.EventTracing.Processing.All 1.12.10",
+  "etlSha256": "34F7FD9B5C444365569529733DFA464C37F566C909B1138A3B1212E363593D4D",
+  "rawTracePublished": false,
+  "traceWindow": {
+    "StartTime": "2026-10-11T05:11:59.1933035+00:00",
+    "StopTime": "2026-10-11T05:12:30.0592095+00:00"
+  },
+  "reference": {
+    "Analyzer": "Microsoft.TraceProcessing",
+    "IndependentParser": true,
+    "LostEvents": 0,
+    "LostBuffers": 0,
+    "CpuGaps": 122356,
+    "Window": {
+      "StartUtc": "2026-10-11T05:12:01+00:00",
+      "EndUtc": "2026-10-11T05:12:29+00:00",
+      "Seconds": 28,
+      "Valid": true
+    },
+    "Cpu": [
+      {
+        "EndUtc": "2026-10-11T05:12:02+00:00",
+        "CpuPercent": 3.43083
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:03+00:00",
+        "CpuPercent": 3.6693299999999978
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:04+00:00",
+        "CpuPercent": 3.211330000000001
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:05+00:00",
+        "CpuPercent": 2.8271424999999977
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:06+00:00",
+        "CpuPercent": 2.056409999999999
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:07+00:00",
+        "CpuPercent": 2.5507299999999984
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:08+00:00",
+        "CpuPercent": 2.2475324999999993
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:09+00:00",
+        "CpuPercent": 2.783610000000001
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:10+00:00",
+        "CpuPercent": 2.2923649999999975
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:11+00:00",
+        "CpuPercent": 2.4054575000000007
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:12+00:00",
+        "CpuPercent": 3.028722499999998
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:13+00:00",
+        "CpuPercent": 2.2780125000000058
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:14+00:00",
+        "CpuPercent": 2.7493749999999992
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:15+00:00",
+        "CpuPercent": 2.4093074999999997
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:16+00:00",
+        "CpuPercent": 2.6578999999999997
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:17+00:00",
+        "CpuPercent": 1.9891124999999985
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:18+00:00",
+        "CpuPercent": 2.514122500000001
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:19+00:00",
+        "CpuPercent": 2.060227499999998
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:20+00:00",
+        "CpuPercent": 10.144514999999975
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:21+00:00",
+        "CpuPercent": 47.21442499999979
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:22+00:00",
+        "CpuPercent": 19.33504250000025
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:23+00:00",
+        "CpuPercent": 2.4820474999999984
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:24+00:00",
+        "CpuPercent": 2.4520900000000014
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:25+00:00",
+        "CpuPercent": 2.427782499999998
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:26+00:00",
+        "CpuPercent": 2.553797499999999
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:27+00:00",
+        "CpuPercent": 2.312332500000002
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:28+00:00",
+        "CpuPercent": 1.7574074999999998
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:29+00:00",
+        "CpuPercent": 2.1846949999999987
+      }
+    ],
+    "SemanticsQualified": false
+  },
+  "qualification": {
+    "Status": "NOT TESTED",
+    "Window": {
+      "StartUtc": "2026-10-11T05:12:01+00:00",
+      "EndUtc": "2026-10-11T05:12:29+00:00",
+      "Seconds": 28,
+      "Valid": true
+    },
+    "Metrics": {
+      "Status": "NOT TESTED",
+      "TruePositive": 0,
+      "FalsePositive": 0,
+      "FalseNegative": 0,
+      "TrueNegative": 0,
+      "Unknown": 3,
+      "InsufficientEvidence": 0,
+      "ReferenceMismatch": 0,
+      "Precision": null,
+      "Recall": null
+    },
+    "Exclusions": [
+      "ReferenceSemanticsNotQualified",
+      "ReferenceLossOrUnknownLoss"
+    ],
+    "CpuMedianAbsoluteError": null,
+    "PressureState": "Unknown"
+  },
+  "legacyReference": {
+    "Analyzer": "Microsoft.TraceProcessing",
+    "IndependentParser": true,
+    "LostEvents": 0,
+    "LostBuffers": 0,
+    "CpuGaps": 122356,
+    "Window": {
+      "StartUtc": "2026-10-11T05:12:01+00:00",
+      "EndUtc": "2026-10-11T05:12:29+00:00",
+      "Seconds": 28,
+      "Valid": true
+    },
+    "Cpu": [
+      {
+        "EndUtc": "2026-10-11T05:12:02+00:00",
+        "CpuPercent": 3.6016174999999984
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:03+00:00",
+        "CpuPercent": 3.751820000000002
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:04+00:00",
+        "CpuPercent": 3.401435000000002
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:05+00:00",
+        "CpuPercent": 2.6013600000000014
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:06+00:00",
+        "CpuPercent": 2.3761225000000006
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:07+00:00",
+        "CpuPercent": 2.3757600000000005
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:08+00:00",
+        "CpuPercent": 2.4757375000000006
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:09+00:00",
+        "CpuPercent": 2.976187499999999
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:10+00:00",
+        "CpuPercent": 2.5003475
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:11+00:00",
+        "CpuPercent": 2.4013024999999995
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:12+00:00",
+        "CpuPercent": 2.7757550000000006
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:13+00:00",
+        "CpuPercent": 2.2761399999999994
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:14+00:00",
+        "CpuPercent": 2.6257125
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:15+00:00",
+        "CpuPercent": 2.376025000000001
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:16+00:00",
+        "CpuPercent": 2.676332500000001
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:17+00:00",
+        "CpuPercent": 2.0498125
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:18+00:00",
+        "CpuPercent": 2.5263125
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:19+00:00",
+        "CpuPercent": 2.1503175000000008
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:20+00:00",
+        "CpuPercent": 10.1541
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:21+00:00",
+        "CpuPercent": 47.21796249999996
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:22+00:00",
+        "CpuPercent": 19.227567499999992
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:23+00:00",
+        "CpuPercent": 2.5508999999999995
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:24+00:00",
+        "CpuPercent": 2.300795000000001
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:25+00:00",
+        "CpuPercent": 2.5504949999999993
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:26+00:00",
+        "CpuPercent": 2.501247500000001
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:27+00:00",
+        "CpuPercent": 2.2758824999999994
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:28+00:00",
+        "CpuPercent": 1.8008775000000004
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:29+00:00",
+        "CpuPercent": 2.4006674999999995
+      }
+    ],
+    "SemanticsQualified": true
+  },
+  "legacyQualification": {
+    "Status": "NOT TESTED",
+    "Window": {
+      "StartUtc": "2026-10-11T05:12:01+00:00",
+      "EndUtc": "2026-10-11T05:12:29+00:00",
+      "Seconds": 28,
+      "Valid": true
+    },
+    "Metrics": {
+      "Status": "NOT TESTED",
+      "TruePositive": 0,
+      "FalsePositive": 0,
+      "FalseNegative": 0,
+      "TrueNegative": 0,
+      "Unknown": 3,
+      "InsufficientEvidence": 0,
+      "ReferenceMismatch": 0,
+      "Precision": null,
+      "Recall": null
+    },
+    "Exclusions": [
+      "ReferenceLossOrUnknownLoss"
+    ],
+    "CpuMedianAbsoluteError": null,
+    "PressureState": "Unknown"
+  },
+  "lifetimes": [
+    {
+      "id": "8E094C945EC55F5D31051161",
+      "startedUtc": "2026-10-11T05:11:59.2719497+00:00",
+      "endedUtc": "2026-10-11T05:12:29.6467537+00:00"
+    },
+    {
+      "id": "37CA8CB0CF404467E7851AA6",
+      "startedUtc": "2026-10-11T05:12:19.8021393+00:00",
+      "endedUtc": "2026-10-11T05:12:21.6817735+00:00"
+    },
+    {
+      "id": "C9C9E96007667401B5766D44",
+      "startedUtc": "2026-10-11T05:12:10.9861177+00:00",
+      "endedUtc": "2026-10-11T05:12:11.015037+00:00"
+    },
+    {
+      "id": "02EFA760D30D51308DBD76F8",
+      "startedUtc": "2026-10-11T05:12:19.9222302+00:00",
+      "endedUtc": null
+    },
+    {
+      "id": "CD0C8839896F9DCBD3676115",
+      "startedUtc": "2026-10-11T05:12:19.8919564+00:00",
+      "endedUtc": null
+    },
+    {
+      "id": "7189F4F4FDCA74EEB32D4BF7",
+      "startedUtc": "2026-10-11T05:12:19.9702766+00:00",
+      "endedUtc": null
+    },
+    {
+      "id": "CDCF346FC92F97C55764745D",
+      "startedUtc": "2026-10-11T05:12:20.1144526+00:00",
+      "endedUtc": "2026-10-11T05:12:20.1959914+00:00"
+    },
+    {
+      "id": "C90FA8DCA6245026FEEE3212",
+      "startedUtc": "2026-10-11T05:11:59.2721676+00:00",
+      "endedUtc": "2026-10-11T05:12:29.3907889+00:00"
+    },
+    {
+      "id": "75388D7BD7650714818E02FA",
+      "startedUtc": "2026-10-11T05:12:20.2470538+00:00",
+      "endedUtc": null
+    },
+    {
+      "id": "6C55067AEF754B9E011C8E28",
+      "startedUtc": "2026-10-11T05:11:59.2695147+00:00",
+      "endedUtc": "2026-10-11T05:12:29.3879664+00:00"
+    },
+    {
+      "id": "AD415E510B113D16DFB64B84",
+      "startedUtc": "2026-10-11T05:12:19.9573789+00:00",
+      "endedUtc": null
+    },
+    {
+      "id": "D22196E6FC41A4AB1A948312",
+      "startedUtc": "2026-10-11T05:12:19.9856431+00:00",
+      "endedUtc": null
+    },
+    {
+      "id": "8B1172F99C9AEBDF053ED84C",
+      "startedUtc": "2026-10-11T05:12:20.1556213+00:00",
+      "endedUtc": null
+    },
+    {
+      "id": "0122A5F1DC4C73ED9D58EB98",
+      "startedUtc": "2026-10-11T05:12:10.9942904+00:00",
+      "endedUtc": "2026-10-11T05:12:11.0133058+00:00"
+    },
+    {
+      "id": "581B526ED5FA92DC4EDDB8D3",
+      "startedUtc": "2026-10-11T05:12:29.6554474+00:00",
+      "endedUtc": null
+    }
+  ],
+  "schedulingSummary": {
+    "ProcessorCount": 4,
+    "Window": {
+      "StartUtc": "2026-10-11T05:12:01+00:00",
+      "EndUtc": "2026-10-11T05:12:29+00:00",
+      "Seconds": 28,
+      "Valid": true
+    },
+    "Bins": [
+      {
+        "EndUtc": "2026-10-11T05:12:02+00:00",
+        "BusySeconds": 0.1372332,
+        "IdleSeconds": 3.8627667999999993,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 3.43083
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:03+00:00",
+        "BusySeconds": 0.1467731999999999,
+        "IdleSeconds": 3.853226800000003,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 3.6693299999999978
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:04+00:00",
+        "BusySeconds": 0.12845320000000005,
+        "IdleSeconds": 3.871546799999999,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 3.211330000000001
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:05+00:00",
+        "BusySeconds": 0.11308569999999991,
+        "IdleSeconds": 3.886914300000003,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.8271424999999977
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:06+00:00",
+        "BusySeconds": 0.08225639999999997,
+        "IdleSeconds": 3.917743599999999,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.056409999999999
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:07+00:00",
+        "BusySeconds": 0.10202919999999993,
+        "IdleSeconds": 3.8979708000000013,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.5507299999999984
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:08+00:00",
+        "BusySeconds": 0.08990129999999996,
+        "IdleSeconds": 3.9100986999999994,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.2475324999999993
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:09+00:00",
+        "BusySeconds": 0.11134440000000002,
+        "IdleSeconds": 3.8886556000000025,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.783610000000001
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:10+00:00",
+        "BusySeconds": 0.0916945999999999,
+        "IdleSeconds": 3.9083053999999935,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.2923649999999975
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:11+00:00",
+        "BusySeconds": 0.09621830000000002,
+        "IdleSeconds": 3.903781699999995,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.4054575000000007
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:12+00:00",
+        "BusySeconds": 0.12114889999999992,
+        "IdleSeconds": 3.8788510999999968,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 3.028722499999998
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:13+00:00",
+        "BusySeconds": 0.09112050000000023,
+        "IdleSeconds": 3.9088795000000047,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.2780125000000058
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:14+00:00",
+        "BusySeconds": 0.10997499999999996,
+        "IdleSeconds": 3.890025000000004,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.7493749999999992
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:15+00:00",
+        "BusySeconds": 0.0963723,
+        "IdleSeconds": 3.9036277,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.4093074999999997
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:16+00:00",
+        "BusySeconds": 0.106316,
+        "IdleSeconds": 3.8936839999999995,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.6578999999999997
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:17+00:00",
+        "BusySeconds": 0.07956449999999994,
+        "IdleSeconds": 3.920435500000003,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 1.9891124999999985
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:18+00:00",
+        "BusySeconds": 0.10056490000000004,
+        "IdleSeconds": 3.899435099999997,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.514122500000001
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:19+00:00",
+        "BusySeconds": 0.08240909999999992,
+        "IdleSeconds": 3.917590899999999,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.060227499999998
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:20+00:00",
+        "BusySeconds": 0.405780599999999,
+        "IdleSeconds": 3.5942193999999956,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 10.144514999999975
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:21+00:00",
+        "BusySeconds": 1.8885769999999917,
+        "IdleSeconds": 2.1114230000000105,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 47.21442499999979
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:22+00:00",
+        "BusySeconds": 0.77340170000001,
+        "IdleSeconds": 3.226598299999993,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 19.33504250000025
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:23+00:00",
+        "BusySeconds": 0.09928189999999994,
+        "IdleSeconds": 3.9007180999999935,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.4820474999999984
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:24+00:00",
+        "BusySeconds": 0.09808360000000006,
+        "IdleSeconds": 3.9019163999999993,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.4520900000000014
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:25+00:00",
+        "BusySeconds": 0.09711129999999991,
+        "IdleSeconds": 3.902888699999999,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.427782499999998
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:26+00:00",
+        "BusySeconds": 0.10215189999999996,
+        "IdleSeconds": 3.8978481000000014,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.553797499999999
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:27+00:00",
+        "BusySeconds": 0.09249330000000008,
+        "IdleSeconds": 3.907506700000003,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.312332500000002
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:28+00:00",
+        "BusySeconds": 0.07029629999999999,
+        "IdleSeconds": 3.9297037000000037,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 1.7574074999999998
+      },
+      {
+        "EndUtc": "2026-10-11T05:12:29+00:00",
+        "BusySeconds": 0.08738779999999995,
+        "IdleSeconds": 3.9126122,
+        "UnknownSeconds": 0,
+        "MissingSeconds": 0,
+        "OverlapSeconds": 0,
+        "CpuPercent": 2.1846949999999987
+      }
+    ],
+    "InvalidIntervals": 0,
+    "Status": "CompleteSchedulingCoverage"
+  },
+  "schedulingQualification": {
+    "status": "ReferenceIncomplete",
+    "reason": "DPC/ISR time and WPA agreement are not independently qualified. Scheduling observations are not accuracy ground truth."
+  },
+  "cpuParserDiagnostics": {
+    "sampleCount": 122352,
+    "invalidTimestamp": 0,
+    "partialTimestamp": 122352,
+    "partialWeight": 122352,
+    "invalidWeight": 0,
+    "missingProcess": 0,
+    "validSamplesInCommonWindow": 111988,
+    "unknownSamplesInCommonWindow": 0,
+    "estimatedUnaccountedSamplingPeriods": 122356,
+    "schedulingTimeSliceCount": 124141,
+    "sampledIdle": 115435,
+    "sampledMissingThread": 0,
+    "schedulingInvalidTimes": 0,
+    "schedulingUnknownThreads": 0,
+    "interpretation": "Weight is estimated time to the next sample. CpuGaps are estimated unaccounted sampling periods, not native lost events. Scheduling bins separately preserve idle, missing, unknown and overlapping time. The original sampled zero-gap gate remains in force."
+  },
+  "processCpuSemantics": "Legacy sampled weight estimate; not qualified running time or ground truth",
+  "processCpu": [
+    {
+      "id": "D22196E6FC41A4AB1A948312",
+      "cpuSeconds": 1.4331661999999965,
+      "wholeMachinePercent": 1.2796126785714255
+    },
+    {
+      "id": "8E094C945EC55F5D31051161",
+      "cpuSeconds": 0.5304311,
+      "wholeMachinePercent": 0.47359919642857146
+    },
+    {
+      "id": "AD415E510B113D16DFB64B84",
+      "cpuSeconds": 0.20500670000000007,
+      "wholeMachinePercent": 0.1830416964285715
+    },
+    {
+      "id": "75388D7BD7650714818E02FA",
+      "cpuSeconds": 0.13413830000000002,
+      "wholeMachinePercent": 0.1197663392857143
+    },
+    {
+      "id": "37CA8CB0CF404467E7851AA6",
+      "cpuSeconds": 0.1270408,
+      "wholeMachinePercent": 0.11342928571428572
+    },
+    {
+      "id": "CD0C8839896F9DCBD3676115",
+      "cpuSeconds": 0.07704650000000002,
+      "wholeMachinePercent": 0.06879151785714287
+    },
+    {
+      "id": "02EFA760D30D51308DBD76F8",
+      "cpuSeconds": 0.052034400000000015,
+      "wholeMachinePercent": 0.046459285714285724
+    },
+    {
+      "id": "CDCF346FC92F97C55764745D",
+      "cpuSeconds": 0.0470079,
+      "wholeMachinePercent": 0.04197133928571428
+    },
+    {
+      "id": "7189F4F4FDCA74EEB32D4BF7",
+      "cpuSeconds": 0.04203150000000001,
+      "wholeMachinePercent": 0.037528125000000016
+    },
+    {
+      "id": "0122A5F1DC4C73ED9D58EB98",
+      "cpuSeconds": 0.016006899999999998,
+      "wholeMachinePercent": 0.014291874999999997
+    },
+    {
+      "id": "8B1172F99C9AEBDF053ED84C",
+      "cpuSeconds": 0.013013100000000001,
+      "wholeMachinePercent": 0.011618839285714288
+    },
+    {
+      "id": "C9C9E96007667401B5766D44",
+      "cpuSeconds": 0.008017400000000001,
+      "wholeMachinePercent": 0.007158392857142858
+    }
+  ],
+  "unlinkedCpu": 2950,
+  "unlinkedIo": 9727,
+  "disk": [
+    {
+      "sessionDiskNumber": 0,
+      "identityStatus": "TraceLocalNumberOnly",
+      "operations": 9927,
+      "readBytes": 40346112,
+      "writeBytes": 19914752,
+      "latency": {
+        "Median": 3.7033,
+        "P95": 5.359339999999998,
+        "Count": 9927
+      }
+    },
+    {
+      "sessionDiskNumber": 1,
+      "identityStatus": "TraceLocalNumberOnly",
+      "operations": 11,
+      "readBytes": 0,
+      "writeBytes": 208896,
+      "latency": {
+        "Median": 0.015,
+        "P95": 0.05555,
+        "Count": 11
+      }
+    }
+  ],
+  "processIo": [
+    {
+      "id": null,
+      "operations": 9727,
+      "bytes": 56450560
+    },
+    {
+      "id": "37CA8CB0CF404467E7851AA6",
+      "operations": 40,
+      "bytes": 918528
+    },
+    {
+      "id": "CD0C8839896F9DCBD3676115",
+      "operations": 17,
+      "bytes": 98304
+    },
+    {
+      "id": "02EFA760D30D51308DBD76F8",
+      "operations": 113,
+      "bytes": 2467328
+    },
+    {
+      "id": "D22196E6FC41A4AB1A948312",
+      "operations": 25,
+      "bytes": 274432
+    },
+    {
+      "id": "AD415E510B113D16DFB64B84",
+      "operations": 3,
+      "bytes": 77824
+    },
+    {
+      "id": "CDCF346FC92F97C55764745D",
+      "operations": 2,
+      "bytes": 20480
+    },
+    {
+      "id": "75388D7BD7650714818E02FA",
+      "operations": 11,
+      "bytes": 162304
+    }
+  ],
+  "resource": {
+    "elapsedMilliseconds": 919.8356,
+    "peakWorkingSetBytes": 171651072
+  },
+  "plans": [
+    {
+      "plan": {
+        "PlanId": "323976C85A2708306596A96B",
+        "FindingId": "perf.ResourceConsumer.C6C56A7AEB6AFA07F8EBBE5E",
+        "EvidenceReferences": [
+          "perf.ResourceConsumer.C6C56A7AEB6AFA07F8EBBE5E",
+          "2026-10-11T05:11:59.5093876\u002B00:00 \u002B 30.05s",
+          "System.Diagnostics.Process"
+        ],
+        "ProblemDescription": "\uD504\uB85C\uC138\uC2A4 \uC790\uC6D0 \uAE30\uC5EC",
+        "ProposedAction": 6,
+        "Eligibility": "Blocked:UnsupportedEvidence",
+        "ConfidenceLimitations": [
+          "Resource pressure does not prove abnormal software.",
+          "Repeat the same workload before planning a repair.",
+          "Clock, temperature, boot attribution and service correlation are not measured.",
+          "Collection errors: Process:PartialAccessOrExited,ProcessBudget:Truncated",
+          "\uADFC\uBCF8 \uC6D0\uC778\uACFC \uC2E4\uC81C \uAC1C\uC120 \uD6A8\uACFC\uB294 \uBBF8\uD655\uC778\uC785\uB2C8\uB2E4."
+        ],
+        "RiskLevel": "ReviewOnly;ExecutionRiskNotAssessed",
+        "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+        "ExpectedEffect": "Unknown",
+        "EstimatedResourceCost": "UnknownUntilTargetInspection",
+        "UserConsentRequired": true,
+        "PreflightChecks": [
+          "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+          "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+          "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+          "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+        ],
+        "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+        "RollbackPlan": "\uBBF8\uB9AC\uBCF4\uAE30\uB294 \uC0C1\uD0DC\uB97C \uBCC0\uACBD\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. \uC2E4\uD589 \uB2E8\uACC4\uC5D0\uC11C \uC870\uCE58\uBCC4 \uC6D0\uBCF5\uC744 \uC124\uACC4\uD558\uC138\uC694.",
+        "VerificationMetrics": [
+          "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+          "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+          "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+          "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+        ],
+        "ExecutionState": "PlannedOnly"
+      },
+      "dryRun": {
+        "PlanId": "323976C85A2708306596A96B",
+        "Status": "Blocked:UnsupportedEvidence",
+        "Target": "ExactTargetNotSelected;ReviewApplicationLoad",
+        "Preconditions": [
+          "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+          "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+          "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+          "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+        ],
+        "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+        "Risk": "ReviewOnly;ExecutionRiskNotAssessed",
+        "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+        "VerificationMetrics": [
+          "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+          "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+          "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+          "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+        ],
+        "ExecutionEnabled": false,
+        "SystemMutations": 0
+      }
+    }
+  ]
+}

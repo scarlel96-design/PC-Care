@@ -1,0 +1,1395 @@
+{
+  "workItem": "WO-10",
+  "status": "PARTIAL",
+  "sourceSha": "c23802b2adc7be63c8c15ab6cd313ec9be0a05db",
+  "sourceTree": "752a647f89d6cced6637c1224e5e2dcae9618776",
+  "ciRun": 38113296563,
+  "command": "./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner",
+  "input": "Twelve bounded 30-second synthetic CI workloads; 28-second common windows; four logical processors",
+  "exitCode": 0,
+  "rawTracePublished": false,
+  "trials": [
+    {
+      "trial": 1,
+      "mode": "idle",
+      "order": 1,
+      "status": "PARTIAL",
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "commonWindow": {
+        "StartUtc": "2026-10-11T05:05:51+00:00",
+        "EndUtc": "2026-10-11T05:06:19+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "WorkloadExecuted": true,
+      "PressureVerified": "Unknown",
+      "QualifiedReference": false,
+      "qualifiedStatus": "NOT TESTED",
+      "exclusions": [
+        "ReferenceSemanticsNotQualified",
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "nativeEtwEventsLost": 0,
+      "nativeEtwBuffersLost": 0,
+      "estimatedUnaccountedSamplingPeriods": 122424,
+      "sampleDiagnostics": {
+        "sampleCount": 122420,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 122420,
+        "partialWeight": 122420,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 111988,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 122424,
+        "schedulingTimeSliceCount": 39268,
+        "sampledIdle": 119066,
+        "sampledMissingThread": 0,
+        "schedulingInvalidTimes": 0,
+        "schedulingUnknownThreads": 0,
+        "interpretation": "Weight is estimated time to the next sample. CpuGaps are estimated unaccounted sampling periods, not native lost events. Scheduling bins separately preserve idle, missing, unknown and overlapping time. The original sampled zero-gap gate remains in force."
+      },
+      "legacySampledMedianPercent": 1.7506675000000005,
+      "schedulingMedianPercent": 1.7556037499999995,
+      "getSystemTimesCommonWindowMedianPercent": 1.953125,
+      "getSystemTimesCommonWindowSamples": 27,
+      "pdhCommonWindowMedianPercent": 2.083427582915409,
+      "pdhCommonWindowSamples": 27,
+      "pdhStatus": "ObservedCounterOnly",
+      "idleSeconds": 109.80222109999998,
+      "busySeconds": 2.1977789000000003,
+      "unknownSeconds": 0,
+      "missingSeconds": 0,
+      "overlapSeconds": 0,
+      "collectorCpuPercentOfMachine": 0.6370769783068926,
+      "collectorPeakWorkingSetBytes": 55472128,
+      "managedAllocatedBytes": 9866248,
+      "analysisMilliseconds": 13.2676,
+      "collectorEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 622,
+        "EventsProcessed": 622,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 0,
+        "MaxQueueDelayMilliseconds": 22.7182,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskWrite": 616,
+          "DiskRead": 6
+        }
+      },
+      "remainingOwnedSessions": 0,
+      "offlineAnalyzerResource": {
+        "elapsedMilliseconds": 2163.415,
+        "peakWorkingSetBytes": 129593344
+      },
+      "etlSha256": "696FE24D615FA99974B47683D9BD660D347F740C5AF4ED9F6411A8CB2C1E1444",
+      "etlBytes": 15728640,
+      "privateRootAclProtected": true,
+      "rawTracePublished": false,
+      "commands": {
+        "capture": "./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner",
+        "analyze": "ReferenceProbe reference.etl measurement.json WORKLOAD_START_UTC+2s WORKLOAD_END_UTC reference-N.json"
+      },
+      "exitCodes": {
+        "startExit": 0,
+        "measureExit": 0,
+        "stopExit": 0,
+        "analysisExit": 0
+      },
+      "limitations": [
+        "No WPA Exporter agreement",
+        "DPC/ISR accounting unqualified",
+        "Scheduling median is an observation, not ground truth",
+        "GetSystemTimes and PDH include only complete intervals inside the common window; their endpoints differ from one-second scheduling bins",
+        "Process contribution error remains null; independent identity mapping is not qualified"
+      ]
+    },
+    {
+      "trial": 2,
+      "mode": "medium",
+      "order": 2,
+      "status": "PARTIAL",
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "commonWindow": {
+        "StartUtc": "2026-10-11T05:06:26+00:00",
+        "EndUtc": "2026-10-11T05:06:54+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "WorkloadExecuted": true,
+      "PressureVerified": "Unknown",
+      "QualifiedReference": false,
+      "qualifiedStatus": "NOT TESTED",
+      "exclusions": [
+        "ReferenceSemanticsNotQualified",
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "nativeEtwEventsLost": 0,
+      "nativeEtwBuffersLost": 0,
+      "estimatedUnaccountedSamplingPeriods": 122600,
+      "sampleDiagnostics": {
+        "sampleCount": 122596,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 122596,
+        "partialWeight": 122596,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 111988,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 122600,
+        "schedulingTimeSliceCount": 93244,
+        "sampledIdle": 115461,
+        "sampledMissingThread": 0,
+        "schedulingInvalidTimes": 0,
+        "schedulingUnknownThreads": 0,
+        "interpretation": "Weight is estimated time to the next sample. CpuGaps are estimated unaccounted sampling periods, not native lost events. Scheduling bins separately preserve idle, missing, unknown and overlapping time. The original sampled zero-gap gate remains in force."
+      },
+      "legacySampledMedianPercent": 4.2136125,
+      "schedulingMedianPercent": 4.407483750000001,
+      "getSystemTimesCommonWindowMedianPercent": 4.61538461538461,
+      "getSystemTimesCommonWindowSamples": 27,
+      "pdhCommonWindowMedianPercent": 5.22721706483531,
+      "pdhCommonWindowSamples": 27,
+      "pdhStatus": "ObservedCounterOnly",
+      "idleSeconds": 106.06671849999998,
+      "busySeconds": 5.933281499999995,
+      "unknownSeconds": 0,
+      "missingSeconds": 0,
+      "overlapSeconds": 0,
+      "collectorCpuPercentOfMachine": 0.6366705527138453,
+      "collectorPeakWorkingSetBytes": 58286080,
+      "managedAllocatedBytes": 11653096,
+      "analysisMilliseconds": 13.4092,
+      "collectorEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 4288,
+        "EventsProcessed": 4288,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 0,
+        "MaxQueueDelayMilliseconds": 31.7222,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskRead": 3535,
+          "DiskWrite": 753
+        }
+      },
+      "remainingOwnedSessions": 0,
+      "offlineAnalyzerResource": {
+        "elapsedMilliseconds": 699.2463,
+        "peakWorkingSetBytes": 155250688
+      },
+      "etlSha256": "A93D9C81F0E7C519BF199949027F0A72404DD23ACCB6AF540644C5380CAB97AF",
+      "etlBytes": 22806528,
+      "privateRootAclProtected": true,
+      "rawTracePublished": false,
+      "commands": {
+        "capture": "./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner",
+        "analyze": "ReferenceProbe reference.etl measurement.json WORKLOAD_START_UTC+2s WORKLOAD_END_UTC reference-N.json"
+      },
+      "exitCodes": {
+        "startExit": 0,
+        "measureExit": 0,
+        "stopExit": 0,
+        "analysisExit": 0
+      },
+      "limitations": [
+        "No WPA Exporter agreement",
+        "DPC/ISR accounting unqualified",
+        "Scheduling median is an observation, not ground truth",
+        "GetSystemTimes and PDH include only complete intervals inside the common window; their endpoints differ from one-second scheduling bins",
+        "Process contribution error remains null; independent identity mapping is not qualified"
+      ]
+    },
+    {
+      "trial": 3,
+      "mode": "cpu",
+      "order": 3,
+      "status": "PARTIAL",
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "commonWindow": {
+        "StartUtc": "2026-10-11T05:06:59+00:00",
+        "EndUtc": "2026-10-11T05:07:27+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "WorkloadExecuted": true,
+      "PressureVerified": "Unknown",
+      "QualifiedReference": false,
+      "qualifiedStatus": "NOT TESTED",
+      "exclusions": [
+        "ReferenceSemanticsNotQualified",
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "nativeEtwEventsLost": 0,
+      "nativeEtwBuffersLost": 0,
+      "estimatedUnaccountedSamplingPeriods": 125353,
+      "sampleDiagnostics": {
+        "sampleCount": 125349,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 125349,
+        "partialWeight": 125349,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 110309,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 125353,
+        "schedulingTimeSliceCount": 47629,
+        "sampledIdle": 6337,
+        "sampledMissingThread": 0,
+        "schedulingInvalidTimes": 0,
+        "schedulingUnknownThreads": 0,
+        "interpretation": "Weight is estimated time to the next sample. CpuGaps are estimated unaccounted sampling periods, not native lost events. Scheduling bins separately preserve idle, missing, unknown and overlapping time. The original sampled zero-gap gate remains in force."
+      },
+      "legacySampledMedianPercent": 100.00999500000054,
+      "schedulingMedianPercent": 100.00000000000007,
+      "getSystemTimesCommonWindowMedianPercent": 100.0,
+      "getSystemTimesCommonWindowSamples": 12,
+      "pdhCommonWindowMedianPercent": 100.0,
+      "pdhCommonWindowSamples": 26,
+      "pdhStatus": "ObservedCounterOnly",
+      "idleSeconds": 2.4599999999999998e-05,
+      "busySeconds": 111.9999754000002,
+      "unknownSeconds": 0,
+      "missingSeconds": 0,
+      "overlapSeconds": 0,
+      "collectorCpuPercentOfMachine": 0.5330785107795569,
+      "collectorPeakWorkingSetBytes": 54644736,
+      "managedAllocatedBytes": 5487176,
+      "analysisMilliseconds": 17.7947,
+      "collectorEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 289,
+        "EventsProcessed": 289,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 0,
+        "MaxQueueDelayMilliseconds": 42.7745,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskWrite": 276,
+          "DiskRead": 13
+        }
+      },
+      "remainingOwnedSessions": 0,
+      "offlineAnalyzerResource": {
+        "elapsedMilliseconds": 639.8114,
+        "peakWorkingSetBytes": 138301440
+      },
+      "etlSha256": "A158C17C787379830A6CFBEC001EC4686E58060604416DB52B2287C3394A558A",
+      "etlBytes": 16252928,
+      "privateRootAclProtected": true,
+      "rawTracePublished": false,
+      "commands": {
+        "capture": "./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner",
+        "analyze": "ReferenceProbe reference.etl measurement.json WORKLOAD_START_UTC+2s WORKLOAD_END_UTC reference-N.json"
+      },
+      "exitCodes": {
+        "startExit": 0,
+        "measureExit": 0,
+        "stopExit": 0,
+        "analysisExit": 0
+      },
+      "limitations": [
+        "No WPA Exporter agreement",
+        "DPC/ISR accounting unqualified",
+        "Scheduling median is an observation, not ground truth",
+        "GetSystemTimes and PDH include only complete intervals inside the common window; their endpoints differ from one-second scheduling bins",
+        "Process contribution error remains null; independent identity mapping is not qualified"
+      ]
+    },
+    {
+      "trial": 4,
+      "mode": "peak",
+      "order": 4,
+      "status": "PARTIAL",
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "commonWindow": {
+        "StartUtc": "2026-10-11T05:07:33+00:00",
+        "EndUtc": "2026-10-11T05:08:01+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "WorkloadExecuted": true,
+      "PressureVerified": "Unknown",
+      "QualifiedReference": false,
+      "qualifiedStatus": "NOT TESTED",
+      "exclusions": [
+        "ReferenceSemanticsNotQualified",
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "nativeEtwEventsLost": 0,
+      "nativeEtwBuffersLost": 0,
+      "estimatedUnaccountedSamplingPeriods": 122785,
+      "sampleDiagnostics": {
+        "sampleCount": 122781,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 122781,
+        "partialWeight": 122781,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 111881,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 122785,
+        "schedulingTimeSliceCount": 74665,
+        "sampledIdle": 108942,
+        "sampledMissingThread": 0,
+        "schedulingInvalidTimes": 0,
+        "schedulingUnknownThreads": 0,
+        "interpretation": "Weight is estimated time to the next sample. CpuGaps are estimated unaccounted sampling periods, not native lost events. Scheduling bins separately preserve idle, missing, unknown and overlapping time. The original sampled zero-gap gate remains in force."
+      },
+      "legacySampledMedianPercent": 3.0764837500000013,
+      "schedulingMedianPercent": 3.1229650000000007,
+      "getSystemTimesCommonWindowMedianPercent": 4.6875,
+      "getSystemTimesCommonWindowSamples": 27,
+      "pdhCommonWindowMedianPercent": 3.203301605372777,
+      "pdhCommonWindowSamples": 27,
+      "pdhStatus": "ObservedCounterOnly",
+      "idleSeconds": 103.4154269,
+      "busySeconds": 8.5845731,
+      "unknownSeconds": 0,
+      "missingSeconds": 0,
+      "overlapSeconds": 0,
+      "collectorCpuPercentOfMachine": 0.5976823651592494,
+      "collectorPeakWorkingSetBytes": 59592704,
+      "managedAllocatedBytes": 14352248,
+      "analysisMilliseconds": 14.1558,
+      "collectorEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 10746,
+        "EventsProcessed": 10746,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 1,
+        "MaxQueueDelayMilliseconds": 31.5726,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskWrite": 350,
+          "DiskRead": 10396
+        }
+      },
+      "remainingOwnedSessions": 0,
+      "offlineAnalyzerResource": {
+        "elapsedMilliseconds": 651.001,
+        "peakWorkingSetBytes": 149565440
+      },
+      "etlSha256": "7FAD7FD615B4BC928DDFB1819C4E3B06B7586BC9EE07CA915C7073CF78FFFD5D",
+      "etlBytes": 19267584,
+      "privateRootAclProtected": true,
+      "rawTracePublished": false,
+      "commands": {
+        "capture": "./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner",
+        "analyze": "ReferenceProbe reference.etl measurement.json WORKLOAD_START_UTC+2s WORKLOAD_END_UTC reference-N.json"
+      },
+      "exitCodes": {
+        "startExit": 0,
+        "measureExit": 0,
+        "stopExit": 0,
+        "analysisExit": 0
+      },
+      "limitations": [
+        "No WPA Exporter agreement",
+        "DPC/ISR accounting unqualified",
+        "Scheduling median is an observation, not ground truth",
+        "GetSystemTimes and PDH include only complete intervals inside the common window; their endpoints differ from one-second scheduling bins",
+        "Process contribution error remains null; independent identity mapping is not qualified"
+      ]
+    },
+    {
+      "trial": 5,
+      "mode": "mixed",
+      "order": 5,
+      "status": "PARTIAL",
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "commonWindow": {
+        "StartUtc": "2026-10-11T05:08:07+00:00",
+        "EndUtc": "2026-10-11T05:08:35+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "WorkloadExecuted": true,
+      "PressureVerified": "Unknown",
+      "QualifiedReference": false,
+      "qualifiedStatus": "NOT TESTED",
+      "exclusions": [
+        "ReferenceSemanticsNotQualified",
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "nativeEtwEventsLost": 0,
+      "nativeEtwBuffersLost": 0,
+      "estimatedUnaccountedSamplingPeriods": 125720,
+      "sampleDiagnostics": {
+        "sampleCount": 125716,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 125716,
+        "partialWeight": 125716,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 112000,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 125720,
+        "schedulingTimeSliceCount": 57714,
+        "sampledIdle": 4258,
+        "sampledMissingThread": 0,
+        "schedulingInvalidTimes": 0,
+        "schedulingUnknownThreads": 0,
+        "interpretation": "Weight is estimated time to the next sample. CpuGaps are estimated unaccounted sampling periods, not native lost events. Scheduling bins separately preserve idle, missing, unknown and overlapping time. The original sampled zero-gap gate remains in force."
+      },
+      "legacySampledMedianPercent": 99.9999987500007,
+      "schedulingMedianPercent": 100.0,
+      "getSystemTimesCommonWindowMedianPercent": 100,
+      "getSystemTimesCommonWindowSamples": 13,
+      "pdhCommonWindowMedianPercent": 100.0,
+      "pdhCommonWindowSamples": 26,
+      "pdhStatus": "ObservedCounterOnly",
+      "idleSeconds": 1.78e-05,
+      "busySeconds": 111.99998220000008,
+      "unknownSeconds": 0,
+      "missingSeconds": 0,
+      "overlapSeconds": 0,
+      "collectorCpuPercentOfMachine": 0.5200473511017898,
+      "collectorPeakWorkingSetBytes": 55250944,
+      "managedAllocatedBytes": 7009688,
+      "analysisMilliseconds": 16.8749,
+      "collectorEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 3725,
+        "EventsProcessed": 3725,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 0,
+        "MaxQueueDelayMilliseconds": 64.6151,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskRead": 3381,
+          "DiskWrite": 344
+        }
+      },
+      "remainingOwnedSessions": 0,
+      "offlineAnalyzerResource": {
+        "elapsedMilliseconds": 653.7697,
+        "peakWorkingSetBytes": 151539712
+      },
+      "etlSha256": "F33D928E90C858C1F3DF119227BA9065AD393C70601EE38962B83442BA0B9C3C",
+      "etlBytes": 17563648,
+      "privateRootAclProtected": true,
+      "rawTracePublished": false,
+      "commands": {
+        "capture": "./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner",
+        "analyze": "ReferenceProbe reference.etl measurement.json WORKLOAD_START_UTC+2s WORKLOAD_END_UTC reference-N.json"
+      },
+      "exitCodes": {
+        "startExit": 0,
+        "measureExit": 0,
+        "stopExit": 0,
+        "analysisExit": 0
+      },
+      "limitations": [
+        "No WPA Exporter agreement",
+        "DPC/ISR accounting unqualified",
+        "Scheduling median is an observation, not ground truth",
+        "GetSystemTimes and PDH include only complete intervals inside the common window; their endpoints differ from one-second scheduling bins",
+        "Process contribution error remains null; independent identity mapping is not qualified"
+      ]
+    },
+    {
+      "trial": 6,
+      "mode": "expected-high",
+      "order": 6,
+      "status": "PARTIAL",
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "commonWindow": {
+        "StartUtc": "2026-10-11T05:08:41+00:00",
+        "EndUtc": "2026-10-11T05:09:09+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "WorkloadExecuted": true,
+      "PressureVerified": "Unknown",
+      "QualifiedReference": false,
+      "qualifiedStatus": "NOT TESTED",
+      "exclusions": [
+        "ReferenceSemanticsNotQualified",
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "nativeEtwEventsLost": 0,
+      "nativeEtwBuffersLost": 0,
+      "estimatedUnaccountedSamplingPeriods": 124492,
+      "sampleDiagnostics": {
+        "sampleCount": 124488,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 124488,
+        "partialWeight": 124488,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 111988,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 124492,
+        "schedulingTimeSliceCount": 61447,
+        "sampledIdle": 3113,
+        "sampledMissingThread": 0,
+        "schedulingInvalidTimes": 0,
+        "schedulingUnknownThreads": 0,
+        "interpretation": "Weight is estimated time to the next sample. CpuGaps are estimated unaccounted sampling periods, not native lost events. Scheduling bins separately preserve idle, missing, unknown and overlapping time. The original sampled zero-gap gate remains in force."
+      },
+      "legacySampledMedianPercent": 100.00999000000022,
+      "schedulingMedianPercent": 100.00000000000004,
+      "getSystemTimesCommonWindowMedianPercent": 100.0,
+      "getSystemTimesCommonWindowSamples": 12,
+      "pdhCommonWindowMedianPercent": 100,
+      "pdhCommonWindowSamples": 27,
+      "pdhStatus": "ObservedCounterOnly",
+      "idleSeconds": 3.03e-05,
+      "busySeconds": 111.99996970000016,
+      "unknownSeconds": 0,
+      "missingSeconds": 0,
+      "overlapSeconds": 0,
+      "collectorCpuPercentOfMachine": 0.6238278565694726,
+      "collectorPeakWorkingSetBytes": 54411264,
+      "managedAllocatedBytes": 5624160,
+      "analysisMilliseconds": 17.2404,
+      "collectorEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 451,
+        "EventsProcessed": 451,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 0,
+        "MaxQueueDelayMilliseconds": 40.8773,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskWrite": 420,
+          "DiskRead": 31
+        }
+      },
+      "remainingOwnedSessions": 0,
+      "offlineAnalyzerResource": {
+        "elapsedMilliseconds": 716.8969,
+        "peakWorkingSetBytes": 154726400
+      },
+      "etlSha256": "763DE3A9840C1EC587B4BD5B6D275A09FEA353A253281D7823270B42C6548F7A",
+      "etlBytes": 17694720,
+      "privateRootAclProtected": true,
+      "rawTracePublished": false,
+      "commands": {
+        "capture": "./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner",
+        "analyze": "ReferenceProbe reference.etl measurement.json WORKLOAD_START_UTC+2s WORKLOAD_END_UTC reference-N.json"
+      },
+      "exitCodes": {
+        "startExit": 0,
+        "measureExit": 0,
+        "stopExit": 0,
+        "analysisExit": 0
+      },
+      "limitations": [
+        "No WPA Exporter agreement",
+        "DPC/ISR accounting unqualified",
+        "Scheduling median is an observation, not ground truth",
+        "GetSystemTimes and PDH include only complete intervals inside the common window; their endpoints differ from one-second scheduling bins",
+        "Process contribution error remains null; independent identity mapping is not qualified"
+      ]
+    },
+    {
+      "trial": 7,
+      "mode": "expected-high",
+      "order": 7,
+      "status": "PARTIAL",
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "commonWindow": {
+        "StartUtc": "2026-10-11T05:09:14+00:00",
+        "EndUtc": "2026-10-11T05:09:42+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "WorkloadExecuted": true,
+      "PressureVerified": "Unknown",
+      "QualifiedReference": false,
+      "qualifiedStatus": "NOT TESTED",
+      "exclusions": [
+        "ReferenceSemanticsNotQualified",
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "nativeEtwEventsLost": 0,
+      "nativeEtwBuffersLost": 0,
+      "estimatedUnaccountedSamplingPeriods": 125004,
+      "sampleDiagnostics": {
+        "sampleCount": 125000,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 125000,
+        "partialWeight": 125000,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 111988,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 125004,
+        "schedulingTimeSliceCount": 67206,
+        "sampledIdle": 4121,
+        "sampledMissingThread": 0,
+        "schedulingInvalidTimes": 0,
+        "schedulingUnknownThreads": 0,
+        "interpretation": "Weight is estimated time to the next sample. CpuGaps are estimated unaccounted sampling periods, not native lost events. Scheduling bins separately preserve idle, missing, unknown and overlapping time. The original sampled zero-gap gate remains in force."
+      },
+      "legacySampledMedianPercent": 100.00999625000051,
+      "schedulingMedianPercent": 99.9999837500001,
+      "getSystemTimesCommonWindowMedianPercent": 100,
+      "getSystemTimesCommonWindowSamples": 13,
+      "pdhCommonWindowMedianPercent": 100.0,
+      "pdhCommonWindowSamples": 26,
+      "pdhStatus": "ObservedCounterOnly",
+      "idleSeconds": 3.46e-05,
+      "busySeconds": 111.99996540000012,
+      "unknownSeconds": 0,
+      "missingSeconds": 0,
+      "overlapSeconds": 0,
+      "collectorCpuPercentOfMachine": 0.6367280567681279,
+      "collectorPeakWorkingSetBytes": 54620160,
+      "managedAllocatedBytes": 7774712,
+      "analysisMilliseconds": 17.1087,
+      "collectorEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 4230,
+        "EventsProcessed": 4230,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 1,
+        "MaxQueueDelayMilliseconds": 59.4517,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskWrite": 1631,
+          "DiskRead": 2599
+        }
+      },
+      "remainingOwnedSessions": 0,
+      "offlineAnalyzerResource": {
+        "elapsedMilliseconds": 734.2042,
+        "peakWorkingSetBytes": 158015488
+      },
+      "etlSha256": "45722918501A670F0213EDF281C7788DB5E1FD0D5F9D1478FE90805633E311EF",
+      "etlBytes": 19267584,
+      "privateRootAclProtected": true,
+      "rawTracePublished": false,
+      "commands": {
+        "capture": "./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner",
+        "analyze": "ReferenceProbe reference.etl measurement.json WORKLOAD_START_UTC+2s WORKLOAD_END_UTC reference-N.json"
+      },
+      "exitCodes": {
+        "startExit": 0,
+        "measureExit": 0,
+        "stopExit": 0,
+        "analysisExit": 0
+      },
+      "limitations": [
+        "No WPA Exporter agreement",
+        "DPC/ISR accounting unqualified",
+        "Scheduling median is an observation, not ground truth",
+        "GetSystemTimes and PDH include only complete intervals inside the common window; their endpoints differ from one-second scheduling bins",
+        "Process contribution error remains null; independent identity mapping is not qualified"
+      ]
+    },
+    {
+      "trial": 8,
+      "mode": "mixed",
+      "order": 8,
+      "status": "PARTIAL",
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "commonWindow": {
+        "StartUtc": "2026-10-11T05:09:48+00:00",
+        "EndUtc": "2026-10-11T05:10:16+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "WorkloadExecuted": true,
+      "PressureVerified": "Unknown",
+      "QualifiedReference": false,
+      "qualifiedStatus": "NOT TESTED",
+      "exclusions": [
+        "ReferenceSemanticsNotQualified",
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "nativeEtwEventsLost": 0,
+      "nativeEtwBuffersLost": 0,
+      "estimatedUnaccountedSamplingPeriods": 128944,
+      "sampleDiagnostics": {
+        "sampleCount": 128940,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 128940,
+        "partialWeight": 128940,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 109604,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 128944,
+        "schedulingTimeSliceCount": 66077,
+        "sampledIdle": 10405,
+        "sampledMissingThread": 0,
+        "schedulingInvalidTimes": 0,
+        "schedulingUnknownThreads": 0,
+        "interpretation": "Weight is estimated time to the next sample. CpuGaps are estimated unaccounted sampling periods, not native lost events. Scheduling bins separately preserve idle, missing, unknown and overlapping time. The original sampled zero-gap gate remains in force."
+      },
+      "legacySampledMedianPercent": 100.00997750000042,
+      "schedulingMedianPercent": 99.99997000000049,
+      "getSystemTimesCommonWindowMedianPercent": 100,
+      "getSystemTimesCommonWindowSamples": 11,
+      "pdhCommonWindowMedianPercent": 100,
+      "pdhCommonWindowSamples": 25,
+      "pdhStatus": "ObservedCounterOnly",
+      "idleSeconds": 3.56e-05,
+      "busySeconds": 111.99996440000014,
+      "unknownSeconds": 0,
+      "missingSeconds": 0,
+      "overlapSeconds": 0,
+      "collectorCpuPercentOfMachine": 2.390557866171319,
+      "collectorPeakWorkingSetBytes": 55136256,
+      "managedAllocatedBytes": 8190608,
+      "analysisMilliseconds": 16.6581,
+      "collectorEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 6843,
+        "EventsProcessed": 6843,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 1,
+        "MaxQueueDelayMilliseconds": 57.3869,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskRead": 4430,
+          "DiskWrite": 2413
+        }
+      },
+      "remainingOwnedSessions": 0,
+      "offlineAnalyzerResource": {
+        "elapsedMilliseconds": 702.7967,
+        "peakWorkingSetBytes": 156971008
+      },
+      "etlSha256": "FE72599A0E84DC95E92580E73CD8789A95D475F823D84FE71B3F65B01EB57ADC",
+      "etlBytes": 18481152,
+      "privateRootAclProtected": true,
+      "rawTracePublished": false,
+      "commands": {
+        "capture": "./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner",
+        "analyze": "ReferenceProbe reference.etl measurement.json WORKLOAD_START_UTC+2s WORKLOAD_END_UTC reference-N.json"
+      },
+      "exitCodes": {
+        "startExit": 0,
+        "measureExit": 0,
+        "stopExit": 0,
+        "analysisExit": 0
+      },
+      "limitations": [
+        "No WPA Exporter agreement",
+        "DPC/ISR accounting unqualified",
+        "Scheduling median is an observation, not ground truth",
+        "GetSystemTimes and PDH include only complete intervals inside the common window; their endpoints differ from one-second scheduling bins",
+        "Process contribution error remains null; independent identity mapping is not qualified"
+      ]
+    },
+    {
+      "trial": 9,
+      "mode": "peak",
+      "order": 9,
+      "status": "PARTIAL",
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "commonWindow": {
+        "StartUtc": "2026-10-11T05:10:22+00:00",
+        "EndUtc": "2026-10-11T05:10:50+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "WorkloadExecuted": true,
+      "PressureVerified": "Unknown",
+      "QualifiedReference": false,
+      "qualifiedStatus": "NOT TESTED",
+      "exclusions": [
+        "ReferenceSemanticsNotQualified",
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "nativeEtwEventsLost": 0,
+      "nativeEtwBuffersLost": 0,
+      "estimatedUnaccountedSamplingPeriods": 122764,
+      "sampleDiagnostics": {
+        "sampleCount": 122760,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 122760,
+        "partialWeight": 122760,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 111988,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 122764,
+        "schedulingTimeSliceCount": 42891,
+        "sampledIdle": 115515,
+        "sampledMissingThread": 0,
+        "schedulingInvalidTimes": 0,
+        "schedulingUnknownThreads": 0,
+        "interpretation": "Weight is estimated time to the next sample. CpuGaps are estimated unaccounted sampling periods, not native lost events. Scheduling bins separately preserve idle, missing, unknown and overlapping time. The original sampled zero-gap gate remains in force."
+      },
+      "legacySampledMedianPercent": 2.162336249999999,
+      "schedulingMedianPercent": 2.1890525,
+      "getSystemTimesCommonWindowMedianPercent": 2.692307692307694,
+      "getSystemTimesCommonWindowSamples": 27,
+      "pdhCommonWindowMedianPercent": 2.4576307161389033,
+      "pdhCommonWindowSamples": 27,
+      "pdhStatus": "ObservedCounterOnly",
+      "idleSeconds": 109.35235949999999,
+      "busySeconds": 2.6476405,
+      "unknownSeconds": 0,
+      "missingSeconds": 0,
+      "overlapSeconds": 0,
+      "collectorCpuPercentOfMachine": 0.6891038818478799,
+      "collectorPeakWorkingSetBytes": 57032704,
+      "managedAllocatedBytes": 11436064,
+      "analysisMilliseconds": 13.7596,
+      "collectorEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 3744,
+        "EventsProcessed": 3744,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 3,
+        "MaxQueueDelayMilliseconds": 31.3438,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskRead": 3451,
+          "DiskWrite": 293
+        }
+      },
+      "remainingOwnedSessions": 0,
+      "offlineAnalyzerResource": {
+        "elapsedMilliseconds": 506.1723,
+        "peakWorkingSetBytes": 132268032
+      },
+      "etlSha256": "4B84A19E6ACAC98FE8038F8FD2CE3C26DD6BFC17FB732653C99AD8885F8154E9",
+      "etlBytes": 16646144,
+      "privateRootAclProtected": true,
+      "rawTracePublished": false,
+      "commands": {
+        "capture": "./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner",
+        "analyze": "ReferenceProbe reference.etl measurement.json WORKLOAD_START_UTC+2s WORKLOAD_END_UTC reference-N.json"
+      },
+      "exitCodes": {
+        "startExit": 0,
+        "measureExit": 0,
+        "stopExit": 0,
+        "analysisExit": 0
+      },
+      "limitations": [
+        "No WPA Exporter agreement",
+        "DPC/ISR accounting unqualified",
+        "Scheduling median is an observation, not ground truth",
+        "GetSystemTimes and PDH include only complete intervals inside the common window; their endpoints differ from one-second scheduling bins",
+        "Process contribution error remains null; independent identity mapping is not qualified"
+      ]
+    },
+    {
+      "trial": 10,
+      "mode": "cpu",
+      "order": 10,
+      "status": "PARTIAL",
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "commonWindow": {
+        "StartUtc": "2026-10-11T05:10:55+00:00",
+        "EndUtc": "2026-10-11T05:11:23+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "WorkloadExecuted": true,
+      "PressureVerified": "Unknown",
+      "QualifiedReference": false,
+      "qualifiedStatus": "NOT TESTED",
+      "exclusions": [
+        "ReferenceSemanticsNotQualified",
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "nativeEtwEventsLost": 0,
+      "nativeEtwBuffersLost": 0,
+      "estimatedUnaccountedSamplingPeriods": 124844,
+      "sampleDiagnostics": {
+        "sampleCount": 124840,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 124840,
+        "partialWeight": 124840,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 111992,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 124844,
+        "schedulingTimeSliceCount": 47811,
+        "sampledIdle": 4050,
+        "sampledMissingThread": 0,
+        "schedulingInvalidTimes": 0,
+        "schedulingUnknownThreads": 0,
+        "interpretation": "Weight is estimated time to the next sample. CpuGaps are estimated unaccounted sampling periods, not native lost events. Scheduling bins separately preserve idle, missing, unknown and overlapping time. The original sampled zero-gap gate remains in force."
+      },
+      "legacySampledMedianPercent": 100.00999750000045,
+      "schedulingMedianPercent": 100.00000000000009,
+      "getSystemTimesCommonWindowMedianPercent": 100,
+      "getSystemTimesCommonWindowSamples": 13,
+      "pdhCommonWindowMedianPercent": 100.0,
+      "pdhCommonWindowSamples": 26,
+      "pdhStatus": "ObservedCounterOnly",
+      "idleSeconds": 2.12e-05,
+      "busySeconds": 111.99997880000016,
+      "unknownSeconds": 0,
+      "missingSeconds": 0,
+      "overlapSeconds": 0,
+      "collectorCpuPercentOfMachine": 0.4679767448653117,
+      "collectorPeakWorkingSetBytes": 54124544,
+      "managedAllocatedBytes": 5584280,
+      "analysisMilliseconds": 16.8926,
+      "collectorEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 238,
+        "EventsProcessed": 238,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 0,
+        "MaxQueueDelayMilliseconds": 37.319,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskWrite": 238
+        }
+      },
+      "remainingOwnedSessions": 0,
+      "offlineAnalyzerResource": {
+        "elapsedMilliseconds": 627.8739,
+        "peakWorkingSetBytes": 137822208
+      },
+      "etlSha256": "429B11046B12679AD2AA46122D56B145F554D1F0603F89520B825897F90CC427",
+      "etlBytes": 16384000,
+      "privateRootAclProtected": true,
+      "rawTracePublished": false,
+      "commands": {
+        "capture": "./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner",
+        "analyze": "ReferenceProbe reference.etl measurement.json WORKLOAD_START_UTC+2s WORKLOAD_END_UTC reference-N.json"
+      },
+      "exitCodes": {
+        "startExit": 0,
+        "measureExit": 0,
+        "stopExit": 0,
+        "analysisExit": 0
+      },
+      "limitations": [
+        "No WPA Exporter agreement",
+        "DPC/ISR accounting unqualified",
+        "Scheduling median is an observation, not ground truth",
+        "GetSystemTimes and PDH include only complete intervals inside the common window; their endpoints differ from one-second scheduling bins",
+        "Process contribution error remains null; independent identity mapping is not qualified"
+      ]
+    },
+    {
+      "trial": 11,
+      "mode": "medium",
+      "order": 11,
+      "status": "PARTIAL",
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "commonWindow": {
+        "StartUtc": "2026-10-11T05:11:28+00:00",
+        "EndUtc": "2026-10-11T05:11:56+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "WorkloadExecuted": true,
+      "PressureVerified": "Unknown",
+      "QualifiedReference": false,
+      "qualifiedStatus": "NOT TESTED",
+      "exclusions": [
+        "ReferenceSemanticsNotQualified",
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "nativeEtwEventsLost": 0,
+      "nativeEtwBuffersLost": 0,
+      "estimatedUnaccountedSamplingPeriods": 122604,
+      "sampleDiagnostics": {
+        "sampleCount": 122600,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 122600,
+        "partialWeight": 122600,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 111988,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 122604,
+        "schedulingTimeSliceCount": 55133,
+        "sampledIdle": 119048,
+        "sampledMissingThread": 0,
+        "schedulingInvalidTimes": 0,
+        "schedulingUnknownThreads": 0,
+        "interpretation": "Weight is estimated time to the next sample. CpuGaps are estimated unaccounted sampling periods, not native lost events. Scheduling bins separately preserve idle, missing, unknown and overlapping time. The original sampled zero-gap gate remains in force."
+      },
+      "legacySampledMedianPercent": 1.80010125,
+      "schedulingMedianPercent": 1.79699,
+      "getSystemTimesCommonWindowMedianPercent": 1.9230769230769273,
+      "getSystemTimesCommonWindowSamples": 26,
+      "pdhCommonWindowMedianPercent": 1.773234461556078,
+      "pdhCommonWindowSamples": 26,
+      "pdhStatus": "ObservedCounterOnly",
+      "idleSeconds": 109.86197399999998,
+      "busySeconds": 2.1380259999999995,
+      "unknownSeconds": 0,
+      "missingSeconds": 0,
+      "overlapSeconds": 0,
+      "collectorCpuPercentOfMachine": 0.4680610406715904,
+      "collectorPeakWorkingSetBytes": 55152640,
+      "managedAllocatedBytes": 9499080,
+      "analysisMilliseconds": 13.7096,
+      "collectorEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 209,
+        "EventsProcessed": 209,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 0,
+        "MaxQueueDelayMilliseconds": 31.472,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskWrite": 209
+        }
+      },
+      "remainingOwnedSessions": 0,
+      "offlineAnalyzerResource": {
+        "elapsedMilliseconds": 577.1345,
+        "peakWorkingSetBytes": 136294400
+      },
+      "etlSha256": "1A90D5AD23FAB7F051CDD7A1C507144B7EB72DC48542706C3B69412866A0ECAB",
+      "etlBytes": 16777216,
+      "privateRootAclProtected": true,
+      "rawTracePublished": false,
+      "commands": {
+        "capture": "./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner",
+        "analyze": "ReferenceProbe reference.etl measurement.json WORKLOAD_START_UTC+2s WORKLOAD_END_UTC reference-N.json"
+      },
+      "exitCodes": {
+        "startExit": 0,
+        "measureExit": 0,
+        "stopExit": 0,
+        "analysisExit": 0
+      },
+      "limitations": [
+        "No WPA Exporter agreement",
+        "DPC/ISR accounting unqualified",
+        "Scheduling median is an observation, not ground truth",
+        "GetSystemTimes and PDH include only complete intervals inside the common window; their endpoints differ from one-second scheduling bins",
+        "Process contribution error remains null; independent identity mapping is not qualified"
+      ]
+    },
+    {
+      "trial": 12,
+      "mode": "idle",
+      "order": 12,
+      "status": "PARTIAL",
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "commonWindow": {
+        "StartUtc": "2026-10-11T05:12:01+00:00",
+        "EndUtc": "2026-10-11T05:12:29+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "WorkloadExecuted": true,
+      "PressureVerified": "Unknown",
+      "QualifiedReference": false,
+      "qualifiedStatus": "NOT TESTED",
+      "exclusions": [
+        "ReferenceSemanticsNotQualified",
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "nativeEtwEventsLost": 0,
+      "nativeEtwBuffersLost": 0,
+      "estimatedUnaccountedSamplingPeriods": 122356,
+      "sampleDiagnostics": {
+        "sampleCount": 122352,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 122352,
+        "partialWeight": 122352,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 111988,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 122356,
+        "schedulingTimeSliceCount": 124141,
+        "sampledIdle": 115435,
+        "sampledMissingThread": 0,
+        "schedulingInvalidTimes": 0,
+        "schedulingUnknownThreads": 0,
+        "interpretation": "Weight is estimated time to the next sample. CpuGaps are estimated unaccounted sampling periods, not native lost events. Scheduling bins separately preserve idle, missing, unknown and overlapping time. The original sampled zero-gap gate remains in force."
+      },
+      "legacySampledMedianPercent": 2.5137800000000006,
+      "schedulingMedianPercent": 2.4980849999999997,
+      "getSystemTimesCommonWindowMedianPercent": 3.076923076923077,
+      "getSystemTimesCommonWindowSamples": 27,
+      "pdhCommonWindowMedianPercent": 2.866549486114245,
+      "pdhCommonWindowSamples": 27,
+      "pdhStatus": "ObservedCounterOnly",
+      "idleSeconds": 106.3989739,
+      "busySeconds": 5.6010261,
+      "unknownSeconds": 0,
+      "missingSeconds": 0,
+      "overlapSeconds": 0,
+      "collectorCpuPercentOfMachine": 0.49395742033294165,
+      "collectorPeakWorkingSetBytes": 60473344,
+      "managedAllocatedBytes": 14440752,
+      "analysisMilliseconds": 13.7082,
+      "collectorEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 10473,
+        "EventsProcessed": 10473,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 0,
+        "MaxQueueDelayMilliseconds": 30.92,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskRead": 9436,
+          "DiskWrite": 1037
+        }
+      },
+      "remainingOwnedSessions": 0,
+      "offlineAnalyzerResource": {
+        "elapsedMilliseconds": 919.8356,
+        "peakWorkingSetBytes": 171651072
+      },
+      "etlSha256": "34F7FD9B5C444365569529733DFA464C37F566C909B1138A3B1212E363593D4D",
+      "etlBytes": 29622272,
+      "privateRootAclProtected": true,
+      "rawTracePublished": false,
+      "commands": {
+        "capture": "./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner",
+        "analyze": "ReferenceProbe reference.etl measurement.json WORKLOAD_START_UTC+2s WORKLOAD_END_UTC reference-N.json"
+      },
+      "exitCodes": {
+        "startExit": 0,
+        "measureExit": 0,
+        "stopExit": 0,
+        "analysisExit": 0
+      },
+      "limitations": [
+        "No WPA Exporter agreement",
+        "DPC/ISR accounting unqualified",
+        "Scheduling median is an observation, not ground truth",
+        "GetSystemTimes and PDH include only complete intervals inside the common window; their endpoints differ from one-second scheduling bins",
+        "Process contribution error remains null; independent identity mapping is not qualified"
+      ]
+    }
+  ],
+  "interpretation": {
+    "nativeLossDistinctFromSamplingGaps": true,
+    "nativeLostEventsAcrossTrials": 0,
+    "nativeLostBuffersAcrossTrials": 0,
+    "gapRange": [
+      122356,
+      128944
+    ],
+    "causeStatus": "PARTIAL",
+    "cause": "The retained WO-09 JSON does not support all six trials returning near 100 percent. CPU trials 1-3 were near 100 percent. Peak trials 4-6 had medians 1.72558, 28.35959375, and 1.8503375 percent. The unchanged legacy formula already excludes Process.Id 0. A universal 100-percent defect is not established. SDK gap causes and independent utilization semantics remain unqualified.",
+    "gapCause": "SDK gaps are estimated unaccounted sampling periods. Exact cause of each gap is not qualified without raw event audit and WPA.",
+    "historicalWo09": "Original JSON remains unchanged. Original WO-09 ETLs were disposed; exact replay is unavailable.",
+    "baselineNarrativeConflict": true
+  },
+  "historicalWo09RetainedJson": [
+    {
+      "trial": 1,
+      "nativeLostEvents": 0,
+      "nativeLostBuffers": 0,
+      "cpuGaps": 121988,
+      "sampledMedianPercent": 100.00998500000034,
+      "mode": "cpu"
+    },
+    {
+      "trial": 2,
+      "nativeLostEvents": 0,
+      "nativeLostBuffers": 0,
+      "cpuGaps": 121816,
+      "sampledMedianPercent": 100.00997500000037,
+      "mode": "cpu"
+    },
+    {
+      "trial": 3,
+      "nativeLostEvents": 0,
+      "nativeLostBuffers": 0,
+      "cpuGaps": 122144,
+      "sampledMedianPercent": 100.00999250000046,
+      "mode": "cpu"
+    },
+    {
+      "trial": 4,
+      "nativeLostEvents": 0,
+      "nativeLostBuffers": 0,
+      "cpuGaps": 121724,
+      "sampledMedianPercent": 1.72558,
+      "mode": "peak"
+    },
+    {
+      "trial": 5,
+      "nativeLostEvents": 0,
+      "nativeLostBuffers": 0,
+      "cpuGaps": 121852,
+      "sampledMedianPercent": 28.359593749999945,
+      "mode": "peak"
+    },
+    {
+      "trial": 6,
+      "nativeLostEvents": 0,
+      "nativeLostBuffers": 0,
+      "cpuGaps": 121764,
+      "sampledMedianPercent": 1.8503374999999997,
+      "mode": "peak"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+WORK ITEM: WO-10 source-copy rollback recheck
+STATUS: PASS
+VERIFIED SOURCE SHA: c23802b2adc7be63c8c15ab6cd313ec9be0a05db
+INPUT: Independent artifacts/wo10/rollback-copy containing MODIFIED_FILE.cs bytes.
+COMMAND: & 'C:/Program Files/Git/bin/bash.exe' docs/rework/evidence/wo10/ROLLBACK.sh 'C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/artifacts/wo10/rollback-copy'
+OUTPUT: SOURCE_COPY_RESTORED;PRODUCT_SOURCE_UNCHANGED
+EXIT CODE: 0
+RESTORED COMMAND: dotnet run --project artifacts/wo10/rollback-copy/CopyFixture.csproj
+OUTPUT: InsufficientEvidence=0;Unknown=1;TrueNegative=0
+EXIT CODE: 0
+PREVIOUS RESTRICTED ATTEMPT: bash failed NtCreateDirectoryObject with 0xC0000022; exit -1073741502.
+ENVIRONMENT: Windows host. Authorized rerun permitted MSYS IPC. No installed product changed.

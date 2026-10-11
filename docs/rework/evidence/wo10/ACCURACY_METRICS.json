@@ -1,0 +1,33 @@
+{
+  "workItem": "WO-10",
+  "status": "NOT TESTED",
+  "sourceSha": "c23802b2adc7be63c8c15ab6cd313ec9be0a05db",
+  "sourceTree": "752a647f89d6cced6637c1224e5e2dcae9618776",
+  "ciRun": 38113296563,
+  "command": "./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner",
+  "input": "Twelve bounded 30-second synthetic CI workloads; 28-second common windows; four logical processors",
+  "exitCode": 0,
+  "rawTracePublished": false,
+  "workloadsExecuted": 12,
+  "qualifiedTrials": 0,
+  "excludedTrials": 12,
+  "TP": 0,
+  "FP": 0,
+  "FN": 0,
+  "TN": 0,
+  "Unknown": 12,
+  "InsufficientEvidence": 0,
+  "ReferenceMismatch": 0,
+  "Precision": null,
+  "Recall": null,
+  "scope": "CPU ground-truth trial accounting. No qualified trial enters the confusion matrix.",
+  "resourceLevelUnknownCount": 36,
+  "resourceLevelUnknownScope": "Three resource categories per unqualified trial; this is not CPU-only accuracy.",
+  "processContributionError": null,
+  "cpuUtilizationGroundTruthError": null,
+  "exclusions": [
+    "ReferenceSemanticsNotQualified",
+    "ReferenceLossOrUnknownLoss"
+  ],
+  "automaticRegression": "42 new synthetic cases pass. Synthetic classification correctness is separate from actual diagnostic accuracy."
+}

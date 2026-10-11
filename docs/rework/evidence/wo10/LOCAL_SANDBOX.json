@@ -1,0 +1,88 @@
+[
+  {
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":0}",
+    "scenario": "Prepared",
+    "termination": "Separate process forcibly terminated",
+    "afterSha256": "0FCCC690DC9BE2CE29BA17504BDB68E81B8210D8893A29A7858639158E92298A",
+    "beforeSha256": "0FCCC690DC9BE2CE29BA17504BDB68E81B8210D8893A29A7858639158E92298A",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "aclProtected": true,
+    "exitCode": 0,
+    "status": "PASS"
+  },
+  {
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":1}",
+    "scenario": "Moved",
+    "termination": "Separate process forcibly terminated",
+    "afterSha256": "0FCCC690DC9BE2CE29BA17504BDB68E81B8210D8893A29A7858639158E92298A",
+    "beforeSha256": "0FCCC690DC9BE2CE29BA17504BDB68E81B8210D8893A29A7858639158E92298A",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "aclProtected": true,
+    "exitCode": 0,
+    "status": "PASS"
+  },
+  {
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":1}",
+    "scenario": "Quarantined",
+    "termination": "Separate process forcibly terminated",
+    "afterSha256": "0FCCC690DC9BE2CE29BA17504BDB68E81B8210D8893A29A7858639158E92298A",
+    "beforeSha256": "0FCCC690DC9BE2CE29BA17504BDB68E81B8210D8893A29A7858639158E92298A",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "aclProtected": true,
+    "exitCode": 0,
+    "status": "PASS"
+  },
+  {
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":1}",
+    "scenario": "RollingBack",
+    "termination": "Separate process forcibly terminated",
+    "afterSha256": "0FCCC690DC9BE2CE29BA17504BDB68E81B8210D8893A29A7858639158E92298A",
+    "beforeSha256": "0FCCC690DC9BE2CE29BA17504BDB68E81B8210D8893A29A7858639158E92298A",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "aclProtected": true,
+    "exitCode": 0,
+    "status": "PASS"
+  },
+  {
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":0}",
+    "scenario": "RestoredMove",
+    "termination": "Separate process forcibly terminated",
+    "afterSha256": "0FCCC690DC9BE2CE29BA17504BDB68E81B8210D8893A29A7858639158E92298A",
+    "beforeSha256": "0FCCC690DC9BE2CE29BA17504BDB68E81B8210D8893A29A7858639158E92298A",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "aclProtected": true,
+    "exitCode": 0,
+    "status": "PASS"
+  },
+  {
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":0}",
+    "scenario": "Restored",
+    "termination": "Separate process forcibly terminated",
+    "afterSha256": "0FCCC690DC9BE2CE29BA17504BDB68E81B8210D8893A29A7858639158E92298A",
+    "beforeSha256": "0FCCC690DC9BE2CE29BA17504BDB68E81B8210D8893A29A7858639158E92298A",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "aclProtected": true,
+    "exitCode": 0,
+    "status": "PASS"
+  },
+  {
+    "scenario": "HardLink",
+    "status": "PASS",
+    "originalPreserved": true,
+    "exitCode": 3,
+    "output": "SANDBOX_BLOCKED IOException"
+  },
+  {
+    "scenario": "Junction",
+    "status": "PASS",
+    "originalPreserved": true,
+    "exitCode": 3,
+    "output": "SANDBOX_BLOCKED IOException"
+  },
+  {
+    "scenario": "SymbolicLink",
+    "status": "NOT TESTED",
+    "originalPreserved": true,
+    "reason": "Symbolic link creation privilege unavailable"
+  }
+]

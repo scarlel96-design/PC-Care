@@ -1,0 +1,12 @@
+WORK ITEM: WO-10 OPEN_SOURCE_EVALUATION.txt
+STATUS: PARTIAL
+BASELINE SHA: 7e4dc94c7c8ed9260e203f99dbf57f5a1e753e20
+VERIFIED SOURCE SHA: c23802b2adc7be63c8c15ab6cd313ec9be0a05db
+SOURCE TREE: 752a647f89d6cced6637c1224e5e2dcae9618776
+BRANCH: codex/pccare-reference-correction-safe-recovery
+ENVIRONMENT: Windows 10.0.26200.0; .NET SDK 10.0.401; x64 Release; 24 logical processors; normal application token.
+TEST COMMAND: dotnet build tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-restore -v:minimal; dotnet list tools/SmartPerformanceDoctor.ReferenceProbe package --vulnerable --include-transitive --format json
+INPUT: Pinned TraceEvent 3.2.8, CsWin32 0.3.358, TraceProcessing 1.12.10; official SDK and UIA documentation
+OUTPUT:
+ReferenceProbe: 경고 0개 / 오류 0개. Audit JSON contains project path and no vulnerable package entries. See NUGET_REFERENCE_AUDIT.json and NUGET_DIAGNOSTICS_AUDIT.json. GuiProbe build also returned zero warnings and errors.
+EXIT CODE: 0

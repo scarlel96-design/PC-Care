@@ -1,0 +1,9 @@
+WORK ITEM: WO-10 evidence validation
+STATUS: PASS
+VERIFIED SOURCE SHA: c23802b2adc7be63c8c15ab6cd313ec9be0a05db
+ENVIRONMENT: local Windows 11, Python 3.14, recorded CI artifact
+COMMAND: C:/Users/scarl/AppData/Local/Programs/Python/Python314/python.exe docs/rework/evidence/wo10/VALIDATE_EVIDENCE.py
+INPUT: eleven reports, fifteen required evidence files, CI TRX/JSON, source Git objects, fixture hashes
+LITERAL OUTPUT: EVIDENCE_PASS reports=11 requiredEvidence=15 app=957/111/0 performance=188 updater=128 securityLab=36 qualifiedCpu=0/12 crashRestore=6/6 gui=NOT_TESTED
+EXIT CODE: 0
+This command validates recorded evidence. It does not rerun product tests.

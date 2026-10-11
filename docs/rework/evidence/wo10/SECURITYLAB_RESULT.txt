@@ -1,0 +1,17 @@
+WORK ITEM: WO-10 SECURITYLAB_RESULT.txt
+STATUS: PASS
+BASELINE SHA: 7e4dc94c7c8ed9260e203f99dbf57f5a1e753e20
+VERIFIED SOURCE SHA: c23802b2adc7be63c8c15ab6cd313ec9be0a05db
+SOURCE TREE: 752a647f89d6cced6637c1224e5e2dcae9618776
+BRANCH: codex/pccare-reference-correction-safe-recovery
+ENVIRONMENT: Windows 10.0.26200.0; .NET SDK 10.0.401; x64 Release; 24 logical processors; normal application token.
+TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger "trx;LogFileName=wo10-securitylab.trx" -v:minimal
+INPUT: Synthetic security regression
+OUTPUT:
+통과!  - 실패:     0, 통과:    36, 건너뜀:     0, 전체:    36, 기간: 49 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+EXIT CODE: 0
+
+WINDOWS CI: 38113296563; SUCCESS; verified source c23802b2adc7be63c8c15ab6cd313ec9be0a05db.
+Application 957 PASS / 111 SKIP / 0 FAIL. Performance 188 PASS, updater 128 PASS, included above. SecurityLab 36 PASS / 0 SKIP / 0 FAIL.
+Synthetic crash recovery 6/6; hardlink, junction and symbolic link rejection PASS. GUI status remains NOT TESTED.
+See CI_LOG.txt, CI_TEST_COUNTS.json and ci/*.json for literal evidence.

@@ -1,0 +1,42 @@
+{
+  "workItem": "WO-10",
+  "status": "PARTIAL",
+  "sourceSha": "c23802b2adc7be63c8c15ab6cd313ec9be0a05db",
+  "sourceTree": "752a647f89d6cced6637c1224e5e2dcae9618776",
+  "ciRun": 38113296563,
+  "command": "./scripts/wo10-reference-validation.ps1 -OutputDirectory artifacts/wo10-ci -IsolatedRunner",
+  "input": "Twelve bounded 30-second synthetic CI workloads; 28-second common windows; four logical processors",
+  "exitCode": 0,
+  "rawTracePublished": false,
+  "scope": "CI collector during WPR and bounded synthetic workloads; offline analyzer cost recorded separately",
+  "collectorCpuRangePercentOfMachine": [
+    0.4679767448653117,
+    2.390557866171319
+  ],
+  "collectorPeakWorkingSetRangeBytes": [
+    54124544,
+    60473344
+  ],
+  "analyzerPeakWorkingSetRangeBytes": [
+    129593344,
+    171651072
+  ],
+  "remainingOwnedSessions": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "uiCpu": "NOT TESTED",
+  "uiLatency": "NOT TESTED",
+  "lowEndPhysicalHardware": "NOT TESTED",
+  "processorGroupsAbove64": "NOT TESTED"
+}

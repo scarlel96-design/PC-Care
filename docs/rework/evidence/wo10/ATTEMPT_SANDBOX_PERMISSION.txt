@@ -1,0 +1,8 @@
+Hard link fixture failed
+At <WORKSPACE>\scripts\wo10-sandbox-validati
+on.ps1:31 char:25
++ if($LASTEXITCODE -ne 0){throw 'Hard link fixture failed'}
++                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Hard link fixture failed:String) [], RuntimeException
+    + FullyQualifiedErrorId : Hard link fixture failed
+ 

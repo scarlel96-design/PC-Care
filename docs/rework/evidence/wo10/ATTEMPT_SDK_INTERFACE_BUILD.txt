@@ -1,0 +1,14 @@
+  SmartPerformanceDoctor.Diagnostics -> <WORKSPACE>\src\SmartPerformanceDoctor.Diagnostics\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Diagnostics.dll
+<WORKSPACE>\tools\SmartPerformanceDoctor.ReferenceProbe\Program.cs(68,31): error CS1061: 'IContextSwitchIn'에는 'IsKnownActualValue'에 대한 정의가 포함되어 있지 않고, 'IContextSwitchIn' 형식의 첫 번째 인수를 허용하는 액세스 가능한 확장 메서드 'IsKnownActualValue'이(가) 없습니다. using 지시문 또는 어셈블리 참조가 있는지 확인하세요. [<WORKSPACE>\tools\SmartPerformanceDoctor.ReferenceProbe\SmartPerformanceDoctor.ReferenceProbe.csproj]
+<WORKSPACE>\tools\SmartPerformanceDoctor.ReferenceProbe\Program.cs(69,16): error CS8602: null 가능 참조에 대한 역참조입니다. [<WORKSPACE>\tools\SmartPerformanceDoctor.ReferenceProbe\SmartPerformanceDoctor.ReferenceProbe.csproj]
+<WORKSPACE>\tools\SmartPerformanceDoctor.ReferenceProbe\Program.cs(69,43): error CS8602: null 가능 참조에 대한 역참조입니다. [<WORKSPACE>\tools\SmartPerformanceDoctor.ReferenceProbe\SmartPerformanceDoctor.ReferenceProbe.csproj]
+
+빌드하지 못했습니다.
+
+<WORKSPACE>\tools\SmartPerformanceDoctor.ReferenceProbe\Program.cs(68,31): error CS1061: 'IContextSwitchIn'에는 'IsKnownActualValue'에 대한 정의가 포함되어 있지 않고, 'IContextSwitchIn' 형식의 첫 번째 인수를 허용하는 액세스 가능한 확장 메서드 'IsKnownActualValue'이(가) 없습니다. using 지시문 또는 어셈블리 참조가 있는지 확인하세요. [<WORKSPACE>\tools\SmartPerformanceDoctor.ReferenceProbe\SmartPerformanceDoctor.ReferenceProbe.csproj]
+<WORKSPACE>\tools\SmartPerformanceDoctor.ReferenceProbe\Program.cs(69,16): error CS8602: null 가능 참조에 대한 역참조입니다. [<WORKSPACE>\tools\SmartPerformanceDoctor.ReferenceProbe\SmartPerformanceDoctor.ReferenceProbe.csproj]
+<WORKSPACE>\tools\SmartPerformanceDoctor.ReferenceProbe\Program.cs(69,43): error CS8602: null 가능 참조에 대한 역참조입니다. [<WORKSPACE>\tools\SmartPerformanceDoctor.ReferenceProbe\SmartPerformanceDoctor.ReferenceProbe.csproj]
+    경고 0개
+    오류 3개
+
+경과 시간: 00:00:07.46
