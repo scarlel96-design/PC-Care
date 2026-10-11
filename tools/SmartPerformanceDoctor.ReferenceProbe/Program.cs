@@ -18,6 +18,7 @@ try
     using var trace = TraceProcessor.Create(path, new TraceProcessorSettings { AllowLostEvents = true, AllowTimeInversion = false, SuppressFirstTimeSetupMessage = true });
     var metadata = trace.UseMetadata();
     var cpu = trace.UseCpuSamplingData();
+    var scheduling = trace.UseCpuSchedulingData();
     var processes = trace.UseProcesses();
     var disks = trace.UseDiskIOData();
     trace.Process();
@@ -33,15 +34,17 @@ try
         Convert.ToHexString(HMACSHA256.HashData(salt, Encoding.UTF8.GetBytes(p.Id+":"+time.DateTimeOffset.UtcTicks)))[..24] : null;
     var processCpu = new Dictionary<string, double>();
     long unlinkedCpu = 0;
+    long invalidTimestamp = 0, partialWeight = 0, invalidWeight = 0, missingProcess = 0;
     foreach (var sample in cpu.Result.Samples)
     {
-        if (!sample.Timestamp.HasValue || sample.Timestamp.IsPartial || !sample.Weight.HasValue || sample.Weight.IsPartial) continue;
+        if (!sample.Timestamp.HasValue || sample.Timestamp.IsPartial) { invalidTimestamp++; continue; }
+        if (!sample.Weight.HasValue || sample.Weight.IsPartial) { partialWeight++; continue; }
         var index = (int)Math.Floor((sample.Timestamp.DateTimeOffset-from).TotalSeconds);
         if (index<0 || index>=weights.Length) continue;
         var weight = (double)sample.Weight.TotalSeconds;
-        if (!double.IsFinite(weight) || weight is <=0 or >1) { unknown[index]++; continue; }
+        if (!double.IsFinite(weight) || weight is <=0 or >1) { invalidWeight++; unknown[index]++; continue; }
         counts[index]++;
-        if (sample.Process is null) { unknown[index]++; continue; }
+        if (sample.Process is null) { missingProcess++; unknown[index]++; continue; }
         if (sample.Process.Id == 0) continue;
         weights[index] += weight;
         var id=Identity(sample.Process);
@@ -59,6 +62,10 @@ try
     var report = new { status="PARTIAL", analyzer="Microsoft.Windows.EventTracing.Processing.All 1.12.10", etlSha256=traceHash,
         rawTracePublished=false, traceWindow=new { metadata.StartTime, metadata.StopTime },
         reference, qualification, lifetimes,
+        cpuParserDiagnostics = new { sampleCount=cpu.Result.Samples.Count, invalidTimestamp, partialWeight,
+            invalidWeight, missingProcess, validSamplesInCommonWindow=counts.Sum(), unknownSamplesInCommonWindow=unknown.Sum(),
+            estimatedUnaccountedSamplingPeriods=cpu.Result.Gaps.Count, schedulingTimeSliceCount=scheduling.Result.CpuTimeSlices.Count,
+            interpretation="Sampling gaps describe estimated unaccounted periods. They are not the native lost-event counter. The original zero-gap qualification gate remains in force." },
         processCpu=processCpu.OrderByDescending(p=>p.Value).Take(128).Select(p=>new { id=p.Key, cpuSeconds=p.Value, wholeMachinePercent=wholeSeconds>0?100*p.Value/(wholeSeconds*metadata.ProcessorCount):(double?)null }),
         unlinkedCpu, unlinkedIo=io.Count(d=>Identity(d.IssuingProcess) is null),
         disk=io.GroupBy(d=>d.Disk).Select(g=>new { sessionDiskNumber=g.Key, identityStatus="TraceLocalNumberOnly", operations=g.Count(),

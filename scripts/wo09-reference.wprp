@@ -5,9 +5,9 @@
    <BufferSize Value="64"/><Buffers Value="128"/>
   </SystemCollector>
   <SystemProvider Id="WO09Provider">
-   <Keywords><Keyword Value="ProcessThread"/><Keyword Value="SampledProfile"/><Keyword Value="DiskIO"/><Keyword Value="DiskIOInit"/></Keywords>
+   <Keywords><Keyword Value="ProcessThread"/><Keyword Value="Loader"/><Keyword Value="CSwitch"/><Keyword Value="SampledProfile"/><Keyword Value="DiskIO"/><Keyword Value="DiskIOInit"/></Keywords>
   </SystemProvider>
-  <Profile Id="WO09.Verbose.File" Name="WO09" Description="Bounded CPU and disk reference, no stacks or context switches" DetailLevel="Verbose" LoggingMode="File">
+  <Profile Id="WO09.Verbose.File" Name="WO09" Description="Bounded CPU and disk reference with thread scheduling and image rundown, no stacks" DetailLevel="Verbose" LoggingMode="File">
    <Collectors><SystemCollectorId Value="WO09Collector"><SystemProviderId Value="WO09Provider"/></SystemCollectorId></Collectors>
   </Profile>
  </Profiles>
