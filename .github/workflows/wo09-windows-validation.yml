@@ -51,6 +51,8 @@ jobs:
         run: |
           dotnet build tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-restore -v:minimal
           if ($LASTEXITCODE -ne 0) { throw 'Reference analyzer build failed' }
+          dotnet run --project tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-build --no-restore -- --verify-time-contract
+          if ($LASTEXITCODE -ne 0) { throw 'SDK converted timestamp contract failed' }
           ./scripts/wo08-measurement.ps1 -OutputDirectory artifacts/wo08-ci -RunControlledWorkloads
           ./scripts/wo09-disk-identity.ps1 -OutputDirectory artifacts/wo09-ci
           ./scripts/wo09-reference-validation.ps1 -OutputDirectory artifacts/wo09-ci -IsolatedRunner

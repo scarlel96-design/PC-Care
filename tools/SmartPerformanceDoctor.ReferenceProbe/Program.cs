@@ -5,6 +5,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 
+if (args is ["--verify-time-contract"]) return SdkTimeConversion.VerifyContract() ? 0 : 1;
+
 if (args.Length != 5) { Console.Error.WriteLine("REFERENCE_PROBE ETL SNAPSHOT_JSON WORKLOAD_START_UTC WORKLOAD_END_UTC OUTPUT_JSON"); return 2; }
 var options = new JsonSerializerOptions { WriteIndented = true, PropertyNameCaseInsensitive = true };
 try
@@ -30,19 +32,19 @@ try
     var counts = new int[wholeSeconds];
     var unknown = new int[wholeSeconds];
     var salt = RandomNumberGenerator.GetBytes(32);
-    string? Identity(IProcess? p) => p?.CreateTime is { HasValue: true, IsPartial: false } time ?
-        Convert.ToHexString(HMACSHA256.HashData(salt, Encoding.UTF8.GetBytes(p.Id+":"+time.DateTimeOffset.UtcTicks)))[..24] : null;
+    string? Identity(IProcess? p) => p?.CreateTime is { } time && SdkTimeConversion.TryTimestamp(time, DateTimeOffset.UnixEpoch, metadata.StopTime, out var created) ?
+        Convert.ToHexString(HMACSHA256.HashData(salt, Encoding.UTF8.GetBytes(p.Id+":"+created.UtcTicks)))[..24] : null;
     var processCpu = new Dictionary<string, double>();
     long unlinkedCpu = 0;
-    long invalidTimestamp = 0, partialWeight = 0, invalidWeight = 0, missingProcess = 0;
+    long invalidTimestamp = 0, partialTimestamp = 0, partialWeight = 0, invalidWeight = 0, missingProcess = 0;
     foreach (var sample in cpu.Result.Samples)
     {
-        if (!sample.Timestamp.HasValue || sample.Timestamp.IsPartial) { invalidTimestamp++; continue; }
-        if (!sample.Weight.HasValue || sample.Weight.IsPartial) { partialWeight++; continue; }
-        var index = (int)Math.Floor((sample.Timestamp.DateTimeOffset-from).TotalSeconds);
+        if (sample.Timestamp.HasValue && sample.Timestamp.IsPartial) partialTimestamp++;
+        if (sample.Weight.HasValue && sample.Weight.IsPartial) partialWeight++;
+        if (!SdkTimeConversion.TryTimestamp(sample.Timestamp, metadata.StartTime, metadata.StopTime, out var timestamp)) { invalidTimestamp++; continue; }
+        var index = (int)Math.Floor((timestamp-from).TotalSeconds);
         if (index<0 || index>=weights.Length) continue;
-        var weight = (double)sample.Weight.TotalSeconds;
-        if (!double.IsFinite(weight) || weight is <=0 or >1) { invalidWeight++; unknown[index]++; continue; }
+        if (!SdkTimeConversion.TrySeconds(sample.Weight, out var weight)) { invalidWeight++; unknown[index]++; continue; }
         counts[index]++;
         if (sample.Process is null) { missingProcess++; unknown[index]++; continue; }
         if (sample.Process.Id == 0) continue;
@@ -53,16 +55,16 @@ try
     var reference = new IndependentTrace("Microsoft.TraceProcessing", true, metadata.LostEventCount, metadata.LostBufferCount,
         cpu.Result.Gaps.Count, new(from,to), weights.Select((w,i)=>new ReferencePoint(from.AddSeconds(i+1),counts[i]>=10 && unknown[i]==0 ? 100*w/metadata.ProcessorCount : null)).ToArray());
     var qualification = ReferenceQualification.Evaluate(snapshot, reference, workload);
-    var io = disks.Result.Activity.Where(d=>d.CompleteTime.HasValue && !d.CompleteTime.IsPartial
-        && d.InitializeTime.HasValue && !d.InitializeTime.IsPartial && d.InitializeTime.DateTimeOffset>=from && d.CompleteTime.DateTimeOffset<=to).ToArray();
+    var io = disks.Result.Activity.Where(d=>SdkTimeConversion.TryTimestamp(d.CompleteTime, from, to, out var completed)
+        && SdkTimeConversion.TryTimestamp(d.InitializeTime, from, completed, out _)).ToArray();
     var lifetimes = processes.Result.Processes.Where(p=>Identity(p) is not null).Select(p=>new { id=Identity(p),
-        startedUtc=p.CreateTime!.Value.DateTimeOffset, endedUtc=p.ExitTime is { HasValue:true, IsPartial:false } end ? (DateTimeOffset?)end.DateTimeOffset : null }).ToArray();
+        startedUtc=p.CreateTime!.Value.DateTimeOffset, endedUtc=p.ExitTime is { } end && SdkTimeConversion.TryTimestamp(end, p.CreateTime!.Value.DateTimeOffset, metadata.StopTime, out var ended) ? (DateTimeOffset?)ended : null }).ToArray();
     string traceHash;
     using (var hashInput = File.OpenRead(path)) traceHash = Convert.ToHexString(SHA256.HashData(hashInput));
     var report = new { status="PARTIAL", analyzer="Microsoft.Windows.EventTracing.Processing.All 1.12.10", etlSha256=traceHash,
         rawTracePublished=false, traceWindow=new { metadata.StartTime, metadata.StopTime },
         reference, qualification, lifetimes,
-        cpuParserDiagnostics = new { sampleCount=cpu.Result.Samples.Count, invalidTimestamp, partialWeight,
+        cpuParserDiagnostics = new { sampleCount=cpu.Result.Samples.Count, invalidTimestamp, partialTimestamp, partialWeight,
             invalidWeight, missingProcess, validSamplesInCommonWindow=counts.Sum(), unknownSamplesInCommonWindow=unknown.Sum(),
             estimatedUnaccountedSamplingPeriods=cpu.Result.Gaps.Count, schedulingTimeSliceCount=scheduling.Result.CpuTimeSlices.Count,
             interpretation="Sampling gaps describe estimated unaccounted periods. They are not the native lost-event counter. The original zero-gap qualification gate remains in force." },
@@ -70,7 +72,7 @@ try
         unlinkedCpu, unlinkedIo=io.Count(d=>Identity(d.IssuingProcess) is null),
         disk=io.GroupBy(d=>d.Disk).Select(g=>new { sessionDiskNumber=g.Key, identityStatus="TraceLocalNumberOnly", operations=g.Count(),
             readBytes=g.Where(d=>d.IOType.ToString()=="Read").Sum(d=>d.Size.Bytes), writeBytes=g.Where(d=>d.IOType.ToString()=="Write").Sum(d=>d.Size.Bytes),
-            latency=Statistics.Describe(g.Where(d=>d.IODuration.HasValue && !d.IODuration.IsPartial).Select(d=>(double?)d.IODuration.TotalMilliseconds)) }),
+            latency=Statistics.Describe(g.Where(d=>d.IODuration.HasValue && d.IODuration.TotalMilliseconds >= 0).Select(d=>(double?)d.IODuration.TotalMilliseconds)) }),
         processIo=io.GroupBy(d=>Identity(d.IssuingProcess)).Select(g=>new { id=g.Key, operations=g.Count(), bytes=g.Sum(d=>d.Size.Bytes) }),
         resource = new { elapsedMilliseconds=started.Elapsed.TotalMilliseconds, peakWorkingSetBytes=System.Diagnostics.Process.GetCurrentProcess().PeakWorkingSet64 },
         plans=RecoveryPlanner.Create(BottleneckAnalyzer.Analyze(snapshot)).Select(p=>new {plan=p, dryRun=RecoveryPlanner.DryRun(p)}) };
