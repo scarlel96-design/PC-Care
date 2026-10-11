@@ -11,8 +11,29 @@
                     HorizontalAlignment="Stretch"
                     Spacing="18">
             <TextBlock Text="시스템 케어" Style="{StaticResource MacPageTitleStyle}"/>
-            <TextBlock Text="PC 상태를 검사하고, 필요한 항목만 한 번에 정리합니다."
+            <TextBlock Text="PC 상태와 저장 공간을 검사하고, 항목별 근거와 처리 가능 여부를 확인합니다."
                        Style="{StaticResource MacInlineStatusTextStyle}"/>
+
+            <Border x:Name="StoragePanel" Style="{StaticResource MacWindowPanelStyle}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="저장 공간 · 근거 기반 검사" Style="{StaticResource MacSectionHeaderStyle}"/>
+                    <ItemsControl ItemsSource="{Binding Drives}"/>
+                    <TextBlock Text="{Binding Status}" AutomationProperties.AutomationId="StorageCareStatus" TextWrapping="Wrap"/>
+                    <ProgressBar IsIndeterminate="{Binding IsBusy}" Height="3"/>
+                    <TextBlock Text="{Binding Summary}" TextWrapping="Wrap"/>
+                    <WrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3">
+                        <Button Content="공간 검사" Click="StorageScan" IsEnabled="{Binding CanStart}" AutomationProperties.AutomationId="StorageCareStart" Margin="0,0,8,8"/>
+                        <Button Content="중단" Click="StorageStop" IsEnabled="{Binding IsBusy}" AutomationProperties.AutomationId="StorageCareStop" Margin="0,0,8,8"/>
+                        <Button Content="Dry Run · 계획 미리보기" Click="StoragePreview" IsEnabled="{Binding CanStart}" AutomationProperties.AutomationId="StorageCarePreview" Margin="0,0,8,8"/>
+                    </WrapGrid>
+                    <ListView x:Name="StorageCandidates" ItemsSource="{Binding Candidates}" SelectionMode="Multiple" MaxHeight="260" AutomationProperties.Name="저장 공간 후보 다중 선택" AutomationProperties.AutomationId="StorageCareCandidates">
+                        <ListView.ItemTemplate><DataTemplate><TextBlock Text="{Binding Display}" TextWrapping="Wrap"/></DataTemplate></ListView.ItemTemplate>
+                    </ListView>
+                    <TextBlock Text="{Binding Preview}" TextWrapping="Wrap" AutomationProperties.AutomationId="StorageCarePlan"/>
+                    <Button Content="정리 실행 · 검증 대기" IsEnabled="False" AutomationProperties.Name="생산 정리 실행 검증 대기"/>
+                    <TextBlock Text="사용자 파일 정리와 복원 실행은 격리 시험에서 검증 중입니다. 동일 볼륨 격리는 공간을 확보하지 않습니다." TextWrapping="Wrap" Style="{StaticResource MacInlineStatusTextStyle}"/>
+                </StackPanel>
+            </Border>
 
             <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="8">
                 <Border Background="{StaticResource PccAccentSoftBrush}" CornerRadius="12" Padding="8,9"><TextBlock Text="1  범위 선택" TextWrapping="Wrap" TextAlignment="Center" Foreground="{StaticResource PccAccentBrush}" FontWeight="SemiBold"/></Border>

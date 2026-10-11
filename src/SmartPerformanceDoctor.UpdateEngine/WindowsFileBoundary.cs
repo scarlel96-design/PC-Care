@@ -200,7 +200,11 @@ public static class WindowsFileBoundary
         return $"{id.Volume:X16}:{id.Low:X16}{id.High:X16}";
     }
 
-    private static IOException Error(string code) => new(code + ": " + new Win32Exception(Marshal.GetLastWin32Error()).Message);
+    private static IOException Error(string code)
+    {
+        var error = new Win32Exception(Marshal.GetLastWin32Error());
+        return new IOException(code + ": " + error.Message, error);
+    }
     [StructLayout(LayoutKind.Sequential)] private struct FileIdInfo { public ulong Volume, Low, High; }
     [StructLayout(LayoutKind.Sequential)] private struct BasicInfo
     {

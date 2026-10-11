@@ -4,6 +4,7 @@ using System.Text.Json;
 try
 {
     if (args is ["create", var parent]) { Console.WriteLine(SandboxRecovery.Create(parent).Root); return 0; }
+    if (args is ["create-sized", var sizedParent, var size]) { Console.WriteLine(SandboxRecovery.CreateSynthetic(sizedParent, int.Parse(size)).Root); return 0; }
     if (args.Length is < 2 or > 3) return 2;
     var sandbox = SandboxRecovery.Open(args[1]);
     void Checkpoint(string state)
@@ -14,10 +15,11 @@ try
             Thread.Sleep(Timeout.Infinite);
         }
     }
-    var result = args[0] switch
+    object result = args[0] switch
     {
         "execute" => sandbox.Execute(sandbox.Approve(), checkpoint: Checkpoint),
         "recover" => sandbox.Recover(Checkpoint),
+        "final-delete" => sandbox.FinalDelete(sandbox.ApproveFinalDelete(), Checkpoint),
         _ => throw new ArgumentException("UnsupportedCommand")
     };
     Console.WriteLine(JsonSerializer.Serialize(result)); return 0;

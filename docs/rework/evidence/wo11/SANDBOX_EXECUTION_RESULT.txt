@@ -1,0 +1,11 @@
+WORK ITEM: WO-11 SANDBOX_EXECUTION_RESULT.txt
+STATUS: PASS
+BASELINE SHA: b1d38b86a54cd5c192784a3ae5e9a3c321df2782
+VALIDATED SOURCE: working tree before publication; see GITHUB_RESULT.txt for committed source
+ENVIRONMENT: Windows NT 10.0.26200.0; 24 logical processors; .NET SDK 10.0.401; 2026-10-11
+TEST COMMAND: dotnet run --project tools/SmartPerformanceDoctor.CleanupProbe -c Release -p:Platform=x64 --no-build -- --synthetic artifacts/wo11/live-final
+INPUT: Two separately created known-pattern 8 MiB fixtures; old 2 KiB temporary preview file
+OUTPUT:
+WO11_CLEANUP_PASS inventory=1 quarantine=1 rollback=1 finalDelete=1 originalHashMatch=1 attributableQuarantineGain=0
+
+EXIT CODE: 0

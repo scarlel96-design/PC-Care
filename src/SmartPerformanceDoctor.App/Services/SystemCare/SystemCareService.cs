@@ -1054,6 +1054,10 @@ public sealed class SystemCareService
 
     private static bool TryApplyFinding(CareFinding item, string quarantine, string auditFolder, CareModuleKind module)
     {
+        // A legacy finding has no exact file identity or per-target consent.
+        if (item.Id.StartsWith("junk.", StringComparison.OrdinalIgnoreCase)
+            || module is CareModuleKind.Junk or CareModuleKind.Privacy or CareModuleKind.Shortcut)
+            return false;
         if (item.RiskCode is "blocked" or "highrisk" or "caution")
         {
             return false;

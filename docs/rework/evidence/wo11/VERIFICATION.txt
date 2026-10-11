@@ -1,0 +1,48 @@
+WORK ITEM: WO-11
+STATUS: PARTIAL
+BRANCH: codex/pccare-evidence-based-system-care
+BASELINE SHA: b1d38b86a54cd5c192784a3ae5e9a3c321df2782
+FINAL SHA: see GITHUB_RESULT.txt
+SOURCE TREE: see GITHUB_RESULT.txt
+CHANGED FIELD: CareFindingQualityGate output CanAutoApply for path-based file cleanup; true -> false.
+MODIFIED_FILE: docs/rework/evidence/wo11/MODIFIED_FILE.cs
+DIFF_FILE: docs/rework/evidence/wo11/DIFF_FILE.patch
+VERIFICATION: docs/rework/evidence/wo11/VERIFICATION.txt
+ROLLBACK: docs/rework/evidence/wo11/ROLLBACK.sh
+ORIGINAL SHA256: D28B3C9388866B178019A17399FB40E2579ECE3CEAE314611FD7F52BFDCA8A2E
+MODIFIED SHA256: 2720EEDBA9BD4C8A8E8D571276D607EB514381FDA93155456E4A4317AC3486FC
+
+BASELINE COMMAND: dotnet run --project artifacts/wo11/gate-fixture -- True
+BASELINE INPUT: junk.recycle; Safe; confidence=.99; CanAutoApply=true; original Gate.cs
+BASELINE OUTPUT: CanAutoApply=True
+BASELINE EXIT CODE: 0
+MODIFIED COMMAND: dotnet build artifacts/wo11/gate-fixture/gate-fixture.csproj -t:Rebuild -m:1 -v:minimal; dotnet run --project artifacts/wo11/gate-fixture --no-build -- False
+MODIFIED INPUT: same finding; MODIFIED_FILE.cs as Gate.cs
+MODIFIED OUTPUT: CanAutoApply=False
+MODIFIED EXIT CODE: 0
+ROLLBACK COMMAND: bash docs/rework/evidence/wo11/ROLLBACK.sh -Target artifacts/wo11/rollback-copy.cs
+ROLLBACK INPUT: independent modified source copy
+ROLLBACK OUTPUT: SOURCE_COPY_RESTORED originalHashMatch=True
+ROLLBACK EXIT CODE: 0
+RESTORED BEHAVIOR COMMAND: Copy-Item artifacts/wo11/rollback-copy.cs artifacts/wo11/gate-fixture/Gate.cs; dotnet build artifacts/wo11/gate-fixture/gate-fixture.csproj -t:Rebuild -m:1 -v:minimal; dotnet run --project artifacts/wo11/gate-fixture --no-build -- True
+RESTORED OUTPUT: CanAutoApply=True
+RESTORED EXIT CODE: 0
+RESTORED STATUS: original bytes and behavior restored only on independent copy. Production source remains modified.
+ACTUAL FILE TRANSACTION RESTORATION: six independent process recoveries and an 8 MiB hash-matching roundtrip. See ROLLBACK_RESULT.txt.
+
+LOCAL BUILD: 0 warnings / 0 errors / exit 0
+LOCAL FULL TESTS: 1002 PASS / 111 SKIP / 0 FAIL / 1113 total / exit 0
+NEW WO11 TESTS: 45 PASS / 0 SKIP / 0 FAIL; included in full count
+UPDATER REGRESSION: 128 PASS; included in full count
+LATEST WO11+UPDATER: 173 PASS / 0 SKIP / 0 FAIL / exit 0
+SECURITYLAB: 36 PASS / 0 SKIP / 0 FAIL / exit 0; separate project
+GUI: NOT TESTED; default harness exit 0 reports guiExecuted=false
+USER TEMP INVENTORY: PARTIAL; 512 bounded entries; Complete=false; target mutations=0
+VM/UAC/REBOOT/POWER LOSS: NOT TESTED
+PHASE 1 RELEASE: NO-GO
+
+SAFETY: only generated known-pattern fixtures receive mutation authority. Production cleanup is disabled.
+REMAINING RISKS: same-user journal authority; journal replacement race; incomplete cache coverage; GUI and installed ACL qualification.
+SOURCE ROLLBACK: use ROLLBACK.sh on the independent copy, or create a separate baseline worktree.
+TRANSACTION ROLLBACK: invoke RecoverySandbox recover on a generated fixture and verify its original SHA-256.
+FINAL DELETE ROLLBACK: unavailable; irreversible states preserve review evidence.

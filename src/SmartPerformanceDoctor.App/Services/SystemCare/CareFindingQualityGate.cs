@@ -87,6 +87,14 @@ public static class CareFindingQualityGate
             blockReason = "자동 처리 신뢰도 기준 미달";
         }
 
+        if (finding.Id.StartsWith("junk.", StringComparison.OrdinalIgnoreCase)
+            || finding.Id.StartsWith("privacy.", StringComparison.OrdinalIgnoreCase)
+            || finding.Id.StartsWith("shortcut.", StringComparison.OrdinalIgnoreCase)
+            || !string.IsNullOrWhiteSpace(finding.TargetPath))
+        {
+            canAutoApply = false;
+            blockReason = "파일 정리 실행 검증 대기 · 저장 공간 검사와 Dry Run을 사용하세요";
+        }
         return Copy(finding, finding.RiskLabel, finding.RiskCode, canAutoApply, confidence, evidence, blockReason);
     }
 

@@ -7,11 +7,14 @@ namespace SmartPerformanceDoctor.App.Views;
 public sealed partial class SystemCareCenterPage : Page
 {
     private readonly SystemCareViewModel _viewModel = new();
+    private readonly StorageCareViewModel _storage = new();
 
     public SystemCareCenterPage()
     {
         InitializeComponent();
         DataContext = _viewModel;
+        StoragePanel.DataContext = _storage;
+        Unloaded += (_, _) => _storage.Leave();
         _viewModel.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName is nameof(SystemCareViewModel.HasResults))
@@ -54,4 +57,9 @@ public sealed partial class SystemCareCenterPage : Page
 
     private async void RollbackChanges(object sender, RoutedEventArgs e) =>
         await _viewModel.RollbackAsync();
+
+    private async void StorageScan(object sender, RoutedEventArgs e) => await _storage.ScanAsync();
+    private void StorageStop(object sender, RoutedEventArgs e) => _storage.Stop();
+    private async void StoragePreview(object sender, RoutedEventArgs e) =>
+        await _storage.PreviewAsync(StorageCandidates.SelectedItems.Cast<SmartPerformanceDoctor.App.Services.SystemCare.CleanupCandidate>().ToArray());
 }

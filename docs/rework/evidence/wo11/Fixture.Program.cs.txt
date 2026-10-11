@@ -1,0 +1,6 @@
+using SmartPerformanceDoctor.App.Services.SystemCare;
+using SmartPerformanceDoctor.App.Models.SystemCare;
+var f = new CareFinding {Id="junk.recycle", CanAutoApply=true,RiskCode="safe", Confidence=.99};
+var actual=CareFindingQualityGate.Evaluate([f]).Single().CanAutoApply;
+Console.WriteLine($"CanAutoApply={actual}");
+return actual == bool.Parse(args[0]) ? 0 : 1;

@@ -12,6 +12,10 @@ public sealed record ActionDescriptor(string ActionId, string Target, string Qua
 public sealed record ConsentRecord(string ActionId, string RootId, DateTimeOffset ExpiresUtc, bool Approved);
 public sealed record ExecutionJournal(int Schema, ActionDescriptor Action, TargetIdentity Target, string State);
 public sealed record RecoveryResult(string State, bool BytesVerified, int Mutations);
+public sealed record FinalDeleteConsent(string ActionId, string FileId, DateTimeOffset ExpiresUtc, bool Approved);
+public sealed record CleanupMeasurement(long CandidateBytes, long QuarantinedBytes, long RestorableBytes,
+    long FinalDeletedBytes, long AvailableBefore, long AvailableAfter, long ObservedFreeSpaceDelta,
+    long? AttributableFreedBytes, double ElapsedMs, string Limitation);
 
 /// <summary>Execute only fixed synthetic fixtures. This tool is absent from the product dependency graph.</summary>
 public sealed class SandboxRecovery
@@ -23,7 +27,11 @@ public sealed class SandboxRecovery
     private SandboxRecovery(string root) => Root = Path.GetFullPath(root);
 
     public static SandboxRecovery Create(string parent)
+        => CreateSynthetic(parent, 4096);
+
+    public static SandboxRecovery CreateSynthetic(string parent, int bytes)
     {
+        if (bytes < 4096 || bytes > 32 * 1024 * 1024) throw new ArgumentOutOfRangeException(nameof(bytes));
         using var parentPin = WindowsFileBoundary.PinDirectory(parent);
         var root = Path.Combine(parentPin.Root, "pccare-wo10-" + Guid.NewGuid().ToString("N"));
         var directory = Directory.CreateDirectory(root);
@@ -36,12 +44,17 @@ public sealed class SandboxRecovery
         directory.SetAccessControl(acl);
         using var pin = WindowsFileBoundary.PinDirectory(root);
         File.WriteAllBytes(Path.Combine(root, "key.bin"), RandomNumberGenerator.GetBytes(32));
-        File.WriteAllBytes(Path.Combine(root, Original), Fixture);
+        using (var output = new FileStream(Path.Combine(root, Original), FileMode.CreateNew, FileAccess.Write, FileShare.None))
+        {
+            for (var written = 0; written < bytes; written += Fixture.Length)
+                output.Write(Fixture.AsSpan(0, Math.Min(Fixture.Length, bytes - written)));
+            output.Flush(true);
+        }
         using var target = WindowsFileBoundary.OpenRead(root, Original);
         var identity = new TargetIdentity(pin.Identity, target.Identity, target.Stream.Length, target.Hash());
         var action = new ActionDescriptor(Guid.NewGuid().ToString("N"), Original, Quarantine, "SyntheticOnly");
         var sandbox = new SandboxRecovery(root);
-        sandbox.Save(new(1, action, identity, "Ready"));
+        sandbox.Save(new(bytes == 4096 ? 1 : 2, action, identity, "Ready"));
         return sandbox;
     }
 
@@ -59,11 +72,57 @@ public sealed class SandboxRecovery
         var journal = Read(); return new(journal.Action.ActionId, journal.Target.RootId, DateTimeOffset.UtcNow.AddMinutes(2), true);
     }
 
+    public FinalDeleteConsent ApproveFinalDelete()
+    {
+        var journal = Read();
+        if (journal.State != "Quarantined") throw new InvalidOperationException("VerifiedQuarantineRequired");
+        using var file = WindowsFileBoundary.OpenRead(Root, Quarantine);
+        Verify(file, journal.Target);
+        return new(journal.Action.ActionId, file.Identity, DateTimeOffset.UtcNow.AddMinutes(2), true);
+    }
+
+    public CleanupMeasurement FinalDelete(FinalDeleteConsent consent, Action<string>? checkpoint = null)
+    {
+        var timer = System.Diagnostics.Stopwatch.StartNew();
+        using var transactionLock = WindowsFileBoundary.OpenExclusive(Root, "operation.lock", false);
+        using var root = WindowsFileBoundary.PinDirectory(Root);
+        var journal = Read();
+        if (journal.State != "Quarantined") throw new InvalidOperationException("FinalDeleteState");
+        var before = new DriveInfo(Path.GetPathRoot(Root)!).AvailableFreeSpace;
+        using (var file = WindowsFileBoundary.OpenWrite(Root, Quarantine, deletable: true))
+        {
+            Verify(file, journal.Target); root.Validate(); checkpoint?.Invoke("FinalDeletePreflight");
+            if (!consent.Approved || consent.ExpiresUtc <= DateTimeOffset.UtcNow || consent.ActionId != journal.Action.ActionId
+                || consent.FileId != file.Identity) throw new InvalidOperationException("SeparateFinalDeleteConsentRequired");
+            Save(journal with { State = "DeletePrepared" }); checkpoint?.Invoke("DeletePrepared");
+            file.DeleteOpenedFile();
+        }
+        checkpoint?.Invoke("Deleted");
+        if (File.Exists(Path.Combine(Root, Quarantine)) || File.Exists(Path.Combine(Root, Original)))
+            throw new IOException("FinalDeleteVerificationFailed");
+        Save(journal with { State = "FinalDeleted" });
+        var after = new DriveInfo(Path.GetPathRoot(Root)!).AvailableFreeSpace;
+        return new(journal.Target.Length, 0, 0, journal.Target.Length, before, after, after - before, null,
+            timer.Elapsed.TotalMilliseconds, "Global free-space delta includes concurrent activity. Attribution is unverified. Final deletion has no rollback.");
+    }
+
+    public CleanupMeasurement MeasureQuarantine(long availableBefore, double elapsedMs)
+    {
+        var journal = Read();
+        if (journal.State != "Quarantined") throw new InvalidOperationException("VerifiedQuarantineRequired");
+        using var file = WindowsFileBoundary.OpenRead(Root, Quarantine); Verify(file, journal.Target);
+        var after = new DriveInfo(Path.GetPathRoot(Root)!).AvailableFreeSpace;
+        return new(journal.Target.Length, journal.Target.Length, journal.Target.Length, 0, availableBefore, after,
+            after - availableBefore, 0, elapsedMs, "Same-volume rename releases no payload allocation. Global free-space delta is not cleanup gain.");
+    }
+
     public RecoveryResult Execute(ConsentRecord consent, CancellationToken cancellation = default, Action<string>? checkpoint = null)
     {
         using var transactionLock = WindowsFileBoundary.OpenExclusive(Root, "operation.lock", !File.Exists(Path.Combine(Root, "operation.lock")));
         using var root = WindowsFileBoundary.PinDirectory(Root);
         var journal = Read();
+        if (journal.State is "DeletePrepared" or "FinalDeleted")
+            throw new InvalidOperationException("IrreversibleDeleteRequiresReview:PreserveEvidence");
         if (journal.State != "Ready") throw new InvalidOperationException("DuplicateOrPendingExecution");
         using var file = WindowsFileBoundary.OpenWrite(Root, Original, deletable: true);
         Verify(file, journal.Target); root.Validate();
@@ -83,6 +142,8 @@ public sealed class SandboxRecovery
     {
         using var transactionLock = WindowsFileBoundary.OpenExclusive(Root, "operation.lock", !File.Exists(Path.Combine(Root, "operation.lock")));
         var journal = Read();
+        if (journal.State is "DeletePrepared" or "FinalDeleted")
+            throw new InvalidDataException("IrreversibleDeleteRequiresReview:PreserveEvidence");
         if (journal.State == "Ready")
         {
             using var ready = WindowsFileBoundary.OpenRead(Root, Original);
@@ -115,11 +176,22 @@ public sealed class SandboxRecovery
         var expected = Sign(payload);
         if (!CryptographicOperations.FixedTimeEquals(Convert.FromHexString(mac), Convert.FromHexString(expected))) throw new InvalidDataException("JournalAuthentication");
         var journal = JsonSerializer.Deserialize<ExecutionJournal>(payload) ?? throw new InvalidDataException("JournalMissing");
-        if (journal.Schema != 1 || journal.Action.Target != Original || journal.Action.Quarantine != Quarantine
+        if (journal.Schema is not (1 or 2) || journal.Action.Target != Original || journal.Action.Quarantine != Quarantine
             || journal.Action.RiskLevel != "SyntheticOnly" || !Guid.TryParseExact(journal.Action.ActionId, "N", out _)
-            || journal.Target.RootId != root.Identity || journal.Target.Sha256 != FixtureHash || journal.Target.Length != Fixture.Length)
+            || journal.Target.RootId != root.Identity || journal.Target.Length < 4096 || journal.Target.Length > 32 * 1024 * 1024
+            || journal.Target.Sha256 != ExpectedHash(journal.Target.Length)
+            || journal.Schema == 1 && journal.Target.Length != Fixture.Length)
             throw new InvalidDataException("JournalBinding");
         return journal;
+    }
+
+    private static string ExpectedHash(long length)
+    {
+        if (length == Fixture.Length) return FixtureHash;
+        using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+        for (long written = 0; written < length; written += Fixture.Length)
+            hash.AppendData(Fixture.AsSpan(0, (int)Math.Min(Fixture.Length, length - written)));
+        return Convert.ToHexString(hash.GetHashAndReset());
     }
 
     private string Sign(string text)

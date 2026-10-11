@@ -1,0 +1,11 @@
+WORK ITEM: WO-11 CRASH_RECOVERY_RESULT.txt
+STATUS: PASS
+BASELINE SHA: b1d38b86a54cd5c192784a3ae5e9a3c321df2782
+VALIDATED SOURCE: working tree before publication; see GITHUB_RESULT.txt for committed source
+ENVIRONMENT: Windows NT 10.0.26200.0; 24 logical processors; .NET SDK 10.0.401; 2026-10-11
+TEST COMMAND: ./scripts/wo11-sandbox-validation.ps1 -OutputDirectory artifacts/wo11/crash-final
+INPUT: Synthetic data or read-only metadata only
+OUTPUT:
+WO11_SANDBOX_PASS crashScenarios=6 hardLinkRejected=1 bytesRestored=6 irreversibleReviewCases=2
+
+EXIT CODE: 0

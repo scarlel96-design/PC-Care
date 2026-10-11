@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Windows.Automation;
 
-if (args.Length != 2 || args[0] != "--exercise-readonly-page")
+if (args.Length != 2 || args[0] is not ("--exercise-readonly-page" or "--exercise-storage-page"))
 {
     Console.WriteLine(JsonSerializer.Serialize(new { status="NOT TESTED", reason="Explicit interactive test process and diagnostics page are required.", guiExecuted=false }));
     return 0;
@@ -16,8 +16,9 @@ try
     var window = AutomationElement.FromHandle(process.MainWindowHandle);
     AutomationElement Find(string id) => window.FindFirst(TreeScope.Descendants,
         new PropertyCondition(AutomationElement.AutomationIdProperty,id)) ?? throw new InvalidOperationException("ControlMissing:"+id);
-    var start=Find("PerformanceDiagnosticsStart"); var stop=Find("PerformanceDiagnosticsStop");
-    var status=Find("PerformanceDiagnosticsStatus"); var plans=Find("PerformanceRecoveryPlans");
+    var storage = args[0] == "--exercise-storage-page";
+    var start=Find(storage ? "StorageCareStart" : "PerformanceDiagnosticsStart"); var stop=Find(storage ? "StorageCareStop" : "PerformanceDiagnosticsStop");
+    var status=Find(storage ? "StorageCareStatus" : "PerformanceDiagnosticsStatus"); var plans=Find(storage ? "StorageCarePlan" : "PerformanceRecoveryPlans");
     var clock=Stopwatch.StartNew();
     void Wait(Func<bool> condition)
     {
@@ -31,12 +32,12 @@ try
         guiExecuted = true;
         start.SetFocus();
         ((InvokePattern)start.GetCurrentPattern(InvokePattern.Pattern)).Invoke();
-        Wait(()=>stop.Current.IsEnabled);
-        ((InvokePattern)stop.GetCurrentPattern(InvokePattern.Pattern)).Invoke();
+        Wait(()=>stop.Current.IsEnabled || storage && start.Current.IsEnabled);
+        if (stop.Current.IsEnabled) ((InvokePattern)stop.GetCurrentPattern(InvokePattern.Pattern)).Invoke();
         Wait(()=>start.Current.IsEnabled && !stop.Current.IsEnabled);
     }
     Console.WriteLine(JsonSerializer.Serialize(new { status="PARTIAL",guiExecuted=true,startStopRestartPass=true,
-        statusAccessible=status.Current.Name.Length>0,plansAccessible=plans.Current.AutomationId=="PerformanceRecoveryPlans",
+        statusAccessible=status.Current.Name.Length>0,plansAccessible=plans.Current.AutomationId==(storage ? "StorageCarePlan" : "PerformanceRecoveryPlans"),
         elapsedMilliseconds=clock.Elapsed.TotalMilliseconds,notTested=new[]{"ScreenReader","HighDpi","ReducedMotion","Navigation","WindowClose","CompletedDryRun"} }));
     return 0;
 }

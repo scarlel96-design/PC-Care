@@ -1,0 +1,11 @@
+WORK ITEM: WO-11 GUI_TEST_RESULT.txt
+STATUS: NOT TESTED
+BASELINE SHA: b1d38b86a54cd5c192784a3ae5e9a3c321df2782
+VALIDATED SOURCE: working tree before publication; see GITHUB_RESULT.txt for committed source
+ENVIRONMENT: Windows NT 10.0.26200.0; 24 logical processors; .NET SDK 10.0.401; 2026-10-11
+TEST COMMAND: tools/SmartPerformanceDoctor.GuiProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.GuiProbe.exe
+INPUT: No interactive test PID; guiExecuted=false
+OUTPUT:
+{"status":"NOT TESTED","reason":"Explicit interactive test process and diagnostics page are required.","guiExecuted":false}
+
+EXIT CODE: 0

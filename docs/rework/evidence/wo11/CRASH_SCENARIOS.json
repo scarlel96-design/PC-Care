@@ -1,0 +1,109 @@
+[
+  {
+    "aclProtected": true,
+    "termination": "Separate process forcibly terminated",
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":0}",
+    "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "exitCode": 0,
+    "status": "PASS",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "scenario": "Prepared"
+  },
+  {
+    "aclProtected": true,
+    "termination": "Separate process forcibly terminated",
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":1}",
+    "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "exitCode": 0,
+    "status": "PASS",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "scenario": "Moved"
+  },
+  {
+    "aclProtected": true,
+    "termination": "Separate process forcibly terminated",
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":1}",
+    "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "exitCode": 0,
+    "status": "PASS",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "scenario": "Quarantined"
+  },
+  {
+    "aclProtected": true,
+    "termination": "Separate process forcibly terminated",
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":1}",
+    "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "exitCode": 0,
+    "status": "PASS",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "scenario": "RollingBack"
+  },
+  {
+    "aclProtected": true,
+    "termination": "Separate process forcibly terminated",
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":0}",
+    "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "exitCode": 0,
+    "status": "PASS",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "scenario": "RestoredMove"
+  },
+  {
+    "aclProtected": true,
+    "termination": "Separate process forcibly terminated",
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":0}",
+    "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "exitCode": 0,
+    "status": "PASS",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "scenario": "Restored"
+  },
+  {
+    "scenario": "HardLink",
+    "output": "SANDBOX_BLOCKED IOException",
+    "exitCode": 3,
+    "status": "PASS",
+    "originalPreserved": true
+  },
+  {
+    "scenario": "Junction",
+    "output": "SANDBOX_BLOCKED IOException",
+    "exitCode": 3,
+    "status": "PASS",
+    "originalPreserved": true
+  },
+  {
+    "scenario": "SymbolicLink",
+    "output": "SANDBOX_BLOCKED IOException",
+    "exitCode": 3,
+    "status": "PASS",
+    "originalPreserved": true
+  },
+  {
+    "quarantinePreserved": true,
+    "status": "PASS",
+    "journalUnchanged": true,
+    "rollback": "BLOCKED: irreversible state needs review",
+    "termination": "Separate process forcibly terminated",
+    "output": "SANDBOX_BLOCKED InvalidDataException",
+    "scenario": "DeletePrepared",
+    "exitCode": 3
+  },
+  {
+    "quarantinePreserved": false,
+    "status": "PASS",
+    "journalUnchanged": true,
+    "rollback": "BLOCKED: irreversible state needs review",
+    "termination": "Separate process forcibly terminated",
+    "output": "SANDBOX_BLOCKED InvalidDataException",
+    "scenario": "Deleted",
+    "exitCode": 3
+  }
+]

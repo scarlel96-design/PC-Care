@@ -1,0 +1,17 @@
+WORK ITEM: WO-11 SECURITYLAB_RESULT.txt
+STATUS: PASS
+BASELINE SHA: b1d38b86a54cd5c192784a3ae5e9a3c321df2782
+VALIDATED SOURCE: working tree before publication; see GITHUB_RESULT.txt for committed source
+ENVIRONMENT: Windows NT 10.0.26200.0; 24 logical processors; .NET SDK 10.0.401; 2026-10-11
+TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --logger trx;LogFileName=wo11-securitylab.trx -v:minimal
+INPUT: Synthetic data or read-only metadata only
+OUTPUT:
+  SmartPerformanceDoctor.SecurityLab -> <SOURCE_ROOT>\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+  SmartPerformanceDoctor.SecurityLab.Tests -> <SOURCE_ROOT>\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll
+<SOURCE_ROOT>\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+결과 파일: <SOURCE_ROOT>\tests\SmartPerformanceDoctor.SecurityLab.Tests\TestResults\wo11-securitylab.trx
+
+통과!  - 실패:     0, 통과:    36, 건너뜀:     0, 전체:    36, 기간: 47 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+
+EXIT CODE: 0
