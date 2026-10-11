@@ -1,0 +1,31 @@
+WORK ITEM: WO12 Release build
+STATUS: PASS
+COMMAND: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+INPUT: restored solution; Release x64
+OUTPUT:
+  SmartPerformanceDoctor.Diagnostics -> CHECKOUT\src\SmartPerformanceDoctor.Diagnostics\bin\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Diagnostics.dll
+  SmartPerformanceDoctor.Aegis -> CHECKOUT\src\SmartPerformanceDoctor.Aegis\bin\Release\net10.0-windows\SmartPerformanceDoctor.Aegis.dll
+  SmartPerformanceDoctor.Contracts -> CHECKOUT\src\SmartPerformanceDoctor.Contracts\bin\Release\net10.0\SmartPerformanceDoctor.Contracts.dll
+  SmartPerformanceDoctor.Data -> CHECKOUT\src\SmartPerformanceDoctor.Data\bin\Release\net10.0\SmartPerformanceDoctor.Data.dll
+  SmartPerformanceDoctor.SecurityLab -> CHECKOUT\src\SmartPerformanceDoctor.SecurityLab\bin\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+  SmartPerformanceDoctor.AstraVault -> CHECKOUT\src\SmartPerformanceDoctor.AstraVault\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.dll
+  SmartPerformanceDoctor.UpdateEngine -> CHECKOUT\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+  SmartPerformanceDoctor.UpdateHelper -> CHECKOUT\src\SmartPerformanceDoctor.UpdateHelper\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryHelper -> CHECKOUT\src\SmartPerformanceDoctor.AegisRecoveryHelper\bin\x64\Release\net10.0-windows\AegisRecoveryHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryService -> CHECKOUT\src\SmartPerformanceDoctor.AegisRecoveryService\bin\x64\Release\net10.0-windows\AegisRecoveryService.dll
+  SmartPerformanceDoctor.App -> CHECKOUT\src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.dll
+  SmartPerformanceDoctor.Tests -> CHECKOUT\tests\SmartPerformanceDoctor.Tests\bin\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll
+  SmartPerformanceDoctor.AstraVault.KillWorker -> CHECKOUT\tests\SmartPerformanceDoctor.AstraVault.KillWorker\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.KillWorker.dll
+  SmartPerformanceDoctor.Setup -> CHECKOUT\src\SmartPerformanceDoctor.Setup\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.Setup.dll
+  SmartPerformanceDoctor.SecurityLab.Tests -> CHECKOUT\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll
+  SmartPerformanceDoctor.SecurityLab.Cli -> CHECKOUT\tools\SmartPerformanceDoctor.SecurityLab.Cli\bin\Release\net10.0-windows\SecurityLab.Cli.dll
+  SmartPerformanceDoctor.DiagnosticsProbe -> CHECKOUT\tools\SmartPerformanceDoctor.DiagnosticsProbe\bin\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.DiagnosticsProbe.dll
+  SmartPerformanceDoctor.ReferenceProbe -> CHECKOUT\tools\SmartPerformanceDoctor.ReferenceProbe\bin\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.ReferenceProbe.dll
+
+빌드했습니다.
+    경고 0개
+    오류 0개
+
+경과 시간: 00:01:14.05
+
+EXIT CODE: 0

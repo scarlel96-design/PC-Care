@@ -1,0 +1,8 @@
+STATUS: PARTIAL
+COMMAND: dotnet list src/SmartPerformanceDoctor.SecurityLab package --vulnerable --include-transitive --format json
+OUTPUT: no vulnerable packages listed in the returned projects
+EXIT CODE: 0
+INPUT: existing Lab dependency graph; NuGet advisory feed
+No external cryptographic audit was executed.
+Custom HChaCha20 independent-vector qualification: NOT TESTED in WO12.
+All six AV3 production approval values remain false.

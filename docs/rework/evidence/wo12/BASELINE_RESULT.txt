@@ -1,0 +1,13 @@
+WORK ITEM: WO12 baseline
+STATUS: PASS for Git identity; prior test counts are WO11 evidence
+BASELINE SHA: ba9a65f7f035262ada7ba53252c103921f87a32c
+BASELINE TREE: 650a7a153a10c08cdd3d221d3a6d22b63bed6ad0
+CI SOURCE: bec4c1bf977f65f5e8299150c8e0a48f72abf1ec
+CI RUN: 38131365937 SUCCESS
+INPUT: WO11 checkout and reports
+COMMAND: git rev-parse HEAD; git rev-parse HEAD^{tree}
+OUTPUT: baseline SHA and tree above
+EXIT CODE: 0
+BASELINE TESTS: 1002 PASS / 111 SKIP; SecurityLab 36 PASS
+Local WO12 source-proof baseline uses an exact git archive of the baseline.
+Other local filtered reruns during editing are not attributed to the exact baseline source.

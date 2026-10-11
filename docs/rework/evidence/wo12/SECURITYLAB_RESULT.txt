@@ -1,0 +1,15 @@
+COMMAND: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --logger 'trx;LogFileName=wo12-lab.trx'
+ENVIRONMENT: Windows NT 10.0.26200.0 / SDK 10.0.401 / x64
+INPUT: current WO12 source; synthetic fixtures
+OUTPUT:
+  SmartPerformanceDoctor.SecurityLab -> CHECKOUT\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+  SmartPerformanceDoctor.SecurityLab.Tests -> CHECKOUT\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll
+CHECKOUT\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+경고: 결과 파일을 덮어쓰는 중: CHECKOUT\tests\SmartPerformanceDoctor.SecurityLab.Tests\TestResults\wo12-lab.trx
+결과 파일: CHECKOUT\tests\SmartPerformanceDoctor.SecurityLab.Tests\TestResults\wo12-lab.trx
+
+통과!  - 실패:     0, 통과:    36, 건너뜀:     0, 전체:    36, 기간: 2 m 4 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+
+EXIT CODE: 0
+COUNTS: 36 PASS / 0 SKIP / 0 FAIL

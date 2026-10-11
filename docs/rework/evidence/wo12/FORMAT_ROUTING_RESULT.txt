@@ -1,0 +1,6 @@
+STATUS: PARTIAL
+INPUT: SecureVaultService, SecureVaultLabBackend, AstraVaultHostService, ProductFeatureFlags, Av3PhaseGate
+COMMAND: source audit and WO12VaultReliabilityTests
+OUTPUT: legacy manifest route; product-host Lab create emits spd-vault-v5-lab; six AV3 approvals false
+EXIT CODE: 0 for final application tests
+Mixed-format fixtures and new AV3 reader fixtures: NOT TESTED

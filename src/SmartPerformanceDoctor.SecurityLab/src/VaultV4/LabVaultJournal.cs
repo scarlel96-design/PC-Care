@@ -5,7 +5,7 @@ namespace SmartPerformanceDoctor.SecurityLab.VaultV4;
 
 /// <summary>
 /// Crash-aware journal for import transactions (design §14 subset).
-/// Phase4: incomplete ObjectsReady carries object id for orphan shred.
+/// Journal entries do not authorize deletion of encrypted objects.
 /// </summary>
 public static class LabVaultJournal
 {
@@ -127,30 +127,21 @@ public static class LabVaultJournal
         return list;
     }
 
-    /// <summary>Abort incomplete txs and delete orphan object ids when known.</summary>
-    public static int RecoverOrphans(string vaultRoot, long generation)
+    /// <summary>Reconcile references after authenticated metadata and commit verification. Preserve all object bytes.</summary>
+    public static int RecoverOrphans(string vaultRoot, long generation, IEnumerable<string>? authenticatedObjectIds = null)
     {
-        var incomplete = ListIncompleteDetailed(vaultRoot);
-        var n = 0;
-        foreach (var tx in incomplete)
+        if (authenticatedObjectIds is null) return 0;
+        var known = authenticatedObjectIds.ToHashSet(StringComparer.Ordinal);
+        var reconciled = 0;
+        foreach (var tx in ListIncompleteDetailed(vaultRoot))
         {
-            if (!string.IsNullOrWhiteSpace(tx.ObjectId))
+            if (tx.ObjectId is not null && known.Contains(tx.ObjectId))
             {
-                try
-                {
-                    LabObjectStore.DeleteEverywhere(vaultRoot, tx.ObjectId);
-                }
-                catch
-                {
-                    // best effort
-                }
+                Mark(vaultRoot, tx.TxId, State.Committed, "authenticated-reference-preserved", generation);
+                reconciled++;
             }
-
-            Mark(vaultRoot, tx.TxId, State.Aborted, "recover-orphan", generation);
-            n++;
         }
-
-        return n;
+        return reconciled;
     }
 
     private static void Append(string vaultRoot, Entry entry)

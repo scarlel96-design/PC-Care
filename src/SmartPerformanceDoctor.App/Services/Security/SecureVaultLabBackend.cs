@@ -21,6 +21,8 @@ internal sealed class SecureVaultLabBackend : IDisposable
 
     public bool IsUnlocked => _vault?.IsUnlocked == true;
 
+    public string AuthenticatedFormat => _vault?.AuthenticatedFormat ?? "Lab v4/v5 · 잠금 해제 후 확인";
+
     public SecureVaultState State =>
         !ExistsOnDisk()
             ? SecureVaultState.NotCreated
@@ -63,7 +65,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
                 Success = true,
                 Message = created.Message + " (생성됨 · 잠금 해제 필요)",
                 RecoveryCodes = created.RecoveryCodes,
-                VaultFormat = LabVaultService.FormatId,
+                VaultFormat = AuthenticatedFormat,
                 KdfProfile = created.KdfProfile,
                 ProcessedCount = 1
             };
@@ -72,12 +74,12 @@ internal sealed class SecureVaultLabBackend : IDisposable
         return new SecureVaultOperationResult
         {
             Success = true,
-            Message = "보안 금고 v4가 생성되었습니다. 복구 코드는 이 화면에만 표시됩니다(해시만 저장).",
+            Message = "보안 금고 Lab v5가 생성되었습니다. 복구 코드는 이 화면에만 표시됩니다(암호화 키 래핑 슬롯으로 보관).",
             RecoveryCodes = created.RecoveryCodes,
             RecoveryKey = created.RecoveryCodes.Count > 0
                 ? string.Join(' ', created.RecoveryCodes.Take(2)) + " …"
                 : null,
-            VaultFormat = LabVaultService.FormatIdV5,
+            VaultFormat = AuthenticatedFormat,
             KdfProfile = created.KdfProfile,
             ProcessedCount = 1
         };
@@ -93,7 +95,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
             Success = result.Success,
             Message = result.Message,
             ProcessedCount = result.ProcessedCount,
-            VaultFormat = LabVaultService.FormatIdV5
+            VaultFormat = AuthenticatedFormat
         };
     }
 
@@ -107,7 +109,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
             Success = result.Success,
             Message = result.Message,
             ProcessedCount = result.ProcessedCount,
-            VaultFormat = LabVaultService.FormatIdV5
+            VaultFormat = AuthenticatedFormat
         };
     }
 
@@ -126,7 +128,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
             Success = result.Success,
             Message = result.Message,
             RecoveryCodes = result.RecoveryCodes,
-            VaultFormat = LabVaultService.FormatIdV5,
+            VaultFormat = AuthenticatedFormat,
             ProcessedCount = result.ProcessedCount
         };
     }
@@ -146,7 +148,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
             Success = result.Success,
             Message = result.Message,
             RecoveryCodes = result.RecoveryCodes,
-            VaultFormat = LabVaultService.FormatIdV5,
+            VaultFormat = AuthenticatedFormat,
             ProcessedCount = result.ProcessedCount
         };
     }
@@ -161,7 +163,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
             Success = result.Success,
             Message = result.Message,
             ProcessedCount = result.ProcessedCount,
-            VaultFormat = LabVaultService.FormatIdV5
+            VaultFormat = AuthenticatedFormat
         };
     }
 
@@ -207,8 +209,10 @@ internal sealed class SecureVaultLabBackend : IDisposable
     public async Task<SecureVaultOperationResult> AddFileAsync(
         string path,
         bool secureDeleteSource,
-        IProgress<SecureVaultProgressReport>? progress = null)
+        IProgress<SecureVaultProgressReport>? progress = null,
+        CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
         EnsureUnlocked();
         if (!File.Exists(path))
         {
@@ -221,10 +225,10 @@ internal sealed class SecureVaultLabBackend : IDisposable
             Percent = 10,
             Detail = Path.GetFileName(path)
         });
-        var result = await Task.Run(() => _vault!.ImportFile(path)).ConfigureAwait(false);
+        var result = await Task.Run(() => _vault!.ImportFile(path, cancellationToken), cancellationToken).ConfigureAwait(false);
         if (!result.Success)
         {
-            return Map(result, LabVaultService.FormatIdV5);
+            return Map(result, AuthenticatedFormat);
         }
 
         if (secureDeleteSource)
@@ -256,15 +260,17 @@ internal sealed class SecureVaultLabBackend : IDisposable
             Success = true,
             Message = secureDeleteSource ? "파일을 금고에 보관하고 원본을 보안 삭제했습니다." : result.Message,
             ProcessedCount = result.ProcessedCount,
-            VaultFormat = LabVaultService.FormatIdV5
+            VaultFormat = AuthenticatedFormat
         };
     }
 
     public async Task<SecureVaultOperationResult> AddFolderAsync(
         string path,
         bool secureDeleteSource,
-        IProgress<SecureVaultProgressReport>? progress = null)
+        IProgress<SecureVaultProgressReport>? progress = null,
+        CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
         EnsureUnlocked();
         if (!Directory.Exists(path))
         {
@@ -278,7 +284,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
             return Fail("보관할 폴더 이름을 확인할 수 없습니다.");
         }
 
-        var files = Directory.EnumerateFiles(fullPath, "*", SearchOption.AllDirectories).ToArray();
+        var files = VaultImportPathValidator.EnumerateValidatedFiles(fullPath, cancellationToken);
         if (files.Length == 0)
         {
             return Fail("빈 폴더는 현재 보관할 수 없습니다. 파일을 하나 이상 넣은 뒤 다시 시도하세요.");
@@ -287,6 +293,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
         var imported = 0;
         for (var i = 0; i < files.Length; i++)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             var file = files[i];
             progress?.Report(new SecureVaultProgressReport
             {
@@ -296,7 +303,11 @@ internal sealed class SecureVaultLabBackend : IDisposable
             });
             var relative = Path.GetRelativePath(fullPath, file).Replace('\\', '/');
             var vaultRelativePath = rootName + "/" + relative;
-            var bytes = await File.ReadAllBytesAsync(file).ConfigureAwait(false);
+            using var source = VaultFileBoundary.OpenRead(Path.GetDirectoryName(file)!, Path.GetFileName(file));
+            if (source.Stream.Length > int.MaxValue) return Fail("현재 금고가 지원하는 파일 크기를 초과했습니다.");
+            var bytes = new byte[checked((int)source.Stream.Length)];
+            await source.Stream.ReadExactlyAsync(bytes, cancellationToken).ConfigureAwait(false);
+            source.Validate();
             try
             {
                 var result = _vault!.ImportBytes(Path.GetFileName(file), vaultRelativePath, bytes);
@@ -362,13 +373,13 @@ internal sealed class SecureVaultLabBackend : IDisposable
                 ? $"폴더 「{rootName}」 {imported}개 파일을 금고에 보관하고 원본을 보안 삭제했습니다."
                 : $"폴더 「{rootName}」 가져오기 완료 · 성공 {imported}",
             ProcessedCount = imported,
-            VaultFormat = LabVaultService.FormatIdV5
+            VaultFormat = AuthenticatedFormat
         };
     }
-    public Task<SecureVaultOperationResult> ExportEntryAsync(string entryId, string destination, bool stepUpConfirmed = false)
+    public Task<SecureVaultOperationResult> ExportEntryAsync(string entryId, string destination, bool stepUpConfirmed = false, CancellationToken cancellationToken = default)
     {
         EnsureUnlocked();
-        var r = _vault!.ExportEntry(entryId, destination, stepUpConfirmed);
+        var r = _vault!.ExportEntry(entryId, destination, stepUpConfirmed, cancellationToken);
         if (!r.Success && r.Message.Contains("step-up", StringComparison.OrdinalIgnoreCase))
         {
             // caller UI should re-confirm; product maps to explicit message
@@ -376,7 +387,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
             {
                 Success = false,
                 Message = "보안 게이트: 금고 항목이 많아 추가 확인이 필요합니다. 내보내기를 다시 확인한 뒤 진행하세요.",
-                VaultFormat = LabVaultService.FormatIdV5
+                VaultFormat = AuthenticatedFormat
             });
         }
 
@@ -386,7 +397,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
     public Task<SecureVaultOperationResult> ExportBrowsableItemsAsync(
         IReadOnlyCollection<SecureVaultBrowsableItem> items,
         string destination,
-        bool stepUpConfirmed = false)
+        bool stepUpConfirmed = false, CancellationToken cancellationToken = default)
     {
         EnsureUnlocked();
         if (items.Count == 0)
@@ -409,7 +420,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
                 var root = item.BundleId["path:".Length..];
                 var prefix = string.IsNullOrWhiteSpace(item.RelativePrefix)
                     ? root + "/"
-                    : root + "/" + item.RelativePrefix.Replace('\\', '/').TrimStart('/');
+                    : root + "/" + item.RelativePrefix.Replace('\\', '/').Trim('/') + "/";
                 foreach (var entry in entries.Where(entry => entry.RelativePath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
                 {
                     selectedIds.Add(entry.EntryId);
@@ -426,6 +437,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
         var exported = 0;
         foreach (var entry in selected)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             string targetDirectory;
             try
             {
@@ -436,7 +448,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
                 return Task.FromResult(Fail($"내보낼 경로를 확인할 수 없습니다: {ex.Message}"));
             }
 
-            var result = _vault.ExportEntry(entry.EntryId, targetDirectory, stepUpConfirmed);
+            var result = _vault.ExportEntry(entry.EntryId, targetDirectory, stepUpConfirmed, cancellationToken);
             if (!result.Success)
             {
                 if (result.Message.Contains("step-up", StringComparison.OrdinalIgnoreCase))
@@ -445,7 +457,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
                     {
                         Success = false,
                         Message = "보안 게이트: 금고 항목이 많아 추가 확인이 필요합니다. 내보내기를 다시 확인한 뒤 진행하세요.",
-                        VaultFormat = LabVaultService.FormatIdV5,
+                        VaultFormat = AuthenticatedFormat,
                         ProcessedCount = exported
                     });
                 }
@@ -454,7 +466,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
                 {
                     Success = false,
                     Message = $"내보내기 중단 · 성공 {exported}/{selected.Length} · {result.Message}",
-                    VaultFormat = LabVaultService.FormatIdV5,
+                    VaultFormat = AuthenticatedFormat,
                     ProcessedCount = exported
                 });
             }
@@ -467,7 +479,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
             Success = true,
             Message = exported == 1 ? "선택 항목을 내보냈습니다." : $"선택한 {exported}개 파일을 폴더 구조대로 내보냈습니다.",
             ProcessedCount = exported,
-            VaultFormat = LabVaultService.FormatIdV5
+            VaultFormat = AuthenticatedFormat
         });
     }
 

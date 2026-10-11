@@ -1,0 +1,8 @@
+STATUS: NOT TESTED
+ENVIRONMENT PREPARATION: BLOCKED
+COMMAND: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/wo12-gui-validation.ps1
+INPUT: no independent-account SID parameters
+OUTPUT: {"status":"BLOCKED","guiExecuted":false,"reason":"Dedicated test account required"}
+EXIT CODE: 4
+GuiProbe Release build: PASS; warnings 0; errors 0.
+Actual GUI, keyboard, screen reader, high DPI, motion reduction and large lists: NOT TESTED.

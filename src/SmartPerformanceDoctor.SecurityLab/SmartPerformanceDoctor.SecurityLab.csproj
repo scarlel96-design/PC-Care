@@ -3,9 +3,10 @@
     <TargetFramework>net10.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <DefineConstants>$(DefineConstants);PCCARE_VAULT_BOUNDARY</DefineConstants>
     <RootNamespace>SmartPerformanceDoctor.SecurityLab</RootNamespace>
     <AssemblyName>SmartPerformanceDoctor.SecurityLab</AssemblyName>
-    <!-- NOT referenced by SmartPerformanceDoctor.App — product isolation -->
+    <!-- The product adapter references this backend. AV3 approval remains separate. -->
     <IsPackable>false</IsPackable>
     <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
   </PropertyGroup>
@@ -15,5 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="tests\**\*.cs" />
+    <Compile Include="..\SmartPerformanceDoctor.UpdateEngine\WindowsFileBoundary.cs" Link="src\Hardening\VaultFileBoundary.cs" />
   </ItemGroup>
 </Project>

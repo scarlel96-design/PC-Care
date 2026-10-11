@@ -5,10 +5,18 @@ using System.Security.AccessControl;
 using System.Text;
 using Microsoft.Win32.SafeHandles;
 
+#if PCCARE_VAULT_BOUNDARY
+namespace SmartPerformanceDoctor.SecurityLab.Hardening;
+#else
 namespace SmartPerformanceDoctor.UpdateEngine;
+#endif
 
 /// <summary>Pin local directory ancestors. Reject links before using the opened file.</summary>
+#if PCCARE_VAULT_BOUNDARY
+public static class VaultFileBoundary
+#else
 public static class WindowsFileBoundary
+#endif
 {
     private const uint Read = 0x80000000, Write = 0x40000000, Delete = 0x10000;
     private const uint OpenReparse = 0x00200000, BackupSemantics = 0x02000000;
@@ -76,7 +84,12 @@ public static class WindowsFileBoundary
 
         internal FileLease(string root, string relative, bool write, bool create, bool deletable, bool exclusive = false)
         {
+#if PCCARE_VAULT_BOUNDARY
+            if (Path.IsPathRooted(relative) || relative.Split(['\\', '/']).Any(part =>
+                    string.IsNullOrEmpty(part) || part is "." or ".." || part.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0))
+#else
             if (!SignedPackage.SafeRelativePath("payload/" + relative.Replace('\\', '/')))
+#endif
                 throw new InvalidDataException("BOUNDARY-PATH");
             var target = Path.GetFullPath(Path.Combine(root, relative));
             var prefix = Path.GetFullPath(root).TrimEnd('\\') + "\\";

@@ -1,0 +1,8 @@
+STATUS: PARTIAL
+COMMAND: dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --synthetic artifacts/wo12/probe
+INPUT: three separately generated v5 vaults; seed 8192 bytes; import 4096 bytes
+OUTPUT: CRASH_SCENARIOS=3;SEPARATE_READER_PROCESSES=3;HASH_ROUNDTRIP=PASS;FAIL_CLOSED=1;POWER_LOSS=NOT_TESTED
+EXIT CODE: 0
+Reader outputs and per-stage exits: CRASH_RECOVERY_RESULT.json
+Two readers export verified bytes. MetadataReady reader exits 4 and preserves ciphertext.
+No successful data recovery is claimed for MetadataReady.

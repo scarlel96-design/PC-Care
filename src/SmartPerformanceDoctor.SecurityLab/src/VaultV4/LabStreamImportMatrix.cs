@@ -195,7 +195,7 @@ public static class LabStreamImportMatrix
             var open = reopen.Unlock(password);
             var incomplete = LabVaultJournal.ListIncomplete(root);
             var orphanGone = fakeId is not null && !File.Exists(LabObjectStore.AbsolutePath(root, fakeId));
-            var pass = open.Success && incomplete.Count == 0 && orphanGone;
+            var pass = open.Success && incomplete.Count == 1 && !orphanGone && !reopen.IsWriteAllowed;
             return R(
                 "mid-stream-kill-recovery",
                 true,

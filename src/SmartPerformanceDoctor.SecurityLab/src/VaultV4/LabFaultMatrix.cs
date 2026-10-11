@@ -125,7 +125,7 @@ public static class LabFaultMatrix
     }
 
     /// <summary>
-    /// Kill/crash simulation: leave incomplete ObjectsReady journal + orphan loose object, then unlock should recover.
+    /// Kill/crash simulation: leave incomplete ObjectsReady journal + orphan loose object, then unlock must preserve evidence and block writes.
     /// </summary>
     public static CaseResult RunMidImportKillRecovery(string password)
     {
@@ -158,7 +158,7 @@ public static class LabFaultMatrix
             var open = reopen.Unlock(password);
             var incomplete = LabVaultJournal.ListIncomplete(root);
             var orphanGone = fakeId is not null && !File.Exists(LabObjectStore.AbsolutePath(root, fakeId));
-            var pass = open.Success && incomplete.Count == 0 && orphanGone;
+            var pass = open.Success && incomplete.Count == 1 && !orphanGone && !reopen.IsWriteAllowed;
             return new CaseResult
             {
                 Name = "mid-import-kill-recovery",
@@ -173,7 +173,7 @@ public static class LabFaultMatrix
         }
     }
 
-    /// <summary>Crash after TX Prepared only (no object yet) — unlock aborts incomplete TX.</summary>
+    /// <summary>Crash after TX Prepared only (no object yet) — unlock preserves the incomplete transaction.</summary>
     public static CaseResult RunPreparedOnlyKillRecovery(string password)
     {
         var root = Path.Combine(Path.GetTempPath(), "lab-kill-prep-" + Guid.NewGuid().ToString("N"));
@@ -194,7 +194,7 @@ public static class LabFaultMatrix
             using var reopen = new LabVaultService(root);
             var open = reopen.Unlock(password);
             var incomplete = LabVaultJournal.ListIncomplete(root);
-            var pass = open.Success && incomplete.Count == 0;
+            var pass = open.Success && incomplete.Count == 1 && !reopen.IsWriteAllowed;
             return new CaseResult
             {
                 Name = "prepared-only-kill-recovery",
@@ -210,7 +210,7 @@ public static class LabFaultMatrix
     }
 
     /// <summary>
-    /// Crash after MetadataReady (object present, not committed) — orphan object shredded + TX aborted.
+    /// Crash after MetadataReady (object present, not committed) — unverified object and transaction remain preserved.
     /// </summary>
     public static CaseResult RunMetadataReadyKillRecovery(string password)
     {
@@ -238,7 +238,7 @@ public static class LabFaultMatrix
             var open = reopen.Unlock(password);
             var incomplete = LabVaultJournal.ListIncomplete(root);
             var orphanGone = fakeId is not null && !File.Exists(LabObjectStore.AbsolutePath(root, fakeId));
-            var pass = open.Success && incomplete.Count == 0 && orphanGone;
+            var pass = open.Success && incomplete.Count == 1 && !orphanGone && !reopen.IsWriteAllowed;
             return new CaseResult
             {
                 Name = "metadata-ready-kill-recovery",

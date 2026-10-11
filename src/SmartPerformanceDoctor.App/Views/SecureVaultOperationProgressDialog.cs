@@ -13,7 +13,7 @@ internal sealed class SecureVaultOperationProgressDialog
     private readonly TextBlock _countText;
     private readonly ProgressBar _progressBar;
 
-    public SecureVaultOperationProgressDialog(string title, XamlRoot xamlRoot)
+    public SecureVaultOperationProgressDialog(string title, XamlRoot xamlRoot, CancellationTokenSource cancellation)
     {
         _phaseText = new TextBlock
         {
@@ -44,7 +44,7 @@ internal sealed class SecureVaultOperationProgressDialog
             Height = 8
         };
 
-        var panel = new StackPanel { Spacing = 10, MinWidth = 420 };
+        var panel = new StackPanel { Spacing = 10, MinWidth = 240, MaxWidth = 520 };
         panel.Children.Add(_phaseText);
         panel.Children.Add(_detailText);
         panel.Children.Add(_progressBar);
@@ -55,7 +55,16 @@ internal sealed class SecureVaultOperationProgressDialog
         {
             Title = title,
             Content = panel,
-            XamlRoot = xamlRoot
+            XamlRoot = xamlRoot,
+            SecondaryButtonText = "작업 취소"
+        };
+
+        _dialog.SecondaryButtonClick += (_, args) =>
+        {
+            args.Cancel = true;
+            cancellation.Cancel();
+            _dialog.IsSecondaryButtonEnabled = false;
+            _detailText.Text = "현재 파일 처리 경계에서 중단합니다. 완료된 사본은 보존됩니다.";
         };
 
         ApplyReport(new SecureVaultProgressReport

@@ -8,6 +8,37 @@ public static class VaultImportPathValidator
     public static (bool Allowed, string NormalizedPath, string Message) ValidateDirectory(string path) =>
         Validate(path, expectDirectory: true);
 
+    public static string[] EnumerateValidatedFiles(string root, CancellationToken cancellationToken = default)
+    {
+        var files = new List<string>();
+        var directories = new Stack<string>();
+        directories.Push(Path.GetFullPath(root));
+        var visited = 0;
+        while (directories.Count > 0)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var directory = directories.Pop();
+            var check = ValidateDirectory(directory);
+            if (!check.Allowed) throw new IOException(check.Message);
+            foreach (var member in Directory.EnumerateFileSystemEntries(directory))
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                if (++visited > 100_000) throw new IOException("폴더 항목이 검사 한도를 초과했습니다. 나누어 가져오세요.");
+                var attributes = File.GetAttributes(member);
+                if ((attributes & FileAttributes.ReparsePoint) != 0)
+                    throw new IOException("폴더에 링크가 있어 가져오기를 중단했습니다.");
+                if ((attributes & FileAttributes.Directory) != 0) directories.Push(member);
+                else
+                {
+                    var file = ValidateFile(member);
+                    if (!file.Allowed) throw new IOException(file.Message);
+                    files.Add(file.NormalizedPath);
+                }
+            }
+        }
+        return files.ToArray();
+    }
+
     private static (bool Allowed, string NormalizedPath, string Message) Validate(string path, bool expectDirectory)
     {
         if (string.IsNullOrWhiteSpace(path))
@@ -39,10 +70,15 @@ public static class VaultImportPathValidator
 
         try
         {
+            SmartPerformanceDoctor.SecurityLab.Hardening.VaultExportWriter.ValidateAncestors(fullPath);
             if ((File.GetAttributes(fullPath) & FileAttributes.ReparsePoint) != 0)
             {
                 return (false, fullPath, "정션·심볼릭 링크·재분석 지점은 금고 입력으로 사용할 수 없습니다.");
             }
+        }
+        catch (IOException ex) when (ex.Message == "VAULT-REPARSE-POINT")
+        {
+            return (false, fullPath, "정션·심볼릭 링크·재분석 지점은 금고 입력으로 사용할 수 없습니다.");
         }
         catch
         {

@@ -704,11 +704,11 @@ public sealed class VaultV4IntegrationTests : IDisposable
         Assert.Empty(Directory.GetFiles(outDir, "*.spdlab.tmp"));
 
         vault.Lock();
-        // unlock path also purges orphans
+        // Unlock preserves unreferenced ciphertext for recovery review.
         LabObjectStore.WriteLoose(vault.Root, LabObjectStore.NewObjectId(), new byte[] { 9, 9, 9, 9 });
         Assert.True(vault.Unlock(password).Success);
         var scan = LabOrphanScanner.Scan(vault.Root, vault.List().Select(e => e.ObjectId));
-        Assert.Equal(0, scan.Count);
+        Assert.Equal(1, scan.Count);
 
         var gaps = LabRemainingGaps.Evaluate();
         Assert.True(gaps.LabCodeComplete, gaps.ToHumanSummary());
@@ -831,7 +831,9 @@ public sealed class VaultV4IntegrationTests : IDisposable
         LabVaultJournal.Mark(vault.Root, tx, LabVaultJournal.State.ObjectsReady, "obj:" + fakeId, 1);
         vault.Lock();
         Assert.True(vault.Unlock(password).Success);
-        Assert.False(File.Exists(LabObjectStore.AbsolutePath(vault.Root, fakeId)));
+        Assert.Equal(new byte[] { 1, 2, 3, 4 }, File.ReadAllBytes(LabObjectStore.AbsolutePath(vault.Root, fakeId)));
+        Assert.False(vault.IsWriteAllowed);
+        Assert.Equal(2, LabVaultJournal.ListIncomplete(vault.Root).Count);
     }
 
     [Fact]

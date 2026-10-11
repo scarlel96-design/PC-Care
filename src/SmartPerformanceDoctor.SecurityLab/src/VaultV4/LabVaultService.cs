@@ -11,6 +11,7 @@ namespace SmartPerformanceDoctor.SecurityLab.VaultV4;
 /// </summary>
 public sealed partial class LabVaultService : IDisposable
 {
+    internal Action<string>? FaultObserver { get; set; }
     public const string FormatId = "spd-vault-v4-lab";
     public const string FormatIdV5 = "spd-vault-v5-lab";
 
@@ -19,6 +20,7 @@ public sealed partial class LabVaultService : IDisposable
     private readonly string _root;
     private readonly LabSessionPolicy _sessionPolicy;
     private readonly LabCryptoBroker _broker = new();
+    private VaultFileBoundary.FileLease? _sessionLease;
     private byte[]? _vmk; // session mirror; sealed with broker
     private byte[]? _metaKey;
     private byte[]? _wrapKey;
@@ -34,6 +36,8 @@ public sealed partial class LabVaultService : IDisposable
         _root = Path.GetFullPath(vaultRoot);
         _sessionPolicy = sessionPolicy ?? LabSessionPolicy.Default;
     }
+
+    public string? AuthenticatedFormat => IsUnlocked ? _header?.Format : null;
 
     public bool IsUnlocked => !_broker.IsSealed && _vmk is not null;
     public bool IsWriteAllowed => IsUnlocked && _writeAllowed && _broker.WriteAllowed;
@@ -134,10 +138,14 @@ public sealed partial class LabVaultService : IDisposable
         finally
         {
             CryptographicOperations.ZeroMemory(kek);
+            CryptographicOperations.ZeroMemory(vmk);
+            CryptographicOperations.ZeroMemory(salt);
         }
     }
 
-    public LabVaultOperationResult Unlock(string password)
+    public LabVaultOperationResult Unlock(string password) => UnlockCore(password, true);
+
+    private LabVaultOperationResult UnlockCore(string password, bool writeAllowed)
     {
         if (!Exists(_root))
         {
@@ -188,7 +196,7 @@ public sealed partial class LabVaultService : IDisposable
                 return FailOp("비밀번호가 올바르지 않거나 헤더가 손상되었습니다.");
             }
 
-            return OpenSession(vmk, header, writeAllowed: true, auditKind: "unlock");
+            return OpenSession(vmk, header, writeAllowed, auditKind: "unlock");
         }
         finally
         {
@@ -200,14 +208,15 @@ public sealed partial class LabVaultService : IDisposable
     /// <summary>Read-only unlock (design §8) — export allowed, import/shred blocked.</summary>
     public LabVaultOperationResult UnlockReadOnly(string password)
     {
-        var r = Unlock(password);
+        var r = UnlockCore(password, false);
         if (!r.Success)
         {
             return r;
         }
 
         _writeAllowed = false;
-        _securityState = LabSecurityState.ReadOnlyUnlocked;
+        if (_securityState != LabSecurityState.RecoveryAvailable)
+            _securityState = LabSecurityState.ReadOnlyUnlocked;
         AppendAudit("unlock_readonly", "ok");
         return new LabVaultOperationResult
         {
@@ -300,6 +309,8 @@ public sealed partial class LabVaultService : IDisposable
     public void Lock()
     {
         _broker.Seal();
+        _sessionLease?.Dispose();
+        _sessionLease = null;
         if (_vmk is not null)
         {
             CryptographicOperations.ZeroMemory(_vmk);
@@ -343,35 +354,44 @@ public sealed partial class LabVaultService : IDisposable
             .ToArray();
     }
 
-    public LabVaultOperationResult ImportFile(string sourcePath)
+    public LabVaultOperationResult ImportFile(string sourcePath, CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
         EnsureWriteUnlocked();
         if (!File.Exists(sourcePath))
         {
             return FailOp("파일을 찾을 수 없습니다.");
         }
 
-        var fi = new FileInfo(sourcePath);
-        if (fi.Length > _sessionPolicy.MaxImportBytes)
+        using var source = VaultFileBoundary.OpenRead(Path.GetDirectoryName(Path.GetFullPath(sourcePath))!, Path.GetFileName(sourcePath));
+        var size = source.Stream.Length;
+        if (size > _sessionPolicy.MaxImportBytes)
         {
             return FailOp($"파일 크기 한도 초과 (최대 {_sessionPolicy.MaxImportBytes} bytes).");
         }
 
-        var sent = Policy.LabSentinelGate.EvaluateImport(fi.Length, _writeAllowed);
+        var sent = Policy.LabSentinelGate.EvaluateImport(size, _writeAllowed);
         if (Policy.LabSentinelGate.IsBlocking(sent))
         {
             return FailOp("정책 거부: " + sent);
         }
 
         // Phase2: stream encrypt for larger files (>= 1 MiB)
-        if (fi.Length >= 1024 * 1024)
+        if (size >= 1024 * 1024)
         {
-            return ImportFileStreaming(sourcePath, fi.Length);
+            return ImportFileStreaming(sourcePath, size, source, cancellationToken);
         }
 
-        var data = File.ReadAllBytes(sourcePath);
-        var name = Path.GetFileName(sourcePath);
-        return ImportBytes(name, name, data);
+        var data = new byte[checked((int)size)];
+        try
+        {
+            source.Stream.ReadExactly(data);
+            source.Validate();
+            cancellationToken.ThrowIfCancellationRequested();
+            var name = Path.GetFileName(sourcePath);
+            return ImportBytes(name, name, data);
+        }
+        finally { CryptographicOperations.ZeroMemory(data); }
     }
 
     public LabVaultOperationResult ImportBytes(string displayName, string relativePath, byte[] data)
@@ -398,6 +418,7 @@ public sealed partial class LabVaultService : IDisposable
             var blob = LabVaultCrypto.EncryptChunked(dataKey, data, aad, suite, conceal);
             LabObjectStore.Write(_root, objectId, blob);
             LabVaultJournal.Mark(_root, tx, LabVaultJournal.State.ObjectsReady, "obj:" + objectId, gen);
+            FaultObserver?.Invoke("ObjectsReady");
 
             // DEK wrap via broker-equivalent domain (dek:objectId) — keeps wrap AAD stable
             Wrapped wrappedDek;
@@ -428,8 +449,10 @@ public sealed partial class LabVaultService : IDisposable
             _metadata.Generation = gen;
             WriteMetadata(_metadata, _metaKey!);
             LabVaultJournal.Mark(_root, tx, LabVaultJournal.State.MetadataReady, entryId, gen);
+            FaultObserver?.Invoke("MetadataReady");
             // durable flush order: objects → metadata → activation commit → journal Committed
             LabDurableCommit.WriteCommitted(_root, _header.VaultId, _metadata.Generation);
+            FaultObserver?.Invoke("CommitWritten");
             LabVaultJournal.Mark(_root, tx, LabVaultJournal.State.Committed, entryId, gen);
             RefreshIntegritySnapshot();
             AppendAudit("import", entryId);
@@ -456,8 +479,9 @@ public sealed partial class LabVaultService : IDisposable
         }
     }
 
-    public LabVaultOperationResult ExportEntry(string entryId, string destDirectory, bool stepUpConfirmed = false)
+    public LabVaultOperationResult ExportEntry(string entryId, string destDirectory, bool stepUpConfirmed = false, CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
         EnsureUnlocked();
         var riskCount = _metadata?.Entries.Count ?? 0;
         var bulk = Policy.LabSentinelGate.EvaluateExport(riskCount, 0, _writeAllowed);
@@ -491,34 +515,23 @@ public sealed partial class LabVaultService : IDisposable
         var plain = DecryptEntry(entry);
         try
         {
-            Directory.CreateDirectory(destDirectory);
+            Hardening.VaultExportWriter.ValidateAncestors(destDirectory);
             var safe = Path.GetFileName(entry.DisplayName);
             if (string.IsNullOrWhiteSpace(safe))
             {
                 safe = entryId + ".bin";
             }
 
-            // neutralize path traversal in display name
-            safe = safe.Replace("..", "_", StringComparison.Ordinal);
             var outPath = Path.Combine(destDirectory, safe);
-            // S-class: atomic write + post-write content hash verify
-            var tmp = outPath + ".spdlab.tmp";
             try
             {
-                File.WriteAllBytes(tmp, plain);
-                var writtenHash = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(tmp)));
-                if (!LabCryptoCompare.FixedTimeEqualsHex(writtenHash, entry.ContentSha256))
-                {
-                    try { File.Delete(tmp); } catch { /* ignore */ }
-                    return FailOp("내보내기 검증 실패: 콘텐츠 해시 불일치");
-                }
-
-                File.Move(tmp, outPath, overwrite: true);
+                Hardening.VaultExportWriter.WriteNew(outPath, plain, entry.ContentSha256, cancellationToken);
             }
-            catch (Exception ex) when (ex is not InvalidOperationException)
+            catch (OperationCanceledException) { throw; }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or CryptographicException)
             {
-                try { if (File.Exists(tmp)) File.Delete(tmp); } catch { /* ignore */ }
-                return FailOp("내보내기 실패: " + ex.Message);
+                FaultObserver?.Invoke("ExportFailure:" + ex.Message);
+                return FailOp("내보내기 실패: 기존 파일을 보존했습니다. 오류 코드: " + ex.HResult.ToString("X8"));
             }
 
             AppendAudit("export", entryId);
@@ -679,6 +692,16 @@ public sealed partial class LabVaultService : IDisposable
         }
 
         Lock();
+        try
+        {
+            VaultExportWriter.ValidateAncestors(_root);
+            _sessionLease = VaultFileBoundary.OpenExclusive(_root, "session.lock", !File.Exists(Path.Combine(_root, "session.lock")));
+        }
+        catch (IOException)
+        {
+            CryptographicOperations.ZeroMemory(vmk);
+            return FailOp("금고가 다른 세션에서 사용 중이거나 파일 경계를 확인하지 못했습니다.");
+        }
         // S-class: keys enter via CryptoBroker; session mirrors for existing helpers
         var vmkCopy = (byte[])vmk.Clone();
         try
@@ -688,6 +711,7 @@ public sealed partial class LabVaultService : IDisposable
         catch
         {
             CryptographicOperations.ZeroMemory(vmk);
+            Lock();
             throw;
         }
 
@@ -739,23 +763,21 @@ public sealed partial class LabVaultService : IDisposable
             _securityState = LabSecurityState.CorruptionDetected;
         }
 
-        var recovered = RecoverIncompleteJournal();
+        var recovered = writeAllowed ? RecoverIncompleteJournal() : 0;
         // after orphan recover, re-commit activation if needed
         if (recovered > 0 && writeAllowed)
         {
             LabDurableCommit.WriteCommitted(_root, header.VaultId, _metadata.Generation);
         }
 
-        // S-class: purge loose object orphans not in metadata (crash leftovers)
+        // Preserve unreferenced objects until an explicit recovery review.
         var orphanPurged = 0;
-        if (writeAllowed && _metadata is not null)
+        var pendingReview = LabVaultJournal.ListIncomplete(_root).Count;
+        if (pendingReview > 0)
         {
-            var purge = LabOrphanScanner.Purge(_root, _metadata.Entries.Select(e => e.ObjectId));
-            orphanPurged = purge.Purged;
-            if (orphanPurged > 0)
-            {
-                AppendAudit("orphan_purge", orphanPurged + " loose");
-            }
+            _writeAllowed = false;
+            writeAllowed = false;
+            _securityState = LabSecurityState.RecoveryAvailable;
         }
 
         // S-class: v5 vault with missing activation after successful decrypt → self-heal (write path)
@@ -825,10 +847,10 @@ public sealed partial class LabVaultService : IDisposable
         return LabContentSuite.Aes256Gcm;
     }
 
-    /// <summary>Phase4: abort incomplete TX + shred orphan objects (obj:id in journal).</summary>
+    /// <summary>Reconcile journal references without deleting object bytes.</summary>
     private int RecoverIncompleteJournal()
     {
-        var n = LabVaultJournal.RecoverOrphans(_root, _header?.Generation ?? 1);
+        var n = LabVaultJournal.RecoverOrphans(_root, _header?.Generation ?? 1, _metadata?.Entries.Select(e => e.ObjectId));
         if (n > 0)
         {
             AppendAudit("journal_recover", n + " orphans");
@@ -837,7 +859,7 @@ public sealed partial class LabVaultService : IDisposable
         return n;
     }
 
-    private LabVaultOperationResult ImportFileStreaming(string sourcePath, long size)
+    private LabVaultOperationResult ImportFileStreaming(string sourcePath, long size, VaultFileBoundary.FileLease source, CancellationToken cancellationToken)
     {
         EnsureWriteUnlocked();
         var name = Path.GetFileName(sourcePath);
@@ -854,7 +876,7 @@ public sealed partial class LabVaultService : IDisposable
             var aad = LabCryptoBroker.BuildObjectAad(_header!.VaultId, entryId, contentGen);
             var objPath = LabObjectStore.AbsolutePath(_root, objectId);
             Directory.CreateDirectory(Path.GetDirectoryName(objPath)!);
-            using (var input = File.OpenRead(sourcePath))
+            var input = source.Stream;
             using (var output = new FileStream(objPath, FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 LabVaultCrypto.EncryptChunkedToFile(dataKey, input, output, aad, ResolveContentSuite());
@@ -873,10 +895,11 @@ public sealed partial class LabVaultService : IDisposable
             LabVaultJournal.Mark(_root, tx, LabVaultJournal.State.ObjectsReady, "obj:" + objectId, gen);
 
             string contentHash;
-            using (var fs = File.OpenRead(sourcePath))
-            {
-                contentHash = Convert.ToHexString(SHA256.HashData(fs));
-            }
+            source.Validate();
+            input.Position = 0;
+            contentHash = Convert.ToHexString(SHA256.HashData(input));
+            source.Validate();
+            cancellationToken.ThrowIfCancellationRequested();
 
             var wrappedDek = WrapKey(_wrapKey!, dataKey, Encoding.UTF8.GetBytes("dek:" + objectId));
             _metadata!.Entries.Add(new LabMetaEntry
@@ -912,6 +935,7 @@ public sealed partial class LabVaultService : IDisposable
         {
             LabVaultJournal.Mark(_root, tx, LabVaultJournal.State.Aborted, name, gen);
             _securityState = LabSecurityState.Unlocked;
+            if (ex is OperationCanceledException) throw;
             return FailOp("스트리밍 import 실패: " + ex.Message);
         }
         finally

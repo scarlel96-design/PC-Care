@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "scope": "synthetic v5 four-entry folder and 4 MiB payload",
+  "folderFileCount": 4,
+  "allFolderBytesCompared": true,
+  "allSourcesPreserved": true,
+  "performancePayload": {
+    "status": "PASS",
+    "bytes": 4194304,
+    "inputSha256": "AAF34F2D9825929FA1021E4C0C7919F93F4B15343875E806678D6229E2CEFCE3",
+    "outputSha256": "AAF34F2D9825929FA1021E4C0C7919F93F4B15343875E806678D6229E2CEFCE3",
+    "unlockMs": 400.1561,
+    "importMs": 158.3525,
+    "exportMs": 209.8538,
+    "kdf": "LabFast synthetic profile",
+    "elapsedMs": 3157.5326,
+    "cpuMs": 8078.125,
+    "peakWorkingSetBytes": 539525120,
+    "lowEndHardware": "NOT TESTED",
+    "largeList": "NOT TESTED"
+  },
+  "gui": "NOT TESTED",
+  "sourceCommit": "recorded in GITHUB_RESULT.txt"
+}

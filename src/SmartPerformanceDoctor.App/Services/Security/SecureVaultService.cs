@@ -40,6 +40,8 @@ public sealed class SecureVaultService : IDisposable
     /// <summary>True when on-disk vault is SecurityLab v4 (not legacy spd-vault-v3).</summary>
     public bool IsLabVaultFormat => SecureVaultLabBackend.ExistsOnDisk() && !SecureVaultPaths.Exists();
 
+    public string VaultFormatDescription => UsesLabEngine ? _lab.AuthenticatedFormat : _manifest?.Format ?? "spd-vault · 잠금 해제 후 확인";
+
     public bool UsesLabEngine => IsLabVaultFormat || (_lab.IsUnlocked && !SecureVaultPaths.Exists());
 
     /// <summary>Lab security state label for UI (design §10 subset).</summary>
@@ -600,7 +602,7 @@ public sealed class SecureVaultService : IDisposable
     }
     public async Task<SecureVaultOperationResult> AddFileAsync(
         string sourcePath,
-        bool sealOrigin = true,
+        bool sealOrigin = false,
         CancellationToken cancellationToken = default,
         IProgress<SecureVaultProgressReport>? progress = null)
     {
@@ -613,7 +615,7 @@ public sealed class SecureVaultService : IDisposable
         sourcePath = input.NormalizedPath;
         if (IsLabVaultFormat)
         {
-            return await _lab.AddFileAsync(sourcePath, sealOrigin, progress).ConfigureAwait(false);
+            return await _lab.AddFileAsync(sourcePath, sealOrigin, progress, cancellationToken).ConfigureAwait(false);
         }
 
         EnsureUnlocked();
@@ -676,7 +678,7 @@ public sealed class SecureVaultService : IDisposable
 
     public async Task<SecureVaultOperationResult> AddFolderAsync(
         string folderPath,
-        bool sealOrigin = true,
+        bool sealOrigin = false,
         CancellationToken cancellationToken = default,
         IProgress<SecureVaultProgressReport>? progress = null)
     {
@@ -687,23 +689,14 @@ public sealed class SecureVaultService : IDisposable
         }
 
         folderPath = input.NormalizedPath;
-        try
-        {
-            var linkedMember = Directory.EnumerateFileSystemEntries(folderPath, "*", SearchOption.AllDirectories)
-                .FirstOrDefault(path => (File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0);
-            if (!string.IsNullOrWhiteSpace(linkedMember))
-            {
-                return Fail("폴더 안에 정션·심볼릭 링크·재분석 지점이 있어 보관하지 않았습니다: " + linkedMember);
-            }
-        }
-        catch (Exception ex)
-        {
-            return Fail("폴더 내부 경로를 안전하게 확인하지 못했습니다: " + ex.Message);
-        }
+        string[] validatedFiles;
+        try { validatedFiles = VaultImportPathValidator.EnumerateValidatedFiles(folderPath, cancellationToken); }
+        catch (OperationCanceledException) { throw; }
+        catch (Exception) { return Fail("폴더 내부 경로를 안전하게 확인하지 못했습니다. 원본을 보존했습니다."); }
 
         if (IsLabVaultFormat)
         {
-            return await _lab.AddFolderAsync(folderPath, sealOrigin, progress).ConfigureAwait(false);
+            return await _lab.AddFolderAsync(folderPath, sealOrigin, progress, cancellationToken).ConfigureAwait(false);
         }
 
         EnsureUnlocked();
@@ -715,7 +708,7 @@ public sealed class SecureVaultService : IDisposable
         var rootName = new DirectoryInfo(folderPath).Name;
         var bundleId = Guid.NewGuid().ToString("N");
         var rootEntryId = Guid.NewGuid().ToString("N");
-        var files = Directory.EnumerateFiles(folderPath, "*", SearchOption.AllDirectories)
+        var files = validatedFiles
             .Where(f => !IsVaultArtifact(f))
             .ToArray();
 
@@ -913,23 +906,7 @@ public sealed class SecureVaultService : IDisposable
     {
         if (IsLabVaultFormat)
         {
-            var first = await _lab.ExportEntryAsync(entryId, destinationDirectory, stepUpConfirmed: false)
-                .ConfigureAwait(false);
-            if (!first.Success
-                && first.Message.Contains("추가 확인", StringComparison.Ordinal)
-                && !stepUpConfirmed)
-            {
-                // product UI may call again with stepUpConfirmed; signal explicitly
-                return first;
-            }
-
-            if (!first.Success && stepUpConfirmed)
-            {
-                return await _lab.ExportEntryAsync(entryId, destinationDirectory, stepUpConfirmed: true)
-                    .ConfigureAwait(false);
-            }
-
-            return first;
+            return await _lab.ExportEntryAsync(entryId, destinationDirectory, stepUpConfirmed, cancellationToken).ConfigureAwait(false);
         }
 
         EnsureUnlocked();
@@ -950,11 +927,12 @@ public sealed class SecureVaultService : IDisposable
     public async Task<SecureVaultOperationResult> ExportBrowsableItemsAsync(
         IReadOnlyCollection<SecureVaultBrowsableItem> items,
         string destinationDirectory,
-        bool stepUpConfirmed = false)
+        bool stepUpConfirmed = false,
+        CancellationToken cancellationToken = default)
     {
         if (IsLabVaultFormat)
         {
-            return await _lab.ExportBrowsableItemsAsync(items, destinationDirectory, stepUpConfirmed)
+            return await _lab.ExportBrowsableItemsAsync(items, destinationDirectory, stepUpConfirmed, cancellationToken)
                 .ConfigureAwait(false);
         }
 
@@ -972,18 +950,19 @@ public sealed class SecureVaultService : IDisposable
         var exported = 0;
         foreach (var item in exportable)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             SecureVaultOperationResult result;
             if (item.Kind == SecureVaultBrowsableKind.FolderRoot)
             {
                 result = item.EntryId is not null
-                    ? await ExportEntryAsync(item.EntryId, destinationDirectory, stepUpConfirmed: stepUpConfirmed).ConfigureAwait(false)
+                    ? await ExportEntryAsync(item.EntryId, destinationDirectory, cancellationToken, stepUpConfirmed: stepUpConfirmed).ConfigureAwait(false)
                     : item.BundleId is not null
-                        ? await ExportBundleAsync(item.BundleId, destinationDirectory).ConfigureAwait(false)
+                        ? await ExportBundleAsync(item.BundleId, destinationDirectory, cancellationToken).ConfigureAwait(false)
                         : Fail("폴더 항목을 찾을 수 없습니다.");
             }
             else if (!string.IsNullOrWhiteSpace(item.EntryId))
             {
-                result = await ExportEntryAsync(item.EntryId, destinationDirectory, stepUpConfirmed: stepUpConfirmed)
+                result = await ExportEntryAsync(item.EntryId, destinationDirectory, cancellationToken, stepUpConfirmed: stepUpConfirmed)
                     .ConfigureAwait(false);
             }
             else
@@ -1604,17 +1583,17 @@ public sealed class SecureVaultService : IDisposable
         var relativePaths = plans.Select(plan => plan.RelativePath).ToArray();
         ReportProgress(
             progress,
-            SecureVaultProgressPhase.Unsealing,
+            SecureVaultProgressPhase.Preparing,
             10,
-            "잠금 해제",
-            "원본 폴더와 하위 폴더의 금고 잠금 표시를 해제합니다.",
+            "추출 준비",
+            "추출 경로와 기존 파일의 충돌 여부를 확인합니다.",
             Path.GetFileName(normalizedDestination),
             totalCount: members.Length);
-        Directory.CreateDirectory(normalizedDestination);
-        SecureVaultOriginSealService.UnsealFolderTree(normalizedDestination, relativePaths, notifyShell: false);
+        SmartPerformanceDoctor.SecurityLab.Hardening.VaultExportWriter.ValidateAncestors(normalizedDestination);
 
         foreach (var directory in plans.Select(plan => plan.TargetDirectory).Where(path => !string.IsNullOrWhiteSpace(path)).Distinct(StringComparer.OrdinalIgnoreCase))
         {
+            SmartPerformanceDoctor.SecurityLab.Hardening.VaultExportWriter.ValidateAncestors(directory!);
             Directory.CreateDirectory(directory!);
         }
 
@@ -1638,9 +1617,8 @@ public sealed class SecureVaultService : IDisposable
                     plans.Count);
 
                 var plaintext = await DecryptEntryPayloadAsync(plan.Member, cancellationToken);
-                PrepareRestoreTarget(plan.TargetPath);
-                await WriteFileAtomicallyAsync(plan.TargetPath, plaintext, cancellationToken);
-                SecureVaultCrypto.Zero(plaintext);
+                try { await WriteFileAtomicallyAsync(plan.TargetPath, plaintext, cancellationToken); }
+                finally { SecureVaultCrypto.Zero(plaintext); }
                 exported++;
             }
         }
@@ -1714,8 +1692,7 @@ public sealed class SecureVaultService : IDisposable
         }
 
         var normalizedDestination = SecureVaultPathHelper.NormalizeDirectory(destinationDirectory);
-        Directory.CreateDirectory(normalizedDestination);
-        SecureVaultOriginSealService.UnsealFolder(normalizedDestination);
+        SmartPerformanceDoctor.SecurityLab.Hardening.VaultExportWriter.ValidateAncestors(normalizedDestination);
 
         string target;
         string displayName;
@@ -1743,13 +1720,14 @@ public sealed class SecureVaultService : IDisposable
         var targetDir = Path.GetDirectoryName(target);
         if (!string.IsNullOrWhiteSpace(targetDir))
         {
-            Directory.CreateDirectory(targetDir);
-            SecureVaultOriginSealService.UnsealFolder(targetDir);
+            SmartPerformanceDoctor.SecurityLab.Hardening.VaultExportWriter.ValidateAncestors(targetDir);
         }
 
         var plaintext = await DecryptEntryPayloadAsync(entry, cancellationToken);
-        await File.WriteAllBytesAsync(target, plaintext, cancellationToken);
-        SecureVaultCrypto.Zero(plaintext);
+        try { await WriteFileAtomicallyAsync(target, plaintext, cancellationToken); }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        { return Fail("추출 대상이 존재하거나 접근할 수 없습니다. 기존 파일과 금고 원본을 보존했습니다."); }
+        finally { SecureVaultCrypto.Zero(plaintext); }
         AppendAudit("entry-exported", $"보내기 · {HashPath(displayName)}", _metadataKey!, _macKey!);
         return new SecureVaultOperationResult
         {
@@ -1761,31 +1739,39 @@ public sealed class SecureVaultService : IDisposable
 
     private async Task<byte[]> DecryptEntryPayloadAsync(SecureVaultManifestEntry entry, CancellationToken cancellationToken)
     {
-        _ = cancellationToken;
+        cancellationToken.ThrowIfCancellationRequested();
         var shardPath = GetPrimaryShardPath(entry.ShardName);
         if (!File.Exists(shardPath))
         {
             throw new FileNotFoundException("암호화 데이터가 없습니다.");
         }
 
+        cancellationToken.ThrowIfCancellationRequested();
         var dek = UnwrapDek(entry);
-        var layered = UsesLayeredSecurity(entry, shardPath);
-        var shardMacKey = layered
-            ? SecureVaultCrypto.DeriveShardKey(_vaultKey!, entry.EntryId, "spd-shard-mac")
-            : null;
-        var blob = ReadEncryptedBlob(shardPath, shardMacKey);
-        var aad = layered ? BuildAssociatedData(entry) : null;
-        var padded = SecureVaultCrypto.Decrypt(dek, blob, aad);
-        SecureVaultCrypto.Zero(dek);
-        var plaintext = layered
-            ? SecureVaultCrypto.Unpad(padded, (int)entry.OriginalSize)
-            : padded;
-        if (!string.Equals(SecureVaultCrypto.HashSha256Hex(plaintext), entry.ContentSha256, StringComparison.OrdinalIgnoreCase))
+        byte[]? shardMacKey = null;
+        byte[]? padded = null;
+        byte[]? plaintext = null;
+        var accepted = false;
+        try
         {
-            throw new CryptographicException("무결성 검증에 실패했습니다.");
+            var layered = UsesLayeredSecurity(entry, shardPath);
+            shardMacKey = layered ? SecureVaultCrypto.DeriveShardKey(_vaultKey!, entry.EntryId, "spd-shard-mac") : null;
+            var blob = ReadEncryptedBlob(shardPath, shardMacKey);
+            padded = SecureVaultCrypto.Decrypt(dek, blob, layered ? BuildAssociatedData(entry) : null);
+            plaintext = layered ? SecureVaultCrypto.Unpad(padded, checked((int)entry.OriginalSize)) : padded;
+            cancellationToken.ThrowIfCancellationRequested();
+            if (!string.Equals(SecureVaultCrypto.HashSha256Hex(plaintext), entry.ContentSha256, StringComparison.OrdinalIgnoreCase))
+                throw new CryptographicException("무결성 검증에 실패했습니다.");
+            accepted = true;
+            return plaintext;
         }
-
-        return plaintext;
+        finally
+        {
+            SecureVaultCrypto.Zero(dek);
+            if (shardMacKey is not null) SecureVaultCrypto.Zero(shardMacKey);
+            if (padded is not null && (!accepted || !ReferenceEquals(padded, plaintext))) SecureVaultCrypto.Zero(padded);
+            if (!accepted && plaintext is not null) SecureVaultCrypto.Zero(plaintext);
+        }
     }
 
     private SecureVaultOperationResult AddPayload(
@@ -2262,49 +2248,9 @@ public sealed class SecureVaultService : IDisposable
         });
     }
 
-    private static void PrepareRestoreTarget(string targetPath)
-    {
-        SecureVaultOriginSealService.UnsealFileStub(targetPath);
-        if (!File.Exists(targetPath))
-        {
-            return;
-        }
-
-        try
-        {
-            File.SetAttributes(targetPath, FileAttributes.Normal);
-            File.Delete(targetPath);
-        }
-        catch (IOException)
-        {
-            // WriteFileAtomicallyAsync will surface a clearer error if deletion still fails.
-        }
-    }
-
-    private static async Task WriteFileAtomicallyAsync(string targetPath, byte[] content, CancellationToken cancellationToken)
-    {
-        var directory = Path.GetDirectoryName(targetPath);
-        if (!string.IsNullOrWhiteSpace(directory))
-        {
-            Directory.CreateDirectory(directory);
-        }
-
-        var tempPath = targetPath + ".spdrestore.tmp";
-        if (File.Exists(tempPath))
-        {
-            File.SetAttributes(tempPath, FileAttributes.Normal);
-            File.Delete(tempPath);
-        }
-
-        await File.WriteAllBytesAsync(tempPath, content, cancellationToken);
-        if (File.Exists(targetPath))
-        {
-            File.SetAttributes(targetPath, FileAttributes.Normal);
-            File.Delete(targetPath);
-        }
-
-        File.Move(tempPath, targetPath);
-    }
+    private static Task WriteFileAtomicallyAsync(string targetPath, byte[] content, CancellationToken cancellationToken) =>
+        Task.Run(() => SmartPerformanceDoctor.SecurityLab.Hardening.VaultExportWriter.WriteNew(
+            targetPath, content, SecureVaultCrypto.HashSha256Hex(content), cancellationToken), cancellationToken);
 
     private static async Task<byte[]> ReadVaultSourceFileAsync(string filePath, CancellationToken cancellationToken)
     {

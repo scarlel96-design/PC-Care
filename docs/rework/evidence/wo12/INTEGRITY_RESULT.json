@@ -1,0 +1,37 @@
+{
+  "status": "PARTIAL",
+  "collisionPreserved": true,
+  "foreignTempPreserved": true,
+  "ownedTempHashFailureCleanup": true,
+  "journalNeverDeletesObjectBytes": true,
+  "crashScenarios": [
+    {
+      "stage": "ObjectsReady",
+      "status": "PASS",
+      "readerExit": 0,
+      "output": "VERIFIED_ENTRIES=1;WRITE_ALLOWED=False",
+      "originalObjectFilesPresent": true,
+      "recovery": "Export bytes verified in separate process",
+      "powerLossTested": false
+    },
+    {
+      "stage": "MetadataReady",
+      "status": "PARTIAL",
+      "readerExit": 4,
+      "output": "PRESERVED_FAIL_CLOSED",
+      "originalObjectFilesPresent": true,
+      "recovery": "Unlock blocked; ciphertext and metadata retained for review",
+      "powerLossTested": false
+    },
+    {
+      "stage": "CommitWritten",
+      "status": "PASS",
+      "readerExit": 0,
+      "output": "VERIFIED_ENTRIES=2;WRITE_ALLOWED=True",
+      "originalObjectFilesPresent": true,
+      "recovery": "Export bytes verified in separate process",
+      "powerLossTested": false
+    }
+  ],
+  "physicalPowerLoss": "NOT TESTED"
+}

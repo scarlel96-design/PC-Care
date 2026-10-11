@@ -6,9 +6,9 @@
     <ScrollViewer>
         <StackPanel Padding="{StaticResource PccPagePadding}" MaxWidth="1060" Spacing="18">
             <TextBlock Text="보안 금고" Style="{StaticResource MacPageTitleStyle}"/>
-            <TextBlock Text="원본 보안 삭제가 확인된 뒤에만 보관 완료를 표시합니다. 원본 경로에는 잠금 스텁이나 표시를 남기지 않습니다."
+            <TextBlock Text="파일을 암호화해 복사합니다. 원본은 기본으로 보존하며, 내보낼 위치에 같은 이름의 파일이 있으면 중단합니다."
                        Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
-            <CheckBox x:Name="SealOriginCheckBox" Content="가져온 뒤 원본 보안 삭제 (권장)" IsChecked="True"/>
+            <CheckBox x:Name="SealOriginCheckBox" Content="가져온 뒤 원본 보안 삭제 (별도 선택 · 되돌릴 수 없음)" IsChecked="False"/>
 
             <Border Style="{StaticResource MacWindowPanelStyle}">
                 <StackPanel Spacing="8">
@@ -18,8 +18,8 @@
                                Foreground="{StaticResource SpdAccentBrush}"/>
                     <TextBlock x:Name="SessionCountdownText" TextWrapping="Wrap" FontWeight="SemiBold"
                                Foreground="{StaticResource SpdAccentBrush}"/>
-                    <TextBlock x:Name="StatusLineText" TextWrapping="Wrap" Style="{StaticResource MacInlineStatusTextStyle}" AutomationProperties.LiveSetting="Assertive" AutomationProperties.Name="보안 금고 상태"/>
-                    <TextBlock x:Name="CryptoLineText"
+                    <TextBlock x:Name="StatusLineText" AutomationProperties.AutomationId="VaultStatus" TextWrapping="Wrap" Style="{StaticResource MacInlineStatusTextStyle}" AutomationProperties.LiveSetting="Assertive" AutomationProperties.Name="보안 금고 상태"/>
+                    <TextBlock x:Name="CryptoLineText" AutomationProperties.AutomationId="VaultFormat"
                                Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
                     <TextBlock x:Name="SecurityLineText"
                                Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
@@ -95,7 +95,7 @@
                                    Foreground="{StaticResource SpdMutedTextBrush}" Text="선택된 항목 없음"/>
                     </Grid>
                     <TextBlock x:Name="BreadcrumbText" FontWeight="SemiBold"/>
-                    <ListView x:Name="EntryList" MinHeight="240" SelectionMode="Multiple" DoubleTapped="EntryDoubleTapped"
+                    <ListView x:Name="EntryList" AutomationProperties.AutomationId="VaultEntries" Height="360" MinHeight="240" AutomationProperties.Name="금고 파일 및 폴더 다중 선택 목록" SelectionMode="Multiple" DoubleTapped="EntryDoubleTapped"
                               SelectionChanged="EntrySelectionChanged">
                         <ListView.ItemTemplate>
                             <DataTemplate>

@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Windows.Automation;
 
-if (args.Length != 2 || args[0] is not ("--exercise-readonly-page" or "--exercise-storage-page"))
+if (args.Length != 2 || args[0] is not ("--exercise-readonly-page" or "--exercise-storage-page" or "--inspect-vault-page"))
 {
     Console.WriteLine(JsonSerializer.Serialize(new { status="NOT TESTED", reason="Explicit interactive test process and diagnostics page are required.", guiExecuted=false }));
     return 0;
@@ -16,6 +16,15 @@ try
     var window = AutomationElement.FromHandle(process.MainWindowHandle);
     AutomationElement Find(string id) => window.FindFirst(TreeScope.Descendants,
         new PropertyCondition(AutomationElement.AutomationIdProperty,id)) ?? throw new InvalidOperationException("ControlMissing:"+id);
+    if (args[0] == "--inspect-vault-page")
+    {
+        var vaultStatus = Find("VaultStatus");
+        var entries = Find("VaultEntries");
+        Console.WriteLine(JsonSerializer.Serialize(new { status="PARTIAL", guiExecuted=true,
+            statusAccessible=vaultStatus.Current.Name.Length>0, entriesAccessible=entries.Current.AutomationId=="VaultEntries",
+            writesExecuted=false, notTested=new[]{"Create","Import","Export","ScreenReader","HighDpi","ReducedMotion"} }));
+        return 0;
+    }
     var storage = args[0] == "--exercise-storage-page";
     var start=Find(storage ? "StorageCareStart" : "PerformanceDiagnosticsStart"); var stop=Find(storage ? "StorageCareStop" : "PerformanceDiagnosticsStop");
     var status=Find(storage ? "StorageCareStatus" : "PerformanceDiagnosticsStatus"); var plans=Find(storage ? "StorageCarePlan" : "PerformanceRecoveryPlans");

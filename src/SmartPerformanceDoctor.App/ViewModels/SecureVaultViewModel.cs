@@ -270,14 +270,16 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
     public async Task<SecureVaultOperationResult> AddFileAsync(
         string path,
         IProgress<SecureVaultProgressReport>? progress = null,
-        bool sealOrigin = true)
+        bool sealOrigin = false,
+        CancellationToken cancellationToken = default)
     {
+        if (IsBusy) return new SecureVaultOperationResult { Success = false, Message = "다른 금고 작업이 진행 중입니다." };
         IsBusy = true;
         try
         {
             TouchActivity();
             var result = await Task.Run(async () =>
-                await _service.AddFileAsync(path, sealOrigin, cancellationToken: default, progress: progress)
+                await _service.AddFileAsync(path, sealOrigin, cancellationToken: cancellationToken, progress: progress)
                     .ConfigureAwait(false));
             StatusLine = result.Message;
             if (result.Success)
@@ -297,14 +299,16 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
     public async Task<SecureVaultOperationResult> AddFolderAsync(
         string path,
         IProgress<SecureVaultProgressReport>? progress = null,
-        bool sealOrigin = true)
+        bool sealOrigin = false,
+        CancellationToken cancellationToken = default)
     {
+        if (IsBusy) return new SecureVaultOperationResult { Success = false, Message = "다른 금고 작업이 진행 중입니다." };
         IsBusy = true;
         try
         {
             TouchActivity();
             var result = await Task.Run(async () =>
-                await _service.AddFolderAsync(path, sealOrigin, cancellationToken: default, progress: progress)
+                await _service.AddFolderAsync(path, sealOrigin, cancellationToken: cancellationToken, progress: progress)
                     .ConfigureAwait(false));
             StatusLine = result.Message;
             if (result.Success)
@@ -324,8 +328,10 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
     public async Task<SecureVaultOperationResult> ExportEntryAsync(
         SecureVaultBrowsableItem item,
         string destination,
-        bool stepUpConfirmed = false)
+        bool stepUpConfirmed = false,
+        CancellationToken cancellationToken = default)
     {
+        if (IsBusy) return new SecureVaultOperationResult { Success = false, Message = "다른 금고 작업이 진행 중입니다." };
         IsBusy = true;
         try
         {
@@ -363,13 +369,15 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
     public async Task<SecureVaultOperationResult> ExportEntriesAsync(
         IReadOnlyCollection<SecureVaultBrowsableItem> items,
         string destination,
-        bool stepUpConfirmed = false)
+        bool stepUpConfirmed = false,
+        CancellationToken cancellationToken = default)
     {
+        if (IsBusy) return new SecureVaultOperationResult { Success = false, Message = "다른 금고 작업이 진행 중입니다." };
         IsBusy = true;
         try
         {
             TouchActivity();
-            var result = await _service.ExportBrowsableItemsAsync(items, destination, stepUpConfirmed);
+            var result = await Task.Run(() => _service.ExportBrowsableItemsAsync(items, destination, stepUpConfirmed, cancellationToken), cancellationToken);
             StatusLine = result.Message;
             return result;
         }
@@ -380,8 +388,10 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
     }
     public async Task<SecureVaultOperationResult> RestoreToOriginAsync(
         SecureVaultBrowsableItem item,
-        IProgress<SecureVaultProgressReport>? progress = null)
+        IProgress<SecureVaultProgressReport>? progress = null,
+        CancellationToken cancellationToken = default)
     {
+        if (IsBusy) return new SecureVaultOperationResult { Success = false, Message = "다른 금고 작업이 진행 중입니다." };
         IsBusy = true;
         try
         {
@@ -391,15 +401,15 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
                 if (item.Kind == SecureVaultBrowsableKind.FolderRoot)
                 {
                     return item.EntryId is not null
-                        ? await _service.RestoreToOriginAsync(item.EntryId, progress: progress).ConfigureAwait(false)
+                        ? await _service.RestoreToOriginAsync(item.EntryId, cancellationToken: cancellationToken, progress: progress).ConfigureAwait(false)
                         : item.BundleId is not null
-                            ? await _service.RestoreBundleToOriginAsync(item.BundleId, progress: progress).ConfigureAwait(false)
+                            ? await _service.RestoreBundleToOriginAsync(item.BundleId, cancellationToken: cancellationToken, progress: progress).ConfigureAwait(false)
                             : new SecureVaultOperationResult { Success = false, Message = "폴더 항목을 찾을 수 없습니다." };
                 }
 
                 if (item.Kind is SecureVaultBrowsableKind.File or SecureVaultBrowsableKind.StandaloneFile)
                 {
-                    return await _service.RestoreToOriginAsync(item.EntryId!, progress: progress).ConfigureAwait(false);
+                    return await _service.RestoreToOriginAsync(item.EntryId!, cancellationToken: cancellationToken, progress: progress).ConfigureAwait(false);
                 }
 
                 return new SecureVaultOperationResult { Success = false, Message = "파일 또는 최상위 폴더를 선택하세요." };
@@ -414,6 +424,7 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
 
             return result;
         }
+        catch (OperationCanceledException) { throw; }
         catch (Exception ex)
         {
             StatusLine = $"복원 실패: {ex.Message}";
@@ -487,7 +498,7 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
         {
             SecurityStateLine = "금고 없음";
             SecurityLine = "마스터 비밀번호로 새 금고를 만드세요.";
-            CryptoLine = "강력한 암호화 · 복구 코드 지원";
+            CryptoLine = "금고 형식은 생성 후 표시됩니다 · 독립 보안 평가 미완료";
             return;
         }
 
@@ -499,7 +510,7 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
                 ? _service.GetLabRecoveryStatusLine()
                 : status.RecoveryStatusLine;
             SecurityLine = recLine;
-            CryptoLine = status.AuditChainValid ? "보안 상태 정상" : "보안 점검 필요";
+            CryptoLine = _service.VaultFormatDescription + (status.AuditChainValid ? " · 감사 기록 무결성 확인" : " · 무결성 확인 필요") + " · 독립 보안 평가 미완료";
             return;
         }
 
@@ -512,7 +523,7 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
         };
 
         SecurityLine = status.RecoveryKeyConfigured ? "복구 키 설정됨" : "복구 키 없음";
-        CryptoLine = "암호화 보호 중";
+        CryptoLine = _service.VaultFormatDescription + " · 독립 보안 평가 미완료";
     }
 
 
@@ -526,19 +537,20 @@ public sealed class SecureVaultViewModel : ObservableObject, IDisposable
 
     private void ReloadVisibleItems()
     {
-        VisibleItems.Clear();
         CanNavigateBack = _currentBundleId is not null;
-        if (_service.State != SecureVaultState.Unlocked)
+        var next = _service.State == SecureVaultState.Unlocked
+            ? _service.GetBrowsableItems(_currentBundleId, _currentRelativePrefix)
+            : Array.Empty<SecureVaultBrowsableItem>();
+        for (var index = 0; index < next.Count; index++)
         {
-            OnPropertyChanged(nameof(VisibleItems));
-            return;
+            var item = next[index];
+            if (index < VisibleItems.Count && VisibleItems[index].Key == item.Key &&
+                VisibleItems[index].DetailLine == item.DetailLine && VisibleItems[index].TotalSize == item.TotalSize &&
+                VisibleItems[index].DisplayName == item.DisplayName && VisibleItems[index].Kind == item.Kind)
+                continue;
+            if (index < VisibleItems.Count) VisibleItems[index] = item;
+            else VisibleItems.Add(item);
         }
-
-        foreach (var item in _service.GetBrowsableItems(_currentBundleId, _currentRelativePrefix))
-        {
-            VisibleItems.Add(item);
-        }
-
-        OnPropertyChanged(nameof(VisibleItems));
+        while (VisibleItems.Count > next.Count) VisibleItems.RemoveAt(VisibleItems.Count - 1);
     }
 }

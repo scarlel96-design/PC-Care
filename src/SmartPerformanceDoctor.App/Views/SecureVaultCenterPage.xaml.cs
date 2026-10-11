@@ -532,7 +532,7 @@ public sealed partial class SecureVaultCenterPage : Page
         var sealOrigin = SealOriginCheckBox.IsChecked == true;
         var operationResult = await RunVaultOperationWithProgressAsync(
             sealOrigin ? "파일 암호화 보관 · 원본 보안 삭제" : "파일 암호화 보관",
-            progress => _viewModel.AddFileAsync(path, progress, sealOrigin));
+            (progress, token) => _viewModel.AddFileAsync(path, progress, sealOrigin, token));
         await ShowOperationResultDialogAsync(operationResult.Success ? "보관 완료" : "보관 실패", operationResult);
         RefreshEntryList();
     }
@@ -587,7 +587,7 @@ public sealed partial class SecureVaultCenterPage : Page
         var sealOrigin = SealOriginCheckBox.IsChecked == true;
         var operationResult = await RunVaultOperationWithProgressAsync(
             sealOrigin ? "폴더 암호화 보관 · 원본 보안 삭제" : "폴더 암호화 보관",
-            progress => _viewModel.AddFolderAsync(path, progress, sealOrigin));
+            (progress, token) => _viewModel.AddFolderAsync(path, progress, sealOrigin, token));
         await ShowOperationResultDialogAsync(operationResult.Success ? "보관 완료" : "보관 실패", operationResult);
         RefreshEntryList();
     }
@@ -717,7 +717,7 @@ public sealed partial class SecureVaultCenterPage : Page
             return;
         }
 
-        var result = await _viewModel.ExportEntriesAsync(items, destination, stepUpConfirmed: false);
+        var result = await RunVaultOperationWithProgressAsync("내보내기", (progress, token) => _viewModel.ExportEntriesAsync(items, destination, false, token));
         if (!result.Success && result.Message.Contains("추가 확인", StringComparison.Ordinal))
         {
             var confirm = new ContentDialog
@@ -731,7 +731,7 @@ public sealed partial class SecureVaultCenterPage : Page
             };
             if (await confirm.ShowAsync() == ContentDialogResult.Primary)
             {
-                result = await _viewModel.ExportEntriesAsync(items, destination, stepUpConfirmed: true);
+                result = await RunVaultOperationWithProgressAsync("내보내기", (progress, token) => _viewModel.ExportEntriesAsync(items, destination, true, token));
             }
         }
 
@@ -774,7 +774,7 @@ public sealed partial class SecureVaultCenterPage : Page
 
         var result = await RunVaultOperationWithProgressAsync(
             "원본 복원",
-            progress => _viewModel.RestoreToOriginAsync(item, progress));
+            (progress, token) => _viewModel.RestoreToOriginAsync(item, progress, token));
         await ShowOperationResultDialogAsync("원본 복원", result);
         RefreshEntryList();
     }
@@ -951,23 +951,24 @@ public sealed partial class SecureVaultCenterPage : Page
 
     private async Task<SecureVaultOperationResult> RunVaultOperationWithProgressAsync(
         string dialogTitle,
-        Func<IProgress<SecureVaultProgressReport>, Task<SecureVaultOperationResult>> operation)
+        Func<IProgress<SecureVaultProgressReport>, CancellationToken, Task<SecureVaultOperationResult>> operation)
     {
         _operationInProgress = true;
         _autoLockTimer.Stop();
         SetUnlockedActionsEnabled(false);
 
-        var progressDialog = new SecureVaultOperationProgressDialog(dialogTitle, XamlRoot);
+        using var cancellation = new CancellationTokenSource();
+        var progressDialog = new SecureVaultOperationProgressDialog(dialogTitle, XamlRoot, cancellation);
         var progress = progressDialog.CreateProgress();
         progressDialog.Show();
 
         try
         {
-            return await operation(progress);
+            return await operation(progress, cancellation.Token);
         }
         catch (OperationCanceledException)
         {
-            return new SecureVaultOperationResult { Success = false, Message = "금고 작업을 취소했습니다." };
+            return new SecureVaultOperationResult { Success = false, Message = "금고 작업을 취소했습니다. 완료된 사본과 원본은 보존됩니다. 목록을 다시 확인하세요." };
         }
         catch (Exception ex)
         {
