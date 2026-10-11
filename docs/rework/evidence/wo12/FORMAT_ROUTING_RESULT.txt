@@ -1,6 +1,7 @@
 STATUS: PARTIAL
 INPUT: SecureVaultService, SecureVaultLabBackend, AstraVaultHostService, ProductFeatureFlags, Av3PhaseGate
-COMMAND: source audit and WO12VaultReliabilityTests
+TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo12-full-final.trx' -v:minimal
+AUDIT: actual service routes and approval constants
 OUTPUT: legacy manifest route; product-host Lab create emits spd-vault-v5-lab; six AV3 approvals false
-EXIT CODE: 0 for final application tests
+EXIT CODE: 0
 Mixed-format fixtures and new AV3 reader fixtures: NOT TESTED

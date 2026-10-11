@@ -88,3 +88,17 @@ The final tree cannot be stored inside itself without changing that tree.
 | P1 | Independent GUI account is absent | Dedicated interactive account, isolated settings, UIA and accessibility results |
 | P1 | Custom HChaCha20 has no new independent vector review in WO-12 | Published vectors and maintained-library compatibility study |
 | P1 | Read-only unlock still changes audit and rate-limit files | Distinguish operational read-only from immutable forensic snapshots |
+
+## Final Windows CI evidence
+
+Validated source: `1dcba347fccabed1a6b17fff53f35020bf52541b`.
+Validated source tree: `367b8c11a1be3cce4a8cc11ccd5afec72984e271`.
+[Windows CI 38159809986](https://github.com/scarlel96-design/PC-Care/actions/runs/38159809986) completed successfully.
+Application: 1,019 PASS / 111 SKIP / 0 FAIL.
+SecurityLab: 36 PASS / 0 SKIP / 0 FAIL, separate project.
+Performance 233, updater 128 and new vault 17 cases are included in the application total.
+The process probe again records two successful byte recoveries and one fail-closed preservation.
+Live GUI, physical power loss and external cryptographic review remain NOT TESTED.
+Read `evidence/wo12/CI_RESULT.json` for raw XML counters and step provenance.
+Read `evidence/wo12/SOURCE_PROVENANCE.json` for all source-commit changes.
+The publication receipt identifies the subsequent documentation-only commit.

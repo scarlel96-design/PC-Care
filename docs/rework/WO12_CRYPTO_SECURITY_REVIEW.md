@@ -13,7 +13,7 @@ It uses existing AES-GCM and chunked formats, not a new WO-12 cipher design.
 Lab uses Argon2id, random salt and independent master/data keys.
 Lab wraps keys and metadata with AES-GCM. Content uses existing XChaCha20-Poly1305 composition.
 The HChaCha20 component is repository code. The final ChaCha20Poly1305 operation uses .NET.
-Salt is 32 bytes. Content nonce is 24 bytes. AEAD tags are 16 bytes.
+Salt is 32 bytes. XChaCha content nonces use 24 bytes. AES-GCM nonces use 12 bytes. AEAD tags use 16 bytes.
 HKDF labels separate key purposes. Random nonces are not a proven persistent global uniqueness ledger.
 Lab memory parameters clamp to at least 64 MiB. LabFast measurements do not represent production KDF performance.
 

@@ -2,7 +2,9 @@ WORK ITEM: WO12
 STATUS: PARTIAL
 BRANCH: codex/pccare-vault-reliability-product-ux
 BASELINE SHA: ba9a65f7f035262ada7ba53252c103921f87a32c
-FINAL SHA / SOURCE TREE: see GITHUB_RESULT.txt and final remote verification
+VALIDATED SOURCE SHA: 1dcba347fccabed1a6b17fff53f35020bf52541b
+VALIDATED SOURCE TREE: 367b8c11a1be3cce4a8cc11ccd5afec72984e271
+FINAL HEAD: final local/remote publication receipt; evidence-only successor
 CHANGED FIELD: LabVaultJournal.RecoverOrphans authenticatedObjectIds; journal records no longer authorize object deletion
 ROOT CAUSE: an unauthenticated incomplete journal deleted encrypted objects in baseline code
 MODIFIED_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo12\MODIFIED_FILE.cs.txt
@@ -41,3 +43,8 @@ SOURCE ROLLBACK IS NOT ACTUAL VAULT DATA RECOVERY
 GUI: NOT TESTED; dedicated-account gate BLOCKED
 POWER LOSS / EXTERNAL CRYPTOGRAPHIC REVIEW / LOW-END HARDWARE: NOT TESTED
 REMAINING RISKS: WO12_PRODUCT_READINESS.md
+
+WINDOWS CI: 38159809986 SUCCESS
+CI SOURCE: 1dcba347fccabed1a6b17fff53f35020bf52541b
+CI COUNTERS: 1019 PASS / 111 SKIP / 0 FAIL; SecurityLab 36 PASS
+CI DETAILS: CI_RESULT.json and GITHUB_RESULT.txt

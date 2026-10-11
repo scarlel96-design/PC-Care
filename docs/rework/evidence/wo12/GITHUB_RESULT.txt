@@ -1,2 +1,35 @@
-STATUS: NOT TESTED
-Source commit and Windows CI will be recorded after upload.
+WORK ITEM: WO12 publication and CI
+STATUS: PASS for source upload and automated Windows CI; overall PARTIAL
+BRANCH: codex/pccare-vault-reliability-product-ux
+BASELINE SHA: ba9a65f7f035262ada7ba53252c103921f87a32c
+VALIDATED SOURCE SHA: 1dcba347fccabed1a6b17fff53f35020bf52541b
+VALIDATED SOURCE TREE: 367b8c11a1be3cce4a8cc11ccd5afec72984e271
+REMOTE SOURCE HEAD: 1dcba347fccabed1a6b17fff53f35020bf52541b
+CI RUN: 38159809986
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38159809986
+CI CONCLUSION: SUCCESS
+ENVIRONMENT: GitHub-hosted windows-latest; synthetic fixtures
+COMMAND: git push -u origin codex/pccare-vault-reliability-product-ux
+OUTPUT: new branch; branch tracking configured
+EXIT CODE: 0
+COMMAND: gh run watch 38159809986 --repo scarlel96-design/PC-Care --exit-status --interval 30
+OUTPUT: windows-validation completed successfully
+EXIT CODE: 0
+COMMAND: gh run view 38159809986 --repo scarlel96-design/PC-Care --json databaseId,headSha,status,conclusion,url,jobs
+OUTPUT: completed; success; headSha=1dcba347fccabed1a6b17fff53f35020bf52541b
+EXIT CODE: 0
+COMMAND: gh run download 38159809986 --repo scarlel96-design/PC-Care -n wo12-windows-evidence -D artifacts/wo12/ci-evidence
+OUTPUT: Windows test evidence downloaded; XML counters parsed into CI_RESULT.json
+EXIT CODE: 0
+APPLICATION: 1019 PASS / 111 SKIP / 0 FAIL / 1130 TOTAL
+PERFORMANCE: 233 PASS; included in application total
+UPDATE: 128 PASS; included in application total
+NEW VAULT: 17 PASS; included in application total
+SECURITYLAB: 36 PASS / 0 SKIP / 0 FAIL; separate project
+CRASH: two byte-verified recoveries; one preserved fail-closed condition
+GUI: NOT TESTED
+PHYSICAL POWER LOSS: NOT TESTED
+Final evidence commit contains documentation only beyond the validated source.
+Resolve its final SHA and tree from the final local/remote receipt.
+The final commit cannot contain its own SHA or tree without changing them.
+No main merge or official release was performed.

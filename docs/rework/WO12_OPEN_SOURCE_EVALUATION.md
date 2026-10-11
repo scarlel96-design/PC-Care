@@ -15,7 +15,7 @@ Overall status: **PARTIAL**. Phase 1: **NO-GO**.
 | ProtectedData | Lab 9.0.0; app central 10.0.10 | Retain existing dependency | No new key-store format |
 | Windows CNG | Windows platform API | Evaluate; no new provider | Existing .NET primitives provide the required current path |
 | libsodium | Official documentation lists 1.0.22-stable; ISC | Evaluate; not adopted | Native binary and binding review, packaging and format compatibility remain untested |
-| WinUI 3 / Windows App SDK | Existing repository version | Reuse ListView virtualization and design tokens | XAML build; GUI NOT TESTED |
+| WinUI 3 / Windows App SDK | Pinned 2.2.0; NuGet currently lists 2.5.1 | Reuse ListView virtualization and design tokens | Pinned version build; GUI NOT TESTED; upgrade not qualified |
 | Microsoft UI Automation | Windows platform API | Extend existing GuiProbe | Probe build PASS; account gate BLOCKED; live inspection NOT TESTED |
 | Existing MVVM | Repository ViewModel conventions | Reuse | No new MVVM package or duplicate state engine |
 
@@ -27,6 +27,9 @@ The NuGet advisory query returned no listed vulnerable Lab packages, exit 0.
 This result is a feed snapshot. It does not prove absence of vulnerabilities or external cryptographic audit.
 Current libraries compiled and ran on .NET 10. No unsupported compatibility claim was inferred from version numbers.
 Konscious maintenance and advisory coverage require continuing review.
+NuGet lists Argon2 1.3.1, published on 2024-06-19, as the current package release.
+The Lab still pins 1.3.0. Its upgrade requires historical fixture and KDF compatibility tests.
+Release age alone does not establish a vulnerability or maintenance failure.
 Existing custom HChaCha20 remains an explicit review item. It was not replaced during this compatibility-preserving patch.
 
 ## Sources checked
@@ -34,6 +37,8 @@ Existing custom HChaCha20 remains an explicit review item. It was not replaced d
 - [.NET AesGcm contract](https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aesgcm?view=net-10.0)
 - [libsodium official documentation](https://libsodium.gitbook.io/doc/)
 - [Konscious official repository](https://github.com/kmaragon/Konscious.Security.Cryptography)
+- [Argon2 package release and framework metadata](https://www.nuget.org/packages/Konscious.Security.Cryptography.Argon2/)
+- [Windows App SDK package releases](https://www.nuget.org/packages/Microsoft.WindowsAppSDK/)
 - [WinUI ListView and GridView](https://learn.microsoft.com/en-us/windows/apps/develop/ui/controls/listview-and-gridview)
 - [Windows CNG](https://learn.microsoft.com/en-us/windows/win32/seccng/cng-portal)
 

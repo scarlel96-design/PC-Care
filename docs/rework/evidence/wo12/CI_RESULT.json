@@ -1,0 +1,265 @@
+{
+  "status": "PASS for automated CI; WO12 overall PARTIAL",
+  "sourceCommit": "1dcba347fccabed1a6b17fff53f35020bf52541b",
+  "sourceTree": "367b8c11a1be3cce4a8cc11ccd5afec72984e271",
+  "runId": 38159809986,
+  "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/38159809986",
+  "conclusion": "success",
+  "environment": "GitHub-hosted windows-latest; synthetic data",
+  "testCounters": {
+    "wo06-full.trx": {
+      "total": 1130,
+      "executed": 1019,
+      "passed": 1019,
+      "failed": 0,
+      "skipped": 111
+    },
+    "wo06-securitylab.trx": {
+      "total": 36,
+      "executed": 36,
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0
+    },
+    "wo12-vault.trx": {
+      "total": 17,
+      "executed": 17,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0
+    },
+    "wo09-performance.trx": {
+      "total": 233,
+      "executed": 233,
+      "passed": 233,
+      "failed": 0,
+      "skipped": 0
+    },
+    "wo06-signed-updater.trx": {
+      "total": 128,
+      "executed": 128,
+      "passed": 128,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "jobs": [
+    {
+      "completedAt": "2026-10-11T17:41:22Z",
+      "conclusion": "success",
+      "databaseId": 114530176259,
+      "name": "windows-validation",
+      "startedAt": "2026-10-11T17:28:52Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-11T17:28:54Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-11T17:28:52Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:29:00Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "startedAt": "2026-10-11T17:28:54Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:29:03Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-dotnet@v4",
+          "number": 3,
+          "startedAt": "2026-10-11T17:29:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:30:49Z",
+          "conclusion": "success",
+          "name": "Restore",
+          "number": 4,
+          "startedAt": "2026-10-11T17:29:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:31:29Z",
+          "conclusion": "success",
+          "name": "Release build",
+          "number": 5,
+          "startedAt": "2026-10-11T17:30:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:32:31Z",
+          "conclusion": "success",
+          "name": "Signed package, publisher, transaction, recovery and staging tests",
+          "number": 6,
+          "startedAt": "2026-10-11T17:31:29Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:32:42Z",
+          "conclusion": "success",
+          "name": "Performance diagnostics scenarios",
+          "number": 7,
+          "startedAt": "2026-10-11T17:32:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:33:15Z",
+          "conclusion": "success",
+          "name": "Read-only Windows collector smoke",
+          "number": 8,
+          "startedAt": "2026-10-11T17:32:42Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:35:47Z",
+          "conclusion": "success",
+          "name": "Diagnostic profiles and controlled workloads",
+          "number": 9,
+          "startedAt": "2026-10-11T17:33:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:36:00Z",
+          "conclusion": "success",
+          "name": "Synthetic recovery and UI Automation harness",
+          "number": 10,
+          "startedAt": "2026-10-11T17:35:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:36:18Z",
+          "conclusion": "success",
+          "name": "Separate-process termination and recovery",
+          "number": 11,
+          "startedAt": "2026-10-11T17:36:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:36:40Z",
+          "conclusion": "success",
+          "name": "Production profile and isolated test profile",
+          "number": 12,
+          "startedAt": "2026-10-11T17:36:18Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:36:55Z",
+          "conclusion": "success",
+          "name": "Vault reliability and separate-process crash recovery",
+          "number": 13,
+          "startedAt": "2026-10-11T17:36:40Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:40:26Z",
+          "conclusion": "success",
+          "name": "Full application regression",
+          "number": 14,
+          "startedAt": "2026-10-11T17:36:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:41:17Z",
+          "conclusion": "success",
+          "name": "SecurityLab regression",
+          "number": 15,
+          "startedAt": "2026-10-11T17:40:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:41:17Z",
+          "conclusion": "success",
+          "name": "Reject unsupported helper verb",
+          "number": 16,
+          "startedAt": "2026-10-11T17:41:17Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:41:18Z",
+          "conclusion": "success",
+          "name": "Upload test evidence",
+          "number": 17,
+          "startedAt": "2026-10-11T17:41:17Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:41:19Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-dotnet@v4",
+          "number": 33,
+          "startedAt": "2026-10-11T17:41:18Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:41:20Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 34,
+          "startedAt": "2026-10-11T17:41:19Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-11T17:41:20Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 35,
+          "startedAt": "2026-10-11T17:41:20Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/38159809986/job/114530176259"
+    }
+  ],
+  "guiExecuted": false,
+  "physicalPowerLossTested": false,
+  "crashResults": [
+    {
+      "stage": "ObjectsReady",
+      "status": "PASS",
+      "readerExit": 0,
+      "output": "VERIFIED_ENTRIES=1;WRITE_ALLOWED=False",
+      "originalObjectFilesPresent": true,
+      "recovery": "Export bytes verified in separate process",
+      "powerLossTested": false
+    },
+    {
+      "stage": "MetadataReady",
+      "status": "PARTIAL",
+      "readerExit": 4,
+      "output": "PRESERVED_FAIL_CLOSED",
+      "originalObjectFilesPresent": true,
+      "recovery": "Unlock blocked; ciphertext and metadata retained for review",
+      "powerLossTested": false
+    },
+    {
+      "stage": "CommitWritten",
+      "status": "PASS",
+      "readerExit": 0,
+      "output": "VERIFIED_ENTRIES=2;WRITE_ALLOWED=True",
+      "originalObjectFilesPresent": true,
+      "recovery": "Export bytes verified in separate process",
+      "powerLossTested": false
+    }
+  ],
+  "performance": {
+    "status": "PASS",
+    "bytes": 4194304,
+    "inputSha256": "AAF34F2D9825929FA1021E4C0C7919F93F4B15343875E806678D6229E2CEFCE3",
+    "outputSha256": "AAF34F2D9825929FA1021E4C0C7919F93F4B15343875E806678D6229E2CEFCE3",
+    "unlockMs": 61.1733,
+    "importMs": 71.5951,
+    "exportMs": 249.9375,
+    "kdf": "LabFast synthetic profile",
+    "elapsedMs": 983.0137,
+    "cpuMs": 2156.25,
+    "peakWorkingSetBytes": 388665344,
+    "lowEndHardware": "NOT TESTED",
+    "largeList": "NOT TESTED"
+  }
+}

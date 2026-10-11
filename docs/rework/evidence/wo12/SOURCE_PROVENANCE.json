@@ -1,0 +1,233 @@
+{
+  "workItem": "WO12",
+  "sourceCommit": "1dcba347fccabed1a6b17fff53f35020bf52541b",
+  "sourceTree": "367b8c11a1be3cce4a8cc11ccd5afec72984e271",
+  "baselineCommit": "ba9a65f7f035262ada7ba53252c103921f87a32c",
+  "files": [
+    {
+      "path": ".github/workflows/wo12-windows-validation.yml",
+      "sha256": "88E96CADC75E2A33068040E4E98D9FBD516607A5C070387549E4C91B8215871C"
+    },
+    {
+      "path": "docs/rework/WO12_CRYPTO_SECURITY_REVIEW.md",
+      "sha256": "068CF8906D06BC90921AA68E98895A065912B2934A39B9800F94346D564B8417"
+    },
+    {
+      "path": "docs/rework/WO12_DATA_INTEGRITY.md",
+      "sha256": "DAF4E885610689BE8345D9051B01C013C971F162DBB3F9D8DB43D1AE6131A9D1"
+    },
+    {
+      "path": "docs/rework/WO12_EXECUTION_REPORT.md",
+      "sha256": "E32C4C9D278704D9344DC4DD35AA95FBE81B668A0411C926F7A861092F3D7EDF"
+    },
+    {
+      "path": "docs/rework/WO12_FORMAT_COMPATIBILITY.md",
+      "sha256": "E56F99186D0881B255D72B5A09ED42054A8FFE6A7CBC5EA34F5F22FAF9DF80AF"
+    },
+    {
+      "path": "docs/rework/WO12_GUI_VALIDATION.md",
+      "sha256": "4794D098CDF425B81FCDAC4C613B8C1C593A90832374CF2D0341DA52E252F0BA"
+    },
+    {
+      "path": "docs/rework/WO12_OPEN_SOURCE_EVALUATION.md",
+      "sha256": "64EB357620915F54D85742F8E697E489085169C1D8C076BA696A09D3A4B2926F"
+    },
+    {
+      "path": "docs/rework/WO12_PRODUCT_READINESS.md",
+      "sha256": "5E6FF8A04B273B2E9056D213E99C877A4A5E2272F5629D20D6BF97337DACEAD4"
+    },
+    {
+      "path": "docs/rework/WO12_VAULT_ARCHITECTURE_AUDIT.md",
+      "sha256": "37B2E11D89C6DD4F23C207A6D1345B170238C44A5795437A916D9E75B6281643"
+    },
+    {
+      "path": "docs/rework/WO12_VAULT_CRASH_RECOVERY.md",
+      "sha256": "C85C37135D0B89D834A4F3727C9B71B2609F1DD86A92A101831A6A3211237213"
+    },
+    {
+      "path": "docs/rework/WO12_VAULT_FUNCTIONAL_TESTS.md",
+      "sha256": "1B4D090F531CC811E9680EC21FB12A5FC857618D54BB1A45BCD18F3AEAE84AD7"
+    },
+    {
+      "path": "docs/rework/WO12_VAULT_UI_UX.md",
+      "sha256": "8A5FB3522FCED764DDD229A5B26AF06EEC445F03464650FDED6622509189C556"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/BASELINE_RESULT.txt",
+      "sha256": "1B31F1A3FD103903AAF95F9649747159FE50CFE0544953CDEFBCAB070521CC2B"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/BUILD_RESULT.txt",
+      "sha256": "47E05A28C46CE8277BEF9CE750D0FA6AC2CFA57F1071A17BF0D413FC0F3929FE"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/CRASH_RECOVERY_RESULT.json",
+      "sha256": "0A918C296B0E91C66D8CBB7C3DDA7C292DFFE3EFB07124F5E963A7923B726613"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/CRASH_RECOVERY_RESULT.txt",
+      "sha256": "6F47D423E226F65B19D278B57715833119648C98C7D44952CB47CE4D3DDBC816"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/CRYPTO_REVIEW_RESULT.txt",
+      "sha256": "E420EA7A582D9A36DE5A08BBEC6B6D44F22050BB9DDD1223F49F8EB699DD12AA"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/DEPENDENCY_AUDIT.json",
+      "sha256": "A460B53491196E9A1A36FDB3CA84C8E7E3216D5D0F6FE727CBC873866E18133E"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/DIFF_FILE.patch",
+      "sha256": "6E89BD9FBB55A60646F6A011AC7524E883397EA2D4FBADAAC1304C9087E746EE"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/FIRST_RUN_FAILURE.txt",
+      "sha256": "F646D36A2292BE087077D92D5FDB9827FB2ED4B9DC2E982412766F5F09CEDD72"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/FORMAT_ROUTING_RESULT.txt",
+      "sha256": "9CEEFBD1C0535848B1533318FC99389F5B9B0447A767A5FA40C68299AD67DF4D"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/FULL_TEST_RESULT.txt",
+      "sha256": "B7F0AC50E655BD40A4629F0026A9F151E4FA2E3C05C55152411E3A53092960F7"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/GITHUB_RESULT.txt",
+      "sha256": "CEE146F268C091BFDC92BADD30E2289B8B148296E3F9C1D28167A78D920D9D1A"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/GUI_TEST_RESULT.txt",
+      "sha256": "C52CA56D497588B7907810E61E7A1248941790872D429B22BCD2034E9A1D3983"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/INTEGRITY_RESULT.json",
+      "sha256": "5DCAD90773A67E7072291BDE4CFBFD06305570C0D3E95951875EB19C5B08515B"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/MODIFIED_FILE.cs.txt",
+      "sha256": "2AC70CF0061905BB6EB6D87836A0C65B252DF19FA86B165BAC233075E15B47E3"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/ORIGINAL_FILE.cs.txt",
+      "sha256": "1B1CBB515DB94BAEF5A9192CD1F38E57BEBAA252DD96F6A1BECDFE448E5E0965"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/PASSWORD_RECOVERY_RESULT.txt",
+      "sha256": "DF4B157498ECB9051B4BA2D3873A4DD50C9E70F4753FA99AAF04F0872A0F66EA"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/PERFORMANCE_RESULT.json",
+      "sha256": "CCD6BF69ED67922B4646DA026E88DDB32AFF2B063A390658A45A1B9D3C24BCB5"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/ROLLBACK.sh",
+      "sha256": "C5822BD03E9FCBD824760BAA8984C4DBE311E4947E203A6655AA03DE9493869B"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/SECURITYLAB_RESULT.txt",
+      "sha256": "281E596F4103DF7078461C3948807DE94A089FF18D2F32F7A3F6E949F05A6941"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/SOURCE_HASHES.json",
+      "sha256": "7F96A1E8D85DACAA4BCB6A0FB30D5889057AC845AA82B67DF811E751469A4CF8"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/SOURCE_ROLLBACK.ps1",
+      "sha256": "ABDE2118D11294548290434C61F6A18C113FDF8F406F08C571BB6CEE1E040D30"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/VAULT_ROUNDTRIP_RESULT.json",
+      "sha256": "B2FC9AED40C1F8BD89F4FE4B5F153023643618DD3DAD1E4A3CD38B9A64D4BEA9"
+    },
+    {
+      "path": "docs/rework/evidence/wo12/VERIFICATION.txt",
+      "sha256": "EBA22278E488F08AA14C38DD765EE18743C1AC913FC6CDBF1181C4F2DF426F99"
+    },
+    {
+      "path": "scripts/wo12-gui-validation.ps1",
+      "sha256": "3D21D29F60AC1248FE2D667A247A80F0C7A843166737E4782EF510D09258CF8C"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultLabBackend.cs",
+      "sha256": "C9801CBE6330C46EC779788711F94EF9FB24CA0230173F677B31158B9DE80781"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultService.cs",
+      "sha256": "4997385DFEDEDBE98A49F891D58FAB4EBE72AB6D8927FB886DCA61C45156862B"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Services/Security/VaultImportPathValidator.cs",
+      "sha256": "DD3DD4FD71CA97994BE6C07FF7C7FEA907E8A96034EE8AA75AF3D331D969768F"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/ViewModels/SecureVaultViewModel.cs",
+      "sha256": "C71676C64DBA44F50B9F7DAAF69F51CFC73D2863E4AB58BF3CB9E8D5D16B4EDB"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Views/SecureVaultCenterPage.xaml",
+      "sha256": "B6B4D7D910D6DB11AF8809FF6C889634ACED8F13119B9C8D292ED2FA05590A2C"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Views/SecureVaultCenterPage.xaml.cs",
+      "sha256": "28E24EC8C37F77293A566CBC66B2A0710617810603F90D296E324B21D7E810F1"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.App/Views/SecureVaultOperationProgressDialog.cs",
+      "sha256": "4F6C431895D391E982CF3FFC9BB7CACF76A2A411FEAB7AA395F874E29E40F9BA"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.SecurityLab/Properties/AssemblyInfo.cs",
+      "sha256": "A3D4DF4A48D9031C7F72F786F58818830DE64E66819DA651FBA541B4752E0CA4"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.SecurityLab/SmartPerformanceDoctor.SecurityLab.csproj",
+      "sha256": "9DA144825389D7C27D2BF7054E09414A5C41908C6CFB2B8FA84CF213CAD3BB9D"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.SecurityLab/src/Hardening/VaultExportWriter.cs",
+      "sha256": "2AEA80525925B20334326C530E910774D26F21AFDF89BAA5824EE48F24B61F7E"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabFaultMatrix.cs",
+      "sha256": "4BA6768F352F854D23FF574EC2F897A55D27AD76E89F210BA718A8890F9FC437"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabStreamImportMatrix.cs",
+      "sha256": "9C1828FC284FD6078AB1911D7EAD92B1F08995BE6ECFDAA6E76F9B008F9DC98A"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultJournal.cs",
+      "sha256": "2AC70CF0061905BB6EB6D87836A0C65B252DF19FA86B165BAC233075E15B47E3"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.cs",
+      "sha256": "68F276E89D75EE1037AC379B74CDED086597BC95C57E8C55B3B757C5BA087301"
+    },
+    {
+      "path": "src/SmartPerformanceDoctor.UpdateEngine/WindowsFileBoundary.cs",
+      "sha256": "27CD9F6F6DE61DF0ED8839501D21D29F6F63FDFB086BAC7F01EBC5F6D8E1441E"
+    },
+    {
+      "path": "tests/SmartPerformanceDoctor.SecurityLab.Tests/VaultV4IntegrationTests.cs",
+      "sha256": "1AD88F4C5889EA7B45DE140C8C7F05FCABEAF7EC46A777E01CBA9ECD65F71208"
+    },
+    {
+      "path": "tests/SmartPerformanceDoctor.Tests/WO12VaultReliabilityTests.cs",
+      "sha256": "4BA5CD1A607267DC7B899BEB7F30783A16F46A6B941029A68F125BBA8CEE4AF7"
+    },
+    {
+      "path": "tools/SmartPerformanceDoctor.GuiProbe/Program.cs",
+      "sha256": "2D8EE4C17CBCB83A218F1F98D14B6353A116CCDFAB6CCA494275AE660C663A99"
+    },
+    {
+      "path": "tools/SmartPerformanceDoctor.VaultProbe/Program.cs",
+      "sha256": "D626C198981722E3DA94AF8DAD15D44495D2000BDE806AF2C68ACF78C3536B64"
+    },
+    {
+      "path": "tools/SmartPerformanceDoctor.VaultProbe/SmartPerformanceDoctor.VaultProbe.csproj",
+      "sha256": "32366111C208D4E52EDC3507538AEA93A4C41F5B9EA283BEFE052A9ADF547D47"
+    }
+  ],
+  "hashScope": "SHA-256 of Windows checkout bytes at validated source commit; Git line endings can differ."
+}

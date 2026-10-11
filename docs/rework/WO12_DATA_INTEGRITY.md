@@ -41,3 +41,10 @@ The process also ran earlier crash fixtures and KDF operations.
 It does not measure the isolated cost of one 4 MiB export.
 Production KDF and low-end hardware performance remain NOT TESTED.
 
+## Synthetic plaintext retention
+
+VaultProbe retains generated plaintext exports beneath its private fixture root.
+The private fixture location stays in an ignored local artifact.
+No plaintext fixture is uploaded by the workflow.
+Delete the generated fixture after review using its exact recorded path.
+Ordinary deletion does not certify physical plaintext removal on SSD storage.
