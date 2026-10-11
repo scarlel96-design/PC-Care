@@ -1,0 +1,161 @@
+WORK ITEM: WO-09 final Windows qualification
+STATUS: PASS
+BRANCH: codex/pccare-diagnostic-qualification-recovery-planning
+BASELINE SHA: 5ac4c4d5a4420bba9b9a1d2bbd8d3de12047c96a
+VALIDATED SOURCE SHA: 888ec1e8de1fe4fc2bcb7b2217e544d20dc929e7
+SOURCE TREE: bfa20d37d8adca1d365d96efbd40983aff988678
+WINDOWS CI: 38105566632 SUCCESS
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38105566632
+ENVIRONMENT: Windows NT 10.0.26100; four logical processors; elevated GitHub runner; .NET 10
+TEST COMMANDS: Exact workflow commands follow. Source workflow and normalized TRX files supply the input contract.
+name: WO09 independent qualification and recovery planning
+
+on:
+  push:
+    branches:
+      - codex/pccare-diagnostic-qualification-recovery-planning
+    paths-ignore:
+      - 'docs/**'
+      - '.gitattributes'
+  pull_request:
+
+jobs:
+  windows-validation:
+    runs-on: windows-latest
+    timeout-minutes: 55
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Restore
+        run: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
+      - name: Release build
+        run: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+      - name: Signed package, publisher, transaction, recovery and staging tests
+        env:
+          VSTEST_CONNECTION_TIMEOUT: '300'
+        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests|FullyQualifiedName~WO06' --logger 'trx;LogFileName=wo06-signed-updater.trx' -v:minimal
+      - name: Performance diagnostics scenarios
+        env:
+          VSTEST_CONNECTION_TIMEOUT: '300'
+        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO07|FullyQualifiedName~WO08|FullyQualifiedName~WO09' --logger 'trx;LogFileName=wo09-performance.trx' -v:minimal
+      - name: Read-only Windows collector smoke
+        shell: pwsh
+        run: |
+          dotnet build tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-restore -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'probe build failed' }
+          New-Item -ItemType Directory -Force artifacts/wo07-ci | Out-Null
+          dotnet run --project tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-build --no-restore -- 30 artifacts/wo07-ci/measurement.json
+          if ($LASTEXITCODE -ne 0) { throw 'CPU or memory collector unavailable' }
+          $measurement = Get-Content artifacts/wo07-ci/measurement.json -Raw | ConvertFrom-Json
+          if ($measurement.environment.elevated) {
+            if ($measurement.snapshot.Errors.Where({ $_.Provider.StartsWith('ETW') }).Count -gt 0) { throw 'Elevated ETW collection failed' }
+            if ($measurement.snapshot.EventsReceived -le 0) { throw 'Elevated ETW delivered no events' }
+            if ($null -eq $measurement.remainingOwnedSessions -or $measurement.remainingOwnedSessions -ne 0) { throw 'ETW session cleanup not verified' }
+          }
+      - name: Diagnostic profiles and controlled workloads
+        shell: pwsh
+        run: |
+          dotnet build tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-restore -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'Reference analyzer build failed' }
+          dotnet run --project tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-build --no-restore -- --verify-time-contract
+          if ($LASTEXITCODE -ne 0) { throw 'SDK converted timestamp contract failed' }
+          ./scripts/wo08-measurement.ps1 -OutputDirectory artifacts/wo08-ci -RunControlledWorkloads
+          ./scripts/wo09-disk-identity.ps1 -OutputDirectory artifacts/wo09-ci
+          ./scripts/wo09-reference-validation.ps1 -OutputDirectory artifacts/wo09-ci -IsolatedRunner
+      - name: Separate-process termination and recovery
+        shell: pwsh
+        run: |
+          dotnet build tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
+          ./scripts/wo06-process-validation.ps1 -OutputDirectory artifacts/wo06-ci-process
+      - name: Production profile and isolated test profile
+        shell: pwsh
+        run: |
+          dotnet build tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'test kit build failed' }
+          dotnet build tools/SmartPerformanceDoctor.VaultRecovery/SmartPerformanceDoctor.VaultRecovery.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'data recovery build failed' }
+          $kit = 'tools/SmartPerformanceDoctor.VMTestKit/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.VMTestKit.exe'
+          $engine = 'src/SmartPerformanceDoctor.UpdateEngine/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateEngine.dll'
+          & $kit audit-production $engine
+          if ($LASTEXITCODE -ne 0) { throw 'test trust leaked into production' }
+          & $kit audit-production 'src/SmartPerformanceDoctor.App/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.dll'
+          if ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production app' }
+          & $kit audit-production 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.dll'
+          if ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production helper' }
+          $profile = Join-Path $env:RUNNER_TEMP 'wo06-test-profile'
+          & $kit fixture-profile $profile ('0' * 40)
+          if ($LASTEXITCODE -ne 0) { throw 'profile generation failed' }
+          $source = Join-Path $profile 'TestVmTrust.g.cs'
+          dotnet build src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -o (Join-Path $profile 'output') -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'test profile build failed' }
+          & $kit audit-production (Join-Path $profile 'output/SmartPerformanceDoctor.UpdateEngine.dll')
+          if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test artifact' }
+          dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -m:1 -o (Join-Path $profile 'app-output') -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'VM Release application profile build failed' }
+          & $kit audit-production (Join-Path $profile 'app-output/SmartPerformanceDoctor.dll')
+          if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test application' }
+          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateHelper.dll')
+          if ($LASTEXITCODE -ne 6) { throw 'VM application copied a production update helper' }
+          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateEngine.dll')
+          if ($LASTEXITCODE -ne 6) { throw 'VM helper copied a production update engine' }
+          exit 0
+      - name: Full application regression
+        env:
+          VSTEST_CONNECTION_TIMEOUT: '300'
+        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo06-full.trx' -v:minimal
+      - name: SecurityLab regression
+        env:
+          VSTEST_CONNECTION_TIMEOUT: '300'
+        run: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo06-securitylab.trx' -v:minimal
+      - name: Reject unsupported helper verb
+        shell: pwsh
+        run: |
+          $helper = 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe'
+          $process = Start-Process -FilePath $helper -ArgumentList @('--exec', 'arbitrary') -Wait -PassThru -NoNewWindow
+          if ($process.ExitCode -ne 2) { throw "Unexpected helper exit code: $($process.ExitCode)" }
+      - name: Upload test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wo09-windows-evidence
+          path: |
+            tests/SmartPerformanceDoctor.Tests/TestResults/*.trx
+            tests/SmartPerformanceDoctor.SecurityLab.Tests/TestResults/*.trx
+            artifacts/wo06-ci-process/process-results.json
+            artifacts/wo07-ci/measurement.json
+            artifacts/wo08-ci/**/*.json
+            artifacts/wo09-ci/**/*.json
+
+LITERAL OUTPUT EXCERPTS:
+    0 Warning(s)
+    0 Error(s)
+Passed!  - Failed:     0, Passed:   128, Skipped:     0, Total:   128, Duration: 37 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+Passed!  - Failed:     0, Passed:   146, Skipped:     0, Total:   146, Duration: 3 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+    0 Warning(s)
+    0 Error(s)
+    0 Warning(s)
+    0 Error(s)
+SDK_TIME_CONTRACT passed=10 failed=0 roundedConvertedValues=Accepted rawValue=Unused
+DISK_IDENTITY_OBSERVED devices=2
+DISK_IDENTITY_OBSERVED devices=2
+READ_ONLY_DISK_IDENTITY_COMPLETED trials=2 rawStorageIdsPublished=False
+WO09_REFERENCE_ANALYSIS_COMPLETED trials=6 rawTracePublished=False
+    0 Warning(s)
+    0 Error(s)
+    0 Warning(s)
+    0 Error(s)
+    0 Warning(s)
+    0 Error(s)
+    0 Warning(s)
+    0 Error(s)
+    0 Warning(s)
+    0 Error(s)
+Passed!  - Failed:     0, Passed:   915, Skipped:   111, Total:  1026, Duration: 2 m 45 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 33 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+EXIT CODE: 0 for successful build/test/smoke commands.
+EXPECTED REJECTION: VM test artifacts fail production audit with exit 6; unsupported helper verb exits 2.
+EXPECTED CRASH RESULTS: Read CI_PROCESS_RECOVERY.json. All 121 recorded expected results match.

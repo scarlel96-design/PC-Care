@@ -1,0 +1,11 @@
+STATUS: PARTIAL
+COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --filter FullyQualifiedName~WO09 --logger 'trx;LogFileName=wo09.trx' --results-directory artifacts/wo09/qualification-tests -v:minimal
+INPUT: 200 synthetic processes; low-CPU I/O leader; unresolved lifetime; invalid I/O
+OUTPUT: WO09 67 PASS, 0 FAIL, 0 SKIP
+EXIT CODE: 0
+Actual PID reuse: NOT TESTED
+Independent cross-parser process join: NOT IMPLEMENTED
+Actual contribution error: NOT TESTED
+
+ENVIRONMENT: Windows 10.0.26200; .NET SDK 10.0.401; 24 logical processors
+FINAL SOURCE: See CI_SOURCE_RESULT.txt for exact-source validation

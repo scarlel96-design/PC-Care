@@ -1,0 +1,30 @@
+[
+  {
+    "file": "CI_FULL.trx",
+    "originalSha256": "14a0c5106f914082e99026bfb6c734add07a06e40acfd3e48eab40ee4bc66b1e",
+    "publishedSha256": "094e5e6640aa3bb8db95d4242842a4855654f9475b7e0e52f306bcc071ee54b1",
+    "transformation": "Mask runner host, workspace, and user directory. Preserve test outcomes.",
+    "lineEndingNormalization": "LF; parsed test IDs and outcomes unchanged"
+  },
+  {
+    "file": "CI_PERFORMANCE.trx",
+    "originalSha256": "922efbdf6f425e970c75b0d2efa77309f23f76085639bf470ea05559eec49b0e",
+    "publishedSha256": "ce6d173267738845ddbd7f5303e081efff64dfeaf88468b17b5c853f4d047a5c",
+    "transformation": "Mask runner host, workspace, and user directory. Preserve test outcomes.",
+    "lineEndingNormalization": "LF; parsed test IDs and outcomes unchanged"
+  },
+  {
+    "file": "CI_UPDATER.trx",
+    "originalSha256": "363c132610dee73b3bc99cfb881f5ebcbb8e4e953b4f1b132a22914bb2f9bb4f",
+    "publishedSha256": "441d87c3c99bd8c44698313dd2fe51b04716198154b76b277ca1311b16833706",
+    "transformation": "Mask runner host, workspace, and user directory. Preserve test outcomes.",
+    "lineEndingNormalization": "LF; parsed test IDs and outcomes unchanged"
+  },
+  {
+    "file": "CI_SECURITYLAB.trx",
+    "originalSha256": "2f1984daf47b611f31dbe9abe5e994c367d8a9f60d644a12d2354f7b843032f6",
+    "publishedSha256": "a753b6a6cda74e2bd2aea544d2063858c21674ba5013419b5f9e66849049e7c3",
+    "transformation": "Mask runner host, workspace, and user directory. Preserve test outcomes.",
+    "lineEndingNormalization": "LF; parsed test IDs and outcomes unchanged"
+  }
+]

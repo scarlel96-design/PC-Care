@@ -1,0 +1,379 @@
+{
+  "status": "PARTIAL",
+  "analyzer": "Microsoft.Windows.EventTracing.Processing.All 1.12.10",
+  "etlSha256": "E45C05B15FFCFDC3D2047940D809CB11269BAD11F22BEAD2EE3A77D5D209BB4E",
+  "rawTracePublished": false,
+  "traceWindow": {
+    "StartTime": "2026-10-11T02:42:57.8051463+00:00",
+    "StopTime": "2026-10-11T02:43:28.2839836+00:00"
+  },
+  "reference": {
+    "Analyzer": "Microsoft.TraceProcessing",
+    "IndependentParser": true,
+    "LostEvents": 0,
+    "LostBuffers": 0,
+    "CpuGaps": 121764,
+    "Window": {
+      "StartUtc": "2026-10-11T02:42:59+00:00",
+      "EndUtc": "2026-10-11T02:43:27+00:00",
+      "Seconds": 28,
+      "Valid": true
+    },
+    "Cpu": [
+      {
+        "EndUtc": "2026-10-11T02:43:00+00:00",
+        "CpuPercent": 35.85182499999982
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:01+00:00",
+        "CpuPercent": 31.001657499999947
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:02+00:00",
+        "CpuPercent": 30.723184999999926
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:03+00:00",
+        "CpuPercent": 28.451144999999904
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:04+00:00",
+        "CpuPercent": 28.777182499999928
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:05+00:00",
+        "CpuPercent": 27.80214999999988
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:06+00:00",
+        "CpuPercent": 12.876335000000013
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:07+00:00",
+        "CpuPercent": 0.8505749999999997
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:08+00:00",
+        "CpuPercent": 1.7003324999999996
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:09+00:00",
+        "CpuPercent": 1.6754475000000004
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:10+00:00",
+        "CpuPercent": 1.8503524999999996
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:11+00:00",
+        "CpuPercent": 1.6502525000000001
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:12+00:00",
+        "CpuPercent": 1.4504525000000004
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:13+00:00",
+        "CpuPercent": 1.17569
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:14+00:00",
+        "CpuPercent": 2.1503774999999994
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:15+00:00",
+        "CpuPercent": 1.8503224999999999
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:16+00:00",
+        "CpuPercent": 5.476557500000003
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:17+00:00",
+        "CpuPercent": 2.126065
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:18+00:00",
+        "CpuPercent": 8.5267275
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:19+00:00",
+        "CpuPercent": 4.276460000000004
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:20+00:00",
+        "CpuPercent": 4.101170000000001
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:21+00:00",
+        "CpuPercent": 1.625194999999999
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:22+00:00",
+        "CpuPercent": 1.4753499999999997
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:23+00:00",
+        "CpuPercent": 1.6250824999999995
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:24+00:00",
+        "CpuPercent": 1.0503775000000004
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:25+00:00",
+        "CpuPercent": 1.4002574999999997
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:26+00:00",
+        "CpuPercent": 1.6752525
+      },
+      {
+        "EndUtc": "2026-10-11T02:43:27+00:00",
+        "CpuPercent": 1.6751450000000006
+      }
+    ]
+  },
+  "qualification": {
+    "Status": "NOT TESTED",
+    "Window": {
+      "StartUtc": "2026-10-11T02:42:59+00:00",
+      "EndUtc": "2026-10-11T02:43:27+00:00",
+      "Seconds": 28,
+      "Valid": true
+    },
+    "Metrics": {
+      "Status": "NOT TESTED",
+      "TruePositive": 0,
+      "FalsePositive": 0,
+      "FalseNegative": 0,
+      "TrueNegative": 0,
+      "Unknown": 3,
+      "InsufficientEvidence": 0,
+      "ReferenceMismatch": 0,
+      "Precision": null,
+      "Recall": null
+    },
+    "Exclusions": [
+      "ReferenceLossOrUnknownLoss"
+    ],
+    "CpuMedianAbsoluteError": null,
+    "PressureState": "Unknown"
+  },
+  "lifetimes": [
+    {
+      "id": "D97BD74DC56C2F81F39CCDD1",
+      "startedUtc": "2026-10-11T02:43:15.9380522+00:00",
+      "endedUtc": "2026-10-11T02:43:15.9582531+00:00"
+    },
+    {
+      "id": "ED65B9F3D107FFC04EDAA761",
+      "startedUtc": "2026-10-11T02:42:57.880287+00:00",
+      "endedUtc": "2026-10-11T02:43:28.1173902+00:00"
+    },
+    {
+      "id": "93E65085BBAAD66D1E40B4C0",
+      "startedUtc": "2026-10-11T02:43:15.9293461+00:00",
+      "endedUtc": "2026-10-11T02:43:15.9600318+00:00"
+    },
+    {
+      "id": "2EFBF6AB98C1A295B20F7C4F",
+      "startedUtc": "2026-10-11T02:42:57.8810814+00:00",
+      "endedUtc": "2026-10-11T02:43:28.0011635+00:00"
+    },
+    {
+      "id": "7CEC960DDDB08821CFF39DA1",
+      "startedUtc": "2026-10-11T02:43:18.1171331+00:00",
+      "endedUtc": "2026-10-11T02:43:18.1649743+00:00"
+    },
+    {
+      "id": "37FF5622A470F84DFADFA6B2",
+      "startedUtc": "2026-10-11T02:43:17.6776282+00:00",
+      "endedUtc": "2026-10-11T02:43:17.7557828+00:00"
+    },
+    {
+      "id": "4382881C6870A58EEC41EC43",
+      "startedUtc": "2026-10-11T02:43:17.7456545+00:00",
+      "endedUtc": null
+    },
+    {
+      "id": "084AB48A453C032E5F6100B1",
+      "startedUtc": "2026-10-11T02:43:28.1257373+00:00",
+      "endedUtc": null
+    },
+    {
+      "id": "A15F86DFAD419B63D3C44839",
+      "startedUtc": "2026-10-11T02:42:57.8782791+00:00",
+      "endedUtc": "2026-10-11T02:43:27.9991625+00:00"
+    }
+  ],
+  "cpuParserDiagnostics": {
+    "sampleCount": 121760,
+    "invalidTimestamp": 0,
+    "partialTimestamp": 121760,
+    "partialWeight": 121760,
+    "invalidWeight": 0,
+    "missingProcess": 0,
+    "validSamplesInCommonWindow": 111988,
+    "unknownSamplesInCommonWindow": 0,
+    "estimatedUnaccountedSamplingPeriods": 121764,
+    "schedulingTimeSliceCount": 52401,
+    "interpretation": "Sampling gaps describe estimated unaccounted periods. They are not the native lost-event counter. The original zero-gap qualification gate remains in force."
+  },
+  "processCpu": [
+    {
+      "id": "ED65B9F3D107FFC04EDAA761",
+      "cpuSeconds": 0.5956338000000009,
+      "wholeMachinePercent": 0.5318158928571436
+    },
+    {
+      "id": "7CEC960DDDB08821CFF39DA1",
+      "cpuSeconds": 0.04401640000000002,
+      "wholeMachinePercent": 0.039300357142857165
+    },
+    {
+      "id": "37FF5622A470F84DFADFA6B2",
+      "cpuSeconds": 0.0239767,
+      "wholeMachinePercent": 0.021407767857142858
+    },
+    {
+      "id": "4382881C6870A58EEC41EC43",
+      "cpuSeconds": 0.017995300000000002,
+      "wholeMachinePercent": 0.016067232142857147
+    },
+    {
+      "id": "D97BD74DC56C2F81F39CCDD1",
+      "cpuSeconds": 0.016006199999999998,
+      "wholeMachinePercent": 0.014291249999999997
+    },
+    {
+      "id": "93E65085BBAAD66D1E40B4C0",
+      "cpuSeconds": 0.010999499999999999,
+      "wholeMachinePercent": 0.009820982142857143
+    },
+    {
+      "id": "A15F86DFAD419B63D3C44839",
+      "cpuSeconds": 0.0010125,
+      "wholeMachinePercent": 0.000904017857142857
+    }
+  ],
+  "unlinkedCpu": 9085,
+  "unlinkedIo": 1456,
+  "disk": [
+    {
+      "sessionDiskNumber": 0,
+      "identityStatus": "TraceLocalNumberOnly",
+      "operations": 1431,
+      "readBytes": 224948736,
+      "writeBytes": 33247744,
+      "latency": {
+        "Median": 2.8887,
+        "P95": 15.135950000000001,
+        "Count": 1431
+      }
+    },
+    {
+      "sessionDiskNumber": 1,
+      "identityStatus": "TraceLocalNumberOnly",
+      "operations": 64,
+      "readBytes": 36864,
+      "writeBytes": 286720,
+      "latency": {
+        "Median": 0.07425,
+        "P95": 0.08616,
+        "Count": 64
+      }
+    }
+  ],
+  "processIo": [
+    {
+      "id": null,
+      "operations": 1456,
+      "bytes": 257782784
+    },
+    {
+      "id": "37FF5622A470F84DFADFA6B2",
+      "operations": 33,
+      "bytes": 626688
+    },
+    {
+      "id": "4382881C6870A58EEC41EC43",
+      "operations": 4,
+      "bytes": 102400
+    },
+    {
+      "id": "7CEC960DDDB08821CFF39DA1",
+      "operations": 2,
+      "bytes": 8192
+    }
+  ],
+  "resource": {
+    "elapsedMilliseconds": 495.6423,
+    "peakWorkingSetBytes": 129003520
+  },
+  "plans": [
+    {
+      "plan": {
+        "PlanId": "B3853BB5FE36AC7F0A3E1D67",
+        "FindingId": "perf.ResourceConsumer.7D973108A6E5CE999C100445",
+        "EvidenceReferences": [
+          "perf.ResourceConsumer.7D973108A6E5CE999C100445",
+          "2026-10-11T02:42:57.9729709\u002B00:00 \u002B 30.07s",
+          "System.Diagnostics.Process"
+        ],
+        "ProblemDescription": "\uD504\uB85C\uC138\uC2A4 \uC790\uC6D0 \uAE30\uC5EC",
+        "ProposedAction": 6,
+        "Eligibility": "Blocked:UnsupportedEvidence",
+        "ConfidenceLimitations": [
+          "Resource pressure does not prove abnormal software.",
+          "Repeat the same workload before planning a repair.",
+          "Clock, temperature, boot attribution and service correlation are not measured.",
+          "Collection errors: Process:PartialAccessOrExited,ProcessBudget:Truncated",
+          "\uADFC\uBCF8 \uC6D0\uC778\uACFC \uC2E4\uC81C \uAC1C\uC120 \uD6A8\uACFC\uB294 \uBBF8\uD655\uC778\uC785\uB2C8\uB2E4."
+        ],
+        "RiskLevel": "ReviewOnly;ExecutionRiskNotAssessed",
+        "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+        "ExpectedEffect": "Unknown",
+        "EstimatedResourceCost": "UnknownUntilTargetInspection",
+        "UserConsentRequired": true,
+        "PreflightChecks": [
+          "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+          "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+          "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+          "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+        ],
+        "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+        "RollbackPlan": "\uBBF8\uB9AC\uBCF4\uAE30\uB294 \uC0C1\uD0DC\uB97C \uBCC0\uACBD\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. \uC2E4\uD589 \uB2E8\uACC4\uC5D0\uC11C \uC870\uCE58\uBCC4 \uC6D0\uBCF5\uC744 \uC124\uACC4\uD558\uC138\uC694.",
+        "VerificationMetrics": [
+          "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+          "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+          "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+          "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+        ],
+        "ExecutionState": "PlannedOnly"
+      },
+      "dryRun": {
+        "PlanId": "B3853BB5FE36AC7F0A3E1D67",
+        "Status": "Blocked:UnsupportedEvidence",
+        "Target": "ExactTargetNotSelected;ReviewApplicationLoad",
+        "Preconditions": [
+          "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+          "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+          "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+          "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+        ],
+        "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+        "Risk": "ReviewOnly;ExecutionRiskNotAssessed",
+        "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+        "VerificationMetrics": [
+          "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+          "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+          "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+          "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+        ],
+        "ExecutionEnabled": false,
+        "SystemMutations": 0
+      }
+    }
+  ]
+}

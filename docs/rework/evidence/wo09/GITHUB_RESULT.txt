@@ -1,0 +1,24 @@
+WORK ITEM: WO-09 final Windows qualification
+STATUS: PARTIAL
+BRANCH: codex/pccare-diagnostic-qualification-recovery-planning
+BASELINE SHA: 5ac4c4d5a4420bba9b9a1d2bbd8d3de12047c96a
+VALIDATED SOURCE SHA: 888ec1e8de1fe4fc2bcb7b2217e544d20dc929e7
+SOURCE TREE: bfa20d37d8adca1d365d96efbd40983aff988678
+WINDOWS CI: 38105566632 SUCCESS
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38105566632
+ENVIRONMENT: Windows NT 10.0.26100; four logical processors; elevated GitHub runner; .NET 10
+STATUS OF PUBLICATION: The executable source is uploaded. This evidence is stored in the report publication commit.
+PUBLICATION HEAD: Resolve the enclosing Git commit. A document cannot include its own commit hash without changing that hash.
+PUBLICATION TREE: Resolve the enclosing Git tree.
+TEST COMMAND: gh run view 38105566632 --json status,conclusion,headSha,url,jobs
+INPUT: PC-Care CI run 38105566632
+OUTPUT: status=completed; conclusion=success; headSha=888ec1e8de1fe4fc2bcb7b2217e544d20dc929e7
+EXIT CODE: 0
+DOWNLOAD COMMAND: gh run download 38105566632 -n wo09-windows-evidence -D artifacts/wo09/ci-38105566632
+OUTPUT: no stdout; requested artifact downloaded
+EXIT CODE: 0
+SOURCE COMMIT HISTORY: 781d80872de902b4a4dfe4966e86b7634559851d; 704d3552cde72ddca4d09db9c664a8077bffbf28; ab63c7cf1e35a751853ed1eecf1554ea10214d05; 888ec1e8de1fe4fc2bcb7b2217e544d20dc929e7
+CHANGED FILES: CHANGED_FILES.txt
+PUBLICATION POLICY: Fast-forward branch push. No force push, main merge, or official release.
+FINAL REMOTE ATTESTATION: The final response and ignored artifacts/wo09/PUBLICATION_ATTESTATION.json record observed local/remote HEAD and tree after upload.
+ROLLBACK PROCEDURE: Use reviewed Git revert for repository changes. ROLLBACK.sh restores only the designated source fixture copy.

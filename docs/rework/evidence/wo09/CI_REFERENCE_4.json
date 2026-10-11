@@ -1,0 +1,285 @@
+{
+  "status": "PARTIAL",
+  "analyzer": "Microsoft.Windows.EventTracing.Processing.All 1.12.10",
+  "etlSha256": "D5269AA9F548352FD4A7937988565B93E5D3D10FFCE0B2DB3AE59EA5B2A7FBA1",
+  "rawTracePublished": false,
+  "traceWindow": {
+    "StartTime": "2026-10-11T02:41:52.3592957+00:00",
+    "StopTime": "2026-10-11T02:42:22.8418595+00:00"
+  },
+  "reference": {
+    "Analyzer": "Microsoft.TraceProcessing",
+    "IndependentParser": true,
+    "LostEvents": 0,
+    "LostBuffers": 0,
+    "CpuGaps": 121724,
+    "Window": {
+      "StartUtc": "2026-10-11T02:41:54+00:00",
+      "EndUtc": "2026-10-11T02:42:22+00:00",
+      "Seconds": 28,
+      "Valid": true
+    },
+    "Cpu": [
+      {
+        "EndUtc": "2026-10-11T02:41:55+00:00",
+        "CpuPercent": 4.6012224999999995
+      },
+      {
+        "EndUtc": "2026-10-11T02:41:56+00:00",
+        "CpuPercent": 5.627759999999998
+      },
+      {
+        "EndUtc": "2026-10-11T02:41:57+00:00",
+        "CpuPercent": 6.556852499999997
+      },
+      {
+        "EndUtc": "2026-10-11T02:41:58+00:00",
+        "CpuPercent": 2.575442500000002
+      },
+      {
+        "EndUtc": "2026-10-11T02:41:59+00:00",
+        "CpuPercent": 2.2755674999999997
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:00+00:00",
+        "CpuPercent": 1.8201824999999998
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:01+00:00",
+        "CpuPercent": 1.7015025000000004
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:02+00:00",
+        "CpuPercent": 1.90138
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:03+00:00",
+        "CpuPercent": 1.7760749999999996
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:04+00:00",
+        "CpuPercent": 1.650435
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:05+00:00",
+        "CpuPercent": 1.7504499999999998
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:06+00:00",
+        "CpuPercent": 1.1004675
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:07+00:00",
+        "CpuPercent": 1.5258324999999993
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:08+00:00",
+        "CpuPercent": 1.7753574999999997
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:09+00:00",
+        "CpuPercent": 1.7256700000000003
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:10+00:00",
+        "CpuPercent": 1.7251650000000003
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:11+00:00",
+        "CpuPercent": 1.7254899999999997
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:12+00:00",
+        "CpuPercent": 1.22512
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:13+00:00",
+        "CpuPercent": 1.9756350000000005
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:14+00:00",
+        "CpuPercent": 1.7253399999999994
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:15+00:00",
+        "CpuPercent": 1.75046
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:16+00:00",
+        "CpuPercent": 7.7770225000000055
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:17+00:00",
+        "CpuPercent": 1.4507050000000001
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:18+00:00",
+        "CpuPercent": 1.5754175000000001
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:19+00:00",
+        "CpuPercent": 1.5752274999999996
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:20+00:00",
+        "CpuPercent": 1.4000125000000003
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:21+00:00",
+        "CpuPercent": 1.6252125000000002
+      },
+      {
+        "EndUtc": "2026-10-11T02:42:22+00:00",
+        "CpuPercent": 1.1257875
+      }
+    ]
+  },
+  "qualification": {
+    "Status": "NOT TESTED",
+    "Window": {
+      "StartUtc": "2026-10-11T02:41:54+00:00",
+      "EndUtc": "2026-10-11T02:42:22+00:00",
+      "Seconds": 28,
+      "Valid": true
+    },
+    "Metrics": {
+      "Status": "NOT TESTED",
+      "TruePositive": 0,
+      "FalsePositive": 0,
+      "FalseNegative": 0,
+      "TrueNegative": 0,
+      "Unknown": 3,
+      "InsufficientEvidence": 0,
+      "ReferenceMismatch": 0,
+      "Precision": null,
+      "Recall": null
+    },
+    "Exclusions": [
+      "ReferenceLossOrUnknownLoss"
+    ],
+    "CpuMedianAbsoluteError": null,
+    "PressureState": "Unknown"
+  },
+  "lifetimes": [
+    {
+      "id": "B582E8E694BE7ABF161A1759",
+      "startedUtc": "2026-10-11T02:41:52.4316818+00:00",
+      "endedUtc": "2026-10-11T02:42:22.5451114+00:00"
+    },
+    {
+      "id": "45A614D71EEB0AEA977F2A4A",
+      "startedUtc": "2026-10-11T02:41:52.4336354+00:00",
+      "endedUtc": "2026-10-11T02:42:22.6539403+00:00"
+    },
+    {
+      "id": "1208CFEFEE03A12B26A2862D",
+      "startedUtc": "2026-10-11T02:42:22.6623854+00:00",
+      "endedUtc": null
+    },
+    {
+      "id": "C8E3DF6FD7419F47E6C0D1DD",
+      "startedUtc": "2026-10-11T02:42:15.8234209+00:00",
+      "endedUtc": "2026-10-11T02:42:15.8543515+00:00"
+    },
+    {
+      "id": "41E0AA7321A3530641EEAFE1",
+      "startedUtc": "2026-10-11T02:42:15.8318411+00:00",
+      "endedUtc": "2026-10-11T02:42:15.8526045+00:00"
+    },
+    {
+      "id": "0A6FA8BD675240AD90D36816",
+      "startedUtc": "2026-10-11T02:41:54.1802583+00:00",
+      "endedUtc": null
+    },
+    {
+      "id": "039BD4902C3F39C739A91871",
+      "startedUtc": "2026-10-11T02:41:52.434316+00:00",
+      "endedUtc": "2026-10-11T02:42:22.5473404+00:00"
+    }
+  ],
+  "cpuParserDiagnostics": {
+    "sampleCount": 121720,
+    "invalidTimestamp": 0,
+    "partialTimestamp": 121720,
+    "partialWeight": 121720,
+    "invalidWeight": 0,
+    "missingProcess": 0,
+    "validSamplesInCommonWindow": 111988,
+    "unknownSamplesInCommonWindow": 0,
+    "estimatedUnaccountedSamplingPeriods": 121724,
+    "schedulingTimeSliceCount": 44434,
+    "interpretation": "Sampling gaps describe estimated unaccounted periods. They are not the native lost-event counter. The original zero-gap qualification gate remains in force."
+  },
+  "processCpu": [
+    {
+      "id": "45A614D71EEB0AEA977F2A4A",
+      "cpuSeconds": 0.5344362999999995,
+      "wholeMachinePercent": 0.4771752678571425
+    },
+    {
+      "id": "41E0AA7321A3530641EEAFE1",
+      "cpuSeconds": 0.018015299999999998,
+      "wholeMachinePercent": 0.016085089285714286
+    },
+    {
+      "id": "0A6FA8BD675240AD90D36816",
+      "cpuSeconds": 0.0179711,
+      "wholeMachinePercent": 0.016045625
+    },
+    {
+      "id": "C8E3DF6FD7419F47E6C0D1DD",
+      "cpuSeconds": 0.0100173,
+      "wholeMachinePercent": 0.008944017857142857
+    },
+    {
+      "id": "B582E8E694BE7ABF161A1759",
+      "cpuSeconds": 0.0009995,
+      "wholeMachinePercent": 0.0008924107142857143
+    }
+  ],
+  "unlinkedCpu": 2019,
+  "unlinkedIo": 948,
+  "disk": [
+    {
+      "sessionDiskNumber": 0,
+      "identityStatus": "TraceLocalNumberOnly",
+      "operations": 962,
+      "readBytes": 4609024,
+      "writeBytes": 180408832,
+      "latency": {
+        "Median": 2.4716,
+        "P95": 27.913539999999998,
+        "Count": 962
+      }
+    },
+    {
+      "sessionDiskNumber": 1,
+      "identityStatus": "TraceLocalNumberOnly",
+      "operations": 16,
+      "readBytes": 0,
+      "writeBytes": 225280,
+      "latency": {
+        "Median": 0.0165,
+        "P95": 0.047475,
+        "Count": 16
+      }
+    }
+  ],
+  "processIo": [
+    {
+      "id": null,
+      "operations": 948,
+      "bytes": 184679424
+    },
+    {
+      "id": "0A6FA8BD675240AD90D36816",
+      "operations": 30,
+      "bytes": 563712
+    }
+  ],
+  "resource": {
+    "elapsedMilliseconds": 509.1097,
+    "peakWorkingSetBytes": 127406080
+  },
+  "plans": []
+}

@@ -1,0 +1,17 @@
+WORK ITEM: WO-09
+STATUS: PASS
+BASELINE SHA: 5ac4c4d5a4420bba9b9a1d2bbd8d3de12047c96a
+EVIDENCE SOURCE: local WO-09 implementation before commits 704d3552 (GUI binding) and ab63c7cf (reference diagnostics)
+EXACT FINAL SOURCE VALIDATION: Windows CI; see GITHUB_RESULT.txt
+ENVIRONMENT: Windows 10.0.26200; .NET SDK 10.0.401; 24 logical processors; normal Windows token
+COMMAND: dotnet run --project artifacts/wo09/dry-run-fixture/fixture.csproj -c Release --no-launch-profile -- artifacts/wo09/dry-run-result.json
+INPUT: Four synthetic CPU findings: Candidate, Unknown, ExpectedWorkload, InsufficientEvidence
+OUTPUT:
+DRY_RUN_COMPLETED plans=4;preview=1;blocked=3;executionEnabled=False;systemMutations=0
+
+EXIT CODE: 0
+
+REPRODUCIBLE FIXTURE COMMAND: dotnet run --project docs/rework/evidence/wo09/DRY_RUN_FIXTURE.csproj -c Release --no-launch-profile -- artifacts/wo09/dry-run-replay.json
+INPUT: tracked DRY_RUN_FIXTURE.cs; synthetic findings only
+OUTPUT: DRY_RUN_COMPLETED plans=4;preview=1;blocked=3;executionEnabled=False;systemMutations=0
+EXIT CODE: 0

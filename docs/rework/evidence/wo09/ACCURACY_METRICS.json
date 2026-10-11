@@ -1,0 +1,537 @@
+{
+  "status": "PARTIAL",
+  "cpuQualificationStatus": "PARTIAL",
+  "scope": "Six controlled CPU trials on one isolated GitHub Windows runner; not general product accuracy",
+  "trialCount": 6,
+  "qualifiedCpuTrials": 0,
+  "qualifiedPositiveCpuTrials": 0,
+  "qualifiedNegativeCpuTrials": 0,
+  "counts": {
+    "TruePositive": 0,
+    "FalsePositive": 0,
+    "FalseNegative": 0,
+    "TrueNegative": 0,
+    "Unknown": 18,
+    "InsufficientEvidence": 0,
+    "ReferenceMismatch": 0
+  },
+  "Precision": null,
+  "Recall": null,
+  "processContributionError": null,
+  "diskMeasurementError": null,
+  "memoryPressureAccuracy": "NOT TESTED",
+  "diskPressureAccuracy": "NOT TESTED",
+  "actualPidReuse": "NOT TESTED",
+  "gui": "NOT TESTED",
+  "predeclaredTargets": {
+    "minimumCommonWindowSeconds": 10,
+    "maximumCpuMedianAbsoluteErrorPercentagePoints": 10,
+    "zeroFalseClassifications": true,
+    "bothPositiveAndNegativeRequired": true
+  },
+  "trials": [
+    {
+      "trial": 1,
+      "mode": "cpu",
+      "WorkloadExecuted": true,
+      "PressureVerified": false,
+      "pressureState": "Unknown",
+      "qualifiedCpu": false,
+      "referenceLoss": {
+        "LostEvents": 0,
+        "LostBuffers": 0,
+        "CpuGaps": 121988
+      },
+      "alignedWindow": {
+        "StartUtc": "2026-10-11T02:40:15+00:00",
+        "EndUtc": "2026-10-11T02:40:43+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "exclusions": [
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "counts": {
+        "TruePositive": 0,
+        "FalsePositive": 0,
+        "FalseNegative": 0,
+        "TrueNegative": 0,
+        "Unknown": 3,
+        "InsufficientEvidence": 0,
+        "ReferenceMismatch": 0
+      },
+      "cpuMedianAbsoluteErrorPercentagePoints": null,
+      "predeclaredErrorTargetMet": false,
+      "referenceCpuMedian": 100.00998500000034,
+      "collectorOverheadPercentOfMachine": 0.6755928246796924,
+      "collectorPeakWorkingSetBytes": 59535360,
+      "analyzerResources": {
+        "elapsedMilliseconds": 650.5304,
+        "peakWorkingSetBytes": 152231936
+      },
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "appEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 1108,
+        "EventsProcessed": 1108,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 1,
+        "MaxQueueDelayMilliseconds": 41.1271,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskWrite": 1101,
+          "DiskRead": 7
+        }
+      },
+      "referenceParserDiagnostics": {
+        "sampleCount": 121984,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 121984,
+        "partialWeight": 121984,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 111988,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 121988,
+        "schedulingTimeSliceCount": 52112,
+        "interpretation": "Sampling gaps describe estimated unaccounted periods. They are not the native lost-event counter. The original zero-gap qualification gate remains in force."
+      },
+      "independentLifetimeCount": 6,
+      "unlinkedCpu": 1926,
+      "unlinkedIo": 1023
+    },
+    {
+      "trial": 2,
+      "mode": "cpu",
+      "WorkloadExecuted": true,
+      "PressureVerified": false,
+      "pressureState": "Unknown",
+      "qualifiedCpu": false,
+      "referenceLoss": {
+        "LostEvents": 0,
+        "LostBuffers": 0,
+        "CpuGaps": 121816
+      },
+      "alignedWindow": {
+        "StartUtc": "2026-10-11T02:40:49+00:00",
+        "EndUtc": "2026-10-11T02:41:17+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "exclusions": [
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "counts": {
+        "TruePositive": 0,
+        "FalsePositive": 0,
+        "FalseNegative": 0,
+        "TrueNegative": 0,
+        "Unknown": 3,
+        "InsufficientEvidence": 0,
+        "ReferenceMismatch": 0
+      },
+      "cpuMedianAbsoluteErrorPercentagePoints": null,
+      "predeclaredErrorTargetMet": false,
+      "referenceCpuMedian": 100.00997500000037,
+      "collectorOverheadPercentOfMachine": 0.7403967197299127,
+      "collectorPeakWorkingSetBytes": 55422976,
+      "analyzerResources": {
+        "elapsedMilliseconds": 606.9326,
+        "peakWorkingSetBytes": 134930432
+      },
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "appEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 247,
+        "EventsProcessed": 247,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 0,
+        "MaxQueueDelayMilliseconds": 36.2614,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskWrite": 247
+        }
+      },
+      "referenceParserDiagnostics": {
+        "sampleCount": 121812,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 121812,
+        "partialWeight": 121812,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 111988,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 121816,
+        "schedulingTimeSliceCount": 46392,
+        "interpretation": "Sampling gaps describe estimated unaccounted periods. They are not the native lost-event counter. The original zero-gap qualification gate remains in force."
+      },
+      "independentLifetimeCount": 6,
+      "unlinkedCpu": 1867,
+      "unlinkedIo": 248
+    },
+    {
+      "trial": 3,
+      "mode": "cpu",
+      "WorkloadExecuted": true,
+      "PressureVerified": false,
+      "pressureState": "Unknown",
+      "qualifiedCpu": false,
+      "referenceLoss": {
+        "LostEvents": 0,
+        "LostBuffers": 0,
+        "CpuGaps": 122144
+      },
+      "alignedWindow": {
+        "StartUtc": "2026-10-11T02:41:21+00:00",
+        "EndUtc": "2026-10-11T02:41:49+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "exclusions": [
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "counts": {
+        "TruePositive": 0,
+        "FalsePositive": 0,
+        "FalseNegative": 0,
+        "TrueNegative": 0,
+        "Unknown": 3,
+        "InsufficientEvidence": 0,
+        "ReferenceMismatch": 0
+      },
+      "cpuMedianAbsoluteErrorPercentagePoints": null,
+      "predeclaredErrorTargetMet": false,
+      "referenceCpuMedian": 100.00999250000046,
+      "collectorOverheadPercentOfMachine": 0.7015511845042581,
+      "collectorPeakWorkingSetBytes": 54288384,
+      "analyzerResources": {
+        "elapsedMilliseconds": 684.9717,
+        "peakWorkingSetBytes": 135536640
+      },
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "appEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 320,
+        "EventsProcessed": 320,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 0,
+        "MaxQueueDelayMilliseconds": 43.4679,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskWrite": 303,
+          "DiskRead": 17
+        }
+      },
+      "referenceParserDiagnostics": {
+        "sampleCount": 122140,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 122140,
+        "partialWeight": 122140,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 111988,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 122144,
+        "schedulingTimeSliceCount": 48185,
+        "interpretation": "Sampling gaps describe estimated unaccounted periods. They are not the native lost-event counter. The original zero-gap qualification gate remains in force."
+      },
+      "independentLifetimeCount": 7,
+      "unlinkedCpu": 2063,
+      "unlinkedIo": 319
+    },
+    {
+      "trial": 4,
+      "mode": "peak",
+      "WorkloadExecuted": true,
+      "PressureVerified": false,
+      "pressureState": "Unknown",
+      "qualifiedCpu": false,
+      "referenceLoss": {
+        "LostEvents": 0,
+        "LostBuffers": 0,
+        "CpuGaps": 121724
+      },
+      "alignedWindow": {
+        "StartUtc": "2026-10-11T02:41:54+00:00",
+        "EndUtc": "2026-10-11T02:42:22+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "exclusions": [
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "counts": {
+        "TruePositive": 0,
+        "FalsePositive": 0,
+        "FalseNegative": 0,
+        "TrueNegative": 0,
+        "Unknown": 3,
+        "InsufficientEvidence": 0,
+        "ReferenceMismatch": 0
+      },
+      "cpuMedianAbsoluteErrorPercentagePoints": null,
+      "predeclaredErrorTargetMet": false,
+      "referenceCpuMedian": 1.72558,
+      "collectorOverheadPercentOfMachine": 0.6499494201665825,
+      "collectorPeakWorkingSetBytes": 56840192,
+      "analyzerResources": {
+        "elapsedMilliseconds": 509.1097,
+        "peakWorkingSetBytes": 127406080
+      },
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "appEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 1049,
+        "EventsProcessed": 1049,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 0,
+        "MaxQueueDelayMilliseconds": 31.5239,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskWrite": 795,
+          "DiskRead": 254
+        }
+      },
+      "referenceParserDiagnostics": {
+        "sampleCount": 121720,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 121720,
+        "partialWeight": 121720,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 111988,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 121724,
+        "schedulingTimeSliceCount": 44434,
+        "interpretation": "Sampling gaps describe estimated unaccounted periods. They are not the native lost-event counter. The original zero-gap qualification gate remains in force."
+      },
+      "independentLifetimeCount": 7,
+      "unlinkedCpu": 2019,
+      "unlinkedIo": 948
+    },
+    {
+      "trial": 5,
+      "mode": "peak",
+      "WorkloadExecuted": true,
+      "PressureVerified": false,
+      "pressureState": "Unknown",
+      "qualifiedCpu": false,
+      "referenceLoss": {
+        "LostEvents": 0,
+        "LostBuffers": 0,
+        "CpuGaps": 121852
+      },
+      "alignedWindow": {
+        "StartUtc": "2026-10-11T02:42:26+00:00",
+        "EndUtc": "2026-10-11T02:42:54+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "exclusions": [
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "counts": {
+        "TruePositive": 0,
+        "FalsePositive": 0,
+        "FalseNegative": 0,
+        "TrueNegative": 0,
+        "Unknown": 3,
+        "InsufficientEvidence": 0,
+        "ReferenceMismatch": 0
+      },
+      "cpuMedianAbsoluteErrorPercentagePoints": null,
+      "predeclaredErrorTargetMet": false,
+      "referenceCpuMedian": 28.359593749999945,
+      "collectorOverheadPercentOfMachine": 0.7666550653754041,
+      "collectorPeakWorkingSetBytes": 60518400,
+      "analyzerResources": {
+        "elapsedMilliseconds": 656.1287,
+        "peakWorkingSetBytes": 142422016
+      },
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "appEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 12480,
+        "EventsProcessed": 12480,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 0,
+        "MaxQueueDelayMilliseconds": 31.2978,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskWrite": 313,
+          "DiskRead": 12167
+        }
+      },
+      "referenceParserDiagnostics": {
+        "sampleCount": 121848,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 121848,
+        "partialWeight": 121848,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 111988,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 121852,
+        "schedulingTimeSliceCount": 82961,
+        "interpretation": "Sampling gaps describe estimated unaccounted periods. They are not the native lost-event counter. The original zero-gap qualification gate remains in force."
+      },
+      "independentLifetimeCount": 8,
+      "unlinkedCpu": 21376,
+      "unlinkedIo": 12132
+    },
+    {
+      "trial": 6,
+      "mode": "peak",
+      "WorkloadExecuted": true,
+      "PressureVerified": false,
+      "pressureState": "Unknown",
+      "qualifiedCpu": false,
+      "referenceLoss": {
+        "LostEvents": 0,
+        "LostBuffers": 0,
+        "CpuGaps": 121764
+      },
+      "alignedWindow": {
+        "StartUtc": "2026-10-11T02:42:59+00:00",
+        "EndUtc": "2026-10-11T02:43:27+00:00",
+        "Seconds": 28,
+        "Valid": true
+      },
+      "exclusions": [
+        "ReferenceLossOrUnknownLoss"
+      ],
+      "counts": {
+        "TruePositive": 0,
+        "FalsePositive": 0,
+        "FalseNegative": 0,
+        "TrueNegative": 0,
+        "Unknown": 3,
+        "InsufficientEvidence": 0,
+        "ReferenceMismatch": 0
+      },
+      "cpuMedianAbsoluteErrorPercentagePoints": null,
+      "predeclaredErrorTargetMet": false,
+      "referenceCpuMedian": 1.8503374999999997,
+      "collectorOverheadPercentOfMachine": 0.8185039364304099,
+      "collectorPeakWorkingSetBytes": 56197120,
+      "analyzerResources": {
+        "elapsedMilliseconds": 495.6423,
+        "peakWorkingSetBytes": 129003520
+      },
+      "environment": {
+        "os": "Microsoft Windows NT 10.0.26100.0",
+        "logicalProcessors": 4,
+        "traceEvent": "3.2.8.0",
+        "elevated": true
+      },
+      "appEtwStatistics": {
+        "NativeEtwEventsLost": 0,
+        "ApplicationQueueDropped": 0,
+        "MalformedEvents": 0,
+        "EventsAccepted": 1655,
+        "EventsProcessed": 1655,
+        "EventsPendingAtStop": 0,
+        "SessionCleanupStatus": "VerifiedAbsent",
+        "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+        "EffectiveProfile": "General",
+        "RangeReduced": false,
+        "UnattributedEvents": 0,
+        "MaxQueueDelayMilliseconds": 26.9226,
+        "RequestedBufferMegabytes": 8,
+        "RequestedBufferQuantumKilobytes": 64,
+        "RequestedMinimumBuffers": 128,
+        "RequestedMaximumBuffers": 170,
+        "ReceivedByKind": {
+          "DiskRead": 1191,
+          "DiskWrite": 464
+        }
+      },
+      "referenceParserDiagnostics": {
+        "sampleCount": 121760,
+        "invalidTimestamp": 0,
+        "partialTimestamp": 121760,
+        "partialWeight": 121760,
+        "invalidWeight": 0,
+        "missingProcess": 0,
+        "validSamplesInCommonWindow": 111988,
+        "unknownSamplesInCommonWindow": 0,
+        "estimatedUnaccountedSamplingPeriods": 121764,
+        "schedulingTimeSliceCount": 52401,
+        "interpretation": "Sampling gaps describe estimated unaccounted periods. They are not the native lost-event counter. The original zero-gap qualification gate remains in force."
+      },
+      "independentLifetimeCount": 9,
+      "unlinkedCpu": 9085,
+      "unlinkedIo": 1456
+    }
+  ]
+}

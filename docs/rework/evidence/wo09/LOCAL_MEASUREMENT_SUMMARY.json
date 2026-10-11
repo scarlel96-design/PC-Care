@@ -1,0 +1,44 @@
+{
+  "environment": {
+    "os": "Microsoft Windows NT 10.0.26200.0",
+    "logicalProcessors": 24,
+    "traceEvent": "3.2.8.0",
+    "elevated": false
+  },
+  "remainingOwnedSessions": null,
+  "analysisMilliseconds": 24.2128,
+  "cpu": {
+    "Median": 10.508926918142503,
+    "P95": 41.6632993512511,
+    "Count": 28
+  },
+  "memory": {
+    "Median": 28.509162920954743,
+    "P95": 28.962901021483386,
+    "Count": 28
+  },
+  "overheadPercentOfMachine": 0.19083529153936632,
+  "status": "PARTIAL",
+  "command": "SmartPerformanceDoctor.DiagnosticsProbe.exe 30 artifacts/wo09/local-readonly.json General",
+  "exitCode": 0,
+  "durationSeconds": 30.021526,
+  "sampleCount": 28,
+  "peakWorkingSetBytes": 70123520,
+  "managedAllocatedBytes": 41888304,
+  "errors": [
+    {
+      "Provider": "Process",
+      "Code": "PartialAccessOrExited"
+    },
+    {
+      "Provider": "ProcessBudget",
+      "Code": "Truncated"
+    },
+    {
+      "Provider": "ETW",
+      "Code": "PermissionDenied"
+    }
+  ],
+  "ETW": "PermissionDenied; no elevated token",
+  "actualWorkload": "Read-only normal host observation; concurrent build/test activity; no bounded stress workload"
+}

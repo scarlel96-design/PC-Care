@@ -1,0 +1,42 @@
+{
+  "status": "PASS",
+  "redactedFields": [
+    "local user",
+    "local computer",
+    "workspace paths"
+  ],
+  "unchangedFields": [
+    "test names",
+    "outcomes",
+    "counts",
+    "timestamps",
+    "durations"
+  ],
+  "rawEvidenceLocation": "Ignored artifacts/wo09 test directories",
+  "files": [
+    {
+      "file": "LOCAL_BASELINE.trx",
+      "rawSha256": "e83d520057b680003481cbeeedfafbd080b8e72b8ab136fb3b2db1657babfd89",
+      "publishedSha256": "49f170aca65b11cdfc968d2d045a9306ddbe8200aec0daa33cd5835de816883f",
+      "lineEndingNormalization": "LF; parsed test IDs and outcomes unchanged"
+    },
+    {
+      "file": "LOCAL_FULL.trx",
+      "rawSha256": "70a3cca4829b899ea80a01130bab2fd82f797bebe3105a9da1b047cf9639c44b",
+      "publishedSha256": "fdfb939a9284468ad1b34b426666e15c10c9139e1dbb0b696af4dc03257644dc",
+      "lineEndingNormalization": "LF; parsed test IDs and outcomes unchanged"
+    },
+    {
+      "file": "LOCAL_SECURITYLAB.trx",
+      "rawSha256": "36f57bb382e08d6e26f0bf26771ccca95f96f82ae1f535d9e3c3cd3e9ea025b1",
+      "publishedSha256": "6ac8c15a4e922cfdba1741b86296920687f831d711dbeb9884f1d3f583bd01ee",
+      "lineEndingNormalization": "LF; parsed test IDs and outcomes unchanged"
+    },
+    {
+      "file": "LOCAL_WO09.trx",
+      "rawSha256": "35867be576db1395fd97143ec7b5399ed491d014438371fb7f5a2d3b6773aefc",
+      "publishedSha256": "ec220841352e809cbfebfff70993e99d22d8ef5657e567928fea998866cc660e",
+      "lineEndingNormalization": "LF; parsed test IDs and outcomes unchanged"
+    }
+  ]
+}

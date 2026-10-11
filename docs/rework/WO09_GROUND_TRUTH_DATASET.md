@@ -34,5 +34,17 @@ Record trial order. CPU trials precede peak trials. Cache and thermal order effe
 
 ## Interpretation
 
-This dataset qualifies CPU observations on one hosted runner. It does not prove a program's root cause.
+This protocol evaluates CPU observations on one hosted runner. Qualification requires the recorded gates.
+It does not prove a program's root cause.
 Memory pressure, physical disk pressure, inaccessible processes, and actual PID reuse need separate ground truth.
+
+## Executed dataset status
+
+Six final trials completed: three CPU trials followed by three short-peak trials.
+Each common window lasted 28 seconds. All workload commands returned exit code zero.
+The independent qualification gate rejected all six CPU references because SDK sampling gaps remained.
+GROUND_TRUTH_RESULT.json records each command result, aligned window, exclusion, and resource observation.
+No independently qualified pressure label was produced.
+The eight existing bounded workload smokes also ran successfully.
+They establish WorkloadExecuted only. Memory allocation and I/O success do not establish pressure.
+Actual PID reuse, inaccessible-process pressure, and independent mixed-resource accuracy remain NOT TESTED.

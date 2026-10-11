@@ -1,0 +1,242 @@
+[
+  {
+    "state": "Candidate",
+    "plan": {
+      "PlanId": "F608563C8C914D5B184CF442",
+      "FindingId": "synthetic.Candidate",
+      "EvidenceReferences": [
+        "synthetic.Candidate",
+        "30 seconds",
+        "Synthetic"
+      ],
+      "ProblemDescription": "CPU \uBD80\uD558",
+      "ProposedAction": 6,
+      "Eligibility": "ReviewOnly",
+      "ConfidenceLimitations": [
+        "\uADFC\uBCF8 \uC6D0\uC778\uACFC \uC2E4\uC81C \uAC1C\uC120 \uD6A8\uACFC\uB294 \uBBF8\uD655\uC778\uC785\uB2C8\uB2E4."
+      ],
+      "RiskLevel": "ReviewOnly;ExecutionRiskNotAssessed",
+      "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+      "ExpectedEffect": "Unknown",
+      "EstimatedResourceCost": "UnknownUntilTargetInspection",
+      "UserConsentRequired": true,
+      "PreflightChecks": [
+        "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+        "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+        "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+        "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+      ],
+      "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+      "RollbackPlan": "\uBBF8\uB9AC\uBCF4\uAE30\uB294 \uC0C1\uD0DC\uB97C \uBCC0\uACBD\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. \uC2E4\uD589 \uB2E8\uACC4\uC5D0\uC11C \uC870\uCE58\uBCC4 \uC6D0\uBCF5\uC744 \uC124\uACC4\uD558\uC138\uC694.",
+      "VerificationMetrics": [
+        "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+        "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+        "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+        "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+      ],
+      "ExecutionState": "PlannedOnly"
+    },
+    "dryRun": {
+      "PlanId": "F608563C8C914D5B184CF442",
+      "Status": "PreviewAvailable",
+      "Target": "ExactTargetNotSelected;ReviewApplicationLoad",
+      "Preconditions": [
+        "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+        "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+        "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+        "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+      ],
+      "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+      "Risk": "ReviewOnly;ExecutionRiskNotAssessed",
+      "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+      "VerificationMetrics": [
+        "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+        "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+        "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+        "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+      ],
+      "ExecutionEnabled": false,
+      "SystemMutations": 0
+    }
+  },
+  {
+    "state": "Unknown",
+    "plan": {
+      "PlanId": "7936656E6ADC9061F2D5B8A3",
+      "FindingId": "synthetic.Unknown",
+      "EvidenceReferences": [
+        "synthetic.Unknown",
+        "30 seconds",
+        "Synthetic"
+      ],
+      "ProblemDescription": "CPU \uBD80\uD558",
+      "ProposedAction": 6,
+      "Eligibility": "Blocked:ObservationRequiresConfirmation",
+      "ConfidenceLimitations": [
+        "\uADFC\uBCF8 \uC6D0\uC778\uACFC \uC2E4\uC81C \uAC1C\uC120 \uD6A8\uACFC\uB294 \uBBF8\uD655\uC778\uC785\uB2C8\uB2E4."
+      ],
+      "RiskLevel": "ReviewOnly;ExecutionRiskNotAssessed",
+      "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+      "ExpectedEffect": "Unknown",
+      "EstimatedResourceCost": "UnknownUntilTargetInspection",
+      "UserConsentRequired": true,
+      "PreflightChecks": [
+        "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+        "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+        "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+        "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+      ],
+      "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+      "RollbackPlan": "\uBBF8\uB9AC\uBCF4\uAE30\uB294 \uC0C1\uD0DC\uB97C \uBCC0\uACBD\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. \uC2E4\uD589 \uB2E8\uACC4\uC5D0\uC11C \uC870\uCE58\uBCC4 \uC6D0\uBCF5\uC744 \uC124\uACC4\uD558\uC138\uC694.",
+      "VerificationMetrics": [
+        "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+        "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+        "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+        "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+      ],
+      "ExecutionState": "PlannedOnly"
+    },
+    "dryRun": {
+      "PlanId": "7936656E6ADC9061F2D5B8A3",
+      "Status": "Blocked:ObservationRequiresConfirmation",
+      "Target": "ExactTargetNotSelected;ReviewApplicationLoad",
+      "Preconditions": [
+        "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+        "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+        "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+        "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+      ],
+      "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+      "Risk": "ReviewOnly;ExecutionRiskNotAssessed",
+      "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+      "VerificationMetrics": [
+        "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+        "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+        "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+        "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+      ],
+      "ExecutionEnabled": false,
+      "SystemMutations": 0
+    }
+  },
+  {
+    "state": "ExpectedWorkload",
+    "plan": {
+      "PlanId": "1CC5AC542C189604B93D262A",
+      "FindingId": "synthetic.ExpectedWorkload",
+      "EvidenceReferences": [
+        "synthetic.ExpectedWorkload",
+        "30 seconds",
+        "Synthetic"
+      ],
+      "ProblemDescription": "CPU \uBD80\uD558",
+      "ProposedAction": 6,
+      "Eligibility": "Blocked:ExpectedWorkload",
+      "ConfidenceLimitations": [
+        "\uADFC\uBCF8 \uC6D0\uC778\uACFC \uC2E4\uC81C \uAC1C\uC120 \uD6A8\uACFC\uB294 \uBBF8\uD655\uC778\uC785\uB2C8\uB2E4."
+      ],
+      "RiskLevel": "ReviewOnly;ExecutionRiskNotAssessed",
+      "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+      "ExpectedEffect": "Unknown",
+      "EstimatedResourceCost": "UnknownUntilTargetInspection",
+      "UserConsentRequired": true,
+      "PreflightChecks": [
+        "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+        "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+        "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+        "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+      ],
+      "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+      "RollbackPlan": "\uBBF8\uB9AC\uBCF4\uAE30\uB294 \uC0C1\uD0DC\uB97C \uBCC0\uACBD\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. \uC2E4\uD589 \uB2E8\uACC4\uC5D0\uC11C \uC870\uCE58\uBCC4 \uC6D0\uBCF5\uC744 \uC124\uACC4\uD558\uC138\uC694.",
+      "VerificationMetrics": [
+        "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+        "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+        "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+        "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+      ],
+      "ExecutionState": "PlannedOnly"
+    },
+    "dryRun": {
+      "PlanId": "1CC5AC542C189604B93D262A",
+      "Status": "Blocked:ExpectedWorkload",
+      "Target": "ExactTargetNotSelected;ReviewApplicationLoad",
+      "Preconditions": [
+        "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+        "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+        "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+        "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+      ],
+      "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+      "Risk": "ReviewOnly;ExecutionRiskNotAssessed",
+      "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+      "VerificationMetrics": [
+        "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+        "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+        "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+        "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+      ],
+      "ExecutionEnabled": false,
+      "SystemMutations": 0
+    }
+  },
+  {
+    "state": "InsufficientEvidence",
+    "plan": {
+      "PlanId": "F8E1E0DA21166173DDE6DD77",
+      "FindingId": "synthetic.InsufficientEvidence",
+      "EvidenceReferences": [
+        "synthetic.InsufficientEvidence",
+        "30 seconds",
+        "Synthetic"
+      ],
+      "ProblemDescription": "CPU \uBD80\uD558",
+      "ProposedAction": 6,
+      "Eligibility": "Blocked:ObservationRequiresConfirmation",
+      "ConfidenceLimitations": [
+        "\uADFC\uBCF8 \uC6D0\uC778\uACFC \uC2E4\uC81C \uAC1C\uC120 \uD6A8\uACFC\uB294 \uBBF8\uD655\uC778\uC785\uB2C8\uB2E4."
+      ],
+      "RiskLevel": "ReviewOnly;ExecutionRiskNotAssessed",
+      "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+      "ExpectedEffect": "Unknown",
+      "EstimatedResourceCost": "UnknownUntilTargetInspection",
+      "UserConsentRequired": true,
+      "PreflightChecks": [
+        "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+        "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+        "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+        "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+      ],
+      "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+      "RollbackPlan": "\uBBF8\uB9AC\uBCF4\uAE30\uB294 \uC0C1\uD0DC\uB97C \uBCC0\uACBD\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4. \uC2E4\uD589 \uB2E8\uACC4\uC5D0\uC11C \uC870\uCE58\uBCC4 \uC6D0\uBCF5\uC744 \uC124\uACC4\uD558\uC138\uC694.",
+      "VerificationMetrics": [
+        "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+        "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+        "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+        "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+      ],
+      "ExecutionState": "PlannedOnly"
+    },
+    "dryRun": {
+      "PlanId": "F8E1E0DA21166173DDE6DD77",
+      "Status": "Blocked:ObservationRequiresConfirmation",
+      "Target": "ExactTargetNotSelected;ReviewApplicationLoad",
+      "Preconditions": [
+        "\uB3D9\uC77C\uD55C \uC791\uC5C5 \uC870\uAC74\uC5D0\uC11C \uC7AC\uCE21\uC815\uD558\uC138\uC694.",
+        "\uC815\uD655\uD55C \uBCC0\uACBD \uB300\uC0C1\uACFC \uC18C\uC720\uC790\uB97C \uD655\uC778\uD558\uC138\uC694.",
+        "\uD604\uC7AC \uC0C1\uD0DC\uC640 \uC6D0\uBCF5 \uC790\uB8CC\uB97C \uBCF4\uC874\uD558\uC138\uC694.",
+        "\uC2E4\uD589 \uC804 \uBCC4\uB3C4 \uB3D9\uC758\uB97C \uBC1B\uC73C\uC138\uC694."
+      ],
+      "RequiredPrivileges": "NoneForPreview;ReassessBeforeExecution",
+      "Risk": "ReviewOnly;ExecutionRiskNotAssessed",
+      "RollbackCapability": "NotApplicableToPreview;RequiredBeforeExecution",
+      "VerificationMetrics": [
+        "\uB3D9\uC77C \uC2DC\uAC04 \uAD6C\uAC04\uC758 CPU \uC911\uC559\uAC12\u00B7P95",
+        "\uBA54\uBAA8\uB9AC \uC555\uBC15 \uC2DC\uAC04",
+        "\uC7A5\uCE58\uBCC4 I/O \uC9C0\uC5F0",
+        "\uC0AC\uC6A9\uC790 \uC791\uC5C5 \uC644\uB8CC \uC2DC\uAC04"
+      ],
+      "ExecutionEnabled": false,
+      "SystemMutations": 0
+    }
+  }
+]

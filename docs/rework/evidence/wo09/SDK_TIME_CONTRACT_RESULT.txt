@@ -1,0 +1,11 @@
+WORK ITEM: SDK converted timestamp and duration regression
+STATUS: PASS
+SOURCE SHA: 888ec1e8de1fe4fc2bcb7b2217e544d20dc929e7
+ENVIRONMENT: Windows 10.0.26200; .NET SDK 10.0.401; normal token
+COMMAND: dotnet run --project tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-build --no-restore -- --verify-time-contract
+INPUT: Microsoft TraceProcessing 1.12.10 public TraceTimestamp and TraceDuration structs; synthetic partial and full contexts
+CASES: rounded timestamp; rounded duration; full timestamp; missing timestamp; missing duration; out-of-window timestamp; conversion exception; negative duration; zero duration; excessive duration
+OUTPUT: SDK_TIME_CONTRACT passed=10 failed=0 roundedConvertedValues=Accepted rawValue=Unused
+EXIT CODE: 0
+MEANING: Ten SDK API conversion cases. Not a live ETL accuracy test or application unit-test count.
+RAW VALUE: The production parser does not access TraceTimestamp.Value or TraceDuration.Value.

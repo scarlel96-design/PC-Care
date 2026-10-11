@@ -1,0 +1,81 @@
+WORK ITEM: WO-09
+STATUS: PARTIAL
+BRANCH: codex/pccare-diagnostic-qualification-recovery-planning
+BASELINE SHA: 5ac4c4d5a4420bba9b9a1d2bbd8d3de12047c96a
+CI SOURCE SHA: 888ec1e8de1fe4fc2bcb7b2217e544d20dc929e7
+CI SOURCE TREE: bfa20d37d8adca1d365d96efbd40983aff988678
+CHANGED FIELD: AccuracyMetrics.InsufficientEvidence, Unknown, ReferenceMismatch; ReferenceComparison category branches
+MODIFIED_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo09\MODIFIED_FILE.cs
+DIFF_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo09\DIFF_FILE.patch
+VERIFICATION: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo09\VERIFICATION.txt
+ROLLBACK: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo09\ROLLBACK.sh
+ORIGINAL SHA256: A9D374C3B8542B849AA8FBFE55D913DCED42A7C4F472EFEA4601CF1678389619
+MODIFIED SHA256: 4F73E92B626E0654B0A1BDB86423ED1E03CB180D395D5E9855109AD286B9BBAE
+ENVIRONMENT: Windows 10.0.26200; .NET SDK 10.0.401; 24 logical processors
+WORKING DIRECTORY: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care
+BASELINE COMMAND: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/wo09-source-fixture.ps1 -Stage baseline
+INPUT: actual ReferenceComparison method; InsufficientEvidence CPU finding; positive CPU truth
+OUTPUT:
+TP=1;FP=0;FN=0;TN=0;Unknown=0;Insufficient=0;Mismatch=0;Precision=1;Recall=1
+
+EXIT CODE: 0
+
+MODIFIED COMMAND: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/wo09-source-fixture.ps1 -Stage modified
+INPUT: actual ReferenceComparison method; InsufficientEvidence CPU finding; positive CPU truth
+OUTPUT:
+TP=0;FP=0;FN=0;TN=0;Unknown=0;Insufficient=1;Mismatch=0;Precision=null;Recall=null
+
+EXIT CODE: 0
+
+ROLLBACK COMMAND: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/wo09-source-fixture.ps1 -Stage rollback
+INPUT: actual ReferenceComparison method; InsufficientEvidence CPU finding; positive CPU truth
+OUTPUT:
+TP=1;FP=0;FN=0;TN=0;Unknown=0;Insufficient=0;Mismatch=0;Precision=1;Recall=1
+
+EXIT CODE: 0
+
+ROLLBACK COMMAND: & 'C:\Program Files\Git\bin\bash.exe' docs/rework/evidence/wo09/ROLLBACK.sh 'C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/artifacts/wo09/fixture/rollback-copy'
+INPUT: independent artifacts/wo09/fixture/rollback-copy/ReferenceComparison.cs; verified modified hash
+OUTPUT: SOURCE_COPY_RESTORED;INSTALL_TRANSACTION_NOT_TESTED
+EXIT CODE: 0
+RESTORED STATUS: original hash and baseline behavior restored in the independent copy
+FINAL SOURCE STATUS: ReferenceComparison.cs and MODIFIED_FILE remain modified
+INSTALL TRANSACTION ROLLBACK: NOT TESTED in WO-09; existing regression recorded separately
+
+AUTOMATED BASELINE: 848 PASS / 111 SKIP / 0 FAIL; exit 0
+AUTOMATED MODIFIED: 915 PASS / 111 SKIP / 0 FAIL; exit 0
+WO09 TESTS: 67 PASS / 0 SKIP / 0 FAIL; exit 0
+SECURITYLAB: 36 PASS / 0 SKIP / 0 FAIL; exit 0
+RELEASE BUILD: 0 warnings / 0 errors; exit 0
+DRY RUN: DRY_RUN_COMPLETED plans=4;preview=1;blocked=3;executionEnabled=False;systemMutations=0; exit 0
+GUI: NOT TESTED
+CI: See GITHUB_RESULT.txt and CI evidence for the validated source and run
+RESTORATION: Source-copy rollback and installed update transaction restoration are distinct
+
+ROOT CAUSE: InsufficientEvidence entered a positive classification branch. Independent reference and planner contracts were absent.
+CHANGED FILES: Read GITHUB_RESULT.txt and CHANGED_FILES.txt for the complete source and publication inventory.
+IMPLEMENTATION: Add qualified reference windows, conservative comparison, I/O selection, disk mapping, read-only planning, Dry Run, lifecycle gates.
+SAFETY: No recovery executor. Production trust gates unchanged. Raw ETL and identity keys excluded from uploads.
+REMAINING RISKS: Read ACCURACY_METRICS.json and WO09_PRODUCT_READINESS.md. Live GUI and independent process/disk qualification remain incomplete.
+ROLLBACK PROCEDURE: Run ROLLBACK.sh only against the designated independent rollback-copy fixture. Use reviewed Git revert for repository restoration.
+
+WORK ITEM: WO-09 final Windows qualification
+STATUS: PARTIAL
+BRANCH: codex/pccare-diagnostic-qualification-recovery-planning
+BASELINE SHA: 5ac4c4d5a4420bba9b9a1d2bbd8d3de12047c96a
+VALIDATED SOURCE SHA: 888ec1e8de1fe4fc2bcb7b2217e544d20dc929e7
+SOURCE TREE: bfa20d37d8adca1d365d96efbd40983aff988678
+WINDOWS CI: 38105566632 SUCCESS
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38105566632
+ENVIRONMENT: Windows NT 10.0.26100; four logical processors; elevated GitHub runner; .NET 10
+FINAL CI: App 915 PASS / 111 SKIP / 0 FAIL; performance 146 PASS; updater 128 PASS; SecurityLab 36 PASS; SDK API fixture 10 PASS
+INDEPENDENT CPU: six executed trials; zero qualified references; Unknown=18; Precision=null; Recall=null
+REFERENCE GAPS: 121988,121816,122144,121724,121852,121764
+APP ETW: NativeEtwEventsLost=0; ApplicationQueueDropped=0; VerifiedAbsent in all six trials; terminal loss interval Unknown
+PUBLISHED DOCUMENTS: eleven required reports and fourteen required evidence files; EVIDENCE_MANIFEST.json supplies reopened file hashes
+PHASE 1: NO-GO
+
+CONTINUATION RECHECK: baseline, modified, ROLLBACK.sh, and restored fixture each returned exit code 0 with the literal outputs recorded above.
+ARTIFACT REOPEN: WO09_EVIDENCE_REOPENED files=64 requiredReports=11 requiredEvidence=14 sourceHash=PASS executionEnabled=False
+REOPEN EXIT CODE: 0
+ROLLBACK EXECUTABLE MODE: git ls-files --stage returned 100755 for ROLLBACK.sh

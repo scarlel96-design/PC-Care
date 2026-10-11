@@ -1,0 +1,30 @@
+WORK ITEM: Initial local baseline attempt
+STATUS: FAIL
+COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --logger "trx;LogFileName=baseline.trx" --results-directory artifacts/wo09/baseline -v:minimal
+ENVIRONMENT: managed sandbox; Windows normal token; default testhost connection timeout
+INPUT: WO-08 baseline assemblies
+OUTPUT:
+<WORKSPACE>\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+vstest.console 프로세스가 90초 후 testhost 프로세스에 연결하지 못했습니다. 이런 오류는 컴퓨터가 느려서 발생할 수 있습니다. 환경 변수 VSTEST_CONNECTION_TIMEOUT을(를) 설정하여 시간 제한을 늘리세요. The process with id 3680 was still running when this message was reported.
+결과 파일: <WORKSPACE>\artifacts\wo09\baseline\baseline.trx
+
+테스트 실행이 중단되었습니다.
+
+EXIT CODE: 1
+RESOLUTION: Authorized execution rerun; VSTEST_CONNECTION_TIMEOUT=30. See BASELINE_RESULT.txt.
+
+Initial CI reference qualification attempts:
+CI 38103137150 source 781d80872de902b4a4dfe4966e86b7634559851d: workflow SUCCESS; six reference trials unqualified.
+CI 38103213638 source 704d3552cde72ddca4d09db9c664a8077bffbf28: workflow SUCCESS; six reference trials unqualified.
+Both attempts reported zero native WPR loss, but SDK sampling gaps and invalid CPU coverage excluded truth.
+The next source adds Loader, CSwitch, and anonymous sample diagnostics. It preserves acceptance thresholds.
+
+CI 38104330612 source ab63c7cf1e35a751853ed1eecf1554ea10214d05: workflow SUCCESS; six reference trials unqualified.
+WPR LostEvents=0 and LostBuffers=0 for every trial.
+SDK samples=invalidTimestamp for every trial.
+The parser incorrectly rejected initialized converted timestamps when IsPartial=true.
+The SDK XML defines IsPartial as unavailability of raw Value. Converted DateTimeOffset remains usable.
+CPU sampling gaps were also nonzero. This issue remains distinct from the timestamp conversion defect.
+Resolution source 888ec1e8de1fe4fc2bcb7b2217e544d20dc929e7 accepts bounded converted values.
+Ten SDK contract cases pass. The zero-gap qualification criterion remains unchanged.

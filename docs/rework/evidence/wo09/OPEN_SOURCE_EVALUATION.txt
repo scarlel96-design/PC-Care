@@ -1,0 +1,19 @@
+WORK ITEM: WO-09
+STATUS: PASS
+BASELINE SHA: 5ac4c4d5a4420bba9b9a1d2bbd8d3de12047c96a
+AUDIT SOURCE: 888ec1e8de1fe4fc2bcb7b2217e544d20dc929e7; selected package versions unchanged
+ENVIRONMENT: Windows 10.0.26200; .NET SDK 10.0.401; 24 logical processors; normal Windows token
+COMMAND: dotnet list tools/SmartPerformanceDoctor.ReferenceProbe package --vulnerable --include-transitive
+INPUT: Configured official NuGet audit source; SDK 1.12.10
+OUTPUT:
+  복원할 프로젝트를 확인하는 중...
+  <WORKSPACE>\src\SmartPerformanceDoctor.Diagnostics\SmartPerformanceDoctor.Diagnostics.csproj을(를) 288밀리초 동안 복원했습니다.
+  <WORKSPACE>\tools\SmartPerformanceDoctor.ReferenceProbe\SmartPerformanceDoctor.ReferenceProbe.csproj을(를) 288밀리초 동안 복원했습니다.
+
+다음 소스가 사용되었습니다.
+   https://api.nuget.org/v3/index.json
+   C:\Program Files (x86)\Microsoft SDKs\NuGetPackages\
+
+현재 소스를 고려해 볼 때 지정된 프로젝트 `SmartPerformanceDoctor.ReferenceProbe`에 취약한 패키지가 없습니다.
+
+EXIT CODE: 0

@@ -1,0 +1,27 @@
+{
+  "status": "PARTIAL",
+  "disks": [
+    {
+      "CounterInstance": "0",
+      "Identifier": "170728B8E55319948F72927D",
+      "DeviceType": "NVMe SSD",
+      "Status": "UniqueStorageIdMatched;RevalidateEachCollection",
+      "PartitionCount": 4
+    },
+    {
+      "CounterInstance": "1",
+      "Identifier": "F14107D517730838F58AF784",
+      "DeviceType": "Unknown",
+      "Status": "UniqueStorageIdMatched;RevalidateEachCollection",
+      "PartitionCount": 1
+    },
+    {
+      "CounterInstance": "2",
+      "Identifier": "A8F69D60BD37B6030BD23E8E",
+      "DeviceType": "Unknown",
+      "Status": "UniqueStorageIdMatched;RevalidateEachCollection",
+      "PartitionCount": 1
+    }
+  ],
+  "limitations": "Read-only number/UniqueId correlation; no topology-change or complete device-type qualification"
+}

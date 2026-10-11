@@ -1,0 +1,14 @@
+WORK ITEM: WO-09
+STATUS: PARTIAL
+BASELINE SHA: 5ac4c4d5a4420bba9b9a1d2bbd8d3de12047c96a
+EVIDENCE SOURCE: local WO-09 implementation before commits 704d3552 (GUI binding) and ab63c7cf (reference diagnostics)
+EXACT FINAL SOURCE VALIDATION: Windows CI; see GITHUB_RESULT.txt
+ENVIRONMENT: Windows 10.0.26200; .NET SDK 10.0.401; 24 logical processors; normal Windows token
+COMMAND: ./scripts/wo09-disk-identity.ps1
+INPUT: Read-only local storage query; random private key; two repeated captures
+OUTPUT:
+DISK_IDENTITY_OBSERVED devices=3
+DISK_IDENTITY_OBSERVED devices=3
+READ_ONLY_DISK_IDENTITY_COMPLETED trials=2 rawStorageIdsPublished=False
+
+EXIT CODE: 0

@@ -1,0 +1,423 @@
+[
+  {
+    "mode": "cpu",
+    "workload": {
+      "policy": {
+        "Mode": "cpu",
+        "Seconds": 12,
+        "Threads": 4,
+        "MemoryMiB": 64
+      },
+      "durationSeconds": 12,
+      "qualification": false,
+      "startedUtc": "2026-10-11T02:38:32.0210381+00:00",
+      "endedUtc": "2026-10-11T02:38:44.0413502+00:00",
+      "elapsedSeconds": 12.0203264,
+      "cpuSeconds": 46.234375,
+      "workingSetBytes": 29810688,
+      "ioBytes": 0,
+      "groundTruth": "Expected workload; requested activity does not prove whole-system saturation or uncached physical I/O."
+    },
+    "WorkloadExecuted": true,
+    "PressureVerified": "Unknown",
+    "independentTruth": "NOT TESTED",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "collectorOverheadPercentOfMachine": 1.3619963869707,
+    "collectorPeakWorkingSetBytes": 67080192,
+    "etwStatistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 46,
+      "EventsProcessed": 46,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 32.7274,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskWrite": 46
+      }
+    }
+  },
+  {
+    "mode": "memory",
+    "workload": {
+      "policy": {
+        "Mode": "memory",
+        "Seconds": 12,
+        "Threads": 4,
+        "MemoryMiB": 64
+      },
+      "durationSeconds": 12,
+      "qualification": false,
+      "startedUtc": "2026-10-11T02:38:56.4569471+00:00",
+      "endedUtc": "2026-10-11T02:39:08.4605218+00:00",
+      "elapsedSeconds": 12.003583,
+      "cpuSeconds": 0.015625,
+      "workingSetBytes": 100855808,
+      "ioBytes": 0,
+      "groundTruth": "Expected workload; requested activity does not prove whole-system saturation or uncached physical I/O."
+    },
+    "WorkloadExecuted": true,
+    "PressureVerified": "Unknown",
+    "independentTruth": "NOT TESTED",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "collectorOverheadPercentOfMachine": 1.1351542989940897,
+    "collectorPeakWorkingSetBytes": 55095296,
+    "etwStatistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 52,
+      "EventsProcessed": 52,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 31.79,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskWrite": 52
+      }
+    }
+  },
+  {
+    "mode": "mixed",
+    "workload": {
+      "policy": {
+        "Mode": "mixed",
+        "Seconds": 12,
+        "Threads": 4,
+        "MemoryMiB": 64
+      },
+      "durationSeconds": 12,
+      "qualification": false,
+      "startedUtc": "2026-10-11T02:39:57.6107051+00:00",
+      "endedUtc": "2026-10-11T02:40:09.6494806+00:00",
+      "elapsedSeconds": 12.0387884,
+      "cpuSeconds": 46.078125,
+      "workingSetBytes": 30318592,
+      "ioBytes": 134217728,
+      "groundTruth": "Expected workload; requested activity does not prove whole-system saturation or uncached physical I/O."
+    },
+    "WorkloadExecuted": true,
+    "PressureVerified": "Unknown",
+    "independentTruth": "NOT TESTED",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "collectorOverheadPercentOfMachine": 1.4569695338713666,
+    "collectorPeakWorkingSetBytes": 55271424,
+    "etwStatistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 1458,
+      "EventsProcessed": 1458,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 1,
+      "MaxQueueDelayMilliseconds": 48.5048,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskRead": 1235,
+        "DiskWrite": 223
+      }
+    }
+  },
+  {
+    "mode": "peak",
+    "workload": {
+      "policy": {
+        "Mode": "peak",
+        "Seconds": 12,
+        "Threads": 4,
+        "MemoryMiB": 64
+      },
+      "durationSeconds": 12,
+      "qualification": false,
+      "startedUtc": "2026-10-11T02:38:44.2421184+00:00",
+      "endedUtc": "2026-10-11T02:38:56.2428842+00:00",
+      "elapsedSeconds": 12.0008072,
+      "cpuSeconds": 3.4375,
+      "workingSetBytes": 29896704,
+      "ioBytes": 0,
+      "groundTruth": "Expected workload; requested activity does not prove whole-system saturation or uncached physical I/O."
+    },
+    "WorkloadExecuted": true,
+    "PressureVerified": "Unknown",
+    "independentTruth": "NOT TESTED",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "collectorOverheadPercentOfMachine": 1.3625125491298669,
+    "collectorPeakWorkingSetBytes": 57044992,
+    "etwStatistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 484,
+      "EventsProcessed": 484,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 30.41,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskWrite": 484
+      }
+    }
+  },
+  {
+    "mode": "random-read",
+    "workload": {
+      "policy": {
+        "Mode": "random-read",
+        "Seconds": 12,
+        "Threads": 4,
+        "MemoryMiB": 64
+      },
+      "durationSeconds": 12,
+      "qualification": false,
+      "startedUtc": "2026-10-11T02:39:33.1495038+00:00",
+      "endedUtc": "2026-10-11T02:39:45.148829+00:00",
+      "elapsedSeconds": 11.9993834,
+      "cpuSeconds": 0.03125,
+      "workingSetBytes": 29896704,
+      "ioBytes": 134217728,
+      "groundTruth": "Expected workload; requested activity does not prove whole-system saturation or uncached physical I/O."
+    },
+    "WorkloadExecuted": true,
+    "PressureVerified": "Unknown",
+    "independentTruth": "NOT TESTED",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "collectorOverheadPercentOfMachine": 1.069817982408165,
+    "collectorPeakWorkingSetBytes": 56139776,
+    "etwStatistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 1228,
+      "EventsProcessed": 1228,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 25.4362,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskWrite": 72,
+        "DiskRead": 1156
+      }
+    }
+  },
+  {
+    "mode": "random-write",
+    "workload": {
+      "policy": {
+        "Mode": "random-write",
+        "Seconds": 12,
+        "Threads": 4,
+        "MemoryMiB": 64
+      },
+      "durationSeconds": 12,
+      "qualification": false,
+      "startedUtc": "2026-10-11T02:39:45.3735326+00:00",
+      "endedUtc": "2026-10-11T02:39:57.3838829+00:00",
+      "elapsedSeconds": 12.0104007,
+      "cpuSeconds": 0.046875,
+      "workingSetBytes": 29872128,
+      "ioBytes": 134217728,
+      "groundTruth": "Expected workload; requested activity does not prove whole-system saturation or uncached physical I/O."
+    },
+    "WorkloadExecuted": true,
+    "PressureVerified": "Unknown",
+    "independentTruth": "NOT TESTED",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "collectorOverheadPercentOfMachine": 1.3939018758140282,
+    "collectorPeakWorkingSetBytes": 62746624,
+    "etwStatistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 8428,
+      "EventsProcessed": 8428,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 29.2801,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskWrite": 219,
+        "DiskRead": 8209
+      }
+    }
+  },
+  {
+    "mode": "sequential-read",
+    "workload": {
+      "policy": {
+        "Mode": "sequential-read",
+        "Seconds": 12,
+        "Threads": 4,
+        "MemoryMiB": 64
+      },
+      "durationSeconds": 12,
+      "qualification": false,
+      "startedUtc": "2026-10-11T02:39:08.6689501+00:00",
+      "endedUtc": "2026-10-11T02:39:20.6810105+00:00",
+      "elapsedSeconds": 12.0120878,
+      "cpuSeconds": 0.046875,
+      "workingSetBytes": 29896704,
+      "ioBytes": 134217728,
+      "groundTruth": "Expected workload; requested activity does not prove whole-system saturation or uncached physical I/O."
+    },
+    "WorkloadExecuted": true,
+    "PressureVerified": "Unknown",
+    "independentTruth": "NOT TESTED",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "collectorOverheadPercentOfMachine": 1.0691691975262334,
+    "collectorPeakWorkingSetBytes": 56307712,
+    "etwStatistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 1114,
+      "EventsProcessed": 1114,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 30.5857,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskWrite": 219,
+        "DiskRead": 895
+      }
+    }
+  },
+  {
+    "mode": "sequential-write",
+    "workload": {
+      "policy": {
+        "Mode": "sequential-write",
+        "Seconds": 12,
+        "Threads": 4,
+        "MemoryMiB": 64
+      },
+      "durationSeconds": 12,
+      "qualification": false,
+      "startedUtc": "2026-10-11T02:39:20.9161729+00:00",
+      "endedUtc": "2026-10-11T02:39:32.9171735+00:00",
+      "elapsedSeconds": 12.0010467,
+      "cpuSeconds": 0.0625,
+      "workingSetBytes": 29966336,
+      "ioBytes": 134217728,
+      "groundTruth": "Expected workload; requested activity does not prove whole-system saturation or uncached physical I/O."
+    },
+    "WorkloadExecuted": true,
+    "PressureVerified": "Unknown",
+    "independentTruth": "NOT TESTED",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "collectorOverheadPercentOfMachine": 1.4265055461954659,
+    "collectorPeakWorkingSetBytes": 56786944,
+    "etwStatistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 3351,
+      "EventsProcessed": 3351,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 21.3053,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskWrite": 867,
+        "DiskRead": 2484
+      }
+    }
+  }
+]

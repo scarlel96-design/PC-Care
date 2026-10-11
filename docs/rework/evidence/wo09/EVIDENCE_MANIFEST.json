@@ -1,0 +1,326 @@
+{
+  "status": "PASS",
+  "sourceRestorationScope": "Independent source copy; not installed transaction",
+  "files": [
+    {
+      "path": "docs/rework/evidence/wo09/ACCURACY_METRICS.json",
+      "sha256": "60fffd339ae41bbc9d18d00d08232e45b98a80717ec47cfeab5f59f0adb538fd",
+      "bytes": 17611
+    },
+    {
+      "path": "docs/rework/evidence/wo09/AGGREGATE_REFERENCE.py",
+      "sha256": "b638d23d413d39652e346dea925636becd17ea54b5c2c74006d2deacd0581a96",
+      "bytes": 5140
+    },
+    {
+      "path": "docs/rework/evidence/wo09/BASELINE_RESULT.txt",
+      "sha256": "d8e9831d75ccb75df60404a727b20e7ca0013c09184fdac34f911f312fe689c9",
+      "bytes": 27197
+    },
+    {
+      "path": "docs/rework/evidence/wo09/BUILD_RESULT.txt",
+      "sha256": "0fe83d66d8a324d5f0877cf94c0f4fc9d7422dca2995b9244ef9b97a81c29d50",
+      "bytes": 3532
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CHANGED_FILES.txt",
+      "sha256": "a5f0f80072438d520f21a053cc8a0c7c2d40310de1a62e949fe1084564ae2fc6",
+      "bytes": 4594
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CI_EVIDENCE_REDACTION.json",
+      "sha256": "c542e24d0d392e83a6d670bf9cfbdabc577a04480ebca615ff291d03974cfd13",
+      "bytes": 1583
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CI_FULL.trx",
+      "sha256": "094e5e6640aa3bb8db95d4242842a4855654f9475b7e0e52f306bcc071ee54b1",
+      "bytes": 1514614
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CI_PERFORMANCE.trx",
+      "sha256": "ce6d173267738845ddbd7f5303e081efff64dfeaf88468b17b5c853f4d047a5c",
+      "bytes": 204886
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CI_PROCESS_RECOVERY.json",
+      "sha256": "0f8546d52ccd8a7635ff3e770ebb3442e71aed1b2065da65a41dde893643dfe8",
+      "bytes": 61541
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CI_REFERENCE_1.json",
+      "sha256": "21e26c8d72ebef8b1b28ffb7281244257b667a829b06db1fa4fc06b26ffe0871",
+      "bytes": 21639
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CI_REFERENCE_2.json",
+      "sha256": "458921b0ba04d6b72cb700866c037b4d6521fb3d8ac5d4dd70c80d638a49ba3c",
+      "bytes": 21629
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CI_REFERENCE_3.json",
+      "sha256": "773996a66530da3f084e006687ddaa1740dfd98210dfcca99aa7531f1f12db1f",
+      "bytes": 22017
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CI_REFERENCE_4.json",
+      "sha256": "77b4298a5912d63510bc7ebebab32865da1d8f41e00a734c6a6c60f8be6d2133",
+      "bytes": 7452
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CI_REFERENCE_5.json",
+      "sha256": "6f3f369cb1c462962bb40d4748657fb7b1589923862810cb085d8f9ff4dbbea9",
+      "bytes": 15150
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CI_REFERENCE_6.json",
+      "sha256": "2d33680ca45c5e1cd996a4c75417e1bdc0aa73aaf531f852dbe9a65c9457de6c",
+      "bytes": 11963
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CI_REFERENCE_EXECUTION.json",
+      "sha256": "f662683161cb62d979ed46c4ea632ae826f9f8041902750b3b8b95064478a4ab",
+      "bytes": 3996
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CI_SECURITYLAB.trx",
+      "sha256": "a753b6a6cda74e2bd2aea544d2063858c21674ba5013419b5f9e66849049e7c3",
+      "bytes": 54742
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CI_SOURCE_RESULT.txt",
+      "sha256": "844ba265ad98e444f40c54e18489ff8a5ec5af5ea9fe0bcedb1f47a48b677cb7",
+      "bytes": 10575
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CI_TEST_COUNTS.json",
+      "sha256": "878fa53ad0ce67705d37a6d9b9711171dafc1f08384208e7e3cd6b388014aa57",
+      "bytes": 1930
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CI_UPDATER.trx",
+      "sha256": "441d87c3c99bd8c44698313dd2fe51b04716198154b76b277ca1311b16833706",
+      "bytes": 188122
+    },
+    {
+      "path": "docs/rework/evidence/wo09/CI_WORKLOAD_SMOKE.json",
+      "sha256": "ec6e8819f606c63de072c33ca3da180cded68fe0c94f8ebb88128728e46faf79",
+      "bytes": 13586
+    },
+    {
+      "path": "docs/rework/evidence/wo09/DIFF_FILE.patch",
+      "sha256": "f141eee6403e5848ed7ed2974ffcc7c2a8d4cefec72459ba1ee8a4f6f2d12ded",
+      "bytes": 1123
+    },
+    {
+      "path": "docs/rework/evidence/wo09/disk-1.json",
+      "sha256": "03a8066aadc05ac3c3b112f6493296d17b74e4a346e320cb636ab88edeef7c35",
+      "bytes": 804
+    },
+    {
+      "path": "docs/rework/evidence/wo09/disk-2.json",
+      "sha256": "03a8066aadc05ac3c3b112f6493296d17b74e4a346e320cb636ab88edeef7c35",
+      "bytes": 804
+    },
+    {
+      "path": "docs/rework/evidence/wo09/DISK_IDENTITY_RESULT.txt",
+      "sha256": "6604baa1462611458ae3807565a57ee8426ed4e4f65b3f8250f4aea47fb0ad33",
+      "bytes": 650
+    },
+    {
+      "path": "docs/rework/evidence/wo09/DRY_RUN_FIXTURE.cs",
+      "sha256": "1ca9cbcd3c41c505abcd7dba46c19f665b88790bbf3c751f7dd09d293cc0cdbc",
+      "bytes": 952
+    },
+    {
+      "path": "docs/rework/evidence/wo09/DRY_RUN_FIXTURE.csproj",
+      "sha256": "c492b09508313f7281e79c0b9b831bda800d51507d0557e0814ea549c8d369c4",
+      "bytes": 511
+    },
+    {
+      "path": "docs/rework/evidence/wo09/DRY_RUN_RESULT.txt",
+      "sha256": "f4b77c8c2f77164f27d5ba48834571fc24c66c1e0b3a25cb523fbc5524c27f37",
+      "bytes": 1051
+    },
+    {
+      "path": "docs/rework/evidence/wo09/DRY_RUN_SAMPLE.json",
+      "sha256": "2e8d34e3d4d28d35cf178b66ccb95203fcdf9f8829a2cb7020aec3b894d078bc",
+      "bytes": 12484
+    },
+    {
+      "path": "docs/rework/evidence/wo09/FULL_TEST_RESULT.txt",
+      "sha256": "476a07d329a23f2fe185ad62b0cba473406bc5b34e33bb3e93defb5b516df1d7",
+      "bytes": 27171
+    },
+    {
+      "path": "docs/rework/evidence/wo09/GITHUB_RESULT.txt",
+      "sha256": "4a1fd580d7f3141eef4ef84f521c6244435e55005fd773d95956dbd1ee082358",
+      "bytes": 1784
+    },
+    {
+      "path": "docs/rework/evidence/wo09/GROUND_TRUTH_RESULT.json",
+      "sha256": "0dc90dc8cd60f8133941c5222566fc5c51383bb73a76f6381efb03eaf513c87e",
+      "bytes": 21415
+    },
+    {
+      "path": "docs/rework/evidence/wo09/GUI_TEST_RESULT.txt",
+      "sha256": "80dde7a69948fafa56c5955e36a449b19f8968a83db7c540771714ae6928114d",
+      "bytes": 262
+    },
+    {
+      "path": "docs/rework/evidence/wo09/IMPORT_CI_EVIDENCE.py",
+      "sha256": "2194e8880d10063f228d56c59c24f95a083e07155c0de8479f9202a164f5e37f",
+      "bytes": 3976
+    },
+    {
+      "path": "docs/rework/evidence/wo09/INITIAL_ATTEMPTS.txt",
+      "sha256": "84831ee192c3c54abf9e6a7c0eb64ddab9b54b93463e68b974a67752979fd7bf",
+      "bytes": 2400
+    },
+    {
+      "path": "docs/rework/evidence/wo09/LOCAL_BASELINE.trx",
+      "sha256": "49f170aca65b11cdfc968d2d045a9306ddbe8200aec0daa33cd5835de816883f",
+      "bytes": 1503423
+    },
+    {
+      "path": "docs/rework/evidence/wo09/LOCAL_FULL.trx",
+      "sha256": "fdfb939a9284468ad1b34b426666e15c10c9139e1dbb0b696af4dc03257644dc",
+      "bytes": 1602603
+    },
+    {
+      "path": "docs/rework/evidence/wo09/LOCAL_MEASUREMENT_SUMMARY.json",
+      "sha256": "636ff225ab3f67c05608b17ad3038409694f618dff4e59195ccb3e7ee3a219bb",
+      "bytes": 1147
+    },
+    {
+      "path": "docs/rework/evidence/wo09/LOCAL_SECURITYLAB.trx",
+      "sha256": "6ac8c15a4e922cfdba1741b86296920687f831d711dbeb9884f1d3f583bd01ee",
+      "bytes": 57857
+    },
+    {
+      "path": "docs/rework/evidence/wo09/LOCAL_WO09.trx",
+      "sha256": "ec220841352e809cbfebfff70993e99d22d8ef5657e567928fea998866cc660e",
+      "bytes": 100840
+    },
+    {
+      "path": "docs/rework/evidence/wo09/MODIFIED_FILE.cs",
+      "sha256": "4f73e92b626e0654b0a1bdb86423ed1e03cb180d395d5e9855109ad286b9bbae",
+      "bytes": 4062
+    },
+    {
+      "path": "docs/rework/evidence/wo09/OPEN_SOURCE_EVALUATION.txt",
+      "sha256": "01b30bc895e5f0e16f2a8dab0e076c06e117d536dafb49f47536002a843e7f8a",
+      "bytes": 1078
+    },
+    {
+      "path": "docs/rework/evidence/wo09/ORIGINAL_FILE.cs",
+      "sha256": "a9d374c3b8542b849aa8fbfe55d913dced42a7c4f472efea4601cf1678389619",
+      "bytes": 3839
+    },
+    {
+      "path": "docs/rework/evidence/wo09/PROCESS_CORRELATION_RESULT.txt",
+      "sha256": "0d842157ffb02ac7dedf0f070fa5c52a27bf525390f9d8741a2909598e3b600e",
+      "bytes": 693
+    },
+    {
+      "path": "docs/rework/evidence/wo09/RECOVERY_PLAN_TEST_RESULT.txt",
+      "sha256": "ecbb5e35b4306d892192e3ed3f745425641524a7a7206963a3b07ce6928a58f8",
+      "bytes": 1211
+    },
+    {
+      "path": "docs/rework/evidence/wo09/REFERENCE_TRACE_RESULT.txt",
+      "sha256": "019255e997398008dc019c9a74fb6bddbe2c716e497ede9d843f130a533bf677",
+      "bytes": 4851
+    },
+    {
+      "path": "docs/rework/evidence/wo09/ROLLBACK.sh",
+      "sha256": "c6a45a11489f485ed3fb4f8d35c7d21af0d0028271a4e82f48decf19f206317f",
+      "bytes": 182
+    },
+    {
+      "path": "docs/rework/evidence/wo09/SDK_TIME_CONTRACT_RESULT.txt",
+      "sha256": "3540f796266485d532821b3f51b662ec94d02d075855db5d5813aa3262943c39",
+      "bytes": 964
+    },
+    {
+      "path": "docs/rework/evidence/wo09/SECURITYLAB_RESULT.txt",
+      "sha256": "787096e1797d81558a3da6aa1d2f24c9714672eea3ba8fd98d06857b258489f6",
+      "bytes": 1523
+    },
+    {
+      "path": "docs/rework/evidence/wo09/SOURCE_ROLLBACK.ps1",
+      "sha256": "9faa65f145fa169a6b857ec43771477a63aceb12a8c0e3d11210c22432cbc371",
+      "bytes": 934
+    },
+    {
+      "path": "docs/rework/evidence/wo09/TEST_EVIDENCE_REDACTION.json",
+      "sha256": "9d47dbf3a7673a88e0cfd655f5b9fd26aac725f718acd1169163406bdd635402",
+      "bytes": 1529
+    },
+    {
+      "path": "docs/rework/evidence/wo09/VALIDATE_EVIDENCE.py",
+      "sha256": "608facee3170211c3d3552de084d92de19d8f4066c43ee8215f2097d1ef42776",
+      "bytes": 2997
+    },
+    {
+      "path": "docs/rework/evidence/wo09/VERIFICATION.txt",
+      "sha256": "5e336ccd31d8e104ccd1e50d08e319bc7917bf5930b1f63ba8139cc9f6a4767c",
+      "bytes": 5668
+    },
+    {
+      "path": "docs/rework/WO09_DIAGNOSTIC_ACCURACY.md",
+      "sha256": "1f140608df10861247c8422edcb3cad254616448ecd7a08816c5321c99da9942",
+      "bytes": 4728
+    },
+    {
+      "path": "docs/rework/WO09_DISK_IDENTITY.md",
+      "sha256": "155fce1b817e8d334724efa0298ae493f358db48cb550b6d2a215fca15625769",
+      "bytes": 1772
+    },
+    {
+      "path": "docs/rework/WO09_DRY_RUN_VALIDATION.md",
+      "sha256": "ce7f43af953c934446f23ea1a5ded0f83fe256bc12a66657288203f30fcafad2",
+      "bytes": 1513
+    },
+    {
+      "path": "docs/rework/WO09_EXECUTION_REPORT.md",
+      "sha256": "7863503b58de6fdb6265aeb3d010f7626718b36f27f23d48088614724f60d045",
+      "bytes": 9299
+    },
+    {
+      "path": "docs/rework/WO09_GROUND_TRUTH_DATASET.md",
+      "sha256": "a6025a7341c0ba2a5cfbe5b104cfd2e87b7ff7da4505145e630f6c6aea94d8f6",
+      "bytes": 3020
+    },
+    {
+      "path": "docs/rework/WO09_GUI_VALIDATION.md",
+      "sha256": "719a2c77b80188b75f7c56ce6cd877e0a3dee4b371eed6002732ee7e5c6efd59",
+      "bytes": 2662
+    },
+    {
+      "path": "docs/rework/WO09_OPEN_SOURCE_EVALUATION.md",
+      "sha256": "8cd294f8e07086189fa573a13917e77cb699d7d0d2f7a4de8df38892597ec1b4",
+      "bytes": 4970
+    },
+    {
+      "path": "docs/rework/WO09_PROCESS_ATTRIBUTION.md",
+      "sha256": "16a33e31aafe2568ac6459af1eaa76d27e493d982047e2c91d8d67ac304539c4",
+      "bytes": 2313
+    },
+    {
+      "path": "docs/rework/WO09_PRODUCT_READINESS.md",
+      "sha256": "2edc7cdfede3a79bce40c55184bd1afd386b52eb4bad5ed4597b10ad6459c0a6",
+      "bytes": 3416
+    },
+    {
+      "path": "docs/rework/WO09_RECOVERY_PLANNER_DESIGN.md",
+      "sha256": "23a9a48c124868d056839ea2e9771fcba8e47e04b3ae7ea52613f3662bf30899",
+      "bytes": 3947
+    },
+    {
+      "path": "docs/rework/WO09_REFERENCE_TRACE_PIPELINE.md",
+      "sha256": "6f5e6a29e66d587d63f8d1daca27e752cfcf450b858fabb15222541c5f252e4e",
+      "bytes": 6214
+    }
+  ]
+}
