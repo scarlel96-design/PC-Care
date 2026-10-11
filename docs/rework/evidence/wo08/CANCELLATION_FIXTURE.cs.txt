@@ -1,0 +1,15 @@
+using SmartPerformanceDoctor.Diagnostics;
+using System.Diagnostics;
+using System.Text.Json;
+var latencies = new List<double>();
+for (int i = 0; i < 3; i++)
+{
+    using var cancellation = new CancellationTokenSource();
+    long request = 0;
+    using var registration = cancellation.Token.Register(() => Interlocked.Exchange(ref request, Stopwatch.GetTimestamp()));
+    cancellation.CancelAfter(3000);
+    var snapshot = await new PerformanceCollector().CollectAsync(new SamplingPolicy(DurationSeconds: 30), cancellation.Token);
+    latencies.Add(1000d * (Stopwatch.GetTimestamp() - request) / Stopwatch.Frequency);
+    if (!snapshot.Errors.Any(e => e.Code == "Cancelled")) throw new InvalidOperationException("Cancellation was not recorded");
+}
+Console.WriteLine(JsonSerializer.Serialize(new { status = "PASS", latencyMilliseconds = latencies, scope = "Nonadmin collector cancellation; no live UI or elevated ETW", repeats = 3 }));

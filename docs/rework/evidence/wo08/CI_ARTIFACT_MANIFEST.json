@@ -1,0 +1,142 @@
+[
+  {
+    "path": "ci/artifacts/wo06-ci-process/process-results.json",
+    "bytes": 62633,
+    "sha256": "51db766821bc3e2db29686f28d07dbc520f8d175ca329dadb312d118e8128461"
+  },
+  {
+    "path": "ci/artifacts/wo07-ci/measurement.json",
+    "bytes": 875408,
+    "sha256": "1cc76642bdd5396cf50b6c19ea1ea18f614abff2f9e94e281cdd1c8c50663f05"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/cpu/measurement.json",
+    "bytes": 218626,
+    "sha256": "80c248811d791efa8f36d828a6d5fc0995c29bfcb7629367cd3a6db7cad08cba"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/cpu/workload-e4ab66d4594b43e0bd5ffe6a088eb509.json",
+    "bytes": 443,
+    "sha256": "91d47d2cdf7bfa5c4b27ea58a48d102bca72d717e47ec91466db286fe2165fc4"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/Detailed.json",
+    "bytes": 464198,
+    "sha256": "c1b9007d4ba77e13dd6333b8324aedd9501078ac08cd44609187ad26e3dbc741"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/General.json",
+    "bytes": 473859,
+    "sha256": "cc42683d41320889ce69fc29ba7ef6df777324e55a62633df1c88912197f7509"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/LowOverhead.json",
+    "bytes": 453232,
+    "sha256": "e415a5e8aba9dd8ec9acad41d5e3f188449dfbffc28080a0e94058510d0fd8a1"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/memory/measurement.json",
+    "bytes": 397593,
+    "sha256": "6eb43edd907e99d92be158327737e0e3713f51c6f730fcd1fedea130613c2f69"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/memory/workload-84f017f48de54a43a79ef0351cd99fca.json",
+    "bytes": 447,
+    "sha256": "672b1d6d318eea0b8aa07b80a27f549f30db8fcd1b11ff7857219477b263824b"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/mixed/measurement.json",
+    "bytes": 245996,
+    "sha256": "7fa007bdd3fec96573621a430ee2a6ecadf3294b8794a973af6315edf8e78b46"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/mixed/workload-ddfd11b142714cf49f230aa3d657896c.json",
+    "bytes": 452,
+    "sha256": "95ecf5ca4965ddfebeacaea0e05240fb2e0bd72425e8524697fc040f754c1400"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/peak/measurement.json",
+    "bytes": 387682,
+    "sha256": "1a20f8a0db28645542f69e38fff59158baf2aab76ab57ed7465b23620b68ee30"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/peak/workload-8670ff62e83445d8b4f02d6eb2f04cfb.json",
+    "bytes": 444,
+    "sha256": "cd4864388cf5ccbd04a671eb0f068851e5167d4361eb3d8c4c407d72d2cfd490"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/random-read/measurement.json",
+    "bytes": 391535,
+    "sha256": "44b512e55afdbb758a1e58d576198a5abaa07dec162da2d54bc205047b2a587a"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/random-read/workload-198dfe2cad17405abd83c86caeec2870.json",
+    "bytes": 457,
+    "sha256": "8a81b89d2a7ae98b2e2b753b95e01a6a300f3b212a1db0b0d80cd49d155d16d5"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/random-write/measurement.json",
+    "bytes": 386019,
+    "sha256": "0fc06631c0ff99c1aed675729f90c759eb3cba43f79f586fee236882761328e0"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/random-write/workload-8777011d0e8347b2a3f8b04e98bb8d7a.json",
+    "bytes": 459,
+    "sha256": "3f30d9a417db3cdb6365000f514726e137f46c7a9628d88637ba5495c574e88e"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/reference-workload/measurement.json",
+    "bytes": 254304,
+    "sha256": "da1b13f1c7e8bdcb47b9bf46890ec0a9640cc9f3b09459337142e952025843bc"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/reference-workload/workload-cb4f32a34e5641b88cfc89dc4988d4f2.json",
+    "bytes": 444,
+    "sha256": "e1f2e0ece76caebef621a1789339b763e0933c6623c6abab92f65278c5e03d17"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/reference.json",
+    "bytes": 640,
+    "sha256": "700aa78d969ec581ea9279a89911b519531da08424dfd429ca9c9f6edc4251df"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/sequential-read/measurement.json",
+    "bytes": 381051,
+    "sha256": "a87dd41ed7cc3fb19c60cb93479853bdbf2b0712cc638d7abb28ccf74f573198"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/sequential-read/workload-0bf7203930a14840aa429ae6f3e45a0f.json",
+    "bytes": 463,
+    "sha256": "4fe3effd28641ceb732177e6ca2cf7bf5aa1fd5042acc5ee9323453c55da9b3d"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/sequential-write/measurement.json",
+    "bytes": 380010,
+    "sha256": "76eeeffcb6eebce81db007e2ab1405aa361ad5c06b8dd66ea178163f35638e17"
+  },
+  {
+    "path": "ci/artifacts/wo08-ci/sequential-write/workload-dbb8972cd91b4198a67aa356e2929a2b.json",
+    "bytes": 463,
+    "sha256": "adab813bcf9ae4dd377801cb72d79cd48206699e75623b27c797c1d5045637c5"
+  },
+  {
+    "path": "ci/tests/SmartPerformanceDoctor.SecurityLab.Tests/TestResults/wo06-securitylab.trx",
+    "bytes": 55571,
+    "sha256": "7b4a8221236ff6a15860e47bbf2a31662bcedddd5005cc9c32d4eb70106aa4e6"
+  },
+  {
+    "path": "ci/tests/SmartPerformanceDoctor.Tests/TestResults/wo06-full.trx",
+    "bytes": 1443040,
+    "sha256": "1e6ecfae9f0bac5b22f541b057d05fe05ada4394db1117f80f686e5fc6be5308"
+  },
+  {
+    "path": "ci/tests/SmartPerformanceDoctor.Tests/TestResults/wo06-signed-updater.trx",
+    "bytes": 190975,
+    "sha256": "2d4c96c0d3c1b4168caf34fbef00d1e54352f33f415cce835468cbb6347aacad"
+  },
+  {
+    "path": "ci/tests/SmartPerformanceDoctor.Tests/TestResults/wo08-performance.trx",
+    "bytes": 113241,
+    "sha256": "e98667f7e6f32b20a3d8c1e424af304b9ddc92585cd22cbc9fdc4c98cd72b972"
+  }
+]

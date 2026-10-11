@@ -1,0 +1,90 @@
+[
+  {
+    "capture": "local-measurement\\cpu\\measurement.json",
+    "findingCount": 8,
+    "states": {
+      "Candidate": 0,
+      "ExpectedWorkload": 0,
+      "Observation": 8,
+      "Unknown": 0
+    },
+    "scope": "Analyzer output counts only. No independent ground-truth labels."
+  },
+  {
+    "capture": "local-measurement\\memory\\measurement.json",
+    "findingCount": 6,
+    "states": {
+      "Candidate": 0,
+      "ExpectedWorkload": 0,
+      "Observation": 6,
+      "Unknown": 0
+    },
+    "scope": "Analyzer output counts only. No independent ground-truth labels."
+  },
+  {
+    "capture": "local-measurement\\mixed\\measurement.json",
+    "findingCount": 7,
+    "states": {
+      "Candidate": 0,
+      "ExpectedWorkload": 0,
+      "Observation": 7,
+      "Unknown": 0
+    },
+    "scope": "Analyzer output counts only. No independent ground-truth labels."
+  },
+  {
+    "capture": "local-measurement\\peak\\measurement.json",
+    "findingCount": 6,
+    "states": {
+      "Candidate": 0,
+      "ExpectedWorkload": 0,
+      "Observation": 6,
+      "Unknown": 0
+    },
+    "scope": "Analyzer output counts only. No independent ground-truth labels."
+  },
+  {
+    "capture": "local-measurement\\random-read\\measurement.json",
+    "findingCount": 6,
+    "states": {
+      "Candidate": 0,
+      "ExpectedWorkload": 0,
+      "Observation": 6,
+      "Unknown": 0
+    },
+    "scope": "Analyzer output counts only. No independent ground-truth labels."
+  },
+  {
+    "capture": "local-measurement\\random-write\\measurement.json",
+    "findingCount": 6,
+    "states": {
+      "Candidate": 0,
+      "ExpectedWorkload": 0,
+      "Observation": 6,
+      "Unknown": 0
+    },
+    "scope": "Analyzer output counts only. No independent ground-truth labels."
+  },
+  {
+    "capture": "local-measurement\\sequential-read\\measurement.json",
+    "findingCount": 6,
+    "states": {
+      "Candidate": 0,
+      "ExpectedWorkload": 0,
+      "Observation": 6,
+      "Unknown": 0
+    },
+    "scope": "Analyzer output counts only. No independent ground-truth labels."
+  },
+  {
+    "capture": "local-measurement\\sequential-write\\measurement.json",
+    "findingCount": 6,
+    "states": {
+      "Candidate": 0,
+      "ExpectedWorkload": 0,
+      "Observation": 6,
+      "Unknown": 0
+    },
+    "scope": "Analyzer output counts only. No independent ground-truth labels."
+  }
+]

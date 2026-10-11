@@ -1,0 +1,15 @@
+{
+  "status": "NOT TESTED",
+  "scope": "Real controlled Windows workloads with independent aligned reference",
+  "truePositive": null,
+  "falsePositive": null,
+  "falseNegative": null,
+  "trueNegative": null,
+  "unknown": null,
+  "insufficientEvidence": null,
+  "processContributionError": null,
+  "diskMetricError": null,
+  "precision": null,
+  "recall": null,
+  "reason": "No independently interpreted and aligned ground-truth set. Synthetic contract tests do not establish real accuracy."
+}

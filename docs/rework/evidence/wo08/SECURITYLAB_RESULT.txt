@@ -1,0 +1,61 @@
+WORK ITEM: WO-08
+BRANCH: codex/pccare-performance-diagnostics-accuracy
+BASELINE SHA: 620d8def4f9857dc4d33d24d0ff668e445669144
+BASELINE TREE: 745973452a3290a57e1305b75c1fc33edbb97cf9
+VALIDATED SOURCE SHA: 77e19b01f1baa579811bbd122b062abaaa460ba1
+SOURCE TREE: 41d94d1917e3dc12cc770cc3a8109f95b26ff9cf
+FINAL SHA: Resolve the evidence commit from the branch HEAD. This file cannot contain its own commit hash.
+WORKSPACE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care
+ENVIRONMENT: Windows 11 Pro build 26200; 24 logical processors; about 32 GiB RAM; nonadministrator token.
+CI RUN: 38084989987
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38084989987
+POLICY: Read-only diagnosis. Phase 1 NO-GO. No main merge or official release.
+
+STATUS: PASS
+TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=securitylab.trx' --results-directory artifacts/wo08/securitylab -v:minimal
+INPUT: Synthetic SecurityLab regression data
+EXIT CODE: 0
+RESULT: 36 PASS / 0 FAIL / 0 SKIP.
+OUTPUT:
+C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+
+결과 파일: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\artifacts\wo08\securitylab\securitylab.trx
+
+
+
+통과!  - 실패:     0, 통과:    36, 건너뜀:     0, 전체:    36, 기간: 1 m 4 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+
+CI STATUS: PASS
+CI SOURCE: 77e19b01f1baa579811bbd122b062abaaa460ba1
+CI RUN: 38084989987
+CI EXIT CODE: 0
+
+## Final Windows CI evidence
+
+Run 38084989987 completed successfully on source commit `77e19b01f1baa579811bbd122b062abaaa460ba1`.
+The runner used Windows build 26100, four logical processors, and an elevated token.
+The full app passed 848 tests, failed zero tests, and skipped 111 tests.
+The performance subset passed 79 tests. The updater subset passed 128 tests.
+SecurityLab passed 36 tests in its separate project.
+The Release build reported zero warnings and zero errors.
+The measurement harness completed with exit code zero and `WO08_MEASUREMENT_COMPLETED`.
+All 13 saved collector captures had verified cleanup and zero remaining owned sessions.
+Native loss counters were queried before stop. The terminal interval remains unknown.
+General mode omits CPU profile and context-switch event streams.
+LowOverhead mode tracks lifetimes without resource events. Its zero resource count is expected.
+Detailed mode dropped 2,106 queue events and disabled ETW after loss.
+Detailed mode recorded 10,323 unattributed events. Attribution completeness is not established.
+Independent PDH and system snapshots continued after ETW scope reduction.
+Short CPU and mixed captures had fewer than eight samples. They cannot prove persistent saturation.
+These different profiles and workloads do not establish a WO-07 improvement percentage.
+The measurements do not establish physical low-end hardware performance.
+
+| Profile | Received | Native loss before stop | Queue drop | Malformed | Accepted / processed / pending | CPU % machine | Peak MiB | Range reduced |
+|---|---:|---:|---:|---:|---|---:|---:|---|
+| Detailed | 16007 | 0 | 2106 | 0 | 13901 / 13901 / 0 | 1.275 | 61.785 | True |
+| General | 2692 | 0 | 0 | 0 | 2692 / 2692 / 0 | 1.607 | 54.035 | False |
+| LowOverhead | 0 | 0 | 0 | 0 | 0 / 0 / 0 | 1.142 | 52.680 | False |
+EXACT CI COMMANDS: .github/workflows/wo08-windows-validation.yml at the validated source SHA.
+LITERAL CI OUTPUT: CI_LOG.txt. Machine inputs and outputs: ci/, CI_MEASUREMENT_SUMMARY.json, CI_TEST_COUNTS.json.

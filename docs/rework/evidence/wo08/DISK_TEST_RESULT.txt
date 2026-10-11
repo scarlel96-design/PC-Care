@@ -1,0 +1,36 @@
+WORK ITEM: WO-08
+BRANCH: codex/pccare-performance-diagnostics-accuracy
+BASELINE SHA: 620d8def4f9857dc4d33d24d0ff668e445669144
+BASELINE TREE: 745973452a3290a57e1305b75c1fc33edbb97cf9
+VALIDATED SOURCE SHA: 77e19b01f1baa579811bbd122b062abaaa460ba1
+SOURCE TREE: 41d94d1917e3dc12cc770cc3a8109f95b26ff9cf
+FINAL SHA: Resolve the evidence commit from the branch HEAD. This file cannot contain its own commit hash.
+WORKSPACE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care
+ENVIRONMENT: Windows 11 Pro build 26200; 24 logical processors; about 32 GiB RAM; nonadministrator token.
+CI RUN: 38084989987
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38084989987
+POLICY: Read-only diagnosis. Phase 1 NO-GO. No main merge or official release.
+
+STATUS: PARTIAL
+TEST COMMAND: powershell -NoProfile -File scripts/wo08-measurement.ps1 -OutputDirectory artifacts/wo08/local-workloads -RunControlledWorkloads
+INPUT: Sequential/random read/write; unique 32-MiB synthetic files; at most 128 MiB measured I/O per workload.
+OUTPUT: WO08_MEASUREMENT_COMPLETED; three PDH PhysicalDisk instances observed.
+EXIT CODE: 0
+VALIDATION: Separate-instance, invalid-counter, session-identity, and calibration-condition tests passed in PERFORMANCE.trx.
+LIMITATION: Cached I/O does not prove a physical device bottleneck.
+LIMITATION: File initialization writes are separate from the reported measured I/O byte count.
+LIMITATION: I/O can reach its byte limit before the 12-second process window ends.
+DEVICE TYPE: Unknown. No verified HDD/SATA/NVMe mapping exists.
+REFERENCE ERROR: NOT TESTED. No aligned independent disk reference exists.
+
+## Observed disk instances
+
+The local physical host exported three PhysicalDisk instances.
+The CI runner exported two PhysicalDisk instances.
+The eight bounded local I/O and CPU/memory workloads completed.
+CI completed those eight workloads and one overlapping WPR CPU workload.
+These captures measure counter instances. They do not validate stable hardware mapping or device-type classification.
+Independent disk metric error remains NOT TESTED.
+
+CI HARNESS EXIT CODE: 0
+CI HARNESS OUTPUT: WO08_MEASUREMENT_COMPLETED

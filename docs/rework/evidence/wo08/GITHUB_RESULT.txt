@@ -1,0 +1,28 @@
+WORK ITEM: WO-08
+BRANCH: codex/pccare-performance-diagnostics-accuracy
+BASELINE SHA: 620d8def4f9857dc4d33d24d0ff668e445669144
+BASELINE TREE: 745973452a3290a57e1305b75c1fc33edbb97cf9
+VALIDATED SOURCE SHA: 77e19b01f1baa579811bbd122b062abaaa460ba1
+SOURCE TREE: 41d94d1917e3dc12cc770cc3a8109f95b26ff9cf
+FINAL SHA: Resolve the evidence commit from the branch HEAD. This file cannot contain its own commit hash.
+WORKSPACE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care
+ENVIRONMENT: Windows 11 Pro build 26200; 24 logical processors; about 32 GiB RAM; nonadministrator token.
+CI RUN: 38084989987
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38084989987
+POLICY: Read-only diagnosis. Phase 1 NO-GO. No main merge or official release.
+
+STATUS: PASS for source upload and Windows CI; WO-08 remains PARTIAL.
+UPLOAD COMMAND: git push -u origin codex/pccare-performance-diagnostics-accuracy
+OUTPUT: New branch uploaded; tracking branch set.
+EXIT CODE: 0
+SOURCE FINAL SHA: 77e19b01f1baa579811bbd122b062abaaa460ba1
+FINAL EVIDENCE SHA: The commit containing the final evidence update.
+No main merge or official release occurred.
+
+CI CONCLUSION: success
+CI STATUS: completed
+CI SOURCE SHA: 77e19b01f1baa579811bbd122b062abaaa460ba1
+ARTIFACT: wo08-windows-evidence
+DOWNLOAD COMMAND: gh run download 38084989987 --repo scarlel96-design/PC-Care --name wo08-windows-evidence --dir artifacts/wo08/ci-artifact
+DOWNLOAD EXIT CODE: 0
+FINAL HEAD: Resolve the branch ref after the evidence commit. Its source delta contains documentation only.

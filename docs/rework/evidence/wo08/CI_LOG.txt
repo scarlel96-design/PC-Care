@@ -1,0 +1,660 @@
+windows-validation	UNKNOWN STEP	﻿2026-10-10T20:45:31.0499031Z Current runner version: '2.337.0'
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0519972Z ##[group]Runner Image Provisioner
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0520706Z Hosted Compute Agent
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0521189Z Version: 20260901.588
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0521686Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0522259Z Build Date: 2026-09-01T19:56:44Z
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0522777Z Worker ID: {8a4a0fb4-213f-45d6-b8c7-dbd699404567}
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0523311Z Azure Region: mexicocentral
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0523814Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0524911Z ##[group]Operating System
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0525477Z Microsoft Windows Server 2025
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0525931Z 10.0.26100
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0526312Z Datacenter
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0526734Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0527157Z ##[group]Runner Image
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0527605Z Image: windows-2025-vs2026
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0528084Z Version: 20260925.250.1
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0529285Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20260925.250/images/windows/Windows2025-VS2026-Readme.md
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0530579Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20260925.250
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0531332Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0532204Z ##[group]GITHUB_TOKEN Permissions
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0533669Z Contents: read
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0534130Z Metadata: read
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0534555Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0536221Z Secret source: Actions
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0537213Z Cache mode: write
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0537929Z Prepare workflow directory
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0819331Z Prepare all required actions
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.0859464Z Getting action download info
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.3689715Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:31.5018250Z Download action repository 'actions/setup-dotnet@v4' (SHA:67a3573c9a986a3f9c594539f4ab511d57bb3ce9)
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.1684056Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.4740438Z Complete job name: windows-validation
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7037068Z ##[group]Run actions/checkout@v4
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7037945Z with:
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7038279Z   repository: scarlel96-design/PC-Care
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7041610Z   token: ***
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7041918Z   ssh-strict: true
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7042235Z   ssh-user: git
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7042549Z   persist-credentials: true
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7042896Z   clean: true
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7043213Z   sparse-checkout-cone-mode: true
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7043591Z   fetch-depth: 1
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7043899Z   fetch-tags: false
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7044216Z   show-progress: true
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7044540Z   lfs: false
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7044837Z   submodules: false
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7045152Z   set-safe-directory: true
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7045515Z   allow-unsafe-pr-checkout: false
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.7046413Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.8218680Z Syncing repository: scarlel96-design/PC-Care
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.8220074Z ##[group]Getting Git version info
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.8220621Z Working directory is 'D:\a\PC-Care\PC-Care'
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:32.8807533Z [command]"C:\Program Files\Git\bin\git.exe" version
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.2542017Z git version 2.55.0.windows.5
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.2578745Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.2598032Z Temporarily overriding HOME='D:\a\_temp\5e72f332-c1f7-42b2-93b6-cea37bbbf973' before making global git config changes
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.2600225Z Adding repository directory to the temporary git global config as a safe directory
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.2606640Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\PC-Care\PC-Care
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.3171138Z Deleting the contents of 'D:\a\PC-Care\PC-Care'
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.3176004Z ##[group]Initializing the repository
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.3183308Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\PC-Care\PC-Care
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.4414743Z Initialized empty Git repository in D:/a/PC-Care/PC-Care/.git/
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.4452318Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/scarlel96-design/PC-Care
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.4953368Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.4953977Z ##[group]Disabling automatic garbage collection
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.4961280Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.5182842Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.5183388Z ##[group]Setting up auth
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.5193452Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:33.5419011Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:34.6164532Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:34.6390178Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:35.0483641Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:35.0706645Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:35.4614177Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:35.4844153Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:35.4844554Z ##[group]Fetching the repository
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:35.4856828Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +77e19b01f1baa579811bbd122b062abaaa460ba1:refs/remotes/origin/codex/pccare-performance-diagnostics-accuracy
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:36.9986266Z From https://github.com/scarlel96-design/PC-Care
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:36.9987488Z  * [new ref]         77e19b01f1baa579811bbd122b062abaaa460ba1 -> origin/codex/pccare-performance-diagnostics-accuracy
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.0016935Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.0017251Z ##[group]Determining the checkout info
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.0019204Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.0030735Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.0362289Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.0598862Z ##[group]Checking out the ref
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.0606773Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B codex/pccare-performance-diagnostics-accuracy refs/remotes/origin/codex/pccare-performance-diagnostics-accuracy
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.4058698Z Switched to a new branch 'codex/pccare-performance-diagnostics-accuracy'
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.4111349Z branch 'codex/pccare-performance-diagnostics-accuracy' set up to track 'origin/codex/pccare-performance-diagnostics-accuracy'.
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.4155077Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.4475046Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.4675196Z 77e19b01f1baa579811bbd122b062abaaa460ba1
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.5094939Z ##[group]Run actions/setup-dotnet@v4
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.5095243Z with:
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.5095408Z   dotnet-version: 10.0.x
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.5095598Z   cache: false
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.5095748Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.6422087Z (node:1068) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.6422672Z (Use `node --trace-deprecation ...` to show where the warning was created)
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:37.7018171Z [command]"C:\Program Files\PowerShell\7\pwsh.exe" -NoLogo -Sta -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command & 'D:\a\_actions\actions\setup-dotnet\v4\externals\install-dotnet.ps1' -SkipNonVersionedFiles -Runtime dotnet -Channel LTS
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:39.0823730Z dotnet-install: .NET Core Runtime with version '10.0.12' is already installed.
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:39.1856417Z [command]"C:\Program Files\PowerShell\7\pwsh.exe" -NoLogo -Sta -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command & 'D:\a\_actions\actions\setup-dotnet\v4\externals\install-dotnet.ps1' -SkipNonVersionedFiles -Channel 10.0
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:40.2216086Z dotnet-install: .NET Core SDK with version '10.0.401' is already installed.
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:40.3068642Z ##[group]Run dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:40.3069119Z ^[[36;1mdotnet restore SmartPerformanceDoctor.sln -p:Platform=x64^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:40.3434117Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:40.3434422Z env:
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:40.3434586Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:40.3434787Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:45:49.7417288Z   Determining projects to restore...
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:16.5724933Z   Restored D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.DiagnosticsProbe\SmartPerformanceDoctor.DiagnosticsProbe.csproj (in 24.5 sec).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:18.8942795Z   Restored D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.SecurityLab.Tests\SmartPerformanceDoctor.SecurityLab.Tests.csproj (in 26.84 sec).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:20.6356770Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Data\SmartPerformanceDoctor.Data.csproj (in 1.54 sec).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:20.6408297Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Contracts\SmartPerformanceDoctor.Contracts.csproj (in 1 ms).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:20.6538063Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AstraVault\SmartPerformanceDoctor.AstraVault.csproj (in 3 ms).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:20.6581492Z   Restored D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.SecurityLab.Cli\SmartPerformanceDoctor.SecurityLab.Cli.csproj (in 2 ms).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:20.6602811Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateHelper\SmartPerformanceDoctor.UpdateHelper.csproj (in 1 ms).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:20.7145428Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\SmartPerformanceDoctor.UpdateEngine.csproj (in 1 ms).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:20.7189175Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Setup\SmartPerformanceDoctor.Setup.csproj (in 2 ms).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:20.7912491Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.SecurityLab\SmartPerformanceDoctor.SecurityLab.csproj (in 7 ms).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:20.7958905Z D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj : warning NU1510: PackageReference System.IO.Pipes.AccessControl will not be pruned. This package is automatically available and does not need to be referenced explicitly. Remove the PackageReference item. [D:\a\PC-Care\PC-Care\SmartPerformanceDoctor.sln]
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:20.7962529Z D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj : warning NU1510: PackageReference System.Security.Cryptography.ProtectedData will not be pruned. This package is automatically available and does not need to be referenced explicitly. Remove the PackageReference item. [D:\a\PC-Care\PC-Care\SmartPerformanceDoctor.sln]
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:20.7965894Z D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj : warning NU1510: PackageReference System.Drawing.Common will not be pruned. This package is automatically available and does not need to be referenced explicitly. Remove the PackageReference item. [D:\a\PC-Care\PC-Care\SmartPerformanceDoctor.sln]
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:29.1771019Z   Restored D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.AstraVault.KillWorker\SmartPerformanceDoctor.AstraVault.KillWorker.csproj (in 37.2 sec).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:29.2030149Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Aegis\SmartPerformanceDoctor.Aegis.csproj (in 2 ms).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:30.0738158Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Diagnostics\SmartPerformanceDoctor.Diagnostics.csproj (in 12.56 sec).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:30.1166921Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryHelper\SmartPerformanceDoctor.AegisRecoveryHelper.csproj (in 9 ms).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:37.3861079Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryService\SmartPerformanceDoctor.AegisRecoveryService.csproj (in 8.18 sec).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:41.1446200Z   Restored D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\SmartPerformanceDoctor.Tests.csproj (in 49.2 sec).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:41.1662324Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj (in 20.35 sec).
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:41.5741681Z ##[group]Run dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:41.5742379Z ^[[36;1mdotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:41.5796709Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:41.5796983Z env:
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:41.5797146Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:41.5797364Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:51.0574508Z   SmartPerformanceDoctor.Diagnostics -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Diagnostics\bin\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Diagnostics.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:51.4547579Z   SmartPerformanceDoctor.Aegis -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Aegis\bin\Release\net10.0-windows\SmartPerformanceDoctor.Aegis.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:51.6663320Z   SmartPerformanceDoctor.Contracts -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Contracts\bin\Release\net10.0\SmartPerformanceDoctor.Contracts.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:51.8909466Z   SmartPerformanceDoctor.Data -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Data\bin\Release\net10.0\SmartPerformanceDoctor.Data.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:52.5788260Z   SmartPerformanceDoctor.SecurityLab -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.SecurityLab\bin\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:53.4626142Z   SmartPerformanceDoctor.AstraVault -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AstraVault\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:53.8739488Z   SmartPerformanceDoctor.UpdateEngine -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:54.0991281Z   SmartPerformanceDoctor.UpdateHelper -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateHelper\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateHelper.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:54.2431778Z   SmartPerformanceDoctor.AegisRecoveryHelper -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryHelper\bin\x64\Release\net10.0-windows\AegisRecoveryHelper.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:46:54.7267195Z   SmartPerformanceDoctor.AegisRecoveryService -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryService\bin\x64\Release\net10.0-windows\AegisRecoveryService.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:28.2482286Z   SmartPerformanceDoctor.App -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:33.5027431Z   SmartPerformanceDoctor.Tests -> D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:33.7556569Z   SmartPerformanceDoctor.AstraVault.KillWorker -> D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.AstraVault.KillWorker\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.KillWorker.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:34.1607420Z   SmartPerformanceDoctor.Setup -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Setup\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.Setup.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:34.4217542Z   SmartPerformanceDoctor.SecurityLab.Tests -> D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:34.5480633Z   SmartPerformanceDoctor.SecurityLab.Cli -> D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.SecurityLab.Cli\bin\Release\net10.0-windows\SecurityLab.Cli.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:34.7178117Z   SmartPerformanceDoctor.DiagnosticsProbe -> D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.DiagnosticsProbe\bin\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.DiagnosticsProbe.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:34.7276316Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:34.7281979Z Build succeeded.
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:34.7282651Z     0 Warning(s)
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:34.7282987Z     0 Error(s)
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:34.7286165Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:34.7286380Z Time Elapsed 00:00:52.65
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:35.1449377Z ##[group]Run dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests|FullyQualifiedName~WO06' --logger 'trx;LogFileName=wo06-signed-updater.trx' -v:minimal
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:35.1451735Z ^[[36;1mdotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests|FullyQualifiedName~WO06' --logger 'trx;LogFileName=wo06-signed-updater.trx' -v:minimal^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:35.1508008Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:35.1508277Z env:
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:35.1508441Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:35.1508695Z   VSTEST_CONNECTION_TIMEOUT: 300
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:35.1508894Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:37.1449792Z   SmartPerformanceDoctor.Diagnostics -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Diagnostics\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Diagnostics.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:37.2167631Z   SmartPerformanceDoctor.AstraVault -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AstraVault\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:37.3671499Z   SmartPerformanceDoctor.Data -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Data\bin\x64\Release\net10.0\SmartPerformanceDoctor.Data.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:37.5059915Z   SmartPerformanceDoctor.Contracts -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Contracts\bin\x64\Release\net10.0\SmartPerformanceDoctor.Contracts.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:37.8226100Z   SmartPerformanceDoctor.Aegis -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Aegis\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.Aegis.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:38.1740015Z   SmartPerformanceDoctor.SecurityLab -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:38.2367114Z   SmartPerformanceDoctor.UpdateEngine -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:38.2965863Z   SmartPerformanceDoctor.UpdateHelper -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateHelper\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateHelper.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:38.4321682Z   SmartPerformanceDoctor.AegisRecoveryHelper -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryHelper\bin\x64\Release\net10.0-windows\AegisRecoveryHelper.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:38.5641560Z   SmartPerformanceDoctor.AegisRecoveryService -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryService\bin\x64\Release\net10.0-windows\AegisRecoveryService.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:50.2284528Z   SmartPerformanceDoctor.App -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:52.8697319Z   SmartPerformanceDoctor.Tests -> D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:53.0923110Z   SmartPerformanceDoctor.AstraVault.KillWorker -> D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.AstraVault.KillWorker\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.KillWorker.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:53.0992466Z Test run for D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll (.NETCoreApp,Version=v10.0)
+windows-validation	UNKNOWN STEP	2026-10-10T20:47:53.5988530Z A total of 1 test files matched the specified pattern.
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:25.8317956Z Results File: D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo06-signed-updater.trx
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:25.8319013Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:25.8354033Z Passed!  - Failed:     0, Passed:   128, Skipped:     0, Total:   128, Duration: 31 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:26.2365826Z ##[group]Run dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO07|FullyQualifiedName~WO08' --logger 'trx;LogFileName=wo08-performance.trx' -v:minimal
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:26.2367316Z ^[[36;1mdotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO07|FullyQualifiedName~WO08' --logger 'trx;LogFileName=wo08-performance.trx' -v:minimal^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:26.2450124Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:26.2450396Z env:
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:26.2450552Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:26.2450767Z   VSTEST_CONNECTION_TIMEOUT: 300
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:26.2450962Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:27.5501648Z   SmartPerformanceDoctor.Diagnostics -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Diagnostics\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Diagnostics.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:27.6116542Z   SmartPerformanceDoctor.AstraVault -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AstraVault\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:27.6686025Z   SmartPerformanceDoctor.Data -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Data\bin\x64\Release\net10.0\SmartPerformanceDoctor.Data.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:27.6973214Z   SmartPerformanceDoctor.Contracts -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Contracts\bin\x64\Release\net10.0\SmartPerformanceDoctor.Contracts.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:27.8108529Z   SmartPerformanceDoctor.Aegis -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Aegis\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.Aegis.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:27.8512313Z   SmartPerformanceDoctor.SecurityLab -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:27.8835141Z   SmartPerformanceDoctor.UpdateEngine -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:27.9428492Z   SmartPerformanceDoctor.UpdateHelper -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateHelper\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateHelper.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:27.9837501Z   SmartPerformanceDoctor.AegisRecoveryHelper -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryHelper\bin\x64\Release\net10.0-windows\AegisRecoveryHelper.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:28.0277923Z   SmartPerformanceDoctor.AegisRecoveryService -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryService\bin\x64\Release\net10.0-windows\AegisRecoveryService.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:29.3370353Z   SmartPerformanceDoctor.App -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:30.0262075Z   SmartPerformanceDoctor.Tests -> D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:30.1766492Z   SmartPerformanceDoctor.AstraVault.KillWorker -> D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.AstraVault.KillWorker\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.KillWorker.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:30.1836080Z Test run for D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll (.NETCoreApp,Version=v10.0)
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:30.3564988Z A total of 1 test files matched the specified pattern.
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:34.8499511Z Results File: D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo08-performance.trx
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:34.8502153Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:34.8535906Z Passed!  - Failed:     0, Passed:    79, Skipped:     0, Total:    79, Duration: 3 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:35.2775196Z ##[group]Run dotnet build tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-restore -v:minimal
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:35.2776553Z ^[[36;1mdotnet build tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-restore -v:minimal^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:35.2777387Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'probe build failed' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:35.2777982Z ^[[36;1mNew-Item -ItemType Directory -Force artifacts/wo07-ci | Out-Null^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:35.2779009Z ^[[36;1mdotnet run --project tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-build --no-restore -- 30 artifacts/wo07-ci/measurement.json^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:35.2780062Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'CPU or memory collector unavailable' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:35.2780840Z ^[[36;1m$measurement = Get-Content artifacts/wo07-ci/measurement.json -Raw | ConvertFrom-Json^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:35.2781608Z ^[[36;1mif ($measurement.environment.elevated) {^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:35.2782441Z ^[[36;1m  if ($measurement.snapshot.Errors.Where({ $_.Provider.StartsWith('ETW') }).Count -gt 0) { throw 'Elevated ETW collection failed' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:35.2783446Z ^[[36;1m  if ($measurement.snapshot.EventsReceived -le 0) { throw 'Elevated ETW delivered no events' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:35.2784535Z ^[[36;1m  if ($null -eq $measurement.remainingOwnedSessions -or $measurement.remainingOwnedSessions -ne 0) { throw 'ETW session cleanup not verified' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:35.2785412Z ^[[36;1m}^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:35.2852382Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:35.2853063Z env:
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:35.2853340Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:35.2853681Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:36.4292894Z   SmartPerformanceDoctor.Diagnostics -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Diagnostics\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Diagnostics.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:36.6869556Z   SmartPerformanceDoctor.DiagnosticsProbe -> D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.DiagnosticsProbe\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.DiagnosticsProbe.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:36.6987407Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:36.6995754Z Build succeeded.
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:36.6996540Z     0 Warning(s)
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:36.6996908Z     0 Error(s)
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:36.6998300Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:48:36.6998980Z Time Elapsed 00:00:00.96
+windows-validation	UNKNOWN STEP	2026-10-10T20:49:07.9975835Z ##[group]Run ./scripts/wo08-measurement.ps1 -OutputDirectory artifacts/wo08-ci -RunControlledWorkloads -IsolatedRunnerReference
+windows-validation	UNKNOWN STEP	2026-10-10T20:49:07.9976620Z ^[[36;1m./scripts/wo08-measurement.ps1 -OutputDirectory artifacts/wo08-ci -RunControlledWorkloads -IsolatedRunnerReference^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:49:08.0033153Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	UNKNOWN STEP	2026-10-10T20:49:08.0033605Z env:
+windows-validation	UNKNOWN STEP	2026-10-10T20:49:08.0033763Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	UNKNOWN STEP	2026-10-10T20:49:08.0033959Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:00.5715212Z WO08_MEASUREMENT_COMPLETED
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:00.6097972Z ##[group]Run dotnet build tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:00.6099115Z ^[[36;1mdotnet build tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj -c Release -p:Platform=x64 -m:1 -v:minimal^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:00.6099901Z ^[[36;1m./scripts/wo06-process-validation.ps1 -OutputDirectory artifacts/wo06-ci-process^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:00.6160126Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:00.6160457Z env:
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:00.6160679Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:00.6160944Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:01.4284354Z   Determining projects to restore...
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:01.9309790Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\SmartPerformanceDoctor.UpdateEngine.csproj (in 191 ms).
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:01.9335321Z   Restored D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.UpdateRecoveryProbe\SmartPerformanceDoctor.UpdateRecoveryProbe.csproj (in 201 ms).
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:02.3188502Z   SmartPerformanceDoctor.UpdateEngine -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:02.5618386Z   SmartPerformanceDoctor.UpdateRecoveryProbe -> D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.UpdateRecoveryProbe\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateRecoveryProbe.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:02.5706320Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:02.5711542Z Build succeeded.
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:02.5712274Z     0 Warning(s)
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:02.5712926Z     0 Error(s)
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:02.5713969Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:02.5714204Z Time Elapsed 00:00:01.49
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.5599399Z WINDOWS_SYNTHETIC_PROCESS=PASS; VM_E2E=NOT_TESTED; UNKNOWN_ORPHAN=PRESERVED
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6114655Z ##[group]Run dotnet build tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6115726Z ^[[36;1mdotnet build tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj -c Release -p:Platform=x64 -m:1 -v:minimal^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6116362Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'test kit build failed' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6117015Z ^[[36;1mdotnet build tools/SmartPerformanceDoctor.VaultRecovery/SmartPerformanceDoctor.VaultRecovery.csproj -c Release -p:Platform=x64 -m:1 -v:minimal^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6117664Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'data recovery build failed' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6118237Z ^[[36;1m$kit = 'tools/SmartPerformanceDoctor.VMTestKit/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.VMTestKit.exe'^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6119082Z ^[[36;1m$engine = 'src/SmartPerformanceDoctor.UpdateEngine/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateEngine.dll'^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6119619Z ^[[36;1m& $kit audit-production $engine^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6119946Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'test trust leaked into production' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6120506Z ^[[36;1m& $kit audit-production 'src/SmartPerformanceDoctor.App/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.dll'^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6121091Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production app' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6122253Z ^[[36;1m& $kit audit-production 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.dll'^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6122910Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production helper' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6123330Z ^[[36;1m$profile = Join-Path $env:RUNNER_TEMP 'wo06-test-profile'^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6123833Z ^[[36;1m& $kit fixture-profile $profile ('0' * 40)^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6124178Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'profile generation failed' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6124541Z ^[[36;1m$source = Join-Path $profile 'TestVmTrust.g.cs'^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6125392Z ^[[36;1mdotnet build src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -o (Join-Path $profile 'output') -v:minimal^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6126473Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'test profile build failed' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6126947Z ^[[36;1m& $kit audit-production (Join-Path $profile 'output/SmartPerformanceDoctor.UpdateEngine.dll')^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6127458Z ^[[36;1mif ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test artifact' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6128297Z ^[[36;1mdotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -m:1 -o (Join-Path $profile 'app-output') -v:minimal^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6129158Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw 'VM Release application profile build failed' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6129640Z ^[[36;1m& $kit audit-production (Join-Path $profile 'app-output/SmartPerformanceDoctor.dll')^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6130125Z ^[[36;1mif ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test application' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6130664Z ^[[36;1m& $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateHelper.dll')^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6131212Z ^[[36;1mif ($LASTEXITCODE -ne 6) { throw 'VM application copied a production update helper' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6131752Z ^[[36;1m& $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateEngine.dll')^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6132312Z ^[[36;1mif ($LASTEXITCODE -ne 6) { throw 'VM helper copied a production update engine' }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6134377Z ^[[36;1mexit 0^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6190512Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6190837Z env:
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6191413Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:23.6191697Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:24.4795315Z   Determining projects to restore...
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:25.0393925Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.SecurityLab\SmartPerformanceDoctor.SecurityLab.csproj (in 236 ms).
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:25.0413765Z   Restored D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.VMTestKit\SmartPerformanceDoctor.VMTestKit.csproj (in 236 ms).
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:25.0444068Z   1 of 3 projects are up-to-date for restore.
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:25.4077836Z   SmartPerformanceDoctor.UpdateEngine -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:25.5012513Z   SmartPerformanceDoctor.SecurityLab -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:25.7201109Z   SmartPerformanceDoctor.VMTestKit -> D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.VMTestKit\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.VMTestKit.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:25.7290050Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:25.7295733Z Build succeeded.
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:25.7296306Z     0 Warning(s)
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:25.7296652Z     0 Error(s)
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:25.7298230Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:25.7298674Z Time Elapsed 00:00:01.63
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:26.6546764Z   Determining projects to restore...
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:27.2526348Z   Restored D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.VaultRecovery\SmartPerformanceDoctor.VaultRecovery.csproj (in 243 ms).
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:27.2558475Z   2 of 3 projects are up-to-date for restore.
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:27.6315819Z   SmartPerformanceDoctor.UpdateEngine -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:27.7028689Z   SmartPerformanceDoctor.SecurityLab -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:27.9095303Z   SmartPerformanceDoctor.VaultRecovery -> D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.VaultRecovery\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.VaultRecovery.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:27.9193027Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:27.9199665Z Build succeeded.
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:27.9200519Z     0 Warning(s)
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:27.9200862Z     0 Error(s)
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:27.9202289Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:27.9202519Z Time Elapsed 00:00:01.65
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:28.3085776Z PRODUCTION_PROFILE=PASS; TEST_ROOT=ABSENT
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:28.3803480Z PRODUCTION_PROFILE=PASS; TEST_ROOT=ABSENT
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:28.4465273Z PRODUCTION_PROFILE=PASS; TEST_ROOT=ABSENT
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:28.5832347Z PROFILE=WO05-VM-TEST; PRIVATE_KEY=NOT-SAVED
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:29.7526215Z   SmartPerformanceDoctor.UpdateEngine -> D:\a\_temp\wo06-test-profile\output\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:29.7701799Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:29.7716812Z Build succeeded.
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:29.7717932Z     0 Warning(s)
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:29.7736583Z     0 Error(s)
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:29.7745015Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:29.7745458Z Time Elapsed 00:00:00.90
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:31.4459578Z   SmartPerformanceDoctor.Diagnostics -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.Diagnostics.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:31.8913943Z   SmartPerformanceDoctor.AstraVault -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.AstraVault.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:32.0582420Z   SmartPerformanceDoctor.Aegis -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.Aegis.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:32.1760231Z   SmartPerformanceDoctor.Contracts -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.Contracts.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:32.2979400Z   SmartPerformanceDoctor.Data -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.Data.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:32.5944870Z   SmartPerformanceDoctor.SecurityLab -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.SecurityLab.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:32.6456521Z   SmartPerformanceDoctor.UpdateEngine -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:32.8385769Z   SmartPerformanceDoctor.UpdateHelper -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.UpdateHelper.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:32.9790717Z   SmartPerformanceDoctor.AegisRecoveryHelper -> D:\a\_temp\wo06-test-profile\app-output\AegisRecoveryHelper.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:33.1378627Z   SmartPerformanceDoctor.AegisRecoveryService -> D:\a\_temp\wo06-test-profile\app-output\AegisRecoveryService.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:52.9324543Z   SmartPerformanceDoctor.App -> D:\a\_temp\wo06-test-profile\app-output\SmartPerformanceDoctor.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:53.8912426Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:53.8918156Z Build succeeded.
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:53.8919054Z     0 Warning(s)
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:53.8919343Z     0 Error(s)
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:53.8920617Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:53.8920794Z Time Elapsed 00:00:23.68
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:54.1376572Z ##[group]Run dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo06-full.trx' -v:minimal
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:54.1377861Z ^[[36;1mdotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo06-full.trx' -v:minimal^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:54.1435000Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:54.1435268Z env:
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:54.1435435Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:54.1435828Z   VSTEST_CONNECTION_TIMEOUT: 300
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:54.1436016Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:54.9779600Z Test run for D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll (.NETCoreApp,Version=v10.0)
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:55.1483357Z A total of 1 test files matched the specified pattern.
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:55.8204971Z [xUnit.net 00:00:00.36]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityReview_PreflightEvidenceCurrent [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:55.8638728Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityReview_PreflightEvidenceCurrent [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:56.3582436Z [xUnit.net 00:00:00.89]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SClassStillNotSatisfied [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:56.3871669Z [xUnit.net 00:00:00.92]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SpdVaultUnchanged_NoMigration [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:56.3898796Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SClassStillNotSatisfied [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:56.3909501Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SpdVaultUnchanged_NoMigration [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:56.3916350Z [xUnit.net 00:00:00.93]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityInvariant_StabilityRepeat_Skipped [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:56.3934717Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityInvariant_StabilityRepeat_Skipped [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:56.3951532Z [xUnit.net 00:00:00.93]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_EnableFlagsRemainFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:56.5079298Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_EnableFlagsRemainFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3061912Z [xUnit.net 00:00:01.84]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_DecisionGate_NotProductionEnable [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3063711Z [xUnit.net 00:00:01.84]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenAnchorMissing [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3094526Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_DecisionGate_NotProductionEnable [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3096126Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenAnchorMissing [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3097453Z [xUnit.net 00:00:01.84]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ExternalReviewCompletedCodeRemainsFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3098648Z [xUnit.net 00:00:01.84]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_EnableFlagsRemainFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3099864Z [xUnit.net 00:00:01.84]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenXChaCha24Missing [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3101188Z [xUnit.net 00:00:01.84]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenSClassUnsatisfied [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3102643Z [xUnit.net 00:00:01.84]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_SpdVaultUnchanged_NoMigration [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3103856Z [xUnit.net 00:00:01.84]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ProductionWriterStillNotAuthorized [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3929635Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ExternalReviewCompletedCodeRemainsFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3931028Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_EnableFlagsRemainFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3932074Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenXChaCha24Missing [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3933248Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenSClassUnsatisfied [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3934274Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_SpdVaultUnchanged_NoMigration [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3935115Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ProductionWriterStillNotAuthorized [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3936928Z [xUnit.net 00:00:01.93]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_Preflight_CurrentEvidenceSourceOfTruthMatchesActual [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.3938203Z [xUnit.net 00:00:01.93]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenActualDiskDurabilityMissing [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.4539117Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_Preflight_CurrentEvidenceSourceOfTruthMatchesActual [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.4541020Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenActualDiskDurabilityMissing [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.4550291Z [xUnit.net 00:00:01.99]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SpdVaultUnchanged_NoMigration [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.4553404Z [xUnit.net 00:00:01.99]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_FullRollbackMatrix_StabilityRepeat_Skipped [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5224381Z [xUnit.net 00:00:02.06]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SClassStillNotSatisfied [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5259470Z [xUnit.net 00:00:02.06]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionEnableAuthorized_RemainsFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5273332Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SpdVaultUnchanged_NoMigration [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5276013Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_FullRollbackMatrix_StabilityRepeat_Skipped [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5278871Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SClassStillNotSatisfied [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5280088Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionEnableAuthorized_RemainsFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5281436Z [xUnit.net 00:00:02.06]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionAnchorImplemented_RemainsFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5282822Z [xUnit.net 00:00:02.06]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5284131Z [xUnit.net 00:00:02.06]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_EnableFlagsRemainFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5287615Z [xUnit.net 00:00:02.06]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_DiskDurabilityStillOpen [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5296848Z [xUnit.net 00:00:02.06]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SpdVaultUnchanged_NoMigration [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5298398Z [xUnit.net 00:00:02.06]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_AnchorSignoff_HarnessCandidateOnly_NotProductionImplemented [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5299908Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionAnchorImplemented_RemainsFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5301115Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5302246Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_EnableFlagsRemainFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5303462Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_DiskDurabilityStillOpen [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5305499Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SpdVaultUnchanged_NoMigration [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5306668Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_AnchorSignoff_HarnessCandidateOnly_NotProductionImplemented [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5307808Z [xUnit.net 00:00:02.06]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_XChaCha24StillOpen [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5308971Z [xUnit.net 00:00:02.06]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_TrustedMonotonicAnchorRequired_ForFullVaultRollbackClosure [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5310039Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_XChaCha24StillOpen [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:57.5311040Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_TrustedMonotonicAnchorRequired_ForFullVaultRollbackClosure [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:59.4980576Z [xUnit.net 00:00:04.03]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_EnableFlagsRemainFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:59.5204232Z [xUnit.net 00:00:04.05]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SClassStillNotSatisfied [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:59.5233927Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_EnableFlagsRemainFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:52:59.5254672Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SClassStillNotSatisfied [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:03.7390820Z [xUnit.net 00:00:08.27]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_ProductionWriterGate_RemainsFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:04.2929434Z   Skipped SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_ProductionWriterGate_RemainsFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:04.4899326Z [xUnit.net 00:00:09.03]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Recovery_EqualGenerationConflictingRoot_CorruptBlocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:04.9869864Z   Skipped SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Recovery_EqualGenerationConflictingRoot_CorruptBlocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:04.9871587Z [xUnit.net 00:00:09.52]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_NonHarnessCommitSession_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:05.1565192Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_NonHarnessCommitSession_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:05.9169245Z [xUnit.net 00:00:10.45]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_NonHarnessProductionRouteStillDenied [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:05.9229255Z [xUnit.net 00:00:10.45]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444 [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:05.9236636Z [xUnit.net 00:00:10.45]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_StabilityRepeat_Skipped [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:05.9602161Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_NonHarnessProductionRouteStillDenied [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:05.9603575Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444 [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:05.9604772Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_StabilityRepeat_Skipped [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.0096018Z [xUnit.net 00:00:10.54]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_EnableFlagsRemainFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.0121246Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_EnableFlagsRemainFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.0122713Z [xUnit.net 00:00:10.55]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionRouteDenied [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.0124112Z [xUnit.net 00:00:10.55]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ReadOnlyValidatorComplete [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.0125441Z [xUnit.net 00:00:10.55]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SClassStillNotSatisfied [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.0126691Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionRouteDenied [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.0128198Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ReadOnlyValidatorComplete [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.0129543Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SClassStillNotSatisfied [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.0141853Z [xUnit.net 00:00:10.55]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_PreflightEvidenceCurrent [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.0143401Z [xUnit.net 00:00:10.55]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SpdVaultUnchangedNoMigration [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.0372113Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_PreflightEvidenceCurrent [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.0373330Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SpdVaultUnchangedNoMigration [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.6607644Z [xUnit.net 00:00:11.19]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_CommitThreeCopyAsync_Production_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.6705636Z [xUnit.net 00:00:11.19]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_DenyMigrationRoute_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.6789032Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_CommitThreeCopyAsync_Production_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.6972789Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_DenyMigrationRoute_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.6992431Z [xUnit.net 00:00:11.19]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_TryOpenProductionSession_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.6994124Z [xUnit.net 00:00:11.20]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.PhaseGate_E71_ReviewFixes_AllEnableFlagsFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.6995609Z [xUnit.net 00:00:11.20]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_JournalWriterGate_False [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.6996809Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_TryOpenProductionSession_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.6997970Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.PhaseGate_E71_ReviewFixes_AllEnableFlagsFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:06.6999085Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_JournalWriterGate_False [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:07.0726344Z [xUnit.net 00:00:11.60]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.PhaseGate_E62_ReviewFixes_ProductionStillDisabled [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:07.6795334Z [xUnit.net 00:00:12.21]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_E6Recovery_EqualGenerationConflictingRoot_CorruptBlocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:07.6796829Z [xUnit.net 00:00:12.21]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_Rollback_PreviousRootMismatch_MatchesE4_CorruptBlocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:07.6799200Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.PhaseGate_E62_ReviewFixes_ProductionStillDisabled [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:07.6800614Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_E6Recovery_EqualGenerationConflictingRoot_CorruptBlocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:07.6801963Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_Rollback_PreviousRootMismatch_MatchesE4_CorruptBlocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:09.5738038Z [xUnit.net 00:00:14.11]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NonHarnessWriterInvocation_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:09.5917419Z   Skipped SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NonHarnessWriterInvocation_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:13.5057226Z [xUnit.net 00:00:18.03]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OrchestratorCommitAsync_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:13.5268602Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OrchestratorCommitAsync_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:13.5638808Z [xUnit.net 00:00:18.03]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ConcurrentCommit_SecondBlocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:13.5979700Z [xUnit.net 00:00:18.03]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OpenWriteSessionAsync_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:14.2866402Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ConcurrentCommit_SecondBlocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:14.2945976Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OpenWriteSessionAsync_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:15.3784207Z [xUnit.net 00:00:19.91]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ReentrantCommit_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:15.3822795Z [xUnit.net 00:00:19.91]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_FactoryProductionCreate_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.0803676Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ReentrantCommit_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.0806902Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_FactoryProductionCreate_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.0824624Z [xUnit.net 00:00:20.62]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.PhaseGate_E7_PreEnableHardening_EnableFlagsFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.0841255Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.PhaseGate_E7_PreEnableHardening_EnableFlagsFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.0846933Z [xUnit.net 00:00:20.62]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_DuplicateTransactionId_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.0848065Z [xUnit.net 00:00:20.62]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_ProductionDurableStore_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.0864404Z [xUnit.net 00:00:20.62]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_JournalRecorderProductionRoute_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.0866629Z [xUnit.net 00:00:20.62]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_TransactionCoordinator_NonHarness_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.1240783Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_DuplicateTransactionId_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.1242373Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_ProductionDurableStore_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.1254329Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_JournalRecorderProductionRoute_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.1256000Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_TransactionCoordinator_NonHarness_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.1257726Z [xUnit.net 00:00:20.66]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_EnableFlagsRemainFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.1258987Z [xUnit.net 00:00:20.66]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SClassStillNotSatisfied [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.1980040Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_EnableFlagsRemainFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.1981345Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SClassStillNotSatisfied [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.7367154Z [xUnit.net 00:00:21.26]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Implemented_RemainsFalseUntilSignoff [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.8469374Z [xUnit.net 00:00:21.36]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionAnchorImplemented_RemainsFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.8744258Z [xUnit.net 00:00:21.36]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SpdVaultUnchanged_NoMigration [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.8792701Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Implemented_RemainsFalseUntilSignoff [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.8796285Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionAnchorImplemented_RemainsFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.8797821Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SpdVaultUnchanged_NoMigration [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.8799206Z [xUnit.net 00:00:21.36]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ReadOnlyValidator_XChaCha24_Pass [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.8809580Z [xUnit.net 00:00:21.36]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionEnableAuthorized_RemainsFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.8811117Z [xUnit.net 00:00:21.36]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.8812249Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ReadOnlyValidator_XChaCha24_Pass [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.8813337Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionEnableAuthorized_RemainsFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:16.8814465Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:21.6360021Z [xUnit.net 00:00:26.17]     SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.PhaseGate_E3_ActualKillHarness_DocumentationOnly [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:22.7213034Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.PhaseGate_E3_ActualKillHarness_DocumentationOnly [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:24.1637535Z [xUnit.net 00:00:28.69]     SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_Conflict_CorruptBlocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:24.1647501Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_Conflict_CorruptBlocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:24.9321788Z [xUnit.net 00:00:29.47]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.WriterEnableChecklist_State_NoGo [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:24.9584353Z [xUnit.net 00:00:29.48]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SClassStillNotSatisfied [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:24.9586895Z [xUnit.net 00:00:29.48]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_StabilityRepeat_Skipped [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:24.9588742Z [xUnit.net 00:00:29.49]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_TrustedAnchorSignoff_PreflightEvidenceCurrent [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:24.9590923Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.WriterEnableChecklist_State_NoGo [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:24.9626543Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SClassStillNotSatisfied [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:24.9769218Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_StabilityRepeat_Skipped [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:24.9770291Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_TrustedAnchorSignoff_PreflightEvidenceCurrent [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:24.9771237Z [xUnit.net 00:00:29.49]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_DiskDurabilityStillOpen [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:24.9772137Z [xUnit.net 00:00:29.49]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SpdVaultUnchanged_NoMigration [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:24.9970824Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_DiskDurabilityStillOpen [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:24.9988858Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SpdVaultUnchanged_NoMigration [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.0017763Z [xUnit.net 00:00:29.53]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.PhaseGate_E4_HighRiskClosure_NotWriterEnable [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.0053745Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.PhaseGate_E4_HighRiskClosure_NotWriterEnable [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.1048902Z [xUnit.net 00:00:29.64]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_HarnessProvider_Signed [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.1051834Z [xUnit.net 00:00:29.64]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionAnchorImplemented_RemainsFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.1060983Z [xUnit.net 00:00:29.64]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_EnableFlagsRemainFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.1062200Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_HarnessProvider_Signed [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.1063334Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionAnchorImplemented_RemainsFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.1064457Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_EnableFlagsRemainFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.1066030Z [xUnit.net 00:00:29.64]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionEnableAuthorized_RemainsFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.1067432Z [xUnit.net 00:00:29.64]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_XChaCha24Implemented_RemainsFalseSignedCandidate [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.1068811Z [xUnit.net 00:00:29.64]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.1070182Z [xUnit.net 00:00:29.64]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalWitnessStub_SignedButNotProductionLive [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.1423609Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionEnableAuthorized_RemainsFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.1441346Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_XChaCha24Implemented_RemainsFalseSignedCandidate [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.1444614Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.1449459Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalWitnessStub_SignedButNotProductionLive [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.6820137Z [xUnit.net 00:00:30.22]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R9_Migration_RemainsDisabled_NoWriterCollision [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:25.8243086Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R9_Migration_RemainsDisabled_NoWriterCollision [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:26.4736883Z [xUnit.net 00:00:31.01]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_EqualGenerationDifferentRoot_CorruptBlocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:26.9678072Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_EqualGenerationDifferentRoot_CorruptBlocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:26.9732921Z [xUnit.net 00:00:31.51]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:27.1121472Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:27.1211359Z [xUnit.net 00:00:31.66]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SClassStillNotSatisfied [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:27.1212832Z [xUnit.net 00:00:31.66]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_EnableFlagsRemainFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:27.2134131Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SClassStillNotSatisfied [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:27.2238266Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_EnableFlagsRemainFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:27.2248276Z [xUnit.net 00:00:31.75]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorStabilityRepeat_Skipped [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:27.2343544Z [xUnit.net 00:00:31.77]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SpdVaultUnchanged_NoMigration [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:27.2578943Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorStabilityRepeat_Skipped [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:27.2611365Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SpdVaultUnchanged_NoMigration [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:29.2901505Z [xUnit.net 00:00:33.83]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.JournalRecorder_ProductionRoute_Fails_WhenJournalDisabled [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:29.2904961Z [xUnit.net 00:00:33.83]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.PhaseGate_E6_DisabledProductionWriter_NotAuthorized [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:29.2913702Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.JournalRecorder_ProductionRoute_Fails_WhenJournalDisabled [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:29.2914827Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.PhaseGate_E6_DisabledProductionWriter_NotAuthorized [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:29.8271231Z [xUnit.net 00:00:34.36]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionOpenSession_Throws_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:29.8275238Z [xUnit.net 00:00:34.36]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.DurableStore_RelativePathEscape_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:29.8558916Z [xUnit.net 00:00:34.39]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_WritePolicy_ProductionDisabled [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:30.3186241Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionOpenSession_Throws_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:30.3187269Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.DurableStore_RelativePathEscape_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:30.3188058Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_WritePolicy_ProductionDisabled [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:30.3188708Z [xUnit.net 00:00:34.85]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_ProductionRoute_AppHostViewModel_NoWriter [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:30.3189370Z [xUnit.net 00:00:34.85]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DurableStore_RootEscape_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:30.8465835Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_ProductionRoute_AppHostViewModel_NoWriter [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:30.8466474Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DurableStore_RootEscape_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:32.0711452Z [xUnit.net 00:00:36.61]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionCommit_Throws_Blocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:32.3625673Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionCommit_Throws_Blocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:32.8053515Z [xUnit.net 00:00:37.34]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.WriterFactory_ProductionCreate_Fails_WhenProductionWriterDisabled [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:32.8849899Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.WriterFactory_ProductionCreate_Fails_WhenProductionWriterDisabled [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:32.8852979Z [xUnit.net 00:00:37.41]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_HeaderConflict_CorruptBlocked [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:33.4712121Z [xUnit.net 00:00:38.00]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.PhaseGate_E8_LimitedDryRun_EnableFlagsFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:33.9593791Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_HeaderConflict_CorruptBlocked [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:33.9595335Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.PhaseGate_E8_LimitedDryRun_EnableFlagsFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:57.5654207Z [xUnit.net 00:01:02.10]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_AnchorDesign_NotImplemented [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:57.5655615Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_AnchorDesign_NotImplemented [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:57.5666144Z [xUnit.net 00:01:02.10]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:57.5668717Z [xUnit.net 00:01:02.10]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.PhaseGate_E5_ProductionWriterDesign_NotWriterEnable [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:58.3751381Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:58.3754238Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.PhaseGate_E5_ProductionWriterDesign_NotWriterEnable [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:59.3332412Z [xUnit.net 00:01:03.87]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_DecisionRecord_NotProductionEnable [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:59.3340379Z   Skipped SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_DecisionRecord_NotProductionEnable [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:59.3342039Z [xUnit.net 00:01:03.87]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_SpdVaultUnchanged_NoMigration [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:59.3343166Z [xUnit.net 00:01:03.87]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_EnableFlagsRemainFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:59.4293376Z [xUnit.net 00:01:03.96]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_M01M02Closed_CurrentEvidenceConsistent [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:59.4296360Z [xUnit.net 00:01:03.96]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_ExternalReviewCompletedCodeRemainsFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:59.4304675Z   Skipped SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_SpdVaultUnchanged_NoMigration [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:59.4305850Z   Skipped SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_EnableFlagsRemainFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:59.4307052Z   Skipped SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_M01M02Closed_CurrentEvidenceConsistent [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:53:59.4308507Z   Skipped SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_ExternalReviewCompletedCodeRemainsFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:54:02.3869951Z [xUnit.net 00:01:06.92]     SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse [SKIP]
+windows-validation	UNKNOWN STEP	2026-10-10T20:54:02.3938002Z   Skipped SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse [1 ms]
+windows-validation	UNKNOWN STEP	2026-10-10T20:55:41.7301832Z Results File: D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo06-full.trx
+windows-validation	UNKNOWN STEP	2026-10-10T20:55:41.7308317Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:55:41.7348276Z Passed!  - Failed:     0, Passed:   848, Skipped:   111, Total:   959, Duration: 2 m 45 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	UNKNOWN STEP	2026-10-10T20:55:41.8736371Z ##[group]Run dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo06-securitylab.trx' -v:minimal
+windows-validation	UNKNOWN STEP	2026-10-10T20:55:41.8737681Z ^[[36;1mdotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo06-securitylab.trx' -v:minimal^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:55:41.8801707Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	UNKNOWN STEP	2026-10-10T20:55:41.8801993Z env:
+windows-validation	UNKNOWN STEP	2026-10-10T20:55:41.8802159Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	UNKNOWN STEP	2026-10-10T20:55:41.8802373Z   VSTEST_CONNECTION_TIMEOUT: 300
+windows-validation	UNKNOWN STEP	2026-10-10T20:55:41.8802559Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:55:43.5713274Z   SmartPerformanceDoctor.SecurityLab -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:55:43.9785981Z   SmartPerformanceDoctor.SecurityLab.Tests -> D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll
+windows-validation	UNKNOWN STEP	2026-10-10T20:55:43.9894398Z Test run for D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll (.NETCoreApp,Version=v10.0)
+windows-validation	UNKNOWN STEP	2026-10-10T20:55:44.1703064Z A total of 1 test files matched the specified pattern.
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:28.8386746Z Results File: D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.SecurityLab.Tests\TestResults\wo06-securitylab.trx
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:28.8389038Z 
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:28.8421964Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 44 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.2459294Z ##[group]Run $helper = 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe'
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.2460296Z ^[[36;1m$helper = 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe'^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.2461094Z ^[[36;1m$process = Start-Process -FilePath $helper -ArgumentList @('--exec', 'arbitrary') -Wait -PassThru -NoNewWindow^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.2461686Z ^[[36;1mif ($process.ExitCode -ne 2) { throw "Unexpected helper exit code: $($process.ExitCode)" }^[[0m
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.2520307Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.2520640Z env:
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.2520872Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.2521167Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.9844366Z ##[group]Run actions/upload-artifact@v4
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.9844700Z with:
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.9844915Z   name: wo08-windows-evidence
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.9845785Z   path: tests/SmartPerformanceDoctor.Tests/TestResults/*.trx
+windows-validation	UNKNOWN STEP	tests/SmartPerformanceDoctor.SecurityLab.Tests/TestResults/*.trx
+windows-validation	UNKNOWN STEP	artifacts/wo06-ci-process/process-results.json
+windows-validation	UNKNOWN STEP	artifacts/wo07-ci/measurement.json
+windows-validation	UNKNOWN STEP	artifacts/wo08-ci/**/*.json
+windows-validation	UNKNOWN STEP	
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.9846598Z   if-no-files-found: warn
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.9846808Z   compression-level: 6
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.9847025Z   overwrite: false
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.9847242Z   include-hidden-files: false
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.9847486Z env:
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.9847695Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:29.9847960Z ##[endgroup]
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:30.1379524Z (node:3608) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:30.1380685Z (Use `node --trace-deprecation ...` to show where the warning was created)
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:30.1801591Z Multiple search paths detected. Calculating the least common ancestor of all paths
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:30.1804349Z The least common ancestor is D:\a\PC-Care\PC-Care. This will be the root directory of the artifact
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:30.1805266Z With the provided path, there will be 28 files uploaded
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:30.1809761Z Artifact name is valid!
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:30.1811015Z Root directory input is valid!
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:30.5450899Z Beginning upload of artifact content to blob storage
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:30.6453956Z (node:3608) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.2711772Z Uploaded bytes 586266
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.3344165Z Finished uploading artifact content to blob storage!
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.3344984Z SHA256 digest of uploaded artifact zip is a5cf14dc3f470c8a73971ea248f63614a147b1bded138186cc097ce8eaa4294e
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.3346855Z Finalizing artifact upload
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.5732030Z Artifact wo08-windows-evidence.zip successfully finalized. Artifact ID 11682671091
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.5733257Z Artifact wo08-windows-evidence has been successfully uploaded! Final size is 586266 bytes. Artifact ID is 11682671091
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.5742151Z Artifact download URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38084989987/artifacts/11682671091
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.6028651Z Post job cleanup.
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.7194929Z (node:5376) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.7195528Z (Use `node --trace-deprecation ...` to show where the warning was created)
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.7441421Z Post job cleanup.
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.8932484Z [command]"C:\Program Files\Git\bin\git.exe" version
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.9169759Z git version 2.55.0.windows.5
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.9220678Z Temporarily overriding HOME='D:\a\_temp\a69329a6-cdd1-46d0-a1d1-ef5fef840722' before making global git config changes
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.9222143Z Adding repository directory to the temporary git global config as a safe directory
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.9230218Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\PC-Care\PC-Care
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.9491612Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:31.9772197Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:32.4206440Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:32.4442244Z http.https://github.com/.extraheader
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:32.4475050Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:32.4704265Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:32.8638261Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:32.8866846Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:33.3233392Z Cleaning up orphan processes
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:33.3475223Z Terminate orphan process: pid (9196) (dotnet)
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:33.3571848Z Terminate orphan process: pid (1976) (dotnet)
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:33.3634185Z Terminate orphan process: pid (5076) (dotnet)
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:33.3685141Z Terminate orphan process: pid (1728) (conhost)
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:33.3843173Z Terminate orphan process: pid (9888) (VBCSCompiler)
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:33.3885563Z Terminate orphan process: pid (6588) (conhost)
+windows-validation	UNKNOWN STEP	2026-10-10T20:56:33.4367712Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-dotnet@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

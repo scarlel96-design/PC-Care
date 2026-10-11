@@ -1,0 +1,51 @@
+WORK ITEM: WO-08
+BRANCH: codex/pccare-performance-diagnostics-accuracy
+BASELINE SHA: 620d8def4f9857dc4d33d24d0ff668e445669144
+BASELINE TREE: 745973452a3290a57e1305b75c1fc33edbb97cf9
+VALIDATED SOURCE SHA: 77e19b01f1baa579811bbd122b062abaaa460ba1
+SOURCE TREE: 41d94d1917e3dc12cc770cc3a8109f95b26ff9cf
+FINAL SHA: Resolve the evidence commit from the branch HEAD. This file cannot contain its own commit hash.
+WORKSPACE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care
+ENVIRONMENT: Windows 11 Pro build 26200; 24 logical processors; about 32 GiB RAM; nonadministrator token.
+CI RUN: 38084989987
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38084989987
+POLICY: Read-only diagnosis. Phase 1 NO-GO. No main merge or official release.
+
+STATUS: PASS for version retention and API evaluation; PARTIAL for independent reference validation.
+TraceEvent 3.2.8: MIT; retained. Official release tag and NuGet metadata reviewed.
+CsWin32 0.3.358: MIT; retained. Official release tag and NuGet metadata reviewed.
+No dependency version upgrade occurred. Release .NET 10 x64 compilation and Windows execution passed.
+NuGet audit reported no known vulnerable packages with the configured feeds, including transitive packages.
+This audit is a feed result, not a complete security certification.
+TraceEvent remains the ETW parser and session implementation. CsWin32 generates PDH bindings.
+WPR/WPA remains the independent reference technology. Independent interpretation remains open.
+LibreHardwareMonitor remains optional. Its core license is MPL-2.0. No sensor driver was installed.
+Temperature and clock remain Unknown.
+Sources:
+https://github.com/microsoft/perfview/releases/tag/v3.2.8
+https://www.nuget.org/packages/Microsoft.Diagnostics.Tracing.TraceEvent/3.2.8
+https://github.com/microsoft/CsWin32/releases/tag/v0.3.358
+https://www.nuget.org/packages/Microsoft.Windows.CsWin32/0.3.358
+https://github.com/LibreHardwareMonitor/LibreHardwareMonitor
+https://learn.microsoft.com/en-us/windows-hardware/test/wpt/windows-performance-recorder
+https://learn.microsoft.com/en-us/windows/win32/api/evntrace/ns-evntrace-event_trace_properties
+https://learn.microsoft.com/en-us/windows/win32/etw/configuring-and-starting-an-event-tracing-session
+
+TEST COMMAND: dotnet list src/SmartPerformanceDoctor.Diagnostics package --vulnerable --include-transitive
+EXIT CODE: 0
+OUTPUT:
+  복원할 프로젝트를 확인하는 중...
+
+  복원할 모든 프로젝트가 최신 상태입니다.
+
+
+
+다음 소스가 사용되었습니다.
+
+   https://api.nuget.org/v3/index.json
+
+   C:\Program Files (x86)\Microsoft SDKs\NuGetPackages\
+
+
+
+현재 소스를 고려해 볼 때 지정된 프로젝트 `SmartPerformanceDoctor.Diagnostics`에 취약한 패키지가 없습니다.

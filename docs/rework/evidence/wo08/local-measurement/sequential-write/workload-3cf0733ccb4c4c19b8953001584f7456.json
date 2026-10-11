@@ -1,0 +1,15 @@
+{
+  "policy": {
+    "Mode": "sequential-write",
+    "Seconds": 12,
+    "Threads": 4,
+    "MemoryMiB": 64
+  },
+  "startedUtc": "2026-10-10T20:43:16.5932795+00:00",
+  "endedUtc": "2026-10-10T20:43:28.6003514+00:00",
+  "elapsedSeconds": 12.0070268,
+  "cpuSeconds": 0.078125,
+  "workingSetBytes": 31109120,
+  "ioBytes": 134217728,
+  "groundTruth": "Expected workload; requested activity does not prove whole-system saturation or uncached physical I/O."
+}

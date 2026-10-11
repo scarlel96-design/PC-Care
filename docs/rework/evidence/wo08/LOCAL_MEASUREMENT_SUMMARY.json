@@ -1,0 +1,453 @@
+[
+  {
+    "file": "Detailed.json",
+    "samples": 13,
+    "cpuOverheadPercent": 0.27729874235170693,
+    "peakWorkingSetMiB": 60.828125,
+    "managedAllocatedBytes": 20603976,
+    "physicalDiskInstances": 3,
+    "etw": {
+      "NativeEtwEventsLost": null,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 0,
+      "EventsProcessed": 0,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "NotStarted",
+      "LossMeasurementStatus": "NotAvailable",
+      "EffectiveProfile": "Detailed",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 0,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {}
+    },
+    "errors": [
+      {
+        "Provider": "Process",
+        "Code": "PartialAccessOrExited"
+      },
+      {
+        "Provider": "ProcessBudget",
+        "Code": "Truncated"
+      },
+      {
+        "Provider": "ETW",
+        "Code": "PermissionDenied"
+      }
+    ]
+  },
+  {
+    "file": "General.json",
+    "samples": 14,
+    "cpuOverheadPercent": 0.23819811948860622,
+    "peakWorkingSetMiB": 60.83984375,
+    "managedAllocatedBytes": 22086952,
+    "physicalDiskInstances": 3,
+    "etw": {
+      "NativeEtwEventsLost": null,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 0,
+      "EventsProcessed": 0,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "NotStarted",
+      "LossMeasurementStatus": "NotAvailable",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 0,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {}
+    },
+    "errors": [
+      {
+        "Provider": "Process",
+        "Code": "PartialAccessOrExited"
+      },
+      {
+        "Provider": "ProcessBudget",
+        "Code": "Truncated"
+      },
+      {
+        "Provider": "ETW",
+        "Code": "PermissionDenied"
+      }
+    ]
+  },
+  {
+    "file": "LowOverhead.json",
+    "samples": 14,
+    "cpuOverheadPercent": 0.29453950688317176,
+    "peakWorkingSetMiB": 63.0,
+    "managedAllocatedBytes": 22038000,
+    "physicalDiskInstances": 3,
+    "etw": {
+      "NativeEtwEventsLost": null,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 0,
+      "EventsProcessed": 0,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "NotStarted",
+      "LossMeasurementStatus": "NotAvailable",
+      "EffectiveProfile": "LowOverhead",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 0,
+      "RequestedBufferMegabytes": 2,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 32,
+      "RequestedMaximumBuffers": 50,
+      "ReceivedByKind": {}
+    },
+    "errors": [
+      {
+        "Provider": "Process",
+        "Code": "PartialAccessOrExited"
+      },
+      {
+        "Provider": "ProcessBudget",
+        "Code": "Truncated"
+      },
+      {
+        "Provider": "ETW",
+        "Code": "PermissionDenied"
+      }
+    ]
+  },
+  {
+    "file": "cpu\\measurement.json",
+    "samples": 10,
+    "cpuOverheadPercent": 0.4275430501344973,
+    "peakWorkingSetMiB": 60.890625,
+    "managedAllocatedBytes": 16355440,
+    "physicalDiskInstances": 3,
+    "etw": {
+      "NativeEtwEventsLost": null,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 0,
+      "EventsProcessed": 0,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "NotStarted",
+      "LossMeasurementStatus": "NotAvailable",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 0,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {}
+    },
+    "errors": [
+      {
+        "Provider": "Process",
+        "Code": "PartialAccessOrExited"
+      },
+      {
+        "Provider": "ProcessBudget",
+        "Code": "Truncated"
+      },
+      {
+        "Provider": "ETW",
+        "Code": "PermissionDenied"
+      }
+    ]
+  },
+  {
+    "file": "memory\\measurement.json",
+    "samples": 11,
+    "cpuOverheadPercent": 0.35184559019842565,
+    "peakWorkingSetMiB": 60.9453125,
+    "managedAllocatedBytes": 17665392,
+    "physicalDiskInstances": 3,
+    "etw": {
+      "NativeEtwEventsLost": null,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 0,
+      "EventsProcessed": 0,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "NotStarted",
+      "LossMeasurementStatus": "NotAvailable",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 0,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {}
+    },
+    "errors": [
+      {
+        "Provider": "Process",
+        "Code": "PartialAccessOrExited"
+      },
+      {
+        "Provider": "ProcessBudget",
+        "Code": "Truncated"
+      },
+      {
+        "Provider": "ETW",
+        "Code": "PermissionDenied"
+      }
+    ]
+  },
+  {
+    "file": "mixed\\measurement.json",
+    "samples": 11,
+    "cpuOverheadPercent": 0.4272564019867366,
+    "peakWorkingSetMiB": 62.83203125,
+    "managedAllocatedBytes": 17699416,
+    "physicalDiskInstances": 3,
+    "etw": {
+      "NativeEtwEventsLost": null,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 0,
+      "EventsProcessed": 0,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "NotStarted",
+      "LossMeasurementStatus": "NotAvailable",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 0,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {}
+    },
+    "errors": [
+      {
+        "Provider": "Process",
+        "Code": "PartialAccessOrExited"
+      },
+      {
+        "Provider": "ProcessBudget",
+        "Code": "Truncated"
+      },
+      {
+        "Provider": "ETW",
+        "Code": "PermissionDenied"
+      }
+    ]
+  },
+  {
+    "file": "peak\\measurement.json",
+    "samples": 11,
+    "cpuOverheadPercent": 0.36797353716904824,
+    "peakWorkingSetMiB": 60.89453125,
+    "managedAllocatedBytes": 17760360,
+    "physicalDiskInstances": 3,
+    "etw": {
+      "NativeEtwEventsLost": null,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 0,
+      "EventsProcessed": 0,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "NotStarted",
+      "LossMeasurementStatus": "NotAvailable",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 0,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {}
+    },
+    "errors": [
+      {
+        "Provider": "Process",
+        "Code": "PartialAccessOrExited"
+      },
+      {
+        "Provider": "ProcessBudget",
+        "Code": "Truncated"
+      },
+      {
+        "Provider": "ETW",
+        "Code": "PermissionDenied"
+      }
+    ]
+  },
+  {
+    "file": "random-read\\measurement.json",
+    "samples": 11,
+    "cpuOverheadPercent": 0.31920862347237405,
+    "peakWorkingSetMiB": 60.8515625,
+    "managedAllocatedBytes": 17650160,
+    "physicalDiskInstances": 3,
+    "etw": {
+      "NativeEtwEventsLost": null,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 0,
+      "EventsProcessed": 0,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "NotStarted",
+      "LossMeasurementStatus": "NotAvailable",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 0,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {}
+    },
+    "errors": [
+      {
+        "Provider": "Process",
+        "Code": "PartialAccessOrExited"
+      },
+      {
+        "Provider": "ProcessBudget",
+        "Code": "Truncated"
+      },
+      {
+        "Provider": "ETW",
+        "Code": "PermissionDenied"
+      }
+    ]
+  },
+  {
+    "file": "random-write\\measurement.json",
+    "samples": 11,
+    "cpuOverheadPercent": 0.3516182655750178,
+    "peakWorkingSetMiB": 60.62890625,
+    "managedAllocatedBytes": 17653728,
+    "physicalDiskInstances": 3,
+    "etw": {
+      "NativeEtwEventsLost": null,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 0,
+      "EventsProcessed": 0,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "NotStarted",
+      "LossMeasurementStatus": "NotAvailable",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 0,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {}
+    },
+    "errors": [
+      {
+        "Provider": "Process",
+        "Code": "PartialAccessOrExited"
+      },
+      {
+        "Provider": "ProcessBudget",
+        "Code": "Truncated"
+      },
+      {
+        "Provider": "ETW",
+        "Code": "PermissionDenied"
+      }
+    ]
+  },
+  {
+    "file": "sequential-read\\measurement.json",
+    "samples": 11,
+    "cpuOverheadPercent": 0.35737810810519033,
+    "peakWorkingSetMiB": 63.1640625,
+    "managedAllocatedBytes": 17636008,
+    "physicalDiskInstances": 3,
+    "etw": {
+      "NativeEtwEventsLost": null,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 0,
+      "EventsProcessed": 0,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "NotStarted",
+      "LossMeasurementStatus": "NotAvailable",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 0,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {}
+    },
+    "errors": [
+      {
+        "Provider": "Process",
+        "Code": "PartialAccessOrExited"
+      },
+      {
+        "Provider": "ProcessBudget",
+        "Code": "Truncated"
+      },
+      {
+        "Provider": "ETW",
+        "Code": "PermissionDenied"
+      }
+    ]
+  },
+  {
+    "file": "sequential-write\\measurement.json",
+    "samples": 11,
+    "cpuOverheadPercent": 0.3461921534340906,
+    "peakWorkingSetMiB": 62.96875,
+    "managedAllocatedBytes": 17654528,
+    "physicalDiskInstances": 3,
+    "etw": {
+      "NativeEtwEventsLost": null,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 0,
+      "EventsProcessed": 0,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "NotStarted",
+      "LossMeasurementStatus": "NotAvailable",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 0,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {}
+    },
+    "errors": [
+      {
+        "Provider": "Process",
+        "Code": "PartialAccessOrExited"
+      },
+      {
+        "Provider": "ProcessBudget",
+        "Code": "Truncated"
+      },
+      {
+        "Provider": "ETW",
+        "Code": "PermissionDenied"
+      }
+    ]
+  }
+]

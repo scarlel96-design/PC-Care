@@ -1,0 +1,636 @@
+[
+  {
+    "path": "artifacts/wo07-ci/measurement.json",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "durationSeconds": 30.0612246,
+    "sampleCount": 29,
+    "received": 4224,
+    "statistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 4224,
+      "EventsProcessed": 4224,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 31.5772,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskWrite": 271,
+        "DiskRead": 3953
+      }
+    },
+    "overheadPercentOfMachine": 0.9485849422115692,
+    "peakWorkingSetMiB": 58.08984375,
+    "managedAllocatedBytes": 11734432,
+    "diskInstances": 2,
+    "apiProcessIds": 130,
+    "etwProcessIds": 3,
+    "correlatedProcessIds": 3,
+    "findingStates": [
+      "NoObservedPressure.CpuSaturation",
+      "NoObservedPressure.MemoryPressure",
+      "NoObservedPressure.DiskIoPressure",
+      "NoObservedPressure.DiskIoPressure.E22FBC9173FBBD99B62C9527",
+      "NoObservedPressure.DiskIoPressure.8D727C5D329A83F4C55CD973",
+      "ResourceConsumer.68100E181FBFA37C0C2808A9"
+    ]
+  },
+  {
+    "path": "artifacts/wo08-ci/cpu/measurement.json",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "durationSeconds": 12.1072051,
+    "sampleCount": 5,
+    "received": 2678,
+    "statistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 2678,
+      "EventsProcessed": 2678,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 65.3899,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskRead": 2632,
+        "DiskWrite": 46
+      }
+    },
+    "overheadPercentOfMachine": 1.5164007587514976,
+    "peakWorkingSetMiB": 53.16796875,
+    "managedAllocatedBytes": 3939760,
+    "diskInstances": 2,
+    "apiProcessIds": 129,
+    "etwProcessIds": 4,
+    "correlatedProcessIds": 4,
+    "findingStates": [
+      "InsufficientEvidence.CpuSaturation",
+      "InsufficientEvidence.MemoryPressure",
+      "InsufficientEvidence.DiskIoPressure",
+      "InsufficientEvidence.DiskIoPressure.EB25579D5D23D570B5614348",
+      "InsufficientEvidence.DiskIoPressure.C8F416D80657330430D5A39B"
+    ]
+  },
+  {
+    "path": "artifacts/wo08-ci/Detailed.json",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "durationSeconds": 15.0078556,
+    "sampleCount": 14,
+    "received": 16007,
+    "statistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 2106,
+      "MalformedEvents": 0,
+      "EventsAccepted": 13901,
+      "EventsProcessed": 13901,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "DisabledAfterLoss",
+      "RangeReduced": true,
+      "UnattributedEvents": 10323,
+      "MaxQueueDelayMilliseconds": 21.8904,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "ContextSwitch": 3414,
+        "HardFault": 1,
+        "CpuSample": 12572,
+        "DiskWrite": 20
+      }
+    },
+    "overheadPercentOfMachine": 1.2753737449339533,
+    "peakWorkingSetMiB": 61.78515625,
+    "managedAllocatedBytes": 12337096,
+    "diskInstances": 2,
+    "apiProcessIds": 130,
+    "etwProcessIds": 10,
+    "correlatedProcessIds": 9,
+    "findingStates": [
+      "NoObservedPressure.CpuSaturation",
+      "NoObservedPressure.MemoryPressure",
+      "NoObservedPressure.DiskIoPressure",
+      "NoObservedPressure.DiskIoPressure.65962E838E04F1AA3234DECB",
+      "NoObservedPressure.DiskIoPressure.98E729C35D3D7B250BDA3F4A",
+      "ResourceConsumer.7CAA4187E9D78AEFAD3FDC5B"
+    ]
+  },
+  {
+    "path": "artifacts/wo08-ci/General.json",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "durationSeconds": 15.0680674,
+    "sampleCount": 14,
+    "received": 2692,
+    "statistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 2692,
+      "EventsProcessed": 2692,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 25.8005,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskRead": 2234,
+        "DiskWrite": 458
+      }
+    },
+    "overheadPercentOfMachine": 1.6072897311303505,
+    "peakWorkingSetMiB": 54.03515625,
+    "managedAllocatedBytes": 6610800,
+    "diskInstances": 2,
+    "apiProcessIds": 138,
+    "etwProcessIds": 11,
+    "correlatedProcessIds": 11,
+    "findingStates": [
+      "NoObservedPressure.CpuSaturation",
+      "NoObservedPressure.MemoryPressure",
+      "NoObservedPressure.DiskIoPressure",
+      "NoObservedPressure.DiskIoPressure.B8C5F7B1A4379AD5D77175C1",
+      "NoObservedPressure.DiskIoPressure.FF7AA9601745A684378C0552",
+      "ResourceConsumer.15E1E2345576247CF5D50D5E"
+    ]
+  },
+  {
+    "path": "artifacts/wo08-ci/LowOverhead.json",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "durationSeconds": 15.0549613,
+    "sampleCount": 14,
+    "received": 0,
+    "statistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 0,
+      "EventsProcessed": 0,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "LowOverhead",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 0,
+      "RequestedBufferMegabytes": 2,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 32,
+      "RequestedMaximumBuffers": 50,
+      "ReceivedByKind": {}
+    },
+    "overheadPercentOfMachine": 1.1416502279550862,
+    "peakWorkingSetMiB": 52.6796875,
+    "managedAllocatedBytes": 5297960,
+    "diskInstances": 2,
+    "apiProcessIds": 132,
+    "etwProcessIds": 0,
+    "correlatedProcessIds": 0,
+    "findingStates": [
+      "NoObservedPressure.CpuSaturation",
+      "NoObservedPressure.MemoryPressure",
+      "NoObservedPressure.DiskIoPressure",
+      "NoObservedPressure.DiskIoPressure.74A9D11B98A999F8804879E2",
+      "NoObservedPressure.DiskIoPressure.BEA6DF29E32CB09938775A2A",
+      "ResourceConsumer.5AAFF612DC0A8E84C2D62E0F"
+    ]
+  },
+  {
+    "path": "artifacts/wo08-ci/memory/measurement.json",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "durationSeconds": 12.0604378,
+    "sampleCount": 11,
+    "received": 1476,
+    "statistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 1476,
+      "EventsProcessed": 1476,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 25.4853,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskRead": 1241,
+        "DiskWrite": 235
+      }
+    },
+    "overheadPercentOfMachine": 1.6194478445881955,
+    "peakWorkingSetMiB": 53.5859375,
+    "managedAllocatedBytes": 5171584,
+    "diskInstances": 2,
+    "apiProcessIds": 133,
+    "etwProcessIds": 15,
+    "correlatedProcessIds": 13,
+    "findingStates": [
+      "NoObservedPressure.CpuSaturation",
+      "NoObservedPressure.MemoryPressure",
+      "NoObservedPressure.DiskIoPressure",
+      "NoObservedPressure.DiskIoPressure.553B7F3312A9887CFFE9A9F1",
+      "NoObservedPressure.DiskIoPressure.B0CB29E25CD111D097CCD1B3",
+      "ResourceConsumer.A62E7541BD0D03F942411F8B",
+      "ResourceConsumer.1D4C148FFE7882B905D04360",
+      "ResourceConsumer.BE50FAEBCC432EB1837CC083"
+    ]
+  },
+  {
+    "path": "artifacts/wo08-ci/mixed/measurement.json",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "durationSeconds": 12.082075,
+    "sampleCount": 6,
+    "received": 89,
+    "statistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 89,
+      "EventsProcessed": 89,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 35.7538,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskWrite": 86,
+        "DiskRead": 3
+      }
+    },
+    "overheadPercentOfMachine": 1.7782024197002584,
+    "peakWorkingSetMiB": 54.41796875,
+    "managedAllocatedBytes": 3100216,
+    "diskInstances": 2,
+    "apiProcessIds": 131,
+    "etwProcessIds": 3,
+    "correlatedProcessIds": 3,
+    "findingStates": [
+      "InsufficientEvidence.CpuSaturation",
+      "InsufficientEvidence.MemoryPressure",
+      "InsufficientEvidence.DiskIoPressure",
+      "InsufficientEvidence.DiskIoPressure.BDA190A776F69AB19E9501A2",
+      "InsufficientEvidence.DiskIoPressure.B743900849CC6D0442354255"
+    ]
+  },
+  {
+    "path": "artifacts/wo08-ci/peak/measurement.json",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "durationSeconds": 12.0782613,
+    "sampleCount": 11,
+    "received": 2609,
+    "statistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 2609,
+      "EventsProcessed": 2609,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 31.7769,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskRead": 2246,
+        "DiskWrite": 363
+      }
+    },
+    "overheadPercentOfMachine": 1.7787638854940158,
+    "peakWorkingSetMiB": 53.49609375,
+    "managedAllocatedBytes": 5733464,
+    "diskInstances": 2,
+    "apiProcessIds": 129,
+    "etwProcessIds": 3,
+    "correlatedProcessIds": 3,
+    "findingStates": [
+      "NoObservedPressure.CpuSaturation",
+      "NoObservedPressure.MemoryPressure",
+      "NoObservedPressure.DiskIoPressure",
+      "NoObservedPressure.DiskIoPressure.D261129AF23AE78F48C9A576",
+      "NoObservedPressure.DiskIoPressure.77E2E171E2374B5302C3FB68",
+      "ResourceConsumer.77CEE4EB6D9134100583AAB9",
+      "ResourceConsumer.73FA1802AD61ADB48DDCCFB4"
+    ]
+  },
+  {
+    "path": "artifacts/wo08-ci/random-read/measurement.json",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "durationSeconds": 12.0555648,
+    "sampleCount": 11,
+    "received": 904,
+    "statistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 904,
+      "EventsProcessed": 904,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 30.9262,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskWrite": 810,
+        "DiskRead": 94
+      }
+    },
+    "overheadPercentOfMachine": 1.5552983465361987,
+    "peakWorkingSetMiB": 53.4140625,
+    "managedAllocatedBytes": 4931432,
+    "diskInstances": 2,
+    "apiProcessIds": 132,
+    "etwProcessIds": 11,
+    "correlatedProcessIds": 11,
+    "findingStates": [
+      "NoObservedPressure.CpuSaturation",
+      "NoObservedPressure.MemoryPressure",
+      "NoObservedPressure.DiskIoPressure",
+      "NoObservedPressure.DiskIoPressure.A8F19236393B9E4D2254E55B",
+      "NoObservedPressure.DiskIoPressure.87443083288055B3C6817F37",
+      "ResourceConsumer.0CC03D9D22F6643354F5F187"
+    ]
+  },
+  {
+    "path": "artifacts/wo08-ci/random-write/measurement.json",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "durationSeconds": 12.0510302,
+    "sampleCount": 11,
+    "received": 150,
+    "statistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 150,
+      "EventsProcessed": 150,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 31.8421,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskWrite": 134,
+        "DiskRead": 16
+      }
+    },
+    "overheadPercentOfMachine": 1.4586408554515116,
+    "peakWorkingSetMiB": 53.02734375,
+    "managedAllocatedBytes": 4576688,
+    "diskInstances": 2,
+    "apiProcessIds": 132,
+    "etwProcessIds": 8,
+    "correlatedProcessIds": 7,
+    "findingStates": [
+      "NoObservedPressure.CpuSaturation",
+      "NoObservedPressure.MemoryPressure",
+      "NoObservedPressure.DiskIoPressure",
+      "NoObservedPressure.DiskIoPressure.E9182575EA24CBE794B3E51E",
+      "NoObservedPressure.DiskIoPressure.431972F6C6365E33B5E3F7A4",
+      "ResourceConsumer.0D620F1554FE0E7A9E05117A"
+    ]
+  },
+  {
+    "path": "artifacts/wo08-ci/reference-workload/measurement.json",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "durationSeconds": 12.0681842,
+    "sampleCount": 6,
+    "received": 111,
+    "statistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 111,
+      "EventsProcessed": 111,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 34.0148,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskRead": 55,
+        "DiskWrite": 56
+      }
+    },
+    "overheadPercentOfMachine": 2.006826345922032,
+    "peakWorkingSetMiB": 53.56640625,
+    "managedAllocatedBytes": 3055040,
+    "diskInstances": 2,
+    "apiProcessIds": 130,
+    "etwProcessIds": 15,
+    "correlatedProcessIds": 15,
+    "findingStates": [
+      "InsufficientEvidence.CpuSaturation",
+      "InsufficientEvidence.MemoryPressure",
+      "InsufficientEvidence.DiskIoPressure",
+      "InsufficientEvidence.DiskIoPressure.9699603BF5371BB1B369D16F",
+      "InsufficientEvidence.DiskIoPressure.0E8933E38234E1F1D7618EB7"
+    ]
+  },
+  {
+    "path": "artifacts/wo08-ci/sequential-read/measurement.json",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "durationSeconds": 12.0554768,
+    "sampleCount": 11,
+    "received": 76,
+    "statistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 76,
+      "EventsProcessed": 76,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 39.7994,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskWrite": 76
+      }
+    },
+    "overheadPercentOfMachine": 1.5553096995715674,
+    "peakWorkingSetMiB": 52.921875,
+    "managedAllocatedBytes": 4487624,
+    "diskInstances": 2,
+    "apiProcessIds": 128,
+    "etwProcessIds": 3,
+    "correlatedProcessIds": 3,
+    "findingStates": [
+      "NoObservedPressure.CpuSaturation",
+      "NoObservedPressure.MemoryPressure",
+      "NoObservedPressure.DiskIoPressure",
+      "NoObservedPressure.DiskIoPressure.EA984DBA46922F557554372F",
+      "NoObservedPressure.DiskIoPressure.C02878AA0FA8431588E4760A",
+      "ResourceConsumer.3BA188DE974B1294DA45EF0B"
+    ]
+  },
+  {
+    "path": "artifacts/wo08-ci/sequential-write/measurement.json",
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26100.0",
+      "logicalProcessors": 4,
+      "traceEvent": "3.2.8.0",
+      "elevated": true
+    },
+    "durationSeconds": 12.056587,
+    "sampleCount": 11,
+    "received": 54,
+    "statistics": {
+      "NativeEtwEventsLost": 0,
+      "ApplicationQueueDropped": 0,
+      "MalformedEvents": 0,
+      "EventsAccepted": 54,
+      "EventsProcessed": 54,
+      "EventsPendingAtStop": 0,
+      "SessionCleanupStatus": "VerifiedAbsent",
+      "LossMeasurementStatus": "SessionCounterBeforeStop;TerminalIntervalUnknown",
+      "EffectiveProfile": "General",
+      "RangeReduced": false,
+      "UnattributedEvents": 0,
+      "MaxQueueDelayMilliseconds": 25.4394,
+      "RequestedBufferMegabytes": 8,
+      "RequestedBufferQuantumKilobytes": 64,
+      "RequestedMinimumBuffers": 128,
+      "RequestedMaximumBuffers": 170,
+      "ReceivedByKind": {
+        "DiskWrite": 54
+      }
+    },
+    "overheadPercentOfMachine": 1.425569275948492,
+    "peakWorkingSetMiB": 53.52734375,
+    "managedAllocatedBytes": 4469024,
+    "diskInstances": 2,
+    "apiProcessIds": 128,
+    "etwProcessIds": 2,
+    "correlatedProcessIds": 2,
+    "findingStates": [
+      "NoObservedPressure.CpuSaturation",
+      "NoObservedPressure.MemoryPressure",
+      "NoObservedPressure.DiskIoPressure",
+      "NoObservedPressure.DiskIoPressure.1A5ED48D842C9F75AE12495E",
+      "NoObservedPressure.DiskIoPressure.717E65786043D3711BB726BF",
+      "ResourceConsumer.F301298E87E65A2592E9E42A"
+    ]
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "policy": {
+    "Mode": "cpu",
+    "Seconds": 12,
+    "Threads": 4,
+    "MemoryMiB": 64
+  },
+  "startedUtc": "2026-10-10T20:51:33.1808069+00:00",
+  "endedUtc": "2026-10-10T20:51:45.2001708+00:00",
+  "elapsedSeconds": 12.0189157,
+  "cpuSeconds": 44.890625,
+  "workingSetBytes": 30584832,
+  "ioBytes": 0,
+  "groundTruth": "Expected workload; requested activity does not prove whole-system saturation or uncached physical I/O."
+}

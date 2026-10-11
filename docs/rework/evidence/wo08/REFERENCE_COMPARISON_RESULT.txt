@@ -1,0 +1,39 @@
+WORK ITEM: WO-08
+BRANCH: codex/pccare-performance-diagnostics-accuracy
+BASELINE SHA: 620d8def4f9857dc4d33d24d0ff668e445669144
+BASELINE TREE: 745973452a3290a57e1305b75c1fc33edbb97cf9
+VALIDATED SOURCE SHA: 77e19b01f1baa579811bbd122b062abaaa460ba1
+SOURCE TREE: 41d94d1917e3dc12cc770cc3a8109f95b26ff9cf
+FINAL SHA: Resolve the evidence commit from the branch HEAD. This file cannot contain its own commit hash.
+WORKSPACE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care
+ENVIRONMENT: Windows 11 Pro build 26200; 24 logical processors; about 32 GiB RAM; nonadministrator token.
+CI RUN: 38084989987
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38084989987
+POLICY: Read-only diagnosis. Phase 1 NO-GO. No main merge or official release.
+
+STATUS: NOT TESTED
+TEST COMMAND: scripts/wo08-measurement.ps1 -IsolatedRunnerReference
+INPUT: Disposable GitHub runner only. WPR CPU trace and bounded workload.
+OUTPUT: WPR start and stop exited zero. The trace dropped 39,336 events. Independent labeled interpretation remains NOT TESTED.
+EXIT CODE: Not applicable to independent accuracy. The capture harness has a separate recorded exit code.
+REFERENCE STATUS: Successful WPR recording alone is PARTIAL.
+ACCURACY: Precision and recall remain null until independently labeled, aligned comparisons exist.
+
+## Executed independent reference capture
+
+WPR started and stopped successfully on the isolated CI runner. Both commands returned zero.
+The trace contained 300,941,312 bytes before removal.
+Its SHA-256 was `0461B00ED7E0628F88166FF92CD1A2200FEC3819ABAF4BE763F8E61AB8F06A31`.
+WPR reported: `This trace has dropped 39336 events. Please record this trace again.`
+The generated ETL was removed after hashing. No raw ETL was uploaded.
+The WPR capture overlaps the recorded bounded CPU workload.
+No independent WPA interpretation or aligned category ground truth was completed.
+Reference comparison remains PARTIAL. Real diagnostic accuracy remains NOT TESTED.
+False positives, false negatives, Unknown counts, precision, recall, and contribution errors remain null for independent accuracy.
+WPR loss belongs to its own session. It is not PC-Care queue loss.
+Use a dedicated runner and a loss-checked reference configuration for the next comparison.
+Save an explicitly authorized trace until independent interpretation completes.
+The current hash proves trace creation. It does not permit later replay of the removed trace.
+
+HARNESS EXIT CODE: 0
+HARNESS OUTPUT: WO08_MEASUREMENT_COMPLETED
