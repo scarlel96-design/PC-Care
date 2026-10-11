@@ -52,8 +52,32 @@ try
         var id=Identity(sample.Process);
         if (id is null) unlinkedCpu++; else processCpu[id]=processCpu.GetValueOrDefault(id)+weight;
     }
-    var reference = new IndependentTrace("Microsoft.TraceProcessing", true, metadata.LostEventCount, metadata.LostBufferCount,
+    var legacyReference = new IndependentTrace("Microsoft.TraceProcessing", true, metadata.LostEventCount, metadata.LostBufferCount,
         cpu.Result.Gaps.Count, new(from,to), weights.Select((w,i)=>new ReferencePoint(from.AddSeconds(i+1),counts[i]>=10 && unknown[i]==0 ? 100*w/metadata.ProcessorCount : null)).ToArray());
+    var legacyQualification = ReferenceQualification.Evaluate(snapshot, legacyReference, workload);
+    var schedulingIntervals = new List<CpuExecutionInterval>();
+    long schedulingInvalidTimes = 0, schedulingUnknownThreads = 0;
+    foreach (var slice in scheduling.Result.CpuTimeSlices)
+    {
+        if (!SdkTimeConversion.TryTimestamp(slice.StartTime, metadata.StartTime, metadata.StopTime, out var begin)
+            || !SdkTimeConversion.TryTimestamp(slice.StopTime, begin, metadata.StopTime, out var end) || end <= begin)
+        { schedulingInvalidTimes++; continue; }
+        if (end <= from || begin >= to) continue;
+        // Require both context-switch boundaries to agree on the scheduled thread.
+        var known = slice.SwitchIn is not null && slice.SwitchOut is not null
+            && slice.SwitchIn.ThreadId == slice.SwitchOut.ThreadId;
+        if (!known) schedulingUnknownThreads++;
+        var activity = !known ? CpuActivity.Unknown : slice.SwitchIn!.ThreadId == 0 ? CpuActivity.Idle : CpuActivity.Busy;
+        if (schedulingIntervals.Count >= 4_000_000) throw new InvalidOperationException("SchedulingIntervalBudgetExceeded");
+        schedulingIntervals.Add(new(slice.Processor, begin, end, activity));
+    }
+    var schedulingSummary = new MeasurementWindow(from, to).Valid
+        ? CpuSchedulingReference.Normalize(schedulingIntervals, metadata.ProcessorCount, new(from, to)) : null;
+    var sampledIdle = cpu.Result.Samples.Count(s => s.Thread?.Id == 0);
+    var sampledMissingThread = cpu.Result.Samples.Count(s => s.Thread is null);
+    // Retain old values for audit. Do not approve either estimator without independent agreement.
+    var reference = new IndependentTrace("Microsoft.TraceProcessing", true, metadata.LostEventCount, metadata.LostBufferCount,
+        cpu.Result.Gaps.Count, new(from, to), schedulingSummary?.Bins.Select(b => new ReferencePoint(b.EndUtc, b.CpuPercent)).ToArray() ?? []) { SemanticsQualified = false };
     var qualification = ReferenceQualification.Evaluate(snapshot, reference, workload);
     var io = disks.Result.Activity.Where(d=>SdkTimeConversion.TryTimestamp(d.CompleteTime, from, to, out var completed)
         && SdkTimeConversion.TryTimestamp(d.InitializeTime, from, completed, out _)).ToArray();
@@ -63,11 +87,14 @@ try
     using (var hashInput = File.OpenRead(path)) traceHash = Convert.ToHexString(SHA256.HashData(hashInput));
     var report = new { status="PARTIAL", analyzer="Microsoft.Windows.EventTracing.Processing.All 1.12.10", etlSha256=traceHash,
         rawTracePublished=false, traceWindow=new { metadata.StartTime, metadata.StopTime },
-        reference, qualification, lifetimes,
+        reference, qualification, legacyReference, legacyQualification, lifetimes, schedulingSummary,
+        schedulingQualification = new { status="ReferenceIncomplete", reason="DPC/ISR time and WPA agreement are not independently qualified. Scheduling observations are not accuracy ground truth." },
         cpuParserDiagnostics = new { sampleCount=cpu.Result.Samples.Count, invalidTimestamp, partialTimestamp, partialWeight,
             invalidWeight, missingProcess, validSamplesInCommonWindow=counts.Sum(), unknownSamplesInCommonWindow=unknown.Sum(),
             estimatedUnaccountedSamplingPeriods=cpu.Result.Gaps.Count, schedulingTimeSliceCount=scheduling.Result.CpuTimeSlices.Count,
-            interpretation="Sampling gaps describe estimated unaccounted periods. They are not the native lost-event counter. The original zero-gap qualification gate remains in force." },
+            sampledIdle, sampledMissingThread, schedulingInvalidTimes, schedulingUnknownThreads,
+            interpretation="Weight is estimated time to the next sample. CpuGaps are estimated unaccounted sampling periods, not native lost events. Scheduling bins separately preserve idle, missing, unknown and overlapping time. The original sampled zero-gap gate remains in force." },
+        processCpuSemantics="Legacy sampled weight estimate; not qualified running time or ground truth",
         processCpu=processCpu.OrderByDescending(p=>p.Value).Take(128).Select(p=>new { id=p.Key, cpuSeconds=p.Value, wholeMachinePercent=wholeSeconds>0?100*p.Value/(wholeSeconds*metadata.ProcessorCount):(double?)null }),
         unlinkedCpu, unlinkedIo=io.Count(d=>Identity(d.IssuingProcess) is null),
         disk=io.GroupBy(d=>d.Disk).Select(g=>new { sessionDiskNumber=g.Key, identityStatus="TraceLocalNumberOnly", operations=g.Count(),

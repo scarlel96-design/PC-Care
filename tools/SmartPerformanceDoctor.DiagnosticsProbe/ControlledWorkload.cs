@@ -9,9 +9,9 @@ internal static class ControlledWorkload
         if (args.Length != 5) throw new ArgumentException("--workload MODE SECONDS OUTPUT_DIRECTORY THREADS");
         var requestedSeconds = int.Parse(args[2]);
         var qualification = args[0] == "--qualification-workload";
-        if (qualification && (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != "true" || requestedSeconds is < 10 or > 30 || args[1] is not ("cpu" or "peak")))
+        if (qualification && (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != "true" || requestedSeconds is < 10 or > 30 || args[1] is not ("cpu" or "peak" or "idle" or "medium" or "mixed" or "expected-high")))
             throw new ArgumentException("IsolatedRunnerQualificationPolicyRequired");
-        var policy = new WorkloadPolicy(args[1], qualification ? Math.Min(15,requestedSeconds) : requestedSeconds, int.Parse(args[4])); policy.Validate();
+        var policy = new WorkloadPolicy(qualification && args[1] is "idle" or "medium" or "expected-high" ? "cpu" : args[1], qualification ? Math.Min(15,requestedSeconds) : requestedSeconds, int.Parse(args[4])); policy.Validate();
         var durationSeconds = qualification ? requestedSeconds : policy.Seconds;
         var root = Path.GetFullPath(args[3]); Directory.CreateDirectory(root);
         var resultPath = Path.Combine(root,"workload-"+Guid.NewGuid().ToString("N")+".json");
@@ -21,9 +21,9 @@ internal static class ControlledWorkload
         ThreadPool.GetMinThreads(out var minThreads,out var completionThreads);
         ThreadPool.SetMinThreads(Math.Max(minThreads,policy.Threads+1),completionThreads);
         var tasks=new List<Task>(); long bytes=0; byte[]? memory=null;
-        if (policy.Mode is "cpu" or "peak" or "mixed")
+        if ((policy.Mode is "cpu" or "peak" or "mixed") && args[1] != "idle")
             for(int t=0;t<policy.Threads;t++) tasks.Add(Task.Run(()=>
-            { double x=1; while(!stop.IsCancellationRequested && (policy.Mode!="peak" || clock.Elapsed.TotalSeconds<1)) {for(int i=0;i<10000;i++)x=Math.Sqrt(x+123.456); } GC.KeepAlive(x); }));
+            { double x=1; while(!stop.IsCancellationRequested && (policy.Mode!="peak" || clock.Elapsed.TotalSeconds<1)) {for(int i=0;i<10000;i++)x=Math.Sqrt(x+123.456); if(args[1]=="medium")Thread.Sleep(1); } GC.KeepAlive(x); }));
         if (policy.Mode=="memory") {memory=new byte[policy.MemoryMiB*1024*1024];for(int i=0;i<memory.Length;i+=4096)memory[i]=1;}
         if (policy.Mode.Contains("read") || policy.Mode.Contains("write") || policy.Mode=="mixed")
             tasks.Add(Task.Run(()=>
@@ -43,7 +43,7 @@ internal static class ControlledWorkload
         await Task.WhenAll(tasks);
         if(clock.Elapsed.TotalSeconds<durationSeconds)await Task.Delay(TimeSpan.FromSeconds(durationSeconds)-clock.Elapsed);
         GC.KeepAlive(memory); process.Refresh();
-        var result=new { policy,durationSeconds,qualification,startedUtc=started,endedUtc=DateTimeOffset.UtcNow,elapsedSeconds=clock.Elapsed.TotalSeconds,
+        var result=new { policy,requestedMode=args[1],durationSeconds,qualification,startedUtc=started,endedUtc=DateTimeOffset.UtcNow,elapsedSeconds=clock.Elapsed.TotalSeconds,
             cpuSeconds=process.TotalProcessorTime.TotalSeconds-before,workingSetBytes=process.WorkingSet64,ioBytes=bytes,
             groundTruth="Expected workload; requested activity does not prove whole-system saturation or uncached physical I/O." };
         await using var output=new FileStream(resultPath,FileMode.CreateNew,FileAccess.Write,FileShare.None);

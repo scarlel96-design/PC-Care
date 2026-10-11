@@ -21,6 +21,28 @@ var seconds = args.Length > 0 && int.TryParse(args[0], out var duration) ? durat
 HashSet<string>? sessionBaseline = null;
 if (TraceEventSession.IsElevated() == true)
     try { sessionBaseline = TraceEventSession.GetActiveSessionNames().ToHashSet(StringComparer.Ordinal); } catch { }
+async Task<object> ReadPdhCpu()
+{
+    var points = new List<ReferencePoint>();
+    var started = DateTimeOffset.UtcNow;
+    try
+    {
+        using var pdh = new CounterProbe([new("cpu", @"\Processor(_Total)\% Processor Time")]);
+        for (var index = 0; index < seconds; index++)
+        {
+            await Task.Delay(1000);
+            var values = pdh.Read();
+            var value = values.GetValueOrDefault("cpu");
+            points.Add(new(DateTimeOffset.UtcNow, value is >= 0 and <= 100 ? value : null));
+        }
+        var observed = points.Any(point => point.CpuPercent.HasValue);
+        return new { status=observed ? "ObservedCounterOnly" : "Unknown", startedUtc=started, cpu=points,
+            error=observed ? (string?)null : "NoValidPdhCpuSamples" };
+    }
+    catch (Exception error) { return new {status="Unknown",startedUtc=started,cpu=points,error=(string?)error.GetType().Name}; }
+}
+if (seconds is < 2 or > 120) return 2;
+var pdhTask = ReadPdhCpu();
 var collector = new PerformanceCollector();
 var result = await collector.CollectAsync(new SamplingPolicy(DurationSeconds: seconds) { EtwProfile = profile }, CancellationToken.None);
 int? remainingOwnedSessions = null;
@@ -33,7 +55,7 @@ analysisClock.Stop();
 var json = JsonSerializer.Serialize(new {
     environment = new { os = Environment.OSVersion.ToString(), logicalProcessors = Environment.ProcessorCount,
         traceEvent = typeof(TraceEventSession).Assembly.GetName().Version?.ToString(), elevated = TraceEventSession.IsElevated() },
-    snapshot = result, findings, measurements, remainingOwnedSessions, analysisMilliseconds = analysisClock.Elapsed.TotalMilliseconds,
+    snapshot = result, findings, measurements, pdhCpu = await pdhTask, remainingOwnedSessions, analysisMilliseconds = analysisClock.Elapsed.TotalMilliseconds,
     cpu = Statistics.Describe(result.Samples.Select(s => s.CpuPercent)),
     memory = Statistics.Describe(result.Samples.Select(s => s.AvailableMemoryPercent)),
     overheadPercentOfMachine = 100 * result.CollectorCpuSeconds / result.DurationSeconds / Environment.ProcessorCount

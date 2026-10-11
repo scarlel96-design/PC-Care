@@ -6,13 +6,13 @@
             <TextBlock Text="30초 동안 읽기 전용으로 측정합니다. 시스템 설정과 사용자 파일은 변경하지 않습니다."
                        TextWrapping="Wrap" Foreground="{StaticResource SpdMutedTextBrush}"/>
             <StackPanel Orientation="Horizontal" Spacing="8">
-                <Button x:Name="StartButton" Content="측정 시작" Click="Start" AutomationProperties.Name="성능 측정 시작"/>
-                <Button x:Name="StopButton" Content="측정 중단" Click="Stop" IsEnabled="False"/>
+                <Button x:Name="StartButton" Content="측정 시작" Click="Start" AutomationProperties.Name="성능 측정 시작" AutomationProperties.AutomationId="PerformanceDiagnosticsStart"/>
+                <Button x:Name="StopButton" Content="측정 중단" Click="Stop" IsEnabled="False" AutomationProperties.Name="성능 측정 중단" AutomationProperties.AutomationId="PerformanceDiagnosticsStop"/>
             </StackPanel>
             <CheckBox x:Name="ExpectedLoad" Content="게임·렌더링 등 높은 부하 작업을 의도적으로 실행 중"/>
             <Border Style="{StaticResource MacWindowPanelStyle}">
                 <StackPanel Spacing="12">
-                    <TextBlock x:Name="StatusText" Text="측정 대기" TextWrapping="Wrap"/>
+                    <TextBlock x:Name="StatusText" Text="측정 대기" TextWrapping="Wrap" AutomationProperties.AutomationId="PerformanceDiagnosticsStatus" AutomationProperties.LiveSetting="Polite"/>
                     <ProgressBar x:Name="Progress" Maximum="30"/>
                     <TextBlock x:Name="Metrics" Text="CPU — · 메모리 — · 디스크 —" TextWrapping="Wrap"/>
                     <TextBlock x:Name="Coverage" Text="측정되지 않은 항목은 미측정으로 표시합니다."
@@ -35,7 +35,7 @@
             </ItemsControl>
             <TextBlock Text="성능 회복 검토 계획" FontSize="22" FontWeight="SemiBold"/>
             <TextBlock Text="측정 근거를 바탕으로 계획을 미리 봅니다. 실행 기능은 제공되지 않습니다." TextWrapping="Wrap"/>
-            <ItemsControl x:Name="PlansList">
+            <ItemsControl x:Name="PlansList" AutomationProperties.AutomationId="PerformanceRecoveryPlans" AutomationProperties.Name="성능 회복 검토 계획 미리보기">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border Style="{StaticResource MacWindowPanelStyle}" Margin="0,0,0,8">

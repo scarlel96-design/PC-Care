@@ -7,7 +7,10 @@ public sealed record MeasurementWindow(DateTimeOffset StartUtc, DateTimeOffset E
 }
 public sealed record ReferencePoint(DateTimeOffset EndUtc, double? CpuPercent);
 public sealed record IndependentTrace(string Analyzer, bool IndependentParser, long? LostEvents, long? LostBuffers,
-    long CpuGaps, MeasurementWindow Window, IReadOnlyList<ReferencePoint> Cpu);
+    long CpuGaps, MeasurementWindow Window, IReadOnlyList<ReferencePoint> Cpu)
+{
+    public bool SemanticsQualified { get; init; } = true;
+}
 public sealed record QualificationResult(string Status, MeasurementWindow? Window, AccuracyMetrics Metrics,
     IReadOnlyList<string> Exclusions, double? CpuMedianAbsoluteError, string PressureState);
 
@@ -37,6 +40,7 @@ public static class ReferenceQualification
         var window = new MeasurementWindow(new[] { snapshot.StartedUtc, reference.Window.StartUtc, workload.StartUtc }.Max(),
             new[] { snapshot.StartedUtc.AddSeconds(snapshot.DurationSeconds), reference.Window.EndUtc, workload.EndUtc }.Min());
         if (!reference.IndependentParser || reference.Analyzer != "Microsoft.TraceProcessing") exclusions.Add("IndependentParserNotVerified");
+        if (!reference.SemanticsQualified) exclusions.Add("ReferenceSemanticsNotQualified");
         if (reference.LostEvents != 0 || reference.LostBuffers != 0 || reference.CpuGaps != 0) exclusions.Add("ReferenceLossOrUnknownLoss");
         if (!window.Valid) exclusions.Add("InvalidOrShortCommonWindow");
         if (exclusions.Count > 0) return new("NOT TESTED", window.Valid ? window : null,

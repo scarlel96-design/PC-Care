@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="../../tools/SmartPerformanceDoctor.RecoverySandbox/SandboxRecovery.cs" Link="WO10/SandboxRecovery.cs" />
     <ProjectReference Include="..\..\src\SmartPerformanceDoctor.Diagnostics\SmartPerformanceDoctor.Diagnostics.csproj" />
     <PackageReference Include="Konscious.Security.Cryptography.Argon2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
