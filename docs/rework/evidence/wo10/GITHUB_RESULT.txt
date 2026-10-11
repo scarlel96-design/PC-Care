@@ -1,5 +1,5 @@
 WORK ITEM: WO-10 GitHub verification
-STATUS: PASS for executable source and Windows CI; report publication is finalized by the branch HEAD.
+STATUS: PASS for source upload, evidence publication, remote inventory and Windows CI.
 BRANCH: codex/pccare-reference-correction-safe-recovery
 BASELINE SHA: 7e4dc94c7c8ed9260e203f99dbf57f5a1e753e20
 VERIFIED SOURCE SHA: c23802b2adc7be63c8c15ab6cd313ec9be0a05db
@@ -14,5 +14,23 @@ EXIT CODE: 0
 COMMAND: gh run download 38113296563 --repo scarlel96-design/PC-Care --name wo10-windows-evidence --dir artifacts/wo10-ci-download
 OUTPUT: artifact files downloaded; exit 0; parsed counts match CI_LOG.txt
 EXIT CODE: 0
-FINAL SHA: Resolve the publication commit containing this file. Executable source remains c23802b2adc7be63c8c15ab6cd313ec9be0a05db.
+VERIFIED REPORT PUBLICATION SHA: e7959f605f0423d7ae4ac6ecec1bb7308d26ba7a
+VERIFIED REPORT PUBLICATION TREE: 91a6e934ceb7cef24b74bd0eb9e49d104214c115
+RECORDED LOCAL HEAD: e7959f605f0423d7ae4ac6ecec1bb7308d26ba7a
+RECORDED REMOTE HEAD: e7959f605f0423d7ae4ac6ecec1bb7308d26ba7a
+COMMAND: git push origin codex/pccare-reference-correction-safe-recovery
+LITERAL OUTPUT: c23802b..e7959f6 codex/pccare-reference-correction-safe-recovery -> codex/pccare-reference-correction-safe-recovery
+EXIT CODE: 0
+COMMAND: git ls-remote origin refs/heads/codex/pccare-reference-correction-safe-recovery
+LITERAL OUTPUT: e7959f605f0423d7ae4ac6ecec1bb7308d26ba7a refs/heads/codex/pccare-reference-correction-safe-recovery
+EXIT CODE: 0
+REMOTE INVENTORY: 108 report and evidence blobs match GitHub object IDs. ROLLBACK.sh mode=100755.
+COMMAND: gh api repos/scarlel96-design/PC-Care/git/trees/91a6e934ceb7cef24b74bd0eb9e49d104214c115?recursive=1
+INPUT: verified publication tree
+OUTPUT: sha=91a6e934ceb7cef24b74bd0eb9e49d104214c115; truncated=false; reportCount=11; matchedBlobs=108
+EXIT CODE: 0
+FINAL ATTESTATION SHA: Use the commit containing this attestation. Its parent is the exact publication SHA above.
+The final response records that attestation HEAD and its remote equality after upload.
+Only evidence records and the manifest change after the verified report publication.
+Executable source and workflow remain c23802b2adc7be63c8c15ab6cd313ec9be0a05db.
 No main merge or official release occurred. Phase 1 remains NO-GO.
