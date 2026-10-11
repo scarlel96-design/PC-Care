@@ -106,10 +106,10 @@ public sealed class PerformanceCollector
                     if (processes.Length > policy.MaxProcesses && !errors.Any(x => x.Provider == "ProcessBudget")) errors.Add(new("ProcessBudget", "Truncated"));
                 }
                 finally { foreach (var process in processes) process.Dispose(); }
-                var selected = ProcessSelection.Select(processMetrics, policy.MaxProcesses);
+                var (disks, faults, etwProcesses, switches) = etw.Drain();
+                var selected = ProcessSelection.Select(processMetrics, policy.MaxProcesses, etwProcesses);
                 var coverage = new ProcessSelectionCoverage(processes.Length, processMetrics.Count, selected.Count, failures, Math.Max(0, processes.Length - 8192));
                 previous = current;
-                var (disks, faults, etwProcesses, switches) = etw.Drain();
                 var sample = new PerformanceSample(seconds, Environment.ProcessorCount <= 64 ? system.Cpu : null,
                     system.TotalMemory > 0 ? 100d * system.AvailableMemory / system.TotalMemory : null,
                     system.CommitLimit > 0 ? 100d * system.Commit / system.CommitLimit : null,

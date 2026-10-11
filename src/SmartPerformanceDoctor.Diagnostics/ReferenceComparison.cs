@@ -18,7 +18,9 @@ public static class ReferenceComparison
             var f = findings.Where(f => f.Category == r.Category || f.Category == "NoObservedPressure." + r.Category
                 || f.Category == "Transient." + r.Category || f.Category == "InsufficientEvidence." + r.Category).ToArray();
             if (f.Length != 1) { mismatch++; continue; }
-            if (f[0].Severity == "Unknown") { insufficient++; continue; }
+            if (f[0].Severity == "Unknown") { unknown++; continue; }
+            if (f[0].Severity == "ReferenceMismatch") { mismatch++; continue; }
+            if (f[0].Severity == "InsufficientEvidence") { insufficient++; continue; }
             var present = f[0].Category == r.Category;
             if (present && r.Present.Value) tp++;
             else if (present) fp++;

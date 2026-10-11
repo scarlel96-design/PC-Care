@@ -33,6 +33,22 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+            <TextBlock Text="성능 회복 검토 계획" FontSize="22" FontWeight="SemiBold"/>
+            <TextBlock Text="측정 근거를 바탕으로 계획을 미리 봅니다. 실행 기능은 제공되지 않습니다." TextWrapping="Wrap"/>
+            <ItemsControl x:Name="PlansList">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource MacWindowPanelStyle}" Margin="0,0,0,8">
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding Detail}" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding Evidence}" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding Preview}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
     </ScrollViewer>
 </Page>

@@ -7,12 +7,19 @@ internal static class ControlledWorkload
     public static async Task<int> Run(string[] args)
     {
         if (args.Length != 5) throw new ArgumentException("--workload MODE SECONDS OUTPUT_DIRECTORY THREADS");
-        var policy = new WorkloadPolicy(args[1], int.Parse(args[2]), int.Parse(args[4])); policy.Validate();
+        var requestedSeconds = int.Parse(args[2]);
+        var qualification = args[0] == "--qualification-workload";
+        if (qualification && (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != "true" || requestedSeconds is < 10 or > 30 || args[1] is not ("cpu" or "peak")))
+            throw new ArgumentException("IsolatedRunnerQualificationPolicyRequired");
+        var policy = new WorkloadPolicy(args[1], qualification ? Math.Min(15,requestedSeconds) : requestedSeconds, int.Parse(args[4])); policy.Validate();
+        var durationSeconds = qualification ? requestedSeconds : policy.Seconds;
         var root = Path.GetFullPath(args[3]); Directory.CreateDirectory(root);
         var resultPath = Path.Combine(root,"workload-"+Guid.NewGuid().ToString("N")+".json");
         var started=DateTimeOffset.UtcNow; var clock=Stopwatch.StartNew();
         using var process=Process.GetCurrentProcess(); var before=process.TotalProcessorTime.TotalSeconds;
-        using var stop=new CancellationTokenSource(TimeSpan.FromSeconds(policy.Seconds));
+        using var stop=new CancellationTokenSource(TimeSpan.FromSeconds(durationSeconds));
+        ThreadPool.GetMinThreads(out var minThreads,out var completionThreads);
+        ThreadPool.SetMinThreads(Math.Max(minThreads,policy.Threads+1),completionThreads);
         var tasks=new List<Task>(); long bytes=0; byte[]? memory=null;
         if (policy.Mode is "cpu" or "peak" or "mixed")
             for(int t=0;t<policy.Threads;t++) tasks.Add(Task.Run(()=>
@@ -34,9 +41,9 @@ internal static class ControlledWorkload
                 if(write)file.Flush(true);
             }));
         await Task.WhenAll(tasks);
-        if(clock.Elapsed.TotalSeconds<policy.Seconds)await Task.Delay(TimeSpan.FromSeconds(policy.Seconds)-clock.Elapsed);
+        if(clock.Elapsed.TotalSeconds<durationSeconds)await Task.Delay(TimeSpan.FromSeconds(durationSeconds)-clock.Elapsed);
         GC.KeepAlive(memory); process.Refresh();
-        var result=new { policy,startedUtc=started,endedUtc=DateTimeOffset.UtcNow,elapsedSeconds=clock.Elapsed.TotalSeconds,
+        var result=new { policy,durationSeconds,qualification,startedUtc=started,endedUtc=DateTimeOffset.UtcNow,elapsedSeconds=clock.Elapsed.TotalSeconds,
             cpuSeconds=process.TotalProcessorTime.TotalSeconds-before,workingSetBytes=process.WorkingSet64,ioBytes=bytes,
             groundTruth="Expected workload; requested activity does not prove whole-system saturation or uncached physical I/O." };
         await using var output=new FileStream(resultPath,FileMode.CreateNew,FileAccess.Write,FileShare.None);

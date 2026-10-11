@@ -3,6 +3,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="Microsoft.Windows.EventTracing.Processing.All" Version="1.12.10" />
     <PackageVersion Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="3.2.8" />
     <PackageVersion Include="Microsoft.Windows.CsWin32" Version="0.3.358" />
     <PackageVersion Include="Microsoft.WindowsAppSDK" Version="2.2.0" />

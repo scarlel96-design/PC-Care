@@ -61,12 +61,16 @@ public sealed class ProcessIdentityRegistry
 }
 public static class ProcessSelection
 {
-    public static IReadOnlyList<ProcessMetric> Select(IEnumerable<ProcessMetric> candidates, int budget)
+    public static IReadOnlyList<ProcessMetric> Select(IEnumerable<ProcessMetric> candidates, int budget, IReadOnlyList<EtwProcessMetric>? io = null)
     {
         if (budget is < 1 or > 128) throw new ArgumentOutOfRangeException(nameof(budget));
         var all = candidates.Where(p => p.WorkingSetBytes >= 0).ToArray();
         var cpu = all.OrderByDescending(p => p.CpuPercent ?? -1).ThenBy(p => p.Identifier, StringComparer.Ordinal);
         var memory = all.OrderByDescending(p => p.WorkingSetBytes).ThenBy(p => p.Identifier, StringComparer.Ordinal);
-        return cpu.Take((budget + 1) / 2).Concat(memory.Take(budget / 2)).Concat(cpu).DistinctBy(p => p.Identifier).Take(budget).ToArray();
+        var ioIds = (io ?? []).Where(p => p.Operations > 0 && p.ReadBytes >= 0 && p.WriteBytes >= 0)
+            .OrderByDescending(p => (decimal)p.ReadBytes + p.WriteBytes).Select(p => p.Identifier).Distinct().Take(Math.Max(1, budget / 3)).ToArray();
+        var ioCandidates = ioIds.Select(id => all.FirstOrDefault(p => p.Identifier == id)).OfType<ProcessMetric>().ToArray();
+        var remaining = budget - ioCandidates.Length;
+        return ioCandidates.Concat(cpu.Take((remaining + 1) / 2)).Concat(memory.Take(remaining / 2)).Concat(cpu).DistinctBy(p => p.Identifier).Take(budget).ToArray();
     }
 }
