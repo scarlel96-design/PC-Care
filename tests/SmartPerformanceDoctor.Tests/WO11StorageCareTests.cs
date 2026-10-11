@@ -2,6 +2,8 @@ using SmartPerformanceDoctor.App.Services.SystemCare;
 using SmartPerformanceDoctor.App.Models.SystemCare;
 using SmartPerformanceDoctor.RecoverySandbox;
 using System.Security.Cryptography;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using Xunit;
 
 namespace SmartPerformanceDoctor.Tests;
@@ -34,6 +36,11 @@ public sealed class WO11StorageCareTests : IDisposable
     {
         var file = Path.Combine(sandbox.Root, "old.tmp");
         File.WriteAllBytes(file, new byte[1234]); File.SetLastWriteTimeUtc(file, DateTime.UtcNow.AddDays(-8));
+        // Elevated Windows tokens can assign the Administrators group as the default owner.
+        var info = new FileInfo(file);
+        var security = info.GetAccessControl();
+        security.SetOwner(WindowsIdentity.GetCurrent().User!);
+        info.SetAccessControl(security);
         return Assert.Single(StorageInventory.CaptureIsolated(sandbox.Root).Candidates, c => c.Disposition == CleanupDisposition.SafeCandidate);
     }
     [Fact] public void InventoryUsesExactBytesWithoutEstimation()

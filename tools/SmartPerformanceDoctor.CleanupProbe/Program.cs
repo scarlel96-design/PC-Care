@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using System.Security.Cryptography;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Text.Json;
 using SmartPerformanceDoctor.App.Services.SystemCare;
 using SmartPerformanceDoctor.RecoverySandbox;
@@ -22,6 +24,10 @@ var original = Path.Combine(sandbox.Root, "fixture.dat");
 var hash = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(original)));
 var candidatePath = Path.Combine(sandbox.Root, "old.tmp");
 File.WriteAllBytes(candidatePath, new byte[2048]); File.SetLastWriteTimeUtc(candidatePath, DateTime.UtcNow.AddDays(-8));
+var candidateInfo = new FileInfo(candidatePath);
+var candidateSecurity = candidateInfo.GetAccessControl();
+candidateSecurity.SetOwner(WindowsIdentity.GetCurrent().User!);
+candidateInfo.SetAccessControl(candidateSecurity);
 var inventory = StorageInventory.CaptureIsolated(sandbox.Root);
 var preview = StorageInventory.DryRun(inventory.Candidates.Where(c => c.Disposition == CleanupDisposition.SafeCandidate).ToArray());
 var before = new DriveInfo(Path.GetPathRoot(sandbox.Root)!).AvailableFreeSpace;
@@ -29,7 +35,8 @@ var timer = Stopwatch.StartNew(); sandbox.Execute(sandbox.Approve());
 var quarantine = sandbox.MeasureQuarantine(before, timer.Elapsed.TotalMilliseconds);
 var restored = sandbox.Recover();
 var restoredHash = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(original)));
-if (hash != restoredHash || quarantine.AttributableFreedBytes != 0 || preview.SystemMutations != 0) return 3;
+if (hash != restoredHash || quarantine.AttributableFreedBytes != 0 || preview.SystemMutations != 0
+    || preview.CandidateBytes != 2048 || preview.SelectedCount != 1) return 3;
 sandbox = SandboxRecovery.CreateSynthetic(parent, 8 * 1024 * 1024);
 sandbox.Execute(sandbox.Approve());
 var deleted = sandbox.FinalDelete(sandbox.ApproveFinalDelete());
