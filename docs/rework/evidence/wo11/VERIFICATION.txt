@@ -46,3 +46,21 @@ REMAINING RISKS: same-user journal authority; journal replacement race; incomple
 SOURCE ROLLBACK: use ROLLBACK.sh on the independent copy, or create a separate baseline worktree.
 TRANSACTION ROLLBACK: invoke RecoverySandbox recover on a generated fixture and verify its original SHA-256.
 FINAL DELETE ROLLBACK: unavailable; irreversible states preserve review evidence.
+
+LOCAL ARTIFACT PATHS:
+MODIFIED_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo11\MODIFIED_FILE.cs
+DIFF_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo11\DIFF_FILE.patch
+VERIFICATION: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo11\VERIFICATION.txt
+ROLLBACK: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo11\ROLLBACK.sh
+
+FINAL WINDOWS CI: SUCCESS / 38131365937 / exit 0
+VALIDATED IMPLEMENTATION SHA: bec4c1bf977f65f5e8299150c8e0a48f72abf1ec
+VALIDATED IMPLEMENTATION TREE: 467ab0d0e076323ffb929ebbada7b8cd3d367b36
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38131365937
+CI FULL: 1002 PASS / 111 SKIP / 0 FAIL / 1113 total
+CI PERFORMANCE: 233 PASS, included; CI UPDATER: 128 PASS, included; CI SECURITYLAB: 36 PASS, separate.
+CI SOURCE PROVENANCE: final publication adds evidence only; source equivalence is checked before final receipt.
+CI FILE RESTORE: 8 MiB SHA256 match; six forced-termination recoveries; three link rejections.
+CI SPACE: quarantine attributable gain=0; observed delta=-4096; separate final deletion observed delta=8388608; attribution=null.
+CI GUI: NOT TESTED; guiExecuted=false.
+FINAL PUBLICATION: see GITHUB_RESULT.txt resolution commands and local FINAL_PUBLICATION_RESULT.txt.

@@ -1,0 +1,45 @@
+{
+  "full": {
+    "passed": 1002,
+    "failed": 0,
+    "skipped": 111,
+    "total": 1113,
+    "exitCode": 0,
+    "includedInFull": false,
+    "trxSha256": "1BFFC46EAF1ACA235FEDA43A74348E883F2E418FD43A61D3AA4747F5867B183E"
+  },
+  "WO11": {
+    "passed": 45,
+    "failed": 0,
+    "skipped": 0,
+    "total": 45,
+    "includedInFull": true
+  },
+  "performance": {
+    "passed": 233,
+    "failed": 0,
+    "skipped": 0,
+    "total": 233,
+    "exitCode": 0,
+    "includedInFull": true,
+    "trxSha256": "367EEEB29B5F59C24597CA8712AE5DBD4FE8A6482B59060F2D1537526E41B648"
+  },
+  "updater": {
+    "passed": 128,
+    "failed": 0,
+    "skipped": 0,
+    "total": 128,
+    "exitCode": 0,
+    "includedInFull": true,
+    "trxSha256": "65E29DAAD79A4EC1CC07A41048D4B417AE2BA148A081D117119ED3F5ED1838C4"
+  },
+  "SecurityLab": {
+    "passed": 36,
+    "failed": 0,
+    "skipped": 0,
+    "total": 36,
+    "exitCode": 0,
+    "includedInFull": false,
+    "trxSha256": "7FAB141F591E567676CC9FF077C25CBC5DFDDE423CC4FEED57DA756437877673"
+  }
+}

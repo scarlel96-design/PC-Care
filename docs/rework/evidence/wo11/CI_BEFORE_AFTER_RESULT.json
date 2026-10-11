@@ -1,0 +1,35 @@
+{
+  "scope": "SyntheticWindowsFilesystem",
+  "quarantine": {
+    "CandidateBytes": 8388608,
+    "QuarantinedBytes": 8388608,
+    "RestorableBytes": 8388608,
+    "FinalDeletedBytes": 0,
+    "AvailableBefore": 156461830144,
+    "AvailableAfter": 156461826048,
+    "ObservedFreeSpaceDelta": -4096,
+    "AttributableFreedBytes": 0,
+    "ElapsedMs": 67.6666,
+    "Limitation": "Same-volume rename releases no payload allocation. Global free-space delta is not cleanup gain."
+  },
+  "restored": {
+    "State": "Restored",
+    "BytesVerified": true,
+    "Mutations": 1
+  },
+  "beforeSha256": "C9E31EA40540ABF97516878BA89B95B324B6B684299662B2B8561EDEB25AB5E2",
+  "afterSha256": "C9E31EA40540ABF97516878BA89B95B324B6B684299662B2B8561EDEB25AB5E2",
+  "finalDelete": {
+    "CandidateBytes": 8388608,
+    "QuarantinedBytes": 0,
+    "RestorableBytes": 0,
+    "FinalDeletedBytes": 8388608,
+    "AvailableBefore": 156453429248,
+    "AvailableAfter": 156461817856,
+    "ObservedFreeSpaceDelta": 8388608,
+    "AttributableFreedBytes": null,
+    "ElapsedMs": 35.246,
+    "Limitation": "Global free-space delta includes concurrent activity. Attribution is unverified. Final deletion has no rollback."
+  },
+  "speedImprovement": null
+}

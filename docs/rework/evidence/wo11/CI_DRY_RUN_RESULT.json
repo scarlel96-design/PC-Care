@@ -1,0 +1,16 @@
+{
+  "SelectedCount": 1,
+  "CandidateBytes": 2048,
+  "QuarantinedBytes": 0,
+  "ActualFreedBytes": null,
+  "RestorableBytes": 0,
+  "FinalDeletedBytes": 0,
+  "ExecutionEnabled": false,
+  "SystemMutations": 0,
+  "Checks": [
+    "파일 ID·소유자·크기·수정 시각 재검증 완료",
+    "위험: 파일 격리 / 권한: 일반 사용자 / 동의: 실행 직전 필요",
+    "생산 정리 실행은 검증 대기 중입니다. 동일 볼륨 격리만으로 확보 공간이 늘지 않습니다."
+  ],
+  "Status": "PreviewOnly"
+}

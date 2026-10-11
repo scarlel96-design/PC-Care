@@ -43,3 +43,19 @@ Use the same volume, workload, observation window, and cache conditions.
 Record before and after measurements independently.
 Repeat the workload before claiming a performance improvement.
 Report unchanged or negative results without converting cleaned bytes into an improvement percentage.
+
+## Independent Windows Runner execution
+
+CI source: `bec4c1bf977f65f5e8299150c8e0a48f72abf1ec`. Runner: Windows 10.0.26100.0, four logical processors.
+The synthetic inventory scanned four entries in 21.0237 ms.
+Process CPU time during that scan window was 31.25 ms.
+The process working-set sample was 38,400,000 bytes.
+That sample is not scan-only memory or a measured peak.
+The 8 MiB quarantine took 67.6666 ms.
+Global available-space delta was -4,096 bytes. Attributable payload gain was zero.
+Restoration returned `Restored` and `BytesVerified=true` with matching SHA-256.
+Separate final deletion took 35.246 ms.
+Its observed available-space delta was 8,388,608 bytes. Attributable gain remains null.
+These values are a separate execution, not a before/after performance comparison against the local host.
+Speed improvement remains null.
+See `evidence/wo11/CI_BEFORE_AFTER_RESULT.json` and `CI_INVENTORY_RESULT.json`.

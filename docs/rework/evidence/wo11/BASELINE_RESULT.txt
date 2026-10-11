@@ -3,7 +3,7 @@ STATUS: PASS
 BASELINE SHA: b1d38b86a54cd5c192784a3ae5e9a3c321df2782
 VALIDATED SOURCE: working tree before publication; see GITHUB_RESULT.txt for committed source
 ENVIRONMENT: Windows NT 10.0.26200.0; 24 logical processors; .NET SDK 10.0.401; 2026-10-11
-TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --logger trx;LogFileName=wo11-baseline.trx -v:minimal
+TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo11-baseline.trx' -v:minimal
 INPUT: Baseline commit b1d38b86a54cd5c192784a3ae5e9a3c321df2782
 OUTPUT:
 <SOURCE_ROOT>\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행

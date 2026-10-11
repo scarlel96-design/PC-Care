@@ -53,3 +53,45 @@ The test executor is absent from the production dependency graph.
 Update signing gates, AV3 Writer gates, and secure-delete execution remain unchanged.
 No official release or main merge is part of this work.
 See GITHUB_RESULT.txt for publication and Windows CI provenance.
+
+## Windows Runner ownership correction
+
+The first Windows CI run was 38130962723.
+Release and 128 updater tests passed.
+The performance group returned 224 PASS and 9 FAIL.
+The elevated Runner assigned its default group owner to generated test files.
+Production inventory correctly classified these files as UnknownOwnership.
+Test fixtures now explicitly assign their candidate file to the current user SID.
+The standalone probe also requires exactly one 2048-byte preview candidate.
+Production ownership policy remains unchanged.
+The corrected local WO-11 group returned 45 PASS, zero FAIL, and zero SKIP.
+The corrected synthetic probe returned WO11_CLEANUP_PASS and exit 0.
+The first local test retry stalled before output under the sandbox.
+That process was interrupted with exit 1.
+The IPC-enabled retry completed with exit 0.
+No interrupted run was counted as PASS.
+## Final Windows CI
+
+CI run [38131365937](https://github.com/scarlel96-design/PC-Care/actions/runs/38131365937) completed successfully.
+Validated implementation: `bec4c1bf977f65f5e8299150c8e0a48f72abf1ec`.
+Validated tree: `467ab0d0e076323ffb929ebbada7b8cd3d367b36`.
+The Windows Runner reported 1002 PASS, 111 SKIP, and zero FAIL in the full application group.
+The 233 performance and 128 updater tests are subsets of that group.
+The new WO-11 group contains 45 passing tests.
+SecurityLab separately reported 36 PASS.
+Release compilation reported zero warnings and zero errors.
+Downloaded TRX records independently confirm these counts.
+Six separate-process recoveries preserved the original SHA-256.
+Three link inputs were rejected. Two irreversible states preserved their journals for review.
+The 8 MiB roundtrip preserved its original SHA-256.
+The CI GUI record reports `NOT TESTED` and `guiExecuted=false`.
+See `evidence/wo11/CI_RESULT.txt` for exact commands and literal output.
+
+## Publication provenance
+
+Implementation and test-fixture correction commits were uploaded to the independent work branch.
+The final publication commit adds reports and evidence only.
+Its executable source matches the validated implementation commit.
+Resolve its commit with the commands in `evidence/wo11/GITHUB_RESULT.txt`.
+The final local receipt records exact local and remote HEAD values after upload.
+WO-11 remains PARTIAL. Phase 1 remains NO-GO.

@@ -1,0 +1,83 @@
+{
+  "Drives": [
+    {
+      "Drive": "C:\\",
+      "CapacityBytes": 160467759104,
+      "AvailableBytes": 31868755968,
+      "TotalFreeBytes": 31868755968,
+      "Status": "Measured"
+    },
+    {
+      "Drive": "D:\\",
+      "CapacityBytes": 161059172352,
+      "AvailableBytes": 156461830144,
+      "TotalFreeBytes": 156461830144,
+      "Status": "Measured"
+    }
+  ],
+  "Candidates": [
+    {
+      "CandidateId": "8b5e7b7413a645d5b849050048543e82",
+      "Disposition": 4,
+      "LogicalBytes": 683,
+      "LastWriteUtc": "2026-10-11T10:23:39.456849Z",
+      "Reason": "소유권 미확인 · 처리 차단",
+      "Identity": {
+        "RootId": "36EE28C2EE287BED:0001000000001A7C0000000000000000",
+        "FileId": "36EE28C2EE287BED:0001000000001A7F0000000000000000",
+        "Length": 683,
+        "LastWriteUtc": "2026-10-11T10:23:39.456849Z"
+      },
+      "CanExecute": false
+    },
+    {
+      "CandidateId": "6031c277a10449d8a55c4fda666f8496",
+      "Disposition": 4,
+      "LogicalBytes": 8388608,
+      "LastWriteUtc": "2026-10-11T10:23:39.3855004Z",
+      "Reason": "소유권 미확인 · 처리 차단",
+      "Identity": {
+        "RootId": "36EE28C2EE287BED:0001000000001A7C0000000000000000",
+        "FileId": "36EE28C2EE287BED:0001000000001A7E0000000000000000",
+        "Length": 8388608,
+        "LastWriteUtc": "2026-10-11T10:23:39.3855004Z"
+      },
+      "CanExecute": false
+    },
+    {
+      "CandidateId": "f6cb4d4fab2a45a58fe229ec37951032",
+      "Disposition": 4,
+      "LogicalBytes": 32,
+      "LastWriteUtc": "2026-10-11T10:23:39.3737036Z",
+      "Reason": "소유권 미확인 · 처리 차단",
+      "Identity": {
+        "RootId": "36EE28C2EE287BED:0001000000001A7C0000000000000000",
+        "FileId": "36EE28C2EE287BED:0001000000001A7D0000000000000000",
+        "Length": 32,
+        "LastWriteUtc": "2026-10-11T10:23:39.3737036Z"
+      },
+      "CanExecute": false
+    },
+    {
+      "CandidateId": "0b17fd84238f466c89839c3e380816ff",
+      "Disposition": 0,
+      "LogicalBytes": 2048,
+      "LastWriteUtc": "2026-10-03T10:23:39.4671471Z",
+      "Reason": "현재 사용자 소유의 7일 이상 된 임시 후보 · 실행 승인 아님",
+      "Identity": {
+        "RootId": "36EE28C2EE287BED:0001000000001A7C0000000000000000",
+        "FileId": "36EE28C2EE287BED:0001000000001A800000000000000000",
+        "Length": 2048,
+        "LastWriteUtc": "2026-10-03T10:23:39.4671471Z"
+      },
+      "CanExecute": false
+    }
+  ],
+  "MeasuredLogicalBytes": 8391371,
+  "ExcludedCount": 3,
+  "Complete": true,
+  "Limitation": "파일 논리 크기입니다. 할당 크기와 실제 확보 가능 공간은 미확인입니다. 하위 폴더는 검사하지 않습니다.",
+  "ElapsedMs": 21.0237,
+  "CollectorCpuMs": 31.25,
+  "WorkingSetBytes": 38400000
+}

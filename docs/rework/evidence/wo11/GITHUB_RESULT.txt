@@ -1,7 +1,27 @@
 WORK ITEM: WO-11 publication
-STATUS: PENDING
+STATUS: PASS
 BRANCH: codex/pccare-evidence-based-system-care
 BASELINE SHA: b1d38b86a54cd5c192784a3ae5e9a3c321df2782
-CI SOURCE SHA: pending
-FINAL SHA: pending
-SOURCE TREE: pending
+BASELINE TREE: 81cb2e509575fb516ecc77328d310a5bc4c41983
+FINAL VALIDATED IMPLEMENTATION SHA: bec4c1bf977f65f5e8299150c8e0a48f72abf1ec
+VALIDATED SOURCE TREE: 467ab0d0e076323ffb929ebbada7b8cd3d367b36
+CI RUN: 38131365937
+CI CONCLUSION: SUCCESS
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38131365937
+FINAL PUBLICATION SHA: resolve the commit containing this document on the work branch.
+PUBLICATION COMMAND: git log -1 --format=%H -- docs/rework/evidence/wo11/GITHUB_RESULT.txt
+PUBLICATION TREE COMMAND: git rev-parse HEAD^{tree}
+PROVENANCE: the final evidence commit changes documentation only.
+SOURCE EQUIVALENCE COMMAND: git diff --name-only bec4c1bf977f65f5e8299150c8e0a48f72abf1ec HEAD -- src tests tools scripts .github
+EXPECTED SOURCE EQUIVALENCE OUTPUT: empty
+UPLOAD COMMAND: git push origin codex/pccare-evidence-based-system-care
+IMPLEMENTATION UPLOAD RESULT: bec4c1bf977f65f5e8299150c8e0a48f72abf1ec accepted; exit 0.
+REMOTE VERIFICATION COMMAND: git ls-remote origin refs/heads/codex/pccare-evidence-based-system-care
+FINAL RECEIPT: local ignored artifacts/wo11/FINAL_PUBLICATION_RESULT.txt records final local/remote HEAD and tree.
+ROOT CAUSE OF FIRST CI FAILURE: elevated runner created group-owned synthetic candidate files.
+FIX: explicitly set fixture owner; production UnknownOwnership policy unchanged.
+FIRST CI: 38130962723 FAIL; preserved in execution report.
+FINAL CI: full 1002 PASS / 111 SKIP / 0 FAIL; SecurityLab 36 PASS.
+SAFETY: no main merge; no official release; no user-target mutation.
+REMAINING RISKS: see WO11_PRODUCT_READINESS.md; Phase 1 NO-GO.
+ROLLBACK PROCEDURE: source-copy ROLLBACK.sh and synthetic transaction recover are separate procedures.

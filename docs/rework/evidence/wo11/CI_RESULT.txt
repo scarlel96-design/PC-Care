@@ -1,0 +1,43 @@
+WORK ITEM: WO-11 final Windows CI
+STATUS: PASS
+BRANCH: codex/pccare-evidence-based-system-care
+VALIDATED SOURCE SHA: bec4c1bf977f65f5e8299150c8e0a48f72abf1ec
+SOURCE TREE: 467ab0d0e076323ffb929ebbada7b8cd3d367b36
+CI RUN: 38131365937
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38131365937
+ENVIRONMENT: GitHub-hosted Windows; OS 10.0.26100.0; 4 logical processors; elevated runner; .NET 10
+INPUT: generated known-pattern files and read-only metadata; no user vault
+TEST COMMANDS:
+dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
+dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests|FullyQualifiedName~WO06' --logger 'trx;LogFileName=wo06-signed-updater.trx' -v:minimal
+dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO07|FullyQualifiedName~WO08|FullyQualifiedName~WO09|FullyQualifiedName~WO10|FullyQualifiedName~WO11' --logger 'trx;LogFileName=wo09-performance.trx' -v:minimal
+dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo06-full.trx' -v:minimal
+dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo06-securitylab.trx' -v:minimal
+./scripts/wo11-sandbox-validation.ps1 -OutputDirectory artifacts/wo11-sandbox
+tools/SmartPerformanceDoctor.CleanupProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.CleanupProbe.exe --synthetic artifacts/wo11-ci
+ACTUAL OUTPUT:
+0 Warning(s)
+0 Error(s)
+Passed!  - Failed:     0, Passed:   128, Skipped:     0, Total:   128, Duration: 37 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+Passed!  - Failed:     0, Passed:   233, Skipped:     0, Total:   233, Duration: 7 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+SDK_TIME_CONTRACT passed=10 failed=0 roundedConvertedValues=Accepted rawValue=Unused
+WO11_SANDBOX_PASS crashScenarios=6 hardLinkRejected=1 bytesRestored=6 irreversibleReviewCases=2
+WO11_CLEANUP_PASS inventory=1 quarantine=1 rollback=1 finalDelete=1 originalHashMatch=1 attributableQuarantineGain=0
+Passed!  - Failed:     0, Passed:  1002, Skipped:   111, Total:  1113, Duration: 3 m 49 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 31 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+EXIT CODE: 0 for successful build, test, and validation script commands.
+EXPECTED REJECTIONS: link input exit 3; irreversible rollback exit 3; invalid helper verb exit 2.
+GUI RESULT: NOT TESTED; guiExecuted=false; default harness success is not a GUI test.
+VM/UAC/REBOOT/POWER LOSS: NOT TESTED
+INDEPENDENT CPU ACCURACY: existing PARTIAL; smoke and controlled workloads are not qualified ground truth.
+COUNTS: full 1002 PASS / 0 FAIL / 111 SKIP; performance 233 and updater 128 are included.
+COUNTS: WO11 45 PASS, included in full; SecurityLab 36 PASS, separate project.
+DELTA FROM BASELINE: full PASS +45; SKIP unchanged at 111; no removed security tests.
+RAW LOG SHA256: AFE6F36E519E5C72430C0D4EB846B8F35E2E070E20D23B5287E1D127E5D99786
+RAW LOG LOCATION: artifacts/wo11/ci-final.log; ignored local evidence.
+TRX HASHES: see CI_TEST_COUNTS.json.
+ARTIFACT: wo11-windows-evidence; downloaded with gh run download.
+RETRIEVAL COMMAND: gh run download 38131365937 --repo scarlel96-design/PC-Care -n wo11-windows-evidence -D artifacts/wo11/ci-final
+RETRIEVAL EXIT CODE: 0
+RELEASE DECISION: Phase 1 NO-GO
