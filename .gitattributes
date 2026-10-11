@@ -24,3 +24,8 @@ docs/rework/evidence/wo08/ROLLBACK.sh text eol=lf
 docs/rework/evidence/wo08/DIFF_FILE.patch -text -whitespace
 docs/rework/evidence/wo08/*.trx -text whitespace=cr-at-eol
 docs/rework/evidence/wo08/CI_LOG.txt -text whitespace=-blank-at-eol
+
+/docs/rework/evidence/wo09/*.cs -text whitespace=cr-at-eol
+/docs/rework/evidence/wo09/ROLLBACK.sh text eol=lf
+/docs/rework/evidence/wo09/DIFF_FILE.patch -text -whitespace
+/docs/rework/evidence/wo09/*.trx -text whitespace=cr-at-eol

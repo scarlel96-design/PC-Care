@@ -27,12 +27,16 @@ public sealed partial class PerformanceDiagnosticsPage : Page
                 ExpectedLoad.IsChecked == true ? "ExpectedHighLoad" : "Unspecified");
             if (!_lifecycle.IsCurrent(lease)) return;
             FindingsList.ItemsSource = PerformanceFindingAdapter.Convert(result);
-            PlansList.ItemsSource = RecoveryPlanner.Create(BottleneckAnalyzer.Analyze(result)).Select(p => new
+            PlansList.ItemsSource = RecoveryPlanner.Create(BottleneckAnalyzer.Analyze(result)).Select(p =>
             {
-                Title = RecoveryPlanner.ActionLabel(p.ProposedAction),
-                Detail = p.Eligibility == "ReviewOnly" ? "검토 계획 · 실행 전 대상 확인과 별도 동의 필요" : "계획 차단 · 추가 근거 확인 필요",
-                Evidence = "기대 효과: 미확인 · " + p.ProblemDescription,
-                Preview = "미리보기: " + string.Join(" / ", p.PreflightChecks) + " · 실제 변경 0건"
+                var preview = RecoveryPlanner.DryRun(p);
+                return new
+                {
+                    Title = RecoveryPlanner.ActionLabel(p.ProposedAction),
+                    Detail = preview.Status == "PreviewAvailable" ? "검토 계획 · 실행 전 대상 확인과 별도 동의 필요" : "계획 차단 · 추가 근거 확인 필요",
+                    Evidence = "기대 효과: 미확인 · " + p.ProblemDescription,
+                    Preview = "미리보기: " + string.Join(" / ", preview.Preconditions) + $" · 실제 변경 {preview.SystemMutations}건"
+                };
             }).ToArray();
             StatusText.Text = result.Errors.Any(x => x.Code == "Cancelled") ? "측정 중단 · 수집된 표본만 표시" : "측정 완료 · 병목 후보를 재측정으로 확인하세요";
             Coverage.Text = DiagnosticPresentation.Coverage(result);
