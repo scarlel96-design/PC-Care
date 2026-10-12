@@ -4,7 +4,7 @@ Status: **PARTIAL**. Phase 1: **NO-GO**.
 
 Branch: `codex/pccare-vault-crash-safe-recovery`.
 Baseline SHA: `de7563d76f79bbe563e09ed385fcadcd5b87928e`.
-Source manifest SHA-256: `7E468DC4BFC6735757E6994CAAB8D002E1A94EE1E72FDC88A6F556C27263E7AC`.
+Source manifest SHA-256: `140E28B09FCD66016A0F77F2AAA808CF96ACA4E8FD1536F36B8B958BB4116E7F`.
 Execution environment: Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic fixtures only.
 Final source commit and CI receipt: `evidence/wo13/GITHUB_RESULT.txt`.
 
@@ -23,16 +23,16 @@ Packed input is bounded before allocation. Loose input streams from a pinned rea
 
 ## Local measurement
 
-Command: `dotnet run --project tools/SmartPerformanceDoctor.VaultProbe -c Release -- --crash-safe artifacts/wo13/final`. Exit code: 0.
+Command: `dotnet run --project tools/SmartPerformanceDoctor.VaultProbe -c Release -- --crash-safe artifacts/wo13/auth-final`. Exit code: 0.
 All five output hashes matched their synthetic inputs.
 
 | Bytes | Export ms | CPU ms | Cumulative allocated bytes | Maximum sampled working set bytes | Hash |
 |---:|---:|---:|---:|---:|---|
-| 0 | 116.2265 | 140.625 | 12453184 | 253005824 | PASS |
-| 4096 | 82.4755 | 125.000 | 12463616 | 420696064 | PASS |
-| 4194304 | 154.9252 | 250.000 | 20851704 | 430874624 | PASS |
-| 67108864 | 859.8990 | 1296.875 | 146924248 | 243347456 | PASS |
-| 268435456 | 3107.5964 | 4453.125 | 550330872 | 378527744 | PASS |
+| 0 | 80.9186 | 78.125 | 12452992 | 257740800 | PASS |
+| 4096 | 72.6311 | 140.625 | 12463520 | 421539840 | PASS |
+| 4194304 | 108.4448 | 171.875 | 20849848 | 294793216 | PASS |
+| 67108864 | 723.5300 | 1078.125 | 146932968 | 277483520 | PASS |
+| 268435456 | 2853.2486 | 4468.750 | 550402440 | 376844288 | PASS |
 
 Export timing excludes KDF. Working-set samples can include retained KDF and previous-test memory.
 The sampler runs at 10 ms intervals. It does not prove the true peak.

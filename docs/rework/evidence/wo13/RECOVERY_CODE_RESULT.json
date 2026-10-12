@@ -3,24 +3,82 @@
   "status": "PARTIAL",
   "baselineSha": "de7563d76f79bbe563e09ed385fcadcd5b87928e",
   "branch": "codex/pccare-vault-crash-safe-recovery",
-  "sourceManifestSha256": "7E468DC4BFC6735757E6994CAAB8D002E1A94EE1E72FDC88A6F556C27263E7AC",
-  "environment": "Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic fixtures only",
-  "command": "$env:VSTEST_CONNECTION_TIMEOUT='300'; dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo13-full-host.trx' -v:minimal",
-  "input": "synthetic fixture only",
+  "sourceCommit": "5573de4c6c982731e713a074f6ca1b26532f8b46",
+  "sourceManifestSha256": "140E28B09FCD66016A0F77F2AAA808CF96ACA4E8FD1536F36B8B958BB4116E7F",
+  "environment": "Windows NT 10.0.26200.0; SDK 10.0.401; 24 logical processors; synthetic fixtures only",
+  "command": "dotnet run --project tools/SmartPerformanceDoctor.VaultProbe -c Release -- --recovery-crash artifacts/wo13/recovery-auth-final",
+  "input": "synthetic fixtures only",
   "output": {
+    "process": {
+      "status": "PASS",
+      "scenarios": [
+        {
+          "stage": "RecoveryTemporaryCreated",
+          "status": "PASS",
+          "consumedBeforeReader": false,
+          "recoveryReaderExit": 0,
+          "recoveryOutput": "RECOVERY_OPENED",
+          "passwordReaderExit": 0,
+          "passwordOutput": "VERIFIED_ENTRIES=1;WRITE_ALLOWED=True",
+          "sha256": "AD78BEB1916BDEE51516C8540030000CF3C5380CA6BF3A7CF6C4FFDCC40BE8E4"
+        },
+        {
+          "stage": "RecoveryDataWritten",
+          "status": "PASS",
+          "consumedBeforeReader": false,
+          "recoveryReaderExit": 0,
+          "recoveryOutput": "RECOVERY_OPENED",
+          "passwordReaderExit": 0,
+          "passwordOutput": "VERIFIED_ENTRIES=1;WRITE_ALLOWED=True",
+          "sha256": "AD78BEB1916BDEE51516C8540030000CF3C5380CA6BF3A7CF6C4FFDCC40BE8E4"
+        },
+        {
+          "stage": "RecoveryBeforeReplace",
+          "status": "PASS",
+          "consumedBeforeReader": false,
+          "recoveryReaderExit": 0,
+          "recoveryOutput": "RECOVERY_OPENED",
+          "passwordReaderExit": 0,
+          "passwordOutput": "VERIFIED_ENTRIES=1;WRITE_ALLOWED=True",
+          "sha256": "AD78BEB1916BDEE51516C8540030000CF3C5380CA6BF3A7CF6C4FFDCC40BE8E4"
+        },
+        {
+          "stage": "RecoveryAfterReplace",
+          "status": "PASS",
+          "consumedBeforeReader": true,
+          "recoveryReaderExit": 4,
+          "recoveryOutput": "RECOVERY_REJECTED",
+          "passwordReaderExit": 0,
+          "passwordOutput": "VERIFIED_ENTRIES=1;WRITE_ALLOWED=True",
+          "sha256": "AD78BEB1916BDEE51516C8540030000CF3C5380CA6BF3A7CF6C4FFDCC40BE8E4"
+        }
+      ],
+      "concurrent": {
+        "status": "PASS",
+        "successes": 1,
+        "rejections": 1,
+        "firstExit": 0,
+        "secondExit": 4,
+        "firstOutput": "RECOVERY_OPENED",
+        "secondOutput": "RECOVERY_REJECTED"
+      },
+      "powerLoss": "NOT TESTED",
+      "authenticatedStoreReplay": "NOT PREVENTED"
+    },
     "covered": [
       "session conflict preserves code",
-      "normal code reuse rejected",
-      "password change keeps existing recovery code"
+      "normal reuse rejected",
+      "authenticated used bitmap",
+      "MAC, identity, KDF and null-field rejection",
+      "missing v6 fallback rejected",
+      "four write exceptions surface failure"
     ],
     "remainingP0": [
-      "used bitmap authentication",
-      "replay freshness",
-      "consume/session crash durability",
-      "simultaneous separate-process race"
+      "whole-store replay freshness",
+      "v5 unauthenticated used bitmap",
+      "code may be consumed before success reaches interrupted caller",
+      "power-loss durability"
     ]
   },
-  "exitCode": 0,
-  "sourceCommitReceipt": "GITHUB_RESULT.txt",
-  "testCaseReceipt": "LOCAL_TEST_CASES.json"
+  "exitCode": 0
 }

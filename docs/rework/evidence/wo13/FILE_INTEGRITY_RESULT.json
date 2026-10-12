@@ -3,42 +3,76 @@
   "status": "PASS",
   "baselineSha": "de7563d76f79bbe563e09ed385fcadcd5b87928e",
   "branch": "codex/pccare-vault-crash-safe-recovery",
-  "sourceManifestSha256": "7E468DC4BFC6735757E6994CAAB8D002E1A94EE1E72FDC88A6F556C27263E7AC",
-  "environment": "Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic fixtures only",
-  "command": "dotnet run --project tools/SmartPerformanceDoctor.VaultProbe -c Release -- --crash-safe artifacts/wo13/final",
-  "input": "synthetic fixture only",
-  "output": [
-    {
-      "bytes": 0,
-      "inputSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
-      "outputSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
-      "match": true
-    },
-    {
-      "bytes": 4096,
-      "inputSha256": "1E8F7E311F47F2A1EDA3A091415DFA453F214D46F9F844DCB17FB8C97CD1FD8B",
-      "outputSha256": "1E8F7E311F47F2A1EDA3A091415DFA453F214D46F9F844DCB17FB8C97CD1FD8B",
-      "match": true
-    },
-    {
-      "bytes": 4194304,
-      "inputSha256": "9803D3F4B611522CC65338BDF28BCD00EBDBE919DECD199076884E045A294E89",
-      "outputSha256": "9803D3F4B611522CC65338BDF28BCD00EBDBE919DECD199076884E045A294E89",
-      "match": true
-    },
-    {
-      "bytes": 67108864,
-      "inputSha256": "4215F88F4885AF5ADB5E4B3DBD00178D0AC3EF5FB7CE1BDD9579F38F0601FAF1",
-      "outputSha256": "4215F88F4885AF5ADB5E4B3DBD00178D0AC3EF5FB7CE1BDD9579F38F0601FAF1",
-      "match": true
-    },
-    {
-      "bytes": 268435456,
-      "inputSha256": "B0FEBA5742C01D221B1F2E53D0702CF2D9DFFF82A2B9A4F2DC8AB99646BE6D05",
-      "outputSha256": "B0FEBA5742C01D221B1F2E53D0702CF2D9DFFF82A2B9A4F2DC8AB99646BE6D05",
-      "match": true
-    }
-  ],
-  "exitCode": 0,
-  "sourceCommitReceipt": "GITHUB_RESULT.txt"
+  "sourceCommit": "5573de4c6c982731e713a074f6ca1b26532f8b46",
+  "sourceManifestSha256": "140E28B09FCD66016A0F77F2AAA808CF96ACA4E8FD1536F36B8B958BB4116E7F",
+  "environment": "Windows NT 10.0.26200.0; SDK 10.0.401; 24 logical processors; synthetic fixtures only",
+  "command": "dotnet run --project tools/SmartPerformanceDoctor.VaultProbe -c Release -- --crash-safe artifacts/wo13/auth-final",
+  "input": "synthetic fixtures only",
+  "output": {
+    "importReaders": 12,
+    "passwordReaders": 10,
+    "exportHashes": [
+      {
+        "bytes": 0,
+        "status": "PASS",
+        "inputSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "outputSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "exportMs": 80.9186,
+        "cpuMs": 78.125,
+        "managedAllocatedBytes": 12452992,
+        "maxSampledWorkingSetBytes": 257740800,
+        "kdfExcluded": true,
+        "allocationIsCumulative": true
+      },
+      {
+        "bytes": 4096,
+        "status": "PASS",
+        "inputSha256": "1E8F7E311F47F2A1EDA3A091415DFA453F214D46F9F844DCB17FB8C97CD1FD8B",
+        "outputSha256": "1E8F7E311F47F2A1EDA3A091415DFA453F214D46F9F844DCB17FB8C97CD1FD8B",
+        "exportMs": 72.6311,
+        "cpuMs": 140.625,
+        "managedAllocatedBytes": 12463520,
+        "maxSampledWorkingSetBytes": 421539840,
+        "kdfExcluded": true,
+        "allocationIsCumulative": true
+      },
+      {
+        "bytes": 4194304,
+        "status": "PASS",
+        "inputSha256": "9803D3F4B611522CC65338BDF28BCD00EBDBE919DECD199076884E045A294E89",
+        "outputSha256": "9803D3F4B611522CC65338BDF28BCD00EBDBE919DECD199076884E045A294E89",
+        "exportMs": 108.4448,
+        "cpuMs": 171.875,
+        "managedAllocatedBytes": 20849848,
+        "maxSampledWorkingSetBytes": 294793216,
+        "kdfExcluded": true,
+        "allocationIsCumulative": true
+      },
+      {
+        "bytes": 67108864,
+        "status": "PASS",
+        "inputSha256": "4215F88F4885AF5ADB5E4B3DBD00178D0AC3EF5FB7CE1BDD9579F38F0601FAF1",
+        "outputSha256": "4215F88F4885AF5ADB5E4B3DBD00178D0AC3EF5FB7CE1BDD9579F38F0601FAF1",
+        "exportMs": 723.53,
+        "cpuMs": 1078.125,
+        "managedAllocatedBytes": 146932968,
+        "maxSampledWorkingSetBytes": 277483520,
+        "kdfExcluded": true,
+        "allocationIsCumulative": true
+      },
+      {
+        "bytes": 268435456,
+        "status": "PASS",
+        "inputSha256": "B0FEBA5742C01D221B1F2E53D0702CF2D9DFFF82A2B9A4F2DC8AB99646BE6D05",
+        "outputSha256": "B0FEBA5742C01D221B1F2E53D0702CF2D9DFFF82A2B9A4F2DC8AB99646BE6D05",
+        "exportMs": 2853.2486,
+        "cpuMs": 4468.75,
+        "managedAllocatedBytes": 550402440,
+        "maxSampledWorkingSetBytes": 376844288,
+        "kdfExcluded": true,
+        "allocationIsCumulative": true
+      }
+    ]
+  },
+  "exitCode": 0
 }

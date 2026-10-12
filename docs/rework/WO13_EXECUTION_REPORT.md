@@ -4,7 +4,7 @@ Status: **PARTIAL**. Phase 1: **NO-GO**.
 
 Branch: `codex/pccare-vault-crash-safe-recovery`.
 Baseline SHA: `de7563d76f79bbe563e09ed385fcadcd5b87928e`.
-Source manifest SHA-256: `7E468DC4BFC6735757E6994CAAB8D002E1A94EE1E72FDC88A6F556C27263E7AC`.
+Source manifest SHA-256: `140E28B09FCD66016A0F77F2AAA808CF96ACA4E8FD1536F36B8B958BB4116E7F`.
 Execution environment: Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic fixtures only.
 Final source commit and CI receipt: `evidence/wo13/GITHUB_RESULT.txt`.
 
@@ -16,7 +16,7 @@ Added fail-visible journal validation and serialized service operations.
 Moved recovery-code consumption after session reservation and authentication.
 Added chunked authenticated export with verified final publication.
 Blocked explicit original-removal requests and corrected stale AV3 mirror authorization.
-Added 26 application regression cases and a Windows workflow.
+Added 36 application regression cases and a Windows workflow.
 No production migration, official release, or main merge was performed.
 
 ## Local facts not available from GitHub alone
@@ -24,7 +24,11 @@ No production migration, official release, or main merge was performed.
 Local generated fixtures use dedicated temporary directories. No real user vault was selected.
 Baseline v5 MetadataReady preserved ciphertext but reader exit 4 blocked unlock.
 The original failing fixture remains preserved locally.
-The v6 harness ran 22 writer terminations and 22 independent readers.
+The v6 harness ran 22 import/password terminations and 22 independent readers.
+The recovery-store harness added four terminations and four password byte-verification readers.
+A concurrent two-process code test returned one success and one rejection.
+New slot-authentication tests rejected used-bit, MAC, identity, KDF, and null-field tampering.
+The KDF limit prevents unauthenticated v6 parameters from requesting a one-GiB derivation.
 Both full regression attempts in the restricted shell aborted at testhost connection startup.
 These aborted runs are not test passes. Host reruns use a 300-second connection timeout.
 The first source-preservation regression failed because the new test expected an extra export root folder.
@@ -60,10 +64,15 @@ Actual vault recovery is separately proven by reader exports and matching bytes.
 - `tests/SmartPerformanceDoctor.Tests/WO13VaultTransactionTests.cs`
 - `tools/SmartPerformanceDoctor.VaultProbe/CrashSafeProbe.cs`
 - `tools/SmartPerformanceDoctor.VaultProbe/Program.cs`
+- `tools/SmartPerformanceDoctor.VaultProbe/RecoveryCrashProbe.cs`
 
 ## Results
 
-Read `FULL_TEST_RESULT.txt`, `SECURITYLAB_RESULT.txt`, and `BUILD_RESULT.txt` for final observed totals.
+The final host Release build returned exit 0, zero warnings, and zero errors.
+The final application run passed 1,055 cases. It skipped 111 cases and failed zero cases.
+SecurityLab passed 36 cases with zero skips and zero failures.
+WO-13 added 36 passing cases. The previous 111 skips remain unchanged.
+Read `FULL_TEST_RESULT.txt`, `SECURITYLAB_RESULT.txt`, and `BUILD_RESULT.txt` for commands and literal output.
 Read `GITHUB_RESULT.txt` for the validated source commit, remote HEAD, tree, and Windows CI.
 Read `WO13_PRODUCT_READINESS.md` for remaining P0 and P1 work.
 
@@ -76,3 +85,10 @@ Source-copy restoration only changes an independent evidence copy.
 Vault recovery opens an authenticated generation and verifies exported bytes in a separate process.
 Retain the fixture before further recovery attempts.
 Do not use the source rollback script on vault data.
+
+## Final Windows CI
+
+Run `38200891260` passed on source `5573de4c6c982731e713a074f6ca1b26532f8b46`.
+Application: 1,055 PASS / 111 SKIP / 0 FAIL. SecurityLab: 36 PASS / 0 SKIP / 0 FAIL.
+The downloaded artifact independently confirms the TRX counters and synthetic reader results.
+Read `evidence/wo13/CI_RESULT.json` for file hashes and `GITHUB_RESULT.txt` for command receipts.

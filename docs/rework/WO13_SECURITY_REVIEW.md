@@ -4,7 +4,7 @@ Status: **PARTIAL**. Phase 1: **NO-GO**.
 
 Branch: `codex/pccare-vault-crash-safe-recovery`.
 Baseline SHA: `de7563d76f79bbe563e09ed385fcadcd5b87928e`.
-Source manifest SHA-256: `7E468DC4BFC6735757E6994CAAB8D002E1A94EE1E72FDC88A6F556C27263E7AC`.
+Source manifest SHA-256: `140E28B09FCD66016A0F77F2AAA808CF96ACA4E8FD1536F36B8B958BB4116E7F`.
 Execution environment: Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic fixtures only.
 Final source commit and CI receipt: `evidence/wo13/GITHUB_RESULT.txt`.
 
@@ -41,9 +41,12 @@ Encrypted orphan objects are preserved after unauthenticated journal errors.
 
 1. Qualify a compatible replacement for the product v5 metadata overwrite path.
 2. Qualify v5 password and recovery-key transition durability.
-3. Authenticate recovery-code consumption and prevent replay across crashes.
-4. Test simultaneous separate-process recovery-code use and interrupted recovery.
+3. Add a qualified freshness anchor for recovery-store replay prevention.
+4. Extend interrupted recovery and all-operation concurrency tests.
 5. Complete hostile path replacement and storage failure matrices.
+
+The v6 used-code bitmap has HMAC protection. Four recovery-store interruptions passed.
+A live two-process race rejected the second consumer. These tests do not prove power-loss durability.
 
 External security review and power-loss durability remain uncompleted.
 

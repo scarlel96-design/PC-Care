@@ -1,0 +1,49 @@
+WORK ITEM: WO-13 GitHub verification
+STATUS: PASS for source upload and automated Windows CI; WO-13 product PARTIAL / Phase 1 NO-GO
+BRANCH: codex/pccare-vault-crash-safe-recovery
+BASELINE SHA: de7563d76f79bbe563e09ed385fcadcd5b87928e
+VERIFIED SOURCE SHA: 5573de4c6c982731e713a074f6ca1b26532f8b46
+VERIFIED SOURCE TREE: 4a20ca0ef2d5cfb62650de8cb2e830327a3cae6d
+SOURCE MANIFEST SHA256: 140E28B09FCD66016A0F77F2AAA808CF96ACA4E8FD1536F36B8B958BB4116E7F
+CI RUN: 38200891260
+CI JOB: 114653838137
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38200891260
+CI SOURCE: 5573de4c6c982731e713a074f6ca1b26532f8b46
+CI STATUS: completed / success
+CI JOB COMPLETED UTC: 2026-10-12T04:02:38Z
+ENVIRONMENT: GitHub-hosted windows-latest; .NET 10.0.x; synthetic fixtures
+WORKFLOW: .github/workflows/wo13-windows-validation.yml
+COMMAND: gh run watch 38200891260 --repo scarlel96-design/PC-Care --exit-status --interval 30
+INPUT: final source CI run
+RESULT: all job steps success
+EXIT CODE: 0
+COMMAND: gh run view 38200891260 --repo scarlel96-design/PC-Care --json status,conclusion,headSha,jobs
+OUTPUT: status=completed;conclusion=success;headSha=5573de4c6c982731e713a074f6ca1b26532f8b46
+EXIT CODE: 0
+COMMAND: gh run view 38200891260 --repo scarlel96-design/PC-Care --log
+OUTPUT: actual test and process output follows
+EXIT CODE: 0
+2026-10-12T03:46:41.0611370Z Passed!  - Failed:     0, Passed:   128, Skipped:     0, Total:   128, Duration: 30 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+2026-10-12T03:46:54.4055331Z Passed!  - Failed:     0, Passed:   233, Skipped:     0, Total:   233, Duration: 6 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+2026-10-12T03:52:09.0247895Z Passed!  - Failed:     0, Passed:    17, Skipped:     0, Total:    17, Duration: 18 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+2026-10-12T03:52:25.1968756Z CRASH_SCENARIOS=3;SEPARATE_READER_PROCESSES=3;HASH_ROUNDTRIP=PASS;FAIL_CLOSED=1;POWER_LOSS=NOT_TESTED
+2026-10-12T03:54:03.2738097Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 35 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+2026-10-12T03:55:10.8037351Z CRASH_SCENARIOS=12;PASSWORD_CRASH_SCENARIOS=10;STREAMING_CASES=5;EXISTING_BYTES=PASS;METADATA_READY=PASS;FORMAT=v6-test-only;POWER_LOSS=NOT_TESTED
+2026-10-12T03:55:32.9630572Z RECOVERY_CRASH_SCENARIOS=4;FRESH_PASSWORD_READERS=4;BYTES=PASS;CONCURRENT_CONSUME=1_SUCCESS_1_REJECT;POWER_LOSS=NOT_TESTED
+2026-10-12T04:00:56.6495308Z Passed!  - Failed:     0, Passed:  1055, Skipped:   111, Total:  1166, Duration: 5 m 20 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+2026-10-12T04:02:32.4788562Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 32 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+COMMAND: gh run download 38200891260 --repo scarlel96-design/PC-Care --name wo13-windows-evidence --dir artifacts/wo13/ci-final-source
+INPUT: artifact 11725697202
+OUTPUT: no console output; 41 extracted JSON/TRX files reopened and hashed
+EXIT CODE: 0
+ARTIFACT NAME: wo13-windows-evidence
+ARTIFACT SHA256: sha256:c026b733ba45ad61a5efb286e186fe4277e1f2eae1995ac2f54a9cd269e9c3c0
+ARTIFACT SIZE: 682256
+TRX AND INVENTORY: CI_RESULT.json
+CI TEST COMMANDS: read the verified workflow above. Each run step retained its command and input.
+GUI: NOT TESTED; UI Automation harness returned guiExecuted=false
+POWER LOSS: NOT TESTED
+PRODUCTION VAULT APPROVAL: BLOCKED; default v5 MetadataReady remains FAIL
+FINAL REPORT COMMIT: the subsequent docs-only commit preserves these 23 verified source files.
+FINAL REMOTE HEAD: retrieve the branch ref after the report commit. The final user report records that exact HEAD and tree.
+ROLLBACK PROCEDURE: preserve fixtures; use ROLLBACK.sh only for the independent source copy.

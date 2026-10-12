@@ -7,3 +7,6 @@ INPUT: no dedicated test account supplied
 OUTPUT: {"status":"BLOCKED","guiExecuted":false,"reason":"Dedicated test account required"}
 EXIT CODE: 4
 RESULT: account gate stopped before GUI launch
+
+PROVENANCE NOTE: Gate-only command ran before the final recovery-store source commit. No GUI was launched.
+FINAL GUI STATUS: NOT TESTED. Do not apply the final source manifest to a live GUI claim.

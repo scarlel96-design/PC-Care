@@ -1,9 +1,9 @@
 diff --git a/.github/workflows/wo13-windows-validation.yml b/.github/workflows/wo13-windows-validation.yml
 new file mode 100644
-index 0000000..4906b43
+index 0000000..53b10b8
 --- /dev/null
 +++ b/.github/workflows/wo13-windows-validation.yml
-@@ -0,0 +1,161 @@
+@@ -0,0 +1,164 @@
 +name: WO13 authenticated vault crash recovery
 +
 +on:
@@ -129,6 +129,8 @@ index 0000000..4906b43
 +          if ($LASTEXITCODE -ne 0) { throw 'WO13 regression failed' }
 +          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --crash-safe artifacts/wo13-ci
 +          if ($LASTEXITCODE -ne 0) { throw 'authenticated vault recovery failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --recovery-crash artifacts/wo13-ci
++          if ($LASTEXITCODE -ne 0) { throw 'authenticated recovery code persistence failed' }
 +      - name: Full application regression
 +        env:
 +          VSTEST_CONNECTION_TIMEOUT: '300'
@@ -165,6 +167,7 @@ index 0000000..4906b43
 +            artifacts/wo13-ci/commit-recovery.json
 +            artifacts/wo13-ci/password-crash.json
 +            artifacts/wo13-ci/streaming-export.json
++            artifacts/wo13-ci/recovery-code-crash.json
 diff --git a/src/SmartPerformanceDoctor.App/Services/Security/SecureVaultLabBackend.cs b/src/SmartPerformanceDoctor.App/Services/Security/SecureVaultLabBackend.cs
 index 020f2af..b476b69 100644
 --- a/src/SmartPerformanceDoctor.App/Services/Security/SecureVaultLabBackend.cs
@@ -597,25 +600,71 @@ index c2d7a1c..5cf63f3 100644
          if (!File.Exists(packPath))
          {
 diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabRecoverySlots.cs b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabRecoverySlots.cs
-index 06d2adc..d22d199 100644
+index 06d2adc..9d222b4 100644
 --- a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabRecoverySlots.cs
 +++ b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabRecoverySlots.cs
-@@ -1,4 +1,4 @@
--using System.Security.Cryptography;
-+﻿using System.Security.Cryptography;
- using System.Text;
- using System.Text.Json;
- using SmartPerformanceDoctor.SecurityLab.Hardening;
-@@ -97,7 +97,7 @@ public static class LabRecoverySlots
+@@ -15,6 +15,9 @@ public static class LabRecoverySlots
+ {
+     private sealed class Store
+     {
++        public int SchemaVersion { get; set; }
++        public string VaultId { get; set; } = "";
++        public string MacHex { get; set; } = "";
+         public string SaltHex { get; set; } = "";
+         public string VmkWrapNonceHex { get; set; } = "";
+         public string VmkWrapTagHex { get; set; } = "";
+@@ -35,7 +38,8 @@ public static class LabRecoverySlots
+         public bool Used { get; set; }
+     }
+ 
+-    public static (IReadOnlyList<string> Codes, string Path) GenerateAndWrap(string vaultRoot, string vaultId, byte[] vmk)
++    public static (IReadOnlyList<string> Codes, string Path) GenerateAndWrap(string vaultRoot, string vaultId, byte[] vmk,
++        bool authenticatedTestFormat = false)
+     {
+         var recoveryRoot = LabVaultCrypto.GenerateKey();
+         try
+@@ -45,6 +49,8 @@ public static class LabRecoverySlots
+             var salt = LabVaultCrypto.GenerateSalt(16);
+             var store = new Store
+             {
++                SchemaVersion = authenticatedTestFormat ? 6 : 0,
++                VaultId = authenticatedTestFormat ? vaultId : "",
+                 SaltHex = Convert.ToHexString(salt),
+                 VmkWrapNonceHex = Convert.ToHexString(vmkWrap.Nonce),
+                 VmkWrapTagHex = Convert.ToHexString(vmkWrap.Tag),
+@@ -85,9 +91,14 @@ public static class LabRecoverySlots
+                 }
+             }
+ 
+-            var path = PathOf(vaultRoot);
++            var path = PathOf(vaultRoot, authenticatedTestFormat);
+             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+-            File.WriteAllText(path, JsonSerializer.Serialize(store, new JsonSerializerOptions { WriteIndented = true }));
++            if (authenticatedTestFormat)
++            {
++                store.MacHex = SignStore(store, vmk);
++                WriteAuthenticatedStore(path, store, vmk);
++            }
++            else File.WriteAllText(path, JsonSerializer.Serialize(store, new JsonSerializerOptions { WriteIndented = true }));
+             return (codes, path);
+         }
+         finally
+@@ -97,22 +108,31 @@ public static class LabRecoverySlots
      }
  
      /// <summary>Try one-time recovery unlock → returns VMK copy (caller zeroizes).</summary>
 -    public static bool TryUnwrapVmk(string vaultRoot, string vaultId, string code, out byte[]? vmk, out string message)
-+    public static bool TryUnwrapVmk(string vaultRoot, string vaultId, string code, out byte[]? vmk, out string message, bool consume = true)
++    public static bool TryUnwrapVmk(string vaultRoot, string vaultId, string code, out byte[]? vmk, out string message,
++        bool consume = true, Action<string>? faultObserver = null, bool requireAuthenticated = false)
      {
          vmk = null;
          message = "";
-@@ -108,11 +108,17 @@ public static class LabRecoverySlots
+-        var path = PathOf(vaultRoot);
++        var authenticated = requireAuthenticated || Directory.Exists(LabAuthenticatedGeneration.DirectoryPath(vaultRoot));
++        var path = PathOf(vaultRoot, authenticated);
+         if (!File.Exists(path))
+         {
+             message = "복구 슬롯 없음";
              return false;
          }
  
@@ -630,11 +679,29 @@ index 06d2adc..d22d199 100644
 +            if (file.Stream.Length > 1024 * 1024) throw new InvalidDataException("recovery store exceeds budget");
 +            store = JsonSerializer.Deserialize<Store>(file.Stream)
                      ?? throw new InvalidOperationException("parse");
++            ValidateStore(store, authenticated, vaultId);
 +            file.Validate();
          }
          catch
          {
-@@ -214,8 +220,29 @@ public static class LabRecoverySlots
+@@ -197,6 +217,7 @@ public static class LabRecoverySlots
+                     Convert.FromHexString(store.VmkWrapTagHex),
+                     Convert.FromHexString(store.VmkWrapCipherHex),
+                     aadVmk);
++                if (authenticated) VerifyStore(store, vmk);
+             }
+             finally
+             {
+@@ -205,6 +226,8 @@ public static class LabRecoverySlots
+         }
+         catch (CryptographicException)
+         {
++            if (vmk is not null) CryptographicOperations.ZeroMemory(vmk);
++            vmk = null;
+             message = "복구 슬롯 복호화 실패";
+             return false;
+         }
+@@ -214,8 +237,37 @@ public static class LabRecoverySlots
              CryptographicOperations.ZeroMemory(slotSalt);
          }
  
@@ -645,6 +712,13 @@ index 06d2adc..d22d199 100644
 +        if (consume)
 +        {
 +            store.Slots[match].Used = true;
++            if (authenticated)
++            {
++                store.MacHex = SignStore(store, vmk!);
++                WriteAuthenticatedStore(path, store, vmk!, faultObserver);
++            }
++            else
++            {
 +            var directory = Path.GetDirectoryName(path)!;
 +            using var parent = VaultFileBoundary.PinDirectory(directory);
 +            var temporary = Guid.NewGuid().ToString("N") + ".recovery.tmp";
@@ -655,6 +729,7 @@ index 06d2adc..d22d199 100644
 +            parent.Validate();
 +            File.Replace(Path.Combine(directory, temporary), path, path + ".previous", false);
 +            parent.Validate();
++            }
 +        }
 +        }
 +        catch
@@ -666,8 +741,35 @@ index 06d2adc..d22d199 100644
          message = "복구 코드로 금고 키를 복원했습니다(일회용).";
          return true;
      }
-@@ -305,12 +332,12 @@ public static class LabRecoverySlots
+@@ -229,9 +281,11 @@ public static class LabRecoverySlots
+     /// <summary>S-class recovery posture for UI / session labels.</summary>
+     public static RecoverySnapshot Snapshot(string vaultRoot)
+     {
+-        var path = PathOf(vaultRoot);
++        var authenticated = Directory.Exists(LabAuthenticatedGeneration.DirectoryPath(vaultRoot));
++        var path = PathOf(vaultRoot, authenticated);
+         if (!File.Exists(path))
+         {
++            if (authenticated) return new RecoverySnapshot { StorePresent = true, Format = "corrupt" };
+             var legacy = LabRecoveryCodes.Remaining(vaultRoot);
+             return new RecoverySnapshot
+             {
+@@ -256,7 +310,7 @@ public static class LabRecoverySlots
+             return new RecoverySnapshot
+             {
+                 StorePresent = true,
+-                Format = "v5-slots",
++                Format = authenticated ? "v6-authenticated-slots-unverified" : "v5-slots",
+                 TotalSlots = store.Slots.Count,
+                 Remaining = rem,
+                 Used = used
+@@ -303,22 +357,97 @@ public static class LabRecoverySlots
+                 return $"레거시 복구 증명 {Remaining}개 (VMK 해제 불가)";
+             }
  
++            if (Format == "v6-authenticated-slots-unverified")
++                return $"인증형 복구코드 {Remaining}/{TotalSlots} · 잠금 해제 시 인증 확인";
++
              if (Exhausted)
              {
 -                return $"복구코드 소진 ({Used}/{TotalSlots}) · 비밀번호 변경으로 재발급";
@@ -681,6 +783,98 @@ index 06d2adc..d22d199 100644
              }
  
              return $"복구코드 잔여 {Remaining}/{TotalSlots}";
+         }
+     }
+ 
+-    private static string PathOf(string vaultRoot) =>
+-        Path.Combine(vaultRoot, "recovery", "recovery_slots.v5.json");
++    private static string PathOf(string vaultRoot, bool authenticated = false) =>
++        Path.Combine(vaultRoot, "recovery", authenticated ? "recovery_slots.v6.json" : "recovery_slots.v5.json");
++
++    private static bool IsHex(string? value, int length) =>
++        value is not null && value.Length == length && value.All(Uri.IsHexDigit);
++
++    private static void ValidateStore(Store store, bool authenticated, string vaultId)
++    {
++        if (store.Slots is null || store.Slots.Count != 10 || !IsHex(store.SaltHex, 32)
++            || !IsHex(store.VmkWrapNonceHex, 24) || !IsHex(store.VmkWrapTagHex, 32)
++            || !IsHex(store.VmkWrapCipherHex, 64))
++            throw new InvalidDataException("invalid recovery slot count or wrapping contract");
++        if (authenticated && (store.SchemaVersion != 6 || store.VaultId != vaultId || !IsHex(store.MacHex, 64)))
++            throw new InvalidDataException("invalid authenticated recovery identity");
++        var balanced = LabKdfParams.FromProfile(LabKdfProfile.Balanced);
++        foreach (var slot in store.Slots)
++        {
++            if (slot is null || !IsHex(slot.HashHex, 64) || !IsHex(slot.SaltHex, 32) || !IsHex(slot.NonceHex, 24)
++                || !IsHex(slot.TagHex, 32) || !IsHex(slot.CipherHex, 64)
++                || slot.Iterations is < 1 or > 20 || slot.MemoryKb is < 8 or > 1048576
++                || slot.Parallelism is < 1 or > 64)
++                throw new InvalidDataException("invalid recovery slot contract");
++            // Bound unauthenticated KDF input before deriving the authentication key.
++            if (authenticated && (slot.Iterations != balanced.Iterations || slot.MemoryKb != balanced.MemoryKb
++                || slot.Parallelism != balanced.Parallelism))
++                throw new InvalidDataException("unsupported authenticated recovery KDF");
++        }
++    }
++
++    private static string SignStore(Store store, byte[] vmk)
++    {
++        var key = HKDF.DeriveKey(HashAlgorithmName.SHA256, vmk, 32, info: "lab/v6/recovery-slots"u8.ToArray());
++        var mac = store.MacHex;
++        try
++        {
++            store.MacHex = "";
++            return Convert.ToHexString(HMACSHA256.HashData(key, JsonSerializer.SerializeToUtf8Bytes(store)));
++        }
++        finally { store.MacHex = mac; CryptographicOperations.ZeroMemory(key); }
++    }
++
++    private static void VerifyStore(Store store, byte[] vmk)
++    {
++        if (!LabCryptoCompare.FixedTimeEqualsHex(store.MacHex, SignStore(store, vmk)))
++            throw new CryptographicException("recovery store authentication failed");
++    }
++
++    private static void WriteAuthenticatedStore(string path, Store store, byte[] vmk, Action<string>? fault = null)
++    {
++        var directory = Path.GetDirectoryName(path)!;
++        using var parent = VaultFileBoundary.PinDirectory(directory);
++        VerifyStore(store, vmk);
++        var temporary = Guid.NewGuid().ToString("N") + ".recovery.tmp";
++        var bytes = JsonSerializer.SerializeToUtf8Bytes(store);
++        using (var file = VaultFileBoundary.OpenWrite(directory, temporary, true))
++        {
++            fault?.Invoke("RecoveryTemporaryCreated");
++            file.Stream.Write(bytes);
++            fault?.Invoke("RecoveryDataWritten");
++            file.Stream.Flush(true);
++            file.Verify(bytes.Length, Convert.ToHexString(SHA256.HashData(bytes)));
++        }
++        fault?.Invoke("RecoveryBeforeReplace");
++        parent.Validate();
++        if (File.Exists(path)) File.Replace(Path.Combine(directory, temporary), path, path + ".previous", false);
++        else File.Move(Path.Combine(directory, temporary), path, false);
++        fault?.Invoke("RecoveryAfterReplace");
++        parent.Validate();
++        using var published = VaultFileBoundary.OpenRead(directory, Path.GetFileName(path));
++        if (published.Stream.Length > 1024 * 1024) throw new InvalidDataException("recovery store exceeds budget");
++        var verified = JsonSerializer.Deserialize<Store>(published.Stream) ?? throw new InvalidDataException("empty recovery store");
++        ValidateStore(verified, true, store.VaultId);
++        VerifyStore(verified, vmk); published.Validate();
++    }
+ 
+     private static string HashCode(byte[] salt, string code)
+     {
+@@ -343,7 +472,7 @@ public static class LabRecoverySlots
+     {
+         var plain = new byte[cipher.Length];
+         using var gcm = new AesGcm(key, LabVaultCrypto.TagSize);
+-        gcm.Decrypt(nonce, cipher, tag, plain, aad);
+-        return plain;
++        try { gcm.Decrypt(nonce, cipher, tag, plain, aad); return plain; }
++        catch { CryptographicOperations.ZeroMemory(plain); throw; }
+     }
+ }
 diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultCrypto.cs b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultCrypto.cs
 index 766b382..ed5d7d8 100644
 --- a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultCrypto.cs
@@ -1217,15 +1411,9 @@ index 0000000..62dec0e
 +    }
 +}
 diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.cs b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.cs
-index 62023bc..b994b38 100644
+index 62023bc..0cf84ff 100644
 --- a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.cs
 +++ b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.cs
-@@ -1,4 +1,4 @@
--using System.Security.Cryptography;
-+﻿using System.Security.Cryptography;
- using System.Text;
- using System.Text.Json;
- using SmartPerformanceDoctor.SecurityLab.Hardening;
 @@ -14,6 +14,10 @@ public sealed partial class LabVaultService : IDisposable
      internal Action<string>? FaultObserver { get; set; }
      public const string FormatId = "spd-vault-v4-lab";
@@ -1304,7 +1492,8 @@ index 62023bc..b994b38 100644
 +            }
 +            else LabDurableCommit.WriteCommitted(_root, vaultId, metadata.Generation);
  
-             var (codes, _) = LabRecoverySlots.GenerateAndWrap(_root, vaultId, vmk);
+-            var (codes, _) = LabRecoverySlots.GenerateAndWrap(_root, vaultId, vmk);
++            var (codes, _) = LabRecoverySlots.GenerateAndWrap(_root, vaultId, vmk, _createCrashSafeTestFormat);
              File.WriteAllText(
                  Path.Combine(_root, "audit", "events.log"),
 -                $"{DateTimeOffset.UtcNow:o}|create|{vaultId}|v5|ok{Environment.NewLine}",
@@ -1377,13 +1566,13 @@ index 62023bc..b994b38 100644
          {
 -            var opened = OpenSession(vmk, header, writeAllowed: true, auditKind: "recovery_unlock");
 -            if (!opened.Success)
-+            if (!LabRecoverySlots.TryUnwrapVmk(_root, header.VaultId, recoveryCode, out var vmk, out var message, consume: false)
++            if (!LabRecoverySlots.TryUnwrapVmk(_root, header.VaultId, recoveryCode, out var vmk, out var message, consume: false, requireAuthenticated: header.Version == 6)
 +                || vmk is null)
 +                return FailOp(message);
 +            var opened = OpenSession(vmk, header, true, "recovery_unlock", lease);
 +            if (!opened.Success) return opened;
 +            // Consume only after the session and authenticated metadata are available.
-+            if (!LabRecoverySlots.TryUnwrapVmk(_root, header.VaultId, recoveryCode, out var confirmed, out message))
++            if (!LabRecoverySlots.TryUnwrapVmk(_root, header.VaultId, recoveryCode, out var confirmed, out message, faultObserver: FaultObserver, requireAuthenticated: header.Version == 6))
 +            { Lock(); return FailOp(message); }
 +            try
              {
@@ -2065,11 +2254,11 @@ index eeb9a6f..a810c31 100644
 +}
 diff --git a/tests/SmartPerformanceDoctor.Tests/WO13VaultTransactionTests.cs b/tests/SmartPerformanceDoctor.Tests/WO13VaultTransactionTests.cs
 new file mode 100644
-index 0000000..798fb55
+index 0000000..bd4480e
 --- /dev/null
 +++ b/tests/SmartPerformanceDoctor.Tests/WO13VaultTransactionTests.cs
-@@ -0,0 +1,210 @@
-+﻿using System.Security.Cryptography;
+@@ -0,0 +1,266 @@
++using System.Security.Cryptography;
 +using SmartPerformanceDoctor.SecurityLab.VaultV4;
 +using SmartPerformanceDoctor.SecurityLab.Hardening;
 +using Xunit;
@@ -2278,6 +2467,62 @@ index 0000000..798fb55
 +                Convert.FromHexString("000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F"),
 +                Convert.FromHexString("000000090000004A0000000031415927"))));
 +    }
++
++    [Theory]
++    [InlineData("Used")]
++    [InlineData("MacHex")]
++    [InlineData("VaultId")]
++    [InlineData("MemoryKb")]
++    [InlineData("NullSalt")]
++    public void Authenticated_recovery_tampering_rejects_without_unlock(string field)
++    {
++        using var vault = new LabVaultService(root, crashSafeTestFormat: true);
++        var created = vault.Create(Password, LabKdfProfile.LabFast); Assert.True(created.Success);
++        Assert.True(vault.Unlock(Password).Success);
++        Assert.True(vault.ImportBytes("seed.bin", "seed.bin", [1,2,3]).Success); vault.Lock();
++        var path = Path.Combine(root, "recovery", "recovery_slots.v6.json");
++        if (field == "Used") { Assert.True(vault.UnlockWithRecoveryCode(created.RecoveryCodes[0]).Success); vault.Lock(); }
++        var node = System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(path))!;
++        switch (field)
++        {
++            case "Used": node["Slots"]![0]!["Used"] = false; break;
++            case "MacHex": node["MacHex"] = new string('0',64); break;
++            case "VaultId": node["VaultId"] = "different"; break;
++            case "MemoryKb": node["Slots"]![0]!["MemoryKb"] = 1048576; break;
++            case "NullSalt": node["Slots"]![0]!["SaltHex"] = null; break;
++        }
++        File.WriteAllText(path, node.ToJsonString());
++        Assert.False(vault.UnlockWithRecoveryCode(created.RecoveryCodes[0]).Success);
++        Assert.False(vault.IsUnlocked);
++        Assert.True(vault.Unlock(Password).Success); VerifySeed(vault);
++    }
++    [Theory]
++    [InlineData("RecoveryTemporaryCreated",false)]
++    [InlineData("RecoveryDataWritten",false)]
++    [InlineData("RecoveryBeforeReplace",false)]
++    [InlineData("RecoveryAfterReplace",true)]
++    public void Recovery_write_failure_reports_failure_and_preserves_authenticated_data(string stage, bool consumed)
++    {
++        using var vault = new LabVaultService(root, crashSafeTestFormat: true);
++        var created = vault.Create(Password, LabKdfProfile.LabFast); Assert.True(created.Success);
++        Assert.True(vault.Unlock(Password).Success);
++        Assert.True(vault.ImportBytes("seed.bin", "seed.bin", [1,2,3]).Success); vault.Lock();
++        vault.FaultObserver = point => { if (point == stage) throw new IOException("injected"); };
++        Assert.False(vault.UnlockWithRecoveryCode(created.RecoveryCodes[0]).Success);
++        Assert.False(vault.IsUnlocked); vault.FaultObserver = null;
++        Assert.Equal(!consumed, vault.UnlockWithRecoveryCode(created.RecoveryCodes[0]).Success);
++        vault.Lock(); Assert.True(vault.Unlock(Password).Success); VerifySeed(vault);
++    }
++    [Fact] public void Missing_authenticated_recovery_store_does_not_use_legacy_store()
++    {
++        using var vault = new LabVaultService(root, crashSafeTestFormat: true);
++        var created = vault.Create(Password, LabKdfProfile.LabFast); Assert.True(created.Success);
++        var path = Path.Combine(root,"recovery","recovery_slots.v6.json");
++        File.Move(path,Path.Combine(root,"recovery","recovery_slots.v5.json"));
++        Assert.False(vault.UnlockWithRecoveryCode(created.RecoveryCodes[0]).Success);
++        Assert.Equal("corrupt", LabRecoverySlots.Snapshot(root).Format);
++        Assert.True(vault.Unlock(Password).Success);
++    }
 +}
 diff --git a/tools/SmartPerformanceDoctor.VaultProbe/CrashSafeProbe.cs b/tools/SmartPerformanceDoctor.VaultProbe/CrashSafeProbe.cs
 new file mode 100644
@@ -2396,19 +2641,35 @@ index 0000000..7efd84a
 +    }
 +}
 diff --git a/tools/SmartPerformanceDoctor.VaultProbe/Program.cs b/tools/SmartPerformanceDoctor.VaultProbe/Program.cs
-index b4f514e..06a483b 100644
+index b4f514e..aadfeaa 100644
 --- a/tools/SmartPerformanceDoctor.VaultProbe/Program.cs
 +++ b/tools/SmartPerformanceDoctor.VaultProbe/Program.cs
-@@ -16,7 +16,7 @@ static string ValidateRoot(string root)
+@@ -16,7 +16,23 @@ static string ValidateRoot(string root)
      Check(File.ReadAllText(Path.Combine(root,"fixture.marker"))=="WO12_SYNTHETIC_ONLY","FixtureMarkerRequired");
      return root;
  }
 -if(args.Length==3 && args[0]=="--child")
++if (args.Length == 3 && args[0] == "--recovery-child")
++{
++    var root = ValidateRoot(args[1]);
++    using var vault = new LabVaultService(Path.Combine(root, "vault"));
++    vault.FaultObserver = stage =>
++    {
++        if (stage != args[2]) return;
++        File.WriteAllText(Path.Combine(root, "barrier.signal"), stage);
++        Thread.Sleep(Timeout.Infinite);
++    };
++    var code = File.ReadAllText(Path.Combine(root, "private-code.txt"));
++    var opened = vault.UnlockWithRecoveryCode(code);
++    Console.WriteLine(opened.Success ? "RECOVERY_OPENED" : "RECOVERY_REJECTED");
++    return opened.Success ? 0 : 4;
++}
++if (args.Length == 2 && args[0] == "--recovery-crash") return RecoveryCrashProbe.Run(args[1]);
 +if(args.Length==3 && (args[0]=="--child" || args[0]=="--password-child"))
  {
      var root=ValidateRoot(args[1]);
      using var vault=new LabVaultService(Path.Combine(root,"vault"));
-@@ -27,14 +27,15 @@ if(args.Length==3 && args[0]=="--child")
+@@ -27,14 +43,15 @@ if(args.Length==3 && args[0]=="--child")
          File.WriteAllText(Path.Combine(root,"barrier.signal"),stage);
          Thread.Sleep(Timeout.Infinite);
      };
@@ -2427,7 +2688,7 @@ index b4f514e..06a483b 100644
      if(!opened.Success) { Console.WriteLine("PRESERVED_FAIL_CLOSED"); return 4; }
      vault.FaultObserver=message=>Console.Error.WriteLine(message);
      var entries=vault.List();
-@@ -48,6 +49,7 @@ if(args.Length==2 && args[0]=="--verify")
+@@ -48,6 +65,7 @@ if(args.Length==2 && args[0]=="--verify")
      Console.WriteLine($"VERIFIED_ENTRIES={entries.Count};WRITE_ALLOWED={vault.IsWriteAllowed}");
      return 0;
  }
@@ -2435,3 +2696,81 @@ index b4f514e..06a483b 100644
  if(args.Length!=2 || args[0]!="--synthetic") return 2;
  var outputRoot=Path.GetFullPath(args[1]);Directory.CreateDirectory(outputRoot);
  var fixtureRoot=Path.Combine(Path.GetTempPath(),"wo12-vault-fixture-"+Guid.NewGuid().ToString("N"));
+diff --git a/tools/SmartPerformanceDoctor.VaultProbe/RecoveryCrashProbe.cs b/tools/SmartPerformanceDoctor.VaultProbe/RecoveryCrashProbe.cs
+new file mode 100644
+index 0000000..04b59c7
+--- /dev/null
++++ b/tools/SmartPerformanceDoctor.VaultProbe/RecoveryCrashProbe.cs
+@@ -0,0 +1,72 @@
++using System.Diagnostics;
++using System.Security.Cryptography;
++using System.Text.Json;
++using SmartPerformanceDoctor.SecurityLab.VaultV4;
++
++internal static class RecoveryCrashProbe
++{
++    private const string Password = "WO12-Synthetic-Only!";
++    private static void Require(bool ok, string reason) { if (!ok) throw new InvalidOperationException(reason); }
++    private static Process Launch(params string[] args)
++    {
++        var start = new ProcessStartInfo("dotnet") { UseShellExecute = false, RedirectStandardOutput = true,
++            RedirectStandardError = true, CreateNoWindow = true };
++        start.ArgumentList.Add(typeof(RecoveryCrashProbe).Assembly.Location);
++        foreach (var arg in args) start.ArgumentList.Add(arg);
++        return Process.Start(start)!;
++    }
++    private static string Fixture()
++    {
++        var root = Path.Combine(Path.GetTempPath(), "wo12-vault-fixture-recovery-" + Guid.NewGuid().ToString("N"));
++        Directory.CreateDirectory(root);
++        File.WriteAllText(Path.Combine(root, "fixture.marker"), "WO12_SYNTHETIC_ONLY");
++        using var vault = new LabVaultService(Path.Combine(root, "vault"), crashSafeTestFormat: true);
++        var created = vault.Create(Password, LabKdfProfile.LabFast); Require(created.Success, "create");
++        // Keep the synthetic code private. Never emit it in evidence or process arguments.
++        File.WriteAllText(Path.Combine(root, "private-code.txt"), created.RecoveryCodes[0]);
++        Require(vault.Unlock(Password).Success, "unlock");
++        var data = new byte[8192]; new Random(12).NextBytes(data);
++        Require(vault.ImportBytes("seed.bin", "seed.bin", data).Success, "seed");
++        return root;
++    }
++    internal static int Run(string output)
++    {
++        Directory.CreateDirectory(output);
++        var results = new List<object>();
++        foreach (var stage in new[] { "RecoveryTemporaryCreated", "RecoveryDataWritten", "RecoveryBeforeReplace", "RecoveryAfterReplace" })
++        {
++            var root = Fixture();
++            using (var child = Launch("--recovery-child", root, stage))
++            {
++                var timer = Stopwatch.StartNew();
++                while (!File.Exists(Path.Combine(root, "barrier.signal")) && !child.HasExited && timer.Elapsed.TotalSeconds < 30)
++                    Thread.Sleep(50);
++                Require(File.Exists(Path.Combine(root, "barrier.signal")), "barrier:" + stage);
++                child.Kill(true); child.WaitForExit();
++            }
++            using var recovery = Launch("--recovery-child", root, "none");
++            var recoveryText = recovery.StandardOutput.ReadToEnd(); recovery.WaitForExit();
++            var consumed = stage == "RecoveryAfterReplace";
++            Require(recovery.ExitCode == (consumed ? 4 : 0), "consume-state:" + stage);
++            using var reader = Launch("--verify", root);
++            var text = reader.StandardOutput.ReadToEnd(); var error = reader.StandardError.ReadToEnd(); reader.WaitForExit();
++            Require(reader.ExitCode == 0, "password-reader:" + error);
++            using var exported = File.OpenRead(Path.Combine(root,"export","seed.bin"));
++            results.Add(new { stage, status = "PASS", consumedBeforeReader = consumed,
++                recoveryReaderExit = recovery.ExitCode, recoveryOutput = recoveryText.Trim(),
++                passwordReaderExit = reader.ExitCode, passwordOutput = text.Trim(), sha256 = Convert.ToHexString(SHA256.HashData(exported)) });
++        }
++        var concurrentRoot = Fixture();
++        using var first = Launch("--recovery-child", concurrentRoot, "none");
++        using var second = Launch("--recovery-child", concurrentRoot, "none");
++        var firstOutput = first.StandardOutput.ReadToEnd(); var secondOutput = second.StandardOutput.ReadToEnd();
++        first.WaitForExit(); second.WaitForExit();
++        Require(new[] { first.ExitCode, second.ExitCode }.Order().SequenceEqual(new[] { 0,4 }), "duplicate-consume");
++        File.WriteAllText(Path.Combine(output,"recovery-code-crash.json"), JsonSerializer.Serialize(new {
++            status="PASS", scenarios=results, concurrent = new {status="PASS",successes=1,rejections=1,
++                firstExit=first.ExitCode,secondExit=second.ExitCode,firstOutput=firstOutput.Trim(),secondOutput=secondOutput.Trim()},
++            powerLoss="NOT TESTED", authenticatedStoreReplay="NOT PREVENTED" }, new JsonSerializerOptions {WriteIndented=true}));
++        Console.WriteLine("RECOVERY_CRASH_SCENARIOS=4;FRESH_PASSWORD_READERS=4;BYTES=PASS;CONCURRENT_CONSUME=1_SUCCESS_1_REJECT;POWER_LOSS=NOT_TESTED");
++        return 0;
++    }
++}

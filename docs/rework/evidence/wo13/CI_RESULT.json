@@ -1,0 +1,358 @@
+{
+  "status": "PASS",
+  "scope": "Windows CI automated and synthetic process tests",
+  "sourceCommit": "5573de4c6c982731e713a074f6ca1b26532f8b46",
+  "sourceTree": "4a20ca0ef2d5cfb62650de8cb2e830327a3cae6d",
+  "runId": 38200891260,
+  "jobId": 114653838137,
+  "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/38200891260",
+  "artifactId": 11725697202,
+  "artifactDigest": "sha256:c026b733ba45ad61a5efb286e186fe4277e1f2eae1995ac2f54a9cd269e9c3c0",
+  "trx": [
+    {
+      "file": "wo06-securitylab.trx",
+      "counters": {
+        "total": "36",
+        "executed": "36",
+        "passed": "36",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "A81EA24BF17F4B02DDF176C789C1156904E6BE6D9EED161EFB85A5DCACBB2D3D"
+    },
+    {
+      "file": "wo06-full.trx",
+      "counters": {
+        "total": "1166",
+        "executed": "1055",
+        "passed": "1055",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "B8A4A9C78E2DACD2EC987D91ACB23A5DF48FEC070E80C17B9F0CCCB8641EFA12"
+    },
+    {
+      "file": "wo06-signed-updater.trx",
+      "counters": {
+        "total": "128",
+        "executed": "128",
+        "passed": "128",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "216AD6421151771FDFA6ED9454E52748E187E222F43FFF30ADDD709883A25D6B"
+    },
+    {
+      "file": "wo09-performance.trx",
+      "counters": {
+        "total": "233",
+        "executed": "233",
+        "passed": "233",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "A51B5425965020FD371E6C38ADE8CAEAC6B952CE6A2FB997AE8A4BD1C03F91D8"
+    },
+    {
+      "file": "wo12-vault.trx",
+      "counters": {
+        "total": "17",
+        "executed": "17",
+        "passed": "17",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "AFB88E9ED0F5698F23C8EE8029F14D16BD917A2B317C006CCB3D80AB535C816E"
+    },
+    {
+      "file": "wo13-vault.trx",
+      "counters": {
+        "total": "36",
+        "executed": "36",
+        "passed": "36",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "142F97823C93B3CBDD29F6E55D1E506FA473F6B3F86CDE1F11728F1628E8C08A"
+    }
+  ],
+  "artifactInventory": [
+    {
+      "path": "artifacts/wo06-ci-process/process-results.json",
+      "bytes": 62633,
+      "sha256": "51DB766821BC3E2DB29686F28D07DBC520F8D175CA329DADB312D118E8128461"
+    },
+    {
+      "path": "artifacts/wo07-ci/measurement.json",
+      "bytes": 907418,
+      "sha256": "B771877AA0B39AAB26BA64AEDC4723F31963814831FBB0452EF2B1641B0650DB"
+    },
+    {
+      "path": "artifacts/wo08-ci/cpu/measurement.json",
+      "bytes": 244682,
+      "sha256": "6AADBFCA457FFEE919FCFDB0B5E24FD15853DB53709DE789AF02A241913B4C11"
+    },
+    {
+      "path": "artifacts/wo08-ci/cpu/workload-7ecf194e78ae486f8c15baa44d7a65ca.json",
+      "bytes": 524,
+      "sha256": "DDBC56E456BA0E0F059ECDFA5F8EB51D65817B6F3E63A1090BD9C93B114376B1"
+    },
+    {
+      "path": "artifacts/wo08-ci/Detailed.json",
+      "bytes": 468581,
+      "sha256": "30F8FDA11A617DDBA3D2A2D6FD2FC757BEEB23CBAE3E6725BF716CA7948E9F91"
+    },
+    {
+      "path": "artifacts/wo08-ci/General.json",
+      "bytes": 473613,
+      "sha256": "A4BDFEF8DF4F93EBBCDC13E3862B30DB8C082A85ACA5D76D259C81BE70D705B4"
+    },
+    {
+      "path": "artifacts/wo08-ci/LowOverhead.json",
+      "bytes": 455870,
+      "sha256": "09727A5B1F8D9A0295984BB79F97045A3E57C219D7E4BF41213F04CFA5EB9061"
+    },
+    {
+      "path": "artifacts/wo08-ci/memory/measurement.json",
+      "bytes": 381913,
+      "sha256": "CB35E39BF71B5BF617E03F45B264371C2BEBE58DCFCE854AB637FE461A34E175"
+    },
+    {
+      "path": "artifacts/wo08-ci/memory/workload-89975c086cad44f9897517879cd6462b.json",
+      "bytes": 529,
+      "sha256": "FE2F94E8B4BCE99FFDABDD2130997F761DBA1DEE4BFA23CB950FF70B9CCBADBE"
+    },
+    {
+      "path": "artifacts/wo08-ci/mixed/measurement.json",
+      "bytes": 247130,
+      "sha256": "C2E90CF683F40C5ACAB3F7B9FF5523CD6AC08EEC73C158F1AB0D21F855BE1A00"
+    },
+    {
+      "path": "artifacts/wo08-ci/mixed/workload-d4a71a3bbde94fbb8b6a5adfb46732e8.json",
+      "bytes": 535,
+      "sha256": "20CDC5F857BFB8DE2D07983A54354CD215FB52536D3CF9B14B3CF44D31F3EAEE"
+    },
+    {
+      "path": "artifacts/wo08-ci/peak/measurement.json",
+      "bytes": 387388,
+      "sha256": "C90900072FC8259C5A612B772CF185E0D18358595C557F4BFDC9AAD59C7F9887"
+    },
+    {
+      "path": "artifacts/wo08-ci/peak/workload-7cbb79722d994db997ed880b1fcfc2b2.json",
+      "bytes": 525,
+      "sha256": "2278510DC31E57095E6C6EC6898ED7776BB7F3EBED66DBDE099D9EE4E29C511F"
+    },
+    {
+      "path": "artifacts/wo08-ci/random-read/measurement.json",
+      "bytes": 383264,
+      "sha256": "F9EFB699D28BC7FF61925F732EE0672C2D72BDA4D3E1AC0E2A11A715D149DB4F"
+    },
+    {
+      "path": "artifacts/wo08-ci/random-read/workload-1150d50a3fe848d4ab5a6c6114273957.json",
+      "bytes": 544,
+      "sha256": "541CC06DEEB8E0A98D9CA532771CF16E624A2150D3140F867C32FEC92154EFEF"
+    },
+    {
+      "path": "artifacts/wo08-ci/random-write/measurement.json",
+      "bytes": 385460,
+      "sha256": "33A6AAAE027FD34EFD2F6340D70D40E31D3EEDFA70ABA53768AD828D57EF634E"
+    },
+    {
+      "path": "artifacts/wo08-ci/random-write/workload-916b2a64f6da4246b7f4fc2308fc3d19.json",
+      "bytes": 548,
+      "sha256": "1A391606CA3D2234EC8F39F72473BA6727EA34A3BDB05887C0DCCDB16E19182E"
+    },
+    {
+      "path": "artifacts/wo08-ci/sequential-read/measurement.json",
+      "bytes": 379269,
+      "sha256": "145D81F1569B1A753C3B0AB912EFF7A47454CDC502E3F9DF9E9034956156CE05"
+    },
+    {
+      "path": "artifacts/wo08-ci/sequential-read/workload-f39009725b904058b845d1d1836b2c04.json",
+      "bytes": 554,
+      "sha256": "6F367778EA1C39A8E59A6F619C93078090A47FC1A16E0D9E2C61DB9FC531C112"
+    },
+    {
+      "path": "artifacts/wo08-ci/sequential-write/measurement.json",
+      "bytes": 386713,
+      "sha256": "C8C3D26AC0AE1557D6A3309D2013839D1A95C4C3BEC76F674D4AE0478E2113E6"
+    },
+    {
+      "path": "artifacts/wo08-ci/sequential-write/workload-26b621bd47954248b8e6cce61763703f.json",
+      "bytes": 555,
+      "sha256": "783ACC8B017E98F8DC9F1079174C7A3A8D0FA30566AFBEE8FCA5C7B99E40D636"
+    },
+    {
+      "path": "artifacts/wo09-ci/disk-1.json",
+      "bytes": 607,
+      "sha256": "8A6FF9543C0064D5892CB6F42BEA1B16C2B30CF5CEF848E436A8CB93F585E773"
+    },
+    {
+      "path": "artifacts/wo09-ci/disk-2.json",
+      "bytes": 607,
+      "sha256": "8A6FF9543C0064D5892CB6F42BEA1B16C2B30CF5CEF848E436A8CB93F585E773"
+    },
+    {
+      "path": "artifacts/wo10-sandbox/gui-status.json",
+      "bytes": 125,
+      "sha256": "2BA664F34A8795A63F8DE059A47A85D5325C7DF3FA5EE7BEF7521BBABFABB344"
+    },
+    {
+      "path": "artifacts/wo10-sandbox/sandbox-results.json",
+      "bytes": 3472,
+      "sha256": "ADED9AA496AFFBAD287A323AE950FCFCD467575DCC542D2516447C9C3E605DB9"
+    },
+    {
+      "path": "artifacts/wo11-ci/before-after.json",
+      "bytes": 1248,
+      "sha256": "3ADB4CE24C47B41EF97EA362942A866283A9D236BC2383069A961D47B4F21A31"
+    },
+    {
+      "path": "artifacts/wo11-ci/dry-run.json",
+      "bytes": 776,
+      "sha256": "5342644D0307957176E3E8F9A1B079C748BF9942BA64FFEBBA321FA607094F2C"
+    },
+    {
+      "path": "artifacts/wo11-ci/inventory.json",
+      "bytes": 3169,
+      "sha256": "E42972F840BA412F73522737261EEDDCE99C3D18CD6841590DDD857E235A7B7B"
+    },
+    {
+      "path": "artifacts/wo11-sandbox/sandbox-results.json",
+      "bytes": 4124,
+      "sha256": "E5064DE51A0811AB33DBA1FF3C88522953163A8612EC57C519791EB68BC0BCC3"
+    },
+    {
+      "path": "artifacts/wo12-ci/crash-results.json",
+      "bytes": 836,
+      "sha256": "0A918C296B0E91C66D8CBB7C3DDA7C292DFFE3EFB07124F5E963A7923B726613"
+    },
+    {
+      "path": "artifacts/wo12-ci/performance.json",
+      "bytes": 478,
+      "sha256": "73D6E358BEBE2D87E9DA626C95103F6F56EB2A63F8AF6C3C179DD0A58F17A01A"
+    },
+    {
+      "path": "artifacts/wo13-ci/commit-recovery.json",
+      "bytes": 3147,
+      "sha256": "8DB0D721FB7492CE756143692E694D72C6C4CA112F4328E77BC2B9B64D3F584F"
+    },
+    {
+      "path": "artifacts/wo13-ci/password-crash.json",
+      "bytes": 2212,
+      "sha256": "A2FA379DE52D16C647E40313C043F6FF81414953BB40D8A31B108DE04DE7E03D"
+    },
+    {
+      "path": "artifacts/wo13-ci/recovery-code-crash.json",
+      "bytes": 1848,
+      "sha256": "E298E4E0F4CDAE7606C23C70675A3DB906ECF023351BB6BD37FC36210652576A"
+    },
+    {
+      "path": "artifacts/wo13-ci/streaming-export.json",
+      "bytes": 2146,
+      "sha256": "07D641FEA9737383D48864FB3018EC743F8426792BB0C71765F3C2CBCE0D12F5"
+    },
+    {
+      "path": "tests/SmartPerformanceDoctor.SecurityLab.Tests/TestResults/wo06-securitylab.trx",
+      "bytes": 55571,
+      "sha256": "A81EA24BF17F4B02DDF176C789C1156904E6BE6D9EED161EFB85A5DCACBB2D3D"
+    },
+    {
+      "path": "tests/SmartPerformanceDoctor.Tests/TestResults/wo06-full.trx",
+      "bytes": 1743504,
+      "sha256": "B8A4A9C78E2DACD2EC987D91ACB23A5DF48FEC070E80C17B9F0CCCB8641EFA12"
+    },
+    {
+      "path": "tests/SmartPerformanceDoctor.Tests/TestResults/wo06-signed-updater.trx",
+      "bytes": 190975,
+      "sha256": "216AD6421151771FDFA6ED9454E52748E187E222F43FFF30ADDD709883A25D6B"
+    },
+    {
+      "path": "tests/SmartPerformanceDoctor.Tests/TestResults/wo09-performance.trx",
+      "bytes": 333387,
+      "sha256": "A51B5425965020FD371E6C38ADE8CAEAC6B952CE6A2FB997AE8A4BD1C03F91D8"
+    },
+    {
+      "path": "tests/SmartPerformanceDoctor.Tests/TestResults/wo12-vault.trx",
+      "bytes": 26970,
+      "sha256": "AFB88E9ED0F5698F23C8EE8029F14D16BD917A2B317C006CCB3D80AB535C816E"
+    },
+    {
+      "path": "tests/SmartPerformanceDoctor.Tests/TestResults/wo13-vault.trx",
+      "bytes": 56691,
+      "sha256": "142F97823C93B3CBDD29F6E55D1E506FA473F6B3F86CDE1F11728F1628E8C08A"
+    }
+  ],
+  "importCrashReaders": 12,
+  "passwordCrashReaders": 10,
+  "recoveryCodeCrashReaders": 4,
+  "streamingCases": 5,
+  "guiStatus": "NOT TESTED",
+  "powerLossStatus": "NOT TESTED"
+}

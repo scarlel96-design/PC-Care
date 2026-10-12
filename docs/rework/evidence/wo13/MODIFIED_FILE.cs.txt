@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using SmartPerformanceDoctor.SecurityLab.Hardening;
@@ -128,7 +128,7 @@ public sealed partial class LabVaultService : IDisposable
             }
             else LabDurableCommit.WriteCommitted(_root, vaultId, metadata.Generation);
 
-            var (codes, _) = LabRecoverySlots.GenerateAndWrap(_root, vaultId, vmk);
+            var (codes, _) = LabRecoverySlots.GenerateAndWrap(_root, vaultId, vmk, _createCrashSafeTestFormat);
             File.WriteAllText(
                 Path.Combine(_root, "audit", "events.log"),
                 $"{DateTimeOffset.UtcNow:o}|create|{vaultId}|{header.Version}|ok{Environment.NewLine}",
@@ -283,13 +283,13 @@ public sealed partial class LabVaultService : IDisposable
         catch (IOException) { return FailOp("금고가 다른 세션에서 사용 중입니다. 복구 코드는 소모하지 않았습니다."); }
         try
         {
-            if (!LabRecoverySlots.TryUnwrapVmk(_root, header.VaultId, recoveryCode, out var vmk, out var message, consume: false)
+            if (!LabRecoverySlots.TryUnwrapVmk(_root, header.VaultId, recoveryCode, out var vmk, out var message, consume: false, requireAuthenticated: header.Version == 6)
                 || vmk is null)
                 return FailOp(message);
             var opened = OpenSession(vmk, header, true, "recovery_unlock", lease);
             if (!opened.Success) return opened;
             // Consume only after the session and authenticated metadata are available.
-            if (!LabRecoverySlots.TryUnwrapVmk(_root, header.VaultId, recoveryCode, out var confirmed, out message))
+            if (!LabRecoverySlots.TryUnwrapVmk(_root, header.VaultId, recoveryCode, out var confirmed, out message, faultObserver: FaultObserver, requireAuthenticated: header.Version == 6))
             { Lock(); return FailOp(message); }
             try
             {

@@ -2,13 +2,15 @@ WORK ITEM: Release build
 STATUS: PASS
 BASELINE SHA: de7563d76f79bbe563e09ed385fcadcd5b87928e
 BRANCH: codex/pccare-vault-crash-safe-recovery
-SOURCE MANIFEST SHA256: 7E468DC4BFC6735757E6994CAAB8D002E1A94EE1E72FDC88A6F556C27263E7AC
-ENVIRONMENT: Windows NT 10.0.26200.0; SDK 10.0.401
+VERIFIED SOURCE SHA: 5573de4c6c982731e713a074f6ca1b26532f8b46
+SOURCE MANIFEST SHA256: 140E28B09FCD66016A0F77F2AAA808CF96ACA4E8FD1536F36B8B958BB4116E7F
+ENVIRONMENT: Windows NT 10.0.26200.0; SDK 10.0.401; 24 logical processors; synthetic fixtures only
 TEST COMMAND: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
 INPUT: SmartPerformanceDoctor.sln; Release/x64
 OUTPUT:
 빌드했습니다.
     경고 0개
     오류 0개
-경과 시간: 00:01:06.31
+경과 시간: 00:00:27.84
 EXIT CODE: 0
+LOCAL LOG: artifacts/wo13/build-auth-final-host.log

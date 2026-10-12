@@ -4,7 +4,7 @@ Status: **PARTIAL**. Phase 1: **NO-GO**.
 
 Branch: `codex/pccare-vault-crash-safe-recovery`.
 Baseline SHA: `de7563d76f79bbe563e09ed385fcadcd5b87928e`.
-Source manifest SHA-256: `7E468DC4BFC6735757E6994CAAB8D002E1A94EE1E72FDC88A6F556C27263E7AC`.
+Source manifest SHA-256: `140E28B09FCD66016A0F77F2AAA808CF96ACA4E8FD1536F36B8B958BB4116E7F`.
 Execution environment: Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic fixtures only.
 Final source commit and CI receipt: `evidence/wo13/GITHUB_RESULT.txt`.
 
@@ -20,7 +20,8 @@ Two service instances demonstrated session conflict and recovery-code preservati
 
 ## Unqualified cases
 
-The two-instance test runs in one process. It is not a simultaneous two-process recovery-code race test.
+The two-instance session-conflict test runs in one process.
+An additional live two-process recovery-code test returned exactly one success and one rejection.
 The crash harness uses separate processes, but it does not cover every concurrent operation pair.
 Create versus Create, Export versus PasswordChange, and Dispose during cancellation require broader live race tests.
 Monitor serialization can delay UI callers when callers invoke synchronous operations on the UI thread.

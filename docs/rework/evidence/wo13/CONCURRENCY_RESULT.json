@@ -3,22 +3,33 @@
   "status": "PARTIAL",
   "baselineSha": "de7563d76f79bbe563e09ed385fcadcd5b87928e",
   "branch": "codex/pccare-vault-crash-safe-recovery",
-  "sourceManifestSha256": "7E468DC4BFC6735757E6994CAAB8D002E1A94EE1E72FDC88A6F556C27263E7AC",
+  "sourceManifestSha256": "140E28B09FCD66016A0F77F2AAA808CF96ACA4E8FD1536F36B8B958BB4116E7F",
   "environment": "Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic fixtures only",
-  "command": "$env:VSTEST_CONNECTION_TIMEOUT='300'; dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo13-full-host.trx' -v:minimal",
+  "command": "$env:VSTEST_CONNECTION_TIMEOUT='300'; dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo13-auth-full-host.trx' -v:minimal",
   "input": "synthetic fixture only",
   "output": {
     "covered": [
       "same-instance import/Lock barrier",
-      "two-instance session conflict"
+      "two-instance session conflict",
+      "live separate-process code use: one success, one rejection"
     ],
     "notTested": [
       "all operation pairs",
-      "simultaneous separate-process code use",
       "Dispose/cancellation race"
     ]
   },
   "exitCode": 0,
   "sourceCommitReceipt": "GITHUB_RESULT.txt",
-  "testCaseReceipt": "LOCAL_TEST_CASES.json"
+  "testCaseReceipt": "LOCAL_TEST_CASES.json",
+  "sourceCommit": "5573de4c6c982731e713a074f6ca1b26532f8b46",
+  "additionalCommand": "dotnet run --project tools/SmartPerformanceDoctor.VaultProbe -c Release -- --recovery-crash artifacts/wo13/recovery-auth-final",
+  "processOutput": {
+    "status": "PASS",
+    "successes": 1,
+    "rejections": 1,
+    "firstExit": 0,
+    "secondExit": 4,
+    "firstOutput": "RECOVERY_OPENED",
+    "secondOutput": "RECOVERY_REJECTED"
+  }
 }
