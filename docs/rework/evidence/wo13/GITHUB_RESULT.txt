@@ -47,3 +47,16 @@ PRODUCTION VAULT APPROVAL: BLOCKED; default v5 MetadataReady remains FAIL
 FINAL REPORT COMMIT: the subsequent docs-only commit preserves these 23 verified source files.
 FINAL REMOTE HEAD: retrieve the branch ref after the report commit. The final user report records that exact HEAD and tree.
 ROLLBACK PROCEDURE: preserve fixtures; use ROLLBACK.sh only for the independent source copy.
+REMOTE CHECK COMMAND: git push origin codex/pccare-vault-crash-safe-recovery
+OUTPUT: 5573de4..792c1ab codex/pccare-vault-crash-safe-recovery -> codex/pccare-vault-crash-safe-recovery
+EXIT CODE: 0
+REMOTE CHECK COMMAND: git ls-remote origin refs/heads/codex/pccare-vault-crash-safe-recovery
+OUTPUT: 792c1abab381acd74c990f21953cc53e7a90dcaf refs/heads/codex/pccare-vault-crash-safe-recovery
+EXIT CODE: 0
+REMOTE CHECK COMMAND: gh api repos/scarlel96-design/PC-Care/git/ref/heads/codex/pccare-vault-crash-safe-recovery --jq .object.sha
+OUTPUT: 792c1abab381acd74c990f21953cc53e7a90dcaf
+EXIT CODE: 0
+VERIFIED REPORT COMMIT: 792c1abab381acd74c990f21953cc53e7a90dcaf
+VERIFIED REPORT TREE: 3bc42c7c8592bac46d9fe3a3938da72c68b98974
+PROVENANCE: This receipt is a subsequent docs-only update. It does not claim CI executed on its own evidence commit.
+FINAL HANDOFF RECEIPT: The local artifacts/wo13/FINAL_HANDOFF.txt records the final pushed evidence HEAD and tree after publication.

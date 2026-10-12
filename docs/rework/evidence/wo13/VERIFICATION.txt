@@ -27,7 +27,7 @@ RECOVERY CODE COMMAND: dotnet run --project tools/SmartPerformanceDoctor.VaultPr
 RECOVERY CODE INPUT: synthetic v6 recovery store; four writer termination points; two-process concurrent consumption
 RECOVERY CODE OUTPUT: RECOVERY_CRASH_SCENARIOS=4;FRESH_PASSWORD_READERS=4;BYTES=PASS;CONCURRENT_CONSUME=1_SUCCESS_1_REJECT;POWER_LOSS=NOT_TESTED
 RECOVERY CODE EXIT: 0
-ROLLBACK COMMAND: bash docs/rework/evidence/wo13/ROLLBACK.sh "C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/artifacts/wo13/rollback-copy.cs.txt"
+ROLLBACK COMMAND: & "C:/Program Files/Git/bin/bash.exe" docs/rework/evidence/wo13/ROLLBACK.sh "C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/artifacts/wo13/rollback-copy.cs.txt"
 ROLLBACK INPUT: independent artifacts/wo13/rollback-copy.cs.txt copied from MODIFIED_FILE
 ROLLBACK OUTPUT: SOURCE_COPY_RESTORED=PASS
 ROLLBACK EXIT: 0
