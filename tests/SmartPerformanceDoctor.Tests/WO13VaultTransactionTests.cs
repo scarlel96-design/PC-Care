@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using SmartPerformanceDoctor.SecurityLab.VaultV4;
 using SmartPerformanceDoctor.SecurityLab.Hardening;
 using Xunit;
@@ -206,5 +206,61 @@ public sealed class WO13VaultTransactionTests : IDisposable
             Convert.ToHexString(LabXChaCha20Poly1305.HChaCha20(
                 Convert.FromHexString("000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F"),
                 Convert.FromHexString("000000090000004A0000000031415927"))));
+    }
+
+    [Theory]
+    [InlineData("Used")]
+    [InlineData("MacHex")]
+    [InlineData("VaultId")]
+    [InlineData("MemoryKb")]
+    [InlineData("NullSalt")]
+    public void Authenticated_recovery_tampering_rejects_without_unlock(string field)
+    {
+        using var vault = new LabVaultService(root, crashSafeTestFormat: true);
+        var created = vault.Create(Password, LabKdfProfile.LabFast); Assert.True(created.Success);
+        Assert.True(vault.Unlock(Password).Success);
+        Assert.True(vault.ImportBytes("seed.bin", "seed.bin", [1,2,3]).Success); vault.Lock();
+        var path = Path.Combine(root, "recovery", "recovery_slots.v6.json");
+        if (field == "Used") { Assert.True(vault.UnlockWithRecoveryCode(created.RecoveryCodes[0]).Success); vault.Lock(); }
+        var node = System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(path))!;
+        switch (field)
+        {
+            case "Used": node["Slots"]![0]!["Used"] = false; break;
+            case "MacHex": node["MacHex"] = new string('0',64); break;
+            case "VaultId": node["VaultId"] = "different"; break;
+            case "MemoryKb": node["Slots"]![0]!["MemoryKb"] = 1048576; break;
+            case "NullSalt": node["Slots"]![0]!["SaltHex"] = null; break;
+        }
+        File.WriteAllText(path, node.ToJsonString());
+        Assert.False(vault.UnlockWithRecoveryCode(created.RecoveryCodes[0]).Success);
+        Assert.False(vault.IsUnlocked);
+        Assert.True(vault.Unlock(Password).Success); VerifySeed(vault);
+    }
+    [Theory]
+    [InlineData("RecoveryTemporaryCreated",false)]
+    [InlineData("RecoveryDataWritten",false)]
+    [InlineData("RecoveryBeforeReplace",false)]
+    [InlineData("RecoveryAfterReplace",true)]
+    public void Recovery_write_failure_reports_failure_and_preserves_authenticated_data(string stage, bool consumed)
+    {
+        using var vault = new LabVaultService(root, crashSafeTestFormat: true);
+        var created = vault.Create(Password, LabKdfProfile.LabFast); Assert.True(created.Success);
+        Assert.True(vault.Unlock(Password).Success);
+        Assert.True(vault.ImportBytes("seed.bin", "seed.bin", [1,2,3]).Success); vault.Lock();
+        vault.FaultObserver = point => { if (point == stage) throw new IOException("injected"); };
+        Assert.False(vault.UnlockWithRecoveryCode(created.RecoveryCodes[0]).Success);
+        Assert.False(vault.IsUnlocked); vault.FaultObserver = null;
+        Assert.Equal(!consumed, vault.UnlockWithRecoveryCode(created.RecoveryCodes[0]).Success);
+        vault.Lock(); Assert.True(vault.Unlock(Password).Success); VerifySeed(vault);
+    }
+    [Fact] public void Missing_authenticated_recovery_store_does_not_use_legacy_store()
+    {
+        using var vault = new LabVaultService(root, crashSafeTestFormat: true);
+        var created = vault.Create(Password, LabKdfProfile.LabFast); Assert.True(created.Success);
+        var path = Path.Combine(root,"recovery","recovery_slots.v6.json");
+        File.Move(path,Path.Combine(root,"recovery","recovery_slots.v5.json"));
+        Assert.False(vault.UnlockWithRecoveryCode(created.RecoveryCodes[0]).Success);
+        Assert.Equal("corrupt", LabRecoverySlots.Snapshot(root).Format);
+        Assert.True(vault.Unlock(Password).Success);
     }
 }

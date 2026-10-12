@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using SmartPerformanceDoctor.SecurityLab.Hardening;
@@ -15,6 +15,9 @@ public static class LabRecoverySlots
 {
     private sealed class Store
     {
+        public int SchemaVersion { get; set; }
+        public string VaultId { get; set; } = "";
+        public string MacHex { get; set; } = "";
         public string SaltHex { get; set; } = "";
         public string VmkWrapNonceHex { get; set; } = "";
         public string VmkWrapTagHex { get; set; } = "";
@@ -35,7 +38,8 @@ public static class LabRecoverySlots
         public bool Used { get; set; }
     }
 
-    public static (IReadOnlyList<string> Codes, string Path) GenerateAndWrap(string vaultRoot, string vaultId, byte[] vmk)
+    public static (IReadOnlyList<string> Codes, string Path) GenerateAndWrap(string vaultRoot, string vaultId, byte[] vmk,
+        bool authenticatedTestFormat = false)
     {
         var recoveryRoot = LabVaultCrypto.GenerateKey();
         try
@@ -45,6 +49,8 @@ public static class LabRecoverySlots
             var salt = LabVaultCrypto.GenerateSalt(16);
             var store = new Store
             {
+                SchemaVersion = authenticatedTestFormat ? 6 : 0,
+                VaultId = authenticatedTestFormat ? vaultId : "",
                 SaltHex = Convert.ToHexString(salt),
                 VmkWrapNonceHex = Convert.ToHexString(vmkWrap.Nonce),
                 VmkWrapTagHex = Convert.ToHexString(vmkWrap.Tag),
@@ -85,9 +91,14 @@ public static class LabRecoverySlots
                 }
             }
 
-            var path = PathOf(vaultRoot);
+            var path = PathOf(vaultRoot, authenticatedTestFormat);
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-            File.WriteAllText(path, JsonSerializer.Serialize(store, new JsonSerializerOptions { WriteIndented = true }));
+            if (authenticatedTestFormat)
+            {
+                store.MacHex = SignStore(store, vmk);
+                WriteAuthenticatedStore(path, store, vmk);
+            }
+            else File.WriteAllText(path, JsonSerializer.Serialize(store, new JsonSerializerOptions { WriteIndented = true }));
             return (codes, path);
         }
         finally
@@ -97,11 +108,13 @@ public static class LabRecoverySlots
     }
 
     /// <summary>Try one-time recovery unlock → returns VMK copy (caller zeroizes).</summary>
-    public static bool TryUnwrapVmk(string vaultRoot, string vaultId, string code, out byte[]? vmk, out string message, bool consume = true)
+    public static bool TryUnwrapVmk(string vaultRoot, string vaultId, string code, out byte[]? vmk, out string message,
+        bool consume = true, Action<string>? faultObserver = null, bool requireAuthenticated = false)
     {
         vmk = null;
         message = "";
-        var path = PathOf(vaultRoot);
+        var authenticated = requireAuthenticated || Directory.Exists(LabAuthenticatedGeneration.DirectoryPath(vaultRoot));
+        var path = PathOf(vaultRoot, authenticated);
         if (!File.Exists(path))
         {
             message = "복구 슬롯 없음";
@@ -118,6 +131,7 @@ public static class LabRecoverySlots
             if (file.Stream.Length > 1024 * 1024) throw new InvalidDataException("recovery store exceeds budget");
             store = JsonSerializer.Deserialize<Store>(file.Stream)
                     ?? throw new InvalidOperationException("parse");
+            ValidateStore(store, authenticated, vaultId);
             file.Validate();
         }
         catch
@@ -203,6 +217,7 @@ public static class LabRecoverySlots
                     Convert.FromHexString(store.VmkWrapTagHex),
                     Convert.FromHexString(store.VmkWrapCipherHex),
                     aadVmk);
+                if (authenticated) VerifyStore(store, vmk);
             }
             finally
             {
@@ -211,6 +226,8 @@ public static class LabRecoverySlots
         }
         catch (CryptographicException)
         {
+            if (vmk is not null) CryptographicOperations.ZeroMemory(vmk);
+            vmk = null;
             message = "복구 슬롯 복호화 실패";
             return false;
         }
@@ -225,6 +242,13 @@ public static class LabRecoverySlots
         if (consume)
         {
             store.Slots[match].Used = true;
+            if (authenticated)
+            {
+                store.MacHex = SignStore(store, vmk!);
+                WriteAuthenticatedStore(path, store, vmk!, faultObserver);
+            }
+            else
+            {
             var directory = Path.GetDirectoryName(path)!;
             using var parent = VaultFileBoundary.PinDirectory(directory);
             var temporary = Guid.NewGuid().ToString("N") + ".recovery.tmp";
@@ -235,6 +259,7 @@ public static class LabRecoverySlots
             parent.Validate();
             File.Replace(Path.Combine(directory, temporary), path, path + ".previous", false);
             parent.Validate();
+            }
         }
         }
         catch
@@ -256,9 +281,11 @@ public static class LabRecoverySlots
     /// <summary>S-class recovery posture for UI / session labels.</summary>
     public static RecoverySnapshot Snapshot(string vaultRoot)
     {
-        var path = PathOf(vaultRoot);
+        var authenticated = Directory.Exists(LabAuthenticatedGeneration.DirectoryPath(vaultRoot));
+        var path = PathOf(vaultRoot, authenticated);
         if (!File.Exists(path))
         {
+            if (authenticated) return new RecoverySnapshot { StorePresent = true, Format = "corrupt" };
             var legacy = LabRecoveryCodes.Remaining(vaultRoot);
             return new RecoverySnapshot
             {
@@ -283,7 +310,7 @@ public static class LabRecoverySlots
             return new RecoverySnapshot
             {
                 StorePresent = true,
-                Format = "v5-slots",
+                Format = authenticated ? "v6-authenticated-slots-unverified" : "v5-slots",
                 TotalSlots = store.Slots.Count,
                 Remaining = rem,
                 Used = used
@@ -330,6 +357,9 @@ public static class LabRecoverySlots
                 return $"레거시 복구 증명 {Remaining}개 (VMK 해제 불가)";
             }
 
+            if (Format == "v6-authenticated-slots-unverified")
+                return $"인증형 복구코드 {Remaining}/{TotalSlots} · 잠금 해제 시 인증 확인";
+
             if (Exhausted)
             {
                 return $"복구코드 소진 ({Used}/{TotalSlots}) · 명시적 복구 코드 재발급 필요";
@@ -344,8 +374,80 @@ public static class LabRecoverySlots
         }
     }
 
-    private static string PathOf(string vaultRoot) =>
-        Path.Combine(vaultRoot, "recovery", "recovery_slots.v5.json");
+    private static string PathOf(string vaultRoot, bool authenticated = false) =>
+        Path.Combine(vaultRoot, "recovery", authenticated ? "recovery_slots.v6.json" : "recovery_slots.v5.json");
+
+    private static bool IsHex(string? value, int length) =>
+        value is not null && value.Length == length && value.All(Uri.IsHexDigit);
+
+    private static void ValidateStore(Store store, bool authenticated, string vaultId)
+    {
+        if (store.Slots is null || store.Slots.Count != 10 || !IsHex(store.SaltHex, 32)
+            || !IsHex(store.VmkWrapNonceHex, 24) || !IsHex(store.VmkWrapTagHex, 32)
+            || !IsHex(store.VmkWrapCipherHex, 64))
+            throw new InvalidDataException("invalid recovery slot count or wrapping contract");
+        if (authenticated && (store.SchemaVersion != 6 || store.VaultId != vaultId || !IsHex(store.MacHex, 64)))
+            throw new InvalidDataException("invalid authenticated recovery identity");
+        var balanced = LabKdfParams.FromProfile(LabKdfProfile.Balanced);
+        foreach (var slot in store.Slots)
+        {
+            if (slot is null || !IsHex(slot.HashHex, 64) || !IsHex(slot.SaltHex, 32) || !IsHex(slot.NonceHex, 24)
+                || !IsHex(slot.TagHex, 32) || !IsHex(slot.CipherHex, 64)
+                || slot.Iterations is < 1 or > 20 || slot.MemoryKb is < 8 or > 1048576
+                || slot.Parallelism is < 1 or > 64)
+                throw new InvalidDataException("invalid recovery slot contract");
+            // Bound unauthenticated KDF input before deriving the authentication key.
+            if (authenticated && (slot.Iterations != balanced.Iterations || slot.MemoryKb != balanced.MemoryKb
+                || slot.Parallelism != balanced.Parallelism))
+                throw new InvalidDataException("unsupported authenticated recovery KDF");
+        }
+    }
+
+    private static string SignStore(Store store, byte[] vmk)
+    {
+        var key = HKDF.DeriveKey(HashAlgorithmName.SHA256, vmk, 32, info: "lab/v6/recovery-slots"u8.ToArray());
+        var mac = store.MacHex;
+        try
+        {
+            store.MacHex = "";
+            return Convert.ToHexString(HMACSHA256.HashData(key, JsonSerializer.SerializeToUtf8Bytes(store)));
+        }
+        finally { store.MacHex = mac; CryptographicOperations.ZeroMemory(key); }
+    }
+
+    private static void VerifyStore(Store store, byte[] vmk)
+    {
+        if (!LabCryptoCompare.FixedTimeEqualsHex(store.MacHex, SignStore(store, vmk)))
+            throw new CryptographicException("recovery store authentication failed");
+    }
+
+    private static void WriteAuthenticatedStore(string path, Store store, byte[] vmk, Action<string>? fault = null)
+    {
+        var directory = Path.GetDirectoryName(path)!;
+        using var parent = VaultFileBoundary.PinDirectory(directory);
+        VerifyStore(store, vmk);
+        var temporary = Guid.NewGuid().ToString("N") + ".recovery.tmp";
+        var bytes = JsonSerializer.SerializeToUtf8Bytes(store);
+        using (var file = VaultFileBoundary.OpenWrite(directory, temporary, true))
+        {
+            fault?.Invoke("RecoveryTemporaryCreated");
+            file.Stream.Write(bytes);
+            fault?.Invoke("RecoveryDataWritten");
+            file.Stream.Flush(true);
+            file.Verify(bytes.Length, Convert.ToHexString(SHA256.HashData(bytes)));
+        }
+        fault?.Invoke("RecoveryBeforeReplace");
+        parent.Validate();
+        if (File.Exists(path)) File.Replace(Path.Combine(directory, temporary), path, path + ".previous", false);
+        else File.Move(Path.Combine(directory, temporary), path, false);
+        fault?.Invoke("RecoveryAfterReplace");
+        parent.Validate();
+        using var published = VaultFileBoundary.OpenRead(directory, Path.GetFileName(path));
+        if (published.Stream.Length > 1024 * 1024) throw new InvalidDataException("recovery store exceeds budget");
+        var verified = JsonSerializer.Deserialize<Store>(published.Stream) ?? throw new InvalidDataException("empty recovery store");
+        ValidateStore(verified, true, store.VaultId);
+        VerifyStore(verified, vmk); published.Validate();
+    }
 
     private static string HashCode(byte[] salt, string code)
     {
@@ -370,7 +472,7 @@ public static class LabRecoverySlots
     {
         var plain = new byte[cipher.Length];
         using var gcm = new AesGcm(key, LabVaultCrypto.TagSize);
-        gcm.Decrypt(nonce, cipher, tag, plain, aad);
-        return plain;
+        try { gcm.Decrypt(nonce, cipher, tag, plain, aad); return plain; }
+        catch { CryptographicOperations.ZeroMemory(plain); throw; }
     }
 }

@@ -16,6 +16,22 @@ static string ValidateRoot(string root)
     Check(File.ReadAllText(Path.Combine(root,"fixture.marker"))=="WO12_SYNTHETIC_ONLY","FixtureMarkerRequired");
     return root;
 }
+if (args.Length == 3 && args[0] == "--recovery-child")
+{
+    var root = ValidateRoot(args[1]);
+    using var vault = new LabVaultService(Path.Combine(root, "vault"));
+    vault.FaultObserver = stage =>
+    {
+        if (stage != args[2]) return;
+        File.WriteAllText(Path.Combine(root, "barrier.signal"), stage);
+        Thread.Sleep(Timeout.Infinite);
+    };
+    var code = File.ReadAllText(Path.Combine(root, "private-code.txt"));
+    var opened = vault.UnlockWithRecoveryCode(code);
+    Console.WriteLine(opened.Success ? "RECOVERY_OPENED" : "RECOVERY_REJECTED");
+    return opened.Success ? 0 : 4;
+}
+if (args.Length == 2 && args[0] == "--recovery-crash") return RecoveryCrashProbe.Run(args[1]);
 if(args.Length==3 && (args[0]=="--child" || args[0]=="--password-child"))
 {
     var root=ValidateRoot(args[1]);

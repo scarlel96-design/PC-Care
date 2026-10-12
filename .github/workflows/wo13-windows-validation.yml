@@ -123,6 +123,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'WO13 regression failed' }
           dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --crash-safe artifacts/wo13-ci
           if ($LASTEXITCODE -ne 0) { throw 'authenticated vault recovery failed' }
+          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --recovery-crash artifacts/wo13-ci
+          if ($LASTEXITCODE -ne 0) { throw 'authenticated recovery code persistence failed' }
       - name: Full application regression
         env:
           VSTEST_CONNECTION_TIMEOUT: '300'
@@ -159,3 +161,4 @@ jobs:
             artifacts/wo13-ci/commit-recovery.json
             artifacts/wo13-ci/password-crash.json
             artifacts/wo13-ci/streaming-export.json
+            artifacts/wo13-ci/recovery-code-crash.json
