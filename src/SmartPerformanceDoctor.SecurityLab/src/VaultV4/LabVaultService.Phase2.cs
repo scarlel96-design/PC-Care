@@ -12,6 +12,15 @@ public sealed partial class LabVaultService
         using var operation = EnterOperation();
         EnsureWriteUnlocked();
         if (_header?.Version == 6) return ChangeGenerationPassword(currentPassword, newPassword);
+        return FailOp("기존 v4/v5의 비밀번호 변경은 중단 시 복구가 검증되지 않아 차단됩니다. 원본을 보존합니다.");
+    }
+
+    internal LabVaultOperationResult ReproduceLegacyPasswordChange(string currentPassword, string newPassword)
+    {
+        using var operation = EnterOperation();
+        LabLocalTrustedState.ValidateFixture(_root);
+        EnsureWriteUnlocked();
+        if (_header?.Version != 5) throw new InvalidOperationException("LEGACY-V5-FIXTURE-REQUIRED");
         var policy = LabPasswordPolicy.ValidateForCreate(newPassword);
         if (!policy.IsValid)
         {
@@ -91,14 +100,18 @@ public sealed partial class LabVaultService
                 _header.Version = 5;
             }
 
+            FaultObserver?.Invoke("LegacyPasswordBeforeHeader");
             WriteHeader(_header);
+            FaultObserver?.Invoke("LegacyPasswordHeadersWritten");
             var before = LabRecoverySlots.Snapshot(_root);
             var (codes, _) = LabRecoverySlots.GenerateAndWrap(_root, _header.VaultId, _vmk);
+            FaultObserver?.Invoke("LegacyPasswordSlotsWritten");
             if (_metadata is not null)
             {
                 LabDurableCommit.WriteCommitted(_root, _header.VaultId, _metadata.Generation);
             }
 
+            FaultObserver?.Invoke("LegacyPasswordCommitted");
             // recovery-session / low-slot users leave RecoveryAvailable after change
             _securityState = LabSecurityState.Unlocked;
             _writeAllowed = true;

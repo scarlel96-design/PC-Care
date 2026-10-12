@@ -39,9 +39,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.WindowsAppSDK" />
-    <PackageReference Include="System.IO.Pipes.AccessControl" />
-    <PackageReference Include="System.Security.Cryptography.ProtectedData" />
-    <PackageReference Include="System.Drawing.Common" />
     <PackageReference Include="Konscious.Security.Cryptography.Argon2" />
     <PackageReference Include="System.ServiceProcess.ServiceController" />
   </ItemGroup>

@@ -89,13 +89,13 @@ public sealed class WO12VaultReliabilityTests : IDisposable
         var result=await vault.ExportEntryAsync(vault.Entries.Single().EntryId,output);Assert.False(result.Success);
         Assert.Equal(new byte[]{7},File.ReadAllBytes(Path.Combine(output,"legacy.bin")));
     }
-    [Fact] public void Lab_wrong_password_recovery_and_password_change_preserve_content()
+    [Fact] public void Lab_wrong_password_recovery_and_blocked_legacy_change_preserve_content()
     {
         using var vault=new LabVaultService(Path.Combine(root,"direct")); var created=vault.Create(Password,LabKdfProfile.LabFast);Assert.True(created.Success);Assert.True(vault.Unlock(Password).Success);
         var import=vault.ImportBytes("data.bin","data.bin",new byte[]{1,2,3});Assert.True(import.Success);
         vault.Lock();Assert.False(vault.Unlock("Wrong-Synthetic-12!").Success); Assert.True(vault.UnlockWithRecoveryCode(created.RecoveryCodes[0]).Success);
-        Assert.True(vault.ChangePassword(Password,"New-Synthetic-Vault-12!").Success);
-        vault.Lock();Assert.False(vault.Unlock(Password).Success);Assert.True(vault.Unlock("New-Synthetic-Vault-12!").Success);
+        Assert.False(vault.ChangePassword(Password,"New-Synthetic-Vault-12!").Success);
+        vault.Lock();Assert.True(vault.Unlock(Password).Success);
         Assert.True(vault.ExportEntry(import.EntryId!,Path.Combine(root,"changed"),true).Success);Assert.Equal(new byte[]{1,2,3},File.ReadAllBytes(Path.Combine(root,"changed","data.bin")));
     }
     [Fact] public void Source_directory_scan_cancellation_is_not_a_success()

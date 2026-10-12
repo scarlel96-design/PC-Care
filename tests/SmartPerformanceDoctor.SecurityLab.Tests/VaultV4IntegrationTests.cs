@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using System.Text.Json;
 using SmartPerformanceDoctor.SecurityLab.Hardening;
 using SmartPerformanceDoctor.SecurityLab.Migration;
@@ -509,12 +509,13 @@ public sealed class VaultV4IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Phase2_password_change_and_readonly_unlock()
+    public void Phase2_legacy_password_change_blocked_and_readonly_unlock()
     {
         const string password = "Correct-Horse-Battery-99!";
         const string next = "Correct-Horse-Battery-00!";
         using var vault = new LabVaultService(Path.Combine(_root, "p2"));
-        Assert.True(vault.Create(password, LabKdfProfile.LabFast).Success);
+        var created = vault.Create(password, LabKdfProfile.LabFast);
+        Assert.True(created.Success);
         Assert.True(vault.Unlock(password).Success);
 
         var src = Path.Combine(_root, "p2-data.txt");
@@ -522,18 +523,15 @@ public sealed class VaultV4IntegrationTests : IDisposable
         Assert.True(vault.ImportFile(src).Success);
 
         var ch = vault.ChangePassword(password, next);
-        Assert.True(ch.Success, ch.Message);
-        Assert.NotNull(ch.RecoveryCodes);
-        Assert.True(ch.RecoveryCodes!.Count >= 10);
+        Assert.False(ch.Success);
         Assert.Equal(LabSecurityState.Unlocked, vault.GetSecurityState());
         Assert.Equal(10, LabRecoverySlots.Remaining(vault.Root));
         vault.Lock();
-        Assert.False(vault.Unlock(password).Success);
-        Assert.True(vault.Unlock(next).Success);
+        Assert.True(vault.Unlock(password).Success);
 
-        // reissue invalidates previous codes from change
-        var oldCode = ch.RecoveryCodes[0];
-        var re = vault.ReissueRecoveryCodes(next);
+        // reissue invalidates initial recovery codes
+        var oldCode = created.RecoveryCodes[0];
+        var re = vault.ReissueRecoveryCodes(password);
         Assert.True(re.Success, re.Message);
         Assert.NotNull(re.RecoveryCodes);
         Assert.Equal(10, re.RecoveryCodes!.Count);
@@ -541,9 +539,9 @@ public sealed class VaultV4IntegrationTests : IDisposable
         Assert.False(vault.UnlockWithRecoveryCode(oldCode).Success);
         Assert.True(vault.UnlockWithRecoveryCode(re.RecoveryCodes[0]).Success);
         Assert.Equal(LabSecurityState.RecoveryAvailable, vault.GetSecurityState());
-        // recovery session → password change clears RecoveryAvailable
-        Assert.True(vault.ChangePassword(next, password).Success);
-        Assert.Equal(LabSecurityState.Unlocked, vault.GetSecurityState());
+        // blocked legacy password change preserves RecoveryAvailable
+        Assert.False(vault.ChangePassword(password, next).Success);
+        Assert.Equal(LabSecurityState.RecoveryAvailable, vault.GetSecurityState());
 
         vault.Lock();
         var ro = vault.UnlockReadOnly(password);

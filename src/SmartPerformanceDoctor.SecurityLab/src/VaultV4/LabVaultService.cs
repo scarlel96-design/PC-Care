@@ -1039,8 +1039,10 @@ public sealed partial class LabVaultService : IDisposable
         LabParserGuard.EnsureHeaderSize(json.Length);
         var hash = Convert.ToHexString(SHA256.HashData(json));
         File.WriteAllBytes(Path.Combine(_root, "vault.header.json"), json);
+        FaultObserver?.Invoke("LegacyPrimaryHeaderWritten");
         File.WriteAllText(Path.Combine(_root, "vault.header.blake3"), hash);
         File.WriteAllBytes(Path.Combine(_root, "vault.header.copy1.json"), json);
+        FaultObserver?.Invoke("LegacySecondaryHeaderWritten");
         File.WriteAllText(Path.Combine(_root, "vault.header.copy1.sha256"), hash);
         File.WriteAllBytes(Path.Combine(_root, "vault.header.backup.json"), json);
     }
