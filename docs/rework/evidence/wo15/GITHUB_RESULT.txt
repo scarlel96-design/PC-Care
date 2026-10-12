@@ -1,0 +1,28 @@
+WORK ITEM: WO15 / GitHub publication
+STATUS: PASS for implementation upload and Windows CI; report publication inventory follows in a separate record.
+BRANCH: codex/pccare-vault-freshness-recovery-receipts
+BASELINE SHA: b99d29f1591cb46ce56b299665648e486072d4b8
+CI SOURCE SHA: ab2c19f3027a5450a55042915af69220f7ec5ccc
+CI SOURCE TREE: 37233729e49b78d1b1dc4bbbe3d5416db72a15e0
+CI RUN: 38255952676
+CI JOB: 114833955385
+CI CONCLUSION: success
+CI COMPLETED: 2026-10-12T13:56:23Z
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38255952676
+ENVIRONMENT: Windows Server 2025 10.0.26100 Datacenter
+COMMAND: gh run view 38255952676 --log > artifacts/wo15/ci-run.log
+INPUT: completed CI run for implementation source
+RESULT: completed job logs downloaded
+EXIT CODE: 0
+COMMAND: gh run view 38255952676 --json status,conclusion,headSha,jobs > artifacts/wo15/ci-final-status.json
+OUTPUT: status=completed; conclusion=success; headSha=ab2c19f3027a5450a55042915af69220f7ec5ccc; job=114833955385 success
+EXIT CODE: 0
+COMMAND: gh run download 38255952676 -n wo15-windows-evidence -D artifacts/wo15/ci-evidence
+RESULT: workflow artifact downloaded; TRX and anonymized result JSON reopened
+EXIT CODE: 0
+IMPLEMENTATION COMMAND: git push -u origin codex/pccare-vault-freshness-recovery-receipts
+RESULT: source branch published; CI source SHA matches implementation HEAD
+EXIT CODE: 0
+PUBLICATION NOTE: Required reports and sanitized evidence are committed after this CI source. Final publication HEAD is not a tested-source SHA.
+SAFETY: main merge and official release were not performed. Raw local logs, ETL, passwords, recovery codes and plaintext fixtures are excluded.
+ROLLBACK: Keep this branch independent. Use ROLLBACK.sh only for its named source copy. Vault recovery evidence is separate.

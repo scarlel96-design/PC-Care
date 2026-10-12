@@ -1,0 +1,23 @@
+WORK ITEM: WO-15 / FULL_TEST_RESULT.txt
+STATUS: PASS
+BASELINE SHA: b99d29f1591cb46ce56b299665648e486072d4b8
+SOURCE SHA: ab2c19f3027a5450a55042915af69220f7ec5ccc
+SOURCE TREE: 37233729e49b78d1b1dc4bbbe3d5416db72a15e0
+BRANCH: codex/pccare-vault-freshness-recovery-receipts
+ENVIRONMENT: {"os": "Windows 11 build 26200", "sdk": "10.0.401", "logicalProcessors": 24, "data": "synthetic fixtures only", "dedicatedGuiProfile": false, "disposableVm": false}
+TEST COMMAND: $env:VSTEST_CONNECTION_TIMEOUT='300'; dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 -m:1 --logger 'trx;LogFileName=wo15-full.trx' -v:minimal
+INPUT: Synthetic fixtures; no user vault
+OUTPUT:
+통과!  - 실패:     0, 통과:  1108, 건너뜀:   111, 전체:  1219, 기간: 3 m 42 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+WO15: 23 PASS. Previous 1085 PASS retained. Skip delta: 0.
+Performance 233 and updater 128 are included, not additive.
+EXIT CODE: 0
+
+CI FINAL RESULT: PASS
+CI SOURCE SHA: ab2c19f3027a5450a55042915af69220f7ec5ccc
+CI RUN: 38255952676 / SUCCESS
+CI ENVIRONMENT: Windows Server 2025 10.0.26100 Datacenter
+CI TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo06-full.trx' -v:minimal
+CI INPUT: synthetic fixtures
+CI OUTPUT: Passed!  - Failed:     0, Passed:  1108, Skipped:   111, Total:  1219, Duration: 7 m 24 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+CI EXIT CODE: 0

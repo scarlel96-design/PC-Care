@@ -1,0 +1,14 @@
+WORK ITEM: WO-15 / BASELINE_RESULT.txt
+STATUS: PASS
+BASELINE SHA: b99d29f1591cb46ce56b299665648e486072d4b8
+SOURCE SHA: ab2c19f3027a5450a55042915af69220f7ec5ccc
+SOURCE TREE: 37233729e49b78d1b1dc4bbbe3d5416db72a15e0
+BRANCH: codex/pccare-vault-freshness-recovery-receipts
+ENVIRONMENT: {"os": "Windows 11 build 26200", "sdk": "10.0.401", "logicalProcessors": 24, "data": "synthetic fixtures only", "dedicatedGuiProfile": false, "disposableVm": false}
+TEST COMMAND: $env:VSTEST_CONNECTION_TIMEOUT='300'; dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO14' --logger 'trx;LogFileName=wo15-baseline-verified.trx' -v:minimal
+INPUT: WO14 baseline tests before WO15 modifications; baseline HEAD b99d29f1591cb46ce56b299665648e486072d4b8
+OUTPUT:
+통과!  - 실패:     0, 통과:    30, 건너뜀:     0, 전체:    30, 기간: 34 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+Historical full baseline: 1085 PASS / 111 SKIP / 0 FAIL, WO14 CI 38228910926.
+Initial sandbox testhost attempts timed out; they are not PASS. Verified retry used Windows host execution.
+EXIT CODE: 0

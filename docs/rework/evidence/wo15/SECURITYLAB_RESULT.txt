@@ -1,0 +1,21 @@
+WORK ITEM: WO-15 / SECURITYLAB_RESULT.txt
+STATUS: PASS
+BASELINE SHA: b99d29f1591cb46ce56b299665648e486072d4b8
+SOURCE SHA: ab2c19f3027a5450a55042915af69220f7ec5ccc
+SOURCE TREE: 37233729e49b78d1b1dc4bbbe3d5416db72a15e0
+BRANCH: codex/pccare-vault-freshness-recovery-receipts
+ENVIRONMENT: {"os": "Windows 11 build 26200", "sdk": "10.0.401", "logicalProcessors": 24, "data": "synthetic fixtures only", "dedicatedGuiProfile": false, "disposableVm": false}
+TEST COMMAND: $env:VSTEST_CONNECTION_TIMEOUT='300'; dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo15-securitylab.trx' -v:minimal
+INPUT: Synthetic fixtures; no user vault
+OUTPUT:
+통과!  - 실패:     0, 통과:    36, 건너뜀:     0, 전체:    36, 기간: 38 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+EXIT CODE: 0
+
+CI FINAL RESULT: PASS
+CI SOURCE SHA: ab2c19f3027a5450a55042915af69220f7ec5ccc
+CI RUN: 38255952676 / SUCCESS
+CI ENVIRONMENT: Windows Server 2025 10.0.26100 Datacenter
+CI TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo06-securitylab.trx' -v:minimal
+CI INPUT: synthetic fixtures
+CI OUTPUT: Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 19 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+CI EXIT CODE: 0

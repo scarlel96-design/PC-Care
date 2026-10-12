@@ -1,0 +1,26 @@
+{
+  "workItem": "WO-15",
+  "status": "PARTIAL",
+  "sourceSha": "ab2c19f3027a5450a55042915af69220f7ec5ccc",
+  "sourceTree": "37233729e49b78d1b1dc4bbbe3d5416db72a15e0",
+  "environment": {
+    "os": "Windows 11 build 26200",
+    "sdk": "10.0.401",
+    "logicalProcessors": 24,
+    "data": "synthetic fixtures only",
+    "dedicatedGuiProfile": false,
+    "disposableVm": false
+  },
+  "command": "dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo15 artifacts/wo15/probe",
+  "input": "Synthetic fixture only",
+  "exitCode": 0,
+  "result": {
+    "status": "PARTIAL",
+    "vaultOnlySlotReplay": "BLOCKED",
+    "vaultOnlyWholeReplay": "BLOCKED",
+    "anchorAndVaultReplay": "ACCEPTED_UNSUPPORTED_THREAT_MODEL",
+    "readOnlyBytes": "PASS",
+    "productionApproved": false
+  },
+  "literalOutput": "SLOT_REPLAY=BLOCKED;WHOLE_VAULT_REPLAY=BLOCKED;JOINT_ANCHOR_REPLAY=UNSUPPORTED;RECEIPT_CRASH=15;LEGACY_PASSWORD_CRASH=6;ORIGINAL_BYTES=VERIFIED;POWER_LOSS=NOT_TESTED"
+}

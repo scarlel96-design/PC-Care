@@ -1,0 +1,18 @@
+WORK ITEM: WO-15 / GUI_TEST_RESULT.txt
+STATUS: BLOCKED
+BASELINE SHA: b99d29f1591cb46ce56b299665648e486072d4b8
+SOURCE SHA: ab2c19f3027a5450a55042915af69220f7ec5ccc
+SOURCE TREE: 37233729e49b78d1b1dc4bbbe3d5416db72a15e0
+BRANCH: codex/pccare-vault-freshness-recovery-receipts
+ENVIRONMENT: {"os": "Windows 11 build 26200", "sdk": "10.0.401", "logicalProcessors": 24, "data": "synthetic fixtures only", "dedicatedGuiProfile": false, "disposableVm": false}
+TEST COMMAND:
+$wo15Sid = [Security.Principal.WindowsIdentity]::GetCurrent().User.Value
+& powershell -NoProfile -File scripts/wo15-gui-validation.ps1 -ExpectedTestSid $wo15Sid -OriginalUserSid $wo15Sid
+exit $LASTEXITCODE
+INPUT: Current SID supplied for both parameters. The command does not print the SID.
+OUTPUT:
+{"status":"BLOCKED","guiExecuted":false,"reason":"Independent test SID required; no profile changes made"}
+Actual GUI: NOT TESTED. Dedicated SID, VM snapshot, and interactive desktop not provided.
+Script checks SID before creating directories. SnapshotId is caller evidence, not hypervisor verification.
+EXIT CODE: 4
+EARLIER RESTRICTED ATTEMPT: AuthorizationManager check failed; exit 1 before the script ran. The host retry produced the recorded exit 4.

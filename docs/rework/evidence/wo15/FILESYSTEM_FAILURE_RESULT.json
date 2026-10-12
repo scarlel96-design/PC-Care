@@ -1,0 +1,128 @@
+{
+  "workItem": "WO-15",
+  "status": "PARTIAL",
+  "sourceSha": "ab2c19f3027a5450a55042915af69220f7ec5ccc",
+  "sourceTree": "37233729e49b78d1b1dc4bbbe3d5416db72a15e0",
+  "environment": {
+    "os": "Windows 11 build 26200",
+    "sdk": "10.0.401",
+    "logicalProcessors": 24,
+    "data": "synthetic fixtures only",
+    "dedicatedGuiProfile": false,
+    "disposableVm": false
+  },
+  "input": "Synthetic fixture only",
+  "exitCode": 0,
+  "result": [
+    {
+      "scenario": "Actual disk full",
+      "status": "NOT TESTED",
+      "evidence": "No bounded disposable volume provided; exception injection is not disk-full proof"
+    },
+    {
+      "scenario": "ACL access denied",
+      "status": "NOT TESTED",
+      "evidence": "No independent SID ACL fixture executed"
+    },
+    {
+      "scenario": "Read-only volume",
+      "status": "NOT TESTED",
+      "evidence": "No disposable read-only volume executed"
+    },
+    {
+      "scenario": "File lock",
+      "status": "PASS",
+      "evidence": "WO14 Locked_snapshot_file_is_rejected_without_changing_source; WO15 exclusive state.lock"
+    },
+    {
+      "scenario": "Metadata partial write",
+      "status": "PARTIAL",
+      "evidence": "Existing corruption/metadata interruption tests pass; arbitrary storage partial-write matrix not executed"
+    },
+    {
+      "scenario": "Journal write crash",
+      "status": "PARTIAL",
+      "evidence": "Existing WO13 journal failure tests pass; no new WO15 journal mid-byte kill"
+    },
+    {
+      "scenario": "Activation replacement crash",
+      "status": "PASS",
+      "evidence": "WO14 transition 10 kills and v6 password 10 kills preserve authenticated originals"
+    },
+    {
+      "scenario": "Anchor write failure",
+      "status": "PASS",
+      "evidence": "AnchorBeforeReplace/AfterReplace exception and separate-process kill tests"
+    },
+    {
+      "scenario": "Receipt write failure",
+      "status": "PASS",
+      "evidence": "Anchor replacement occurrences 1/2/3 cover reserve/commit/ack interruption"
+    },
+    {
+      "scenario": "Symbolic-link replacement",
+      "status": "NOT TESTED",
+      "evidence": "Existing boundary rejection is not a live WO15 replacement race"
+    },
+    {
+      "scenario": "Junction replacement",
+      "status": "NOT TESTED",
+      "evidence": "Existing boundary rejection is not a live WO15 replacement race"
+    },
+    {
+      "scenario": "Hardlink replacement",
+      "status": "PARTIAL",
+      "evidence": "WO14 hardlinked snapshot rejection passes; live replacement race not executed"
+    },
+    {
+      "scenario": "Original directory replacement",
+      "status": "PARTIAL",
+      "evidence": "WO14 held snapshot handles reject replacement/mutation; separate live replacement attack not executed"
+    },
+    {
+      "scenario": "File added during transition",
+      "status": "PASS",
+      "evidence": "WO14 Concurrent_inventory_addition_is_visible_and_preserved"
+    },
+    {
+      "scenario": "Concurrent Create",
+      "status": "NOT TESTED",
+      "evidence": "No new WO15 two-process create race"
+    },
+    {
+      "scenario": "Import with PasswordChange",
+      "status": "NOT TESTED",
+      "evidence": "Coordinator reuse inspected; explicit mixed-operation race not executed"
+    },
+    {
+      "scenario": "Export with Lock",
+      "status": "NOT TESTED",
+      "evidence": "Existing Lock waits for import is a different operation pair"
+    },
+    {
+      "scenario": "Recovery with Dispose",
+      "status": "NOT TESTED",
+      "evidence": "No new WO15 explicit race"
+    }
+  ],
+  "executions": [
+    {
+      "command": "$env:VSTEST_CONNECTION_TIMEOUT='300'; dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 -m:1 --logger 'trx;LogFileName=wo15-full.trx' -v:minimal",
+      "input": "Synthetic app test fixtures",
+      "output": "통과!  - 실패:     0, 통과:  1108, 건너뜀:   111, 전체:  1219, 기간: 3 m 42 s - SmartPerformanceDoctor.Tests.dll (net10.0)",
+      "exitCode": 0
+    },
+    {
+      "command": "dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo15 artifacts/wo15/probe",
+      "input": "Synthetic receipt and replay fixtures",
+      "output": "SLOT_REPLAY=BLOCKED;WHOLE_VAULT_REPLAY=BLOCKED;JOINT_ANCHOR_REPLAY=UNSUPPORTED;RECEIPT_CRASH=15;LEGACY_PASSWORD_CRASH=6;ORIGINAL_BYTES=VERIFIED;POWER_LOSS=NOT_TESTED",
+      "exitCode": 0
+    },
+    {
+      "command": "dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo14 artifacts/wo15/compatibility",
+      "input": "Synthetic v5/v6 compatibility fixtures",
+      "output": "TRANSITION=PASS;TRANSITION_CRASH=10;METADATA_READY_V5=READ_ONLY_RECOVERY;METADATA_READY_V6=PASS;PASSWORD_CRASH=10;REPLAY=UNMITIGATED;POWER_LOSS=NOT_TESTED",
+      "exitCode": 0
+    }
+  ]
+}

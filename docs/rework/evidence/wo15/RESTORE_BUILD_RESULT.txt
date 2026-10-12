@@ -1,0 +1,56 @@
+WORK ITEM: WO-15 / RESTORE_BUILD_RESULT.txt
+STATUS: PASS
+BASELINE SHA: b99d29f1591cb46ce56b299665648e486072d4b8
+SOURCE SHA: ab2c19f3027a5450a55042915af69220f7ec5ccc
+SOURCE TREE: 37233729e49b78d1b1dc4bbbe3d5416db72a15e0
+BRANCH: codex/pccare-vault-freshness-recovery-receipts
+ENVIRONMENT: {"os": "Windows 11 build 26200", "sdk": "10.0.401", "logicalProcessors": 24, "data": "synthetic fixtures only", "dedicatedGuiProfile": false, "disposableVm": false}
+TEST COMMAND: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64 -v:minimal
+dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+INPUT: Synthetic fixtures; no user vault
+OUTPUT:
+Restore: completed, 0 warnings, 0 errors.
+Release literal result:
+빌드했습니다.
+    경고 0개
+    오류 0개
+경과 시간: 00:00:21.78
+Each command exit: 0. NU1510 references removed, not suppressed.
+Initial restricted restore failed; verified host retry supersedes that attempt.
+EXIT CODE: 0
+
+RESTORE LITERAL OUTPUT (workspace path redacted):
+  복원할 프로젝트를 확인하는 중...
+  <WORKSPACE>\src\SmartPerformanceDoctor.Contracts\SmartPerformanceDoctor.Contracts.csproj을(를) 435밀리초 동안 복원했습니다.
+  <WORKSPACE>\src\SmartPerformanceDoctor.Setup\SmartPerformanceDoctor.Setup.csproj을(를) 472밀리초 동안 복원했습니다.
+  <WORKSPACE>\src\SmartPerformanceDoctor.UpdateEngine\SmartPerformanceDoctor.UpdateEngine.csproj을(를) 775밀리초 동안 복원했습니다.
+  <WORKSPACE>\src\SmartPerformanceDoctor.UpdateHelper\SmartPerformanceDoctor.UpdateHelper.csproj을(를) 775밀리초 동안 복원했습니다.
+  <WORKSPACE>\src\SmartPerformanceDoctor.AstraVault\SmartPerformanceDoctor.AstraVault.csproj을(를) 836밀리초 동안 복원했습니다.
+  <WORKSPACE>\src\SmartPerformanceDoctor.SecurityLab\SmartPerformanceDoctor.SecurityLab.csproj을(를) 838밀리초 동안 복원했습니다.
+  <WORKSPACE>\src\SmartPerformanceDoctor.AegisRecoveryHelper\SmartPerformanceDoctor.AegisRecoveryHelper.csproj을(를) 835밀리초 동안 복원했습니다.
+  <WORKSPACE>\src\SmartPerformanceDoctor.Aegis\SmartPerformanceDoctor.Aegis.csproj을(를) 837밀리초 동안 복원했습니다.
+  <WORKSPACE>\tests\SmartPerformanceDoctor.AstraVault.KillWorker\SmartPerformanceDoctor.AstraVault.KillWorker.csproj을(를) 844밀리초 동안 복원했습니다.
+  <WORKSPACE>\tools\SmartPerformanceDoctor.SecurityLab.Cli\SmartPerformanceDoctor.SecurityLab.Cli.csproj을(를) 838밀리초 동안 복원했습니다.
+  <WORKSPACE>\tools\SmartPerformanceDoctor.DiagnosticsProbe\SmartPerformanceDoctor.DiagnosticsProbe.csproj을(를) 860밀리초 동안 복원했습니다.
+  <WORKSPACE>\tests\SmartPerformanceDoctor.SecurityLab.Tests\SmartPerformanceDoctor.SecurityLab.Tests.csproj을(를) 868밀리초 동안 복원했습니다.
+  <WORKSPACE>\src\SmartPerformanceDoctor.Data\SmartPerformanceDoctor.Data.csproj을(를) 846밀리초 동안 복원했습니다.
+  <WORKSPACE>\src\SmartPerformanceDoctor.Diagnostics\SmartPerformanceDoctor.Diagnostics.csproj을(를) 856밀리초 동안 복원했습니다.
+  <WORKSPACE>\tools\SmartPerformanceDoctor.ReferenceProbe\SmartPerformanceDoctor.ReferenceProbe.csproj을(를) 928밀리초 동안 복원했습니다.
+  <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\SmartPerformanceDoctor.Tests.csproj을(를) 971밀리초 동안 복원했습니다.
+  <WORKSPACE>\src\SmartPerformanceDoctor.AegisRecoveryService\SmartPerformanceDoctor.AegisRecoveryService.csproj을(를) 976밀리초 동안 복원했습니다.
+  <WORKSPACE>\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj을(를) 963밀리초 동안 복원했습니다.
+
+RESTORE EXIT CODE: 0
+
+CI FINAL RESULT: PASS
+CI SOURCE SHA: ab2c19f3027a5450a55042915af69220f7ec5ccc
+CI RUN: 38255952676 / SUCCESS
+CI RESTORE COMMAND: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
+CI RESTORE RESULT: success; no NuGet warning/error lines in restore step
+CI RESTORE EXIT CODE: 0
+CI BUILD COMMAND: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+CI BUILD LITERAL OUTPUT:
+    0 Warning(s)
+    0 Error(s)
+CI BUILD EXIT CODE: 0
+CI ACTION NOTE: Node deprecation warnings occurred in action setup/upload/post steps. These are distinct from Restore and Release compiler results.

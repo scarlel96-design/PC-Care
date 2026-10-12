@@ -1,0 +1,46 @@
+WORK ITEM: WO15
+STATUS: PARTIAL / PHASE 1 NO-GO
+BRANCH: codex/pccare-vault-freshness-recovery-receipts
+BASELINE SHA: b99d29f1591cb46ce56b299665648e486072d4b8
+SOURCE SHA: ab2c19f3027a5450a55042915af69220f7ec5ccc
+SOURCE TREE: 37233729e49b78d1b1dc4bbbe3d5416db72a15e0
+CHANGED FIELD: LabVaultService.ChangePassword v4/v5 returns failure without mutation; v6 retains existing transaction path.
+MODIFIED_FILE: <WORKSPACE>/docs/rework/evidence/wo15/MODIFIED_FILE
+DIFF_FILE: <WORKSPACE>/docs/rework/evidence/wo15/DIFF_FILE
+VERIFICATION: <WORKSPACE>/docs/rework/evidence/wo15/VERIFICATION.txt
+ROLLBACK: <WORKSPACE>/docs/rework/evidence/wo15/ROLLBACK.sh
+PATH NOTE: WORKSPACE is the PC-Care repository root. Public evidence omits the local account path.
+ORIGINAL SHA256: 3EC4F8085FEA9938D0F1C65864CF05A9F1E5A7111E0EA02420EFB385102AC984
+MODIFIED SHA256: A8442FD4C5839B7B69B844EABC3C3242BB46BCA4283FAD4F8527F388BA5F202A
+BASELINE COMMAND: $env:VSTEST_CONNECTION_TIMEOUT='300'; dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO14' --logger 'trx;LogFileName=wo15-baseline-verified.trx' -v:minimal
+BASELINE INPUT: baseline fixture regression
+BASELINE OUTPUT: 통과!  - 실패:     0, 통과:    30, 건너뜀:     0, 전체:    30, 기간: 34 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+BASELINE EXIT: 0
+MODIFIED COMMAND: $env:VSTEST_CONNECTION_TIMEOUT='300'; dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 -m:1 --logger 'trx;LogFileName=wo15-full.trx' -v:minimal
+MODIFIED INPUT: all app tests, synthetic vault fixtures
+MODIFIED OUTPUT: 통과!  - 실패:     0, 통과:  1108, 건너뜀:   111, 전체:  1219, 기간: 3 m 42 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+MODIFIED EXIT: 0
+ROLLBACK COMMAND: & 'C:\Program Files\Git\bin\bash.exe' docs/rework/evidence/wo15/ROLLBACK.sh -CopyPath artifacts/wo15/rollback-copy/MODIFIED_FILE.copy
+ROLLBACK INPUT: independent byte copy of MODIFIED_FILE
+ROLLBACK OUTPUT: SOURCE_COPY_RESTORED=PASS;LIVE_SOURCE_UNCHANGED=PASS;VAULT_RECOVERY=NOT_CLAIMED
+ROLLBACK EXIT: 0
+RESTORED COPY SHA256: 3EC4F8085FEA9938D0F1C65864CF05A9F1E5A7111E0EA02420EFB385102AC984
+LIVE CHECKOUT SHA256 (CRLF): 50156381D76973AA029866DB3419121CFF4144DDAD9271D92592AA0B8ED48E79
+HASH NOTE: ORIGINAL_FILE and MODIFIED_FILE contain exact LF Git blobs. The unchanged live checkout uses CRLF.
+ROLLBACK PREPARATION: Copy-Item -LiteralPath docs/rework/evidence/wo15/MODIFIED_FILE -Destination artifacts/wo15/rollback-copy/MODIFIED_FILE.copy
+EARLIER ROLLBACK ATTEMPTS: Restricted Git Bash startup failed. Host PowerShell lacked Get-FileHash. An LF/CRLF comparison then failed before mutation. The corrected script uses SHA256 and checks the live checkout separately.
+RESTORED BEHAVIOR: source byte restoration only; actual vault recovery is separately recorded in RECOVERY_RECEIPT_RESULT.json.
+Probe literal output: SLOT_REPLAY=BLOCKED;WHOLE_VAULT_REPLAY=BLOCKED;JOINT_ANCHOR_REPLAY=UNSUPPORTED;RECEIPT_CRASH=15;LEGACY_PASSWORD_CRASH=6;ORIGINAL_BYTES=VERIFIED;POWER_LOSS=NOT_TESTED
+Probe command: dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo15 artifacts/wo15/probe
+Probe exit: 0
+Open risks: joint anchor rollback; consume-to-anchor interruption; public unanchored recovery; damaged legacy password states; GUI; physical media; production signing.
+
+CI FINAL RESULT: SUCCESS
+CI RUN: 38255952676
+CI SOURCE SHA: ab2c19f3027a5450a55042915af69220f7ec5ccc
+CI ENVIRONMENT: Windows Server 2025 10.0.26100 Datacenter
+CI APP OUTPUT: Passed!  - Failed:     0, Passed:  1108, Skipped:   111, Total:  1219, Duration: 7 m 24 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+CI SECURITYLAB OUTPUT: Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 19 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+CI FOCUSED OUTPUT: Passed!  - Failed:     0, Passed:    23, Skipped:     0, Total:    23, Duration: 21 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+CI EXIT CODES: 0
+CI COMMANDS AND COUNTERS: CI_RESULT.json

@@ -1,0 +1,62 @@
+[
+  {
+    "path": ".github/workflows/wo15-windows-validation.yml",
+    "originalSha256": null,
+    "modifiedSha256": "507e3a5401ea10bfe4dc94613067cb5cf963af9aecff126f840b97d3d636359f"
+  },
+  {
+    "path": "scripts/wo15-gui-validation.ps1",
+    "originalSha256": null,
+    "modifiedSha256": "98b1c11c61f4722d139ca9f21980aeafc46666287ccc0131474466324751f815"
+  },
+  {
+    "path": "src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj",
+    "originalSha256": "902e14568643d0eca212c86c9dbf58b644e3ac19ff8830f16f9895dbb11ffb59",
+    "modifiedSha256": "8f332588615afd6ecdaba058c0d41defb1b0fbf884f12485725724e2ca042429"
+  },
+  {
+    "path": "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabTrustedState.cs",
+    "originalSha256": null,
+    "modifiedSha256": "d4ccf99c39c228383c6913466335c958b65cbc98ad3b46fae3b13e26a6c913ff"
+  },
+  {
+    "path": "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.Phase2.cs",
+    "originalSha256": "3ec4f8085fea9938d0f1c65864cf05a9f1e5a7111e0ea02420efb385102ac984",
+    "modifiedSha256": "a8442fd4c5839b7b69b844eabc3c3242bb46bca4283fad4f8527f388ba5f202a"
+  },
+  {
+    "path": "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.TrustedRecovery.cs",
+    "originalSha256": null,
+    "modifiedSha256": "45294d3a80c78fc50254e6fc68d050124af5c5f1c2a71453286925b1ea18ed92"
+  },
+  {
+    "path": "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.cs",
+    "originalSha256": "5dccfd9e8b6ca5276a3ca993ceac15f7536e9504d3b02bce8dd3c04a2340b8f7",
+    "modifiedSha256": "e07b9f4ba56c908d467236d02a5c637e70fae9c50b54456a012d230d35358bcd"
+  },
+  {
+    "path": "tests/SmartPerformanceDoctor.SecurityLab.Tests/VaultV4IntegrationTests.cs",
+    "originalSha256": "867e4b2a9dc73c9e546d2ac05030485196a68b8b04947d74c1c6954eef89dd33",
+    "modifiedSha256": "fd5d399535d89db3074e5de1318e010772a6d285fbdfeb1116a1e056f278065a"
+  },
+  {
+    "path": "tests/SmartPerformanceDoctor.Tests/WO12VaultReliabilityTests.cs",
+    "originalSha256": "0592f0cf0416dee1cc4c659b33d1af7b60802f7b5961e6a5e006afffdce14235",
+    "modifiedSha256": "7b4cbce6edca6464c435cce6f8cf6705f9e06a5ce1c29e72bc3eb2ecab661a30"
+  },
+  {
+    "path": "tests/SmartPerformanceDoctor.Tests/WO15TrustedRecoveryTests.cs",
+    "originalSha256": null,
+    "modifiedSha256": "85264c3628ab8119d20dd7253391e1e6a00b6d75ef7f00d22cbe792317c5c752"
+  },
+  {
+    "path": "tools/SmartPerformanceDoctor.VaultProbe/Program.cs",
+    "originalSha256": "b485a0ccdd86c294300d4b0a87dcc6d53d4f3bdd455f6277995804527a9ef05e",
+    "modifiedSha256": "2d11f01ee92bacf66dd7c6bf7411e85440b1907b89a30f98cb3965b276bf3f24"
+  },
+  {
+    "path": "tools/SmartPerformanceDoctor.VaultProbe/TrustedRecoveryProbe.cs",
+    "originalSha256": null,
+    "modifiedSha256": "e19252b3f10f962c5d1b2295fcc9c8f774d5b783c07f39b175371b46a98dfcb3"
+  }
+]

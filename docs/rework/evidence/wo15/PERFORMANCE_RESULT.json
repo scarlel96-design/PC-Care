@@ -1,0 +1,180 @@
+{
+  "workItem": "WO-15",
+  "status": "PASS",
+  "sourceSha": "ab2c19f3027a5450a55042915af69220f7ec5ccc",
+  "sourceTree": "37233729e49b78d1b1dc4bbbe3d5416db72a15e0",
+  "environment": {
+    "os": "Windows 11 build 26200",
+    "sdk": "10.0.401",
+    "logicalProcessors": 24,
+    "data": "synthetic fixtures only",
+    "dedicatedGuiProfile": false,
+    "disposableVm": false
+  },
+  "command": "dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo15-memory artifacts/wo15/memory",
+  "input": "Synthetic fixture only",
+  "exitCode": 0,
+  "result": [
+    {
+      "status": "PASS",
+      "bytes": 0,
+      "inputSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "outputSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "unlock": {
+        "elapsedMs": 412.1501,
+        "cpuMs": 406.25,
+        "managedAllocatedBytes": 91010088,
+        "initialWorkingSetBytes": 29011968,
+        "maxSampledWorkingSetBytes": 109277184
+      },
+      "export": {
+        "elapsedMs": 64.4479,
+        "cpuMs": 78.125,
+        "managedAllocatedBytes": 15475168,
+        "initialWorkingSetBytes": 108949504,
+        "maxSampledWorkingSetBytes": 109228032
+      },
+      "hashing": {
+        "elapsedMs": 23.2312,
+        "cpuMs": 31.25,
+        "managedAllocatedBytes": 8000,
+        "initialWorkingSetBytes": 47226880,
+        "maxSampledWorkingSetBytes": 47243264
+      },
+      "importInThisProcess": false,
+      "exportIncludesAuthenticationAndOutput": true,
+      "workingSetIncludesPriorUnlock": true,
+      "managedAllocationIncludesSampler": true,
+      "lowEndHardware": "NOT TESTED"
+    },
+    {
+      "status": "PASS",
+      "bytes": 4096,
+      "inputSha256": "D67C656E01756650D77717B0839985A056EC28FFE174601D690FC407A2CEFFCA",
+      "outputSha256": "D67C656E01756650D77717B0839985A056EC28FFE174601D690FC407A2CEFFCA",
+      "unlock": {
+        "elapsedMs": 369.8112,
+        "cpuMs": 359.375,
+        "managedAllocatedBytes": 90957528,
+        "initialWorkingSetBytes": 28864512,
+        "maxSampledWorkingSetBytes": 109056000
+      },
+      "export": {
+        "elapsedMs": 52.0938,
+        "cpuMs": 15.625,
+        "managedAllocatedBytes": 15476440,
+        "initialWorkingSetBytes": 108703744,
+        "maxSampledWorkingSetBytes": 108900352
+      },
+      "hashing": {
+        "elapsedMs": 24.6805,
+        "cpuMs": 15.625,
+        "managedAllocatedBytes": 8000,
+        "initialWorkingSetBytes": 46669824,
+        "maxSampledWorkingSetBytes": 46682112
+      },
+      "importInThisProcess": false,
+      "exportIncludesAuthenticationAndOutput": true,
+      "workingSetIncludesPriorUnlock": true,
+      "managedAllocationIncludesSampler": true,
+      "lowEndHardware": "NOT TESTED"
+    },
+    {
+      "status": "PASS",
+      "bytes": 4194304,
+      "inputSha256": "B9474B200E75EEADE43D407169F578DE80B338E230F36CFD47B7DE192E0D5192",
+      "outputSha256": "B9474B200E75EEADE43D407169F578DE80B338E230F36CFD47B7DE192E0D5192",
+      "unlock": {
+        "elapsedMs": 337.7565,
+        "cpuMs": 640.625,
+        "managedAllocatedBytes": 90992536,
+        "initialWorkingSetBytes": 28811264,
+        "maxSampledWorkingSetBytes": 109223936
+      },
+      "export": {
+        "elapsedMs": 69.8882,
+        "cpuMs": 109.375,
+        "managedAllocatedBytes": 15480792,
+        "initialWorkingSetBytes": 108888064,
+        "maxSampledWorkingSetBytes": 111849472
+      },
+      "hashing": {
+        "elapsedMs": 23.6949,
+        "cpuMs": 46.875,
+        "managedAllocatedBytes": 8000,
+        "initialWorkingSetBytes": 47198208,
+        "maxSampledWorkingSetBytes": 47214592
+      },
+      "importInThisProcess": false,
+      "exportIncludesAuthenticationAndOutput": true,
+      "workingSetIncludesPriorUnlock": true,
+      "managedAllocationIncludesSampler": true,
+      "lowEndHardware": "NOT TESTED"
+    },
+    {
+      "status": "PASS",
+      "bytes": 67108864,
+      "inputSha256": "77A0C90E19A4122C3BB62FA54F710F121A215A2123EA7F0B38EC1B1265BCAC83",
+      "outputSha256": "77A0C90E19A4122C3BB62FA54F710F121A215A2123EA7F0B38EC1B1265BCAC83",
+      "unlock": {
+        "elapsedMs": 362.2503,
+        "cpuMs": 671.875,
+        "managedAllocatedBytes": 90980280,
+        "initialWorkingSetBytes": 28823552,
+        "maxSampledWorkingSetBytes": 108793856
+      },
+      "export": {
+        "elapsedMs": 458.1278,
+        "cpuMs": 828.125,
+        "managedAllocatedBytes": 15578456,
+        "initialWorkingSetBytes": 108453888,
+        "maxSampledWorkingSetBytes": 111431680
+      },
+      "hashing": {
+        "elapsedMs": 259.8021,
+        "cpuMs": 515.625,
+        "managedAllocatedBytes": 58312,
+        "initialWorkingSetBytes": 46919680,
+        "maxSampledWorkingSetBytes": 47591424
+      },
+      "importInThisProcess": false,
+      "exportIncludesAuthenticationAndOutput": true,
+      "workingSetIncludesPriorUnlock": true,
+      "managedAllocationIncludesSampler": true,
+      "lowEndHardware": "NOT TESTED"
+    },
+    {
+      "status": "PASS",
+      "bytes": 268435456,
+      "inputSha256": "CD9DD169DDE4047AC96A92EEE5873890506FB71CF9AEC657C5403629BB402F82",
+      "outputSha256": "CD9DD169DDE4047AC96A92EEE5873890506FB71CF9AEC657C5403629BB402F82",
+      "unlock": {
+        "elapsedMs": 333.6796,
+        "cpuMs": 312.5,
+        "managedAllocatedBytes": 90988848,
+        "initialWorkingSetBytes": 28782592,
+        "maxSampledWorkingSetBytes": 108408832
+      },
+      "export": {
+        "elapsedMs": 1802.3754,
+        "cpuMs": 1656.25,
+        "managedAllocatedBytes": 15913808,
+        "initialWorkingSetBytes": 108064768,
+        "maxSampledWorkingSetBytes": 113856512
+      },
+      "hashing": {
+        "elapsedMs": 1011.8302,
+        "cpuMs": 1640.625,
+        "managedAllocatedBytes": 219176,
+        "initialWorkingSetBytes": 49684480,
+        "maxSampledWorkingSetBytes": 49872896
+      },
+      "importInThisProcess": false,
+      "exportIncludesAuthenticationAndOutput": true,
+      "workingSetIncludesPriorUnlock": true,
+      "managedAllocationIncludesSampler": true,
+      "lowEndHardware": "NOT TESTED"
+    }
+  ],
+  "literalOutput": "EXPORT_ONLY_CHILDREN=5;SHA256=PASS;MAX_BYTES=268435456;LOW_END_HARDWARE=NOT_TESTED"
+}
