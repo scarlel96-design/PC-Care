@@ -89,7 +89,7 @@ public sealed class SecurityAttackSimulationTests : IDisposable
     }
 
     [Fact]
-    public async Task Vault_LabImportWithSourceWipe_DeletesOriginalOnlyAfterImport()
+    public async Task Vault_LabSourceWipe_BlockedAndOriginalPreserved()
     {
         const string password = "LabImportWipe99!";
         var source = Path.Combine(_tempRoot, "lab-source.txt");
@@ -104,8 +104,11 @@ public sealed class SecurityAttackSimulationTests : IDisposable
 
             var result = await vault.AddFileAsync(source, sealOrigin: true);
 
-            Assert.True(result.Success, result.Message);
-            Assert.False(File.Exists(source));
+            Assert.False(result.Success);
+            Assert.Contains("원본 제거는 검증 대기", result.Message);
+            Assert.Equal("lab-import-secret", await File.ReadAllTextAsync(source));
+            Assert.Empty(vault.Entries);
+            Assert.True((await vault.AddFileAsync(source, sealOrigin: false)).Success);
             Assert.Single(vault.Entries);
 
             var folder = Path.Combine(_tempRoot, "lab-folder");
@@ -114,8 +117,12 @@ public sealed class SecurityAttackSimulationTests : IDisposable
             await File.WriteAllTextAsync(Path.Combine(folder, "nested", "two.txt"), "two");
             var folderResult = await vault.AddFolderAsync(folder, sealOrigin: true);
 
-            Assert.True(folderResult.Success, folderResult.Message);
-            Assert.False(Directory.Exists(folder));
+            Assert.False(folderResult.Success);
+            Assert.Contains("원본 제거는 검증 대기", folderResult.Message);
+            Assert.Equal("one", await File.ReadAllTextAsync(Path.Combine(folder, "one.txt")));
+            Assert.Equal("two", await File.ReadAllTextAsync(Path.Combine(folder, "nested", "two.txt")));
+            Assert.Single(vault.Entries);
+            Assert.True((await vault.AddFolderAsync(folder, sealOrigin: false)).Success);
             Assert.Equal(3, vault.Entries.Count);
         }
         finally
@@ -526,7 +533,7 @@ public sealed class SecurityAttackSimulationTests : IDisposable
     }
 
     [Fact]
-    public async Task Vault_SealedFolder_RestoreToOrigin_RoundTrip()
+    public async Task Vault_FolderSealing_BlockedAndExportRoundTripPreservesOriginal()
     {
         const string password = "RestoreFolderVault99!";
         var folder = Path.Combine(_tempRoot, "sealed-restore");
@@ -538,19 +545,22 @@ public sealed class SecurityAttackSimulationTests : IDisposable
         using var vault = new SecureVaultService();
         Assert.True(vault.CreateVault(password).Success);
         Assert.True(vault.Unlock(password).Success);
-        Assert.True((await vault.AddFolderAsync(folder, sealOrigin: true)).Success);
-
-        Assert.False(File.Exists(Path.Combine(folder, "root.txt")));
-        Assert.False(File.Exists(Path.Combine(nested, "child.txt")));
-        Assert.False(File.Exists(Path.Combine(folder, ".spd_vault_sealed")));
-
-        var root = vault.Entries.First(e => e.Kind == SecureVaultEntryKind.FolderRoot);
-        var restored = await vault.RestoreToOriginAsync(root.EntryId);
-        Assert.True(restored.Success, restored.Message);
-
+        var blocked = await vault.AddFolderAsync(folder, sealOrigin: true);
+        Assert.False(blocked.Success);
+        Assert.Contains("원본 제거는 검증 대기", blocked.Message);
+        Assert.Empty(vault.Entries);
         Assert.Equal("root-content", await File.ReadAllTextAsync(Path.Combine(folder, "root.txt")));
         Assert.Equal("child-content", await File.ReadAllTextAsync(Path.Combine(nested, "child.txt")));
-        Assert.False(File.Exists(Path.Combine(folder, ".spd_vault_sealed")));
-        Assert.DoesNotContain(vault.Entries, e => e.BundleId == root.BundleId);
+        Assert.True((await vault.AddFolderAsync(folder, sealOrigin: false)).Success);
+        var root = vault.Entries.First(e => e.Kind == SecureVaultEntryKind.FolderRoot);
+        var output = Path.Combine(_tempRoot, "folder-export");
+        Directory.CreateDirectory(output);
+        var exported = await vault.ExportEntryAsync(root.EntryId, output);
+        Assert.True(exported.Success, exported.Message);
+        Assert.Equal("root-content", await File.ReadAllTextAsync(Path.Combine(output, "root.txt")));
+        Assert.Equal("child-content", await File.ReadAllTextAsync(Path.Combine(output, "nested", "child.txt")));
+        Assert.Equal("root-content", await File.ReadAllTextAsync(Path.Combine(folder, "root.txt")));
+        Assert.Equal("child-content", await File.ReadAllTextAsync(Path.Combine(nested, "child.txt")));
+
     }
 }

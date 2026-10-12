@@ -1,0 +1,29 @@
+{
+  "baseline": "de7563d76f79bbe563e09ed385fcadcd5b87928e",
+  "branch": "codex/pccare-vault-crash-safe-recovery",
+  "sourceManifestSha256": "7E468DC4BFC6735757E6994CAAB8D002E1A94EE1E72FDC88A6F556C27263E7AC",
+  "files": {
+    ".github/workflows/wo13-windows-validation.yml": "280927A39DA9AD1848E8950F4F8E94C365D7925260B265BAED8E4E915998AFC1",
+    "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultLabBackend.cs": "E5415BDBA8AC3CEBAC6C5BE8C1677B9D14C201C30320F1D7980F6596F503B541",
+    "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultService.cs": "BEA9D2842B29CA484DC0A1615D506EB59A3BEADD7339B087DD96EC2B0160CD5D",
+    "src/SmartPerformanceDoctor.SecurityLab/src/Hardening/VaultExportWriter.cs": "BBC8C5EB51571F847AFF80DD66CD158211363479C6CAF6C05563002A1E3ADCD2",
+    "src/SmartPerformanceDoctor.SecurityLab/src/Migration/LabToAv3MigrationGate.cs": "B7AF310616A87E76D8DA7C6726EE0791AB3FB4CF594662BD5304490DDF0CF939",
+    "src/SmartPerformanceDoctor.SecurityLab/src/ProductBridge/Av3GateSnapshot.cs": "EBEAF09CD9B19B6E205B25090BF0AE787BA8E8D2E8521B75136E9005911352AE",
+    "src/SmartPerformanceDoctor.SecurityLab/src/ProductBridge/Av3LabEnableChecklist.cs": "64ECF31555C335DA51FD4F6BBCD9AE978771BF8C20797C5C15DD1AA151909740",
+    "src/SmartPerformanceDoctor.SecurityLab/src/ProductBridge/LabReleaseState.cs": "46AB0F5796D626F10F0722F973DC9834AA918095DDEC5A64BFD1BBD2B35D7EA2",
+    "src/SmartPerformanceDoctor.SecurityLab/src/Progress/LabRemainingGaps.cs": "EE14323AE7A76D4C0CEC60980B7F74FFA0AA543E020F65DF31369622DB2DD054",
+    "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabAuthenticatedGeneration.cs": "985DDB39D8FD12EE035EF4688E66C8227A46958C9733014716EB058C8D73BAE3",
+    "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabPackStore.cs": "3D45AE6316EB5EA5EE64A9127F3B9BD7634E33BAEEEDF2F1648CEC3409CB36A4",
+    "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabRecoverySlots.cs": "B5A7205011429102BFD8ACF8DAB73C9B17283B3AFA48BDFE77BD38FFE4D79968",
+    "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultCrypto.cs": "191F00ADD8DF0443304E4CDD5B05B79C5F55DD7B2B5D6A37F3E0A5C03456CA65",
+    "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultJournal.cs": "F955607362EC51DFC1DB3542CC1B3ED8F471AB92824098FFBE05D90827786B2A",
+    "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.Phase2.cs": "3EC4F8085FEA9938D0F1C65864CF05A9F1E5A7111E0EA02420EFB385102AC984",
+    "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.Transactions.cs": "717A01F9B3BD078B7DE4C5C6A0C2129BBF27A48109EDCD32E8A55B6E71A693CE",
+    "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.cs": "B026A72AE6F8D3969CFE4426FCCF094D973B49C95EF3455B94D381FC528C8811",
+    "tests/SmartPerformanceDoctor.SecurityLab.Tests/VaultV4IntegrationTests.cs": "867E4B2A9DC73C9E546D2AC05030485196A68B8B04947D74C1C6954EEF89DD33",
+    "tests/SmartPerformanceDoctor.Tests/SecurityAttackSimulationTests.cs": "DC7C918B900E220CC053BE7002AA27A9D3043B3B69F78B4B08C2A4C82BEB2F5C",
+    "tests/SmartPerformanceDoctor.Tests/WO13VaultTransactionTests.cs": "EB45D98FB3A24E505551C375E4DBD963BB4AD55016BEB28E02E11C447274C8D8",
+    "tools/SmartPerformanceDoctor.VaultProbe/CrashSafeProbe.cs": "FC8A9845B086A75C50BF44152A7CE4A0AB0C627C1A9C07EC13C3CA1D51B56726",
+    "tools/SmartPerformanceDoctor.VaultProbe/Program.cs": "00E79FC140559328C44F56FEB1C3AF3D01480CA40BAAFD72A4D480F87E552480"
+  }
+}

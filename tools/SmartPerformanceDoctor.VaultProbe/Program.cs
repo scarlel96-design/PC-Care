@@ -16,7 +16,7 @@ static string ValidateRoot(string root)
     Check(File.ReadAllText(Path.Combine(root,"fixture.marker"))=="WO12_SYNTHETIC_ONLY","FixtureMarkerRequired");
     return root;
 }
-if(args.Length==3 && args[0]=="--child")
+if(args.Length==3 && (args[0]=="--child" || args[0]=="--password-child"))
 {
     var root=ValidateRoot(args[1]);
     using var vault=new LabVaultService(Path.Combine(root,"vault"));
@@ -27,14 +27,15 @@ if(args.Length==3 && args[0]=="--child")
         File.WriteAllText(Path.Combine(root,"barrier.signal"),stage);
         Thread.Sleep(Timeout.Infinite);
     };
-    Check(vault.ImportBytes("new.bin","new.bin",Payload(4096,13)).Success,"ChildImport");
+    if(args[0]=="--password-child") Check(vault.ChangePassword(Password,"WO13-New-Synthetic-Only!").Success,"ChildPassword");
+    else Check(vault.ImportBytes("new.bin","new.bin",Payload(4096,13)).Success,"ChildImport");
     return 3;
 }
-if(args.Length==2 && args[0]=="--verify")
+if(args.Length==2 && (args[0]=="--verify" || args[0]=="--verify-new-password"))
 {
     var root=ValidateRoot(args[1]);
     using var vault=new LabVaultService(Path.Combine(root,"vault"));
-    var opened=vault.Unlock(Password);
+    var opened=vault.Unlock(args[0]=="--verify-new-password"?"WO13-New-Synthetic-Only!":Password);
     if(!opened.Success) { Console.WriteLine("PRESERVED_FAIL_CLOSED"); return 4; }
     vault.FaultObserver=message=>Console.Error.WriteLine(message);
     var entries=vault.List();
@@ -48,6 +49,7 @@ if(args.Length==2 && args[0]=="--verify")
     Console.WriteLine($"VERIFIED_ENTRIES={entries.Count};WRITE_ALLOWED={vault.IsWriteAllowed}");
     return 0;
 }
+if(args.Length==2 && args[0]=="--crash-safe") return CrashSafeProbe.Run(args[1]);
 if(args.Length!=2 || args[0]!="--synthetic") return 2;
 var outputRoot=Path.GetFullPath(args[1]);Directory.CreateDirectory(outputRoot);
 var fixtureRoot=Path.Combine(Path.GetTempPath(),"wo12-vault-fixture-"+Guid.NewGuid().ToString("N"));

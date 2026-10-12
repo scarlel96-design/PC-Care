@@ -1,0 +1,24 @@
+{
+  "workItem": "CONCURRENCY_RESULT",
+  "status": "PARTIAL",
+  "baselineSha": "de7563d76f79bbe563e09ed385fcadcd5b87928e",
+  "branch": "codex/pccare-vault-crash-safe-recovery",
+  "sourceManifestSha256": "7E468DC4BFC6735757E6994CAAB8D002E1A94EE1E72FDC88A6F556C27263E7AC",
+  "environment": "Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic fixtures only",
+  "command": "$env:VSTEST_CONNECTION_TIMEOUT='300'; dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo13-full-host.trx' -v:minimal",
+  "input": "synthetic fixture only",
+  "output": {
+    "covered": [
+      "same-instance import/Lock barrier",
+      "two-instance session conflict"
+    ],
+    "notTested": [
+      "all operation pairs",
+      "simultaneous separate-process code use",
+      "Dispose/cancellation race"
+    ]
+  },
+  "exitCode": 0,
+  "sourceCommitReceipt": "GITHUB_RESULT.txt",
+  "testCaseReceipt": "LOCAL_TEST_CASES.json"
+}

@@ -1,0 +1,39 @@
+WORK ITEM: WO-13 authenticated vault recovery
+STATUS: PARTIAL; Phase 1 NO-GO
+CHANGED BRANCH: codex/pccare-vault-crash-safe-recovery
+BASELINE SHA: de7563d76f79bbe563e09ed385fcadcd5b87928e
+SOURCE MANIFEST SHA256: 7E468DC4BFC6735757E6994CAAB8D002E1A94EE1E72FDC88A6F556C27263E7AC
+CHANGED FIELD: LabVaultService crashSafeTestFormat=true selects explicit synthetic v6. Default remains v5.
+MODIFIED_FILE: C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo13/MODIFIED_FILE.cs.txt
+DIFF_FILE: C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo13/DIFF_FILE.patch
+VERIFICATION: C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo13/VERIFICATION.txt
+ROLLBACK: C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo13/ROLLBACK.sh
+ORIGINAL SHA256: 68F276E89D75EE1037AC379B74CDED086597BC95C57E8C55B3B757C5BA087301
+MODIFIED SHA256: B026A72AE6F8D3969CFE4426FCCF094D973B49C95EF3455B94D381FC528C8811
+BASELINE COMMAND: dotnet run --project tools/SmartPerformanceDoctor.VaultProbe -c Release -- --synthetic artifacts/wo13/baseline
+BASELINE INPUT: synthetic v5 seed and imported file
+BASELINE OUTPUT: CRASH_SCENARIOS=3;SEPARATE_READER_PROCESSES=3;HASH_ROUNDTRIP=PASS;FAIL_CLOSED=1;POWER_LOSS=NOT_TESTED
+BASELINE EXIT: 0
+BASELINE RESULT: MetadataReady reader exit 4; PreservedButLocked. Harness exit 0 accepts preservation, not recovery.
+MODIFIED COMMAND: dotnet run --project tools/SmartPerformanceDoctor.VaultProbe -c Release -- --crash-safe artifacts/wo13/final
+MODIFIED INPUT: synthetic v6 seed; 12 import interruptions; 10 password interruptions; 0/4096/4MiB/64MiB/256MiB exports
+MODIFIED OUTPUT: CRASH_SCENARIOS=12;PASSWORD_CRASH_SCENARIOS=10;STREAMING_CASES=5;EXISTING_BYTES=PASS;METADATA_READY=PASS;FORMAT=v6-test-only;POWER_LOSS=NOT_TESTED
+MODIFIED EXIT: 0
+MODIFIED RESULT: 22 independent readers verified existing-file SHA256 after writer termination. Five streamed exports matched SHA256.
+ROLLBACK COMMAND: bash docs/rework/evidence/wo13/ROLLBACK.sh "C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/artifacts/wo13/rollback-copy.cs.txt"
+ROLLBACK INPUT: independent artifacts/wo13/rollback-copy.cs.txt copied from MODIFIED_FILE
+ROLLBACK OUTPUT: SOURCE_COPY_RESTORED=PASS
+ROLLBACK EXIT: 0
+RESTORED STATUS: source-copy bytes equal ORIGINAL SHA256; MODIFIED_FILE and working source remain changed.
+RESTORED BEHAVIOR: baseline source restored only in independent evidence copy. No installed application or vault data rollback occurred.
+ACTUAL VAULT RECOVERY: separate reader processes authenticated previous or committed v6 generations and exported matching seed bytes.
+FULL TEST: 1045 PASS / 111 SKIP / 0 FAIL / 1156 total; exit 0
+SECURITYLAB: 36 PASS / 0 SKIP / 0 FAIL; exit 0
+BUILD: 0 warnings / 0 errors; exit 0
+GUI: NOT TESTED; dedicated-account gate exit 4 before launch
+POWER LOSS: NOT TESTED
+REMAINING P0: default v5 MetadataReady/password overwrite; recovery-code used-bit authentication, replay and crash atomicity.
+FINAL SOURCE SHA AND CI: read GITHUB_RESULT.txt. Do not infer current source SHA from this file's own future commit.
+SOURCE ROLLBACK PROCEDURE: copy MODIFIED_FILE to the independent rollback-copy target; run ROLLBACK.sh.
+VAULT RECOVERY PROCEDURE: preserve the whole fixture; open an authenticated v6 activation candidate; verify exported bytes.
+LOCAL SOURCE NOTE: Full tests and probe used manifest E7BD327A32D6B22BB4E07F60FD698B969470984F9A4262FB78C6969F48F37C5B. Current source removes one terminal blank line from CrashSafeProbe.cs. Windows CI will verify the committed source.

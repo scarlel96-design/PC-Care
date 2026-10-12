@@ -1,19 +1,21 @@
-namespace SmartPerformanceDoctor.SecurityLab.ProductBridge;
+﻿namespace SmartPerformanceDoctor.SecurityLab.ProductBridge;
 
 /// <summary>
-/// Lab mirror of AV3 production-writer gate posture (aligned with Av3PhaseGate 50.4.0 GO).
-/// Product vault write path remains SecurityLab v5; AV3 gates authorized for dual-track readiness.
+/// Lab mirror of the current closed AV3 production gates.
+/// Product vault uses SecurityLab v5. AV3 production approval remains incomplete.
 /// </summary>
 public static class Av3GateSnapshot
 {
-    public const bool ProductionWriterEnabled = true;
-    public const bool WriterEnableReady = true;
-    public const bool ExternalReviewCompleted = true;
-    public const bool MigrationToAv3Enabled = true;
-    public const bool JournalWriterEnabled = true;
+    public const bool ProductionWriterEnabled = false;
+    public const bool WriterEnableReady = false;
+    public const bool ExternalReviewCompleted = false;
+    public const bool MigrationToAv3Enabled = false;
+    public const bool JournalWriterEnabled = false;
+
+    public const bool ProductionEnableAuthorized = false;
 
     public const string PhaseLabel =
-        "PRODUCTION AUTHORIZED (50.4.0) · Lab v5 active product vault · AV3 gates GO · ExternalReviewCompleted";
+        "NO-GO · Lab v5 product vault · AV3 production gates closed";
 
     public static string StatusSummary =>
         $"AV3.ProductionWriter={ProductionWriterEnabled}; EnableReady={WriterEnableReady}; " +
@@ -24,5 +26,5 @@ public static class Av3GateSnapshot
         "=== AV3 Gate Snapshot (Lab mirror) ===\n" +
         StatusSummary + "\n" +
         PhaseLabel + "\n" +
-        "Product vault: SecurityLab v5 · AV3 production gates authorized for 50.4.0.";
+        "Product vault: SecurityLab v5 · AV3 production approval incomplete.";
 }

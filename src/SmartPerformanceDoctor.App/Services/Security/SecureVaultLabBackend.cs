@@ -212,6 +212,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
         IProgress<SecureVaultProgressReport>? progress = null,
         CancellationToken cancellationToken = default)
     {
+        if (secureDeleteSource) return new SecureVaultOperationResult { Success = false, Message = "원본 제거는 검증 대기 상태입니다. 원본 보존 방식으로 추가하세요." };
         cancellationToken.ThrowIfCancellationRequested();
         EnsureUnlocked();
         if (!File.Exists(path))
@@ -270,6 +271,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
         IProgress<SecureVaultProgressReport>? progress = null,
         CancellationToken cancellationToken = default)
     {
+        if (secureDeleteSource) return new SecureVaultOperationResult { Success = false, Message = "원본 제거는 검증 대기 상태입니다. 원본 보존 방식으로 추가하세요." };
         cancellationToken.ThrowIfCancellationRequested();
         EnsureUnlocked();
         if (!Directory.Exists(path))

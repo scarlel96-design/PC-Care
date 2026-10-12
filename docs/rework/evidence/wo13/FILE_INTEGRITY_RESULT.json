@@ -1,0 +1,44 @@
+{
+  "workItem": "FILE_INTEGRITY_RESULT",
+  "status": "PASS",
+  "baselineSha": "de7563d76f79bbe563e09ed385fcadcd5b87928e",
+  "branch": "codex/pccare-vault-crash-safe-recovery",
+  "sourceManifestSha256": "7E468DC4BFC6735757E6994CAAB8D002E1A94EE1E72FDC88A6F556C27263E7AC",
+  "environment": "Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic fixtures only",
+  "command": "dotnet run --project tools/SmartPerformanceDoctor.VaultProbe -c Release -- --crash-safe artifacts/wo13/final",
+  "input": "synthetic fixture only",
+  "output": [
+    {
+      "bytes": 0,
+      "inputSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "outputSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "match": true
+    },
+    {
+      "bytes": 4096,
+      "inputSha256": "1E8F7E311F47F2A1EDA3A091415DFA453F214D46F9F844DCB17FB8C97CD1FD8B",
+      "outputSha256": "1E8F7E311F47F2A1EDA3A091415DFA453F214D46F9F844DCB17FB8C97CD1FD8B",
+      "match": true
+    },
+    {
+      "bytes": 4194304,
+      "inputSha256": "9803D3F4B611522CC65338BDF28BCD00EBDBE919DECD199076884E045A294E89",
+      "outputSha256": "9803D3F4B611522CC65338BDF28BCD00EBDBE919DECD199076884E045A294E89",
+      "match": true
+    },
+    {
+      "bytes": 67108864,
+      "inputSha256": "4215F88F4885AF5ADB5E4B3DBD00178D0AC3EF5FB7CE1BDD9579F38F0601FAF1",
+      "outputSha256": "4215F88F4885AF5ADB5E4B3DBD00178D0AC3EF5FB7CE1BDD9579F38F0601FAF1",
+      "match": true
+    },
+    {
+      "bytes": 268435456,
+      "inputSha256": "B0FEBA5742C01D221B1F2E53D0702CF2D9DFFF82A2B9A4F2DC8AB99646BE6D05",
+      "outputSha256": "B0FEBA5742C01D221B1F2E53D0702CF2D9DFFF82A2B9A4F2DC8AB99646BE6D05",
+      "match": true
+    }
+  ],
+  "exitCode": 0,
+  "sourceCommitReceipt": "GITHUB_RESULT.txt"
+}

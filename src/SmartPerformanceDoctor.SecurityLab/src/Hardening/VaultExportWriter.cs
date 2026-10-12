@@ -17,6 +17,19 @@ public static class VaultExportWriter
 
     public static void WriteNew(string target, byte[] content, string expectedHash, CancellationToken cancellationToken = default)
     {
+        WriteNew(target, content.LongLength, expectedHash, stream =>
+        {
+            for (var offset = 0; offset < content.Length; offset += 128 * 1024)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                stream.Write(content, offset, Math.Min(128 * 1024, content.Length - offset));
+            }
+        }, cancellationToken);
+    }
+
+    public static void WriteNew(string target, long expectedLength, string expectedHash,
+        Action<Stream> writeAuthenticatedContent, CancellationToken cancellationToken = default)
+    {
         cancellationToken.ThrowIfCancellationRequested();
         target = Path.GetFullPath(target);
         ValidateAncestors(target);
@@ -30,11 +43,8 @@ public static class VaultExportWriter
         {
             var stream = file.Stream;
             {
-                for (var offset = 0; offset < content.Length; offset += 128 * 1024)
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
-                    stream.Write(content, offset, Math.Min(128 * 1024, content.Length - offset));
-                }
+                writeAuthenticatedContent(stream);
+                if (stream.Length != expectedLength) throw new CryptographicException("VAULT-EXPORT-LENGTH");
                 stream.Flush(flushToDisk: true);
                 stream.Position = 0;
                 var actualHash = Convert.ToHexString(SHA256.HashData(stream));
@@ -43,7 +53,7 @@ public static class VaultExportWriter
             }
             cancellationToken.ThrowIfCancellationRequested();
             parent.Validate();
-            file.Verify(content.LongLength, expectedHash);
+            file.Verify(expectedLength, expectedHash);
             file.RenameOpenedFile(target);
             published = true;
         }

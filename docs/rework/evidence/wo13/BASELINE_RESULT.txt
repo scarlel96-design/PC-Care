@@ -1,0 +1,15 @@
+WORK ITEM: Baseline reproduction
+STATUS: PARTIAL
+BASELINE SHA: de7563d76f79bbe563e09ed385fcadcd5b87928e
+BASELINE TREE: f5dd13afd6889982379668b929cc4b37dc178832
+BASELINE CI SOURCE: 1dcba347fccabed1a6b17fff53f35020bf52541b
+BASELINE CI: 38159809986 SUCCESS (live GitHub receipt checked)
+ENVIRONMENT: Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic fixtures only
+TEST COMMAND: dotnet run --project tools/SmartPerformanceDoctor.VaultProbe -c Release -- --synthetic artifacts/wo13/baseline
+INPUT: synthetic Lab v5 seed and new import
+OUTPUT: CRASH_SCENARIOS=3;SEPARATE_READER_PROCESSES=3;HASH_ROUNDTRIP=PASS;FAIL_CLOSED=1;POWER_LOSS=NOT_TESTED
+EXIT CODE: 0
+CHILD RESULTS: ObjectsReady reader 0; MetadataReady reader 4 PRESERVED_FAIL_CLOSED; CommitWritten reader 0
+RESTORED STATUS: MetadataReady PreservedButLocked; not recovered
+BASELINE COUNTS: app 1019 PASS / 111 SKIP; SecurityLab 36 PASS (prior CI, not a new local baseline full run)
+LOCAL ORIGINAL FIXTURE: artifacts/wo13/baseline-fixture-preserved (not uploaded)

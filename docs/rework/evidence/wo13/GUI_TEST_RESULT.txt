@@ -1,0 +1,9 @@
+WORK ITEM: Dedicated-profile GUI
+STATUS: NOT TESTED
+ENVIRONMENT: Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic fixtures only
+SOURCE MANIFEST SHA256: 7E468DC4BFC6735757E6994CAAB8D002E1A94EE1E72FDC88A6F556C27263E7AC
+TEST COMMAND: pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/wo12-gui-validation.ps1
+INPUT: no dedicated test account supplied
+OUTPUT: {"status":"BLOCKED","guiExecuted":false,"reason":"Dedicated test account required"}
+EXIT CODE: 4
+RESULT: account gate stopped before GUI launch

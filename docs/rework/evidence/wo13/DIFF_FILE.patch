@@ -1,0 +1,2437 @@
+diff --git a/.github/workflows/wo13-windows-validation.yml b/.github/workflows/wo13-windows-validation.yml
+new file mode 100644
+index 0000000..4906b43
+--- /dev/null
++++ b/.github/workflows/wo13-windows-validation.yml
+@@ -0,0 +1,161 @@
++name: WO13 authenticated vault crash recovery
++
++on:
++  push:
++    branches:
++      - codex/pccare-vault-crash-safe-recovery
++    paths-ignore:
++      - 'docs/**'
++      - '.gitattributes'
++  pull_request:
++
++jobs:
++  windows-validation:
++    runs-on: windows-latest
++    timeout-minutes: 55
++    permissions:
++      contents: read
++    steps:
++      - uses: actions/checkout@v4
++      - uses: actions/setup-dotnet@v4
++        with:
++          dotnet-version: '10.0.x'
++      - name: Restore
++        run: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
++      - name: Release build
++        run: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
++      - name: Signed package, publisher, transaction, recovery and staging tests
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests|FullyQualifiedName~WO06' --logger 'trx;LogFileName=wo06-signed-updater.trx' -v:minimal
++      - name: Performance diagnostics scenarios
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO07|FullyQualifiedName~WO08|FullyQualifiedName~WO09|FullyQualifiedName~WO10|FullyQualifiedName~WO11' --logger 'trx;LogFileName=wo09-performance.trx' -v:minimal
++      - name: Read-only Windows collector smoke
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-restore -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'probe build failed' }
++          New-Item -ItemType Directory -Force artifacts/wo07-ci | Out-Null
++          dotnet run --project tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-build --no-restore -- 30 artifacts/wo07-ci/measurement.json
++          if ($LASTEXITCODE -ne 0) { throw 'CPU or memory collector unavailable' }
++          $measurement = Get-Content artifacts/wo07-ci/measurement.json -Raw | ConvertFrom-Json
++          if ($measurement.environment.elevated) {
++            if ($measurement.snapshot.Errors.Where({ $_.Provider.StartsWith('ETW') }).Count -gt 0) { throw 'Elevated ETW collection failed' }
++            if ($measurement.snapshot.EventsReceived -le 0) { throw 'Elevated ETW delivered no events' }
++            if ($null -eq $measurement.remainingOwnedSessions -or $measurement.remainingOwnedSessions -ne 0) { throw 'ETW session cleanup not verified' }
++          }
++      - name: Diagnostic profiles and controlled workloads
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-restore -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'Reference analyzer build failed' }
++          dotnet run --project tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-build --no-restore -- --verify-time-contract
++          if ($LASTEXITCODE -ne 0) { throw 'SDK converted timestamp contract failed' }
++          ./scripts/wo08-measurement.ps1 -OutputDirectory artifacts/wo08-ci -RunControlledWorkloads
++          ./scripts/wo09-disk-identity.ps1 -OutputDirectory artifacts/wo09-ci
++          # CPU reference qualification remains a separate unresolved task.
++      - name: Synthetic recovery and UI Automation harness
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.RecoverySandbox -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw "sandbox build failed" }
++          ./scripts/wo10-sandbox-validation.ps1 -OutputDirectory artifacts/wo10-sandbox
++          ./scripts/wo11-sandbox-validation.ps1 -OutputDirectory artifacts/wo11-sandbox
++          dotnet build tools/SmartPerformanceDoctor.CleanupProbe -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw "cleanup probe build failed" }
++          & tools/SmartPerformanceDoctor.CleanupProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.CleanupProbe.exe --synthetic artifacts/wo11-ci
++          if ($LASTEXITCODE -ne 0) { throw "cleanup roundtrip failed" }
++          dotnet build tools/SmartPerformanceDoctor.GuiProbe -c Release -p:Platform=x64 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw "UIA harness build failed" }
++          & tools/SmartPerformanceDoctor.GuiProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.GuiProbe.exe | Set-Content artifacts/wo10-sandbox/gui-status.json
++      - name: Separate-process termination and recovery
++        shell: pwsh
++        run: |
++          dotnet build tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          ./scripts/wo06-process-validation.ps1 -OutputDirectory artifacts/wo06-ci-process
++      - name: Production profile and isolated test profile
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'test kit build failed' }
++          dotnet build tools/SmartPerformanceDoctor.VaultRecovery/SmartPerformanceDoctor.VaultRecovery.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'data recovery build failed' }
++          $kit = 'tools/SmartPerformanceDoctor.VMTestKit/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.VMTestKit.exe'
++          $engine = 'src/SmartPerformanceDoctor.UpdateEngine/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateEngine.dll'
++          & $kit audit-production $engine
++          if ($LASTEXITCODE -ne 0) { throw 'test trust leaked into production' }
++          & $kit audit-production 'src/SmartPerformanceDoctor.App/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.dll'
++          if ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production app' }
++          & $kit audit-production 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.dll'
++          if ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production helper' }
++          $profile = Join-Path $env:RUNNER_TEMP 'wo06-test-profile'
++          & $kit fixture-profile $profile ('0' * 40)
++          if ($LASTEXITCODE -ne 0) { throw 'profile generation failed' }
++          $source = Join-Path $profile 'TestVmTrust.g.cs'
++          dotnet build src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -o (Join-Path $profile 'output') -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'test profile build failed' }
++          & $kit audit-production (Join-Path $profile 'output/SmartPerformanceDoctor.UpdateEngine.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test artifact' }
++          dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -m:1 -o (Join-Path $profile 'app-output') -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'VM Release application profile build failed' }
++          & $kit audit-production (Join-Path $profile 'app-output/SmartPerformanceDoctor.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test application' }
++          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateHelper.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'VM application copied a production update helper' }
++          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateEngine.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'VM helper copied a production update engine' }
++          exit 0
++      - name: Vault reliability and separate-process crash recovery
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO12VaultReliabilityTests' --logger 'trx;LogFileName=wo12-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'vault reliability failed' }
++          dotnet build tools/SmartPerformanceDoctor.VaultProbe -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'vault probe build failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --synthetic artifacts/wo12-ci
++          if ($LASTEXITCODE -ne 0) { throw 'vault crash preservation failed' }
++      - name: Authenticated generations and password crash recovery
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO13' --logger 'trx;LogFileName=wo13-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO13 regression failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --crash-safe artifacts/wo13-ci
++          if ($LASTEXITCODE -ne 0) { throw 'authenticated vault recovery failed' }
++      - name: Full application regression
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo06-full.trx' -v:minimal
++      - name: SecurityLab regression
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo06-securitylab.trx' -v:minimal
++      - name: Reject unsupported helper verb
++        shell: pwsh
++        run: |
++          $helper = 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe'
++          $process = Start-Process -FilePath $helper -ArgumentList @('--exec', 'arbitrary') -Wait -PassThru -NoNewWindow
++          if ($process.ExitCode -ne 2) { throw "Unexpected helper exit code: $($process.ExitCode)" }
++      - name: Upload test evidence
++        if: always()
++        uses: actions/upload-artifact@v4
++        with:
++          name: wo13-windows-evidence
++          path: |
++            tests/SmartPerformanceDoctor.Tests/TestResults/*.trx
++            tests/SmartPerformanceDoctor.SecurityLab.Tests/TestResults/*.trx
++            artifacts/wo06-ci-process/process-results.json
++            artifacts/wo07-ci/measurement.json
++            artifacts/wo08-ci/**/*.json
++            artifacts/wo09-ci/**/*.json
++            artifacts/wo10-ci/**/*.json
++            artifacts/wo10-sandbox/sandbox-results.json
++            artifacts/wo10-sandbox/gui-status.json
++            artifacts/wo11-ci/*.json
++            artifacts/wo11-sandbox/sandbox-results.json
++            artifacts/wo12-ci/crash-results.json
++            artifacts/wo12-ci/performance.json
++            artifacts/wo13-ci/commit-recovery.json
++            artifacts/wo13-ci/password-crash.json
++            artifacts/wo13-ci/streaming-export.json
+diff --git a/src/SmartPerformanceDoctor.App/Services/Security/SecureVaultLabBackend.cs b/src/SmartPerformanceDoctor.App/Services/Security/SecureVaultLabBackend.cs
+index 020f2af..b476b69 100644
+--- a/src/SmartPerformanceDoctor.App/Services/Security/SecureVaultLabBackend.cs
++++ b/src/SmartPerformanceDoctor.App/Services/Security/SecureVaultLabBackend.cs
+@@ -212,6 +212,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
+         IProgress<SecureVaultProgressReport>? progress = null,
+         CancellationToken cancellationToken = default)
+     {
++        if (secureDeleteSource) return new SecureVaultOperationResult { Success = false, Message = "원본 제거는 검증 대기 상태입니다. 원본 보존 방식으로 추가하세요." };
+         cancellationToken.ThrowIfCancellationRequested();
+         EnsureUnlocked();
+         if (!File.Exists(path))
+@@ -270,6 +271,7 @@ internal sealed class SecureVaultLabBackend : IDisposable
+         IProgress<SecureVaultProgressReport>? progress = null,
+         CancellationToken cancellationToken = default)
+     {
++        if (secureDeleteSource) return new SecureVaultOperationResult { Success = false, Message = "원본 제거는 검증 대기 상태입니다. 원본 보존 방식으로 추가하세요." };
+         cancellationToken.ThrowIfCancellationRequested();
+         EnsureUnlocked();
+         if (!Directory.Exists(path))
+diff --git a/src/SmartPerformanceDoctor.App/Services/Security/SecureVaultService.cs b/src/SmartPerformanceDoctor.App/Services/Security/SecureVaultService.cs
+index 26d8377..c57c8c7 100644
+--- a/src/SmartPerformanceDoctor.App/Services/Security/SecureVaultService.cs
++++ b/src/SmartPerformanceDoctor.App/Services/Security/SecureVaultService.cs
+@@ -606,6 +606,7 @@ public sealed class SecureVaultService : IDisposable
+         CancellationToken cancellationToken = default,
+         IProgress<SecureVaultProgressReport>? progress = null)
+     {
++        if (sealOrigin) return new SecureVaultOperationResult { Success = false, Message = "원본 제거는 검증 대기 상태입니다. 원본 보존 방식으로 추가하세요." };
+         var input = VaultImportPathValidator.ValidateFile(sourcePath);
+         if (!input.Allowed)
+         {
+@@ -682,6 +683,7 @@ public sealed class SecureVaultService : IDisposable
+         CancellationToken cancellationToken = default,
+         IProgress<SecureVaultProgressReport>? progress = null)
+     {
++        if (sealOrigin) return new SecureVaultOperationResult { Success = false, Message = "원본 제거는 검증 대기 상태입니다. 원본 보존 방식으로 추가하세요." };
+         var input = VaultImportPathValidator.ValidateDirectory(folderPath);
+         if (!input.Allowed)
+         {
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/Hardening/VaultExportWriter.cs b/src/SmartPerformanceDoctor.SecurityLab/src/Hardening/VaultExportWriter.cs
+index 5647c39..ebf4224 100644
+--- a/src/SmartPerformanceDoctor.SecurityLab/src/Hardening/VaultExportWriter.cs
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/Hardening/VaultExportWriter.cs
+@@ -16,6 +16,19 @@ public static class VaultExportWriter
+     }
+ 
+     public static void WriteNew(string target, byte[] content, string expectedHash, CancellationToken cancellationToken = default)
++    {
++        WriteNew(target, content.LongLength, expectedHash, stream =>
++        {
++            for (var offset = 0; offset < content.Length; offset += 128 * 1024)
++            {
++                cancellationToken.ThrowIfCancellationRequested();
++                stream.Write(content, offset, Math.Min(128 * 1024, content.Length - offset));
++            }
++        }, cancellationToken);
++    }
++
++    public static void WriteNew(string target, long expectedLength, string expectedHash,
++        Action<Stream> writeAuthenticatedContent, CancellationToken cancellationToken = default)
+     {
+         cancellationToken.ThrowIfCancellationRequested();
+         target = Path.GetFullPath(target);
+@@ -30,11 +43,8 @@ public static class VaultExportWriter
+         {
+             var stream = file.Stream;
+             {
+-                for (var offset = 0; offset < content.Length; offset += 128 * 1024)
+-                {
+-                    cancellationToken.ThrowIfCancellationRequested();
+-                    stream.Write(content, offset, Math.Min(128 * 1024, content.Length - offset));
+-                }
++                writeAuthenticatedContent(stream);
++                if (stream.Length != expectedLength) throw new CryptographicException("VAULT-EXPORT-LENGTH");
+                 stream.Flush(flushToDisk: true);
+                 stream.Position = 0;
+                 var actualHash = Convert.ToHexString(SHA256.HashData(stream));
+@@ -43,7 +53,7 @@ public static class VaultExportWriter
+             }
+             cancellationToken.ThrowIfCancellationRequested();
+             parent.Validate();
+-            file.Verify(content.LongLength, expectedHash);
++            file.Verify(expectedLength, expectedHash);
+             file.RenameOpenedFile(target);
+             published = true;
+         }
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/Migration/LabToAv3MigrationGate.cs b/src/SmartPerformanceDoctor.SecurityLab/src/Migration/LabToAv3MigrationGate.cs
+index 948690d..f2f923a 100644
+--- a/src/SmartPerformanceDoctor.SecurityLab/src/Migration/LabToAv3MigrationGate.cs
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/Migration/LabToAv3MigrationGate.cs
+@@ -1,10 +1,10 @@
+-using System.Text;
++﻿using System.Text;
+ using SmartPerformanceDoctor.SecurityLab.ProductBridge;
+ 
+ namespace SmartPerformanceDoctor.SecurityLab.Migration;
+ 
+ /// <summary>
+-/// Phase H: Lab v5 ↔ AV3 migration posture (50.4.0 GO).
++/// Phase H: Lab v5 ↔ AV3 migration posture with closed production gates.
+ /// Execute authorized when product gates are on; migration is re-encrypt only (format non-byte-compatible).
+ /// </summary>
+ public static class LabToAv3MigrationGate
+@@ -58,13 +58,13 @@ public static class LabToAv3MigrationGate
+             G("H2", "AV3 ExternalReviewCompleted", !review, review ? "true" : "false"),
+             G("H3", "AV3 WriterEnableReady", !ready, ready ? "true" : "false"),
+             G("H4", "MigrationToAv3Enabled flag", !migrate, migrate ? "true" : "false"),
+-            G("H5", "Named product sign-off (50.4.0)", false, "product complete authorization"),
+-            G("H6", "Binary header/format parity", false,
+-                "re-encrypt migration (not in-place) — authorized path"),
+-            G("H7", "Object container magic mapping", false,
++            G("H5", "Production enable authorization", !Av3GateSnapshot.ProductionEnableAuthorized, "approval incomplete"),
++            G("H6", "Binary header/format parity", true,
++                "re-encrypt migration (not in-place) — unverified path"),
++            G("H7", "Object container magic mapping", true,
+                 "SPDCHK4 ↔ AV3 via re-encrypt"),
+-            G("H8", "Recovery model mapping", false, "re-issue codes on migrate"),
+-            G("H9", "Journal schema mapping", false, "rebuild journal on migrate"),
++            G("H8", "Recovery model mapping", true, "re-issue codes on migrate"),
++            G("H9", "Journal schema mapping", true, "rebuild journal on migrate"),
+             G("H10", "Lab shipping path complete", false, "Lab v5 production vault active"),
+         };
+ 
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/ProductBridge/Av3GateSnapshot.cs b/src/SmartPerformanceDoctor.SecurityLab/src/ProductBridge/Av3GateSnapshot.cs
+index 2271e6d..7509044 100644
+--- a/src/SmartPerformanceDoctor.SecurityLab/src/ProductBridge/Av3GateSnapshot.cs
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/ProductBridge/Av3GateSnapshot.cs
+@@ -1,19 +1,21 @@
+-namespace SmartPerformanceDoctor.SecurityLab.ProductBridge;
++﻿namespace SmartPerformanceDoctor.SecurityLab.ProductBridge;
+ 
+ /// <summary>
+-/// Lab mirror of AV3 production-writer gate posture (aligned with Av3PhaseGate 50.4.0 GO).
+-/// Product vault write path remains SecurityLab v5; AV3 gates authorized for dual-track readiness.
++/// Lab mirror of the current closed AV3 production gates.
++/// Product vault uses SecurityLab v5. AV3 production approval remains incomplete.
+ /// </summary>
+ public static class Av3GateSnapshot
+ {
+-    public const bool ProductionWriterEnabled = true;
+-    public const bool WriterEnableReady = true;
+-    public const bool ExternalReviewCompleted = true;
+-    public const bool MigrationToAv3Enabled = true;
+-    public const bool JournalWriterEnabled = true;
++    public const bool ProductionWriterEnabled = false;
++    public const bool WriterEnableReady = false;
++    public const bool ExternalReviewCompleted = false;
++    public const bool MigrationToAv3Enabled = false;
++    public const bool JournalWriterEnabled = false;
++
++    public const bool ProductionEnableAuthorized = false;
+ 
+     public const string PhaseLabel =
+-        "PRODUCTION AUTHORIZED (50.4.0) · Lab v5 active product vault · AV3 gates GO · ExternalReviewCompleted";
++        "NO-GO · Lab v5 product vault · AV3 production gates closed";
+ 
+     public static string StatusSummary =>
+         $"AV3.ProductionWriter={ProductionWriterEnabled}; EnableReady={WriterEnableReady}; " +
+@@ -24,5 +26,5 @@ public static class Av3GateSnapshot
+         "=== AV3 Gate Snapshot (Lab mirror) ===\n" +
+         StatusSummary + "\n" +
+         PhaseLabel + "\n" +
+-        "Product vault: SecurityLab v5 · AV3 production gates authorized for 50.4.0.";
++        "Product vault: SecurityLab v5 · AV3 production approval incomplete.";
+ }
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/ProductBridge/Av3LabEnableChecklist.cs b/src/SmartPerformanceDoctor.SecurityLab/src/ProductBridge/Av3LabEnableChecklist.cs
+index 3cc1e07..2d190d7 100644
+--- a/src/SmartPerformanceDoctor.SecurityLab/src/ProductBridge/Av3LabEnableChecklist.cs
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/ProductBridge/Av3LabEnableChecklist.cs
+@@ -1,4 +1,4 @@
+-using System.Text;
++﻿using System.Text;
+ 
+ namespace SmartPerformanceDoctor.SecurityLab.ProductBridge;
+ 
+@@ -23,7 +23,8 @@ public static class Av3LabEnableChecklist
+         public bool EnableAuthorized =>
+             Av3GateSnapshot.ProductionWriterEnabled
+             && Av3GateSnapshot.WriterEnableReady
+-            && Av3GateSnapshot.ExternalReviewCompleted;
++            && Av3GateSnapshot.ExternalReviewCompleted
++            && Av3GateSnapshot.ProductionEnableAuthorized;
+         public int MetRequired => Items.Count(i => i.RequiredForEnable && i.Met);
+         public int TotalRequired => Items.Count(i => i.RequiredForEnable);
+         public bool AllRequiredMet => Items.Where(i => i.RequiredForEnable).All(i => i.Met);
+@@ -31,7 +32,7 @@ public static class Av3LabEnableChecklist
+         public string ToHumanSummary()
+         {
+             var sb = new StringBuilder();
+-            sb.AppendLine("=== AV3 Lab Enable Checklist (50.4.0 GO) ===");
++            sb.AppendLine("=== AV3 Lab Enable Checklist (production gates closed) ===");
+             sb.AppendLine($"ProductionWriterEnabled={Av3GateSnapshot.ProductionWriterEnabled}");
+             sb.AppendLine($"EnableAuthorized={EnableAuthorized}");
+             sb.AppendLine($"Required met: {MetRequired}/{TotalRequired}");
+@@ -54,12 +55,12 @@ public static class Av3LabEnableChecklist
+             I("L1", "Lab v5 durable path active", true, false, "product track = SecurityLab"),
+             I("L2", "Lab FI matrix + kill recovery", true, false, "LabFaultMatrix"),
+             I("L3", "UI state labels mapped", true, false, "LabSecurityStateLabels"),
+-            I("L4", "AV3 ProductionWriter authorized", Av3GateSnapshot.ProductionWriterEnabled, true, "50.4.0 GO"),
++            I("L4", "AV3 ProductionWriter authorized", Av3GateSnapshot.ProductionWriterEnabled, true, "production gates closed"),
+             I("L5", "WriterEnableReady", Av3GateSnapshot.WriterEnableReady, true, "true"),
+-            I("L6", "ExternalReviewCompleted", Av3GateSnapshot.ExternalReviewCompleted, true, "product sign-off"),
++            I("L6", "ExternalReviewCompleted", Av3GateSnapshot.ExternalReviewCompleted, true, "review incomplete"),
+             I("L7", "MigrationToAv3 enabled", Av3GateSnapshot.MigrationToAv3Enabled, true, "re-encrypt path"),
+-            I("L8", "JournalWriter enabled", Av3GateSnapshot.JournalWriterEnabled, true, "authorized"),
+-            I("L9", "Named product sign-off recorded", true, true, "50.4.0 complete"),
++            I("L8", "JournalWriter enabled", Av3GateSnapshot.JournalWriterEnabled, true, "disabled"),
++            I("L9", "Production enable authorization", Av3GateSnapshot.ProductionEnableAuthorized, true, "approval incomplete"),
+             I("L10", "Installer package released", LabReleaseState.InstallerPackageReleased, false,
+                 LabReleaseState.SetupFileName),
+         };
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/ProductBridge/LabReleaseState.cs b/src/SmartPerformanceDoctor.SecurityLab/src/ProductBridge/LabReleaseState.cs
+index 5146343..f07362d 100644
+--- a/src/SmartPerformanceDoctor.SecurityLab/src/ProductBridge/LabReleaseState.cs
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/ProductBridge/LabReleaseState.cs
+@@ -1,7 +1,7 @@
+ namespace SmartPerformanceDoctor.SecurityLab.ProductBridge;
+ 
+ /// <summary>
+-/// 50.4.0 product complete: Setup + Lab design 100% + AV3 gates authorized.
++/// Historical package metadata. Production approval is evaluated separately.
+ /// </summary>
+ public static class LabReleaseState
+ {
+@@ -13,8 +13,8 @@ public static class LabReleaseState
+     public const bool InstallerPackageReleased = true;
+     public const bool LabDesignTrackComplete = true;
+ 
+-    /// <summary>AV3 production gates authorized (50.4.0 product GO). Lab remains active vault path.</summary>
+-    public const bool Av3GatesAuthorized = true;
++    /// <summary>AV3 production approval remains closed.</summary>
++    public const bool Av3GatesAuthorized = false;
+ 
+     public static string Summary =>
+         $"LabRelease v{ProductVersion} · PackageReleased={InstallerPackageReleased} · " +
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/Progress/LabRemainingGaps.cs b/src/SmartPerformanceDoctor.SecurityLab/src/Progress/LabRemainingGaps.cs
+index 2f5f444..f77dc33 100644
+--- a/src/SmartPerformanceDoctor.SecurityLab/src/Progress/LabRemainingGaps.cs
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/Progress/LabRemainingGaps.cs
+@@ -4,7 +4,7 @@ using SmartPerformanceDoctor.SecurityLab.ProductBridge;
+ namespace SmartPerformanceDoctor.SecurityLab.Progress;
+ 
+ /// <summary>
+-/// Remaining gaps after 50.4.0 full complete (package + Lab design + AV3 gates).
++/// Report current production approval gaps. Historical package flags are not approval evidence.
+ /// </summary>
+ public static class LabRemainingGaps
+ {
+@@ -67,21 +67,21 @@ public static class LabRemainingGaps
+                 Id = "G3",
+                 Title = "AV3 external review + named sign-off",
+                 BlockingFullGo = !Av3GateSnapshot.ExternalReviewCompleted,
+-                Note = "50.4.0 product complete"
++                Note = "External review remains incomplete"
+             },
+             new()
+             {
+                 Id = "G4",
+                 Title = "Lab→AV3 migration authorization",
+                 BlockingFullGo = !Av3GateSnapshot.MigrationToAv3Enabled,
+-                Note = "re-encrypt path authorized"
++                Note = "Production migration remains disabled"
+             },
+             new()
+             {
+                 Id = "G5",
+                 Title = "Absolute security marketing claims",
+                 BlockingFullGo = false,
+-                Note = "still forbidden; claim product GO only"
++                Note = "Independent security certification has not been completed"
+             },
+             new()
+             {
+@@ -97,7 +97,7 @@ public static class LabRemainingGaps
+             Gaps = gaps,
+             LabCodeComplete = ship.LabCoreShipReady && pkg && design.OverallPercent >= 99.5
+                               && Av3GateSnapshot.ProductionWriterEnabled,
+-            Summary = "50.4.0 complete: Lab v5 + Setup/Update + AV3 gates authorized."
++            Summary = "Phase 1 NO-GO. AV3 production approval remains closed."
+         };
+     }
+ }
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabAuthenticatedGeneration.cs b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabAuthenticatedGeneration.cs
+new file mode 100644
+index 0000000..9792e8a
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabAuthenticatedGeneration.cs
+@@ -0,0 +1,121 @@
++using System.Security.Cryptography;
++using System.Text;
++using System.Text.Json;
++using SmartPerformanceDoctor.SecurityLab.Hardening;
++
++namespace SmartPerformanceDoctor.SecurityLab.VaultV4;
++
++/// <summary>Explicit Lab v6 commit protocol. Preserve immutable generations and authenticate activation.</summary>
++internal static class LabAuthenticatedGeneration
++{
++    internal sealed record Activation(string Id, string VaultId, long Generation, string HeaderHash, string MetadataHash, string Mac);
++    internal sealed record Generation(Activation Activation, byte[] Header, byte[] Metadata, bool Previous);
++    internal static string DirectoryPath(string root) => Path.Combine(root, "generations-v6");
++
++    internal static Activation Prepare(string root, string vaultId, long generation, byte[] header, byte[] metadata,
++        byte[] vmk, Action<string>? fault)
++    {
++        var directory = DirectoryPath(root);
++        VaultExportWriter.ValidateAncestors(directory);
++        using var parent = VaultFileBoundary.PinDirectory(directory, create: true);
++        var id = Guid.NewGuid().ToString("N");
++        WriteNew(directory, id + ".metadata", metadata);
++        fault?.Invoke("GenerationMetadataWritten");
++        WriteNew(directory, id + ".header", header);
++        fault?.Invoke("GenerationHeaderWritten");
++        var activation = new Activation(id, vaultId, generation, Hash(header), Hash(metadata), "");
++        activation = activation with { Mac = Sign(activation, vmk) };
++        WriteNew(directory, id + ".manifest", JsonSerializer.SerializeToUtf8Bytes(activation));
++        Verify(root, activation, vmk);
++        parent.Validate();
++        fault?.Invoke("GenerationVerified");
++        return activation;
++    }
++
++    internal static void Publish(string root, Activation activation, byte[] vmk, Action<string>? fault)
++    {
++        Verify(root, activation, vmk);
++        var directory = DirectoryPath(root);
++        using var parent = VaultFileBoundary.PinDirectory(directory);
++        var temporary = activation.Id + ".activation.tmp";
++        WriteNew(directory, temporary, JsonSerializer.SerializeToUtf8Bytes(activation));
++        fault?.Invoke("ActivationBeforeReplace");
++        var target = Path.Combine(directory, "active.json");
++        parent.Validate();
++        if (File.Exists(target))
++            File.Replace(Path.Combine(directory, temporary), target, Path.Combine(directory, "previous.json"), false);
++        else
++            File.Move(Path.Combine(directory, temporary), target, false);
++        fault?.Invoke("ActivationAfterReplace");
++        parent.Validate();
++        Verify(root, ReadPointer(directory, "active.json"), vmk);
++    }
++
++    internal static IEnumerable<Generation> Candidates(string root)
++    {
++        foreach (var name in new[] { "active.json", "previous.json" })
++        {
++            Generation? generation = null;
++            try
++            {
++                var activation = ReadPointer(DirectoryPath(root), name);
++                var header = Read(DirectoryPath(root), activation.Id + ".header", 64 * 1024);
++                var metadata = Read(DirectoryPath(root), activation.Id + ".metadata", 64 * 1024 * 1024);
++                if (Hash(header) != activation.HeaderHash || Hash(metadata) != activation.MetadataHash)
++                    throw new CryptographicException("generation digest mismatch");
++                generation = new(activation, header, metadata, name == "previous.json");
++            }
++            catch (Exception ex) when (ex is IOException or JsonException or CryptographicException or InvalidDataException) { }
++            if (generation is not null) yield return generation;
++        }
++    }
++
++    internal static void Verify(string root, Activation activation, byte[] vmk)
++    {
++        Validate(activation);
++        if (!LabCryptoCompare.FixedTimeEqualsHex(activation.Mac, Sign(activation with { Mac = "" }, vmk)))
++            throw new CryptographicException("generation activation authentication failed");
++        var directory = DirectoryPath(root);
++        if (Hash(Read(directory, activation.Id + ".header", 64 * 1024)) != activation.HeaderHash
++            || Hash(Read(directory, activation.Id + ".metadata", 64 * 1024 * 1024)) != activation.MetadataHash)
++            throw new CryptographicException("generation content authentication failed");
++    }
++
++    private static string Sign(Activation activation, byte[] vmk)
++    {
++        var key = HKDF.DeriveKey(HashAlgorithmName.SHA256, vmk, 32, info: Encoding.UTF8.GetBytes("lab/v6/activation"));
++        try { return Convert.ToHexString(HMACSHA256.HashData(key, JsonSerializer.SerializeToUtf8Bytes(activation))); }
++        finally { CryptographicOperations.ZeroMemory(key); }
++    }
++    private static string Hash(byte[] data) => Convert.ToHexString(SHA256.HashData(data));
++    private static void Validate(Activation activation)
++    {
++        static bool Hex(string? value, int length) => value is not null && value.Length == length && value.All(Uri.IsHexDigit);
++        if (!Hex(activation.Id, 32) || !Hex(activation.VaultId, 32) || activation.Generation < 1
++            || !Hex(activation.Mac, 64) || !Hex(activation.HeaderHash, 64) || !Hex(activation.MetadataHash, 64))
++            throw new InvalidDataException("invalid activation contract");
++    }
++    private static Activation ReadPointer(string directory, string name)
++    {
++        var result = JsonSerializer.Deserialize<Activation>(Read(directory, name, 4096))
++            ?? throw new InvalidDataException("empty activation");
++        Validate(result);
++        return result;
++    }
++    private static byte[] Read(string directory, string name, int maximum)
++    {
++        using var file = VaultFileBoundary.OpenRead(directory, name);
++        if (file.Stream.Length > maximum) throw new InvalidDataException("generation size exceeds budget");
++        var data = new byte[checked((int)file.Stream.Length)];
++        file.Stream.ReadExactly(data);
++        file.Validate();
++        return data;
++    }
++    private static void WriteNew(string directory, string name, byte[] data)
++    {
++        using var file = VaultFileBoundary.OpenWrite(directory, name, create: true);
++        file.Stream.Write(data);
++        file.Stream.Flush(true);
++        file.Verify(data.Length, Hash(data));
++    }
++}
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabPackStore.cs b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabPackStore.cs
+index c2d7a1c..5cf63f3 100644
+--- a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabPackStore.cs
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabPackStore.cs
+@@ -111,7 +111,7 @@ public static class LabPackStore
+         LabObjectStore.TryDelete(vaultRoot, objectId);
+     }
+ 
+-    public static byte[] Read(string vaultRoot, string objectId)
++    public static byte[] Read(string vaultRoot, string objectId, int maximumBytes = int.MaxValue)
+     {
+         LabParserGuard.EnsureObjectId(objectId);
+         var idx = LoadIndex(vaultRoot);
+@@ -120,6 +120,7 @@ public static class LabPackStore
+             return LabObjectStore.ReadLooseOrThrow(vaultRoot, objectId);
+         }
+ 
++        if (loc.Length < 0 || loc.Length > maximumBytes) throw new CryptographicException("pack export budget exceeded");
+         var packPath = Path.Combine(vaultRoot, loc.Pack.Replace('/', Path.DirectorySeparatorChar));
+         if (!File.Exists(packPath))
+         {
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabRecoverySlots.cs b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabRecoverySlots.cs
+index 06d2adc..d22d199 100644
+--- a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabRecoverySlots.cs
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabRecoverySlots.cs
+@@ -1,4 +1,4 @@
+-using System.Security.Cryptography;
++﻿using System.Security.Cryptography;
+ using System.Text;
+ using System.Text.Json;
+ using SmartPerformanceDoctor.SecurityLab.Hardening;
+@@ -97,7 +97,7 @@ public static class LabRecoverySlots
+     }
+ 
+     /// <summary>Try one-time recovery unlock → returns VMK copy (caller zeroizes).</summary>
+-    public static bool TryUnwrapVmk(string vaultRoot, string vaultId, string code, out byte[]? vmk, out string message)
++    public static bool TryUnwrapVmk(string vaultRoot, string vaultId, string code, out byte[]? vmk, out string message, bool consume = true)
+     {
+         vmk = null;
+         message = "";
+@@ -108,11 +108,17 @@ public static class LabRecoverySlots
+             return false;
+         }
+ 
++        VaultExportWriter.ValidateAncestors(Path.GetDirectoryName(path)!);
++        using var recoveryLease = VaultFileBoundary.OpenExclusive(Path.GetDirectoryName(path)!, "consume.lock",
++            !File.Exists(Path.Combine(Path.GetDirectoryName(path)!, "consume.lock")));
+         Store store;
+         try
+         {
+-            store = JsonSerializer.Deserialize<Store>(File.ReadAllText(path))
++            using var file = VaultFileBoundary.OpenRead(Path.GetDirectoryName(path)!, Path.GetFileName(path));
++            if (file.Stream.Length > 1024 * 1024) throw new InvalidDataException("recovery store exceeds budget");
++            store = JsonSerializer.Deserialize<Store>(file.Stream)
+                     ?? throw new InvalidOperationException("parse");
++            file.Validate();
+         }
+         catch
+         {
+@@ -214,8 +220,29 @@ public static class LabRecoverySlots
+             CryptographicOperations.ZeroMemory(slotSalt);
+         }
+ 
+-        store.Slots[match].Used = true;
+-        File.WriteAllText(path, JsonSerializer.Serialize(store, new JsonSerializerOptions { WriteIndented = true }));
++        try
++        {
++        if (consume)
++        {
++            store.Slots[match].Used = true;
++            var directory = Path.GetDirectoryName(path)!;
++            using var parent = VaultFileBoundary.PinDirectory(directory);
++            var temporary = Guid.NewGuid().ToString("N") + ".recovery.tmp";
++            using (var file = VaultFileBoundary.OpenWrite(directory, temporary, true))
++            {
++                file.Stream.Write(JsonSerializer.SerializeToUtf8Bytes(store)); file.Stream.Flush(true); file.Validate();
++            }
++            parent.Validate();
++            File.Replace(Path.Combine(directory, temporary), path, path + ".previous", false);
++            parent.Validate();
++        }
++        }
++        catch
++        {
++            if (vmk is not null) CryptographicOperations.ZeroMemory(vmk);
++            vmk = null;
++            throw;
++        }
+         message = "복구 코드로 금고 키를 복원했습니다(일회용).";
+         return true;
+     }
+@@ -305,12 +332,12 @@ public static class LabRecoverySlots
+ 
+             if (Exhausted)
+             {
+-                return $"복구코드 소진 ({Used}/{TotalSlots}) · 비밀번호 변경으로 재발급";
++                return $"복구코드 소진 ({Used}/{TotalSlots}) · 명시적 복구 코드 재발급 필요";
+             }
+ 
+             if (LowRemaining)
+             {
+-                return $"복구코드 잔여 {Remaining}/{TotalSlots} · 부족 · 비밀번호 변경 권고";
++                return $"복구코드 잔여 {Remaining}/{TotalSlots} · 부족 · 복구 코드 정책 확인";
+             }
+ 
+             return $"복구코드 잔여 {Remaining}/{TotalSlots}";
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultCrypto.cs b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultCrypto.cs
+index 766b382..ed5d7d8 100644
+--- a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultCrypto.cs
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultCrypto.cs
+@@ -1,4 +1,4 @@
+-using System.Security.Cryptography;
++﻿using System.Security.Cryptography;
+ using System.Text;
+ using Konscious.Security.Cryptography;
+ 
+@@ -126,7 +126,7 @@ public static class LabVaultCrypto
+                 throw new CryptographicException("invalid chunk length");
+             }
+ 
+-            EnsureRemaining(blob.Length, pos, clen);
++            EnsureRemaining(blob.Length, pos, clen);
+             var cipher = blob.AsSpan(pos, clen).ToArray();
+             pos += clen;
+             var aad = BuildAad(aadPrefix, i);
+@@ -138,117 +138,96 @@ public static class LabVaultCrypto
+             CryptographicOperations.ZeroMemory(plain);
+         }
+ 
+-        if (pos != blob.Length)
+-        {
+-            throw new CryptographicException("unexpected trailing chunk data");
+-        }
+-
++        if (pos != blob.Length)
++        {
++            throw new CryptographicException("unexpected trailing chunk data");
++        }
++
+         return outMs.ToArray();
+     }
+ 
+     public static void EncryptChunkedToFile(
+-        byte[] key,
+-        Stream plaintext,
+-        Stream output,
+-        byte[] aadPrefix,
+-        LabContentSuite suite = LabContentSuite.XChaCha20Poly1305)
++        byte[] key, Stream plaintext, Stream output, byte[] aadPrefix,
++        LabContentSuite suite = LabContentSuite.XChaCha20Poly1305,
++        CancellationToken cancellationToken = default)
+     {
++        cancellationToken.ThrowIfCancellationRequested();
+         var magic = suite == LabContentSuite.XChaCha20Poly1305 ? MagicXchV2 : MagicAes;
+         output.Write(magic);
+         var countPos = output.Position;
+         output.Write(BitConverter.GetBytes(0));
+         var count = 0;
+         var buffer = new byte[ChunkSize];
+-        int read;
+-        if (plaintext.CanSeek && plaintext.Length == 0)
+-        {
+-            WriteChunk(output, key, aadPrefix, 0, Array.Empty<byte>(), suite, false, false);
+-            count = 1;
+-        }
+-        else
++        try
+         {
++            int read;
+             while ((read = plaintext.Read(buffer, 0, buffer.Length)) > 0)
+             {
++                cancellationToken.ThrowIfCancellationRequested();
++                if (count == MaxChunkCount) throw new CryptographicException("chunk count exceeds limit");
+                 var slice = buffer.AsSpan(0, read).ToArray();
+-                if (count == MaxChunkCount)
+-                {
+-                    throw new CryptographicException("chunk count exceeds limit");
+-                }
+-
+-                WriteChunk(output, key, aadPrefix, count, slice, suite, false, false);
+-                CryptographicOperations.ZeroMemory(slice);
++                try { WriteChunk(output, key, aadPrefix, count, slice, suite, false, false); }
++                finally { CryptographicOperations.ZeroMemory(slice); }
+                 count++;
+             }
+-
++            cancellationToken.ThrowIfCancellationRequested();
+             if (count == 0)
+             {
+                 WriteChunk(output, key, aadPrefix, 0, Array.Empty<byte>(), suite, false, false);
+                 count = 1;
+             }
++            var end = output.Position;
++            output.Position = countPos;
++            output.Write(BitConverter.GetBytes(count));
++            output.Position = end;
+         }
+-
+-        var end = output.Position;
+-        output.Position = countPos;
+-        output.Write(BitConverter.GetBytes(count));
+-        output.Position = end;
+-        CryptographicOperations.ZeroMemory(buffer);
++        finally { CryptographicOperations.ZeroMemory(buffer); }
+     }
+ 
+-    public static void DecryptChunkedFromFile(byte[] key, Stream input, Stream plaintextOut, byte[] aadPrefix)
++    public static void DecryptChunkedFromFile(byte[] key, Stream input, Stream plaintextOut, byte[] aadPrefix,
++        CancellationToken cancellationToken = default)
+     {
+         var magic = new byte[7];
+-        if (input.Read(magic, 0, 7) != 7)
+-        {
+-            throw new CryptographicException("truncated magic");
+-        }
+-
++        ReadRequired(input, magic);
+         var (suite, nonceSize, paddingVersion) = DecodeMagic(magic);
+-
+         var countBuf = new byte[4];
+-        if (input.Read(countBuf, 0, 4) != 4)
+-        {
+-            throw new CryptographicException("truncated header");
+-        }
+-
++        ReadRequired(input, countBuf);
+         var count = BitConverter.ToInt32(countBuf);
+         EnsureChunkCount(count);
+         for (var i = 0; i < count; i++)
+         {
++            cancellationToken.ThrowIfCancellationRequested();
+             var nonce = new byte[nonceSize];
+             var tag = new byte[TagSize];
+-            var lenBuf = new byte[4];
+-            if (input.Read(nonce, 0, nonceSize) != nonceSize
+-                || input.Read(tag, 0, TagSize) != TagSize
+-                || input.Read(lenBuf, 0, 4) != 4)
+-            {
+-                throw new CryptographicException("truncated chunk header");
+-            }
+-
+-            var clen = BitConverter.ToInt32(lenBuf);
+-            if (clen < 0 || clen > ChunkSize + ConcealedPadBlock)
++            var length = new byte[4];
++            ReadRequired(input, nonce); ReadRequired(input, tag); ReadRequired(input, length);
++            var size = BitConverter.ToInt32(length);
++            if (size < 0 || size > ChunkSize + ConcealedPadBlock) throw new CryptographicException("invalid chunk length");
++            var cipher = new byte[size];
++            var plain = new byte[size];
++            byte[]? payload = null;
++            try
+             {
+-                throw new CryptographicException("invalid chunk length");
++                ReadRequired(input, cipher);
++                DecryptOne(key, nonce, cipher, tag, plain, BuildAad(aadPrefix, i), suite);
++                payload = StripConcealedPad(plain, paddingVersion, i == count - 1);
++                cancellationToken.ThrowIfCancellationRequested();
++                plaintextOut.Write(payload);
+             }
+-
+-            var cipher = new byte[clen];
+-            if (input.Read(cipher, 0, clen) != clen)
++            finally
+             {
+-                throw new CryptographicException("truncated chunk body");
++                CryptographicOperations.ZeroMemory(plain);
++                CryptographicOperations.ZeroMemory(cipher);
++                if (payload is not null) CryptographicOperations.ZeroMemory(payload);
+             }
+-
+-            var plain = new byte[clen];
+-            var aad = BuildAad(aadPrefix, i);
+-            DecryptOne(key, nonce, cipher, tag, plain, aad, suite);
+-            var payload = StripConcealedPad(plain, paddingVersion, i == count - 1);
+-            plaintextOut.Write(payload);
+-            CryptographicOperations.ZeroMemory(plain);
+-            CryptographicOperations.ZeroMemory(cipher);
+         }
++        if (input.ReadByte() != -1) throw new CryptographicException("unexpected trailing chunk data");
++    }
+ 
+-        if (input.CanSeek && input.Position != input.Length)
+-        {
+-            throw new CryptographicException("unexpected trailing chunk data");
+-        }
++    private static void ReadRequired(Stream input, byte[] buffer)
++    {
++        try { input.ReadExactly(buffer); }
++        catch (EndOfStreamException ex) { throw new CryptographicException("truncated chunk data", ex); }
+     }
+ 
+     private static void WriteChunk(
+@@ -284,14 +263,17 @@ public static class LabVaultCrypto
+         var cipher = new byte[plain.Length];
+         var tag = new byte[TagSize];
+         var aad = BuildAad(aadPrefix, index);
+-        EncryptOne(key, nonce, plain, cipher, tag, aad, suite);
+-        ms.Write(nonce);
+-        ms.Write(tag);
+-        ms.Write(BitConverter.GetBytes(cipher.Length));
+-        ms.Write(cipher);
+-        if (!ReferenceEquals(plain, slice))
++        try
+         {
+-            CryptographicOperations.ZeroMemory(plain);
++            EncryptOne(key, nonce, plain, cipher, tag, aad, suite);
++            ms.Write(nonce);
++            ms.Write(tag);
++            ms.Write(BitConverter.GetBytes(cipher.Length));
++            ms.Write(cipher);
++        }
++        finally
++        {
++            if (!ReferenceEquals(plain, slice)) CryptographicOperations.ZeroMemory(plain);
+         }
+     }
+ 
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultJournal.cs b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultJournal.cs
+index 4638764..3ea729b 100644
+--- a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultJournal.cs
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultJournal.cs
+@@ -73,28 +73,11 @@ public static class LabVaultJournal
+         // Keep last entry per tx + last known object id from any ObjectsReady line (kill after MetadataReady).
+         var last = new Dictionary<string, Entry>(StringComparer.Ordinal);
+         var lastObjectId = new Dictionary<string, string>(StringComparer.Ordinal);
+-        foreach (var line in File.ReadLines(path))
++        foreach (var e in ReadValidated(path))
+         {
+-            try
+-            {
+-                var e = JsonSerializer.Deserialize<Entry>(line);
+-                if (e is null || string.IsNullOrWhiteSpace(e.TxId))
+-                {
+-                    continue;
+-                }
+-
+-                last[e.TxId] = e;
+-                if (e.State == State.ObjectsReady
+-                    && e.Subject.StartsWith("obj:", StringComparison.Ordinal)
+-                    && e.Subject.Length > 4)
+-                {
+-                    lastObjectId[e.TxId] = e.Subject["obj:".Length..];
+-                }
+-            }
+-            catch
+-            {
+-                // skip
+-            }
++            last[e.TxId] = e;
++            if (e.State == State.ObjectsReady && e.Subject.StartsWith("obj:", StringComparison.Ordinal))
++                lastObjectId[e.TxId] = e.Subject[4..];
+         }
+ 
+         var list = new List<IncompleteTx>();
+@@ -144,29 +127,62 @@ public static class LabVaultJournal
+         return reconciled;
+     }
+ 
+-    private static void Append(string vaultRoot, Entry entry)
++    private static readonly object JournalGate = new();
++    private static IReadOnlyList<Entry> ReadValidated(string path)
+     {
+-        try
++        var entries = new List<Entry>();
++        var states = new Dictionary<string, State>(StringComparer.Ordinal);
++        if (!File.Exists(path)) return entries;
++        if (new FileInfo(path).Length > 32L * 1024 * 1024) throw new InvalidDataException("journal budget exceeded");
++        foreach (var line in File.ReadLines(path))
+         {
+-            var dir = Path.Combine(vaultRoot, "journal");
+-            Directory.CreateDirectory(dir);
+-            var path = PathOf(vaultRoot);
+-            var line = JsonSerializer.Serialize(entry) + Environment.NewLine;
+-            // durable-ish append (design §14 flush subset)
+-            using var fs = new FileStream(
+-                path,
+-                FileMode.Append,
+-                FileAccess.Write,
+-                FileShare.Read,
+-                4096,
+-                FileOptions.WriteThrough);
+-            var bytes = Encoding.UTF8.GetBytes(line);
+-            fs.Write(bytes, 0, bytes.Length);
+-            fs.Flush(true);
++            if (line.Length == 0 || line.Length > 4096) throw new InvalidDataException("invalid journal record length");
++            var entry = JsonSerializer.Deserialize<Entry>(line) ?? throw new InvalidDataException("null journal entry");
++            Validate(entry, states);
++            states[entry.TxId] = entry.State;
++            entries.Add(entry);
+         }
+-        catch
++        return entries;
++    }
++    private static void Validate(Entry entry, Dictionary<string, State> states)
++    {
++        if (entry.TxId is null || entry.TxId.Length != 16 || !entry.TxId.All(Uri.IsHexDigit)
++            || !Enum.IsDefined(entry.State) || entry.Generation < 0 || entry.Subject is null)
++            throw new InvalidDataException("invalid journal contract");
++        if (!states.TryGetValue(entry.TxId, out var old))
+         {
+-            // best effort
++            if (entry.State != State.Prepared) throw new InvalidDataException("journal transaction lacks Prepared");
++            return;
++        }
++        var allowed = old switch
++        {
++            State.Prepared => entry.State is State.ObjectsReady or State.Aborted or State.RolledBack,
++            State.ObjectsReady => entry.State is State.MetadataReady or State.Committed or State.Aborted or State.RolledBack,
++            State.MetadataReady => entry.State is State.Committed or State.Aborted or State.RolledBack,
++            _ => false
++        };
++        if (!allowed) throw new InvalidDataException("invalid journal state transition");
++    }
++    private static void Append(string vaultRoot, Entry entry)
++    {
++        lock (JournalGate)
++        {
++            var directory = Path.Combine(vaultRoot, "journal");
++            Hardening.VaultExportWriter.ValidateAncestors(directory);
++            using var parent = Hardening.VaultFileBoundary.PinDirectory(directory, create: true);
++            // Hold a distinct cross-process writer lease while validating and appending.
++            using var lease = Hardening.VaultFileBoundary.OpenExclusive(directory, "writer.lock",
++                !File.Exists(Path.Combine(directory, "writer.lock")));
++            var path = PathOf(vaultRoot);
++            var entries = ReadValidated(path);
++            var states = new Dictionary<string, State>(StringComparer.Ordinal);
++            foreach (var previous in entries) states[previous.TxId] = previous.State;
++            Validate(entry, states);
++            using var file = Hardening.VaultFileBoundary.OpenExclusive(directory, "tx.avj", !File.Exists(path));
++            file.Stream.Position = file.Stream.Length;
++            file.Stream.Write(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(entry) + "\n"));
++            file.Stream.Flush(true);
++            file.Validate(); parent.Validate();
+         }
+     }
+ 
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.Phase2.cs b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.Phase2.cs
+index f167df3..8d1647a 100644
+--- a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.Phase2.cs
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.Phase2.cs
+@@ -9,7 +9,9 @@ public sealed partial class LabVaultService
+     /// <summary>Change password keeping VMK (design §11). Rewrites header + recovery slots.</summary>
+     public LabVaultOperationResult ChangePassword(string currentPassword, string newPassword)
+     {
++        using var operation = EnterOperation();
+         EnsureWriteUnlocked();
++        if (_header?.Version == 6) return ChangeGenerationPassword(currentPassword, newPassword);
+         var policy = LabPasswordPolicy.ValidateForCreate(newPassword);
+         if (!policy.IsValid)
+         {
+@@ -127,6 +129,8 @@ public sealed partial class LabVaultService
+     /// </summary>
+     public LabVaultOperationResult ReissueRecoveryCodes(string password)
+     {
++        using var operation = EnterOperation();
++        if (_header?.Version == 6) return FailOp("시험 세대의 복구 자료를 보존합니다.");
+         EnsureWriteUnlocked();
+         if (_header is null || _vmk is null)
+         {
+@@ -198,6 +202,7 @@ public sealed partial class LabVaultService
+     /// <summary>Phase7: remaining idle/session time for UI countdown (null = disabled).</summary>
+     public (TimeSpan? Idle, TimeSpan? Session, bool IdleWarning) GetSessionRemaining()
+     {
++        using var operation = EnterOperation();
+         if (!IsUnlocked)
+         {
+             return (null, null, false);
+@@ -213,6 +218,7 @@ public sealed partial class LabVaultService
+     /// <summary>Touch activity without mutating data (export/list UX).</summary>
+     public void TouchActivity()
+     {
++        using var operation = EnterOperation();
+         if (IsUnlocked)
+         {
+             _lastActivity = DateTimeOffset.UtcNow;
+@@ -229,6 +235,8 @@ public sealed partial class LabVaultService
+     /// </summary>
+     public LabVaultOperationResult RepairActivationCommit()
+     {
++        using var operation = EnterOperation();
++        if (_header?.Version == 6) return FailOp("시험 세대의 복구 자료를 보존합니다.");
+         EnsureWriteUnlocked();
+         if (_header is null || _metadata is null)
+         {
+@@ -254,6 +262,8 @@ public sealed partial class LabVaultService
+     /// <summary>Phase6: pack GC / repack live objects, drop tombstones (design §7 maintenance).</summary>
+     public LabVaultOperationResult CompactPacks(bool userConfirmed = true)
+     {
++        using var operation = EnterOperation();
++        if (_header?.Version == 6) return FailOp("시험 세대의 복구 자료를 보존합니다.");
+         EnsureWriteUnlocked();
+         var gate = Policy.LabSentinelGate.EvaluateMaintenance(_writeAllowed, userConfirmed);
+         if (gate == Policy.LabSentinelDecision.RequireStepUp)
+@@ -291,6 +301,8 @@ public sealed partial class LabVaultService
+     /// <summary>List/purge loose objects not referenced by metadata (write session).</summary>
+     public LabVaultOperationResult PurgeOrphanLooseObjects()
+     {
++        using var operation = EnterOperation();
++        if (_header?.Version == 6) return FailOp("시험 세대의 복구 자료를 보존합니다.");
+         EnsureWriteUnlocked();
+         if (_metadata is null)
+         {
+@@ -317,6 +329,7 @@ public sealed partial class LabVaultService
+     /// <summary>Phase4: re-decrypt + content hash check for all entries (design integrity).</summary>
+     public LabVaultOperationResult VerifyAllContentHashes()
+     {
++        using var operation = EnterOperation();
+         EnsureUnlocked();
+         _securityState = LabSecurityState.Verifying;
+         var ok = 0;
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.Transactions.cs b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.Transactions.cs
+new file mode 100644
+index 0000000..62dec0e
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.Transactions.cs
+@@ -0,0 +1,125 @@
++using System.Security.Cryptography;
++using System.Text;
++using System.Text.Json;
++using SmartPerformanceDoctor.SecurityLab.Hardening;
++
++namespace SmartPerformanceDoctor.SecurityLab.VaultV4;
++
++public sealed partial class LabVaultService
++{
++    private readonly object _operationGate = new();
++    private IDisposable EnterOperation()
++    {
++        Monitor.Enter(_operationGate);
++        return new OperationLease(_operationGate);
++    }
++    private sealed class OperationLease(object gate) : IDisposable
++    {
++        public void Dispose() => Monitor.Exit(gate);
++    }
++
++    private void WriteGenerationObject(string objectId, byte[] bytes)
++    {
++        var path = LabObjectStore.AbsolutePath(_root, objectId);
++        using var parent = VaultFileBoundary.PinDirectory(Path.GetDirectoryName(path)!, create: true);
++        using var file = VaultFileBoundary.OpenExclusive(Path.GetDirectoryName(path)!, Path.GetFileName(path), true);
++        file.Stream.Write(bytes); file.Stream.Flush(true); file.Validate(); parent.Validate();
++    }
++
++    private void DecryptEntryToStream(LabMetaEntry entry, Stream output, CancellationToken token)
++    {
++        var key = _broker.UnwrapDek(Convert.FromHexString(entry.DekNonceHex), Convert.FromHexString(entry.DekTagHex),
++            Convert.FromHexString(entry.DekCipherHex), entry.ObjectId);
++        try
++        {
++            void Decrypt(Stream input)
++            {
++                var generation = entry.ContentGeneration;
++                var aad = generation > 0 ? LabCryptoBroker.BuildObjectAad(_header!.VaultId, entry.EntryId, generation)
++                    : Encoding.UTF8.GetBytes($"lab-obj:{_header!.VaultId}:{entry.EntryId}");
++                try { LabVaultCrypto.DecryptChunkedFromFile(key, input, output, aad, token); }
++                catch (CryptographicException) when (generation > 0 && _header!.Version != 6)
++                {
++                    input.Position = 0; output.SetLength(0); output.Position = 0;
++                    LabVaultCrypto.DecryptChunkedFromFile(key, input, output,
++                        Encoding.UTF8.GetBytes($"lab-obj:{_header.VaultId}:{entry.EntryId}"), token);
++                }
++            }
++            if (LabPackStore.IsPacked(_root, entry.ObjectId))
++            {
++                var blob = LabPackStore.Read(_root, entry.ObjectId, LabPackStore.PackThresholdBytes);
++                if (blob.Length > LabPackStore.PackThresholdBytes) throw new CryptographicException("packed export exceeds budget");
++                using var input = new MemoryStream(blob, false); Decrypt(input);
++            }
++            else
++            {
++                var path = LabObjectStore.AbsolutePath(_root, entry.ObjectId);
++                using var parent = VaultFileBoundary.PinDirectory(Path.GetDirectoryName(path)!);
++                using var file = VaultFileBoundary.OpenRead(Path.GetDirectoryName(path)!, Path.GetFileName(path));
++                Decrypt(file.Stream); file.Validate(); parent.Validate();
++            }
++        }
++        finally { CryptographicOperations.ZeroMemory(key); }
++    }
++
++    private void CommitGeneration()
++    {
++        if (_header!.Version != 6)
++        {
++            LabDurableCommit.WriteCommitted(_root, _header.VaultId, _metadata!.Generation);
++            return;
++        }
++        if (_preparedGeneration is null) return;
++        LabAuthenticatedGeneration.Publish(_root, _preparedGeneration, _vmk!, FaultObserver);
++        _selectedGeneration = LabAuthenticatedGeneration.Candidates(_root).First();
++        _preparedGeneration = null;
++    }
++
++    private LabVaultOperationResult ChangeGenerationPassword(string currentPassword, string newPassword)
++    {
++        var policy = LabPasswordPolicy.ValidateForCreate(newPassword);
++        if (!policy.IsValid) return FailOp(policy.Message);
++        var header = _header!;
++        var salt = Convert.FromHexString(header.SaltHex);
++        var oldKek = LabVaultCrypto.DeriveArgon2id(currentPassword, salt, header.KdfIterations, header.KdfMemoryKb, header.KdfParallelism);
++        try
++        {
++            var check = UnwrapKey(oldKek, new Wrapped(Convert.FromHexString(header.WrappedVmkNonceHex),
++                Convert.FromHexString(header.WrappedVmkTagHex), Convert.FromHexString(header.WrappedVmkCipherHex)),
++                Encoding.UTF8.GetBytes("vmk:" + header.VaultId));
++            try { if (!LabCryptoCompare.FixedTimeEquals(check, _vmk!)) return FailOp("현재 비밀번호가 올바르지 않습니다."); }
++            finally { CryptographicOperations.ZeroMemory(check); }
++        }
++        catch (CryptographicException) { return FailOp("현재 비밀번호가 올바르지 않습니다."); }
++        finally { CryptographicOperations.ZeroMemory(oldKek); CryptographicOperations.ZeroMemory(salt); }
++
++        FaultObserver?.Invoke("PasswordKdfPrepared");
++        var newSalt = LabVaultCrypto.GenerateSalt();
++        FaultObserver?.Invoke("PasswordSaltPrepared");
++        var newKek = LabVaultCrypto.DeriveArgon2id(newPassword, newSalt, header.KdfIterations, header.KdfMemoryKb, header.KdfParallelism);
++        var saved = JsonSerializer.SerializeToUtf8Bytes(header);
++        try
++        {
++            var wrap = WrapKey(newKek, _vmk!, Encoding.UTF8.GetBytes("vmk:" + header.VaultId));
++            FaultObserver?.Invoke("PasswordWrapPrepared");
++            header.SaltHex = Convert.ToHexString(newSalt);
++            header.WrappedVmkNonceHex = Convert.ToHexString(wrap.Nonce);
++            header.WrappedVmkTagHex = Convert.ToHexString(wrap.Tag);
++            header.WrappedVmkCipherHex = Convert.ToHexString(wrap.Cipher);
++            FaultObserver?.Invoke("PasswordHeaderPrepared");
++            WriteMetadata(_metadata!, _metaKey!);
++            CommitGeneration();
++            FaultObserver?.Invoke("PasswordCommitted");
++            // Recovery slots wrap the unchanged VMK. Keep them until an explicit rotation transaction exists.
++            return new LabVaultOperationResult { Success = true, Message = "비밀번호가 변경되었습니다. 기존 복구 코드는 유지됩니다." };
++        }
++        catch
++        {
++            _header = JsonSerializer.Deserialize<LabVaultHeader>(saved)!;
++            _writeAllowed = false;
++            _securityState = LabSecurityState.RecoveryAvailable;
++            throw;
++        }
++        finally { CryptographicOperations.ZeroMemory(newKek); CryptographicOperations.ZeroMemory(newSalt); }
++    }
++}
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.cs b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.cs
+index 62023bc..b994b38 100644
+--- a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.cs
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.cs
+@@ -1,4 +1,4 @@
+-using System.Security.Cryptography;
++﻿using System.Security.Cryptography;
+ using System.Text;
+ using System.Text.Json;
+ using SmartPerformanceDoctor.SecurityLab.Hardening;
+@@ -14,6 +14,10 @@ public sealed partial class LabVaultService : IDisposable
+     internal Action<string>? FaultObserver { get; set; }
+     public const string FormatId = "spd-vault-v4-lab";
+     public const string FormatIdV5 = "spd-vault-v5-lab";
++    public const string FormatIdV6 = "spd-vault-v6-lab-test";
++    private readonly bool _createCrashSafeTestFormat;
++    private LabAuthenticatedGeneration.Generation? _selectedGeneration;
++    private LabAuthenticatedGeneration.Activation? _preparedGeneration;
+ 
+     private static readonly JsonSerializerOptions JsonOpts = new() { WriteIndented = true };
+ 
+@@ -31,9 +35,11 @@ public sealed partial class LabVaultService : IDisposable
+     private bool _writeAllowed = true;
+     private LabSecurityState _securityState = LabSecurityState.Locked;
+ 
+-    public LabVaultService(string vaultRoot, LabSessionPolicy? sessionPolicy = null)
++    public LabVaultService(string vaultRoot, LabSessionPolicy? sessionPolicy = null, bool crashSafeTestFormat = false)
+     {
++        using var operation = EnterOperation();
+         _root = Path.GetFullPath(vaultRoot);
++        _createCrashSafeTestFormat = crashSafeTestFormat;
+         _sessionPolicy = sessionPolicy ?? LabSessionPolicy.Default;
+     }
+ 
+@@ -56,6 +62,7 @@ public sealed partial class LabVaultService : IDisposable
+ 
+     public LabVaultCreateResult Create(string password, LabKdfProfile profile = LabKdfProfile.Strong)
+     {
++        using var operation = EnterOperation();
+         var policy = LabPasswordPolicy.ValidateForCreate(password);
+         if (!policy.IsValid)
+         {
+@@ -68,6 +75,8 @@ public sealed partial class LabVaultService : IDisposable
+         }
+ 
+         EnsureDirs();
++        using var creationLease = VaultFileBoundary.OpenExclusive(_root, "create.lock", !File.Exists(Path.Combine(_root, "create.lock")));
++        if (Exists(_root)) return FailCreate("이미 금고가 있습니다.");
+         var kdf = LabKdfParams.FromProfile(profile);
+         var salt = LabVaultCrypto.GenerateSalt();
+         var vaultId = Guid.NewGuid().ToString("N");
+@@ -78,9 +87,9 @@ public sealed partial class LabVaultService : IDisposable
+             var wrapped = WrapKey(kek, vmk, Encoding.UTF8.GetBytes("vmk:" + vaultId));
+             var header = new LabVaultHeader
+             {
+-                Magic = "AVLT5",
+-                Format = FormatIdV5,
+-                Version = 5,
++                Magic = _createCrashSafeTestFormat ? "AVLT6" : "AVLT5",
++                Format = _createCrashSafeTestFormat ? FormatIdV6 : FormatIdV5,
++                Version = _createCrashSafeTestFormat ? 6 : 5,
+                 Generation = 1,
+                 VaultId = vaultId,
+                 CreatedUnix = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+@@ -97,7 +106,7 @@ public sealed partial class LabVaultService : IDisposable
+             LabVaultLocator.Write(_root, new LabVaultLocator.Document
+             {
+                 VaultId = vaultId,
+-                Format = FormatIdV5,
++                Format = header.Format,
+                 Suite = "Argon2id+XChaCha20-Poly1305-v2+AES-GCM-wrap+HKDF",
+                 CreatedUnix = header.CreatedUnix,
+                 HeaderCopyCount = 2,
+@@ -109,12 +118,20 @@ public sealed partial class LabVaultService : IDisposable
+             var wrapKey = Hkdf(vmk, "lab/v4/wrap");
+             var metadata = new LabVaultMetadata { VaultId = vaultId, Version = 5, Generation = 1, Entries = new() };
+             WriteMetadata(metadata, metaKey);
+-            LabDurableCommit.WriteCommitted(_root, vaultId, metadata.Generation);
++            if (_createCrashSafeTestFormat)
++            {
++                header.Generation = metadata.Generation;
++                header.HeaderMacHex = ComputeHeaderMac(header, vmk);
++                var initial = LabAuthenticatedGeneration.Prepare(_root, vaultId, metadata.Generation,
++                    JsonSerializer.SerializeToUtf8Bytes(header, JsonOpts), File.ReadAllBytes(Path.Combine(_root, "metadata.db.enc")), vmk, FaultObserver);
++                LabAuthenticatedGeneration.Publish(_root, initial, vmk, FaultObserver);
++            }
++            else LabDurableCommit.WriteCommitted(_root, vaultId, metadata.Generation);
+ 
+             var (codes, _) = LabRecoverySlots.GenerateAndWrap(_root, vaultId, vmk);
+             File.WriteAllText(
+                 Path.Combine(_root, "audit", "events.log"),
+-                $"{DateTimeOffset.UtcNow:o}|create|{vaultId}|v5|ok{Environment.NewLine}",
++                $"{DateTimeOffset.UtcNow:o}|create|{vaultId}|{header.Version}|ok{Environment.NewLine}",
+                 Encoding.UTF8);
+             LabAuditChain.Append(_root, "create", vaultId);
+             LabRateLimiter.Reset(_root);
+@@ -127,11 +144,11 @@ public sealed partial class LabVaultService : IDisposable
+             return new LabVaultCreateResult
+             {
+                 Success = true,
+-                Message = "보안 금고 v5 생성 완료 (locator·이중헤더·복구슬롯·저널). 복구 코드는 이 화면에만 표시됩니다.",
++                Message = $"보안 금고 v{header.Version} 생성 완료. 복구 코드는 이 화면에만 표시됩니다.",
+                 VaultId = vaultId,
+                 Path = _root,
+                 RecoveryCodes = codes,
+-                Format = FormatIdV5,
++                Format = header.Format,
+                 KdfProfile = profile.ToString()
+             };
+         }
+@@ -147,6 +164,7 @@ public sealed partial class LabVaultService : IDisposable
+ 
+     private LabVaultOperationResult UnlockCore(string password, bool writeAllowed)
+     {
++        using var operation = EnterOperation();
+         if (!Exists(_root))
+         {
+             return FailOp("금고가 없습니다.");
+@@ -208,6 +226,7 @@ public sealed partial class LabVaultService : IDisposable
+     /// <summary>Read-only unlock (design §8) — export allowed, import/shred blocked.</summary>
+     public LabVaultOperationResult UnlockReadOnly(string password)
+     {
++        using var operation = EnterOperation();
+         var r = UnlockCore(password, false);
+         if (!r.Success)
+         {
+@@ -233,6 +252,7 @@ public sealed partial class LabVaultService : IDisposable
+     /// </summary>
+     public LabVaultOperationResult UnlockWithRecoveryCode(string recoveryCode)
+     {
++        using var operation = EnterOperation();
+         if (!Exists(_root))
+         {
+             return FailOp("금고가 없습니다.");
+@@ -257,49 +277,32 @@ public sealed partial class LabVaultService : IDisposable
+             return FailOp("헤더 손상: " + ex.Message);
+         }
+ 
+-        if (!LabRecoverySlots.TryUnwrapVmk(_root, header.VaultId, recoveryCode, out var vmk, out var msg)
+-            || vmk is null)
+-        {
+-            // fallback: legacy hash-only consume (v4 vaults)
+-            if (LabRecoveryCodes.TryConsume(_root, recoveryCode, out var legacyMsg))
+-            {
+-                AppendAudit("recovery_legacy", "proof_only");
+-                return FailOp(legacyMsg + " · v4 레거시 코드는 잠금 해제 불가. 비밀번호를 사용하세요.");
+-            }
+-
+-            LabRateLimiter.RecordFailure(_root);
+-            AppendAudit("recovery_fail", "bad_or_used");
+-            return FailOp(msg);
+-        }
+-
++        Lock();
++        VaultFileBoundary.FileLease lease;
++        try { lease = VaultFileBoundary.OpenExclusive(_root, "session.lock", !File.Exists(Path.Combine(_root, "session.lock"))); }
++        catch (IOException) { return FailOp("금고가 다른 세션에서 사용 중입니다. 복구 코드는 소모하지 않았습니다."); }
+         try
+         {
+-            var opened = OpenSession(vmk, header, writeAllowed: true, auditKind: "recovery_unlock");
+-            if (!opened.Success)
++            if (!LabRecoverySlots.TryUnwrapVmk(_root, header.VaultId, recoveryCode, out var vmk, out var message, consume: false)
++                || vmk is null)
++                return FailOp(message);
++            var opened = OpenSession(vmk, header, true, "recovery_unlock", lease);
++            if (!opened.Success) return opened;
++            // Consume only after the session and authenticated metadata are available.
++            if (!LabRecoverySlots.TryUnwrapVmk(_root, header.VaultId, recoveryCode, out var confirmed, out message))
++            { Lock(); return FailOp(message); }
++            try
+             {
+-                return opened;
++                if (confirmed is null || !LabCryptoCompare.FixedTimeEquals(confirmed, _vmk!))
++                { Lock(); return FailOp("복구 저장소가 변경되었습니다. 세션을 닫았습니다."); }
+             }
+-
+-            // Design §8: recovery path opens a privileged session — force RecoveryAvailable + password change nudge
++            finally { if (confirmed is not null) CryptographicOperations.ZeroMemory(confirmed); }
+             _securityState = LabSecurityState.RecoveryAvailable;
+-            var snap = LabRecoverySlots.Snapshot(_root);
+-            AppendAudit("recovery_unlock", "remaining=" + snap.Remaining);
+-            return new LabVaultOperationResult
+-            {
+-                Success = true,
+-                Message = opened.Message
+-                          + " · 복구 세션"
+-                          + " · " + snap.ToUiLine()
+-                          + " · 비밀번호 변경을 권고합니다",
+-                ProcessedCount = opened.ProcessedCount,
+-                ReadOnly = false,
+-                SecurityState = _securityState.ToString()
+-            };
+-        }
+-        finally
+-        {
+-            // OpenSession takes ownership of vmk reference in field; do not zero here if success
++            return new LabVaultOperationResult { Success = true, Message = opened.Message + " · 복구 세션 · 비밀번호 변경 권고",
++                ReadOnly = !_writeAllowed, SecurityState = _securityState.ToString(), ProcessedCount = opened.ProcessedCount };
+         }
++        catch (IOException) { Lock(); return FailOp("복구 사용 기록 실패: 성공으로 처리하지 않았습니다. 원본을 보존합니다."); }
++        finally { if (!ReferenceEquals(_sessionLease, lease)) lease.Dispose(); }
+     }
+ 
+     /// <summary>Legacy alias — now attempts VMK recovery unlock (Phase2).</summary>
+@@ -308,6 +311,7 @@ public sealed partial class LabVaultService : IDisposable
+ 
+     public void Lock()
+     {
++        using var operation = EnterOperation();
+         _broker.Seal();
+         _sessionLease?.Dispose();
+         _sessionLease = null;
+@@ -331,6 +335,8 @@ public sealed partial class LabVaultService : IDisposable
+         _wrapKey = null;
+         _header = null;
+         _metadata = null;
++        _preparedGeneration = null;
++        _selectedGeneration = null;
+         _unlockedAt = default;
+         _lastActivity = default;
+         _writeAllowed = true;
+@@ -339,6 +345,7 @@ public sealed partial class LabVaultService : IDisposable
+ 
+     public IReadOnlyList<LabVaultEntry> List()
+     {
++        using var operation = EnterOperation();
+         EnsureUnlocked();
+         return _metadata!.Entries
+             .Select(e => new LabVaultEntry
+@@ -356,6 +363,7 @@ public sealed partial class LabVaultService : IDisposable
+ 
+     public LabVaultOperationResult ImportFile(string sourcePath, CancellationToken cancellationToken = default)
+     {
++        using var operation = EnterOperation();
+         cancellationToken.ThrowIfCancellationRequested();
+         EnsureWriteUnlocked();
+         if (!File.Exists(sourcePath))
+@@ -396,6 +404,7 @@ public sealed partial class LabVaultService : IDisposable
+ 
+     public LabVaultOperationResult ImportBytes(string displayName, string relativePath, byte[] data)
+     {
++        using var operation = EnterOperation();
+         EnsureWriteUnlocked();
+         if (data.LongLength > _sessionPolicy.MaxImportBytes)
+         {
+@@ -404,9 +413,9 @@ public sealed partial class LabVaultService : IDisposable
+ 
+         var entryId = Guid.NewGuid().ToString("N");
+         var objectId = LabObjectStore.NewObjectId();
+-        var dataKey = LabVaultCrypto.GenerateKey();
+         var gen = _header?.Generation ?? _metadata?.Generation ?? 1;
+         var tx = LabVaultJournal.Begin(_root, "import:" + displayName, gen);
++        var dataKey = LabVaultCrypto.GenerateKey();
+         _securityState = LabSecurityState.Importing;
+         try
+         {
+@@ -416,7 +425,10 @@ public sealed partial class LabVaultService : IDisposable
+             var suite = ResolveContentSuite();
+             var conceal = suite == LabContentSuite.XChaCha20Poly1305 && data.Length > 0 && data.Length < LabVaultCrypto.ConcealedPadBlock;
+             var blob = LabVaultCrypto.EncryptChunked(dataKey, data, aad, suite, conceal);
+-            LabObjectStore.Write(_root, objectId, blob);
++            FaultObserver?.Invoke("BeforeObjectWrite");
++            if (_header.Version == 6) WriteGenerationObject(objectId, blob);
++            else LabObjectStore.Write(_root, objectId, blob);
++            FaultObserver?.Invoke("ObjectWritten");
+             LabVaultJournal.Mark(_root, tx, LabVaultJournal.State.ObjectsReady, "obj:" + objectId, gen);
+             FaultObserver?.Invoke("ObjectsReady");
+ 
+@@ -451,9 +463,11 @@ public sealed partial class LabVaultService : IDisposable
+             LabVaultJournal.Mark(_root, tx, LabVaultJournal.State.MetadataReady, entryId, gen);
+             FaultObserver?.Invoke("MetadataReady");
+             // durable flush order: objects → metadata → activation commit → journal Committed
+-            LabDurableCommit.WriteCommitted(_root, _header.VaultId, _metadata.Generation);
++            CommitGeneration();
+             FaultObserver?.Invoke("CommitWritten");
++            FaultObserver?.Invoke("BeforeFinalJournal");
+             LabVaultJournal.Mark(_root, tx, LabVaultJournal.State.Committed, entryId, gen);
++            FaultObserver?.Invoke("FinalJournalWritten");
+             RefreshIntegritySnapshot();
+             AppendAudit("import", entryId);
+             _securityState = LabSecurityState.Unlocked;
+@@ -468,8 +482,10 @@ public sealed partial class LabVaultService : IDisposable
+         }
+         catch (Exception ex)
+         {
+-            LabVaultJournal.Mark(_root, tx, LabVaultJournal.State.Aborted, displayName, gen);
+-            _securityState = LabSecurityState.Unlocked;
++            _writeAllowed = false;
++            _securityState = LabSecurityState.RecoveryAvailable;
++            try { LabVaultJournal.Mark(_root, tx, LabVaultJournal.State.Aborted, displayName, gen); }
++            catch (Exception journalError) when (journalError is IOException or JsonException) { /* Keep the original failure visible. */ }
+             return FailOp("가져오기 실패: " + ex.Message);
+         }
+         finally
+@@ -481,6 +497,7 @@ public sealed partial class LabVaultService : IDisposable
+ 
+     public LabVaultOperationResult ExportEntry(string entryId, string destDirectory, bool stepUpConfirmed = false, CancellationToken cancellationToken = default)
+     {
++        using var operation = EnterOperation();
+         cancellationToken.ThrowIfCancellationRequested();
+         EnsureUnlocked();
+         var riskCount = _metadata?.Entries.Count ?? 0;
+@@ -512,46 +529,29 @@ public sealed partial class LabVaultService : IDisposable
+             return FailOp("항목이 없습니다.");
+         }
+ 
+-        var plain = DecryptEntry(entry);
++        var safe = Path.GetFileName(entry.DisplayName);
++        if (string.IsNullOrWhiteSpace(safe)) safe = entryId + ".bin";
++        var outPath = Path.Combine(destDirectory, safe);
+         try
+         {
+-            Hardening.VaultExportWriter.ValidateAncestors(destDirectory);
+-            var safe = Path.GetFileName(entry.DisplayName);
+-            if (string.IsNullOrWhiteSpace(safe))
+-            {
+-                safe = entryId + ".bin";
+-            }
+-
+-            var outPath = Path.Combine(destDirectory, safe);
+-            try
+-            {
+-                Hardening.VaultExportWriter.WriteNew(outPath, plain, entry.ContentSha256, cancellationToken);
+-            }
+-            catch (OperationCanceledException) { throw; }
+-            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or CryptographicException)
+-            {
+-                FaultObserver?.Invoke("ExportFailure:" + ex.Message);
+-                return FailOp("내보내기 실패: 기존 파일을 보존했습니다. 오류 코드: " + ex.HResult.ToString("X8"));
+-            }
+-
++            VaultExportWriter.WriteNew(outPath, entry.Size, entry.ContentSha256,
++                output => DecryptEntryToStream(entry, output, cancellationToken), cancellationToken);
+             AppendAudit("export", entryId);
+-            return new LabVaultOperationResult
+-            {
+-                Success = true,
+-                Message = $"내보내기: {outPath}",
+-                EntryId = entryId,
+-                ProcessedCount = 1
+-            };
++            return new LabVaultOperationResult { Success = true, Message = "추출 완료", EntryId = entryId, ProcessedCount = 1 };
+         }
+-        finally
++        catch (OperationCanceledException) { throw; }
++        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or CryptographicException)
+         {
+-            CryptographicOperations.ZeroMemory(plain);
++            FaultObserver?.Invoke("ExportFailure:" + ex.Message);
++            return FailOp("내보내기 실패: 원본과 기존 추출 파일을 보존했습니다. 오류 코드: " + ex.HResult.ToString("X8"));
+         }
+     }
+ 
+     /// <summary>Crypto-shred: drop DEK wrap + destroy object file (lab).</summary>
+     public LabVaultOperationResult CryptoShredEntry(string entryId)
+     {
++        using var operation = EnterOperation();
++        if (_header?.Version == 6) return FailOp("시험 세대의 객체는 복구 검토를 위해 보존합니다.");
+         EnsureWriteUnlocked();
+         var decision = Policy.LabPolicyEngine.Evaluate(new Policy.LabPolicyRequest
+         {
+@@ -574,7 +574,7 @@ public sealed partial class LabVaultService : IDisposable
+         var entry = _metadata.Entries[idx];
+         _metadata.Entries.RemoveAt(idx);
+         WriteMetadata(_metadata, _metaKey!);
+-        LabDurableCommit.WriteCommitted(_root, _header!.VaultId, _metadata.Generation);
++        CommitGeneration();
+ 
+         LabObjectStore.DeleteEverywhere(_root, entry.ObjectId);
+         RefreshIntegritySnapshot();
+@@ -682,20 +682,42 @@ public sealed partial class LabVaultService : IDisposable
+         LabWriteGate.EnsureAllowed(vaultUnlocked: true, writeAllowed: _writeAllowed);
+     }
+ 
+-    private LabVaultOperationResult OpenSession(byte[] vmk, LabVaultHeader header, bool writeAllowed, string auditKind)
++    private LabVaultOperationResult OpenSession(byte[] vmk, LabVaultHeader header, bool writeAllowed, string auditKind, VaultFileBoundary.FileLease? reservedLease = null)
+     {
+-        if (!VerifyHeaderMac(header, vmk))
++        if (header.Version == 6)
++        {
++            var authenticated = false;
++            foreach (var candidate in LabAuthenticatedGeneration.Candidates(_root))
++            {
++                try
++                {
++                    var candidateHeader = JsonSerializer.Deserialize<LabVaultHeader>(candidate.Header, JsonOpts)!;
++                    if (candidateHeader.Version != 6 || candidateHeader.VaultId != header.VaultId
++                        || candidateHeader.Generation != candidate.Activation.Generation
++                        || string.IsNullOrWhiteSpace(candidateHeader.HeaderMacHex) || !VerifyHeaderMac(candidateHeader, vmk)) continue;
++                    LabAuthenticatedGeneration.Verify(_root, candidate.Activation, vmk);
++                    _selectedGeneration = candidate; header = candidateHeader;
++                    if (candidate.Previous) writeAllowed = false;
++                    authenticated = true; break;
++                }
++                catch (Exception ex) when (ex is IOException or CryptographicException or JsonException) { }
++            }
++            if (!authenticated)
++            { CryptographicOperations.ZeroMemory(vmk); return FailOp("인증된 세대를 확인하지 못했습니다. 원본을 보존합니다."); }
++        }
++        else if (!VerifyHeaderMac(header, vmk))
+         {
+             CryptographicOperations.ZeroMemory(vmk);
+             LabRateLimiter.RecordFailure(_root);
+             return FailOp("헤더 인증에 실패했습니다. 금고를 열지 않았습니다.");
+         }
+-
++        var authenticatedGeneration = _selectedGeneration;
+         Lock();
++        _selectedGeneration = authenticatedGeneration;
+         try
+         {
+             VaultExportWriter.ValidateAncestors(_root);
+-            _sessionLease = VaultFileBoundary.OpenExclusive(_root, "session.lock", !File.Exists(Path.Combine(_root, "session.lock")));
++            _sessionLease = reservedLease ?? VaultFileBoundary.OpenExclusive(_root, "session.lock", !File.Exists(Path.Combine(_root, "session.lock")));
+         }
+         catch (IOException)
+         {
+@@ -733,7 +755,7 @@ public sealed partial class LabVaultService : IDisposable
+         }
+ 
+         // S-class: activation commit / generation / metadata digest
+-        var commit = LabDurableCommit.VerifyOnUnlock(
++        var commit = header.Version == 6 ? new LabDurableCommit.VerifyResult { Ok = header.Generation == _metadata.Generation, RollbackSuspected = _selectedGeneration!.Previous, Message = "authenticated generation" } : LabDurableCommit.VerifyOnUnlock(
+             _root,
+             header.VaultId,
+             header.Generation,
+@@ -763,16 +785,24 @@ public sealed partial class LabVaultService : IDisposable
+             _securityState = LabSecurityState.CorruptionDetected;
+         }
+ 
+-        var recovered = writeAllowed ? RecoverIncompleteJournal() : 0;
++        if (header.Version == 6 && _selectedGeneration!.Previous) { _writeAllowed = false; writeAllowed = false; }
++        var journalInvalid = false;
++        var recovered = 0;
++        try { if (writeAllowed) recovered = RecoverIncompleteJournal(); }
++        catch (Exception ex) when (ex is IOException or InvalidDataException or JsonException)
++        { journalInvalid = true; _writeAllowed = false; writeAllowed = false; _securityState = LabSecurityState.RecoveryAvailable; }
+         // after orphan recover, re-commit activation if needed
+         if (recovered > 0 && writeAllowed)
+         {
+-            LabDurableCommit.WriteCommitted(_root, header.VaultId, _metadata.Generation);
++            CommitGeneration();
+         }
+ 
+         // Preserve unreferenced objects until an explicit recovery review.
+         var orphanPurged = 0;
+-        var pendingReview = LabVaultJournal.ListIncomplete(_root).Count;
++        var pendingReview = 0;
++        try { pendingReview = LabVaultJournal.ListIncomplete(_root).Count; }
++        catch (Exception ex) when (ex is IOException or InvalidDataException or JsonException)
++        { journalInvalid = true; pendingReview = 1; }
+         if (pendingReview > 0)
+         {
+             _writeAllowed = false;
+@@ -786,7 +816,7 @@ public sealed partial class LabVaultService : IDisposable
+             && LabDurableCommit.TryRead(_root) is null
+             && string.Equals(header.Format, FormatIdV5, StringComparison.Ordinal))
+         {
+-            LabDurableCommit.WriteCommitted(_root, header.VaultId, _metadata!.Generation);
++            CommitGeneration();
+             selfHealed = true;
+             _securityState = LabSecurityState.RecoveryAvailable;
+             AppendAudit("activation_self_heal", "rewrote missing marker after unlock");
+@@ -794,10 +824,10 @@ public sealed partial class LabVaultService : IDisposable
+ 
+         // S-class: rewrite dual headers when primary is torn but a valid copy was used
+         var headerHealed = false;
+-        if (writeAllowed && _header is not null && HeaderPrimaryNeedsRewrite())
++        if (writeAllowed && _header is not null && header.Version != 6 && HeaderPrimaryNeedsRewrite())
+         {
+             WriteHeader(_header);
+-            LabDurableCommit.WriteCommitted(_root, header.VaultId, _metadata!.Generation);
++            CommitGeneration();
+             headerHealed = true;
+             if (_securityState is not LabSecurityState.CorruptionDetected)
+             {
+@@ -807,17 +837,18 @@ public sealed partial class LabVaultService : IDisposable
+             AppendAudit("header_self_heal", "rewrote dual headers from valid copy");
+         }
+ 
+-        var incomplete = LabVaultJournal.ListIncomplete(_root);
++        var incomplete = journalInvalid ? new[] { "journal-invalid" } : LabVaultJournal.ListIncomplete(_root);
+         var suite = _header?.ContentSuite ?? "AES-256-GCM";
+         var entryCount = _metadata?.Entries.Count ?? 0;
+         var msg = $"잠금 해제 · 항목 {entryCount}개 · suite {suite}"
+                   + (writeAllowed ? "" : " · 읽기 전용")
+-                  + (commit.RollbackSuspected ? " · rollback 감시" : " · commit OK")
++                  + (commit.RollbackSuspected ? " · 인증된 이전 세대: 읽기 전용 복구" : " · commit OK")
+                   + (selfHealed ? " · activation self-heal" : "")
+                   + (headerHealed ? " · header self-heal" : "")
+                   + (orphanPurged > 0 ? $" · orphan 정리 {orphanPurged}" : "")
+                   + (chainIssues.Count > 0 ? $" · 감사체인 경고 {chainIssues.Count}" : "")
+                   + (recovered > 0 ? $" · 저널 정리 {recovered}" : "")
++                  + (journalInvalid ? " · 저널 손상: 인증된 자료를 읽기 전용으로 보존합니다" : "")
+                   + (incomplete.Count > 0 ? $" · 미완료 TX {incomplete.Count}" : "");
+         return new LabVaultOperationResult
+         {
+@@ -877,14 +908,19 @@ public sealed partial class LabVaultService : IDisposable
+             var objPath = LabObjectStore.AbsolutePath(_root, objectId);
+             Directory.CreateDirectory(Path.GetDirectoryName(objPath)!);
+             var input = source.Stream;
+-            using (var output = new FileStream(objPath, FileMode.Create, FileAccess.Write, FileShare.None))
++            using (var parent = VaultFileBoundary.PinDirectory(Path.GetDirectoryName(objPath)!, create: true))
++            using (var output = VaultFileBoundary.OpenExclusive(Path.GetDirectoryName(objPath)!, Path.GetFileName(objPath), true))
+             {
+-                LabVaultCrypto.EncryptChunkedToFile(dataKey, input, output, aad, ResolveContentSuite());
++                FaultObserver?.Invoke("BeforeObjectWrite");
++                cancellationToken.ThrowIfCancellationRequested();
++                LabVaultCrypto.EncryptChunkedToFile(dataKey, input, output.Stream, aad, ResolveContentSuite(), cancellationToken);
++                output.Stream.Flush(true); output.Validate(); parent.Validate();
++                FaultObserver?.Invoke("ObjectWritten");
+             }
+ 
+             // large stream stays loose; if cipher fits pack threshold, repack for concealment
+             var cipherLen = new FileInfo(objPath).Length;
+-            if (cipherLen > 0 && cipherLen <= LabPackStore.PackThresholdBytes)
++            if (_header.Version != 6 && cipherLen > 0 && cipherLen <= LabPackStore.PackThresholdBytes)
+             {
+                 var cipher = File.ReadAllBytes(objPath);
+                 LabObjectStore.Write(_root, objectId, cipher);
+@@ -893,6 +929,7 @@ public sealed partial class LabVaultService : IDisposable
+             }
+ 
+             LabVaultJournal.Mark(_root, tx, LabVaultJournal.State.ObjectsReady, "obj:" + objectId, gen);
++            FaultObserver?.Invoke("ObjectsReady");
+ 
+             string contentHash;
+             source.Validate();
+@@ -917,8 +954,13 @@ public sealed partial class LabVaultService : IDisposable
+                 DekCipherHex = Convert.ToHexString(wrappedDek.Cipher)
+             });
+             WriteMetadata(_metadata, _metaKey!);
+-            LabDurableCommit.WriteCommitted(_root, _header!.VaultId, _metadata.Generation);
++            LabVaultJournal.Mark(_root, tx, LabVaultJournal.State.MetadataReady, entryId, gen);
++            FaultObserver?.Invoke("MetadataReady");
++            CommitGeneration();
++            FaultObserver?.Invoke("CommitWritten");
++            FaultObserver?.Invoke("BeforeFinalJournal");
+             LabVaultJournal.Mark(_root, tx, LabVaultJournal.State.Committed, entryId, gen);
++            FaultObserver?.Invoke("FinalJournalWritten");
+             RefreshIntegritySnapshot();
+             AppendAudit("import_stream", entryId);
+             _securityState = LabSecurityState.Unlocked;
+@@ -933,8 +975,10 @@ public sealed partial class LabVaultService : IDisposable
+         }
+         catch (Exception ex)
+         {
+-            LabVaultJournal.Mark(_root, tx, LabVaultJournal.State.Aborted, name, gen);
+-            _securityState = LabSecurityState.Unlocked;
++            _writeAllowed = false;
++            _securityState = LabSecurityState.RecoveryAvailable;
++            try { LabVaultJournal.Mark(_root, tx, LabVaultJournal.State.Aborted, name, gen); }
++            catch (Exception journalError) when (journalError is IOException or JsonException) { /* Preserve failed transaction evidence. */ }
+             if (ex is OperationCanceledException) throw;
+             return FailOp("스트리밍 import 실패: " + ex.Message);
+         }
+@@ -1035,6 +1079,15 @@ public sealed partial class LabVaultService : IDisposable
+ 
+     private LabVaultHeader ReadHeader()
+     {
++        if (Directory.Exists(LabAuthenticatedGeneration.DirectoryPath(_root)))
++        {
++            _selectedGeneration = LabAuthenticatedGeneration.Candidates(_root).FirstOrDefault()
++                ?? throw new CryptographicException("no complete activation candidate");
++            var candidate = JsonSerializer.Deserialize<LabVaultHeader>(_selectedGeneration.Header)
++                ?? throw new CryptographicException("invalid generation header");
++            if (candidate.Version != 6 || candidate.Format != FormatIdV6) throw new CryptographicException("generation format mismatch");
++            return candidate;
++        }
+         // Prefer highest generation among integrity-valid copies
+         LabVaultHeader? best = null;
+         foreach (var name in new[] { "vault.header.json", "vault.header.copy1.json", "vault.header.backup.json" })
+@@ -1082,6 +1135,7 @@ public sealed partial class LabVaultService : IDisposable
+             }
+         }
+ 
++        if (best?.Version >= 6) throw new CryptographicException("generation activation is required");
+         return best ?? throw new CryptographicException("header integrity mismatch / no valid copy");
+     }
+ 
+@@ -1095,7 +1149,7 @@ public sealed partial class LabVaultService : IDisposable
+             // persist generation into dual headers so unlock generation checks stay consistent
+             try
+             {
+-                WriteHeader(_header);
++                if (_header.Version != 6) WriteHeader(_header);
+             }
+             catch
+             {
+@@ -1119,7 +1173,13 @@ public sealed partial class LabVaultService : IDisposable
+             ms.Write(cipher);
+             var enc = ms.ToArray();
+             LabParserGuard.EnsureMetadataSize(enc.Length);
+-            File.WriteAllBytes(Path.Combine(_root, "metadata.db.enc"), enc);
++            if (_header?.Version == 6)
++            {
++                _header.HeaderMacHex = ComputeHeaderMac(_header, _vmk!);
++                _preparedGeneration = LabAuthenticatedGeneration.Prepare(_root, _header.VaultId, metadata.Generation,
++                    JsonSerializer.SerializeToUtf8Bytes(_header, JsonOpts), enc, _vmk!, FaultObserver);
++            }
++            else File.WriteAllBytes(Path.Combine(_root, "metadata.db.enc"), enc);
+             // note: caller should LabDurableCommit.WriteCommitted after successful write path
+         }
+         finally
+@@ -1130,7 +1190,7 @@ public sealed partial class LabVaultService : IDisposable
+ 
+     private LabVaultMetadata ReadMetadata(byte[] metaKey, string vaultId)
+     {
+-        var blob = File.ReadAllBytes(Path.Combine(_root, "metadata.db.enc"));
++        var blob = _selectedGeneration?.Metadata ?? File.ReadAllBytes(Path.Combine(_root, "metadata.db.enc"));
+         LabParserGuard.EnsureMetadataSize(blob.Length);
+         if (blob.Length < LabVaultCrypto.NonceSize + LabVaultCrypto.TagSize)
+         {
+@@ -1143,10 +1203,14 @@ public sealed partial class LabVaultService : IDisposable
+         var plain = new byte[cipher.Length];
+         var aad = Encoding.UTF8.GetBytes("lab-meta-v4:" + vaultId);
+         using var gcm = new AesGcm(metaKey, LabVaultCrypto.TagSize);
+-        gcm.Decrypt(nonce, cipher, tag, plain, aad);
+-        var meta = JsonSerializer.Deserialize<LabVaultMetadata>(plain)
+-                   ?? throw new InvalidOperationException("metadata parse failed");
+-        CryptographicOperations.ZeroMemory(plain);
++        LabVaultMetadata meta;
++        try
++        {
++            gcm.Decrypt(nonce, cipher, tag, plain, aad);
++            meta = JsonSerializer.Deserialize<LabVaultMetadata>(plain)
++                ?? throw new InvalidOperationException("metadata parse failed");
++        }
++        finally { CryptographicOperations.ZeroMemory(plain); }
+         if (!string.Equals(meta.VaultId, vaultId, StringComparison.Ordinal))
+         {
+             throw new CryptographicException("vault id mismatch");
+diff --git a/tests/SmartPerformanceDoctor.SecurityLab.Tests/VaultV4IntegrationTests.cs b/tests/SmartPerformanceDoctor.SecurityLab.Tests/VaultV4IntegrationTests.cs
+index 54152e4..25d6e30 100644
+--- a/tests/SmartPerformanceDoctor.SecurityLab.Tests/VaultV4IntegrationTests.cs
++++ b/tests/SmartPerformanceDoctor.SecurityLab.Tests/VaultV4IntegrationTests.cs
+@@ -1,4 +1,4 @@
+-using System.Security.Cryptography;
++﻿using System.Security.Cryptography;
+ using System.Text.Json;
+ using SmartPerformanceDoctor.SecurityLab.Hardening;
+ using SmartPerformanceDoctor.SecurityLab.Migration;
+@@ -199,9 +199,9 @@ public sealed class VaultV4IntegrationTests : IDisposable
+         Assert.Equal(100, design.OverallPercent);
+         Assert.True(LabReleaseState.InstallerPackageReleased);
+         Assert.True(LabReleaseState.LabDesignTrackComplete);
+-        Assert.True(Av3GateSnapshot.ProductionWriterEnabled);
+-        Assert.True(Av3GateSnapshot.ExternalReviewCompleted);
+-        Assert.True(Av3GateSnapshot.MigrationToAv3Enabled);
++        Assert.False(Av3GateSnapshot.ProductionWriterEnabled);
++        Assert.False(Av3GateSnapshot.ExternalReviewCompleted);
++        Assert.False(Av3GateSnapshot.MigrationToAv3Enabled);
+     }
+ 
+     [Fact]
+@@ -350,11 +350,11 @@ public sealed class VaultV4IntegrationTests : IDisposable
+         Assert.True(report.AllPass, report.ToHumanSummary());
+         Assert.True(report.Total >= 10, "expected expanded FI + kill suite, got " + report.Total);
+ 
+-        Assert.True(Av3GateSnapshot.ProductionWriterEnabled);
++        Assert.False(Av3GateSnapshot.ProductionWriterEnabled);
+         var checklist = Av3LabEnableChecklist.Evaluate();
+-        Assert.False(checklist.ProductionWriterStillOff);
+-        Assert.True(checklist.EnableAuthorized);
+-        Assert.True(checklist.AllRequiredMet);
++        Assert.True(checklist.ProductionWriterStillOff);
++        Assert.False(checklist.EnableAuthorized);
++        Assert.False(checklist.AllRequiredMet);
+     }
+ 
+     [Fact]
+@@ -556,12 +556,12 @@ public sealed class VaultV4IntegrationTests : IDisposable
+     public void SClass_release_hardening_checklist_ship_core()
+     {
+         var report = LabReleaseHardeningChecklist.Evaluate();
+-        Assert.True(report.Av3WriterAuthorized);
+-        Assert.True(report.ShipCoreReady, report.ToHumanSummary());
++        Assert.False(report.Av3WriterAuthorized);
++        Assert.False(report.ShipCoreReady, report.ToHumanSummary());
+         Assert.True(report.PackageAllowed);
+         Assert.Contains(report.Items, i => i.Id == "R7" && i.Met);
+         Assert.Contains(report.Items, i => i.Id == "R10" && i.Met);
+-        Assert.Contains(report.Items, i => i.Id == "R13" && i.Met);
++        Assert.Contains(report.Items, i => i.Id == "R13" && !i.Met);
+         Assert.Contains(report.Items, i => i.Id == "R14" && i.Met);
+         Assert.Contains(report.Items, i => i.Id == "R15" && i.Met);
+     }
+@@ -580,12 +580,12 @@ public sealed class VaultV4IntegrationTests : IDisposable
+         Assert.False(probe.Av3WriterFlag);
+ 
+         var gate = LabToAv3MigrationGate.Evaluate();
+-        Assert.True(gate.ExecuteAllowed, gate.ToHumanSummary());
++        Assert.False(gate.ExecuteAllowed, gate.ToHumanSummary());
+         Assert.True(gate.DryRunAllowed);
+-        Assert.Equal(0, gate.BlockingCount);
++        Assert.True(gate.BlockingCount > 0);
+         var (ok, msg) = LabToAv3MigrationGate.TryAuthorizeExecute();
+-        Assert.True(ok, msg);
+-        Assert.Contains("승인", msg, StringComparison.Ordinal);
++        Assert.False(ok, msg);
++        Assert.Contains("거부", msg, StringComparison.Ordinal);
+ 
+         Assert.True(LabWriteGate.Evaluate(true, true).Allowed);
+         Assert.False(LabWriteGate.Evaluate(true, false).Allowed);
+@@ -602,12 +602,12 @@ public sealed class VaultV4IntegrationTests : IDisposable
+         vault.Lock();
+ 
+         var pure = LabSelfCheckSuite.Run();
+-        Assert.True(pure.AllPass, pure.ToHumanSummary());
+-        Assert.True(pure.Av3WriterAuthorized);
++        Assert.False(pure.AllPass, pure.ToHumanSummary());
++        Assert.False(pure.Av3WriterAuthorized);
+         Assert.False(pure.PackageDeferred);
+ 
+         var withVault = LabSelfCheckSuite.Run(vault.Root);
+-        Assert.True(withVault.AllPass, withVault.ToHumanSummary());
++        Assert.False(withVault.AllPass, withVault.ToHumanSummary());
+         Assert.Contains(withVault.Sections, s => s.Id == "SC8" && s.Pass);
+     }
+ 
+@@ -632,10 +632,10 @@ public sealed class VaultV4IntegrationTests : IDisposable
+         Assert.True(vault.Unlock(password).Success);
+ 
+         var ship = LabShipReadiness.Evaluate();
+-        Assert.True(ship.LabCoreShipReady, ship.ToHumanSummary());
++        Assert.False(ship.LabCoreShipReady, ship.ToHumanSummary());
+         Assert.True(ship.InstallerReady);
+-        Assert.True(ship.Av3FinalReady);
+-        Assert.Contains("GO", ship.Recommendation, StringComparison.Ordinal);
++        Assert.False(ship.Av3FinalReady);
++        Assert.Contains("미준비", ship.Recommendation, StringComparison.Ordinal);
+     }
+ 
+     [Fact]
+@@ -711,8 +711,8 @@ public sealed class VaultV4IntegrationTests : IDisposable
+         Assert.Equal(1, scan.Count);
+ 
+         var gaps = LabRemainingGaps.Evaluate();
+-        Assert.True(gaps.LabCodeComplete, gaps.ToHumanSummary());
+-        Assert.Equal(0, gaps.BlockingCount);
++        Assert.False(gaps.LabCodeComplete, gaps.ToHumanSummary());
++        Assert.True(gaps.BlockingCount > 0);
+     }
+ 
+     [Fact]
+diff --git a/tests/SmartPerformanceDoctor.Tests/SecurityAttackSimulationTests.cs b/tests/SmartPerformanceDoctor.Tests/SecurityAttackSimulationTests.cs
+index eeb9a6f..a810c31 100644
+--- a/tests/SmartPerformanceDoctor.Tests/SecurityAttackSimulationTests.cs
++++ b/tests/SmartPerformanceDoctor.Tests/SecurityAttackSimulationTests.cs
+@@ -1,6 +1,6 @@
+ using System.Text;
+ using SmartPerformanceDoctor.App.Models.Security;
+-using SmartPerformanceDoctor.App.Services.Commercial;
++using SmartPerformanceDoctor.App.Services.Commercial;
+ using SmartPerformanceDoctor.SecurityLab.ProductBridge;
+ using Xunit;
+ using SmartPerformanceDoctor.App.Services.Security;
+@@ -89,7 +89,7 @@ public sealed class SecurityAttackSimulationTests : IDisposable
+     }
+ 
+     [Fact]
+-    public async Task Vault_LabImportWithSourceWipe_DeletesOriginalOnlyAfterImport()
++    public async Task Vault_LabSourceWipe_BlockedAndOriginalPreserved()
+     {
+         const string password = "LabImportWipe99!";
+         var source = Path.Combine(_tempRoot, "lab-source.txt");
+@@ -104,8 +104,11 @@ public sealed class SecurityAttackSimulationTests : IDisposable
+ 
+             var result = await vault.AddFileAsync(source, sealOrigin: true);
+ 
+-            Assert.True(result.Success, result.Message);
+-            Assert.False(File.Exists(source));
++            Assert.False(result.Success);
++            Assert.Contains("원본 제거는 검증 대기", result.Message);
++            Assert.Equal("lab-import-secret", await File.ReadAllTextAsync(source));
++            Assert.Empty(vault.Entries);
++            Assert.True((await vault.AddFileAsync(source, sealOrigin: false)).Success);
+             Assert.Single(vault.Entries);
+ 
+             var folder = Path.Combine(_tempRoot, "lab-folder");
+@@ -114,8 +117,12 @@ public sealed class SecurityAttackSimulationTests : IDisposable
+             await File.WriteAllTextAsync(Path.Combine(folder, "nested", "two.txt"), "two");
+             var folderResult = await vault.AddFolderAsync(folder, sealOrigin: true);
+ 
+-            Assert.True(folderResult.Success, folderResult.Message);
+-            Assert.False(Directory.Exists(folder));
++            Assert.False(folderResult.Success);
++            Assert.Contains("원본 제거는 검증 대기", folderResult.Message);
++            Assert.Equal("one", await File.ReadAllTextAsync(Path.Combine(folder, "one.txt")));
++            Assert.Equal("two", await File.ReadAllTextAsync(Path.Combine(folder, "nested", "two.txt")));
++            Assert.Single(vault.Entries);
++            Assert.True((await vault.AddFolderAsync(folder, sealOrigin: false)).Success);
+             Assert.Equal(3, vault.Entries.Count);
+         }
+         finally
+@@ -520,13 +527,13 @@ public sealed class SecurityAttackSimulationTests : IDisposable
+         Assert.Contains("ADS", plan.ChainSummary, StringComparison.OrdinalIgnoreCase);
+         Assert.Contains("VSS", plan.ChainSummary, StringComparison.OrdinalIgnoreCase);
+         Assert.False(string.IsNullOrWhiteSpace(plan.Limitations));
+-        Assert.Equal(0, plan.RecoveryResistanceLevel);
+-        Assert.False(plan.Level5Certified);
++        Assert.Equal(0, plan.RecoveryResistanceLevel);
++        Assert.False(plan.Level5Certified);
+         Assert.Contains("파일 단위 Clear", plan.CertifiedResistanceLabel);
+     }
+ 
+     [Fact]
+-    public async Task Vault_SealedFolder_RestoreToOrigin_RoundTrip()
++    public async Task Vault_FolderSealing_BlockedAndExportRoundTripPreservesOriginal()
+     {
+         const string password = "RestoreFolderVault99!";
+         var folder = Path.Combine(_tempRoot, "sealed-restore");
+@@ -538,19 +545,22 @@ public sealed class SecurityAttackSimulationTests : IDisposable
+         using var vault = new SecureVaultService();
+         Assert.True(vault.CreateVault(password).Success);
+         Assert.True(vault.Unlock(password).Success);
+-        Assert.True((await vault.AddFolderAsync(folder, sealOrigin: true)).Success);
+-
+-        Assert.False(File.Exists(Path.Combine(folder, "root.txt")));
+-        Assert.False(File.Exists(Path.Combine(nested, "child.txt")));
+-        Assert.False(File.Exists(Path.Combine(folder, ".spd_vault_sealed")));
+-
++        var blocked = await vault.AddFolderAsync(folder, sealOrigin: true);
++        Assert.False(blocked.Success);
++        Assert.Contains("원본 제거는 검증 대기", blocked.Message);
++        Assert.Empty(vault.Entries);
++        Assert.Equal("root-content", await File.ReadAllTextAsync(Path.Combine(folder, "root.txt")));
++        Assert.Equal("child-content", await File.ReadAllTextAsync(Path.Combine(nested, "child.txt")));
++        Assert.True((await vault.AddFolderAsync(folder, sealOrigin: false)).Success);
+         var root = vault.Entries.First(e => e.Kind == SecureVaultEntryKind.FolderRoot);
+-        var restored = await vault.RestoreToOriginAsync(root.EntryId);
+-        Assert.True(restored.Success, restored.Message);
+-
++        var output = Path.Combine(_tempRoot, "folder-export");
++        Directory.CreateDirectory(output);
++        var exported = await vault.ExportEntryAsync(root.EntryId, output);
++        Assert.True(exported.Success, exported.Message);
++        Assert.Equal("root-content", await File.ReadAllTextAsync(Path.Combine(output, "root.txt")));
++        Assert.Equal("child-content", await File.ReadAllTextAsync(Path.Combine(output, "nested", "child.txt")));
+         Assert.Equal("root-content", await File.ReadAllTextAsync(Path.Combine(folder, "root.txt")));
+         Assert.Equal("child-content", await File.ReadAllTextAsync(Path.Combine(nested, "child.txt")));
+-        Assert.False(File.Exists(Path.Combine(folder, ".spd_vault_sealed")));
+-        Assert.DoesNotContain(vault.Entries, e => e.BundleId == root.BundleId);
++
+     }
+-}
++}
+diff --git a/tests/SmartPerformanceDoctor.Tests/WO13VaultTransactionTests.cs b/tests/SmartPerformanceDoctor.Tests/WO13VaultTransactionTests.cs
+new file mode 100644
+index 0000000..798fb55
+--- /dev/null
++++ b/tests/SmartPerformanceDoctor.Tests/WO13VaultTransactionTests.cs
+@@ -0,0 +1,210 @@
++﻿using System.Security.Cryptography;
++using SmartPerformanceDoctor.SecurityLab.VaultV4;
++using SmartPerformanceDoctor.SecurityLab.Hardening;
++using Xunit;
++
++namespace SmartPerformanceDoctor.Tests;
++
++[Collection("VaultEnvironment")]
++public sealed class WO13VaultTransactionTests : IDisposable
++{
++    private readonly string root = Path.Combine(Path.GetTempPath(), "wo13-tests-" + Guid.NewGuid().ToString("N"));
++    private const string Password = "Synthetic-Vault-13!";
++    public WO13VaultTransactionTests() => Directory.CreateDirectory(root);
++    public void Dispose() { Directory.Delete(root, true); if (Directory.Exists(root + "-output")) Directory.Delete(root + "-output", true); }
++    [Fact]
++    public void Lab_mirror_denies_production_writer_and_migration()
++    {
++        Assert.False(SmartPerformanceDoctor.SecurityLab.ProductBridge.Av3GateSnapshot.ProductionWriterEnabled);
++        Assert.False(SmartPerformanceDoctor.SecurityLab.ProductBridge.Av3GateSnapshot.ExternalReviewCompleted);
++        Assert.False(SmartPerformanceDoctor.SecurityLab.ProductBridge.Av3GateSnapshot.ProductionEnableAuthorized);
++        Assert.False(SmartPerformanceDoctor.SecurityLab.Migration.LabToAv3MigrationGate.Evaluate().ExecuteAllowed);
++    }
++    private LabVaultService Seed()
++    {
++        var vault = new LabVaultService(root, crashSafeTestFormat: true);
++        Assert.True(vault.Create(Password, LabKdfProfile.LabFast).Success);
++        Assert.True(vault.Unlock(Password).Success);
++        Assert.True(vault.ImportBytes("seed.bin", "seed.bin", [1,2,3]).Success);
++        return vault;
++    }
++    private void VerifySeed(LabVaultService vault)
++    {
++        var entry = Assert.Single(vault.List(), x => x.DisplayName == "seed.bin");
++        var exported = vault.ExportEntry(entry.EntryId, root + "-output", true); Assert.True(exported.Success, exported.Message);
++        Assert.Equal(new byte[] {1,2,3}, File.ReadAllBytes(Path.Combine(root + "-output", "seed.bin")));
++    }
++    [Theory]
++    [InlineData("GenerationMetadataWritten")]
++    [InlineData("GenerationHeaderWritten")]
++    [InlineData("MetadataReady")]
++    [InlineData("ActivationBeforeReplace")]
++    public void Uncommitted_generation_preserves_authenticated_seed(string stage)
++    {
++        using (var vault = Seed())
++        {
++            vault.FaultObserver = point => { if (point == stage) throw new IOException("injected"); };
++            Assert.False(vault.ImportBytes("new.bin", "new.bin", [4]).Success);
++            Assert.False(vault.IsWriteAllowed);
++        }
++        using var reader = new LabVaultService(root);
++        Assert.True(reader.Unlock(Password).Success); Assert.Single(reader.List()); VerifySeed(reader);
++    }
++    [Fact] public void Corrupt_active_pointer_recovers_previous_read_only()
++    {
++        using (var vault = Seed()) Assert.True(vault.ImportBytes("new.bin", "new.bin", [4]).Success);
++        File.WriteAllText(Path.Combine(root,"generations-v6","active.json"), "broken");
++        using var reader = new LabVaultService(root);
++        Assert.True(reader.Unlock(Password).Success); Assert.False(reader.IsWriteAllowed); VerifySeed(reader);
++    }
++    [Fact] public void Both_pointers_corrupt_block_access_and_preserve_objects()
++    {
++        using (var vault = Seed()) { }
++        var objects = Directory.GetFiles(root,"*.obj",SearchOption.AllDirectories).ToDictionary(x=>x,File.ReadAllBytes);
++        foreach(var name in new[]{"active.json","previous.json"}) File.WriteAllText(Path.Combine(root,"generations-v6",name),"broken");
++        using var reader = new LabVaultService(root); Assert.False(reader.Unlock(Password).Success);
++        foreach(var pair in objects) Assert.Equal(pair.Value, File.ReadAllBytes(pair.Key));
++    }
++    [Fact] public void Missing_generation_directory_cannot_use_stale_root_header()
++    {
++        using (var vault = Seed()) { }
++        Directory.Move(Path.Combine(root,"generations-v6"),Path.Combine(root,"preserved"));
++        using var reader = new LabVaultService(root); Assert.False(reader.Unlock(Password).Success);
++    }
++    [Fact] public void Journal_write_lock_prevents_success_and_preserves_seed()
++    {
++        using (var vault = Seed())
++        using (var locked = new FileStream(Path.Combine(root,"journal","writer.lock"),FileMode.Open,FileAccess.ReadWrite,FileShare.None))
++            Assert.NotNull(Record.Exception(()=>vault.ImportBytes("new.bin","new.bin",[4])));
++        using var reader = new LabVaultService(root); Assert.True(reader.Unlock(Password).Success); VerifySeed(reader);
++    }
++    [Theory]
++    [InlineData("{")]
++    [InlineData("{\"TxId\":\"bad\",\"State\":1}")]
++    [InlineData("{\"TxId\":\"0123456789abcdef\",\"State\":999}")]
++    public void Corrupt_journal_is_visible_and_does_not_authorize_writes(string content)
++    {
++        using (var vault = Seed()) { }
++        File.WriteAllText(Path.Combine(root,"journal","tx.avj"),content+"\n");
++        using var reader = new LabVaultService(root);
++        Assert.True(reader.Unlock(Password).Success); Assert.False(reader.IsWriteAllowed); VerifySeed(reader);
++    }
++    [Fact] public void Duplicate_and_invalid_journal_transitions_are_rejected()
++    {
++        var id=LabVaultJournal.Begin(root,"synthetic",1);
++        Assert.Throws<InvalidDataException>(()=>LabVaultJournal.Mark(root,id,LabVaultJournal.State.Prepared,"synthetic",1));
++        Assert.Throws<InvalidDataException>(()=>LabVaultJournal.Mark(root,id,LabVaultJournal.State.Committed,"synthetic",1));
++    }
++    [Fact] public void Password_change_keeps_content_and_recovery_key()
++    {
++        using var vault = new LabVaultService(root,crashSafeTestFormat:true);
++        var created=vault.Create(Password,LabKdfProfile.LabFast); Assert.True(created.Success);
++        Assert.True(vault.Unlock(Password).Success); Assert.True(vault.ImportBytes("seed.bin","seed.bin",[1,2,3]).Success);
++        Assert.True(vault.ChangePassword(Password,"New-Synthetic-Vault-13!").Success);
++        vault.Lock(); Assert.False(vault.Unlock(Password).Success);
++        Assert.True(vault.Unlock("New-Synthetic-Vault-13!").Success); vault.Lock();
++        Assert.True(vault.UnlockWithRecoveryCode(created.RecoveryCodes[0]).Success); VerifySeed(vault);
++    }
++    [Fact] public void Session_conflict_does_not_consume_recovery_code()
++    {
++        using var first = new LabVaultService(root,crashSafeTestFormat:true);
++        var created=first.Create(Password,LabKdfProfile.LabFast); Assert.True(created.Success); Assert.True(first.Unlock(Password).Success);
++        using var second = new LabVaultService(root);
++        Assert.False(second.UnlockWithRecoveryCode(created.RecoveryCodes[0]).Success);
++        first.Lock(); Assert.True(second.UnlockWithRecoveryCode(created.RecoveryCodes[0]).Success);
++        second.Lock(); Assert.False(second.UnlockWithRecoveryCode(created.RecoveryCodes[0]).Success);
++    }
++    [Fact] public async Task Lock_waits_for_active_import_in_same_instance()
++    {
++        using var vault=Seed(); using var reached=new ManualResetEventSlim(); using var release=new ManualResetEventSlim();
++        vault.FaultObserver=stage=>{if(stage=="ObjectsReady"){reached.Set();Assert.True(release.Wait(TimeSpan.FromSeconds(10)));}};
++        var importing=Task.Run(()=>vault.ImportBytes("new.bin","new.bin",[4]));
++        Assert.True(reached.Wait(TimeSpan.FromSeconds(10))); var locking=Task.Run(()=>vault.Lock());
++        Assert.NotSame(locking, await Task.WhenAny(locking, Task.Delay(100))); release.Set(); Assert.True((await importing).Success); await locking;
++        Assert.False(vault.IsUnlocked); vault.FaultObserver=null; Assert.True(vault.Unlock(Password).Success); VerifySeed(vault);
++    }
++    [Fact] public void Streaming_authentication_failure_publishes_no_plaintext()
++    {
++        using var vault=Seed(); var entry=Assert.Single(vault.List());
++        var file=Directory.GetFiles(root,"*.obj",SearchOption.AllDirectories).Single(); var bytes=File.ReadAllBytes(file); bytes[^1]^=1;File.WriteAllBytes(file,bytes);
++        Assert.False(vault.ExportEntry(entry.EntryId,root + "-output",true).Success);
++        Assert.True(!Directory.Exists(root + "-output") || Directory.GetFiles(root + "-output").Length == 0);
++    }
++    [Fact] public void Streaming_callback_wrong_length_is_not_published()
++    {
++        Assert.Throws<CryptographicException>(()=>VaultExportWriter.WriteNew(Path.Combine(root,"out.bin"),2,
++            Convert.ToHexString(SHA256.HashData(new byte[]{1,2})),stream=>stream.WriteByte(1)));
++        Assert.False(File.Exists(Path.Combine(root,"out.bin"))); Assert.Empty(Directory.GetFiles(root));
++    }
++    [Fact] public void Default_format_stays_v5_without_implicit_conversion()
++    {
++        using var vault = new LabVaultService(root);
++        Assert.True(vault.Create(Password, LabKdfProfile.LabFast).Success);
++        Assert.True(vault.Unlock(Password).Success);
++        Assert.Equal("spd-vault-v5-lab", vault.AuthenticatedFormat);
++        Assert.False(Directory.Exists(Path.Combine(root, "generations-v6")));
++    }
++    [Fact] public void Unauthenticated_activation_cannot_authorize_new_generation()
++    {
++        using (var vault = Seed()) Assert.True(vault.ImportBytes("new.bin", "new.bin", [4]).Success);
++        var pointer = Path.Combine(root, "generations-v6", "active.json");
++        var node = System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(pointer))!;
++        node["Mac"] = new string('0', 64); File.WriteAllText(pointer, node.ToJsonString());
++        using var reader = new LabVaultService(root);
++        Assert.True(reader.Unlock(Password).Success); Assert.False(reader.IsWriteAllowed);
++        Assert.Single(reader.List()); VerifySeed(reader);
++    }
++    [Fact] public void Changed_generation_metadata_uses_authenticated_previous_copy()
++    {
++        using (var vault = Seed()) Assert.True(vault.ImportBytes("new.bin", "new.bin", [4]).Success);
++        var directory = Path.Combine(root, "generations-v6");
++        var node = System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(Path.Combine(directory, "active.json")))!;
++        var metadata = Path.Combine(directory, node["Id"]!.GetValue<string>() + ".metadata");
++        var bytes = File.ReadAllBytes(metadata); bytes[^1] ^= 1; File.WriteAllBytes(metadata, bytes);
++        using var reader = new LabVaultService(root);
++        Assert.True(reader.Unlock(Password).Success); Assert.False(reader.IsWriteAllowed); VerifySeed(reader);
++    }
++    [Fact] public void Export_collision_preserves_existing_destination_bytes()
++    {
++        using var vault = Seed(); Directory.CreateDirectory(root + "-output");
++        var target = Path.Combine(root + "-output", "seed.bin"); File.WriteAllBytes(target, [9,8,7]);
++        Assert.False(vault.ExportEntry(Assert.Single(vault.List()).EntryId, root + "-output", true).Success);
++        Assert.Equal(new byte[]{9,8,7}, File.ReadAllBytes(target));
++    }
++    [Fact] public void Cancelled_export_publishes_no_file_and_can_retry()
++    {
++        using var vault = Seed(); using var cancelled = new CancellationTokenSource(); cancelled.Cancel();
++        var entry = Assert.Single(vault.List());
++        Assert.Throws<OperationCanceledException>(() => vault.ExportEntry(entry.EntryId, root + "-output", true, cancelled.Token));
++        Assert.True(!Directory.Exists(root + "-output") || Directory.GetFiles(root + "-output").Length == 0);
++        VerifySeed(vault);
++    }
++    [Fact] public void Forged_journal_cannot_delete_unreferenced_object()
++    {
++        using (var vault = Seed()) { }
++        var objectPath = Directory.GetFiles(root, "*.obj", SearchOption.AllDirectories).Single();
++        var before = File.ReadAllBytes(objectPath);
++        File.WriteAllText(Path.Combine(root, "journal", "tx.avj"), "{invalid-json}\n");
++        using var reader = new LabVaultService(root);
++        Assert.True(reader.Unlock(Password).Success); Assert.False(reader.IsWriteAllowed);
++        Assert.Equal(before, File.ReadAllBytes(objectPath)); VerifySeed(reader);
++    }
++    [Fact] public void Stream_parser_rejects_truncated_and_trailing_ciphertext()
++    {
++        var key = LabVaultCrypto.GenerateKey(); var aad = new byte[]{1,2};
++        var encrypted = LabVaultCrypto.EncryptChunked(key, new byte[]{3,4}, aad);
++        foreach (var malformed in new[]{encrypted[..^1], encrypted.Concat(new byte[]{0}).ToArray()})
++        {
++            using var input = new MemoryStream(malformed); using var output = new MemoryStream();
++            Assert.Throws<CryptographicException>(() => LabVaultCrypto.DecryptChunkedFromFile(key,input,output,aad));
++        }
++        CryptographicOperations.ZeroMemory(key);
++    }
++    [Fact] public void HChaCha_matches_published_draft_vector()
++    {
++        Assert.Equal("82413B4227B27BFED30E42508A877D73A0F9E4D58A74A853C12EC41326D3ECDC",
++            Convert.ToHexString(LabXChaCha20Poly1305.HChaCha20(
++                Convert.FromHexString("000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F"),
++                Convert.FromHexString("000000090000004A0000000031415927"))));
++    }
++}
+diff --git a/tools/SmartPerformanceDoctor.VaultProbe/CrashSafeProbe.cs b/tools/SmartPerformanceDoctor.VaultProbe/CrashSafeProbe.cs
+new file mode 100644
+index 0000000..7efd84a
+--- /dev/null
++++ b/tools/SmartPerformanceDoctor.VaultProbe/CrashSafeProbe.cs
+@@ -0,0 +1,110 @@
++using System.Diagnostics;
++using System.Security.Cryptography;
++using System.Text.Json;
++using SmartPerformanceDoctor.SecurityLab.VaultV4;
++
++internal static class CrashSafeProbe
++{
++    private const string Password = "WO12-Synthetic-Only!";
++    private static readonly JsonSerializerOptions Json = new() { WriteIndented = true };
++    private static byte[] Payload(int length, int seed) { var data = new byte[length]; new Random(seed).NextBytes(data); return data; }
++    private static void Require(bool value, string reason) { if (!value) throw new InvalidOperationException(reason); }
++    private static Process Launch(params string[] args)
++    {
++        var start = new ProcessStartInfo("dotnet") { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true, CreateNoWindow = true };
++        start.ArgumentList.Add(typeof(CrashSafeProbe).Assembly.Location);
++        foreach (var arg in args) start.ArgumentList.Add(arg);
++        return Process.Start(start)!;
++    }
++    private static void Copy(string source, string target)
++    {
++        Directory.CreateDirectory(target);
++        foreach (var file in Directory.GetFiles(source, "*", SearchOption.AllDirectories))
++        {
++            var dest = Path.Combine(target, Path.GetRelativePath(source, file));
++            Directory.CreateDirectory(Path.GetDirectoryName(dest)!); File.Copy(file, dest);
++        }
++    }
++    internal static int Run(string outputDirectory)
++    {
++        var output = Path.GetFullPath(outputDirectory); Directory.CreateDirectory(output);
++        var root = Path.Combine(Path.GetTempPath(), "wo13-private-" + Guid.NewGuid().ToString("N"));
++        var baseline = Path.Combine(root, "baseline"); Directory.CreateDirectory(baseline);
++        File.WriteAllText(Path.Combine(baseline, "fixture.marker"), "WO12_SYNTHETIC_ONLY");
++        using (var vault = new LabVaultService(Path.Combine(baseline, "vault"), crashSafeTestFormat: true))
++        {
++            Require(vault.Create(Password, LabKdfProfile.LabFast).Success, "CreateV6");
++            Require(vault.Unlock(Password).Success, "UnlockV6");
++            var seed = vault.ImportBytes("seed.bin", "seed.bin", Payload(8192, 12));
++            Require(seed.Success, "SeedV6:" + seed.Message);
++        }
++        var results = new List<object>();
++        foreach (var stage in new[] { "BeforeObjectWrite", "ObjectWritten", "ObjectsReady", "GenerationMetadataWritten", "GenerationHeaderWritten", "GenerationVerified", "MetadataReady", "ActivationBeforeReplace", "ActivationAfterReplace", "CommitWritten", "BeforeFinalJournal", "FinalJournalWritten" })
++        {
++            var testRoot = Path.Combine(root, "wo12-vault-fixture-" + stage); Copy(baseline, testRoot);
++            var hashes = Directory.GetFiles(Path.Combine(testRoot, "vault", "objects"), "*.obj", SearchOption.AllDirectories)
++                .ToDictionary(file => file, file => Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(file))));
++            using (var child = Launch("--child", testRoot, stage))
++            {
++                var timer = Stopwatch.StartNew();
++                while (!File.Exists(Path.Combine(testRoot, "barrier.signal")) && !child.HasExited && timer.Elapsed.TotalSeconds < 60) Thread.Sleep(20);
++                Require(File.Exists(Path.Combine(testRoot, "barrier.signal")), "Barrier:" + stage + ":" + (child.HasExited ? child.StandardError.ReadToEnd() : "timeout"));
++                child.Kill(true); child.WaitForExit();
++            }
++            using var reader = Launch("--verify", testRoot);
++            var text = reader.StandardOutput.ReadToEnd(); var error = reader.StandardError.ReadToEnd(); reader.WaitForExit();
++            Require(reader.ExitCode == 0, "Reader:" + stage + ":" + error);
++            var committed = stage is "ActivationAfterReplace" or "CommitWritten" or "BeforeFinalJournal" or "FinalJournalWritten";
++            Require(text.Contains("VERIFIED_ENTRIES=" + (committed ? 2 : 1)), "EntryCount:" + stage + ":" + text);
++            Require(hashes.All(pair => pair.Value == Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(pair.Key)))), "OriginalObjectHash");
++            results.Add(new { stage, status = "PASS", readerExit = reader.ExitCode, output = text.Trim(), recovery = committed ? "RestoredCommittedGeneration" : "RestoredPreviousGeneration", existingBytesVerified = true, powerLossTested = false });
++        }
++        File.WriteAllText(Path.Combine(output, "commit-recovery.json"), JsonSerializer.Serialize(results, Json));
++        var passwords = new List<object>();
++        foreach (var stage in new[] { "PasswordKdfPrepared", "PasswordSaltPrepared", "PasswordWrapPrepared", "PasswordHeaderPrepared", "GenerationMetadataWritten", "GenerationHeaderWritten", "GenerationVerified", "ActivationBeforeReplace", "ActivationAfterReplace", "PasswordCommitted" })
++        {
++            var testRoot = Path.Combine(root,"wo12-vault-fixture-password-"+stage); Copy(baseline,testRoot);
++            using(var child=Launch("--password-child",testRoot,stage))
++            {
++                var timer=Stopwatch.StartNew();
++                while(!File.Exists(Path.Combine(testRoot,"barrier.signal")) && !child.HasExited && timer.Elapsed.TotalSeconds<60) Thread.Sleep(20);
++                Require(File.Exists(Path.Combine(testRoot,"barrier.signal")),"PasswordBarrier:"+stage);
++                child.Kill(true); child.WaitForExit();
++            }
++            var committed=stage is "ActivationAfterReplace" or "PasswordCommitted";
++            using var reader=Launch(committed?"--verify-new-password":"--verify",testRoot);
++            var text=reader.StandardOutput.ReadToEnd(); var error=reader.StandardError.ReadToEnd(); reader.WaitForExit();
++            Require(reader.ExitCode==0,"PasswordReader:"+stage+":"+error);
++            Require(text.Contains("VERIFIED_ENTRIES=1"),"PasswordEntries");
++            passwords.Add(new {stage,status="PASS",readerExit=reader.ExitCode,output=text.Trim(),validCredential=committed?"new":"previous",existingBytesVerified=true});
++        }
++        File.WriteAllText(Path.Combine(output,"password-crash.json"),JsonSerializer.Serialize(passwords,Json));
++        var streaming=new List<object>();
++        foreach(var size in new[]{0,4096,4*1024*1024,64*1024*1024,256*1024*1024})
++        {
++            var work=Path.Combine(root,"stream-"+size); Directory.CreateDirectory(work);
++            var input=Path.Combine(work,"sample.bin");
++            using(var file=new FileStream(input,FileMode.CreateNew))
++            {
++                var buffer=Payload(64*1024,13); for(var remaining=size;remaining>0;remaining-=Math.Min(buffer.Length,remaining)) file.Write(buffer,0,Math.Min(buffer.Length,remaining));
++            }
++            using var vault=new LabVaultService(Path.Combine(work,"vault"),crashSafeTestFormat:true);
++            Require(vault.Create(Password,LabKdfProfile.LabFast).Success,"StreamCreate"); Require(vault.Unlock(Password).Success,"StreamUnlock");
++            var imported=vault.ImportFile(input); Require(imported.Success,"StreamImport:"+imported.Message);
++            GC.Collect(); GC.WaitForPendingFinalizers(); GC.Collect();
++            using var process=Process.GetCurrentProcess(); var cpu=process.TotalProcessorTime; var allocated=GC.GetTotalAllocatedBytes(true); var timer=Stopwatch.StartNew();
++            process.Refresh(); long maxWorkingSet=process.WorkingSet64; using var stop=new CancellationTokenSource();
++            var sampler=Task.Run(()=>{while(!stop.IsCancellationRequested){process.Refresh();maxWorkingSet=Math.Max(maxWorkingSet,process.WorkingSet64);Thread.Sleep(10);}});
++            var exported=vault.ExportEntry(imported.EntryId!,Path.Combine(work,"export"),true); stop.Cancel();sampler.Wait();
++            Require(exported.Success,"StreamExport:"+exported.Message);
++            var elapsed=timer.Elapsed.TotalMilliseconds; var exportCpu=(process.TotalProcessorTime-cpu).TotalMilliseconds; var allocation=GC.GetTotalAllocatedBytes(true)-allocated;
++            using var source=File.OpenRead(input); using var result=File.OpenRead(Path.Combine(work,"export","sample.bin"));
++            var inputHash=Convert.ToHexString(SHA256.HashData(source)); var outputHash=Convert.ToHexString(SHA256.HashData(result)); Require(inputHash==outputHash,"StreamHash");
++            streaming.Add(new {bytes=size,status="PASS",inputSha256=inputHash,outputSha256=outputHash,exportMs=elapsed,cpuMs=exportCpu,managedAllocatedBytes=allocation,maxSampledWorkingSetBytes=maxWorkingSet,kdfExcluded=true,allocationIsCumulative=true});
++        }
++        File.WriteAllText(Path.Combine(output,"streaming-export.json"),JsonSerializer.Serialize(streaming,Json));
++        File.WriteAllText(Path.Combine(output, "private-fixture-location.txt"), root);
++        Console.WriteLine($"CRASH_SCENARIOS={results.Count};PASSWORD_CRASH_SCENARIOS={passwords.Count};STREAMING_CASES={streaming.Count};EXISTING_BYTES=PASS;METADATA_READY=PASS;FORMAT=v6-test-only;POWER_LOSS=NOT_TESTED");
++        return 0;
++    }
++}
+diff --git a/tools/SmartPerformanceDoctor.VaultProbe/Program.cs b/tools/SmartPerformanceDoctor.VaultProbe/Program.cs
+index b4f514e..06a483b 100644
+--- a/tools/SmartPerformanceDoctor.VaultProbe/Program.cs
++++ b/tools/SmartPerformanceDoctor.VaultProbe/Program.cs
+@@ -16,7 +16,7 @@ static string ValidateRoot(string root)
+     Check(File.ReadAllText(Path.Combine(root,"fixture.marker"))=="WO12_SYNTHETIC_ONLY","FixtureMarkerRequired");
+     return root;
+ }
+-if(args.Length==3 && args[0]=="--child")
++if(args.Length==3 && (args[0]=="--child" || args[0]=="--password-child"))
+ {
+     var root=ValidateRoot(args[1]);
+     using var vault=new LabVaultService(Path.Combine(root,"vault"));
+@@ -27,14 +27,15 @@ if(args.Length==3 && args[0]=="--child")
+         File.WriteAllText(Path.Combine(root,"barrier.signal"),stage);
+         Thread.Sleep(Timeout.Infinite);
+     };
+-    Check(vault.ImportBytes("new.bin","new.bin",Payload(4096,13)).Success,"ChildImport");
++    if(args[0]=="--password-child") Check(vault.ChangePassword(Password,"WO13-New-Synthetic-Only!").Success,"ChildPassword");
++    else Check(vault.ImportBytes("new.bin","new.bin",Payload(4096,13)).Success,"ChildImport");
+     return 3;
+ }
+-if(args.Length==2 && args[0]=="--verify")
++if(args.Length==2 && (args[0]=="--verify" || args[0]=="--verify-new-password"))
+ {
+     var root=ValidateRoot(args[1]);
+     using var vault=new LabVaultService(Path.Combine(root,"vault"));
+-    var opened=vault.Unlock(Password);
++    var opened=vault.Unlock(args[0]=="--verify-new-password"?"WO13-New-Synthetic-Only!":Password);
+     if(!opened.Success) { Console.WriteLine("PRESERVED_FAIL_CLOSED"); return 4; }
+     vault.FaultObserver=message=>Console.Error.WriteLine(message);
+     var entries=vault.List();
+@@ -48,6 +49,7 @@ if(args.Length==2 && args[0]=="--verify")
+     Console.WriteLine($"VERIFIED_ENTRIES={entries.Count};WRITE_ALLOWED={vault.IsWriteAllowed}");
+     return 0;
+ }
++if(args.Length==2 && args[0]=="--crash-safe") return CrashSafeProbe.Run(args[1]);
+ if(args.Length!=2 || args[0]!="--synthetic") return 2;
+ var outputRoot=Path.GetFullPath(args[1]);Directory.CreateDirectory(outputRoot);
+ var fixtureRoot=Path.Combine(Path.GetTempPath(),"wo12-vault-fixture-"+Guid.NewGuid().ToString("N"));

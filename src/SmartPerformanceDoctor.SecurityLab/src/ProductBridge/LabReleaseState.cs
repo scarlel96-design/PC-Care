@@ -1,7 +1,7 @@
 namespace SmartPerformanceDoctor.SecurityLab.ProductBridge;
 
 /// <summary>
-/// 50.4.0 product complete: Setup + Lab design 100% + AV3 gates authorized.
+/// Historical package metadata. Production approval is evaluated separately.
 /// </summary>
 public static class LabReleaseState
 {
@@ -13,8 +13,8 @@ public static class LabReleaseState
     public const bool InstallerPackageReleased = true;
     public const bool LabDesignTrackComplete = true;
 
-    /// <summary>AV3 production gates authorized (50.4.0 product GO). Lab remains active vault path.</summary>
-    public const bool Av3GatesAuthorized = true;
+    /// <summary>AV3 production approval remains closed.</summary>
+    public const bool Av3GatesAuthorized = false;
 
     public static string Summary =>
         $"LabRelease v{ProductVersion} · PackageReleased={InstallerPackageReleased} · " +

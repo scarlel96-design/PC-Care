@@ -9,7 +9,9 @@ public sealed partial class LabVaultService
     /// <summary>Change password keeping VMK (design §11). Rewrites header + recovery slots.</summary>
     public LabVaultOperationResult ChangePassword(string currentPassword, string newPassword)
     {
+        using var operation = EnterOperation();
         EnsureWriteUnlocked();
+        if (_header?.Version == 6) return ChangeGenerationPassword(currentPassword, newPassword);
         var policy = LabPasswordPolicy.ValidateForCreate(newPassword);
         if (!policy.IsValid)
         {
@@ -127,6 +129,8 @@ public sealed partial class LabVaultService
     /// </summary>
     public LabVaultOperationResult ReissueRecoveryCodes(string password)
     {
+        using var operation = EnterOperation();
+        if (_header?.Version == 6) return FailOp("시험 세대의 복구 자료를 보존합니다.");
         EnsureWriteUnlocked();
         if (_header is null || _vmk is null)
         {
@@ -198,6 +202,7 @@ public sealed partial class LabVaultService
     /// <summary>Phase7: remaining idle/session time for UI countdown (null = disabled).</summary>
     public (TimeSpan? Idle, TimeSpan? Session, bool IdleWarning) GetSessionRemaining()
     {
+        using var operation = EnterOperation();
         if (!IsUnlocked)
         {
             return (null, null, false);
@@ -213,6 +218,7 @@ public sealed partial class LabVaultService
     /// <summary>Touch activity without mutating data (export/list UX).</summary>
     public void TouchActivity()
     {
+        using var operation = EnterOperation();
         if (IsUnlocked)
         {
             _lastActivity = DateTimeOffset.UtcNow;
@@ -229,6 +235,8 @@ public sealed partial class LabVaultService
     /// </summary>
     public LabVaultOperationResult RepairActivationCommit()
     {
+        using var operation = EnterOperation();
+        if (_header?.Version == 6) return FailOp("시험 세대의 복구 자료를 보존합니다.");
         EnsureWriteUnlocked();
         if (_header is null || _metadata is null)
         {
@@ -254,6 +262,8 @@ public sealed partial class LabVaultService
     /// <summary>Phase6: pack GC / repack live objects, drop tombstones (design §7 maintenance).</summary>
     public LabVaultOperationResult CompactPacks(bool userConfirmed = true)
     {
+        using var operation = EnterOperation();
+        if (_header?.Version == 6) return FailOp("시험 세대의 복구 자료를 보존합니다.");
         EnsureWriteUnlocked();
         var gate = Policy.LabSentinelGate.EvaluateMaintenance(_writeAllowed, userConfirmed);
         if (gate == Policy.LabSentinelDecision.RequireStepUp)
@@ -291,6 +301,8 @@ public sealed partial class LabVaultService
     /// <summary>List/purge loose objects not referenced by metadata (write session).</summary>
     public LabVaultOperationResult PurgeOrphanLooseObjects()
     {
+        using var operation = EnterOperation();
+        if (_header?.Version == 6) return FailOp("시험 세대의 복구 자료를 보존합니다.");
         EnsureWriteUnlocked();
         if (_metadata is null)
         {
@@ -317,6 +329,7 @@ public sealed partial class LabVaultService
     /// <summary>Phase4: re-decrypt + content hash check for all entries (design integrity).</summary>
     public LabVaultOperationResult VerifyAllContentHashes()
     {
+        using var operation = EnterOperation();
         EnsureUnlocked();
         _securityState = LabSecurityState.Verifying;
         var ok = 0;

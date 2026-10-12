@@ -606,6 +606,7 @@ public sealed class SecureVaultService : IDisposable
         CancellationToken cancellationToken = default,
         IProgress<SecureVaultProgressReport>? progress = null)
     {
+        if (sealOrigin) return new SecureVaultOperationResult { Success = false, Message = "원본 제거는 검증 대기 상태입니다. 원본 보존 방식으로 추가하세요." };
         var input = VaultImportPathValidator.ValidateFile(sourcePath);
         if (!input.Allowed)
         {
@@ -682,6 +683,7 @@ public sealed class SecureVaultService : IDisposable
         CancellationToken cancellationToken = default,
         IProgress<SecureVaultProgressReport>? progress = null)
     {
+        if (sealOrigin) return new SecureVaultOperationResult { Success = false, Message = "원본 제거는 검증 대기 상태입니다. 원본 보존 방식으로 추가하세요." };
         var input = VaultImportPathValidator.ValidateDirectory(folderPath);
         if (!input.Allowed)
         {

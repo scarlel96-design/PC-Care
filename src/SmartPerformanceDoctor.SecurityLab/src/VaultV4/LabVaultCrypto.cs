@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 using Konscious.Security.Cryptography;
 
@@ -147,108 +147,87 @@ public static class LabVaultCrypto
     }
 
     public static void EncryptChunkedToFile(
-        byte[] key,
-        Stream plaintext,
-        Stream output,
-        byte[] aadPrefix,
-        LabContentSuite suite = LabContentSuite.XChaCha20Poly1305)
+        byte[] key, Stream plaintext, Stream output, byte[] aadPrefix,
+        LabContentSuite suite = LabContentSuite.XChaCha20Poly1305,
+        CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
         var magic = suite == LabContentSuite.XChaCha20Poly1305 ? MagicXchV2 : MagicAes;
         output.Write(magic);
         var countPos = output.Position;
         output.Write(BitConverter.GetBytes(0));
         var count = 0;
         var buffer = new byte[ChunkSize];
-        int read;
-        if (plaintext.CanSeek && plaintext.Length == 0)
+        try
         {
-            WriteChunk(output, key, aadPrefix, 0, Array.Empty<byte>(), suite, false, false);
-            count = 1;
-        }
-        else
-        {
+            int read;
             while ((read = plaintext.Read(buffer, 0, buffer.Length)) > 0)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+                if (count == MaxChunkCount) throw new CryptographicException("chunk count exceeds limit");
                 var slice = buffer.AsSpan(0, read).ToArray();
-                if (count == MaxChunkCount)
-                {
-                    throw new CryptographicException("chunk count exceeds limit");
-                }
-
-                WriteChunk(output, key, aadPrefix, count, slice, suite, false, false);
-                CryptographicOperations.ZeroMemory(slice);
+                try { WriteChunk(output, key, aadPrefix, count, slice, suite, false, false); }
+                finally { CryptographicOperations.ZeroMemory(slice); }
                 count++;
             }
-
+            cancellationToken.ThrowIfCancellationRequested();
             if (count == 0)
             {
                 WriteChunk(output, key, aadPrefix, 0, Array.Empty<byte>(), suite, false, false);
                 count = 1;
             }
+            var end = output.Position;
+            output.Position = countPos;
+            output.Write(BitConverter.GetBytes(count));
+            output.Position = end;
         }
-
-        var end = output.Position;
-        output.Position = countPos;
-        output.Write(BitConverter.GetBytes(count));
-        output.Position = end;
-        CryptographicOperations.ZeroMemory(buffer);
+        finally { CryptographicOperations.ZeroMemory(buffer); }
     }
 
-    public static void DecryptChunkedFromFile(byte[] key, Stream input, Stream plaintextOut, byte[] aadPrefix)
+    public static void DecryptChunkedFromFile(byte[] key, Stream input, Stream plaintextOut, byte[] aadPrefix,
+        CancellationToken cancellationToken = default)
     {
         var magic = new byte[7];
-        if (input.Read(magic, 0, 7) != 7)
-        {
-            throw new CryptographicException("truncated magic");
-        }
-
+        ReadRequired(input, magic);
         var (suite, nonceSize, paddingVersion) = DecodeMagic(magic);
-
         var countBuf = new byte[4];
-        if (input.Read(countBuf, 0, 4) != 4)
-        {
-            throw new CryptographicException("truncated header");
-        }
-
+        ReadRequired(input, countBuf);
         var count = BitConverter.ToInt32(countBuf);
         EnsureChunkCount(count);
         for (var i = 0; i < count; i++)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             var nonce = new byte[nonceSize];
             var tag = new byte[TagSize];
-            var lenBuf = new byte[4];
-            if (input.Read(nonce, 0, nonceSize) != nonceSize
-                || input.Read(tag, 0, TagSize) != TagSize
-                || input.Read(lenBuf, 0, 4) != 4)
+            var length = new byte[4];
+            ReadRequired(input, nonce); ReadRequired(input, tag); ReadRequired(input, length);
+            var size = BitConverter.ToInt32(length);
+            if (size < 0 || size > ChunkSize + ConcealedPadBlock) throw new CryptographicException("invalid chunk length");
+            var cipher = new byte[size];
+            var plain = new byte[size];
+            byte[]? payload = null;
+            try
             {
-                throw new CryptographicException("truncated chunk header");
+                ReadRequired(input, cipher);
+                DecryptOne(key, nonce, cipher, tag, plain, BuildAad(aadPrefix, i), suite);
+                payload = StripConcealedPad(plain, paddingVersion, i == count - 1);
+                cancellationToken.ThrowIfCancellationRequested();
+                plaintextOut.Write(payload);
             }
-
-            var clen = BitConverter.ToInt32(lenBuf);
-            if (clen < 0 || clen > ChunkSize + ConcealedPadBlock)
+            finally
             {
-                throw new CryptographicException("invalid chunk length");
+                CryptographicOperations.ZeroMemory(plain);
+                CryptographicOperations.ZeroMemory(cipher);
+                if (payload is not null) CryptographicOperations.ZeroMemory(payload);
             }
-
-            var cipher = new byte[clen];
-            if (input.Read(cipher, 0, clen) != clen)
-            {
-                throw new CryptographicException("truncated chunk body");
-            }
-
-            var plain = new byte[clen];
-            var aad = BuildAad(aadPrefix, i);
-            DecryptOne(key, nonce, cipher, tag, plain, aad, suite);
-            var payload = StripConcealedPad(plain, paddingVersion, i == count - 1);
-            plaintextOut.Write(payload);
-            CryptographicOperations.ZeroMemory(plain);
-            CryptographicOperations.ZeroMemory(cipher);
         }
+        if (input.ReadByte() != -1) throw new CryptographicException("unexpected trailing chunk data");
+    }
 
-        if (input.CanSeek && input.Position != input.Length)
-        {
-            throw new CryptographicException("unexpected trailing chunk data");
-        }
+    private static void ReadRequired(Stream input, byte[] buffer)
+    {
+        try { input.ReadExactly(buffer); }
+        catch (EndOfStreamException ex) { throw new CryptographicException("truncated chunk data", ex); }
     }
 
     private static void WriteChunk(
@@ -284,14 +263,17 @@ public static class LabVaultCrypto
         var cipher = new byte[plain.Length];
         var tag = new byte[TagSize];
         var aad = BuildAad(aadPrefix, index);
-        EncryptOne(key, nonce, plain, cipher, tag, aad, suite);
-        ms.Write(nonce);
-        ms.Write(tag);
-        ms.Write(BitConverter.GetBytes(cipher.Length));
-        ms.Write(cipher);
-        if (!ReferenceEquals(plain, slice))
+        try
         {
-            CryptographicOperations.ZeroMemory(plain);
+            EncryptOne(key, nonce, plain, cipher, tag, aad, suite);
+            ms.Write(nonce);
+            ms.Write(tag);
+            ms.Write(BitConverter.GetBytes(cipher.Length));
+            ms.Write(cipher);
+        }
+        finally
+        {
+            if (!ReferenceEquals(plain, slice)) CryptographicOperations.ZeroMemory(plain);
         }
     }
 

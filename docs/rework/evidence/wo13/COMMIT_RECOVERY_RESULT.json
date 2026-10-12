@@ -1,0 +1,122 @@
+{
+  "workItem": "COMMIT_RECOVERY_RESULT",
+  "status": "PASS",
+  "baselineSha": "de7563d76f79bbe563e09ed385fcadcd5b87928e",
+  "branch": "codex/pccare-vault-crash-safe-recovery",
+  "sourceManifestSha256": "7E468DC4BFC6735757E6994CAAB8D002E1A94EE1E72FDC88A6F556C27263E7AC",
+  "environment": "Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic fixtures only",
+  "command": "dotnet run --project tools/SmartPerformanceDoctor.VaultProbe -c Release -- --crash-safe artifacts/wo13/final",
+  "input": "synthetic fixture only",
+  "output": [
+    {
+      "stage": "BeforeObjectWrite",
+      "status": "PASS",
+      "readerExit": 0,
+      "output": "VERIFIED_ENTRIES=1;WRITE_ALLOWED=False",
+      "recovery": "RestoredPreviousGeneration",
+      "existingBytesVerified": true,
+      "powerLossTested": false
+    },
+    {
+      "stage": "ObjectWritten",
+      "status": "PASS",
+      "readerExit": 0,
+      "output": "VERIFIED_ENTRIES=1;WRITE_ALLOWED=False",
+      "recovery": "RestoredPreviousGeneration",
+      "existingBytesVerified": true,
+      "powerLossTested": false
+    },
+    {
+      "stage": "ObjectsReady",
+      "status": "PASS",
+      "readerExit": 0,
+      "output": "VERIFIED_ENTRIES=1;WRITE_ALLOWED=False",
+      "recovery": "RestoredPreviousGeneration",
+      "existingBytesVerified": true,
+      "powerLossTested": false
+    },
+    {
+      "stage": "GenerationMetadataWritten",
+      "status": "PASS",
+      "readerExit": 0,
+      "output": "VERIFIED_ENTRIES=1;WRITE_ALLOWED=False",
+      "recovery": "RestoredPreviousGeneration",
+      "existingBytesVerified": true,
+      "powerLossTested": false
+    },
+    {
+      "stage": "GenerationHeaderWritten",
+      "status": "PASS",
+      "readerExit": 0,
+      "output": "VERIFIED_ENTRIES=1;WRITE_ALLOWED=False",
+      "recovery": "RestoredPreviousGeneration",
+      "existingBytesVerified": true,
+      "powerLossTested": false
+    },
+    {
+      "stage": "GenerationVerified",
+      "status": "PASS",
+      "readerExit": 0,
+      "output": "VERIFIED_ENTRIES=1;WRITE_ALLOWED=False",
+      "recovery": "RestoredPreviousGeneration",
+      "existingBytesVerified": true,
+      "powerLossTested": false
+    },
+    {
+      "stage": "MetadataReady",
+      "status": "PASS",
+      "readerExit": 0,
+      "output": "VERIFIED_ENTRIES=1;WRITE_ALLOWED=False",
+      "recovery": "RestoredPreviousGeneration",
+      "existingBytesVerified": true,
+      "powerLossTested": false
+    },
+    {
+      "stage": "ActivationBeforeReplace",
+      "status": "PASS",
+      "readerExit": 0,
+      "output": "VERIFIED_ENTRIES=1;WRITE_ALLOWED=False",
+      "recovery": "RestoredPreviousGeneration",
+      "existingBytesVerified": true,
+      "powerLossTested": false
+    },
+    {
+      "stage": "ActivationAfterReplace",
+      "status": "PASS",
+      "readerExit": 0,
+      "output": "VERIFIED_ENTRIES=2;WRITE_ALLOWED=True",
+      "recovery": "RestoredCommittedGeneration",
+      "existingBytesVerified": true,
+      "powerLossTested": false
+    },
+    {
+      "stage": "CommitWritten",
+      "status": "PASS",
+      "readerExit": 0,
+      "output": "VERIFIED_ENTRIES=2;WRITE_ALLOWED=True",
+      "recovery": "RestoredCommittedGeneration",
+      "existingBytesVerified": true,
+      "powerLossTested": false
+    },
+    {
+      "stage": "BeforeFinalJournal",
+      "status": "PASS",
+      "readerExit": 0,
+      "output": "VERIFIED_ENTRIES=2;WRITE_ALLOWED=True",
+      "recovery": "RestoredCommittedGeneration",
+      "existingBytesVerified": true,
+      "powerLossTested": false
+    },
+    {
+      "stage": "FinalJournalWritten",
+      "status": "PASS",
+      "readerExit": 0,
+      "output": "VERIFIED_ENTRIES=2;WRITE_ALLOWED=True",
+      "recovery": "RestoredCommittedGeneration",
+      "existingBytesVerified": true,
+      "powerLossTested": false
+    }
+  ],
+  "exitCode": 0,
+  "sourceCommitReceipt": "GITHUB_RESULT.txt"
+}

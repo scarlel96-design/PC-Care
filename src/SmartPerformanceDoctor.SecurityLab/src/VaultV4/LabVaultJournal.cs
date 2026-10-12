@@ -73,28 +73,11 @@ public static class LabVaultJournal
         // Keep last entry per tx + last known object id from any ObjectsReady line (kill after MetadataReady).
         var last = new Dictionary<string, Entry>(StringComparer.Ordinal);
         var lastObjectId = new Dictionary<string, string>(StringComparer.Ordinal);
-        foreach (var line in File.ReadLines(path))
+        foreach (var e in ReadValidated(path))
         {
-            try
-            {
-                var e = JsonSerializer.Deserialize<Entry>(line);
-                if (e is null || string.IsNullOrWhiteSpace(e.TxId))
-                {
-                    continue;
-                }
-
-                last[e.TxId] = e;
-                if (e.State == State.ObjectsReady
-                    && e.Subject.StartsWith("obj:", StringComparison.Ordinal)
-                    && e.Subject.Length > 4)
-                {
-                    lastObjectId[e.TxId] = e.Subject["obj:".Length..];
-                }
-            }
-            catch
-            {
-                // skip
-            }
+            last[e.TxId] = e;
+            if (e.State == State.ObjectsReady && e.Subject.StartsWith("obj:", StringComparison.Ordinal))
+                lastObjectId[e.TxId] = e.Subject[4..];
         }
 
         var list = new List<IncompleteTx>();
@@ -144,29 +127,62 @@ public static class LabVaultJournal
         return reconciled;
     }
 
+    private static readonly object JournalGate = new();
+    private static IReadOnlyList<Entry> ReadValidated(string path)
+    {
+        var entries = new List<Entry>();
+        var states = new Dictionary<string, State>(StringComparer.Ordinal);
+        if (!File.Exists(path)) return entries;
+        if (new FileInfo(path).Length > 32L * 1024 * 1024) throw new InvalidDataException("journal budget exceeded");
+        foreach (var line in File.ReadLines(path))
+        {
+            if (line.Length == 0 || line.Length > 4096) throw new InvalidDataException("invalid journal record length");
+            var entry = JsonSerializer.Deserialize<Entry>(line) ?? throw new InvalidDataException("null journal entry");
+            Validate(entry, states);
+            states[entry.TxId] = entry.State;
+            entries.Add(entry);
+        }
+        return entries;
+    }
+    private static void Validate(Entry entry, Dictionary<string, State> states)
+    {
+        if (entry.TxId is null || entry.TxId.Length != 16 || !entry.TxId.All(Uri.IsHexDigit)
+            || !Enum.IsDefined(entry.State) || entry.Generation < 0 || entry.Subject is null)
+            throw new InvalidDataException("invalid journal contract");
+        if (!states.TryGetValue(entry.TxId, out var old))
+        {
+            if (entry.State != State.Prepared) throw new InvalidDataException("journal transaction lacks Prepared");
+            return;
+        }
+        var allowed = old switch
+        {
+            State.Prepared => entry.State is State.ObjectsReady or State.Aborted or State.RolledBack,
+            State.ObjectsReady => entry.State is State.MetadataReady or State.Committed or State.Aborted or State.RolledBack,
+            State.MetadataReady => entry.State is State.Committed or State.Aborted or State.RolledBack,
+            _ => false
+        };
+        if (!allowed) throw new InvalidDataException("invalid journal state transition");
+    }
     private static void Append(string vaultRoot, Entry entry)
     {
-        try
+        lock (JournalGate)
         {
-            var dir = Path.Combine(vaultRoot, "journal");
-            Directory.CreateDirectory(dir);
+            var directory = Path.Combine(vaultRoot, "journal");
+            Hardening.VaultExportWriter.ValidateAncestors(directory);
+            using var parent = Hardening.VaultFileBoundary.PinDirectory(directory, create: true);
+            // Hold a distinct cross-process writer lease while validating and appending.
+            using var lease = Hardening.VaultFileBoundary.OpenExclusive(directory, "writer.lock",
+                !File.Exists(Path.Combine(directory, "writer.lock")));
             var path = PathOf(vaultRoot);
-            var line = JsonSerializer.Serialize(entry) + Environment.NewLine;
-            // durable-ish append (design §14 flush subset)
-            using var fs = new FileStream(
-                path,
-                FileMode.Append,
-                FileAccess.Write,
-                FileShare.Read,
-                4096,
-                FileOptions.WriteThrough);
-            var bytes = Encoding.UTF8.GetBytes(line);
-            fs.Write(bytes, 0, bytes.Length);
-            fs.Flush(true);
-        }
-        catch
-        {
-            // best effort
+            var entries = ReadValidated(path);
+            var states = new Dictionary<string, State>(StringComparer.Ordinal);
+            foreach (var previous in entries) states[previous.TxId] = previous.State;
+            Validate(entry, states);
+            using var file = Hardening.VaultFileBoundary.OpenExclusive(directory, "tx.avj", !File.Exists(path));
+            file.Stream.Position = file.Stream.Length;
+            file.Stream.Write(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(entry) + "\n"));
+            file.Stream.Flush(true);
+            file.Validate(); parent.Validate();
         }
     }
 

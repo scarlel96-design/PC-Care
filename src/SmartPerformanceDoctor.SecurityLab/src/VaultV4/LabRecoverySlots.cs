@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using SmartPerformanceDoctor.SecurityLab.Hardening;
@@ -97,7 +97,7 @@ public static class LabRecoverySlots
     }
 
     /// <summary>Try one-time recovery unlock → returns VMK copy (caller zeroizes).</summary>
-    public static bool TryUnwrapVmk(string vaultRoot, string vaultId, string code, out byte[]? vmk, out string message)
+    public static bool TryUnwrapVmk(string vaultRoot, string vaultId, string code, out byte[]? vmk, out string message, bool consume = true)
     {
         vmk = null;
         message = "";
@@ -108,11 +108,17 @@ public static class LabRecoverySlots
             return false;
         }
 
+        VaultExportWriter.ValidateAncestors(Path.GetDirectoryName(path)!);
+        using var recoveryLease = VaultFileBoundary.OpenExclusive(Path.GetDirectoryName(path)!, "consume.lock",
+            !File.Exists(Path.Combine(Path.GetDirectoryName(path)!, "consume.lock")));
         Store store;
         try
         {
-            store = JsonSerializer.Deserialize<Store>(File.ReadAllText(path))
+            using var file = VaultFileBoundary.OpenRead(Path.GetDirectoryName(path)!, Path.GetFileName(path));
+            if (file.Stream.Length > 1024 * 1024) throw new InvalidDataException("recovery store exceeds budget");
+            store = JsonSerializer.Deserialize<Store>(file.Stream)
                     ?? throw new InvalidOperationException("parse");
+            file.Validate();
         }
         catch
         {
@@ -214,8 +220,29 @@ public static class LabRecoverySlots
             CryptographicOperations.ZeroMemory(slotSalt);
         }
 
-        store.Slots[match].Used = true;
-        File.WriteAllText(path, JsonSerializer.Serialize(store, new JsonSerializerOptions { WriteIndented = true }));
+        try
+        {
+        if (consume)
+        {
+            store.Slots[match].Used = true;
+            var directory = Path.GetDirectoryName(path)!;
+            using var parent = VaultFileBoundary.PinDirectory(directory);
+            var temporary = Guid.NewGuid().ToString("N") + ".recovery.tmp";
+            using (var file = VaultFileBoundary.OpenWrite(directory, temporary, true))
+            {
+                file.Stream.Write(JsonSerializer.SerializeToUtf8Bytes(store)); file.Stream.Flush(true); file.Validate();
+            }
+            parent.Validate();
+            File.Replace(Path.Combine(directory, temporary), path, path + ".previous", false);
+            parent.Validate();
+        }
+        }
+        catch
+        {
+            if (vmk is not null) CryptographicOperations.ZeroMemory(vmk);
+            vmk = null;
+            throw;
+        }
         message = "복구 코드로 금고 키를 복원했습니다(일회용).";
         return true;
     }
@@ -305,12 +332,12 @@ public static class LabRecoverySlots
 
             if (Exhausted)
             {
-                return $"복구코드 소진 ({Used}/{TotalSlots}) · 비밀번호 변경으로 재발급";
+                return $"복구코드 소진 ({Used}/{TotalSlots}) · 명시적 복구 코드 재발급 필요";
             }
 
             if (LowRemaining)
             {
-                return $"복구코드 잔여 {Remaining}/{TotalSlots} · 부족 · 비밀번호 변경 권고";
+                return $"복구코드 잔여 {Remaining}/{TotalSlots} · 부족 · 복구 코드 정책 확인";
             }
 
             return $"복구코드 잔여 {Remaining}/{TotalSlots}";

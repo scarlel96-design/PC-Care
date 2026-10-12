@@ -1,0 +1,13 @@
+WORK ITEM: FULL_TEST_RESULT
+STATUS: PASS
+BASELINE SHA: de7563d76f79bbe563e09ed385fcadcd5b87928e
+BRANCH: codex/pccare-vault-crash-safe-recovery
+SOURCE MANIFEST SHA256: 7E468DC4BFC6735757E6994CAAB8D002E1A94EE1E72FDC88A6F556C27263E7AC
+ENVIRONMENT: Windows NT 10.0.26200.0; SDK 10.0.401; host test execution
+TEST COMMAND: $env:VSTEST_CONNECTION_TIMEOUT='300'; dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo13-full-host.trx' -v:minimal
+INPUT: Release test assemblies; synthetic data
+OUTPUT: 통과!  - 실패:     0, 통과:  1045, 건너뜀:   111, 전체:  1156, 기간: 4 m 45 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+EXIT CODE: 0
+TRX COUNTERS: {"total": "1156", "executed": "1045", "passed": "1045", "failed": "0", "error": "0", "timeout": "0", "aborted": "0", "inconclusive": "0", "passedButRunAborted": "0", "notRunnable": "0", "notExecuted": "0", "disconnected": "0", "warning": "0", "completed": "0", "inProgress": "0", "pending": "0"}
+TRX SHA256: 30317623275FB1C12B6A6CAE32B0F73644AE6800782A25C95DEF70C57F84CD7C
+LOCAL LOG: artifacts/wo13/full-host.log

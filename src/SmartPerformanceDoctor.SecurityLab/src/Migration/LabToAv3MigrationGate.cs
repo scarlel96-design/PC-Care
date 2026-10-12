@@ -1,10 +1,10 @@
-using System.Text;
+﻿using System.Text;
 using SmartPerformanceDoctor.SecurityLab.ProductBridge;
 
 namespace SmartPerformanceDoctor.SecurityLab.Migration;
 
 /// <summary>
-/// Phase H: Lab v5 ↔ AV3 migration posture (50.4.0 GO).
+/// Phase H: Lab v5 ↔ AV3 migration posture with closed production gates.
 /// Execute authorized when product gates are on; migration is re-encrypt only (format non-byte-compatible).
 /// </summary>
 public static class LabToAv3MigrationGate
@@ -58,13 +58,13 @@ public static class LabToAv3MigrationGate
             G("H2", "AV3 ExternalReviewCompleted", !review, review ? "true" : "false"),
             G("H3", "AV3 WriterEnableReady", !ready, ready ? "true" : "false"),
             G("H4", "MigrationToAv3Enabled flag", !migrate, migrate ? "true" : "false"),
-            G("H5", "Named product sign-off (50.4.0)", false, "product complete authorization"),
-            G("H6", "Binary header/format parity", false,
-                "re-encrypt migration (not in-place) — authorized path"),
-            G("H7", "Object container magic mapping", false,
+            G("H5", "Production enable authorization", !Av3GateSnapshot.ProductionEnableAuthorized, "approval incomplete"),
+            G("H6", "Binary header/format parity", true,
+                "re-encrypt migration (not in-place) — unverified path"),
+            G("H7", "Object container magic mapping", true,
                 "SPDCHK4 ↔ AV3 via re-encrypt"),
-            G("H8", "Recovery model mapping", false, "re-issue codes on migrate"),
-            G("H9", "Journal schema mapping", false, "rebuild journal on migrate"),
+            G("H8", "Recovery model mapping", true, "re-issue codes on migrate"),
+            G("H9", "Journal schema mapping", true, "rebuild journal on migrate"),
             G("H10", "Lab shipping path complete", false, "Lab v5 production vault active"),
         };
 

@@ -4,7 +4,7 @@ using SmartPerformanceDoctor.SecurityLab.ProductBridge;
 namespace SmartPerformanceDoctor.SecurityLab.Progress;
 
 /// <summary>
-/// Remaining gaps after 50.4.0 full complete (package + Lab design + AV3 gates).
+/// Report current production approval gaps. Historical package flags are not approval evidence.
 /// </summary>
 public static class LabRemainingGaps
 {
@@ -67,21 +67,21 @@ public static class LabRemainingGaps
                 Id = "G3",
                 Title = "AV3 external review + named sign-off",
                 BlockingFullGo = !Av3GateSnapshot.ExternalReviewCompleted,
-                Note = "50.4.0 product complete"
+                Note = "External review remains incomplete"
             },
             new()
             {
                 Id = "G4",
                 Title = "Lab→AV3 migration authorization",
                 BlockingFullGo = !Av3GateSnapshot.MigrationToAv3Enabled,
-                Note = "re-encrypt path authorized"
+                Note = "Production migration remains disabled"
             },
             new()
             {
                 Id = "G5",
                 Title = "Absolute security marketing claims",
                 BlockingFullGo = false,
-                Note = "still forbidden; claim product GO only"
+                Note = "Independent security certification has not been completed"
             },
             new()
             {
@@ -97,7 +97,7 @@ public static class LabRemainingGaps
             Gaps = gaps,
             LabCodeComplete = ship.LabCoreShipReady && pkg && design.OverallPercent >= 99.5
                               && Av3GateSnapshot.ProductionWriterEnabled,
-            Summary = "50.4.0 complete: Lab v5 + Setup/Update + AV3 gates authorized."
+            Summary = "Phase 1 NO-GO. AV3 production approval remains closed."
         };
     }
 }

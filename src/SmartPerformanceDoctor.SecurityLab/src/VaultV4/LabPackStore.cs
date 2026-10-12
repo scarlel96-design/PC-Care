@@ -111,7 +111,7 @@ public static class LabPackStore
         LabObjectStore.TryDelete(vaultRoot, objectId);
     }
 
-    public static byte[] Read(string vaultRoot, string objectId)
+    public static byte[] Read(string vaultRoot, string objectId, int maximumBytes = int.MaxValue)
     {
         LabParserGuard.EnsureObjectId(objectId);
         var idx = LoadIndex(vaultRoot);
@@ -120,6 +120,7 @@ public static class LabPackStore
             return LabObjectStore.ReadLooseOrThrow(vaultRoot, objectId);
         }
 
+        if (loc.Length < 0 || loc.Length > maximumBytes) throw new CryptographicException("pack export budget exceeded");
         var packPath = Path.Combine(vaultRoot, loc.Pack.Replace('/', Path.DirectorySeparatorChar));
         if (!File.Exists(packPath))
         {

@@ -1,0 +1,137 @@
+{
+  "command": "$env:VSTEST_CONNECTION_TIMEOUT='300'; dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo13-full-host.trx' -v:minimal",
+  "exitCode": 0,
+  "sourceManifestSha256": "7E468DC4BFC6735757E6994CAAB8D002E1A94EE1E72FDC88A6F556C27263E7AC",
+  "cases": [
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Lock_waits_for_active_import_in_same_instance",
+      "outcome": "Passed",
+      "duration": "00:00:02.8601213"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Password_change_keeps_content_and_recovery_key",
+      "outcome": "Passed",
+      "duration": "00:00:03.4208900"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Export_collision_preserves_existing_destination_bytes",
+      "outcome": "Passed",
+      "duration": "00:00:02.8061208"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Streaming_authentication_failure_publishes_no_plaintext",
+      "outcome": "Passed",
+      "duration": "00:00:02.1358258"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Lab_mirror_denies_production_writer_and_migration",
+      "outcome": "Passed",
+      "duration": "00:00:00.0076045"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Changed_generation_metadata_uses_authenticated_previous_copy",
+      "outcome": "Passed",
+      "duration": "00:00:02.7913715"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Missing_generation_directory_cannot_use_stale_root_header",
+      "outcome": "Passed",
+      "duration": "00:00:02.6573073"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Corrupt_journal_is_visible_and_does_not_authorize_writes(content: \"{\\\"TxId\\\":\\\"bad\\\",\\\"State\\\":1}\")",
+      "outcome": "Passed",
+      "duration": "00:00:03.5665562"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Forged_journal_cannot_delete_unreferenced_object",
+      "outcome": "Passed",
+      "duration": "00:00:02.7048257"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Corrupt_active_pointer_recovers_previous_read_only",
+      "outcome": "Passed",
+      "duration": "00:00:03.1063983"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Uncommitted_generation_preserves_authenticated_seed(stage: \"MetadataReady\")",
+      "outcome": "Passed",
+      "duration": "00:00:02.3436537"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Both_pointers_corrupt_block_access_and_preserve_objects",
+      "outcome": "Passed",
+      "duration": "00:00:02.6683285"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Default_format_stays_v5_without_implicit_conversion",
+      "outcome": "Passed",
+      "duration": "00:00:01.7954250"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Session_conflict_does_not_consume_recovery_code",
+      "outcome": "Passed",
+      "duration": "00:00:02.3480168"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Cancelled_export_publishes_no_file_and_can_retry",
+      "outcome": "Passed",
+      "duration": "00:00:02.1450459"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Uncommitted_generation_preserves_authenticated_seed(stage: \"GenerationMetadataWritten\")",
+      "outcome": "Passed",
+      "duration": "00:00:02.5471611"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Unauthenticated_activation_cannot_authorize_new_generation",
+      "outcome": "Passed",
+      "duration": "00:00:03.7207961"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Streaming_callback_wrong_length_is_not_published",
+      "outcome": "Passed",
+      "duration": "00:00:00.0133207"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Uncommitted_generation_preserves_authenticated_seed(stage: \"ActivationBeforeReplace\")",
+      "outcome": "Passed",
+      "duration": "00:00:03.3855428"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Corrupt_journal_is_visible_and_does_not_authorize_writes(content: \"{\")",
+      "outcome": "Passed",
+      "duration": "00:00:03.3366542"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Uncommitted_generation_preserves_authenticated_seed(stage: \"GenerationHeaderWritten\")",
+      "outcome": "Passed",
+      "duration": "00:00:03.0968353"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Journal_write_lock_prevents_success_and_preserves_seed",
+      "outcome": "Passed",
+      "duration": "00:00:02.3021973"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Stream_parser_rejects_truncated_and_trailing_ciphertext",
+      "outcome": "Passed",
+      "duration": "00:00:00.0056609"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Duplicate_and_invalid_journal_transitions_are_rejected",
+      "outcome": "Passed",
+      "duration": "00:00:00.0902242"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.HChaCha_matches_published_draft_vector",
+      "outcome": "Passed",
+      "duration": "00:00:00.0042199"
+    },
+    {
+      "name": "SmartPerformanceDoctor.Tests.WO13VaultTransactionTests.Corrupt_journal_is_visible_and_does_not_authorize_writes(content: \"{\\\"TxId\\\":\\\"0123456789abcdef\\\",\\\"State\\\":999}\")",
+      "outcome": "Passed",
+      "duration": "00:00:03.6770885"
+    }
+  ]
+}

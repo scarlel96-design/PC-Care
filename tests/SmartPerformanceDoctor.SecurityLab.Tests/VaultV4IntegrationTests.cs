@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text.Json;
 using SmartPerformanceDoctor.SecurityLab.Hardening;
 using SmartPerformanceDoctor.SecurityLab.Migration;
@@ -199,9 +199,9 @@ public sealed class VaultV4IntegrationTests : IDisposable
         Assert.Equal(100, design.OverallPercent);
         Assert.True(LabReleaseState.InstallerPackageReleased);
         Assert.True(LabReleaseState.LabDesignTrackComplete);
-        Assert.True(Av3GateSnapshot.ProductionWriterEnabled);
-        Assert.True(Av3GateSnapshot.ExternalReviewCompleted);
-        Assert.True(Av3GateSnapshot.MigrationToAv3Enabled);
+        Assert.False(Av3GateSnapshot.ProductionWriterEnabled);
+        Assert.False(Av3GateSnapshot.ExternalReviewCompleted);
+        Assert.False(Av3GateSnapshot.MigrationToAv3Enabled);
     }
 
     [Fact]
@@ -350,11 +350,11 @@ public sealed class VaultV4IntegrationTests : IDisposable
         Assert.True(report.AllPass, report.ToHumanSummary());
         Assert.True(report.Total >= 10, "expected expanded FI + kill suite, got " + report.Total);
 
-        Assert.True(Av3GateSnapshot.ProductionWriterEnabled);
+        Assert.False(Av3GateSnapshot.ProductionWriterEnabled);
         var checklist = Av3LabEnableChecklist.Evaluate();
-        Assert.False(checklist.ProductionWriterStillOff);
-        Assert.True(checklist.EnableAuthorized);
-        Assert.True(checklist.AllRequiredMet);
+        Assert.True(checklist.ProductionWriterStillOff);
+        Assert.False(checklist.EnableAuthorized);
+        Assert.False(checklist.AllRequiredMet);
     }
 
     [Fact]
@@ -556,12 +556,12 @@ public sealed class VaultV4IntegrationTests : IDisposable
     public void SClass_release_hardening_checklist_ship_core()
     {
         var report = LabReleaseHardeningChecklist.Evaluate();
-        Assert.True(report.Av3WriterAuthorized);
-        Assert.True(report.ShipCoreReady, report.ToHumanSummary());
+        Assert.False(report.Av3WriterAuthorized);
+        Assert.False(report.ShipCoreReady, report.ToHumanSummary());
         Assert.True(report.PackageAllowed);
         Assert.Contains(report.Items, i => i.Id == "R7" && i.Met);
         Assert.Contains(report.Items, i => i.Id == "R10" && i.Met);
-        Assert.Contains(report.Items, i => i.Id == "R13" && i.Met);
+        Assert.Contains(report.Items, i => i.Id == "R13" && !i.Met);
         Assert.Contains(report.Items, i => i.Id == "R14" && i.Met);
         Assert.Contains(report.Items, i => i.Id == "R15" && i.Met);
     }
@@ -580,12 +580,12 @@ public sealed class VaultV4IntegrationTests : IDisposable
         Assert.False(probe.Av3WriterFlag);
 
         var gate = LabToAv3MigrationGate.Evaluate();
-        Assert.True(gate.ExecuteAllowed, gate.ToHumanSummary());
+        Assert.False(gate.ExecuteAllowed, gate.ToHumanSummary());
         Assert.True(gate.DryRunAllowed);
-        Assert.Equal(0, gate.BlockingCount);
+        Assert.True(gate.BlockingCount > 0);
         var (ok, msg) = LabToAv3MigrationGate.TryAuthorizeExecute();
-        Assert.True(ok, msg);
-        Assert.Contains("승인", msg, StringComparison.Ordinal);
+        Assert.False(ok, msg);
+        Assert.Contains("거부", msg, StringComparison.Ordinal);
 
         Assert.True(LabWriteGate.Evaluate(true, true).Allowed);
         Assert.False(LabWriteGate.Evaluate(true, false).Allowed);
@@ -602,12 +602,12 @@ public sealed class VaultV4IntegrationTests : IDisposable
         vault.Lock();
 
         var pure = LabSelfCheckSuite.Run();
-        Assert.True(pure.AllPass, pure.ToHumanSummary());
-        Assert.True(pure.Av3WriterAuthorized);
+        Assert.False(pure.AllPass, pure.ToHumanSummary());
+        Assert.False(pure.Av3WriterAuthorized);
         Assert.False(pure.PackageDeferred);
 
         var withVault = LabSelfCheckSuite.Run(vault.Root);
-        Assert.True(withVault.AllPass, withVault.ToHumanSummary());
+        Assert.False(withVault.AllPass, withVault.ToHumanSummary());
         Assert.Contains(withVault.Sections, s => s.Id == "SC8" && s.Pass);
     }
 
@@ -632,10 +632,10 @@ public sealed class VaultV4IntegrationTests : IDisposable
         Assert.True(vault.Unlock(password).Success);
 
         var ship = LabShipReadiness.Evaluate();
-        Assert.True(ship.LabCoreShipReady, ship.ToHumanSummary());
+        Assert.False(ship.LabCoreShipReady, ship.ToHumanSummary());
         Assert.True(ship.InstallerReady);
-        Assert.True(ship.Av3FinalReady);
-        Assert.Contains("GO", ship.Recommendation, StringComparison.Ordinal);
+        Assert.False(ship.Av3FinalReady);
+        Assert.Contains("미준비", ship.Recommendation, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -711,8 +711,8 @@ public sealed class VaultV4IntegrationTests : IDisposable
         Assert.Equal(1, scan.Count);
 
         var gaps = LabRemainingGaps.Evaluate();
-        Assert.True(gaps.LabCodeComplete, gaps.ToHumanSummary());
-        Assert.Equal(0, gaps.BlockingCount);
+        Assert.False(gaps.LabCodeComplete, gaps.ToHumanSummary());
+        Assert.True(gaps.BlockingCount > 0);
     }
 
     [Fact]
