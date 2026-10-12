@@ -26,3 +26,28 @@ EXIT CODE: 0
 PUBLICATION NOTE: Required reports and sanitized evidence are committed after this CI source. Final publication HEAD is not a tested-source SHA.
 SAFETY: main merge and official release were not performed. Raw local logs, ETL, passwords, recovery codes and plaintext fixtures are excluded.
 ROLLBACK: Keep this branch independent. Use ROLLBACK.sh only for its named source copy. Vault recovery evidence is separate.
+
+REPORT PUBLICATION: PASS
+REPORT HEAD: 03ecb325fe3791eade581265a9cb5173edc301a0
+REPORT TREE: e79b7bf46f674679fffdef57511896c8c2a93872
+COMMAND: git push origin codex/pccare-vault-freshness-recovery-receipts
+INPUT: report publication commit 03ecb325fe3791eade581265a9cb5173edc301a0
+OUTPUT: ab2c19f..03ecb32 codex/pccare-vault-freshness-recovery-receipts -> codex/pccare-vault-freshness-recovery-receipts
+EXIT CODE: 0
+EARLIER ATTEMPT: restricted network returned getaddrinfo() thread failed to start, exit 1. Authorized host retry succeeded.
+COMMAND: gh api repos/scarlel96-design/PC-Care/branches/codex%2Fpccare-vault-freshness-recovery-receipts --jq '.commit.sha'
+OUTPUT: 03ecb325fe3791eade581265a9cb5173edc301a0
+EXIT CODE: 0
+COMMAND: gh api repos/scarlel96-design/PC-Care/git/commits/03ecb325fe3791eade581265a9cb5173edc301a0 --jq '.tree.sha'
+OUTPUT: e79b7bf46f674679fffdef57511896c8c2a93872
+EXIT CODE: 0
+COMMAND: gh api repos/scarlel96-design/PC-Care/git/trees/03ecb325fe3791eade581265a9cb5173edc301a0 --method GET -f recursive=1 > artifacts/wo15/remote-report-tree.json
+INPUT: report commit recursive blob inventory
+OUTPUT: inventory downloaded; truncated=false
+EXIT CODE: 0
+INVENTORY RESULT: REMOTE_FILES=55;BLOB_MATCH=PASS
+INVENTORY METHOD: Compare every WO15 report and evidence blob with git ls-tree -r 03ecb325fe3791eade581265a9cb5173edc301a0.
+INPUT: 13 reports and 42 evidence files, including source copies and executable rollback.
+EXIT CODE: 0
+REOPEN RESULT: REOPENED_FILES=55;REQUIRED_REPORTS=13;REQUIRED_EVIDENCE=16;SOURCE_HASHES=12;JSON=VALID;PRIVACY=PASS;DIFF=EXACT;CI=SUCCESS
+RECEIPT NOTE: This publication receipt is a later documentation-only commit. Its final HEAD is recorded in the external handoff.
