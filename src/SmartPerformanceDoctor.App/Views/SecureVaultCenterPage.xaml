@@ -8,7 +8,7 @@
             <TextBlock Text="보안 금고" Style="{StaticResource MacPageTitleStyle}"/>
             <TextBlock Text="파일을 암호화해 복사합니다. 원본은 기본으로 보존하며, 내보낼 위치에 같은 이름의 파일이 있으면 중단합니다."
                        Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
-            <CheckBox x:Name="SealOriginCheckBox" Content="가져온 뒤 원본 보안 삭제 (별도 선택 · 되돌릴 수 없음)" IsChecked="False"/>
+            <CheckBox x:Name="SealOriginCheckBox" Content="원본 삭제 사용 불가 · 원본 보호 검증이 필요합니다" IsChecked="False" IsEnabled="False"/>
 
             <Border Style="{StaticResource MacWindowPanelStyle}">
                 <StackPanel Spacing="8">
@@ -22,6 +22,10 @@
                     <TextBlock x:Name="CryptoLineText" AutomationProperties.AutomationId="VaultFormat"
                                Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
                     <TextBlock x:Name="SecurityLineText"
+                               Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
+                    <TextBlock AutomationProperties.AutomationId="VaultCompatibilityNotice"
+                               AutomationProperties.Name="기존 금고 중단 복구 안내"
+                               Text="기존 Lab v5는 중단 복구 검증이 필요합니다. 열리지 않으면 원본을 보존하세요. 별도 사본 전환은 현재 격리 시험용이며, 이 화면에서 자동 실행하지 않습니다."
                                Foreground="{StaticResource SpdMutedTextBrush}" TextWrapping="Wrap"/>
                 </StackPanel>
             </Border>

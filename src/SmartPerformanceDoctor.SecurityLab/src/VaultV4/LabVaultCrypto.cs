@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+using System.Buffers;
+using System.Security.Cryptography;
 using System.Text;
 using Konscious.Security.Cryptography;
 
@@ -194,37 +195,60 @@ public static class LabVaultCrypto
         ReadRequired(input, countBuf);
         var count = BitConverter.ToInt32(countBuf);
         EnsureChunkCount(count);
-        for (var i = 0; i < count; i++)
+        var cipher = ArrayPool<byte>.Shared.Rent(ChunkSize + ConcealedPadBlock);
+        var plain = ArrayPool<byte>.Shared.Rent(ChunkSize + ConcealedPadBlock);
+        var nonce = new byte[nonceSize];
+        var tag = new byte[TagSize];
+        var length = new byte[4];
+        try
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            var nonce = new byte[nonceSize];
-            var tag = new byte[TagSize];
-            var length = new byte[4];
-            ReadRequired(input, nonce); ReadRequired(input, tag); ReadRequired(input, length);
-            var size = BitConverter.ToInt32(length);
-            if (size < 0 || size > ChunkSize + ConcealedPadBlock) throw new CryptographicException("invalid chunk length");
-            var cipher = new byte[size];
-            var plain = new byte[size];
-            byte[]? payload = null;
-            try
+            for (var i = 0; i < count; i++)
             {
-                ReadRequired(input, cipher);
-                DecryptOne(key, nonce, cipher, tag, plain, BuildAad(aadPrefix, i), suite);
-                payload = StripConcealedPad(plain, paddingVersion, i == count - 1);
                 cancellationToken.ThrowIfCancellationRequested();
-                plaintextOut.Write(payload);
+                ReadRequired(input, nonce); ReadRequired(input, tag); ReadRequired(input, length);
+                var size = BitConverter.ToInt32(length);
+                if (size < 0 || size > ChunkSize + ConcealedPadBlock)
+                    throw new CryptographicException("invalid chunk length");
+                var cipherChunk = cipher.AsSpan(0, size);
+                var plainChunk = plain.AsSpan(0, size);
+                try
+                {
+                    ReadRequired(input, cipherChunk);
+                    DecryptOne(key, nonce, cipherChunk, tag, plainChunk, BuildAad(aadPrefix, i), suite);
+                    var payloadLength = ConcealedPayloadLength(plainChunk, paddingVersion, i == count - 1);
+                    cancellationToken.ThrowIfCancellationRequested();
+                    plaintextOut.Write(plainChunk[..payloadLength]);
+                }
+                finally
+                {
+                    CryptographicOperations.ZeroMemory(plainChunk);
+                    CryptographicOperations.ZeroMemory(cipherChunk);
+                }
             }
-            finally
-            {
-                CryptographicOperations.ZeroMemory(plain);
-                CryptographicOperations.ZeroMemory(cipher);
-                if (payload is not null) CryptographicOperations.ZeroMemory(payload);
-            }
+            if (input.ReadByte() != -1) throw new CryptographicException("unexpected trailing chunk data");
         }
-        if (input.ReadByte() != -1) throw new CryptographicException("unexpected trailing chunk data");
+        finally
+        {
+            // Clear the complete rentals, including unused capacity.
+            ArrayPool<byte>.Shared.Return(plain, clearArray: true);
+            ArrayPool<byte>.Shared.Return(cipher, clearArray: true);
+        }
     }
 
-    private static void ReadRequired(Stream input, byte[] buffer)
+    private static int ConcealedPayloadLength(ReadOnlySpan<byte> plain, ChunkPaddingVersion padding, bool last)
+    {
+        if (!last || plain.Length != ConcealedPadBlock) return plain.Length;
+        var original = plain[^2] | (plain[^1] << 8);
+        if (padding == ChunkPaddingVersion.HardenedV2
+            && plain.Slice(ConcealedPadBlock - ConcealedPadV2FooterBytes, ConcealedPadV2Marker.Length)
+                .SequenceEqual(ConcealedPadV2Marker)
+            && original <= ConcealedPadBlock - ConcealedPadV2FooterBytes) return original;
+        if (padding == ChunkPaddingVersion.LegacyV1 && plain[^3] == 0xA5
+            && original <= ConcealedPadBlock - 3) return original;
+        return plain.Length;
+    }
+
+    private static void ReadRequired(Stream input, Span<byte> buffer)
     {
         try { input.ReadExactly(buffer); }
         catch (EndOfStreamException ex) { throw new CryptographicException("truncated chunk data", ex); }
@@ -300,9 +324,9 @@ public static class LabVaultCrypto
     private static void DecryptOne(
         byte[] key,
         byte[] nonce,
-        byte[] cipher,
+        ReadOnlySpan<byte> cipher,
         byte[] tag,
-        byte[] plain,
+        Span<byte> plain,
         byte[] aad,
         LabContentSuite suite)
     {

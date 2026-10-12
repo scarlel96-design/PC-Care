@@ -760,7 +760,8 @@ public sealed partial class LabVaultService : IDisposable
             header.VaultId,
             header.Generation,
             _metadata.Generation);
-        if (!commit.Ok)
+        if (!commit.Ok && !(_syntheticSalvage && !writeAllowed && header.Version == 5
+            && !string.IsNullOrEmpty(header.HeaderMacHex) && header.Generation == _metadata.Generation))
         {
             Lock();
             AppendAudit("unlock_fail", "rollback_or_digest");
