@@ -1,0 +1,13 @@
+WORK ITEM: WO14 BUILD_RESULT.txt
+STATUS: PASS
+BASELINE SHA: 47662986e737f9abc983c040a92aa52472efe557
+VERIFIED SOURCE SHA: c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab
+SOURCE TREE: c95434b61ae67ca361945b9caa74dddea477db8f
+ENVIRONMENT: Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic files only.
+TEST COMMAND: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 -m:1 -v:minimal
+INPUT: Verified source, Release x64
+OUTPUT:
+빌드했습니다.
+    경고 0개
+    오류 0개
+EXIT CODE: 0

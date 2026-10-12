@@ -1,0 +1,11 @@
+WORK ITEM: WO14 PERFORMANCE_RESULT.txt
+STATUS: PARTIAL
+BASELINE SHA: 47662986e737f9abc983c040a92aa52472efe557
+VERIFIED SOURCE SHA: c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab
+SOURCE TREE: c95434b61ae67ca361945b9caa74dddea477db8f
+ENVIRONMENT: Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic files only.
+TEST COMMAND: dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo14-memory artifacts/wo14/memory
+INPUT: Four fresh size processes: 4096, 4194304, 67108864, 268435456 bytes; 5 ms WS sampling
+OUTPUT:
+FRESH_PROCESSES=4;SHA256=PASS;KDF_AND_EXPORT=SEPARATE_PHASES;LOW_END_HARDWARE=NOT_TESTED
+EXIT CODE: 0

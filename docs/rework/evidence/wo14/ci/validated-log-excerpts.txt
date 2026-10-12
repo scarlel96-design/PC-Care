@@ -1,0 +1,11 @@
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-12T09:20:20.7093262Z Passed!  - Failed:     0, Passed:   128, Skipped:     0, Total:   128, Duration: 33 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Performance diagnostics scenarios	2026-10-12T09:20:34.9086531Z Passed!  - Failed:     0, Passed:   233, Skipped:     0, Total:   233, Duration: 7 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Vault reliability and separate-process crash recovery	2026-10-12T09:25:38.8180676Z Passed!  - Failed:     0, Passed:    17, Skipped:     0, Total:    17, Duration: 17 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Authenticated generations and password crash recovery	2026-10-12T09:27:16.2921657Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 19 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Legacy v5 transition and authenticated recovery	2026-10-12T09:29:45.6599040Z Passed!  - Failed:     0, Passed:    30, Skipped:     0, Total:    30, Duration: 1 m 7 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Legacy v5 transition and authenticated recovery	2026-10-12T09:31:36.5053478Z TRANSITION=PASS;TRANSITION_CRASH=10;METADATA_READY_V5=READ_ONLY_RECOVERY;METADATA_READY_V6=PASS;PASSWORD_CRASH=10;REPLAY=UNMITIGATED;POWER_LOSS=NOT_TESTED
+windows-validation	Legacy v5 transition and authenticated recovery	2026-10-12T09:31:57.9342717Z FRESH_PROCESSES=4;SHA256=PASS;KDF_AND_EXPORT=SEPARATE_PHASES;LOW_END_HARDWARE=NOT_TESTED
+windows-validation	Full application regression	2026-10-12T09:37:50.3302717Z Passed!  - Failed:     0, Passed:  1085, Skipped:   111, Total:  1196, Duration: 5 m 49 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	SecurityLab regression	2026-10-12T09:39:13.3506073Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 19 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+windows-validation	Release build	2026-10-12T09:19:21.8441339Z     0 Warning(s)
+windows-validation	Release build	2026-10-12T09:19:21.8441647Z     0 Error(s)

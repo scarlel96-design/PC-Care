@@ -1,0 +1,11 @@
+WORK ITEM: WO14 BASELINE_RESULT.txt
+STATUS: PARTIAL
+BASELINE SHA: 47662986e737f9abc983c040a92aa52472efe557
+VERIFIED SOURCE SHA: 47662986e737f9abc983c040a92aa52472efe557
+SOURCE TREE: b3de4df0e6b70252d898d063f8a6e01539f77342
+ENVIRONMENT: Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic files only.
+TEST COMMAND: dotnet run --project tools/SmartPerformanceDoctor.VaultProbe -c Release --no-build -- --synthetic artifacts/wo14/baseline
+INPUT: Baseline binary; three synthetic v5 termination fixtures; separate readers
+OUTPUT:
+CRASH_SCENARIOS=3;SEPARATE_READER_PROCESSES=3;HASH_ROUNDTRIP=PASS;FAIL_CLOSED=1;POWER_LOSS=NOT_TESTED
+EXIT CODE: 0

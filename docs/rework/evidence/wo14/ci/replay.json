@@ -1,0 +1,11 @@
+{
+  "status": "PARTIAL",
+  "integrityProtection": "HMAC",
+  "duplicateWithoutReplay": "rejected",
+  "validStoreReplay": "accepted",
+  "wholeContainerReplay": "accepted",
+  "historicalActivationReplay": "accepted",
+  "historicalActivationReader": "{\u0022status\u0022:\u0022PASS\u0022,\u0022entries\u0022:2,\u0022hashes\u0022:{\u0022\\uD3F4\\uB354/\\uD558\\uC704/seed.bin\u0022:\u00227BCAAFAD8FBE07583691A11DDDBD18DDAB1D2E9A416737B79D53A7D062867D81\u0022,\u0022empty.bin\u0022:\u0022E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\u0022}}",
+  "externalFreshnessAnchor": "absent",
+  "productionApproved": false
+}

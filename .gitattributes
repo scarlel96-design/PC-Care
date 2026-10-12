@@ -48,3 +48,9 @@ docs/rework/evidence/wo08/CI_LOG.txt -text whitespace=-blank-at-eol
 /docs/rework/evidence/wo13/*.cs.txt -text whitespace=cr-at-eol
 /docs/rework/evidence/wo13/DIFF_FILE.patch -text -whitespace
 /docs/rework/evidence/wo13/ROLLBACK.sh text eol=lf
+
+# Preserve WO-14 source evidence and shell execution.
+/docs/rework/evidence/wo14/** -text -whitespace
+/docs/rework/evidence/wo14/*.cs.txt -text whitespace=cr-at-eol
+/docs/rework/evidence/wo14/DIFF_FILE.patch -text -whitespace
+/docs/rework/evidence/wo14/ROLLBACK.sh text eol=lf

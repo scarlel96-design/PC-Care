@@ -1,0 +1,22 @@
+WORK ITEM: WO14 source and evidence publication
+STATUS: PASS for implementation publication and CI; final evidence publication recorded in the delivery receipt.
+BRANCH: codex/pccare-v5-compatibility-recovery-closure
+BASELINE SHA: 47662986e737f9abc983c040a92aa52472efe557
+VERIFIED IMPLEMENTATION LOCAL HEAD: c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab
+VERIFIED IMPLEMENTATION REMOTE HEAD: c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab
+IMPLEMENTATION TREE: c95434b61ae67ca361945b9caa74dddea477db8f
+COMMAND: git ls-remote origin refs/heads/codex/pccare-v5-compatibility-recovery-closure
+OUTPUT: c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab	refs/heads/codex/pccare-v5-compatibility-recovery-closure
+EXIT CODE: 0
+COMMAND: gh api repos/scarlel96-design/PC-Care/git/commits/c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab --jq '{sha: .sha, tree: .tree.sha}'
+OUTPUT: {"sha":"c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab","tree":"c95434b61ae67ca361945b9caa74dddea477db8f"}
+EXIT CODE: 0
+CI RUN: 38228910926
+CI STATUS: SUCCESS
+CI SOURCE SHA: c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38228910926
+INPUT: Implementation branch and its completed Windows workflow.
+The final report commit contains this receipt and does not alter implementation source.
+The final receipt commit cannot contain its own hash. Resolve it with git rev-parse HEAD after publication.
+The final delivery report records the resolved local and remote HEAD and tree.
+No main merge or official release was created.

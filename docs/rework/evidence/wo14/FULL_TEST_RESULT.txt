@@ -1,0 +1,11 @@
+WORK ITEM: WO14 FULL_TEST_RESULT.txt
+STATUS: PASS
+BASELINE SHA: 47662986e737f9abc983c040a92aa52472efe557
+VERIFIED SOURCE SHA: c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab
+SOURCE TREE: c95434b61ae67ca361945b9caa74dddea477db8f
+ENVIRONMENT: Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic files only.
+TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo14-full.trx' -v:minimal
+INPUT: Release x64 application test assembly
+OUTPUT:
+통과!  - 실패:     0, 통과:  1085, 건너뜀:   111, 전체:  1196, 기간: 4 m 35 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+EXIT CODE: 0

@@ -1,0 +1,92 @@
+[
+  {
+    "stage": "TransitionSnapshotReady",
+    "status": "PASS",
+    "readerExit": 0,
+    "readerOutput": "{\"status\":\"PASS\",\"entries\":2,\"hashes\":{\"\\uD3F4\\uB354/\\uD558\\uC704/seed.bin\":\"7BCAAFAD8FBE07583691A11DDDBD18DDAB1D2E9A416737B79D53A7D062867D81\",\"empty.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\"}}",
+    "originalUnchanged": true,
+    "retry": "fresh-workspace-only",
+    "partialCandidatePreserved": true
+  },
+  {
+    "stage": "TransitionSourceAuthenticated",
+    "status": "PASS",
+    "readerExit": 0,
+    "readerOutput": "{\"status\":\"PASS\",\"entries\":2,\"hashes\":{\"\\uD3F4\\uB354/\\uD558\\uC704/seed.bin\":\"7BCAAFAD8FBE07583691A11DDDBD18DDAB1D2E9A416737B79D53A7D062867D81\",\"empty.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\"}}",
+    "originalUnchanged": true,
+    "retry": "fresh-workspace-only",
+    "partialCandidatePreserved": true
+  },
+  {
+    "stage": "TransitionContentVerified",
+    "status": "PASS",
+    "readerExit": 0,
+    "readerOutput": "{\"status\":\"PASS\",\"entries\":2,\"hashes\":{\"\\uD3F4\\uB354/\\uD558\\uC704/seed.bin\":\"7BCAAFAD8FBE07583691A11DDDBD18DDAB1D2E9A416737B79D53A7D062867D81\",\"empty.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\"}}",
+    "originalUnchanged": true,
+    "retry": "fresh-workspace-only",
+    "partialCandidatePreserved": true
+  },
+  {
+    "stage": "TransitionRecoveryReady",
+    "status": "PASS",
+    "readerExit": 0,
+    "readerOutput": "{\"status\":\"PASS\",\"entries\":2,\"hashes\":{\"\\uD3F4\\uB354/\\uD558\\uC704/seed.bin\":\"7BCAAFAD8FBE07583691A11DDDBD18DDAB1D2E9A416737B79D53A7D062867D81\",\"empty.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\"}}",
+    "originalUnchanged": true,
+    "retry": "fresh-workspace-only",
+    "partialCandidatePreserved": true
+  },
+  {
+    "stage": "GenerationMetadataWritten",
+    "status": "PASS",
+    "readerExit": 0,
+    "readerOutput": "{\"status\":\"PASS\",\"entries\":2,\"hashes\":{\"\\uD3F4\\uB354/\\uD558\\uC704/seed.bin\":\"7BCAAFAD8FBE07583691A11DDDBD18DDAB1D2E9A416737B79D53A7D062867D81\",\"empty.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\"}}",
+    "originalUnchanged": true,
+    "retry": "fresh-workspace-only",
+    "partialCandidatePreserved": true
+  },
+  {
+    "stage": "GenerationHeaderWritten",
+    "status": "PASS",
+    "readerExit": 0,
+    "readerOutput": "{\"status\":\"PASS\",\"entries\":2,\"hashes\":{\"\\uD3F4\\uB354/\\uD558\\uC704/seed.bin\":\"7BCAAFAD8FBE07583691A11DDDBD18DDAB1D2E9A416737B79D53A7D062867D81\",\"empty.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\"}}",
+    "originalUnchanged": true,
+    "retry": "fresh-workspace-only",
+    "partialCandidatePreserved": true
+  },
+  {
+    "stage": "GenerationVerified",
+    "status": "PASS",
+    "readerExit": 0,
+    "readerOutput": "{\"status\":\"PASS\",\"entries\":2,\"hashes\":{\"\\uD3F4\\uB354/\\uD558\\uC704/seed.bin\":\"7BCAAFAD8FBE07583691A11DDDBD18DDAB1D2E9A416737B79D53A7D062867D81\",\"empty.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\"}}",
+    "originalUnchanged": true,
+    "retry": "fresh-workspace-only",
+    "partialCandidatePreserved": true
+  },
+  {
+    "stage": "ActivationBeforeReplace",
+    "status": "PASS",
+    "readerExit": 0,
+    "readerOutput": "{\"status\":\"PASS\",\"entries\":2,\"hashes\":{\"\\uD3F4\\uB354/\\uD558\\uC704/seed.bin\":\"7BCAAFAD8FBE07583691A11DDDBD18DDAB1D2E9A416737B79D53A7D062867D81\",\"empty.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\"}}",
+    "originalUnchanged": true,
+    "retry": "fresh-workspace-only",
+    "partialCandidatePreserved": true
+  },
+  {
+    "stage": "ActivationAfterReplace",
+    "status": "PASS",
+    "readerExit": 0,
+    "readerOutput": "{\"status\":\"PASS\",\"entries\":2,\"hashes\":{\"\\uD3F4\\uB354/\\uD558\\uC704/seed.bin\":\"7BCAAFAD8FBE07583691A11DDDBD18DDAB1D2E9A416737B79D53A7D062867D81\",\"empty.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\"}}",
+    "originalUnchanged": true,
+    "retry": "fresh-workspace-only",
+    "partialCandidatePreserved": true
+  },
+  {
+    "stage": "TransitionVerified",
+    "status": "PASS",
+    "readerExit": 0,
+    "readerOutput": "{\"status\":\"PASS\",\"entries\":2,\"hashes\":{\"\\uD3F4\\uB354/\\uD558\\uC704/seed.bin\":\"7BCAAFAD8FBE07583691A11DDDBD18DDAB1D2E9A416737B79D53A7D062867D81\",\"empty.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\"}}",
+    "originalUnchanged": true,
+    "retry": "fresh-workspace-only",
+    "partialCandidatePreserved": true
+  }
+]

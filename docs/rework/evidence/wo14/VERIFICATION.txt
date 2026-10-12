@@ -1,0 +1,101 @@
+WORK ITEM: WO14
+STATUS: PARTIAL
+BRANCH: codex/pccare-v5-compatibility-recovery-closure
+BASELINE SHA: 47662986e737f9abc983c040a92aa52472efe557
+VERIFIED SOURCE SHA: c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab
+SOURCE TREE: c95434b61ae67ca361945b9caa74dddea477db8f
+ENVIRONMENT: Windows 26200; SDK 10.0.401; 24 logical processors; synthetic data.
+
+ROOT CAUSE:
+Unprotected v5 overwrites metadata before the activation commit.
+MetadataReady termination leaves a generation mismatch.
+Authenticated recovery-store records do not provide freshness.
+
+CHANGED FIELD / BRANCH:
+LabV5Transition.ExecuteSynthetic requires explicit consent and a new bounded fixture workspace.
+LabVaultService permits authenticated read-only salvage only through the internal synthetic route.
+LabVaultCrypto streaming decryption uses pooled chunk buffers with zeroing and clearArray return.
+SecureVaultCenterPage disables source sealing and shows compatibility limits.
+Read CHANGED_FILES.txt for all ten implementation paths.
+
+ARTIFACT PATHS:
+MODIFIED_FILE: C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo14/MODIFIED_FILE.cs.txt
+DIFF_FILE: C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo14/DIFF_FILE.patch
+VERIFICATION: C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo14/VERIFICATION.txt
+ROLLBACK: C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/work/PC-Care/docs/rework/evidence/wo14/ROLLBACK.sh
+DIFF SCOPE: LabVaultCrypto.cs only. Other changes are in the source commit.
+
+BASELINE COMMAND:
+dotnet run --project tools/SmartPerformanceDoctor.VaultProbe -c Release --no-build -- --synthetic artifacts/wo14/baseline *> artifacts/wo14-baseline.log
+BASELINE INPUT: Baseline binary; three synthetic v5 interruption fixtures; separate reader processes.
+BASELINE OUTPUT: CRASH_SCENARIOS=3;SEPARATE_READER_PROCESSES=3;HASH_ROUNDTRIP=PASS;FAIL_CLOSED=1;POWER_LOSS=NOT_TESTED
+BASELINE EXIT CODE: 0
+BASELINE BEHAVIOR: Two byte-verified recovery scenarios. One preserved but locked MetadataReady fixture.
+
+MODIFIED COMMAND:
+dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo14 artifacts/wo14/modified *> artifacts/wo14-transition.log
+MODIFIED INPUT: Synthetic LabFast v5; separate encrypted copies; converted v6; independent child readers.
+MODIFIED OUTPUT: TRANSITION=PASS;TRANSITION_CRASH=10;METADATA_READY_V5=READ_ONLY_RECOVERY;METADATA_READY_V6=PASS;PASSWORD_CRASH=10;REPLAY=UNMITIGATED;POWER_LOSS=NOT_TESTED
+MODIFIED EXIT CODE: 0
+MODIFIED RESULT: Ten interrupted transitions preserve all original files and permit a fresh-workspace retry.
+MODIFIED RESULT: Three authenticated v5 content entries are exported from a copied MetadataReady fixture.
+MODIFIED RESULT: Converted v6 preserves prior content after MetadataReady and ten password interruption points.
+MODIFIED LIMIT: Raw v5 normal reopening remains blocked. The salvage result does not qualify commit history.
+
+ROLLBACK COMMAND:
+& 'C:\Program Files\Git\bin\bash.exe' docs/rework/evidence/wo14/ROLLBACK.sh "$(Get-Location)/artifacts/wo14/rollback-copy.cs.txt" *> artifacts/wo14-rollback.log
+ROLLBACK INPUT: Independent copy of MODIFIED_FILE.cs.txt within artifacts/wo14.
+ROLLBACK OUTPUT: SOURCE_COPY_RESTORED=PASS
+ROLLBACK EXIT CODE: 0
+RESTORED STATUS: Independent source copy equals original SHA-256 191F00ADD8DF0443304E4CDD5B05B79C5F55DD7B2B5D6A37F3E0A5C03456CA65.
+WORKING STATUS: Working source retains modified SHA-256 F70A629DEA2D6093AAE9A170FEFD2B63C3257835A4C062804C3A43E6B680DD16.
+RESTORED BEHAVIOR: Baseline source bytes restored; no baseline execution is inferred from a source-copy restoration.
+
+BUILD COMMAND: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 -m:1 -v:minimal *> artifacts/wo14-build.log
+BUILD INPUT: Current solution, Release x64.
+BUILD OUTPUT: 빌드했습니다. / 경고 0개 / 오류 0개 / 경과 시간: 00:01:09.65
+BUILD EXIT CODE: 0
+
+FOCUSED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --filter 'FullyQualifiedName~WO14' --logger 'trx;LogFileName=wo14-focused.trx' -v:minimal *> artifacts/wo14-focused.log
+FOCUSED INPUT: Thirty new WO14 tests.
+FOCUSED OUTPUT: 통과!  - 실패:     0, 통과:    30, 건너뜀:     0, 전체:    30, 기간: 1 m 25 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+FOCUSED EXIT CODE: 0
+
+FULL COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo14-full.trx' -v:minimal *> artifacts/wo14-full.log
+FULL INPUT: Entire app test assembly; existing Skip policies unchanged.
+FULL OUTPUT: 통과!  - 실패:     0, 통과:  1085, 건너뜀:   111, 전체:  1196, 기간: 4 m 35 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+FULL EXIT CODE: 0
+SECURITYLAB: Rebuilt 36 PASS / 0 FAIL / 0 SKIP; exit 0. Read SECURITYLAB_RESULT.txt for both attempts.
+
+MEMORY COMMAND: dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo14-memory artifacts/wo14/memory *> artifacts/wo14-memory.log
+MEMORY INPUT: Fresh child process for each 4 KiB, 4 MiB, 64 MiB, and 256 MiB synthetic file.
+MEMORY OUTPUT: FRESH_PROCESSES=4;SHA256=PASS;KDF_AND_EXPORT=SEPARATE_PHASES;LOW_END_HARDWARE=NOT_TESTED
+MEMORY EXIT CODE: 0
+MEMORY LIMIT: Working set retains prior create/import/KDF allocations. Local probes overlapped.
+
+GUI COMMAND: powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/wo14-gui-validation.ps1
+GUI INPUT: No dedicated test-account arguments.
+GUI OUTPUT: {"status":"BLOCKED","guiExecuted":false,"reason":"Dedicated test account required"}
+GUI EXIT CODE: 4, expected profile rejection.
+GUI RESULT: NOT TESTED. Read WO14_GUI_VALIDATION.md for the executable procedure.
+
+SAFETY:
+All fixtures use synthetic files. Public evidence excludes keys, passwords, recovery codes, plaintext, and private fixture locations.
+Original v5 bytes remain preserved. Incomplete workspaces remain preserved.
+All six AV3 approval gates remain false.
+Production migration and source deletion remain disabled. Phase 1 remains NO-GO.
+
+REMAINING RISKS:
+Historical recovery-store, activation, and whole-container replay are accepted.
+An external freshness anchor is absent. Code-consumption success receipts remain unimplemented.
+Raw v5 password interruption, archival old-reader trials, complete filesystem attacks, GUI, low-spec hardware, and power loss remain unqualified.
+
+ROLLBACK PROCEDURE:
+Copy MODIFIED_FILE.cs.txt to artifacts/wo14/rollback-copy.cs.txt.
+Run the exact ROLLBACK command above.
+Compare its hash with ORIGINAL_FILE.cs.txt.
+Preserve vault originals and incomplete workspaces independently.
+Use a fresh workspace to retry the synthetic transition.
+Source-copy rollback does not restore vault data or an installed application.
+
+GITHUB AND CI: Read GITHUB_RESULT.txt and CI_RESULT.txt for separately verified remote and CI identities.

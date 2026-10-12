@@ -1,0 +1,11 @@
+WORK ITEM: WO14 TRANSITION_TEST_RESULT.txt
+STATUS: PARTIAL
+BASELINE SHA: 47662986e737f9abc983c040a92aa52472efe557
+VERIFIED SOURCE SHA: c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab
+SOURCE TREE: c95434b61ae67ca361945b9caa74dddea477db8f
+ENVIRONMENT: Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic files only.
+TEST COMMAND: dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo14 artifacts/wo14/modified
+INPUT: Private synthetic LabFast v5; Korean nested seed file and empty file; third file for MetadataReady; child kills
+OUTPUT:
+TRANSITION=PASS;TRANSITION_CRASH=10;METADATA_READY_V5=READ_ONLY_RECOVERY;METADATA_READY_V6=PASS;PASSWORD_CRASH=10;REPLAY=UNMITIGATED;POWER_LOSS=NOT_TESTED
+EXIT CODE: 0

@@ -1,0 +1,84 @@
+{
+  "sourceSha": "c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab",
+  "runId": 38228910926,
+  "tests": [
+    {
+      "file": "wo06-securitylab.trx",
+      "passed": 36,
+      "failed": 0,
+      "total": 36,
+      "outcomes": {
+        "Passed": 36
+      },
+      "skipFromTotalMinusExecuted": 0,
+      "sha256": "f013079d521c7bab5318e1bea5cc63db9942b8103a663cc3fcb549a95a29ac83"
+    },
+    {
+      "file": "wo06-full.trx",
+      "passed": 1085,
+      "failed": 0,
+      "total": 1196,
+      "outcomes": {
+        "Passed": 1085,
+        "NotExecuted": 111
+      },
+      "skipFromTotalMinusExecuted": 111,
+      "sha256": "fe90164f7b3c34e46eb880dc8123b211fb266792ad3919de92b3b8a04652d80f"
+    },
+    {
+      "file": "wo06-signed-updater.trx",
+      "passed": 128,
+      "failed": 0,
+      "total": 128,
+      "outcomes": {
+        "Passed": 128
+      },
+      "skipFromTotalMinusExecuted": 0,
+      "sha256": "07b8872f05ade7ec0da1904ec883c83c2a07405a941fd58543eb44d51c96a1a9"
+    },
+    {
+      "file": "wo09-performance.trx",
+      "passed": 233,
+      "failed": 0,
+      "total": 233,
+      "outcomes": {
+        "Passed": 233
+      },
+      "skipFromTotalMinusExecuted": 0,
+      "sha256": "87f5357b0cdcdfcb355af44d5ab16d8a245ca3a0b29d64fe5641d860357a825d"
+    },
+    {
+      "file": "wo12-vault.trx",
+      "passed": 17,
+      "failed": 0,
+      "total": 17,
+      "outcomes": {
+        "Passed": 17
+      },
+      "skipFromTotalMinusExecuted": 0,
+      "sha256": "02d23842ee7239686eed8db684dfc830a2c2d9e592a9c41fab3d9c3ae97924fa"
+    },
+    {
+      "file": "wo13-vault.trx",
+      "passed": 36,
+      "failed": 0,
+      "total": 36,
+      "outcomes": {
+        "Passed": 36
+      },
+      "skipFromTotalMinusExecuted": 0,
+      "sha256": "5c63842c3b377e390a34a8c22fac7a2ddbb3c75b5d3d14c110454e88eb54f2a2"
+    },
+    {
+      "file": "wo14-vault.trx",
+      "passed": 30,
+      "failed": 0,
+      "total": 30,
+      "outcomes": {
+        "Passed": 30
+      },
+      "skipFromTotalMinusExecuted": 0,
+      "sha256": "a8b6c41f3fde31944e070af35569532ee8941c3f6f814913effb3b7ca3adfb3e"
+    }
+  ]
+}

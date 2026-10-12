@@ -1,0 +1,94 @@
+[
+  {
+    "bytes": 4096,
+    "status": "PASS",
+    "inputSha256": "91A4A9DBC71BC666DEF4A8ABCD90E084018AED4611FC1701821E21777F15D0AC",
+    "outputSha256": "91A4A9DBC71BC666DEF4A8ABCD90E084018AED4611FC1701821E21777F15D0AC",
+    "unlock": {
+      "elapsedMs": 423.5148,
+      "cpuMs": 671.875,
+      "managedAllocatedBytes": 90465272,
+      "initialWorkingSetBytes": 319434752,
+      "maxSampledWorkingSetBytes": 388567040
+    },
+    "export": {
+      "elapsedMs": 92.7536,
+      "cpuMs": 109.375,
+      "managedAllocatedBytes": 15478632,
+      "initialWorkingSetBytes": 373399552,
+      "maxSampledWorkingSetBytes": 377552896
+    },
+    "allocationIsCumulative": true,
+    "workingSetIncludesPriorKdfAndImport": true,
+    "processPerSize": true
+  },
+  {
+    "bytes": 4194304,
+    "status": "PASS",
+    "inputSha256": "80271483E6198B99F6D441B59A91DA3E06393423B35116E2EC9707E352CF950E",
+    "outputSha256": "80271483E6198B99F6D441B59A91DA3E06393423B35116E2EC9707E352CF950E",
+    "unlock": {
+      "elapsedMs": 572.8109,
+      "cpuMs": 1078.125,
+      "managedAllocatedBytes": 90463824,
+      "initialWorkingSetBytes": 319864832,
+      "maxSampledWorkingSetBytes": 388947968
+    },
+    "export": {
+      "elapsedMs": 303.2424,
+      "cpuMs": 359.375,
+      "managedAllocatedBytes": 15501760,
+      "initialWorkingSetBytes": 373841920,
+      "maxSampledWorkingSetBytes": 376487936
+    },
+    "allocationIsCumulative": true,
+    "workingSetIncludesPriorKdfAndImport": true,
+    "processPerSize": true
+  },
+  {
+    "bytes": 67108864,
+    "status": "PASS",
+    "inputSha256": "5B3361BD66A64653BFFAA295C87C96D993FF8232667AE72D938ADD0258BF048C",
+    "outputSha256": "5B3361BD66A64653BFFAA295C87C96D993FF8232667AE72D938ADD0258BF048C",
+    "unlock": {
+      "elapsedMs": 401.4736,
+      "cpuMs": 593.75,
+      "managedAllocatedBytes": 90465880,
+      "initialWorkingSetBytes": 319397888,
+      "maxSampledWorkingSetBytes": 388235264
+    },
+    "export": {
+      "elapsedMs": 3139.6089,
+      "cpuMs": 3015.625,
+      "managedAllocatedBytes": 15799208,
+      "initialWorkingSetBytes": 121253888,
+      "maxSampledWorkingSetBytes": 127324160
+    },
+    "allocationIsCumulative": true,
+    "workingSetIncludesPriorKdfAndImport": true,
+    "processPerSize": true
+  },
+  {
+    "bytes": 268435456,
+    "status": "PASS",
+    "inputSha256": "29E6D413452153607B117241C939F630A2FCA422929829E1FAE239BC81DE1309",
+    "outputSha256": "29E6D413452153607B117241C939F630A2FCA422929829E1FAE239BC81DE1309",
+    "unlock": {
+      "elapsedMs": 403.3819,
+      "cpuMs": 640.625,
+      "managedAllocatedBytes": 90445688,
+      "initialWorkingSetBytes": 321126400,
+      "maxSampledWorkingSetBytes": 390324224
+    },
+    "export": {
+      "elapsedMs": 10978.0803,
+      "cpuMs": 9718.75,
+      "managedAllocatedBytes": 16592048,
+      "initialWorkingSetBytes": 322379776,
+      "maxSampledWorkingSetBytes": 326078464
+    },
+    "allocationIsCumulative": true,
+    "workingSetIncludesPriorKdfAndImport": true,
+    "processPerSize": true
+  }
+]

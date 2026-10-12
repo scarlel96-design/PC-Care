@@ -1,0 +1,54 @@
+WORK ITEM: WO14 Windows CI
+STATUS: PASS for automated Windows validation; product status PARTIAL / NO-GO
+BRANCH: codex/pccare-v5-compatibility-recovery-closure
+VERIFIED SOURCE SHA: c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab
+SOURCE TREE: c95434b61ae67ca361945b9caa74dddea477db8f
+RUN ID: 38228910926
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38228910926
+JOB ID: 114743221544
+ENVIRONMENT: GitHub-hosted windows-latest; Release x64; .NET 10.0.x; synthetic vault files.
+START: 2026-10-12T09:17:22Z
+END: 2026-10-12T09:39:20Z
+
+STATUS COMMAND: gh run view 38228910926 --json status,conclusion,headSha,jobs
+INPUT: Completed run 38228910926 in this repository.
+OUTPUT: conclusion=success; status=completed; headSha=c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab; windows-validation=success
+EXIT CODE: 0
+DOWNLOAD COMMAND: gh run download 38228910926 -n wo14-windows-evidence -D artifacts/wo14-ci-download
+DOWNLOAD OUTPUT: No stdout; artifact files materialized and reopened.
+DOWNLOAD EXIT CODE: 0
+LOG COMMAND: gh run view 38228910926 --log > artifacts/wo14-ci.log
+LOG EXIT CODE: 0
+
+BUILD COMMAND: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+BUILD OUTPUT: 0 Warning(s); 0 Error(s)
+BUILD EXIT CODE: 0; successful workflow step.
+RESTORE RESULT: Three NU1510 warnings before build.
+RESTORE PACKAGES: System.IO.Pipes.AccessControl; System.Security.Cryptography.ProtectedData; System.Drawing.Common.
+The zero-warning build summary does not mean the restore step had no warnings.
+
+FULL TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo06-full.trx' -v:minimal
+FULL INPUT: Current application assembly; prior Skip policies retained.
+FULL OUTPUT: Passed!  - Failed:     0, Passed:  1085, Skipped:   111, Total:  1196, Duration: 5 m 49 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+FULL EXIT CODE: 0; successful workflow step.
+LAB COMMAND: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo06-securitylab.trx' -v:minimal
+LAB OUTPUT: Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 19 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+LAB EXIT CODE: 0; successful workflow step.
+FOCUSED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO14' --logger 'trx;LogFileName=wo14-vault.trx' -v:minimal
+FOCUSED OUTPUT: Passed!  - Failed:     0, Passed:    30, Skipped:     0, Total:    30, Duration: 1 m 7 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+FOCUSED EXIT CODE: 0; successful workflow step.
+SUBSETS: Updater 128; performance 233; WO12 17; WO13 36; WO14 30. All subsets are included in the full application run.
+TRX RESULT: Read ci/test-counters.json. Skip is checked against total minus executed and result outcomes.
+
+PROBE COMMAND: dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo14 artifacts/wo14-ci
+PROBE INPUT: Explicit synthetic v5 transition; fresh child readers; converted v6 interruptions; replay trials.
+PROBE OUTPUT: TRANSITION=PASS;TRANSITION_CRASH=10;METADATA_READY_V5=READ_ONLY_RECOVERY;METADATA_READY_V6=PASS;PASSWORD_CRASH=10;REPLAY=UNMITIGATED;POWER_LOSS=NOT_TESTED
+PROBE EXIT CODE: 0; expected security limitations remain visible.
+MEMORY COMMAND: dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo14-memory artifacts/wo14-memory
+MEMORY OUTPUT: FRESH_PROCESSES=4;SHA256=PASS;KDF_AND_EXPORT=SEPARATE_PHASES;LOW_END_HARDWARE=NOT_TESTED
+MEMORY EXIT CODE: 0
+
+CI artifact JSON was downloaded, parsed, checked for private paths and credential patterns, and copied into ci/.
+Raw TRX and complete logs remain local. Their counters, SHA-256 values, and selected literal outputs are public.
+The workflow file records exact commands for every other regression step.
+GUI execution, physical power loss, and production migration are not qualified by this run.

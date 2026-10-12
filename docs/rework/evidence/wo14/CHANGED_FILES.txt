@@ -1,0 +1,10 @@
+.github/workflows/wo14-windows-validation.yml
+scripts/wo14-gui-validation.ps1
+src/SmartPerformanceDoctor.App/Views/SecureVaultCenterPage.xaml
+src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabV5Transition.cs
+src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultCrypto.cs
+src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.cs
+tests/SmartPerformanceDoctor.Tests/WO14StreamingCompatibilityTests.cs
+tests/SmartPerformanceDoctor.Tests/WO14V5TransitionTests.cs
+tools/SmartPerformanceDoctor.VaultProbe/Program.cs
+tools/SmartPerformanceDoctor.VaultProbe/V5TransitionProbe.cs

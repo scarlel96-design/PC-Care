@@ -1,0 +1,22 @@
+WORK ITEM: WO14
+STATUS: PARTIAL
+BRANCH: codex/pccare-v5-compatibility-recovery-closure
+BASELINE SHA: 47662986e737f9abc983c040a92aa52472efe557
+VERIFIED SOURCE SHA: c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab
+SOURCE TREE: c95434b61ae67ca361945b9caa74dddea477db8f
+ENVIRONMENT: Windows 26200; SDK 10.0.401; 24 logical processors; synthetic data.
+
+ATTEMPT 1 KNOWN COMMAND FLAGS: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests -c Release -p:Platform=x64 --no-build --no-restore -v:minimal
+COMMAND LIMIT: The exact initial logger argument was not retained in this receipt. The log reports wo14-lab.trx.
+INPUT: Existing standalone test binary. This binary was stale.
+OUTPUT: 실패!  - 실패:     1, 통과:    35, 건너뜀:     0, 전체:    36, 기간: 1 m 44 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+EXIT CODE: 1
+FAILURE: SClass_export_atomic_and_orphan_purge used the previous readiness assertion.
+CURRENT SOURCE: Assert.False(gaps.LabCodeComplete, gaps.ToHumanSummary()).
+ACTION: Rebuild the standalone test project. Keep the original failure evidence.
+
+ATTEMPT 2 COMMAND: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests -c Release -p:Platform=x64 --logger 'trx;LogFileName=wo14-lab-rebuilt.trx' -v:minimal *> artifacts/wo14-lab-rebuilt.log
+INPUT: Rebuilt current standalone test project. No source or assertion was changed between attempts.
+OUTPUT: 통과!  - 실패:     0, 통과:    36, 건너뜀:     0, 전체:    36, 기간: 1 m 30 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+EXIT CODE: 0
+RESULT: PASS after rebuild.

@@ -1,0 +1,11 @@
+WORK ITEM: WO14 ROLLBACK_RESULT.txt
+STATUS: PASS
+BASELINE SHA: 47662986e737f9abc983c040a92aa52472efe557
+VERIFIED SOURCE SHA: c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab
+SOURCE TREE: c95434b61ae67ca361945b9caa74dddea477db8f
+ENVIRONMENT: Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic files only.
+TEST COMMAND: & 'C:\Program Files\Git\bin\bash.exe' docs/rework/evidence/wo14/ROLLBACK.sh "$(Get-Location)/artifacts/wo14/rollback-copy.cs.txt"
+INPUT: Independent copy of modified LabVaultCrypto.cs
+OUTPUT:
+SOURCE_COPY_RESTORED=PASS
+EXIT CODE: 0

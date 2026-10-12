@@ -1,0 +1,11 @@
+WORK ITEM: WO14 GUI_TEST_RESULT.txt
+STATUS: NOT TESTED
+BASELINE SHA: 47662986e737f9abc983c040a92aa52472efe557
+VERIFIED SOURCE SHA: c8c8f604ecc1cec89875c0b57d5ef0bfcbe995ab
+SOURCE TREE: c95434b61ae67ca361945b9caa74dddea477db8f
+ENVIRONMENT: Windows NT 10.0.26200.0; .NET SDK 10.0.401; 24 logical processors; synthetic files only.
+TEST COMMAND: powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/wo14-gui-validation.ps1
+INPUT: No dedicated test SID; no AppPath, ProbePath, or Launch
+OUTPUT:
+{"status":"BLOCKED","guiExecuted":false,"reason":"Dedicated test account required"}
+EXIT CODE: 4
