@@ -1,0 +1,89 @@
+{
+  "status": "PASS",
+  "sourceSha": "1ca80b98f63ec953c952647fcf28f8032ac986a7",
+  "environment": "Windows 11 build 26200; current account; synthetic fixtures",
+  "command": "dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo16 artifacts/wo16/final-probe",
+  "input": "Synthetic LabFast v5/v6 containers. No user files.",
+  "output": "RECEIPT_RECONCILIATION=9;GENERATION_CRASH=4;V5_READONLY=2;SHA256=PASS;POWER_LOSS=NOT_TESTED",
+  "exitCode": 0,
+  "results": [
+    {
+      "stage": "TrustedBeforeConsumption",
+      "status": "PASS",
+      "result": "InterruptedReview;BYTES_VERIFIED;NO_CONSUMPTION",
+      "childExit": 0,
+      "repeatedQuery": "InterruptedReview;BYTES_VERIFIED;NO_CONSUMPTION",
+      "recoveryStoreUnchanged": true,
+      "callerAcknowledgementExactlyOnce": "NOT PROVEN",
+      "powerLoss": "NOT TESTED"
+    },
+    {
+      "stage": "TrustedAfterConsumption",
+      "status": "PASS",
+      "result": "ReceiptAcknowledged;BYTES_VERIFIED;NO_SECOND_CONSUMPTION",
+      "childExit": 0,
+      "repeatedQuery": "ReceiptAcknowledged;BYTES_VERIFIED;NO_SECOND_CONSUMPTION",
+      "recoveryStoreUnchanged": true,
+      "callerAcknowledgementExactlyOnce": "NOT PROVEN",
+      "powerLoss": "NOT TESTED"
+    },
+    {
+      "stage": "AnchorBeforeReplace:2",
+      "status": "PASS",
+      "result": "ReceiptAcknowledged;BYTES_VERIFIED;NO_SECOND_CONSUMPTION",
+      "childExit": 0,
+      "repeatedQuery": "ReceiptAcknowledged;BYTES_VERIFIED;NO_SECOND_CONSUMPTION",
+      "recoveryStoreUnchanged": true,
+      "callerAcknowledgementExactlyOnce": "NOT PROVEN",
+      "powerLoss": "NOT TESTED"
+    },
+    {
+      "stage": "ReconciliationConsumptionVerified",
+      "status": "PASS",
+      "result": "ReceiptAcknowledged;BYTES_VERIFIED;NO_SECOND_CONSUMPTION",
+      "childExit": 0,
+      "termination": "separate-process-kill",
+      "powerLoss": "NOT TESTED"
+    },
+    {
+      "stage": "ReconciliationBeforeAnchorCommit",
+      "status": "PASS",
+      "result": "ReceiptAcknowledged;BYTES_VERIFIED;NO_SECOND_CONSUMPTION",
+      "childExit": 0,
+      "termination": "separate-process-kill",
+      "powerLoss": "NOT TESTED"
+    },
+    {
+      "stage": "ReconciliationAfterAnchorCommit",
+      "status": "PASS",
+      "result": "ReceiptAcknowledged;BYTES_VERIFIED;NO_SECOND_CONSUMPTION",
+      "childExit": 0,
+      "termination": "separate-process-kill",
+      "powerLoss": "NOT TESTED"
+    },
+    {
+      "stage": "ReconciliationBeforeResponse",
+      "status": "PASS",
+      "result": "ReceiptAcknowledged;BYTES_VERIFIED;NO_SECOND_CONSUMPTION",
+      "childExit": 0,
+      "termination": "separate-process-kill",
+      "powerLoss": "NOT TESTED"
+    },
+    {
+      "stage": "TrustedBeforeAcknowledgement",
+      "status": "PASS",
+      "result": "ReceiptAcknowledged;BYTES_VERIFIED;NO_SECOND_CONSUMPTION",
+      "childExit": 0,
+      "termination": "separate-process-kill",
+      "powerLoss": "NOT TESTED"
+    },
+    {
+      "stage": "TrustedAfterAcknowledgement",
+      "status": "PASS",
+      "result": "ReceiptAcknowledged;BYTES_VERIFIED;NO_SECOND_CONSUMPTION",
+      "childExit": 0,
+      "termination": "separate-process-kill",
+      "powerLoss": "NOT TESTED"
+    }
+  ]
+}

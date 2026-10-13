@@ -1,0 +1,157 @@
+[
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Invalid_receipt_data_is_visible_and_preserved(mutation: \"invalid-state\")",
+    "outcome": "Passed",
+    "duration": "00:00:02.8459092"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Before_consumption_remains_review_required_and_preserves_code",
+    "outcome": "Passed",
+    "duration": "00:00:02.2037304"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Anchor_write_failure_preserves_committed_vault_and_reports_pending",
+    "outcome": "Passed",
+    "duration": "00:00:02.3467075"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultProtectionTests.Vault_and_anchor_files_are_protected_from_cleanup(name: \"vault.header.tmp\")",
+    "outcome": "Passed",
+    "duration": "00:00:00.0000064"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Invalid_generation_sequence_is_rejected(delta: 2)",
+    "outcome": "Passed",
+    "duration": "00:00:02.2018787"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Password_change_commits_anchor_and_reopens_bytes",
+    "outcome": "Passed",
+    "duration": "00:00:02.3855643"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Cancelled_snapshot_preserves_source_and_creates_no_output",
+    "outcome": "Passed",
+    "duration": "00:00:01.5452698"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultProtectionTests.Vault_and_anchor_files_are_protected_from_cleanup(name: \"object.avpack\")",
+    "outcome": "Passed",
+    "duration": "00:00:00.0000095"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.V5_authenticated_backup_recovers_bytes_only_in_independent_copy(stage: \"LegacyPasswordHeadersWritten\")",
+    "outcome": "Passed",
+    "duration": "00:00:04.8601956"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Invalid_receipt_data_is_visible_and_preserved(mutation: \"invalid-posture\")",
+    "outcome": "Passed",
+    "duration": "00:00:01.8289646"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Invalid_generation_sequence_is_rejected(delta: 3)",
+    "outcome": "Passed",
+    "duration": "00:00:02.3229732"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.V5_tampered_backup_is_not_used_as_authenticated_data",
+    "outcome": "Passed",
+    "duration": "00:00:02.9359335"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Invalid_receipt_data_is_visible_and_preserved(mutation: \"reservation-vault\")",
+    "outcome": "Passed",
+    "duration": "00:00:01.9869083"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Unresolved_operation_blocks_another_code_reservation",
+    "outcome": "Passed",
+    "duration": "00:00:01.9524510"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultProtectionTests.Vault_and_anchor_files_are_protected_from_cleanup(name: \"state.dpapi\")",
+    "outcome": "Passed",
+    "duration": "00:00:00.0133955"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultProtectionTests.Vault_and_anchor_files_are_protected_from_cleanup(name: \"recovery_slots.v6.json.previous\")",
+    "outcome": "Passed",
+    "duration": "00:00:00.0003323"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Invalid_receipt_data_is_visible_and_preserved(mutation: \"invalid-code-id\")",
+    "outcome": "Passed",
+    "duration": "00:00:01.9677941"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Invalid_receipt_data_is_visible_and_preserved(mutation: \"duplicate-operation\")",
+    "outcome": "Passed",
+    "duration": "00:00:02.0122730"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.V5_authenticated_backup_recovers_bytes_only_in_independent_copy(stage: \"LegacyPasswordSlotsWritten\")",
+    "outcome": "Passed",
+    "duration": "00:00:05.1318250"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultProtectionTests.Vault_and_anchor_files_are_protected_from_cleanup(name: \"vault.metadata.cache\")",
+    "outcome": "Passed",
+    "duration": "00:00:00.0000160"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Unresolved_reservation_blocks_normal_mutation_before_import",
+    "outcome": "Passed",
+    "duration": "00:00:01.8244497"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultProtectionTests.Vault_and_anchor_files_are_protected_from_cleanup(name: \"state.dpapi.previous\")",
+    "outcome": "Passed",
+    "duration": "00:00:00.0000078"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Consumed_operation_reconciles_without_consuming_again(stage: \"AnchorBeforeReplace:2\")",
+    "outcome": "Passed",
+    "duration": "00:00:02.6424002"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Consumed_operation_reconciles_without_consuming_again(stage: \"TrustedAfterConsumption\")",
+    "outcome": "Passed",
+    "duration": "00:00:02.8417068"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Invalid_receipt_data_is_visible_and_preserved(mutation: \"early-ack\")",
+    "outcome": "Passed",
+    "duration": "00:00:02.4354112"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Invalid_generation_sequence_is_rejected(delta: 0)",
+    "outcome": "Passed",
+    "duration": "00:00:02.4383897"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultProtectionTests.All_production_approval_gates_remain_closed",
+    "outcome": "Passed",
+    "duration": "00:00:00.0001402"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Normal_import_commits_exact_next_generation",
+    "outcome": "Passed",
+    "duration": "00:00:01.9511742"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Unproven_consumption_is_not_committed(condition: \"changed-backup\")",
+    "outcome": "Passed",
+    "duration": "00:00:02.1967519"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Unproven_consumption_is_not_committed(condition: \"wrong-code\")",
+    "outcome": "Passed",
+    "duration": "00:00:02.3198959"
+  },
+  {
+    "test": "SmartPerformanceDoctor.Tests.WO16VaultStabilityTests.Unproven_consumption_is_not_committed(condition: \"missing-backup\")",
+    "outcome": "Passed",
+    "duration": "00:00:02.3315138"
+  }
+]

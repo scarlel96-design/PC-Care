@@ -1,0 +1,59 @@
+WORK ITEM: WO-16 revised standard mode
+STATUS: PARTIAL / Phase 1 NO-GO
+BRANCH: codex/pccare-wo16-standard-mode-stability
+BASELINE SHA: 60fc9a6c812e5458d5367020b732ca0c199ea72e
+BASELINE TREE: 57d21a8fd06231145897e09bfdc09f9c45764e01
+VERIFIED SOURCE SHA: 1ca80b98f63ec953c952647fcf28f8032ac986a7
+SOURCE TREE: 61dc70b16d6d359d562cc26f6fbf65c2e3ef2803
+ENVIRONMENT: Windows 11 build 26200; .NET 10.0.401; 24 logical CPUs; administrator token False.
+INPUT: Isolated synthetic fixtures. Existing user vaults were not opened or changed.
+FINAL SHA: See GITHUB_RESULT.txt and the final delivery message. Evidence is committed after the validated source.
+
+CHANGED BRANCH: codex/pccare-wo16-standard-mode-stability
+CHANGED FIELD: RecoveryReceipt.ReservedEvidence; strict receipt states; exact single-code consumption reconciliation.
+MODIFIED_FILE: docs/rework/evidence/wo16/MODIFIED_FILE
+DIFF_FILE: docs/rework/evidence/wo16/DIFF_FILE
+VERIFICATION: docs/rework/evidence/wo16/VERIFICATION.txt
+ROLLBACK: docs/rework/evidence/wo16/ROLLBACK.sh
+ORIGINAL SHA256: 5d1aa7f0c56fc811e184e0311063cd2c81028846350c77b56917971998465bff
+MODIFIED SHA256: c6f0a26a4733b3b19997065e2f5053aa1e9cfa10dd8a7da61c09c1c7bddeda62
+
+BASELINE COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo16-baseline-full.trx' -v:minimal
+BASELINE INPUT: Unmodified WO-15 Release binaries at baseline source.
+BASELINE OUTPUT: 통과!  - 실패:     0, 통과:  1108, 건너뜀:   111, 전체:  1219, 기간: 3 m 35 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+BASELINE EXIT CODE: 0
+BASELINE VAULT RESULT: TrustedAfterConsumption and AnchorBeforeReplace:2 were Interrupted / AuthenticButStale. Existing bytes verified.
+
+MODIFIED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo16-full.trx' -v:minimal
+MODIFIED INPUT: Final Release binaries; synthetic data.
+MODIFIED OUTPUT: 통과!  - 실패:     0, 통과:  1139, 건너뜀:   111, 전체:  1250, 기간: 6 m 35 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+MODIFIED EXIT CODE: 0
+MODIFIED VAULT COMMAND: dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo16 artifacts/wo16/final-probe
+MODIFIED VAULT OUTPUT: RECEIPT_RECONCILIATION=9;GENERATION_CRASH=4;V5_READONLY=2;SHA256=PASS;POWER_LOSS=NOT_TESTED
+MODIFIED VAULT EXIT CODE: 0
+
+ROLLBACK COMMAND: & 'C:/Program Files/Git/bin/bash.exe' docs/rework/evidence/wo16/ROLLBACK.sh artifacts/wo16/wo16-rollback-validation/RESTORE_COPY
+ROLLBACK INPUT: Independent copy of MODIFIED_FILE. The live source and MODIFIED_FILE are not targets.
+ROLLBACK OUTPUT: ROLLBACK_SOURCE_SHA256=5d1aa7f0c56fc811e184e0311063cd2c81028846350c77b56917971998465bff;SOURCE_COPY_ONLY=PASS
+ROLLBACK EXIT CODE: 0
+RESTORED STATUS: Independent source bytes equal ORIGINAL_FILE. The application source remains modified.
+RESTORED BEHAVIOR: This is a source-copy restoration. It does not execute or restore a vault transaction.
+ACTUAL VAULT RECOVERY: Separate-process authenticated export and SHA-256 comparison are recorded in the probe JSON files.
+
+SANDBOX ERRORS: Initial testhost timeout; file move access denial; restore exit 1 without output; Git Bash MSYS access denial.
+RESOLUTION: Approved normal-process retries passed. No product trust gate was changed.
+GUI: NOT TESTED. Physical power loss: NOT TESTED. Low-end hardware: NOT TESTED.
+DAYBREAK: DAYBREAK_DEFERRED. Overall: PARTIAL. Phase 1: NO-GO.
+
+SOURCE ALIGNMENT: The initial local full run used a stale x64 test output and reported 1137 PASS.
+The solution output was bin/Release. The test command selected bin/x64/Release.
+Both x64 test and probe projects were rebuilt explicitly at the verified source commit.
+The final full run reported 1139 PASS / 111 SKIP / 0 FAIL.
+The final probe and performance measurements used the rebuilt x64 outputs.
+PUBLIC EVIDENCE CHECK: Runtime recovery codes found: 0. Private fixture location excluded: True.
+
+WINDOWS CI: 38419949642 SUCCESS
+CI SOURCE: 1ca80b98f63ec953c952647fcf28f8032ac986a7
+CI APP: 1139 PASS / 111 SKIP / 0 FAIL
+CI WO16: 31 PASS
+CI SECURITYLAB: 36 PASS

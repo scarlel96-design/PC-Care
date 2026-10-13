@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "sourceSha": "1ca80b98f63ec953c952647fcf28f8032ac986a7",
+  "environment": "Windows 11 build 26200; current account; synthetic fixtures",
+  "command": "dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo16 artifacts/wo16/final-probe",
+  "input": "Synthetic LabFast v5/v6 containers. No user files.",
+  "output": "RECEIPT_RECONCILIATION=9;GENERATION_CRASH=4;V5_READONLY=2;SHA256=PASS;POWER_LOSS=NOT_TESTED",
+  "exitCode": 0,
+  "results": {
+    "status": "PASS",
+    "receiptReopenRuns": 9,
+    "v5ReadOnlyRecoveries": 2,
+    "originalBytes": "VERIFIED",
+    "sourceDeletion": false,
+    "generationAuthenticatedContent": "VERIFIED",
+    "fixtures": "SYNTHETIC_ONLY",
+    "independentlyRehashedExportCount": 14,
+    "originalSha256": "74F81FE167D99B4CB41D6D0CCDA82278CAEE9F3E2F25D5E5A3936FF3DCEC60D0",
+    "exportSha256Values": [
+      "74F81FE167D99B4CB41D6D0CCDA82278CAEE9F3E2F25D5E5A3936FF3DCEC60D0"
+    ],
+    "hashCommand": "Python hashlib.sha256 on every synthetic seed.bin export in the private probe root"
+  }
+}

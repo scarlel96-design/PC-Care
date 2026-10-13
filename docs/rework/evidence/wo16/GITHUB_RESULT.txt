@@ -1,0 +1,28 @@
+STATUS: PASS
+BRANCH: codex/pccare-wo16-standard-mode-stability
+BASELINE HEAD: 60fc9a6c812e5458d5367020b732ca0c199ea72e
+BASELINE TREE: 57d21a8fd06231145897e09bfdc09f9c45764e01
+IMPLEMENTATION LOCAL HEAD: 1ca80b98f63ec953c952647fcf28f8032ac986a7
+IMPLEMENTATION REMOTE HEAD: 1ca80b98f63ec953c952647fcf28f8032ac986a7
+IMPLEMENTATION TREE: 61dc70b16d6d359d562cc26f6fbf65c2e3ef2803
+COMMAND: git push -u origin codex/pccare-wo16-standard-mode-stability
+INPUT: new independent implementation branch
+OUTPUT: [new branch] codex/pccare-wo16-standard-mode-stability -> codex/pccare-wo16-standard-mode-stability
+EXIT CODE: 0
+COMMAND: gh run view 38419949642 --json databaseId,headSha,status,conclusion,url,jobs
+OUTPUT: completed / success; source 1ca80b98f63ec953c952647fcf28f8032ac986a7
+EXIT CODE: 0
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38419949642
+BASELINE CI: 38255952676 SUCCESS; source ab2c19f3027a5450a55042915af69220f7ec5ccc
+FINAL EVIDENCE HEAD: Resolve the branch ref after the evidence commit. The final delivery records its exact SHA and tree.
+No self-referential final commit hash is embedded in this tracked file.
+SOURCE CONSISTENCY: The final evidence commit changes docs and .gitattributes only.
+MAIN MERGE: not performed
+OFFICIAL RELEASE: not created
+CI ANNOTATION: actions/checkout@v4, setup-dotnet@v4 and upload-artifact@v4 declare Node 20. The runner used Node 24.
+This annotation is separate from the zero C# build warnings.
+ARTIFACT QUERY: gh api repos/scarlel96-design/PC-Care/actions/runs/38419949642/artifacts
+ARTIFACT OUTPUT:
+{"expired":false,"id":11827202610,"name":"wo16-windows-evidence","size_in_bytes":731994}
+
+EXIT CODE: 0

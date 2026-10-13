@@ -1,0 +1,170 @@
+{
+  "status": "PASS",
+  "sourceSha": "1ca80b98f63ec953c952647fcf28f8032ac986a7",
+  "command": "dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo15-memory artifacts/wo16/memory",
+  "input": "0 bytes, 4 KiB, 4 MiB, 64 MiB, 256 MiB synthetic files; full local tests and crash probe completed first",
+  "output": "EXPORT_ONLY_CHILDREN=5;SHA256=PASS;MAX_BYTES=268435456;LOW_END_HARDWARE=NOT_TESTED",
+  "exitCode": 0,
+  "results": [
+    {
+      "status": "PASS",
+      "bytes": 0,
+      "inputSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "outputSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "unlock": {
+        "elapsedMs": 357.5323,
+        "cpuMs": 703.125,
+        "managedAllocatedBytes": 90969432,
+        "initialWorkingSetBytes": 29343744,
+        "maxSampledWorkingSetBytes": 108892160
+      },
+      "export": {
+        "elapsedMs": 53.8994,
+        "cpuMs": 109.375,
+        "managedAllocatedBytes": 15483112,
+        "initialWorkingSetBytes": 108552192,
+        "maxSampledWorkingSetBytes": 113893376
+      },
+      "hashing": {
+        "elapsedMs": 21.7006,
+        "cpuMs": 31.25,
+        "managedAllocatedBytes": 8000,
+        "initialWorkingSetBytes": 47108096,
+        "maxSampledWorkingSetBytes": 47116288
+      },
+      "importInThisProcess": false,
+      "exportIncludesAuthenticationAndOutput": true,
+      "workingSetIncludesPriorUnlock": true,
+      "managedAllocationIncludesSampler": true,
+      "lowEndHardware": "NOT TESTED"
+    },
+    {
+      "status": "PASS",
+      "bytes": 4096,
+      "inputSha256": "D67C656E01756650D77717B0839985A056EC28FFE174601D690FC407A2CEFFCA",
+      "outputSha256": "D67C656E01756650D77717B0839985A056EC28FFE174601D690FC407A2CEFFCA",
+      "unlock": {
+        "elapsedMs": 330.0701,
+        "cpuMs": 625,
+        "managedAllocatedBytes": 90950640,
+        "initialWorkingSetBytes": 29523968,
+        "maxSampledWorkingSetBytes": 108941312
+      },
+      "export": {
+        "elapsedMs": 38.1079,
+        "cpuMs": 78.125,
+        "managedAllocatedBytes": 15496216,
+        "initialWorkingSetBytes": 108609536,
+        "maxSampledWorkingSetBytes": 114229248
+      },
+      "hashing": {
+        "elapsedMs": 23.7963,
+        "cpuMs": 31.25,
+        "managedAllocatedBytes": 8000,
+        "initialWorkingSetBytes": 114229248,
+        "maxSampledWorkingSetBytes": 114237440
+      },
+      "importInThisProcess": false,
+      "exportIncludesAuthenticationAndOutput": true,
+      "workingSetIncludesPriorUnlock": true,
+      "managedAllocationIncludesSampler": true,
+      "lowEndHardware": "NOT TESTED"
+    },
+    {
+      "status": "PASS",
+      "bytes": 4194304,
+      "inputSha256": "B9474B200E75EEADE43D407169F578DE80B338E230F36CFD47B7DE192E0D5192",
+      "outputSha256": "B9474B200E75EEADE43D407169F578DE80B338E230F36CFD47B7DE192E0D5192",
+      "unlock": {
+        "elapsedMs": 433.5369,
+        "cpuMs": 437.5,
+        "managedAllocatedBytes": 91006856,
+        "initialWorkingSetBytes": 29356032,
+        "maxSampledWorkingSetBytes": 108802048
+      },
+      "export": {
+        "elapsedMs": 129.0517,
+        "cpuMs": 78.125,
+        "managedAllocatedBytes": 15494200,
+        "initialWorkingSetBytes": 108474368,
+        "maxSampledWorkingSetBytes": 111730688
+      },
+      "hashing": {
+        "elapsedMs": 40.1644,
+        "cpuMs": 15.625,
+        "managedAllocatedBytes": 11352,
+        "initialWorkingSetBytes": 47099904,
+        "maxSampledWorkingSetBytes": 47116288
+      },
+      "importInThisProcess": false,
+      "exportIncludesAuthenticationAndOutput": true,
+      "workingSetIncludesPriorUnlock": true,
+      "managedAllocationIncludesSampler": true,
+      "lowEndHardware": "NOT TESTED"
+    },
+    {
+      "status": "PASS",
+      "bytes": 67108864,
+      "inputSha256": "77A0C90E19A4122C3BB62FA54F710F121A215A2123EA7F0B38EC1B1265BCAC83",
+      "outputSha256": "77A0C90E19A4122C3BB62FA54F710F121A215A2123EA7F0B38EC1B1265BCAC83",
+      "unlock": {
+        "elapsedMs": 358.0336,
+        "cpuMs": 531.25,
+        "managedAllocatedBytes": 90969208,
+        "initialWorkingSetBytes": 29368320,
+        "maxSampledWorkingSetBytes": 108605440
+      },
+      "export": {
+        "elapsedMs": 457.2267,
+        "cpuMs": 421.875,
+        "managedAllocatedBytes": 15578456,
+        "initialWorkingSetBytes": 108281856,
+        "maxSampledWorkingSetBytes": 111587328
+      },
+      "hashing": {
+        "elapsedMs": 275.8775,
+        "cpuMs": 265.625,
+        "managedAllocatedBytes": 61664,
+        "initialWorkingSetBytes": 46977024,
+        "maxSampledWorkingSetBytes": 47669248
+      },
+      "importInThisProcess": false,
+      "exportIncludesAuthenticationAndOutput": true,
+      "workingSetIncludesPriorUnlock": true,
+      "managedAllocationIncludesSampler": true,
+      "lowEndHardware": "NOT TESTED"
+    },
+    {
+      "status": "PASS",
+      "bytes": 268435456,
+      "inputSha256": "CD9DD169DDE4047AC96A92EEE5873890506FB71CF9AEC657C5403629BB402F82",
+      "outputSha256": "CD9DD169DDE4047AC96A92EEE5873890506FB71CF9AEC657C5403629BB402F82",
+      "unlock": {
+        "elapsedMs": 477.021,
+        "cpuMs": 765.625,
+        "managedAllocatedBytes": 90959536,
+        "initialWorkingSetBytes": 29421568,
+        "maxSampledWorkingSetBytes": 109248512
+      },
+      "export": {
+        "elapsedMs": 2269.3384,
+        "cpuMs": 3531.25,
+        "managedAllocatedBytes": 16003504,
+        "initialWorkingSetBytes": 108965888,
+        "maxSampledWorkingSetBytes": 116330496
+      },
+      "hashing": {
+        "elapsedMs": 1582.9159,
+        "cpuMs": 2296.875,
+        "managedAllocatedBytes": 172248,
+        "initialWorkingSetBytes": 52609024,
+        "maxSampledWorkingSetBytes": 52842496
+      },
+      "importInThisProcess": false,
+      "exportIncludesAuthenticationAndOutput": true,
+      "workingSetIncludesPriorUnlock": true,
+      "managedAllocationIncludesSampler": true,
+      "lowEndHardware": "NOT TESTED"
+    }
+  ]
+}

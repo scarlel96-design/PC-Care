@@ -1,0 +1,24 @@
+WORK ITEM: WO-16 revised standard mode
+STATUS: PARTIAL / Phase 1 NO-GO
+BRANCH: codex/pccare-wo16-standard-mode-stability
+BASELINE SHA: 60fc9a6c812e5458d5367020b732ca0c199ea72e
+BASELINE TREE: 57d21a8fd06231145897e09bfdc09f9c45764e01
+VERIFIED SOURCE SHA: 1ca80b98f63ec953c952647fcf28f8032ac986a7
+SOURCE TREE: 61dc70b16d6d359d562cc26f6fbf65c2e3ef2803
+ENVIRONMENT: Windows 11 build 26200; .NET 10.0.401; 24 logical CPUs; administrator token False.
+INPUT: Isolated synthetic fixtures. Existing user vaults were not opened or changed.
+FINAL SHA: See GITHUB_RESULT.txt and the final delivery message. Evidence is committed after the validated source.
+
+STATUS: PASS
+TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo16-securitylab.trx' -v:minimal
+INPUT: synthetic fixtures or repository source
+OUTPUT:
+  SmartPerformanceDoctor.SecurityLab -> <REPO>\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+  SmartPerformanceDoctor.SecurityLab.Tests -> <REPO>\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll
+<REPO>\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+결과 파일: <REPO>\tests\SmartPerformanceDoctor.SecurityLab.Tests\TestResults\wo16-securitylab.trx
+
+통과!  - 실패:     0, 통과:    36, 건너뜀:     0, 전체:    36, 기간: 58 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+
+EXIT CODE: 0

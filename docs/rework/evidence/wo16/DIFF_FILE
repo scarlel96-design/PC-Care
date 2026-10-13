@@ -1,0 +1,1111 @@
+diff --git a/.github/workflows/wo16-windows-validation.yml b/.github/workflows/wo16-windows-validation.yml
+new file mode 100644
+index 0000000..a004a09
+--- /dev/null
++++ b/.github/workflows/wo16-windows-validation.yml
+@@ -0,0 +1,203 @@
++name: WO16 standard mode vault stability
++
++on:
++  push:
++    branches:
++      - codex/pccare-wo16-standard-mode-stability
++    paths-ignore:
++      - 'docs/**'
++      - '.gitattributes'
++  pull_request:
++
++jobs:
++  windows-validation:
++    runs-on: windows-latest
++    timeout-minutes: 55
++    permissions:
++      contents: read
++    steps:
++      - uses: actions/checkout@v4
++      - uses: actions/setup-dotnet@v4
++        with:
++          dotnet-version: '10.0.x'
++      - name: Restore
++        run: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
++      - name: Release build
++        run: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
++      - name: Signed package, publisher, transaction, recovery and staging tests
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests|FullyQualifiedName~WO06' --logger 'trx;LogFileName=wo06-signed-updater.trx' -v:minimal
++      - name: Performance diagnostics scenarios
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO07|FullyQualifiedName~WO08|FullyQualifiedName~WO09|FullyQualifiedName~WO10|FullyQualifiedName~WO11' --logger 'trx;LogFileName=wo09-performance.trx' -v:minimal
++      - name: Read-only Windows collector smoke
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-restore -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'probe build failed' }
++          New-Item -ItemType Directory -Force artifacts/wo07-ci | Out-Null
++          dotnet run --project tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-build --no-restore -- 30 artifacts/wo07-ci/measurement.json
++          if ($LASTEXITCODE -ne 0) { throw 'CPU or memory collector unavailable' }
++          $measurement = Get-Content artifacts/wo07-ci/measurement.json -Raw | ConvertFrom-Json
++          if ($measurement.environment.elevated) {
++            if ($measurement.snapshot.Errors.Where({ $_.Provider.StartsWith('ETW') }).Count -gt 0) { throw 'Elevated ETW collection failed' }
++            if ($measurement.snapshot.EventsReceived -le 0) { throw 'Elevated ETW delivered no events' }
++            if ($null -eq $measurement.remainingOwnedSessions -or $measurement.remainingOwnedSessions -ne 0) { throw 'ETW session cleanup not verified' }
++          }
++      - name: Diagnostic profiles and controlled workloads
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-restore -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'Reference analyzer build failed' }
++          dotnet run --project tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-build --no-restore -- --verify-time-contract
++          if ($LASTEXITCODE -ne 0) { throw 'SDK converted timestamp contract failed' }
++          ./scripts/wo08-measurement.ps1 -OutputDirectory artifacts/wo08-ci -RunControlledWorkloads
++          ./scripts/wo09-disk-identity.ps1 -OutputDirectory artifacts/wo09-ci
++          # CPU reference qualification remains a separate unresolved task.
++      - name: Synthetic recovery and UI Automation harness
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.RecoverySandbox -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw "sandbox build failed" }
++          ./scripts/wo10-sandbox-validation.ps1 -OutputDirectory artifacts/wo10-sandbox
++          ./scripts/wo11-sandbox-validation.ps1 -OutputDirectory artifacts/wo11-sandbox
++          dotnet build tools/SmartPerformanceDoctor.CleanupProbe -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw "cleanup probe build failed" }
++          & tools/SmartPerformanceDoctor.CleanupProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.CleanupProbe.exe --synthetic artifacts/wo11-ci
++          if ($LASTEXITCODE -ne 0) { throw "cleanup roundtrip failed" }
++          dotnet build tools/SmartPerformanceDoctor.GuiProbe -c Release -p:Platform=x64 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw "UIA harness build failed" }
++          & tools/SmartPerformanceDoctor.GuiProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.GuiProbe.exe | Set-Content artifacts/wo10-sandbox/gui-status.json
++      - name: Separate-process termination and recovery
++        shell: pwsh
++        run: |
++          dotnet build tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          ./scripts/wo06-process-validation.ps1 -OutputDirectory artifacts/wo06-ci-process
++      - name: Production profile and isolated test profile
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'test kit build failed' }
++          dotnet build tools/SmartPerformanceDoctor.VaultRecovery/SmartPerformanceDoctor.VaultRecovery.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'data recovery build failed' }
++          $kit = 'tools/SmartPerformanceDoctor.VMTestKit/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.VMTestKit.exe'
++          $engine = 'src/SmartPerformanceDoctor.UpdateEngine/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateEngine.dll'
++          & $kit audit-production $engine
++          if ($LASTEXITCODE -ne 0) { throw 'test trust leaked into production' }
++          & $kit audit-production 'src/SmartPerformanceDoctor.App/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.dll'
++          if ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production app' }
++          & $kit audit-production 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.dll'
++          if ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production helper' }
++          $profile = Join-Path $env:RUNNER_TEMP 'wo06-test-profile'
++          & $kit fixture-profile $profile ('0' * 40)
++          if ($LASTEXITCODE -ne 0) { throw 'profile generation failed' }
++          $source = Join-Path $profile 'TestVmTrust.g.cs'
++          dotnet build src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -o (Join-Path $profile 'output') -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'test profile build failed' }
++          & $kit audit-production (Join-Path $profile 'output/SmartPerformanceDoctor.UpdateEngine.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test artifact' }
++          dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -m:1 -o (Join-Path $profile 'app-output') -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'VM Release application profile build failed' }
++          & $kit audit-production (Join-Path $profile 'app-output/SmartPerformanceDoctor.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test application' }
++          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateHelper.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'VM application copied a production update helper' }
++          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateEngine.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'VM helper copied a production update engine' }
++          exit 0
++      - name: Vault reliability and separate-process crash recovery
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO12VaultReliabilityTests' --logger 'trx;LogFileName=wo12-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'vault reliability failed' }
++          dotnet build tools/SmartPerformanceDoctor.VaultProbe -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'vault probe build failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --synthetic artifacts/wo12-ci
++          if ($LASTEXITCODE -ne 0) { throw 'vault crash preservation failed' }
++      - name: Authenticated generations and password crash recovery
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO13' --logger 'trx;LogFileName=wo13-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO13 regression failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --crash-safe artifacts/wo13-ci
++          if ($LASTEXITCODE -ne 0) { throw 'authenticated vault recovery failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --recovery-crash artifacts/wo13-ci
++          if ($LASTEXITCODE -ne 0) { throw 'authenticated recovery code persistence failed' }
++      - name: Legacy v5 transition and authenticated recovery
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO14' --logger 'trx;LogFileName=wo14-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO14 regression failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo14 artifacts/wo14-ci
++          if ($LASTEXITCODE -ne 0) { throw 'legacy transition or recovery failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo14-memory artifacts/wo14-memory
++          if ($LASTEXITCODE -ne 0) { throw 'streaming integrity or memory probe failed' }
++      - name: Trusted recovery receipts and replay boundaries
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO15' --logger 'trx;LogFileName=wo15-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO15 regression failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo15 artifacts/wo15-ci
++          if ($LASTEXITCODE -ne 0) { throw 'WO15 receipt or replay probe failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo15-memory artifacts/wo15-memory
++          if ($LASTEXITCODE -ne 0) { throw 'WO15 export-only memory or integrity probe failed' }
++      - name: WO16 receipt reconciliation and authenticated v5 read-only recovery
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO16' --logger 'trx;LogFileName=wo16-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO16 regression failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo16 artifacts/wo16-ci
++          if ($LASTEXITCODE -ne 0) { throw 'WO16 reconciliation or recovery failed' }
++          pwsh -NoProfile -File scripts/wo16-ui-source-validation.ps1
++          if ($LASTEXITCODE -ne 0) { throw 'WO16 UI source contract failed' }
++      - name: Full application regression
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo06-full.trx' -v:minimal
++      - name: SecurityLab regression
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo06-securitylab.trx' -v:minimal
++      - name: Reject unsupported helper verb
++        shell: pwsh
++        run: |
++          $helper = 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe'
++          $process = Start-Process -FilePath $helper -ArgumentList @('--exec', 'arbitrary') -Wait -PassThru -NoNewWindow
++          if ($process.ExitCode -ne 2) { throw "Unexpected helper exit code: $($process.ExitCode)" }
++      - name: Upload test evidence
++        if: always()
++        uses: actions/upload-artifact@v4
++        with:
++          name: wo16-windows-evidence
++          path: |
++            tests/SmartPerformanceDoctor.Tests/TestResults/*.trx
++            tests/SmartPerformanceDoctor.SecurityLab.Tests/TestResults/*.trx
++            artifacts/wo06-ci-process/process-results.json
++            artifacts/wo07-ci/measurement.json
++            artifacts/wo08-ci/**/*.json
++            artifacts/wo09-ci/**/*.json
++            artifacts/wo10-ci/**/*.json
++            artifacts/wo10-sandbox/sandbox-results.json
++            artifacts/wo10-sandbox/gui-status.json
++            artifacts/wo11-ci/*.json
++            artifacts/wo11-sandbox/sandbox-results.json
++            artifacts/wo12-ci/crash-results.json
++            artifacts/wo12-ci/performance.json
++            artifacts/wo13-ci/commit-recovery.json
++            artifacts/wo13-ci/password-crash.json
++            artifacts/wo13-ci/streaming-export.json
++            artifacts/wo13-ci/recovery-code-crash.json
++            artifacts/wo14-ci/transition.json
++            artifacts/wo14-ci/transition-crash.json
++            artifacts/wo14-ci/metadata-ready.json
++            artifacts/wo14-ci/password-crash.json
++            artifacts/wo14-ci/replay.json
++            artifacts/wo14-memory/streaming-memory.json
++            artifacts/wo15-ci/REPLAY_ATTACK_RESULT.json
++            artifacts/wo15-ci/RECOVERY_RECEIPT_RESULT.json
++            artifacts/wo15-ci/V5_PASSWORD_CRASH_RESULT.json
++            artifacts/wo15-memory/PERFORMANCE_RESULT.json
++
++            artifacts/wo16-ci/*.json
+diff --git a/scripts/wo16-gui-validation.ps1 b/scripts/wo16-gui-validation.ps1
+new file mode 100644
+index 0000000..9454441
+--- /dev/null
++++ b/scripts/wo16-gui-validation.ps1
+@@ -0,0 +1,54 @@
++param(
++    [Parameter(Mandatory=$true)][string]$ExpectedTestSid,
++    [Parameter(Mandatory=$true)][string]$OriginalUserSid,
++    [string]$SnapshotId,
++    [string]$AppPath,
++    [string]$ProbePath,
++    [switch]$DisposableVmConfirmed,
++    [switch]$Launch
++)
++$ErrorActionPreference = 'Stop'
++$sid = [Security.Principal.WindowsIdentity]::GetCurrent().User.Value
++if ($sid -ne $ExpectedTestSid -or $sid -eq $OriginalUserSid) {
++    '{"status":"BLOCKED","guiExecuted":false,"reason":"Independent test SID required; no profile changes made"}'
++    exit 4
++}
++if (!$DisposableVmConfirmed -or [string]::IsNullOrWhiteSpace($SnapshotId)) {
++    '{"status":"BLOCKED","guiExecuted":false,"reason":"Disposable VM and snapshot evidence required"}'
++    exit 5
++}
++$profile = [Environment]::GetFolderPath('UserProfile')
++$local = [Environment]::GetFolderPath('LocalApplicationData')
++if (!$local.StartsWith($profile.TrimEnd('\') + '\', [StringComparison]::OrdinalIgnoreCase)) {
++    throw 'Local AppData must belong to the independent profile'
++}
++$testRoot = Join-Path $local 'PCCareWO16Synthetic'
++for ($node=$testRoot; $node; $node=Split-Path $node -Parent) {
++    if ((Test-Path -LiteralPath $node) -and ((Get-Item -LiteralPath $node).Attributes -band [IO.FileAttributes]::ReparsePoint)) {
++        throw 'Profile reparse point rejected'
++    }
++}
++if (!$Launch) {
++    '{"status":"NOT TESTED","guiExecuted":false,"reason":"Environment prerequisites checked; explicit Launch required"}'
++    exit 0
++}
++if (!(Test-Path -LiteralPath $AppPath -PathType Leaf) -or !(Test-Path -LiteralPath $ProbePath -PathType Leaf)) {
++    throw 'Built application and GuiProbe required'
++}
++New-Item -ItemType Directory -Path $testRoot -Force | Out-Null
++foreach ($name in @('vault','temp','logs','cache')) {
++    New-Item -ItemType Directory -Path (Join-Path $testRoot $name) -Force | Out-Null
++}
++Set-Content -LiteralPath (Join-Path $testRoot 'fixture.marker') -Value 'WO15_SYNTHETIC_ONLY' -NoNewline
++$acl = Get-Acl -LiteralPath $testRoot
++[pscustomobject]@{ status='PARTIAL'; guiExecuted=$false; snapshot=$SnapshotId; dedicatedSidVerified=$true; owner=$acl.Owner; sddl=$acl.Sddl } | ConvertTo-Json
++$env:SPD_TEST_VAULT_ROOT = Join-Path $testRoot 'vault'
++$env:TEMP = Join-Path $testRoot 'temp'
++$env:TMP = $env:TEMP
++# App settings remain in this independent account's AppData.
++# The logs and cache directories are preparation assets, not application redirects.
++$app = Start-Process -FilePath $AppPath -PassThru -WindowStyle Normal
++Write-Output 'Open the vault page. Use only synthetic files in this test profile.'
++Read-Host 'Press Enter after the vault page is visible' | Out-Null
++& $ProbePath --inspect-vault-page $app.Id
++exit $LASTEXITCODE
+diff --git a/scripts/wo16-ui-source-validation.ps1 b/scripts/wo16-ui-source-validation.ps1
+new file mode 100644
+index 0000000..de17a29
+--- /dev/null
++++ b/scripts/wo16-ui-source-validation.ps1
+@@ -0,0 +1,18 @@
++$ErrorActionPreference = 'Stop'
++$repo = Split-Path $PSScriptRoot -Parent
++$pagePath = Join-Path $repo 'src/SmartPerformanceDoctor.App/Views/SecureVaultCenterPage.xaml'
++$page = [xml](Get-Content -Raw -LiteralPath $pagePath)
++$ids = $page.SelectNodes('//@*[local-name()="AutomationProperties.AutomationId"]') | ForEach-Object Value
++foreach ($id in @('VaultStatus','VaultFormat','VaultCompatibilityNotice','VaultPasswordChange','VaultPasswordRestriction','VaultEntries')) {
++    if (@($ids | Where-Object { $_ -eq $id }).Count -ne 1) { throw "Missing or duplicate automation ID: $id" }
++}
++foreach ($script in @('wo15-gui-validation.ps1','wo16-gui-validation.ps1')) {
++    $errors = $null
++    [void][Management.Automation.Language.Parser]::ParseFile((Join-Path $PSScriptRoot $script),[ref]$null,[ref]$errors)
++    if ($errors.Count) { throw "PowerShell syntax errors: $script" }
++}
++$gates = Get-Content -Raw -LiteralPath (Join-Path $repo 'src/SmartPerformanceDoctor.AstraVault/Target/Av3PhaseGate.cs')
++foreach ($gate in @('ProductionWriterEnabled','JournalWriterEnabled','MigrationEnabled','WriterEnableReady','ExternalReviewCompleted','ProductionEnableAuthorized')) {
++    if ($gates -notmatch ("\b" + $gate + '\s*=\s*false\s*;')) { throw "Production gate changed: $gate" }
++}
++Write-Output 'UI_SOURCE_IDS=6;SCRIPT_SYNTAX=2;AV3_FALSE_GATES=6;GUI=NOT_TESTED'
+diff --git a/src/SmartPerformanceDoctor.App/Services/SystemCare/StorageInventory.cs b/src/SmartPerformanceDoctor.App/Services/SystemCare/StorageInventory.cs
+index 69f1c09..b331fff 100644
+--- a/src/SmartPerformanceDoctor.App/Services/SystemCare/StorageInventory.cs
++++ b/src/SmartPerformanceDoctor.App/Services/SystemCare/StorageInventory.cs
+@@ -121,6 +121,11 @@ public static class StorageInventory
+     public static CleanupDisposition Classify(string name, bool owned, FileAttributes attributes, DateTime modified, DateTime now)
+     {
+         var extension = Path.GetExtension(name).ToLowerInvariant();
++        if (name.StartsWith("vault.", StringComparison.OrdinalIgnoreCase)
++            || name.StartsWith("recovery_slots.", StringComparison.OrdinalIgnoreCase)
++            || name.Equals("state.dpapi", StringComparison.OrdinalIgnoreCase)
++            || name.StartsWith("state.dpapi.", StringComparison.OrdinalIgnoreCase)
++            || extension is ".avpack" or ".dpapi") return CleanupDisposition.Protected;
+         if ((attributes & (FileAttributes.ReparsePoint | FileAttributes.Directory | FileAttributes.System)) != 0
+             || extension is ".av3" or ".av4" or ".av5" or ".vault" or ".exe" or ".dll" or ".bak") return CleanupDisposition.Protected;
+         if (!owned) return CleanupDisposition.UnknownOwnership;
+diff --git a/src/SmartPerformanceDoctor.App/Views/SecureVaultCenterPage.xaml b/src/SmartPerformanceDoctor.App/Views/SecureVaultCenterPage.xaml
+index 49df2a2..d269c85 100644
+--- a/src/SmartPerformanceDoctor.App/Views/SecureVaultCenterPage.xaml
++++ b/src/SmartPerformanceDoctor.App/Views/SecureVaultCenterPage.xaml
+@@ -52,7 +52,7 @@
+                     <TextBlock Text="복구 코드로 열기" Style="{StaticResource MacSectionHeaderStyle}" Margin="0,8,0,0"/>
+                     <TextBlock x:Name="RecoveryHintText" TextWrapping="Wrap"
+                                Foreground="{StaticResource SpdMutedTextBrush}"
+-                               Text="일회용 코드 · 사용 후 소진 · 성공 시 복구 세션(비밀번호 변경 권고)"/>
++                               Text="일회용 코드입니다. 복구 후 파일을 별도 위치로 내보내세요. 기존 Lab v4/v5의 비밀번호 변경은 데이터 보호를 위해 제한됩니다."/>
+                     <TextBox x:Name="RecoveryKeyBox" PlaceholderText="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX (일회용 복구 코드)"/>
+                     <Button Content="복구 코드 잠금 해제" Style="{StaticResource MacToolbarButtonStyle}" Click="UnlockWithRecoveryKey"/>
+                 </StackPanel>
+@@ -73,11 +73,14 @@
+                                        Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
+                             <StackPanel Orientation="Horizontal" Spacing="8">
+                                 <Button Content="무결성 검사" Style="{StaticResource MacToolbarButtonStyle}" Click="VerifyIntegrity"/>
+-                                <Button Content="비밀번호 변경" Style="{StaticResource MacToolbarButtonStyle}" Click="ChangePassword"
+-                                        ToolTipService.ToolTip="변경 시 이전 복구 코드 전부 무효 · 새 코드 10개 발급"/>
++                                <Button x:Name="PasswordChangeButton" AutomationProperties.AutomationId="VaultPasswordChange" Content="비밀번호 변경" Style="{StaticResource MacToolbarButtonStyle}" Click="ChangePassword"
++                                        ToolTipService.ToolTip="기존 Lab v4/v5는 중단 시 데이터 보호 검증이 필요하여 변경을 제한합니다."/>
+                                 <Button Content="복구 코드 재발급" Style="{StaticResource MacToolbarButtonStyle}" Click="ReissueRecoveryCodes"
+                                         ToolTipService.ToolTip="비밀번호 확인 후 일회용 복구 코드 10개 재발급"/>
+                             </StackPanel>
++                            <TextBlock x:Name="PasswordChangeRestrictionText" AutomationProperties.AutomationId="VaultPasswordRestriction"
++                                       Text="기존 Lab v4/v5 비밀번호 변경은 제한됩니다. 복구가 필요하면 원본을 보존하고 인증된 사본에서 읽기 전용 회수를 검토하세요."
++                                       Visibility="Collapsed" TextWrapping="Wrap"/>
+                             <StackPanel Orientation="Horizontal" Spacing="8">
+                                 <Button Content="저장소 정리" Style="{StaticResource MacToolbarButtonStyle}" Click="CompactPacks"
+                                         ToolTipService.ToolTip="pack 파일 재패킹·삭제 표식 제거 (쓰기 세션 필요)"/>
+diff --git a/src/SmartPerformanceDoctor.App/Views/SecureVaultCenterPage.xaml.cs b/src/SmartPerformanceDoctor.App/Views/SecureVaultCenterPage.xaml.cs
+index 9de72a8..c19e103 100644
+--- a/src/SmartPerformanceDoctor.App/Views/SecureVaultCenterPage.xaml.cs
++++ b/src/SmartPerformanceDoctor.App/Views/SecureVaultCenterPage.xaml.cs
+@@ -205,6 +205,8 @@ public sealed partial class SecureVaultCenterPage : Page
+         StateLineText.Text = _viewModel.StateLine;
+         StatusLineText.Text = _viewModel.StatusLine;
+         CryptoLineText.Text = _viewModel.CryptoLine;
++        PasswordChangeButton.IsEnabled = !_viewModel.IsLabVaultFormat && _viewModel.IsUnlocked;
++        PasswordChangeRestrictionText.Visibility = _viewModel.IsLabVaultFormat ? Visibility.Visible : Visibility.Collapsed;
+         SecurityLineText.Text = _viewModel.SecurityLine;
+         if (SecurityStateText is not null)
+         {
+@@ -296,6 +298,7 @@ public sealed partial class SecureVaultCenterPage : Page
+ 
+     private async void ChangePassword(object sender, RoutedEventArgs e)
+     {
++        if (_viewModel.IsLabVaultFormat) return;
+         var currentBox = new PasswordBox { PlaceholderText = "현재 비밀번호" };
+         var newBox = new PasswordBox { PlaceholderText = "새 비밀번호 (12자+)" };
+         var confirmBox = new PasswordBox { PlaceholderText = "새 비밀번호 확인" };
+@@ -990,4 +993,4 @@ public sealed partial class SecureVaultCenterPage : Page
+             ResetAutoLockTimer();
+         }
+     }
+-}
+\ No newline at end of file
++}
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabRecoverySlots.cs b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabRecoverySlots.cs
+index 9d222b4..1b56b4b 100644
+--- a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabRecoverySlots.cs
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabRecoverySlots.cs
+@@ -277,6 +277,33 @@ public static class LabRecoverySlots
+         var snap = Snapshot(vaultRoot);
+         return snap.Remaining;
+     }
++    internal static void VerifySingleConsumption(string vaultRoot, string vaultId, byte[] vmk,
++        string code, string previousHash, string currentHash)
++    {
++        LabLocalTrustedState.ValidateFixture(vaultRoot);
++        var directory = Path.Combine(vaultRoot, "recovery");
++        using var gate = VaultFileBoundary.OpenExclusive(directory, "consume.lock", false);
++        Store ReadAuthenticated(string name, string? expectedHash = null)
++        {
++            using var file = VaultFileBoundary.OpenRead(directory, name);
++            if (file.Stream.Length is <= 0 or > 1048576) throw new InvalidDataException("CONSUMPTION-SIZE");
++            if (expectedHash is not null && file.Hash() != expectedHash) throw new InvalidDataException("CONSUMPTION-PREVIOUS-BINDING");
++            file.Stream.Position = 0;
++            var store = JsonSerializer.Deserialize<Store>(file.Stream) ?? throw new InvalidDataException("CONSUMPTION-JSON");
++            ValidateStore(store, true, vaultId); VerifyStore(store, vmk); file.Validate(); return store;
++        }
++        var previous = ReadAuthenticated("recovery_slots.v6.json.previous", previousHash);
++        var current = ReadAuthenticated("recovery_slots.v6.json", currentHash);
++        var identifier = HashCode(Convert.FromHexString(previous.SaltHex), code);
++        var matches = previous.Slots.Select((slot, index) => (slot, index)).Where(p =>
++            LabCryptoCompare.FixedTimeEqualsHex(p.slot.HashHex, identifier)).ToArray();
++        if (matches.Length != 1 || matches[0].slot.Used || !current.Slots[matches[0].index].Used)
++            throw new InvalidDataException("CONSUMPTION-NOT-PROVEN");
++        previous.Slots[matches[0].index].Used = true;
++        previous.MacHex = ""; current.MacHex = "";
++        if (JsonSerializer.Serialize(previous) != JsonSerializer.Serialize(current))
++            throw new InvalidDataException("CONSUMPTION-UNRELATED-MUTATION");
++    }
+ 
+     /// <summary>S-class recovery posture for UI / session labels.</summary>
+     public static RecoverySnapshot Snapshot(string vaultRoot)
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabTrustedState.cs b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabTrustedState.cs
+index ddda3c4..04a912a 100644
+--- a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabTrustedState.cs
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabTrustedState.cs
+@@ -31,6 +31,7 @@ internal sealed record RecoveryReceipt
+     public DateTimeOffset? AcknowledgedAt { get; init; }
+     public RecoveryReceiptState State { get; init; }
+     public RecoveryPosture AnchorResult { get; init; }
++    public FreshnessEvidence? ReservedEvidence { get; init; }
+ }
+ internal interface TrustedStateProvider
+ {
+@@ -57,12 +58,17 @@ internal sealed class LabLocalTrustedState : TrustedStateProvider
+     {
+         var current = new DirectoryInfo(Path.GetFullPath(path));
+         while (current is not null && !current.Name.StartsWith("wo15-vault-fixture-", StringComparison.Ordinal)) current = current.Parent;
+-        if (current is null || File.ReadAllText(Path.Combine(current.FullName, "fixture.marker")) != "WO15_SYNTHETIC_ONLY")
+-            throw new InvalidOperationException("WO15-SYNTHETIC-FIXTURE-REQUIRED");
+-        using var pin = VaultFileBoundary.PinDirectory(current.FullName); pin.Validate();
++        if (current is null) throw new InvalidOperationException("WO15-SYNTHETIC-FIXTURE-REQUIRED");
++        using var pin = VaultFileBoundary.PinDirectory(current.FullName);
++        using var marker = VaultFileBoundary.OpenRead(current.FullName, "fixture.marker");
++        if (marker.Stream.Length != 19) throw new InvalidOperationException("WO15-SYNTHETIC-FIXTURE-REQUIRED");
++        using var reader = new StreamReader(marker.Stream, leaveOpen:true);
++        if (reader.ReadToEnd() != "WO15_SYNTHETIC_ONLY") throw new InvalidOperationException("WO15-SYNTHETIC-FIXTURE-REQUIRED");
++        marker.Validate(); pin.Validate();
+     }
+     internal void Initialize(FreshnessEvidence evidence)
+     {
++        ValidateEvidence(evidence);
+         using var gate = Gate();
+         if (File.Exists(Path.Combine(_root, "state.dpapi"))) throw new IOException("ANCHOR-ALREADY-ENROLLED");
+         // Enrollment is explicit. Missing anchors are never initialized during recovery.
+@@ -85,12 +91,24 @@ internal sealed class LabLocalTrustedState : TrustedStateProvider
+         {
+             var state = JsonSerializer.Deserialize<State>(plain) ?? throw new InvalidDataException("ANCHOR-JSON");
+             if (state.InstanceId != _instanceId) throw new InvalidDataException("ANCHOR-RESET");
+-            if (state.Evidence is null || state.Receipts is null || string.IsNullOrWhiteSpace(state.Evidence.VaultId) ||
+-                state.Evidence.Generation < 1 || state.Evidence.GenerationBinding?.Length != 64 || state.Evidence.RecoveryBinding?.Length != 64 ||
++            ValidateEvidence(state.Evidence);
++            if (state.Receipts is null ||
+                 state.Receipts.Count > 1000 || state.Receipts.Select(r => r?.RecoveryOperationId).Distinct().Count() != state.Receipts.Count ||
+                 state.Receipts.Any(r => r is null || r.VaultId != state.Evidence.VaultId || r.RecoveryOperationId == Guid.Empty || r.SessionConnection == Guid.Empty ||
+-                    string.IsNullOrEmpty(r.ProtectedCodeIdentifier) || !Enum.IsDefined(r.State)))
++                    !IsHash(r.ProtectedCodeIdentifier) || r.AuthenticatedGeneration < 1 || r.ReservedAt == default ||
++                    r.AnchorResult != RecoveryPosture.FreshnessVerified ||
++                    r.State is not (RecoveryReceiptState.Reserved or RecoveryReceiptState.ReceiptPending or RecoveryReceiptState.ReceiptAcknowledged) ||
++                    (r.State == RecoveryReceiptState.Reserved && (r.CommittedAt is not null || r.AcknowledgedAt is not null)) ||
++                    (r.State != RecoveryReceiptState.Reserved && (r.CommittedAt is null || r.CommittedAt < r.ReservedAt)) ||
++                    (r.State == RecoveryReceiptState.ReceiptPending && r.AcknowledgedAt is not null) ||
++                    (r.State == RecoveryReceiptState.ReceiptAcknowledged && (r.AcknowledgedAt is null || r.AcknowledgedAt < r.CommittedAt))))
+                 throw new InvalidDataException("ANCHOR-RECEIPTS");
++            foreach (var receipt in state.Receipts.Where(r => r.ReservedEvidence is not null))
++            {
++                ValidateEvidence(receipt.ReservedEvidence!);
++                if (receipt.ReservedEvidence!.VaultId != receipt.VaultId || receipt.ReservedEvidence.Generation != receipt.AuthenticatedGeneration)
++                    throw new InvalidDataException("ANCHOR-RESERVATION-BINDING");
++            }
+             return state;
+         }
+         finally { CryptographicOperations.ZeroMemory(plain); }
+@@ -129,18 +147,23 @@ internal sealed class LabLocalTrustedState : TrustedStateProvider
+     }
+     internal RecoveryReceipt Reserve(FreshnessEvidence evidence, Guid operationId, string codeId, Guid session)
+     {
++        ValidateEvidence(evidence);
+         using var gate = Gate(); var state = Read();
+-        if (operationId == Guid.Empty || session == Guid.Empty || codeId?.Length != 64 || state.Receipts.Count >= 1000) throw new InvalidDataException("RECEIPT-BUDGET-OR-ID");
++        if (operationId == Guid.Empty || session == Guid.Empty || !IsHash(codeId) || state.Receipts.Count >= 1000) throw new InvalidDataException("RECEIPT-BUDGET-OR-ID");
+         if (state.Receipts.Any(r => r.RecoveryOperationId == operationId || r.ProtectedCodeIdentifier == codeId))
+             throw new InvalidDataException("RECOVERY-ALREADY-RESERVED-QUERY-RECEIPT");
++        if (state.Receipts.Any(r => r.State == RecoveryReceiptState.Reserved))
++            throw new InvalidDataException("RECOVERY-UNRESOLVED-RESERVATION");
+         if (Compare(state, evidence).Posture != RecoveryPosture.FreshnessVerified) throw new InvalidDataException("RECOVERY-FRESHNESS-REVIEW");
+         var receipt = new RecoveryReceipt { VaultId = evidence.VaultId, RecoveryOperationId = operationId,
+             ProtectedCodeIdentifier = codeId, AuthenticatedGeneration = evidence.Generation, ReservedAt = DateTimeOffset.UtcNow,
+-            SessionConnection = session, State = RecoveryReceiptState.Reserved, AnchorResult = RecoveryPosture.FreshnessVerified };
++            SessionConnection = session, State = RecoveryReceiptState.Reserved, AnchorResult = RecoveryPosture.FreshnessVerified,
++            ReservedEvidence = evidence };
+         state.Receipts.Add(receipt); Write(state); return receipt;
+     }
+     internal RecoveryReceipt Commit(AnchorCommitRequest request, Guid operationId)
+     {
++        ValidateEvidence(request.Previous); ValidateEvidence(request.Next);
+         using var gate = Gate(); var state = Read();
+         if (Compare(state, request.Previous).Posture != RecoveryPosture.FreshnessVerified ||
+             request.Next.VaultId != request.Previous.VaultId || request.Next.Generation != request.Previous.Generation ||
+@@ -156,6 +179,34 @@ internal sealed class LabLocalTrustedState : TrustedStateProvider
+         using var gate = Gate(); var receipt = Read().Receipts.SingleOrDefault(r => r.RecoveryOperationId == operationId);
+         return receipt?.State == RecoveryReceiptState.Reserved ? receipt with { State = RecoveryReceiptState.Interrupted } : receipt;
+     }
++    internal FreshnessEvidence ReadEvidence()
++    {
++        using var gate = Gate(); return Read().Evidence;
++    }
++    internal void CommitGeneration(AnchorCommitRequest request)
++    {
++        ValidateEvidence(request.Previous); ValidateEvidence(request.Next);
++        using var gate = Gate(); var state = Read();
++        if (state.Receipts.Any(r => r.State == RecoveryReceiptState.Reserved) || state.Evidence != request.Previous ||
++            request.Next.VaultId != request.Previous.VaultId || request.Previous.Generation == long.MaxValue || request.Next.Generation != request.Previous.Generation + 1 ||
++            request.Next.GenerationBinding == request.Previous.GenerationBinding || request.Next.RecoveryBinding != request.Previous.RecoveryBinding)
++            throw new InvalidDataException("GENERATION-ANCHOR-REVIEW");
++        Write(state with { Evidence = request.Next });
++    }
++    internal void ValidateGenerationPreflight(FreshnessEvidence evidence)
++    {
++        ValidateEvidence(evidence);
++        using var gate = Gate(); var state = Read();
++        if (state.Evidence != evidence || state.Receipts.Any(r => r.State == RecoveryReceiptState.Reserved))
++            throw new InvalidDataException("GENERATION-ANCHOR-REVIEW");
++    }
++    private static bool IsHash(string? value) => value?.Length == 64 && value.All(Uri.IsHexDigit);
++    private static void ValidateEvidence(FreshnessEvidence? evidence)
++    {
++        if (evidence is null || string.IsNullOrWhiteSpace(evidence.VaultId) || evidence.VaultId.Length > 256 ||
++            evidence.Generation < 1 || !IsHash(evidence.GenerationBinding) || !IsHash(evidence.RecoveryBinding))
++            throw new InvalidDataException("ANCHOR-EVIDENCE");
++    }
+     internal RecoveryReceipt Acknowledge(Guid operationId)
+     {
+         using var gate = Gate(); var state = Read(); var index = state.Receipts.FindIndex(r => r.RecoveryOperationId == operationId);
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabV5Transition.cs b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabV5Transition.cs
+index 1060e5d..b3802a6 100644
+--- a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabV5Transition.cs
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabV5Transition.cs
+@@ -12,18 +12,27 @@ public sealed record LabTransitionResult(string Status, bool Completed, long Sou
+ public static class LabV5Transition
+ {
+     public static LabTransitionResult ExecuteSynthetic(string source, string workspace, string password,
+-        bool consent, CancellationToken token = default, Action<string>? fault = null, bool salvageReadOnly = false)
++        bool consent, CancellationToken token = default, Action<string>? fault = null, bool salvageReadOnly = false,
++        string? authenticatedHeaderBackup = null)
+     {
+         if (!consent) throw new InvalidOperationException("EXPLICIT-TEST-CONSENT-REQUIRED");
+         source = Path.GetFullPath(source); workspace = Path.GetFullPath(workspace);
+         var fixture = Path.GetDirectoryName(source)!;
+-        if (!Path.GetFileName(fixture).StartsWith("wo14-vault-fixture-", StringComparison.Ordinal)
++        var backupRecovery = salvageReadOnly && authenticatedHeaderBackup is not null;
++        if (!(Path.GetFileName(fixture).StartsWith("wo14-vault-fixture-", StringComparison.Ordinal)
++              || backupRecovery && Path.GetFileName(fixture).StartsWith("wo15-vault-fixture-", StringComparison.Ordinal))
+             || Path.GetDirectoryName(workspace) != fixture || !Path.GetFileName(workspace).StartsWith("work-", StringComparison.Ordinal))
+             throw new InvalidOperationException("SYNTHETIC-FIXTURE-REQUIRED");
+         using var marker = VaultFileBoundary.OpenRead(fixture, "fixture.marker");
+         using (var reader = new StreamReader(marker.Stream, leaveOpen: true))
+-            if (reader.ReadToEnd() != "WO14_SYNTHETIC_ONLY") throw new InvalidOperationException("SYNTHETIC-MARKER-REQUIRED");
++            if (reader.ReadToEnd() != (Path.GetFileName(fixture).StartsWith("wo14-", StringComparison.Ordinal)
++                    ? "WO14_SYNTHETIC_ONLY" : "WO15_SYNTHETIC_ONLY")) throw new InvalidOperationException("SYNTHETIC-MARKER-REQUIRED");
+         marker.Validate();
++        if (authenticatedHeaderBackup is not null && !backupRecovery)
++            throw new InvalidOperationException("BACKUP-RECOVERY-READONLY-REQUIRED");
++        using var backup = backupRecovery ? VaultFileBoundary.OpenRead(fixture,
++            Path.GetRelativePath(fixture, Path.GetFullPath(authenticatedHeaderBackup!))) : null;
++        if (backup is not null && backup.Stream.Length > 1024 * 1024) throw new InvalidDataException("HEADER-BACKUP-BUDGET");
+         if (Directory.Exists(workspace) || File.Exists(workspace)) throw new IOException("NEW-WORKSPACE-REQUIRED");
+         using var sourcePin = VaultFileBoundary.PinDirectory(source);
+         var pins = new List<VaultFileBoundary.DirectoryPin>();
+@@ -50,13 +59,20 @@ public static class LabV5Transition
+                     hashes.Add(relative, lease.Hash());
+                 }
+             }
+-            using (var header = JsonDocument.Parse(files["vault.header.json"].Stream))
++            using (var header = JsonDocument.Parse(backup?.Stream ?? files["vault.header.json"].Stream))
+             {
+                 var h = header.RootElement;
+                 // Bound unauthenticated KDF parameters before deriving any key.
+                 if (h.GetProperty("Version").GetInt32() != 5 || h.GetProperty("KdfIterations").GetInt32() != 1
+                     || h.GetProperty("KdfMemoryKb").GetInt32() != 65536 || h.GetProperty("KdfParallelism").GetInt32() != 1)
+                     throw new InvalidOperationException("LABFAST-V5-FIXTURE-REQUIRED");
++                if (backup is not null)
++                {
++                    files["vault.header.json"].Stream.Position = 0;
++                    using var original = JsonDocument.Parse(files["vault.header.json"].Stream);
++                    if (h.GetProperty("VaultId").GetString() != original.RootElement.GetProperty("VaultId").GetString())
++                        throw new InvalidDataException("HEADER-BACKUP-VAULT-MISMATCH");
++                }
+             }
+             var required = checked(bytes * 2 + 64L * 1024 * 1024);
+             if (new DriveInfo(Path.GetPathRoot(workspace)!).AvailableFreeSpace < required) throw new IOException("TRANSITION-SPACE-REQUIRED");
+@@ -76,8 +92,24 @@ public static class LabV5Transition
+             }
+             fault?.Invoke("TransitionSnapshotReady");
+             var candidate = Path.Combine(workspace, "candidate-v6");
++            if (backup is not null)
++            {
++                // Replace only the independent candidate. Normal unlock authenticates every restored binding.
++                var backupHash = backup.Hash();
++                foreach (var headerName in new[] { "vault.header.json", "vault.header.copy1.json", "vault.header.backup.json" })
++                {
++                    using var restored = VaultFileBoundary.OpenWrite(candidate, headerName, false);
++                    restored.CopyFrom(backup); restored.Verify(backup.Stream.Length, backupHash);
++                }
++                foreach (var digestName in new[] { "vault.header.blake3", "vault.header.copy1.sha256" })
++                {
++                    using var digest = VaultFileBoundary.OpenWrite(candidate, digestName, false);
++                    digest.Stream.SetLength(0);
++                    digest.Stream.Write(System.Text.Encoding.UTF8.GetBytes(backupHash)); digest.Stream.Flush(true);
++                }
++            }
+             using var vault = new LabVaultService(candidate);
+-            var opened = salvageReadOnly ? vault.OpenSyntheticSalvage(password) : vault.UnlockReadOnly(password);
++            var opened = salvageReadOnly && backup is null ? vault.OpenSyntheticSalvage(password) : vault.UnlockReadOnly(password);
+             if (!opened.Success) return Result("PreservedButLocked", false, new Dictionary<string, string>(), [], opened.Message);
+             fault?.Invoke("TransitionSourceAuthenticated");
+             var content = vault.VerifyAllContent(token);
+diff --git a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.TrustedRecovery.cs b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.TrustedRecovery.cs
+index d38a667..ac6b641 100644
+--- a/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.TrustedRecovery.cs
++++ b/src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.TrustedRecovery.cs
+@@ -4,8 +4,69 @@ using SmartPerformanceDoctor.SecurityLab.Hardening;
+ 
+ namespace SmartPerformanceDoctor.SecurityLab.VaultV4;
+ 
++internal enum TrustedGenerationStatus { Completed, VaultMutationFailed, AnchorCommitPending }
++internal sealed record TrustedGenerationResult(TrustedGenerationStatus Status, LabVaultOperationResult VaultResult,
++    FreshnessEvidence Previous, FreshnessEvidence? Next);
++
+ public sealed partial class LabVaultService
+ {
++    internal RecoveryReceipt ReconcileTrustedRecovery(Guid operationId, string code, LabLocalTrustedState provider)
++    {
++        using var operation = EnterOperation(); LabLocalTrustedState.ValidateFixture(_root);
++        var current = CaptureFreshnessEvidence();
++        var receipt = provider.Query(operationId) ?? throw new InvalidDataException("RECOVERY-OPERATION-NOT-FOUND");
++        if (receipt.State is RecoveryReceiptState.ReceiptPending or RecoveryReceiptState.ReceiptAcknowledged)
++        {
++            if (provider.Verify(current).Posture != RecoveryPosture.FreshnessVerified)
++                throw new InvalidDataException("RECOVERY-REVIEW-REQUIRED");
++            return receipt;
++        }
++        var previous = receipt.ReservedEvidence ?? throw new InvalidDataException("RECOVERY-RESERVATION-EVIDENCE-MISSING");
++        var normalized = code.Replace("-", "", StringComparison.Ordinal).Replace(" ", "", StringComparison.Ordinal).ToUpperInvariant();
++        var identifier = Convert.ToHexString(HMACSHA256.HashData(_vmk!, Encoding.UTF8.GetBytes("wo15/recovery-receipt/code:" + normalized)));
++        if (receipt.State != RecoveryReceiptState.Interrupted || receipt.ProtectedCodeIdentifier != identifier ||
++            previous.VaultId != current.VaultId || previous.Generation != current.Generation ||
++            previous.GenerationBinding != current.GenerationBinding || previous.RecoveryBinding == current.RecoveryBinding)
++            throw new InvalidDataException("RECOVERY-REVIEW-REQUIRED");
++        LabRecoverySlots.VerifySingleConsumption(_root, current.VaultId, _vmk!, code, previous.RecoveryBinding, current.RecoveryBinding);
++        FaultObserver?.Invoke("ReconciliationConsumptionVerified");
++        FaultObserver?.Invoke("ReconciliationBeforeAnchorCommit");
++        var committed = provider.Commit(new(previous, current), operationId);
++        FaultObserver?.Invoke("ReconciliationAfterAnchorCommit");
++        FaultObserver?.Invoke("ReconciliationBeforeResponse");
++        return committed;
++    }
++    internal TrustedGenerationResult ImportWithTrustedAnchor(string name, byte[] bytes, LabLocalTrustedState provider)
++    {
++        using var operation = EnterOperation(); var previous = CaptureFreshnessEvidence();
++        provider.ValidateGenerationPreflight(previous);
++        var result = ImportBytes(name, name, bytes);
++        return FinishTrustedGeneration(previous, result, provider);
++    }
++    internal TrustedGenerationResult ChangePasswordWithTrustedAnchor(string oldPassword, string newPassword, LabLocalTrustedState provider)
++    {
++        using var operation = EnterOperation(); var previous = CaptureFreshnessEvidence();
++        provider.ValidateGenerationPreflight(previous);
++        var result = ChangePassword(oldPassword, newPassword);
++        return FinishTrustedGeneration(previous, result, provider);
++    }
++    private TrustedGenerationResult FinishTrustedGeneration(FreshnessEvidence previous, LabVaultOperationResult result, LabLocalTrustedState provider)
++    {
++        if (!result.Success) return new(TrustedGenerationStatus.VaultMutationFailed, result, previous, null);
++        var next = CaptureFreshnessEvidence();
++        try
++        {
++            FaultObserver?.Invoke("GenerationBeforeAnchorCommit");
++            provider.CommitGeneration(new(previous, next));
++            FaultObserver?.Invoke("GenerationAfterAnchorCommit");
++            return new(TrustedGenerationStatus.Completed, result, previous, next);
++        }
++        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or CryptographicException)
++        {
++            // Preserve the committed vault. A separate store update requires review.
++            return new(TrustedGenerationStatus.AnchorCommitPending, result, previous, next);
++        }
++    }
+     internal FreshnessEvidence CaptureFreshnessEvidence()
+     {
+         using var operation = EnterOperation(); LabLocalTrustedState.ValidateFixture(_root);
+diff --git a/tests/SmartPerformanceDoctor.Tests/WO16VaultProtectionTests.cs b/tests/SmartPerformanceDoctor.Tests/WO16VaultProtectionTests.cs
+new file mode 100644
+index 0000000..9a6dc46
+--- /dev/null
++++ b/tests/SmartPerformanceDoctor.Tests/WO16VaultProtectionTests.cs
+@@ -0,0 +1,31 @@
++using SmartPerformanceDoctor.App.Services.SystemCare;
++using SmartPerformanceDoctor.AstraVault.Target;
++using Xunit;
++
++namespace SmartPerformanceDoctor.Tests;
++
++public sealed class WO16VaultProtectionTests
++{
++    [Theory]
++    [InlineData("state.dpapi")]
++    [InlineData("state.dpapi.previous")]
++    [InlineData("vault.header.tmp")]
++    [InlineData("vault.metadata.cache")]
++    [InlineData("recovery_slots.v6.json.previous")]
++    [InlineData("object.avpack")]
++    public void Vault_and_anchor_files_are_protected_from_cleanup(string name)
++    {
++        var now = DateTime.UtcNow;
++        Assert.Equal(CleanupDisposition.Protected, StorageInventory.Classify(name, true,
++            FileAttributes.Normal, now.AddDays(-30), now));
++    }
++    [Fact] public void All_production_approval_gates_remain_closed()
++    {
++        Assert.False(Av3PhaseGate.ProductionWriterEnabled);
++        Assert.False(Av3PhaseGate.JournalWriterEnabled);
++        Assert.False(Av3PhaseGate.MigrationEnabled);
++        Assert.False(Av3PhaseGate.WriterEnableReady);
++        Assert.False(Av3PhaseGate.ExternalReviewCompleted);
++        Assert.False(Av3PhaseGate.ProductionEnableAuthorized);
++    }
++}
+diff --git a/tests/SmartPerformanceDoctor.Tests/WO16VaultStabilityTests.cs b/tests/SmartPerformanceDoctor.Tests/WO16VaultStabilityTests.cs
+new file mode 100644
+index 0000000..9664882
+--- /dev/null
++++ b/tests/SmartPerformanceDoctor.Tests/WO16VaultStabilityTests.cs
+@@ -0,0 +1,188 @@
++using System.Security.Cryptography;
++using System.Text.Json.Nodes;
++using SmartPerformanceDoctor.SecurityLab.VaultV4;
++using Xunit;
++
++namespace SmartPerformanceDoctor.Tests;
++
++[Collection("VaultEnvironment")]
++public sealed class WO16VaultStabilityTests : IDisposable
++{
++    private readonly string root = Path.Combine(Path.GetTempPath(), "wo15-vault-fixture-" + Guid.NewGuid().ToString("N"));
++    private const string Password = "WO15-Synthetic-Only!";
++    private const string NewPassword = "WO15-New-Synthetic-Only!";
++    private string VaultPath => Path.Combine(root, "vault");
++    public WO16VaultStabilityTests()
++    { Directory.CreateDirectory(root); File.WriteAllText(Path.Combine(root, "fixture.marker"), "WO15_SYNTHETIC_ONLY"); }
++    public void Dispose() => Directory.Delete(root, true);
++    private LabLocalTrustedState Store() => new(Path.Combine(root, "anchor"), "test-instance");
++    private (LabVaultService Vault, string Code, LabLocalTrustedState Store) Seed(bool legacy = false)
++    {
++        var vault = new LabVaultService(VaultPath, crashSafeTestFormat: !legacy);
++        var created = vault.Create(Password, LabKdfProfile.LabFast); Assert.True(created.Success);
++        Assert.True(vault.Unlock(Password).Success);
++        Assert.True(vault.ImportBytes("seed.bin", "seed.bin", [1, 2, 3]).Success);
++        var store = Store(); if (!legacy) store.Initialize(vault.CaptureFreshnessEvidence());
++        return (vault, created.RecoveryCodes[0], store);
++    }
++    private void VerifyBytes(LabVaultService vault)
++    {
++        var output = Path.Combine(root, "export-" + Guid.NewGuid().ToString("N"));
++        Assert.True(vault.ExportEntry(vault.List().Single(e => e.DisplayName == "seed.bin").EntryId, output, true).Success);
++        Assert.Equal(new byte[] { 1, 2, 3 }, File.ReadAllBytes(Path.Combine(output, "seed.bin")));
++    }
++    [Theory]
++    [InlineData("TrustedAfterConsumption")]
++    [InlineData("AnchorBeforeReplace:2")]
++    public void Consumed_operation_reconciles_without_consuming_again(string stage)
++    {
++        var setup = Seed(); using var vault = setup.Vault; vault.Lock(); var id = Guid.NewGuid(); var count = 0;
++        vault.FaultObserver = p => { if (p == stage) throw new IOException("injected"); };
++        setup.Store.FaultObserver = p => { if (p == "AnchorBeforeReplace" && ++count == 2 && stage.EndsWith(":2")) throw new IOException("injected"); };
++        Assert.Throws<IOException>(() => vault.UnlockWithTrustedRecovery(setup.Code, id, setup.Store));
++        Assert.Equal(RecoveryReceiptState.Interrupted, Store().Query(id)!.State);
++        vault.FaultObserver = null; setup.Store.FaultObserver = null;
++        Assert.True(vault.UnlockReadOnly(Password).Success);
++        Assert.Equal(RecoveryReceiptState.ReceiptPending, vault.ReconcileTrustedRecovery(id, setup.Code, Store()).State);
++        var evidence = vault.CaptureFreshnessEvidence(); VerifyBytes(vault);
++        Assert.Equal(RecoveryReceiptState.ReceiptAcknowledged, vault.AcknowledgeTrustedRecovery(id, Store()).State);
++        Assert.Equal(RecoveryReceiptState.ReceiptAcknowledged, vault.ReconcileTrustedRecovery(id, setup.Code, Store()).State);
++        Assert.Equal(evidence, vault.CaptureFreshnessEvidence());
++    }
++    [Fact]
++    public void Before_consumption_remains_review_required_and_preserves_code()
++    {
++        var setup = Seed(); using var vault = setup.Vault; vault.Lock(); var id = Guid.NewGuid();
++        vault.FaultObserver = p => { if (p == "TrustedBeforeConsumption") throw new OperationCanceledException(); };
++        var slots = File.ReadAllBytes(Path.Combine(VaultPath, "recovery", "recovery_slots.v6.json"));
++        Assert.Throws<OperationCanceledException>(() => vault.UnlockWithTrustedRecovery(setup.Code, id, setup.Store));
++        vault.FaultObserver = null; Assert.True(vault.UnlockReadOnly(Password).Success);
++        Assert.Throws<InvalidDataException>(() => vault.ReconcileTrustedRecovery(id, setup.Code, Store()));
++        Assert.Equal(slots, File.ReadAllBytes(Path.Combine(VaultPath, "recovery", "recovery_slots.v6.json")));
++        VerifyBytes(vault);
++    }
++    [Theory][InlineData("wrong-code")][InlineData("missing-backup")][InlineData("changed-backup")]
++    public void Unproven_consumption_is_not_committed(string condition)
++    {
++        var setup = Seed(); using var vault = setup.Vault; vault.Lock(); var id = Guid.NewGuid();
++        vault.FaultObserver = p => { if (p == "TrustedAfterConsumption") throw new IOException("injected"); };
++        Assert.Throws<IOException>(() => vault.UnlockWithTrustedRecovery(setup.Code, id, setup.Store));
++        vault.FaultObserver = null;
++        var backup = Path.Combine(VaultPath, "recovery", "recovery_slots.v6.json.previous");
++        if (condition == "missing-backup") File.Delete(backup);
++        if (condition == "changed-backup") { var bytes = File.ReadAllBytes(backup); bytes[^2] ^= 1; File.WriteAllBytes(backup, bytes); }
++        Assert.True(vault.UnlockReadOnly(Password).Success);
++        Assert.ThrowsAny<Exception>(() => vault.ReconcileTrustedRecovery(id, condition == "wrong-code" ? "invalid" : setup.Code, Store()));
++        Assert.Equal(RecoveryReceiptState.Interrupted, Store().Query(id)!.State); VerifyBytes(vault);
++    }
++    [Fact] public void Normal_import_commits_exact_next_generation()
++    {
++        var setup = Seed(); using var vault = setup.Vault;
++        var result = vault.ImportWithTrustedAnchor("next.bin", [4, 5], setup.Store);
++        Assert.Equal(TrustedGenerationStatus.Completed, result.Status);
++        Assert.Equal(result.Previous.Generation + 1, result.Next!.Generation);
++        Assert.Equal(RecoveryPosture.FreshnessVerified, Store().Verify(result.Next).Posture); VerifyBytes(vault);
++    }
++    [Fact] public void Password_change_commits_anchor_and_reopens_bytes()
++    {
++        var setup = Seed(); using var vault = setup.Vault;
++        var result = vault.ChangePasswordWithTrustedAnchor(Password, NewPassword, setup.Store);
++        Assert.Equal(TrustedGenerationStatus.Completed, result.Status); vault.Lock();
++        Assert.True(vault.UnlockReadOnly(NewPassword).Success); VerifyBytes(vault);
++        Assert.Equal(RecoveryPosture.FreshnessVerified, Store().Verify(vault.CaptureFreshnessEvidence()).Posture);
++    }
++    [Fact] public void Anchor_write_failure_preserves_committed_vault_and_reports_pending()
++    {
++        var setup = Seed(); using var vault = setup.Vault;
++        setup.Store.FaultObserver = p => { if (p == "AnchorBeforeReplace") throw new IOException("injected"); };
++        var result = vault.ImportWithTrustedAnchor("next.bin", [4, 5], setup.Store);
++        Assert.Equal(TrustedGenerationStatus.AnchorCommitPending, result.Status); Assert.True(result.VaultResult.Success);
++        Assert.Equal(RecoveryPosture.AuthenticButStale, Store().Verify(result.Next!).Posture);
++        vault.Lock(); Assert.True(vault.UnlockReadOnly(Password).Success); Assert.Equal(2, vault.List().Count); VerifyBytes(vault);
++    }
++    [Fact] public void Unresolved_reservation_blocks_normal_mutation_before_import()
++    {
++        var setup = Seed(); using var vault = setup.Vault; var previous = vault.CaptureFreshnessEvidence();
++        setup.Store.Reserve(previous, Guid.NewGuid(), new string('D', 64), Guid.NewGuid());
++        Assert.Throws<InvalidDataException>(() => vault.ImportWithTrustedAnchor("next.bin", [4], setup.Store));
++        Assert.Equal(previous, vault.CaptureFreshnessEvidence()); Assert.Single(vault.List());
++    }
++    [Theory][InlineData(0)][InlineData(2)][InlineData(3)]
++    public void Invalid_generation_sequence_is_rejected(int delta)
++    {
++        var setup = Seed(); using var vault = setup.Vault; var evidence = vault.CaptureFreshnessEvidence();
++        Assert.Throws<InvalidDataException>(() => setup.Store.CommitGeneration(new(evidence,
++            evidence with { Generation = evidence.Generation + delta, GenerationBinding = new string('D', 64) })));
++        Assert.Equal(RecoveryPosture.FreshnessVerified, Store().Verify(evidence).Posture);
++    }
++    [Theory][InlineData("LegacyPasswordHeadersWritten")][InlineData("LegacyPasswordSlotsWritten")]
++    public void V5_authenticated_backup_recovers_bytes_only_in_independent_copy(string stage)
++    {
++        var setup = Seed(true); using var vault = setup.Vault;
++        var backup = Path.Combine(root, "authenticated-header.json"); File.Copy(Path.Combine(VaultPath, "vault.header.json"), backup);
++        vault.FaultObserver = p => { if (p == stage) throw new IOException("injected"); };
++        Assert.Throws<IOException>(() => vault.ReproduceLegacyPasswordChange(Password, NewPassword)); vault.Lock();
++        Assert.False(vault.UnlockReadOnly(Password).Success); Assert.False(vault.UnlockReadOnly(NewPassword).Success); vault.Lock();
++        var before = Hashes();
++        var result = LabV5Transition.ExecuteSynthetic(VaultPath, Path.Combine(root, "work-recovery"), Password, true,
++            salvageReadOnly: true, authenticatedHeaderBackup: backup);
++        Assert.Equal("ReadOnlyRecovery", result.Status); Assert.False(result.Completed);
++        Assert.Equal(new byte[] { 1, 2, 3 }, File.ReadAllBytes(Path.Combine(root, "work-recovery", "recovered", "seed.bin")));
++        Assert.Equal(before, Hashes());
++    }
++    [Fact] public void V5_tampered_backup_is_not_used_as_authenticated_data()
++    {
++        var setup = Seed(true); using var vault = setup.Vault; vault.Lock();
++        var backup = Path.Combine(root, "bad-header.json");
++        var node = JsonNode.Parse(File.ReadAllText(Path.Combine(VaultPath, "vault.header.json")))!;
++        node["HeaderMacHex"] = new string('0', 64); File.WriteAllText(backup, node.ToJsonString());
++        var before = Hashes();
++        var result = LabV5Transition.ExecuteSynthetic(VaultPath, Path.Combine(root, "work-rejected"), Password, true,
++            salvageReadOnly: true, authenticatedHeaderBackup: backup);
++        Assert.Equal("PreservedButLocked", result.Status); Assert.Empty(result.ContentHashes); Assert.Equal(before, Hashes());
++    }
++    [Fact] public void Cancelled_snapshot_preserves_source_and_creates_no_output()
++    {
++        var setup = Seed(true); using var vault = setup.Vault; vault.Lock();
++        var backup = Path.Combine(root, "header.json"); File.Copy(Path.Combine(VaultPath, "vault.header.json"), backup);
++        var before = Hashes(); using var stop = new CancellationTokenSource(); stop.Cancel();
++        Assert.Throws<OperationCanceledException>(() => LabV5Transition.ExecuteSynthetic(VaultPath,
++            Path.Combine(root, "work-cancelled"), Password, true, stop.Token, salvageReadOnly: true, authenticatedHeaderBackup: backup));
++        Assert.Equal(before, Hashes()); Assert.False(Directory.Exists(Path.Combine(root, "work-cancelled")));
++    }
++    private string[] Hashes() => Directory.GetFiles(VaultPath, "*", SearchOption.AllDirectories).Order()
++        .Select(p => Path.GetRelativePath(VaultPath, p) + ":" + Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(p)))).ToArray();
++    [Theory]
++    [InlineData("invalid-state")][InlineData("early-ack")][InlineData("invalid-code-id")]
++    [InlineData("reservation-vault")][InlineData("duplicate-operation")][InlineData("invalid-posture")]
++    public void Invalid_receipt_data_is_visible_and_preserved(string mutation)
++    {
++        var setup = Seed(); using var vault = setup.Vault;
++        var evidence = vault.CaptureFreshnessEvidence();
++        setup.Store.Reserve(evidence, Guid.NewGuid(), new string('D', 64), Guid.NewGuid());
++        var path = Path.Combine(root, "anchor", "state.dpapi");
++        var plain = ProtectedData.Unprotect(File.ReadAllBytes(path), null, DataProtectionScope.CurrentUser);
++        var node = JsonNode.Parse(plain)!; CryptographicOperations.ZeroMemory(plain);
++        var receipt = node["Receipts"]![0]!;
++        switch (mutation)
++        {
++            case "invalid-state": receipt["State"] = 999; break;
++            case "early-ack": receipt["AcknowledgedAt"] = DateTimeOffset.UtcNow; break;
++            case "invalid-code-id": receipt["ProtectedCodeIdentifier"] = "invalid"; break;
++            case "reservation-vault": receipt["ReservedEvidence"]!["VaultId"] = "wrong-vault"; break;
++            case "duplicate-operation": node["Receipts"]!.AsArray().Add(receipt.DeepClone()); break;
++            case "invalid-posture": receipt["AnchorResult"] = 999; break;
++        }
++        var changed = ProtectedData.Protect(System.Text.Encoding.UTF8.GetBytes(node.ToJsonString()), null, DataProtectionScope.CurrentUser);
++        File.WriteAllBytes(path, changed);
++        Assert.Equal(RecoveryPosture.AnchorCorrupted, Store().Verify(evidence).Posture);
++        Assert.Equal(changed, File.ReadAllBytes(path)); VerifyBytes(vault);
++    }
++    [Fact] public void Unresolved_operation_blocks_another_code_reservation()
++    {
++        var setup = Seed(); using var vault = setup.Vault; var evidence = vault.CaptureFreshnessEvidence();
++        setup.Store.Reserve(evidence, Guid.NewGuid(), new string('D', 64), Guid.NewGuid());
++        Assert.Throws<InvalidDataException>(() => setup.Store.Reserve(evidence, Guid.NewGuid(), new string('E', 64), Guid.NewGuid()));
++        Assert.Equal(RecoveryPosture.FreshnessVerified, Store().Verify(evidence).Posture); VerifyBytes(vault);
++    }
++}
+diff --git a/tools/SmartPerformanceDoctor.GuiProbe/Program.cs b/tools/SmartPerformanceDoctor.GuiProbe/Program.cs
+index 4185d39..2034be2 100644
+--- a/tools/SmartPerformanceDoctor.GuiProbe/Program.cs
++++ b/tools/SmartPerformanceDoctor.GuiProbe/Program.cs
+@@ -20,8 +20,14 @@ try
+     {
+         var vaultStatus = Find("VaultStatus");
+         var entries = Find("VaultEntries");
++        var format = Find("VaultFormat");
++        var notice = Find("VaultCompatibilityNotice");
++        var password = window.FindFirst(TreeScope.Descendants,
++            new PropertyCondition(AutomationElement.AutomationIdProperty, "VaultPasswordChange"));
+         Console.WriteLine(JsonSerializer.Serialize(new { status="PARTIAL", guiExecuted=true,
+             statusAccessible=vaultStatus.Current.Name.Length>0, entriesAccessible=entries.Current.AutomationId=="VaultEntries",
++            formatAccessible=format.Current.AutomationId=="VaultFormat", compatibilityNoticeAccessible=notice.Current.Name.Length>0,
++            passwordChangeEnabled=password?.Current.IsEnabled, passwordChangeControlPresent=password is not null,
+             writesExecuted=false, notTested=new[]{"Create","Import","Export","ScreenReader","HighDpi","ReducedMotion"} }));
+         return 0;
+     }
+diff --git a/tools/SmartPerformanceDoctor.VaultProbe/Program.cs b/tools/SmartPerformanceDoctor.VaultProbe/Program.cs
+index 2aae6b6..0e0404a 100644
+--- a/tools/SmartPerformanceDoctor.VaultProbe/Program.cs
++++ b/tools/SmartPerformanceDoctor.VaultProbe/Program.cs
+@@ -5,6 +5,7 @@ using SmartPerformanceDoctor.SecurityLab.VaultV4;
+ 
+ // This tool accepts only its own generated fixture root.
+ const string Password = "WO12-Synthetic-Only!";
++if (args.Length > 0 && args[0].StartsWith("--wo16", StringComparison.Ordinal)) return StandardStabilityProbe.Run(args);
+ if (args.Length > 0 && args[0].StartsWith("--wo15", StringComparison.Ordinal)) return TrustedRecoveryProbe.Run(args);
+ if (args.Length > 0 && args[0].StartsWith("--wo14", StringComparison.Ordinal)) return V5TransitionProbe.Run(args);
+ var json = new JsonSerializerOptions { WriteIndented = true };
+diff --git a/tools/SmartPerformanceDoctor.VaultProbe/StandardStabilityProbe.cs b/tools/SmartPerformanceDoctor.VaultProbe/StandardStabilityProbe.cs
+new file mode 100644
+index 0000000..9a57161
+--- /dev/null
++++ b/tools/SmartPerformanceDoctor.VaultProbe/StandardStabilityProbe.cs
+@@ -0,0 +1,127 @@
++using System.Diagnostics;
++using System.Security.Cryptography;
++using System.Text.Json;
++using SmartPerformanceDoctor.SecurityLab.VaultV4;
++
++internal static class StandardStabilityProbe
++{
++    private const string Password = "WO15-Synthetic-Only!";
++    private const string NewPassword = "WO15-New-Synthetic-Only!";
++    private static readonly JsonSerializerOptions Json = new() { WriteIndented = true };
++    private static void Check(bool value, string reason) { if (!value) throw new InvalidOperationException(reason); }
++    internal static int Run(string[] args)
++    {
++        if (args[0] == "--wo16-reconcile") return Reconcile(args[1], args.Length > 2 ? args[2] : null);
++        if (args[0] == "--wo16-generation-child") return GenerationChild(args[1], args[2], args[3]);
++        Check(args.Length == 2 && args[0] == "--wo16", "arguments");
++        var output = Path.GetFullPath(args[1]); Directory.CreateDirectory(output);
++        var parent = Path.Combine(Path.GetTempPath(), "wo16-private-" + Guid.NewGuid().ToString("N")); Directory.CreateDirectory(parent);
++        var receipts = new List<object>();
++        foreach (var stage in new[] { "TrustedBeforeConsumption", "TrustedAfterConsumption", "AnchorBeforeReplace:2" })
++        {
++            var root = TrustedRecoveryProbe.Seed(parent, "receipt-" + stage.Replace(':', '-'));
++            var operation = Guid.NewGuid(); File.WriteAllText(Path.Combine(root, "operation.txt"), operation.ToString());
++            TrustedRecoveryProbe.Kill(root, "trusted", stage);
++            var before = TrustedRecoveryProbe.Hash(Path.Combine(root, "vault", "recovery", "recovery_slots.v6.json"));
++            var result = RunChild("--wo16-reconcile", root);
++            Check(result.Exit == 0 && result.Output.Contains(stage == "TrustedBeforeConsumption" ? "InterruptedReview" : "ReceiptAcknowledged"), "receipt:" + stage);
++            var again = RunChild("--wo16-reconcile", root); Check(again == result, "idempotent-query");
++            Check(before == TrustedRecoveryProbe.Hash(Path.Combine(root, "vault", "recovery", "recovery_slots.v6.json")), "no-second-consumption");
++            receipts.Add(new { stage, status = "PASS", result = result.Output, childExit = result.Exit,
++                repeatedQuery = again.Output, recoveryStoreUnchanged = true, callerAcknowledgementExactlyOnce = "NOT PROVEN", powerLoss = "NOT TESTED" });
++        }
++        foreach (var stage in new[] { "ReconciliationConsumptionVerified", "ReconciliationBeforeAnchorCommit", "ReconciliationAfterAnchorCommit",
++                     "ReconciliationBeforeResponse", "TrustedBeforeAcknowledgement", "TrustedAfterAcknowledgement" })
++        {
++            var root = TrustedRecoveryProbe.Seed(parent, "reconcile-" + stage);
++            File.WriteAllText(Path.Combine(root, "operation.txt"), Guid.NewGuid().ToString());
++            TrustedRecoveryProbe.Kill(root, "trusted", "TrustedAfterConsumption"); File.Delete(Path.Combine(root, "barrier.signal"));
++            KillChild(root, "--wo16-reconcile", stage);
++            var result = RunChild("--wo16-reconcile", root);
++            Check(result.Exit == 0 && result.Output.Contains("ReceiptAcknowledged"), "reconcile-crash:" + stage);
++            receipts.Add(new { stage, status = "PASS", result = result.Output, childExit = result.Exit, termination = "separate-process-kill", powerLoss = "NOT TESTED" });
++        }
++        Write(output, "RECOVERY_RECEIPT_RESULT.json", receipts);
++        var generations = new List<object>();
++        foreach (var action in new[] { "import", "password" })
++        foreach (var stage in new[] { "GenerationBeforeAnchorCommit", "GenerationAfterAnchorCommit" })
++        {
++            var root = TrustedRecoveryProbe.Seed(parent, action + "-" + stage);
++            using (var child = TrustedRecoveryProbe.Launch("--wo16-generation-child", root, action, stage)) WaitAndKill(child, root, stage);
++            using var vault = new LabVaultService(Path.Combine(root, "vault"));
++            Check(vault.UnlockReadOnly(action == "password" ? NewPassword : Password).Success, "generation-open");
++            var evidence = vault.CaptureFreshnessEvidence(); var posture = TrustedRecoveryProbe.Store(root).Verify(evidence).Posture;
++            Check(posture == (stage == "GenerationBeforeAnchorCommit" ? RecoveryPosture.AuthenticButStale : RecoveryPosture.FreshnessVerified), "generation-state");
++            Check(vault.VerifyAllContent(CancellationToken.None).Count == (action == "import" ? 2 : 1), "generation-content");
++            generations.Add(new { action, stage, status = "PASS", posture = posture.ToString(), generation = evidence.Generation,
++                authenticatedContent = "PASS", externalStatePending = stage == "GenerationBeforeAnchorCommit", powerLoss = "NOT TESTED" });
++        }
++        Write(output, "GENERATION_RESULT.json", generations);
++        var legacy = new List<object>();
++        foreach (var stage in new[] { "LegacyPasswordHeadersWritten", "LegacyPasswordSlotsWritten" })
++        {
++            var root = TrustedRecoveryProbe.Seed(parent, "legacy-" + stage, true);
++            var source = Path.Combine(root, "vault"); var backup = Path.Combine(root, "authenticated-header.json");
++            File.Copy(Path.Combine(source, "vault.header.json"), backup);
++            TrustedRecoveryProbe.Kill(root, "legacy", stage);
++            var old = RunChild("--wo15-read", root, "old"); var newer = RunChild("--wo15-read", root, "new");
++            Check(old.Output == "PRESERVED_BUT_LOCKED" && newer.Output == "PRESERVED_BUT_LOCKED", "legacy-baseline");
++            var before = TrustedRecoveryProbe.Hashes(source);
++            var result = LabV5Transition.ExecuteSynthetic(source, Path.Combine(root, "work-salvage"), Password, true,
++                salvageReadOnly: true, authenticatedHeaderBackup: backup);
++            Check(result.Status == "ReadOnlyRecovery", "legacy-recovery");
++            var extracted = Path.Combine(root, "work-salvage", "recovered", "seed.bin");
++            var expected = Convert.ToHexString(SHA256.HashData(new byte[] { 1, 2, 3, 4, 5 }));
++            Check(TrustedRecoveryProbe.Hash(extracted) == expected, "legacy-bytes");
++            var after = TrustedRecoveryProbe.Hashes(source); Check(before.Count == after.Count && before.All(p => after.GetValueOrDefault(p.Key) == p.Value), "legacy-source-preserved");
++            legacy.Add(new { stage, status = "ReadOnlyRecovery", previousPasswordNormalUnlock = old.Output, newPasswordNormalUnlock = newer.Output,
++                authenticatedHeaderBackupRequired = true, sourceUnchanged = true, originalSha256 = expected, extractedSha256 = TrustedRecoveryProbe.Hash(extracted),
++                bytes = 5, sourceHashes = before, productionMigration = false });
++        }
++        Write(output, "V5_RECOVERY_RESULT.json", legacy);
++        Write(output, "FILE_INTEGRITY_RESULT.json", new { status = "PASS", receiptReopenRuns = receipts.Count, v5ReadOnlyRecoveries = legacy.Count,
++            originalBytes = "VERIFIED", sourceDeletion = false, generationAuthenticatedContent = "VERIFIED", fixtures = "SYNTHETIC_ONLY" });
++        File.WriteAllText(Path.Combine(output, "private-fixture-location.txt"), parent);
++        Console.WriteLine($"RECEIPT_RECONCILIATION={receipts.Count};GENERATION_CRASH={generations.Count};V5_READONLY={legacy.Count};SHA256=PASS;POWER_LOSS=NOT_TESTED"); return 0;
++    }
++    private static int Reconcile(string root, string? stage)
++    {
++        LabLocalTrustedState.ValidateFixture(root);
++        void Fault(string point) { if (point == stage) { File.WriteAllText(Path.Combine(root, "barrier.signal"), point); Thread.Sleep(Timeout.Infinite); } }
++        using var vault = new LabVaultService(Path.Combine(root, "vault")); Check(vault.UnlockReadOnly(Password).Success, "reconcile-open"); vault.FaultObserver = Fault;
++        var store = TrustedRecoveryProbe.Store(root); store.FaultObserver = Fault;
++        var id = Guid.Parse(File.ReadAllText(Path.Combine(root, "operation.txt")));
++        RecoveryReceipt? receipt;
++        try { receipt = vault.ReconcileTrustedRecovery(id, File.ReadAllText(Path.Combine(root, "private-code.txt")), store); }
++        catch (InvalidDataException)
++        {
++            Check(store.Query(id)?.State == RecoveryReceiptState.Interrupted && store.Verify(vault.CaptureFreshnessEvidence()).Posture == RecoveryPosture.FreshnessVerified,
++                "unexplained-review"); VerifySeed(vault, root); Console.WriteLine("InterruptedReview;BYTES_VERIFIED;NO_CONSUMPTION"); return 0;
++        }
++        if (receipt.State == RecoveryReceiptState.ReceiptPending) receipt = vault.AcknowledgeTrustedRecovery(id, store);
++        VerifySeed(vault, root); Console.WriteLine(receipt.State + ";BYTES_VERIFIED;NO_SECOND_CONSUMPTION"); return 0;
++    }
++    private static void VerifySeed(LabVaultService vault, string root)
++    {
++        var output = Path.Combine(root, "export-" + Guid.NewGuid().ToString("N"));
++        Check(vault.ExportEntry(vault.List().Single(e => e.DisplayName == "seed.bin").EntryId, output, true).Success, "export");
++        Check(File.ReadAllBytes(Path.Combine(output, "seed.bin")).AsSpan().SequenceEqual(new byte[] { 1, 2, 3, 4, 5 }), "bytes");
++    }
++    private static int GenerationChild(string root, string action, string stage)
++    {
++        LabLocalTrustedState.ValidateFixture(root); using var vault = new LabVaultService(Path.Combine(root, "vault"));
++        Check(vault.Unlock(Password).Success, "generation-unlock");
++        vault.FaultObserver = p => { if (p == stage) { File.WriteAllText(Path.Combine(root, "barrier.signal"), p); Thread.Sleep(Timeout.Infinite); } };
++        if (action == "import") vault.ImportWithTrustedAnchor("next.bin", [6, 7], TrustedRecoveryProbe.Store(root));
++        else if (action == "password") vault.ChangePasswordWithTrustedAnchor(Password, NewPassword, TrustedRecoveryProbe.Store(root));
++        else throw new InvalidOperationException("action"); return 3;
++    }
++    private static (int Exit, string Output) RunChild(params string[] args)
++    { using var child = TrustedRecoveryProbe.Launch(args); var text = child.StandardOutput.ReadToEnd(); var error = child.StandardError.ReadToEnd(); child.WaitForExit(); Check(child.ExitCode == 0, "child:" + error); return (child.ExitCode, text.Trim()); }
++    private static void KillChild(string root, string verb, string stage)
++    { using var child = TrustedRecoveryProbe.Launch(verb, root, stage); WaitAndKill(child, root, stage); }
++    private static void WaitAndKill(Process child, string root, string stage)
++    { var timer = Stopwatch.StartNew(); while (!File.Exists(Path.Combine(root, "barrier.signal")) && !child.HasExited && timer.Elapsed.TotalSeconds < 120) Thread.Sleep(20);
++        Check(File.Exists(Path.Combine(root, "barrier.signal")), "barrier:" + stage + ":" + (child.HasExited ? child.StandardError.ReadToEnd() : "timeout")); child.Kill(true); child.WaitForExit(); }
++    private static void Write(string output, string name, object value) => File.WriteAllText(Path.Combine(output, name), JsonSerializer.Serialize(value, Json));
++}
+diff --git a/tools/SmartPerformanceDoctor.VaultProbe/TrustedRecoveryProbe.cs b/tools/SmartPerformanceDoctor.VaultProbe/TrustedRecoveryProbe.cs
+index 82634fe..e32d78e 100644
+--- a/tools/SmartPerformanceDoctor.VaultProbe/TrustedRecoveryProbe.cs
++++ b/tools/SmartPerformanceDoctor.VaultProbe/TrustedRecoveryProbe.cs
+@@ -9,11 +9,11 @@ internal static class TrustedRecoveryProbe
+     private const string NewPassword="WO15-New-Synthetic-Only!";
+     private static readonly JsonSerializerOptions Json=new(){WriteIndented=true};
+     private static void Check(bool value,string reason){if(!value)throw new InvalidOperationException(reason);}
+-    private static string Hash(string path){using var f=File.OpenRead(path);return Convert.ToHexString(SHA256.HashData(f));}
+-    private static Dictionary<string,string> Hashes(string root)=>Directory.GetFiles(root,"*",SearchOption.AllDirectories).ToDictionary(f=>Path.GetRelativePath(root,f),Hash);
++    internal static string Hash(string path){using var f=File.OpenRead(path);return Convert.ToHexString(SHA256.HashData(f));}
++    internal static Dictionary<string,string> Hashes(string root)=>Directory.GetFiles(root,"*",SearchOption.AllDirectories).ToDictionary(f=>Path.GetRelativePath(root,f),Hash);
+     private static void Copy(string source,string target){Directory.CreateDirectory(target);foreach(var d in Directory.GetDirectories(source,"*",SearchOption.AllDirectories))Directory.CreateDirectory(Path.Combine(target,Path.GetRelativePath(source,d)));foreach(var f in Directory.GetFiles(source,"*",SearchOption.AllDirectories))File.Copy(f,Path.Combine(target,Path.GetRelativePath(source,f)),true);}
+-    private static LabLocalTrustedState Store(string root)=>new(Path.Combine(root,"anchor"),"wo15-test-instance");
+-    private static string Seed(string parent,string name,bool legacy=false)
++    internal static LabLocalTrustedState Store(string root)=>new(Path.Combine(root,"anchor"),"wo15-test-instance");
++    internal static string Seed(string parent,string name,bool legacy=false)
+     {
+         var root=Path.Combine(parent,"wo15-vault-fixture-"+name);Directory.CreateDirectory(root);File.WriteAllText(Path.Combine(root,"fixture.marker"),"WO15_SYNTHETIC_ONLY");
+         using var vault=new LabVaultService(Path.Combine(root,"vault"),crashSafeTestFormat:!legacy);
+@@ -22,9 +22,9 @@ internal static class TrustedRecoveryProbe
+         if(!legacy)Store(root).Initialize(vault.CaptureFreshnessEvidence());
+         File.WriteAllText(Path.Combine(root,"private-code.txt"),created.RecoveryCodes[0]);return root;
+     }
+-    private static Process Launch(params string[] args)
++    internal static Process Launch(params string[] args)
+     {var p=new ProcessStartInfo("dotnet"){UseShellExecute=false,RedirectStandardOutput=true,RedirectStandardError=true,CreateNoWindow=true};p.ArgumentList.Add(typeof(TrustedRecoveryProbe).Assembly.Location);foreach(var a in args)p.ArgumentList.Add(a);return Process.Start(p)!;}
+-    private static void Kill(string root,string mode,string stage)
++    internal static void Kill(string root,string mode,string stage)
+     {using var p=Launch("--wo15-child",root,mode,stage);var timer=Stopwatch.StartNew();while(!File.Exists(Path.Combine(root,"barrier.signal"))&&!p.HasExited&&timer.Elapsed.TotalSeconds<120)Thread.Sleep(20);Check(File.Exists(Path.Combine(root,"barrier.signal")),"barrier:"+stage+":"+(p.HasExited?p.StandardError.ReadToEnd():"timeout"));p.Kill(true);p.WaitForExit();}
+     private static bool ReadBytes(string root,bool newer=false)
+     {using var vault=new LabVaultService(Path.Combine(root,"vault"));if(!vault.UnlockReadOnly(newer?NewPassword:Password).Success)return false;var target=Path.Combine(root,"export-"+Guid.NewGuid().ToString("N"));Check(vault.ExportEntry(vault.List().Single().EntryId,target,true).Success,"export");Check(File.ReadAllBytes(Path.Combine(target,"seed.bin")).AsSpan().SequenceEqual(new byte[]{1,2,3,4,5}),"bytes");return true;}

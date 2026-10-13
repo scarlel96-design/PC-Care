@@ -1,0 +1,29 @@
+WORK ITEM: WO-16 revised standard mode
+STATUS: PARTIAL / Phase 1 NO-GO
+BRANCH: codex/pccare-wo16-standard-mode-stability
+BASELINE SHA: 60fc9a6c812e5458d5367020b732ca0c199ea72e
+BASELINE TREE: 57d21a8fd06231145897e09bfdc09f9c45764e01
+VERIFIED SOURCE SHA: 1ca80b98f63ec953c952647fcf28f8032ac986a7
+SOURCE TREE: 61dc70b16d6d359d562cc26f6fbf65c2e3ef2803
+ENVIRONMENT: Windows 11 build 26200; .NET 10.0.401; 24 logical CPUs; administrator token False.
+INPUT: Isolated synthetic fixtures. Existing user vaults were not opened or changed.
+FINAL SHA: See GITHUB_RESULT.txt and the final delivery message. Evidence is committed after the validated source.
+
+STATUS: NOT TESTED (live GUI)
+COMMAND: dotnet build tools/SmartPerformanceDoctor.GuiProbe -c Release -p:Platform=x64 --no-restore -v:minimal
+OUTPUT: Build succeeded. 0 warnings. 0 errors.
+EXIT CODE: 0
+COMMAND: dotnet tools/SmartPerformanceDoctor.GuiProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.GuiProbe.dll
+OUTPUT: {"status":"NOT TESTED","reason":"Explicit interactive test process and diagnostics page are required.","guiExecuted":false}
+EXIT CODE: 0
+COMMAND: pwsh -NoProfile -File scripts/wo16-ui-source-validation.ps1
+OUTPUT: UI_SOURCE_IDS=6;SCRIPT_SYNTAX=2;AV3_FALSE_GATES=6;GUI=NOT_TESTED
+EXIT CODE: 0
+COMMAND: pwsh -NoProfile -File scripts/wo16-gui-validation.ps1 -ExpectedTestSid S-1-5-21-0-0-0-999 -OriginalUserSid <CURRENT_SID>
+INPUT: An intentionally different synthetic SID. No Launch switch.
+OUTPUT: {"status":"BLOCKED","guiExecuted":false,"reason":"Independent test SID required; no profile changes made"}
+EXIT CODE: 4 (expected)
+RESULT: The script rejected the current user profile before creating test directories or launching the app.
+PREREQUISITES: An independent account, disposable VM snapshot evidence, an interactive session, the built app and GuiProbe.
+SNAPSHOT: No hypervisor snapshot was inspected. A SnapshotId argument alone is not snapshot verification.
+UNEXECUTED: Create/unlock/import/export GUI, screen reader, high DPI, narrow window, reduced motion, live cancellation.

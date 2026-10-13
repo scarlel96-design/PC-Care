@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "sourceSha": "1ca80b98f63ec953c952647fcf28f8032ac986a7",
+  "environment": "Windows 11 build 26200; current account; synthetic fixtures",
+  "command": "dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo16 artifacts/wo16/final-probe",
+  "input": "Synthetic LabFast v5/v6 containers. No user files.",
+  "output": "RECEIPT_RECONCILIATION=9;GENERATION_CRASH=4;V5_READONLY=2;SHA256=PASS;POWER_LOSS=NOT_TESTED",
+  "exitCode": 0,
+  "results": [
+    {
+      "action": "import",
+      "stage": "GenerationBeforeAnchorCommit",
+      "status": "PASS",
+      "posture": "AuthenticButStale",
+      "generation": 4,
+      "authenticatedContent": "PASS",
+      "externalStatePending": true,
+      "powerLoss": "NOT TESTED"
+    },
+    {
+      "action": "import",
+      "stage": "GenerationAfterAnchorCommit",
+      "status": "PASS",
+      "posture": "FreshnessVerified",
+      "generation": 4,
+      "authenticatedContent": "PASS",
+      "externalStatePending": false,
+      "powerLoss": "NOT TESTED"
+    },
+    {
+      "action": "password",
+      "stage": "GenerationBeforeAnchorCommit",
+      "status": "PASS",
+      "posture": "AuthenticButStale",
+      "generation": 4,
+      "authenticatedContent": "PASS",
+      "externalStatePending": true,
+      "powerLoss": "NOT TESTED"
+    },
+    {
+      "action": "password",
+      "stage": "GenerationAfterAnchorCommit",
+      "status": "PASS",
+      "posture": "FreshnessVerified",
+      "generation": 4,
+      "authenticatedContent": "PASS",
+      "externalStatePending": false,
+      "powerLoss": "NOT TESTED"
+    }
+  ]
+}

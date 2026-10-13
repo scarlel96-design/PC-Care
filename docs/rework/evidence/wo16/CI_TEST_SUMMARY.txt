@@ -1,0 +1,15 @@
+COMMAND: gh run view 38419949642 --log
+INPUT: completed Windows CI
+OUTPUT:
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-13T15:15:27.1429956Z Passed!  - Failed:     0, Passed:   128, Skipped:     0, Total:   128, Duration: 36 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Performance diagnostics scenarios	2026-10-13T15:15:39.6339232Z Passed!  - Failed:     0, Passed:   233, Skipped:     0, Total:   233, Duration: 6 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Vault reliability and separate-process crash recovery	2026-10-13T15:20:13.2350689Z Passed!  - Failed:     0, Passed:    17, Skipped:     0, Total:    17, Duration: 8 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Authenticated generations and password crash recovery	2026-10-13T15:21:44.8639053Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 18 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Legacy v5 transition and authenticated recovery	2026-10-13T15:24:27.9932575Z Passed!  - Failed:     0, Passed:    30, Skipped:     0, Total:    30, Duration: 1 m 6 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Trusted recovery receipts and replay boundaries	2026-10-13T15:27:08.6396558Z Passed!  - Failed:     0, Passed:    23, Skipped:     0, Total:    23, Duration: 16 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	WO16 receipt reconciliation and authenticated v5 read-only recovery	2026-10-13T15:29:20.4814529Z Passed!  - Failed:     0, Passed:    31, Skipped:     0, Total:    31, Duration: 54 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	WO16 receipt reconciliation and authenticated v5 read-only recovery	2026-10-13T15:30:15.6444439Z RECEIPT_RECONCILIATION=9;GENERATION_CRASH=4;V5_READONLY=2;SHA256=PASS;POWER_LOSS=NOT_TESTED
+windows-validation	WO16 receipt reconciliation and authenticated v5 read-only recovery	2026-10-13T15:30:16.1925506Z UI_SOURCE_IDS=6;SCRIPT_SYNTAX=2;AV3_FALSE_GATES=6;GUI=NOT_TESTED
+windows-validation	Full application regression	2026-10-13T15:36:28.4752308Z Passed!  - Failed:     0, Passed:  1139, Skipped:   111, Total:  1250, Duration: 6 m 9 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	SecurityLab regression	2026-10-13T15:37:26.5799189Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 54 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+EXIT CODE: 0

@@ -1,0 +1,19 @@
+WORK ITEM: WO-16 revised standard mode
+STATUS: PARTIAL / Phase 1 NO-GO
+BRANCH: codex/pccare-wo16-standard-mode-stability
+BASELINE SHA: 60fc9a6c812e5458d5367020b732ca0c199ea72e
+BASELINE TREE: 57d21a8fd06231145897e09bfdc09f9c45764e01
+VERIFIED SOURCE SHA: 1ca80b98f63ec953c952647fcf28f8032ac986a7
+SOURCE TREE: 61dc70b16d6d359d562cc26f6fbf65c2e3ef2803
+ENVIRONMENT: Windows 11 build 26200; .NET 10.0.401; 24 logical CPUs; administrator token False.
+INPUT: Isolated synthetic fixtures. Existing user vaults were not opened or changed.
+FINAL SHA: See GITHUB_RESULT.txt and the final delivery message. Evidence is committed after the validated source.
+
+STATUS: DAYBREAK_DEFERRED
+INPUT: Revised WO-16 Stage 5.
+OUTPUT: Independent witness, high-privilege boundary, TPM/hardware and joint replay qualification remain deferred.
+EXIT CODE: N/A. No Stage 5 command was executed.
+BLOCKED_DAYBREAK: None. No platform Daybreak prompt was observed.
+RULE: Continue ordinary implementation and regression. Keep all production gates closed.
+RULE: Do not request enrollment or hardware-key registration. Resume special-access work only after explicit user confirmation.
+THREAT LIMIT: DPAPI CurrentUser does not provide an independent rollback witness against the same account or administrators.

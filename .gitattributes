@@ -54,3 +54,9 @@ docs/rework/evidence/wo08/CI_LOG.txt -text whitespace=-blank-at-eol
 /docs/rework/evidence/wo14/*.cs.txt -text whitespace=cr-at-eol
 /docs/rework/evidence/wo14/DIFF_FILE.patch -text -whitespace
 /docs/rework/evidence/wo14/ROLLBACK.sh text eol=lf
+
+# Preserve WO16 source-copy bytes and executable rollback line endings.
+/docs/rework/evidence/wo16/ORIGINAL_FILE -text whitespace=cr-at-eol
+/docs/rework/evidence/wo16/MODIFIED_FILE -text whitespace=cr-at-eol
+/docs/rework/evidence/wo16/DIFF_FILE -text -whitespace
+/docs/rework/evidence/wo16/ROLLBACK.sh text eol=lf
