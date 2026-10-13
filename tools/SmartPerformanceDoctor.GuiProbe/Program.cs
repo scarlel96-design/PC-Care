@@ -20,8 +20,14 @@ try
     {
         var vaultStatus = Find("VaultStatus");
         var entries = Find("VaultEntries");
+        var format = Find("VaultFormat");
+        var notice = Find("VaultCompatibilityNotice");
+        var password = window.FindFirst(TreeScope.Descendants,
+            new PropertyCondition(AutomationElement.AutomationIdProperty, "VaultPasswordChange"));
         Console.WriteLine(JsonSerializer.Serialize(new { status="PARTIAL", guiExecuted=true,
             statusAccessible=vaultStatus.Current.Name.Length>0, entriesAccessible=entries.Current.AutomationId=="VaultEntries",
+            formatAccessible=format.Current.AutomationId=="VaultFormat", compatibilityNoticeAccessible=notice.Current.Name.Length>0,
+            passwordChangeEnabled=password?.Current.IsEnabled, passwordChangeControlPresent=password is not null,
             writesExecuted=false, notTested=new[]{"Create","Import","Export","ScreenReader","HighDpi","ReducedMotion"} }));
         return 0;
     }

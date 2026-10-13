@@ -12,18 +12,27 @@ public sealed record LabTransitionResult(string Status, bool Completed, long Sou
 public static class LabV5Transition
 {
     public static LabTransitionResult ExecuteSynthetic(string source, string workspace, string password,
-        bool consent, CancellationToken token = default, Action<string>? fault = null, bool salvageReadOnly = false)
+        bool consent, CancellationToken token = default, Action<string>? fault = null, bool salvageReadOnly = false,
+        string? authenticatedHeaderBackup = null)
     {
         if (!consent) throw new InvalidOperationException("EXPLICIT-TEST-CONSENT-REQUIRED");
         source = Path.GetFullPath(source); workspace = Path.GetFullPath(workspace);
         var fixture = Path.GetDirectoryName(source)!;
-        if (!Path.GetFileName(fixture).StartsWith("wo14-vault-fixture-", StringComparison.Ordinal)
+        var backupRecovery = salvageReadOnly && authenticatedHeaderBackup is not null;
+        if (!(Path.GetFileName(fixture).StartsWith("wo14-vault-fixture-", StringComparison.Ordinal)
+              || backupRecovery && Path.GetFileName(fixture).StartsWith("wo15-vault-fixture-", StringComparison.Ordinal))
             || Path.GetDirectoryName(workspace) != fixture || !Path.GetFileName(workspace).StartsWith("work-", StringComparison.Ordinal))
             throw new InvalidOperationException("SYNTHETIC-FIXTURE-REQUIRED");
         using var marker = VaultFileBoundary.OpenRead(fixture, "fixture.marker");
         using (var reader = new StreamReader(marker.Stream, leaveOpen: true))
-            if (reader.ReadToEnd() != "WO14_SYNTHETIC_ONLY") throw new InvalidOperationException("SYNTHETIC-MARKER-REQUIRED");
+            if (reader.ReadToEnd() != (Path.GetFileName(fixture).StartsWith("wo14-", StringComparison.Ordinal)
+                    ? "WO14_SYNTHETIC_ONLY" : "WO15_SYNTHETIC_ONLY")) throw new InvalidOperationException("SYNTHETIC-MARKER-REQUIRED");
         marker.Validate();
+        if (authenticatedHeaderBackup is not null && !backupRecovery)
+            throw new InvalidOperationException("BACKUP-RECOVERY-READONLY-REQUIRED");
+        using var backup = backupRecovery ? VaultFileBoundary.OpenRead(fixture,
+            Path.GetRelativePath(fixture, Path.GetFullPath(authenticatedHeaderBackup!))) : null;
+        if (backup is not null && backup.Stream.Length > 1024 * 1024) throw new InvalidDataException("HEADER-BACKUP-BUDGET");
         if (Directory.Exists(workspace) || File.Exists(workspace)) throw new IOException("NEW-WORKSPACE-REQUIRED");
         using var sourcePin = VaultFileBoundary.PinDirectory(source);
         var pins = new List<VaultFileBoundary.DirectoryPin>();
@@ -50,13 +59,20 @@ public static class LabV5Transition
                     hashes.Add(relative, lease.Hash());
                 }
             }
-            using (var header = JsonDocument.Parse(files["vault.header.json"].Stream))
+            using (var header = JsonDocument.Parse(backup?.Stream ?? files["vault.header.json"].Stream))
             {
                 var h = header.RootElement;
                 // Bound unauthenticated KDF parameters before deriving any key.
                 if (h.GetProperty("Version").GetInt32() != 5 || h.GetProperty("KdfIterations").GetInt32() != 1
                     || h.GetProperty("KdfMemoryKb").GetInt32() != 65536 || h.GetProperty("KdfParallelism").GetInt32() != 1)
                     throw new InvalidOperationException("LABFAST-V5-FIXTURE-REQUIRED");
+                if (backup is not null)
+                {
+                    files["vault.header.json"].Stream.Position = 0;
+                    using var original = JsonDocument.Parse(files["vault.header.json"].Stream);
+                    if (h.GetProperty("VaultId").GetString() != original.RootElement.GetProperty("VaultId").GetString())
+                        throw new InvalidDataException("HEADER-BACKUP-VAULT-MISMATCH");
+                }
             }
             var required = checked(bytes * 2 + 64L * 1024 * 1024);
             if (new DriveInfo(Path.GetPathRoot(workspace)!).AvailableFreeSpace < required) throw new IOException("TRANSITION-SPACE-REQUIRED");
@@ -76,8 +92,24 @@ public static class LabV5Transition
             }
             fault?.Invoke("TransitionSnapshotReady");
             var candidate = Path.Combine(workspace, "candidate-v6");
+            if (backup is not null)
+            {
+                // Replace only the independent candidate. Normal unlock authenticates every restored binding.
+                var backupHash = backup.Hash();
+                foreach (var headerName in new[] { "vault.header.json", "vault.header.copy1.json", "vault.header.backup.json" })
+                {
+                    using var restored = VaultFileBoundary.OpenWrite(candidate, headerName, false);
+                    restored.CopyFrom(backup); restored.Verify(backup.Stream.Length, backupHash);
+                }
+                foreach (var digestName in new[] { "vault.header.blake3", "vault.header.copy1.sha256" })
+                {
+                    using var digest = VaultFileBoundary.OpenWrite(candidate, digestName, false);
+                    digest.Stream.SetLength(0);
+                    digest.Stream.Write(System.Text.Encoding.UTF8.GetBytes(backupHash)); digest.Stream.Flush(true);
+                }
+            }
             using var vault = new LabVaultService(candidate);
-            var opened = salvageReadOnly ? vault.OpenSyntheticSalvage(password) : vault.UnlockReadOnly(password);
+            var opened = salvageReadOnly && backup is null ? vault.OpenSyntheticSalvage(password) : vault.UnlockReadOnly(password);
             if (!opened.Success) return Result("PreservedButLocked", false, new Dictionary<string, string>(), [], opened.Message);
             fault?.Invoke("TransitionSourceAuthenticated");
             var content = vault.VerifyAllContent(token);

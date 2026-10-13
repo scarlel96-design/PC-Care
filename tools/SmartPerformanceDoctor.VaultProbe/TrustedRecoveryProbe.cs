@@ -9,11 +9,11 @@ internal static class TrustedRecoveryProbe
     private const string NewPassword="WO15-New-Synthetic-Only!";
     private static readonly JsonSerializerOptions Json=new(){WriteIndented=true};
     private static void Check(bool value,string reason){if(!value)throw new InvalidOperationException(reason);}
-    private static string Hash(string path){using var f=File.OpenRead(path);return Convert.ToHexString(SHA256.HashData(f));}
-    private static Dictionary<string,string> Hashes(string root)=>Directory.GetFiles(root,"*",SearchOption.AllDirectories).ToDictionary(f=>Path.GetRelativePath(root,f),Hash);
+    internal static string Hash(string path){using var f=File.OpenRead(path);return Convert.ToHexString(SHA256.HashData(f));}
+    internal static Dictionary<string,string> Hashes(string root)=>Directory.GetFiles(root,"*",SearchOption.AllDirectories).ToDictionary(f=>Path.GetRelativePath(root,f),Hash);
     private static void Copy(string source,string target){Directory.CreateDirectory(target);foreach(var d in Directory.GetDirectories(source,"*",SearchOption.AllDirectories))Directory.CreateDirectory(Path.Combine(target,Path.GetRelativePath(source,d)));foreach(var f in Directory.GetFiles(source,"*",SearchOption.AllDirectories))File.Copy(f,Path.Combine(target,Path.GetRelativePath(source,f)),true);}
-    private static LabLocalTrustedState Store(string root)=>new(Path.Combine(root,"anchor"),"wo15-test-instance");
-    private static string Seed(string parent,string name,bool legacy=false)
+    internal static LabLocalTrustedState Store(string root)=>new(Path.Combine(root,"anchor"),"wo15-test-instance");
+    internal static string Seed(string parent,string name,bool legacy=false)
     {
         var root=Path.Combine(parent,"wo15-vault-fixture-"+name);Directory.CreateDirectory(root);File.WriteAllText(Path.Combine(root,"fixture.marker"),"WO15_SYNTHETIC_ONLY");
         using var vault=new LabVaultService(Path.Combine(root,"vault"),crashSafeTestFormat:!legacy);
@@ -22,9 +22,9 @@ internal static class TrustedRecoveryProbe
         if(!legacy)Store(root).Initialize(vault.CaptureFreshnessEvidence());
         File.WriteAllText(Path.Combine(root,"private-code.txt"),created.RecoveryCodes[0]);return root;
     }
-    private static Process Launch(params string[] args)
+    internal static Process Launch(params string[] args)
     {var p=new ProcessStartInfo("dotnet"){UseShellExecute=false,RedirectStandardOutput=true,RedirectStandardError=true,CreateNoWindow=true};p.ArgumentList.Add(typeof(TrustedRecoveryProbe).Assembly.Location);foreach(var a in args)p.ArgumentList.Add(a);return Process.Start(p)!;}
-    private static void Kill(string root,string mode,string stage)
+    internal static void Kill(string root,string mode,string stage)
     {using var p=Launch("--wo15-child",root,mode,stage);var timer=Stopwatch.StartNew();while(!File.Exists(Path.Combine(root,"barrier.signal"))&&!p.HasExited&&timer.Elapsed.TotalSeconds<120)Thread.Sleep(20);Check(File.Exists(Path.Combine(root,"barrier.signal")),"barrier:"+stage+":"+(p.HasExited?p.StandardError.ReadToEnd():"timeout"));p.Kill(true);p.WaitForExit();}
     private static bool ReadBytes(string root,bool newer=false)
     {using var vault=new LabVaultService(Path.Combine(root,"vault"));if(!vault.UnlockReadOnly(newer?NewPassword:Password).Success)return false;var target=Path.Combine(root,"export-"+Guid.NewGuid().ToString("N"));Check(vault.ExportEntry(vault.List().Single().EntryId,target,true).Success,"export");Check(File.ReadAllBytes(Path.Combine(target,"seed.bin")).AsSpan().SequenceEqual(new byte[]{1,2,3,4,5}),"bytes");return true;}

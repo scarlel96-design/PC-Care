@@ -205,6 +205,8 @@ public sealed partial class SecureVaultCenterPage : Page
         StateLineText.Text = _viewModel.StateLine;
         StatusLineText.Text = _viewModel.StatusLine;
         CryptoLineText.Text = _viewModel.CryptoLine;
+        PasswordChangeButton.IsEnabled = !_viewModel.IsLabVaultFormat && _viewModel.IsUnlocked;
+        PasswordChangeRestrictionText.Visibility = _viewModel.IsLabVaultFormat ? Visibility.Visible : Visibility.Collapsed;
         SecurityLineText.Text = _viewModel.SecurityLine;
         if (SecurityStateText is not null)
         {
@@ -296,6 +298,7 @@ public sealed partial class SecureVaultCenterPage : Page
 
     private async void ChangePassword(object sender, RoutedEventArgs e)
     {
+        if (_viewModel.IsLabVaultFormat) return;
         var currentBox = new PasswordBox { PlaceholderText = "현재 비밀번호" };
         var newBox = new PasswordBox { PlaceholderText = "새 비밀번호 (12자+)" };
         var confirmBox = new PasswordBox { PlaceholderText = "새 비밀번호 확인" };

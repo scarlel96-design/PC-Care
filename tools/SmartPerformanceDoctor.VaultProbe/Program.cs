@@ -5,6 +5,7 @@ using SmartPerformanceDoctor.SecurityLab.VaultV4;
 
 // This tool accepts only its own generated fixture root.
 const string Password = "WO12-Synthetic-Only!";
+if (args.Length > 0 && args[0].StartsWith("--wo16", StringComparison.Ordinal)) return StandardStabilityProbe.Run(args);
 if (args.Length > 0 && args[0].StartsWith("--wo15", StringComparison.Ordinal)) return TrustedRecoveryProbe.Run(args);
 if (args.Length > 0 && args[0].StartsWith("--wo14", StringComparison.Ordinal)) return V5TransitionProbe.Run(args);
 var json = new JsonSerializerOptions { WriteIndented = true };

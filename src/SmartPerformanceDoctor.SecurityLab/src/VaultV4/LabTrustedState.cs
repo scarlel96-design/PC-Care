@@ -31,6 +31,7 @@ internal sealed record RecoveryReceipt
     public DateTimeOffset? AcknowledgedAt { get; init; }
     public RecoveryReceiptState State { get; init; }
     public RecoveryPosture AnchorResult { get; init; }
+    public FreshnessEvidence? ReservedEvidence { get; init; }
 }
 internal interface TrustedStateProvider
 {
@@ -57,12 +58,17 @@ internal sealed class LabLocalTrustedState : TrustedStateProvider
     {
         var current = new DirectoryInfo(Path.GetFullPath(path));
         while (current is not null && !current.Name.StartsWith("wo15-vault-fixture-", StringComparison.Ordinal)) current = current.Parent;
-        if (current is null || File.ReadAllText(Path.Combine(current.FullName, "fixture.marker")) != "WO15_SYNTHETIC_ONLY")
-            throw new InvalidOperationException("WO15-SYNTHETIC-FIXTURE-REQUIRED");
-        using var pin = VaultFileBoundary.PinDirectory(current.FullName); pin.Validate();
+        if (current is null) throw new InvalidOperationException("WO15-SYNTHETIC-FIXTURE-REQUIRED");
+        using var pin = VaultFileBoundary.PinDirectory(current.FullName);
+        using var marker = VaultFileBoundary.OpenRead(current.FullName, "fixture.marker");
+        if (marker.Stream.Length != 19) throw new InvalidOperationException("WO15-SYNTHETIC-FIXTURE-REQUIRED");
+        using var reader = new StreamReader(marker.Stream, leaveOpen:true);
+        if (reader.ReadToEnd() != "WO15_SYNTHETIC_ONLY") throw new InvalidOperationException("WO15-SYNTHETIC-FIXTURE-REQUIRED");
+        marker.Validate(); pin.Validate();
     }
     internal void Initialize(FreshnessEvidence evidence)
     {
+        ValidateEvidence(evidence);
         using var gate = Gate();
         if (File.Exists(Path.Combine(_root, "state.dpapi"))) throw new IOException("ANCHOR-ALREADY-ENROLLED");
         // Enrollment is explicit. Missing anchors are never initialized during recovery.
@@ -85,12 +91,24 @@ internal sealed class LabLocalTrustedState : TrustedStateProvider
         {
             var state = JsonSerializer.Deserialize<State>(plain) ?? throw new InvalidDataException("ANCHOR-JSON");
             if (state.InstanceId != _instanceId) throw new InvalidDataException("ANCHOR-RESET");
-            if (state.Evidence is null || state.Receipts is null || string.IsNullOrWhiteSpace(state.Evidence.VaultId) ||
-                state.Evidence.Generation < 1 || state.Evidence.GenerationBinding?.Length != 64 || state.Evidence.RecoveryBinding?.Length != 64 ||
+            ValidateEvidence(state.Evidence);
+            if (state.Receipts is null ||
                 state.Receipts.Count > 1000 || state.Receipts.Select(r => r?.RecoveryOperationId).Distinct().Count() != state.Receipts.Count ||
                 state.Receipts.Any(r => r is null || r.VaultId != state.Evidence.VaultId || r.RecoveryOperationId == Guid.Empty || r.SessionConnection == Guid.Empty ||
-                    string.IsNullOrEmpty(r.ProtectedCodeIdentifier) || !Enum.IsDefined(r.State)))
+                    !IsHash(r.ProtectedCodeIdentifier) || r.AuthenticatedGeneration < 1 || r.ReservedAt == default ||
+                    r.AnchorResult != RecoveryPosture.FreshnessVerified ||
+                    r.State is not (RecoveryReceiptState.Reserved or RecoveryReceiptState.ReceiptPending or RecoveryReceiptState.ReceiptAcknowledged) ||
+                    (r.State == RecoveryReceiptState.Reserved && (r.CommittedAt is not null || r.AcknowledgedAt is not null)) ||
+                    (r.State != RecoveryReceiptState.Reserved && (r.CommittedAt is null || r.CommittedAt < r.ReservedAt)) ||
+                    (r.State == RecoveryReceiptState.ReceiptPending && r.AcknowledgedAt is not null) ||
+                    (r.State == RecoveryReceiptState.ReceiptAcknowledged && (r.AcknowledgedAt is null || r.AcknowledgedAt < r.CommittedAt))))
                 throw new InvalidDataException("ANCHOR-RECEIPTS");
+            foreach (var receipt in state.Receipts.Where(r => r.ReservedEvidence is not null))
+            {
+                ValidateEvidence(receipt.ReservedEvidence!);
+                if (receipt.ReservedEvidence!.VaultId != receipt.VaultId || receipt.ReservedEvidence.Generation != receipt.AuthenticatedGeneration)
+                    throw new InvalidDataException("ANCHOR-RESERVATION-BINDING");
+            }
             return state;
         }
         finally { CryptographicOperations.ZeroMemory(plain); }
@@ -129,18 +147,23 @@ internal sealed class LabLocalTrustedState : TrustedStateProvider
     }
     internal RecoveryReceipt Reserve(FreshnessEvidence evidence, Guid operationId, string codeId, Guid session)
     {
+        ValidateEvidence(evidence);
         using var gate = Gate(); var state = Read();
-        if (operationId == Guid.Empty || session == Guid.Empty || codeId?.Length != 64 || state.Receipts.Count >= 1000) throw new InvalidDataException("RECEIPT-BUDGET-OR-ID");
+        if (operationId == Guid.Empty || session == Guid.Empty || !IsHash(codeId) || state.Receipts.Count >= 1000) throw new InvalidDataException("RECEIPT-BUDGET-OR-ID");
         if (state.Receipts.Any(r => r.RecoveryOperationId == operationId || r.ProtectedCodeIdentifier == codeId))
             throw new InvalidDataException("RECOVERY-ALREADY-RESERVED-QUERY-RECEIPT");
+        if (state.Receipts.Any(r => r.State == RecoveryReceiptState.Reserved))
+            throw new InvalidDataException("RECOVERY-UNRESOLVED-RESERVATION");
         if (Compare(state, evidence).Posture != RecoveryPosture.FreshnessVerified) throw new InvalidDataException("RECOVERY-FRESHNESS-REVIEW");
         var receipt = new RecoveryReceipt { VaultId = evidence.VaultId, RecoveryOperationId = operationId,
             ProtectedCodeIdentifier = codeId, AuthenticatedGeneration = evidence.Generation, ReservedAt = DateTimeOffset.UtcNow,
-            SessionConnection = session, State = RecoveryReceiptState.Reserved, AnchorResult = RecoveryPosture.FreshnessVerified };
+            SessionConnection = session, State = RecoveryReceiptState.Reserved, AnchorResult = RecoveryPosture.FreshnessVerified,
+            ReservedEvidence = evidence };
         state.Receipts.Add(receipt); Write(state); return receipt;
     }
     internal RecoveryReceipt Commit(AnchorCommitRequest request, Guid operationId)
     {
+        ValidateEvidence(request.Previous); ValidateEvidence(request.Next);
         using var gate = Gate(); var state = Read();
         if (Compare(state, request.Previous).Posture != RecoveryPosture.FreshnessVerified ||
             request.Next.VaultId != request.Previous.VaultId || request.Next.Generation != request.Previous.Generation ||
@@ -155,6 +178,34 @@ internal sealed class LabLocalTrustedState : TrustedStateProvider
     {
         using var gate = Gate(); var receipt = Read().Receipts.SingleOrDefault(r => r.RecoveryOperationId == operationId);
         return receipt?.State == RecoveryReceiptState.Reserved ? receipt with { State = RecoveryReceiptState.Interrupted } : receipt;
+    }
+    internal FreshnessEvidence ReadEvidence()
+    {
+        using var gate = Gate(); return Read().Evidence;
+    }
+    internal void CommitGeneration(AnchorCommitRequest request)
+    {
+        ValidateEvidence(request.Previous); ValidateEvidence(request.Next);
+        using var gate = Gate(); var state = Read();
+        if (state.Receipts.Any(r => r.State == RecoveryReceiptState.Reserved) || state.Evidence != request.Previous ||
+            request.Next.VaultId != request.Previous.VaultId || request.Previous.Generation == long.MaxValue || request.Next.Generation != request.Previous.Generation + 1 ||
+            request.Next.GenerationBinding == request.Previous.GenerationBinding || request.Next.RecoveryBinding != request.Previous.RecoveryBinding)
+            throw new InvalidDataException("GENERATION-ANCHOR-REVIEW");
+        Write(state with { Evidence = request.Next });
+    }
+    internal void ValidateGenerationPreflight(FreshnessEvidence evidence)
+    {
+        ValidateEvidence(evidence);
+        using var gate = Gate(); var state = Read();
+        if (state.Evidence != evidence || state.Receipts.Any(r => r.State == RecoveryReceiptState.Reserved))
+            throw new InvalidDataException("GENERATION-ANCHOR-REVIEW");
+    }
+    private static bool IsHash(string? value) => value?.Length == 64 && value.All(Uri.IsHexDigit);
+    private static void ValidateEvidence(FreshnessEvidence? evidence)
+    {
+        if (evidence is null || string.IsNullOrWhiteSpace(evidence.VaultId) || evidence.VaultId.Length > 256 ||
+            evidence.Generation < 1 || !IsHash(evidence.GenerationBinding) || !IsHash(evidence.RecoveryBinding))
+            throw new InvalidDataException("ANCHOR-EVIDENCE");
     }
     internal RecoveryReceipt Acknowledge(Guid operationId)
     {

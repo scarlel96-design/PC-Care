@@ -121,6 +121,11 @@ public static class StorageInventory
     public static CleanupDisposition Classify(string name, bool owned, FileAttributes attributes, DateTime modified, DateTime now)
     {
         var extension = Path.GetExtension(name).ToLowerInvariant();
+        if (name.StartsWith("vault.", StringComparison.OrdinalIgnoreCase)
+            || name.StartsWith("recovery_slots.", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("state.dpapi", StringComparison.OrdinalIgnoreCase)
+            || name.StartsWith("state.dpapi.", StringComparison.OrdinalIgnoreCase)
+            || extension is ".avpack" or ".dpapi") return CleanupDisposition.Protected;
         if ((attributes & (FileAttributes.ReparsePoint | FileAttributes.Directory | FileAttributes.System)) != 0
             || extension is ".av3" or ".av4" or ".av5" or ".vault" or ".exe" or ".dll" or ".bak") return CleanupDisposition.Protected;
         if (!owned) return CleanupDisposition.UnknownOwnership;

@@ -52,7 +52,7 @@
                     <TextBlock Text="복구 코드로 열기" Style="{StaticResource MacSectionHeaderStyle}" Margin="0,8,0,0"/>
                     <TextBlock x:Name="RecoveryHintText" TextWrapping="Wrap"
                                Foreground="{StaticResource SpdMutedTextBrush}"
-                               Text="일회용 코드 · 사용 후 소진 · 성공 시 복구 세션(비밀번호 변경 권고)"/>
+                               Text="일회용 코드입니다. 복구 후 파일을 별도 위치로 내보내세요. 기존 Lab v4/v5의 비밀번호 변경은 데이터 보호를 위해 제한됩니다."/>
                     <TextBox x:Name="RecoveryKeyBox" PlaceholderText="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX (일회용 복구 코드)"/>
                     <Button Content="복구 코드 잠금 해제" Style="{StaticResource MacToolbarButtonStyle}" Click="UnlockWithRecoveryKey"/>
                 </StackPanel>
@@ -73,11 +73,14 @@
                                        Style="{StaticResource MacInlineStatusTextStyle}" TextWrapping="Wrap"/>
                             <StackPanel Orientation="Horizontal" Spacing="8">
                                 <Button Content="무결성 검사" Style="{StaticResource MacToolbarButtonStyle}" Click="VerifyIntegrity"/>
-                                <Button Content="비밀번호 변경" Style="{StaticResource MacToolbarButtonStyle}" Click="ChangePassword"
-                                        ToolTipService.ToolTip="변경 시 이전 복구 코드 전부 무효 · 새 코드 10개 발급"/>
+                                <Button x:Name="PasswordChangeButton" AutomationProperties.AutomationId="VaultPasswordChange" Content="비밀번호 변경" Style="{StaticResource MacToolbarButtonStyle}" Click="ChangePassword"
+                                        ToolTipService.ToolTip="기존 Lab v4/v5는 중단 시 데이터 보호 검증이 필요하여 변경을 제한합니다."/>
                                 <Button Content="복구 코드 재발급" Style="{StaticResource MacToolbarButtonStyle}" Click="ReissueRecoveryCodes"
                                         ToolTipService.ToolTip="비밀번호 확인 후 일회용 복구 코드 10개 재발급"/>
                             </StackPanel>
+                            <TextBlock x:Name="PasswordChangeRestrictionText" AutomationProperties.AutomationId="VaultPasswordRestriction"
+                                       Text="기존 Lab v4/v5 비밀번호 변경은 제한됩니다. 복구가 필요하면 원본을 보존하고 인증된 사본에서 읽기 전용 회수를 검토하세요."
+                                       Visibility="Collapsed" TextWrapping="Wrap"/>
                             <StackPanel Orientation="Horizontal" Spacing="8">
                                 <Button Content="저장소 정리" Style="{StaticResource MacToolbarButtonStyle}" Click="CompactPacks"
                                         ToolTipService.ToolTip="pack 파일 재패킹·삭제 표식 제거 (쓰기 세션 필요)"/>

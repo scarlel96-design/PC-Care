@@ -277,6 +277,33 @@ public static class LabRecoverySlots
         var snap = Snapshot(vaultRoot);
         return snap.Remaining;
     }
+    internal static void VerifySingleConsumption(string vaultRoot, string vaultId, byte[] vmk,
+        string code, string previousHash, string currentHash)
+    {
+        LabLocalTrustedState.ValidateFixture(vaultRoot);
+        var directory = Path.Combine(vaultRoot, "recovery");
+        using var gate = VaultFileBoundary.OpenExclusive(directory, "consume.lock", false);
+        Store ReadAuthenticated(string name, string? expectedHash = null)
+        {
+            using var file = VaultFileBoundary.OpenRead(directory, name);
+            if (file.Stream.Length is <= 0 or > 1048576) throw new InvalidDataException("CONSUMPTION-SIZE");
+            if (expectedHash is not null && file.Hash() != expectedHash) throw new InvalidDataException("CONSUMPTION-PREVIOUS-BINDING");
+            file.Stream.Position = 0;
+            var store = JsonSerializer.Deserialize<Store>(file.Stream) ?? throw new InvalidDataException("CONSUMPTION-JSON");
+            ValidateStore(store, true, vaultId); VerifyStore(store, vmk); file.Validate(); return store;
+        }
+        var previous = ReadAuthenticated("recovery_slots.v6.json.previous", previousHash);
+        var current = ReadAuthenticated("recovery_slots.v6.json", currentHash);
+        var identifier = HashCode(Convert.FromHexString(previous.SaltHex), code);
+        var matches = previous.Slots.Select((slot, index) => (slot, index)).Where(p =>
+            LabCryptoCompare.FixedTimeEqualsHex(p.slot.HashHex, identifier)).ToArray();
+        if (matches.Length != 1 || matches[0].slot.Used || !current.Slots[matches[0].index].Used)
+            throw new InvalidDataException("CONSUMPTION-NOT-PROVEN");
+        previous.Slots[matches[0].index].Used = true;
+        previous.MacHex = ""; current.MacHex = "";
+        if (JsonSerializer.Serialize(previous) != JsonSerializer.Serialize(current))
+            throw new InvalidDataException("CONSUMPTION-UNRELATED-MUTATION");
+    }
 
     /// <summary>S-class recovery posture for UI / session labels.</summary>
     public static RecoverySnapshot Snapshot(string vaultRoot)

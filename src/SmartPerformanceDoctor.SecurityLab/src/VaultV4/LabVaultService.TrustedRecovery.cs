@@ -4,8 +4,69 @@ using SmartPerformanceDoctor.SecurityLab.Hardening;
 
 namespace SmartPerformanceDoctor.SecurityLab.VaultV4;
 
+internal enum TrustedGenerationStatus { Completed, VaultMutationFailed, AnchorCommitPending }
+internal sealed record TrustedGenerationResult(TrustedGenerationStatus Status, LabVaultOperationResult VaultResult,
+    FreshnessEvidence Previous, FreshnessEvidence? Next);
+
 public sealed partial class LabVaultService
 {
+    internal RecoveryReceipt ReconcileTrustedRecovery(Guid operationId, string code, LabLocalTrustedState provider)
+    {
+        using var operation = EnterOperation(); LabLocalTrustedState.ValidateFixture(_root);
+        var current = CaptureFreshnessEvidence();
+        var receipt = provider.Query(operationId) ?? throw new InvalidDataException("RECOVERY-OPERATION-NOT-FOUND");
+        if (receipt.State is RecoveryReceiptState.ReceiptPending or RecoveryReceiptState.ReceiptAcknowledged)
+        {
+            if (provider.Verify(current).Posture != RecoveryPosture.FreshnessVerified)
+                throw new InvalidDataException("RECOVERY-REVIEW-REQUIRED");
+            return receipt;
+        }
+        var previous = receipt.ReservedEvidence ?? throw new InvalidDataException("RECOVERY-RESERVATION-EVIDENCE-MISSING");
+        var normalized = code.Replace("-", "", StringComparison.Ordinal).Replace(" ", "", StringComparison.Ordinal).ToUpperInvariant();
+        var identifier = Convert.ToHexString(HMACSHA256.HashData(_vmk!, Encoding.UTF8.GetBytes("wo15/recovery-receipt/code:" + normalized)));
+        if (receipt.State != RecoveryReceiptState.Interrupted || receipt.ProtectedCodeIdentifier != identifier ||
+            previous.VaultId != current.VaultId || previous.Generation != current.Generation ||
+            previous.GenerationBinding != current.GenerationBinding || previous.RecoveryBinding == current.RecoveryBinding)
+            throw new InvalidDataException("RECOVERY-REVIEW-REQUIRED");
+        LabRecoverySlots.VerifySingleConsumption(_root, current.VaultId, _vmk!, code, previous.RecoveryBinding, current.RecoveryBinding);
+        FaultObserver?.Invoke("ReconciliationConsumptionVerified");
+        FaultObserver?.Invoke("ReconciliationBeforeAnchorCommit");
+        var committed = provider.Commit(new(previous, current), operationId);
+        FaultObserver?.Invoke("ReconciliationAfterAnchorCommit");
+        FaultObserver?.Invoke("ReconciliationBeforeResponse");
+        return committed;
+    }
+    internal TrustedGenerationResult ImportWithTrustedAnchor(string name, byte[] bytes, LabLocalTrustedState provider)
+    {
+        using var operation = EnterOperation(); var previous = CaptureFreshnessEvidence();
+        provider.ValidateGenerationPreflight(previous);
+        var result = ImportBytes(name, name, bytes);
+        return FinishTrustedGeneration(previous, result, provider);
+    }
+    internal TrustedGenerationResult ChangePasswordWithTrustedAnchor(string oldPassword, string newPassword, LabLocalTrustedState provider)
+    {
+        using var operation = EnterOperation(); var previous = CaptureFreshnessEvidence();
+        provider.ValidateGenerationPreflight(previous);
+        var result = ChangePassword(oldPassword, newPassword);
+        return FinishTrustedGeneration(previous, result, provider);
+    }
+    private TrustedGenerationResult FinishTrustedGeneration(FreshnessEvidence previous, LabVaultOperationResult result, LabLocalTrustedState provider)
+    {
+        if (!result.Success) return new(TrustedGenerationStatus.VaultMutationFailed, result, previous, null);
+        var next = CaptureFreshnessEvidence();
+        try
+        {
+            FaultObserver?.Invoke("GenerationBeforeAnchorCommit");
+            provider.CommitGeneration(new(previous, next));
+            FaultObserver?.Invoke("GenerationAfterAnchorCommit");
+            return new(TrustedGenerationStatus.Completed, result, previous, next);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or CryptographicException)
+        {
+            // Preserve the committed vault. A separate store update requires review.
+            return new(TrustedGenerationStatus.AnchorCommitPending, result, previous, next);
+        }
+    }
     internal FreshnessEvidence CaptureFreshnessEvidence()
     {
         using var operation = EnterOperation(); LabLocalTrustedState.ValidateFixture(_root);
