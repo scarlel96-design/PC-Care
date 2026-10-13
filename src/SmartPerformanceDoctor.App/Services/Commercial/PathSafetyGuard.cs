@@ -28,6 +28,8 @@ public static class PathSafetyGuard
             return (false, "네트워크·UNC·장치 경로는 파일 단위 보안 삭제를 보장할 수 없어 차단됩니다.");
         }
 
+        if (SmartPerformanceDoctor.App.Services.SystemCare.StorageTargetPolicy.IsProtected(full))
+            return (false, "금고·복구·신뢰 상태·백업 보호 경로입니다.");
         var root = Path.GetPathRoot(full) ?? "";
         if (string.Equals(full.TrimEnd('\\'), root.TrimEnd('\\'), StringComparison.OrdinalIgnoreCase))
         {

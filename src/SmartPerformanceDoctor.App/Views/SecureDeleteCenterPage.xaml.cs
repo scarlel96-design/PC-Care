@@ -225,11 +225,13 @@ public sealed partial class SecureDeleteCenterPage : Page
                 $"작업 ID: {_plan.OperationId}\n" +
                 $"보안 등급: {_plan.SecurityLevel}\n" +
                 $"대상 {_plan.Targets.Count}개 · 차단 {_plan.BlockedTargets.Count}개\n" +
-                $"복구 저항 Level {_plan.RecoveryResistanceLevel} · 위험: {_plan.ProfessionalRecoveryRisk}\n" +
+                $"파일 단위 Clear · 인증 및 장치 Purge 미지원 · 위험: {_plan.ProfessionalRecoveryRisk}\n" +
                 $"풀체인: {_plan.ChainSummary}\n" +
                 $"예상 시간: {_plan.EstimatedDuration}\n" +
                 _plan.Limitations;
-            StatusText.Text = _plan.BlockedTargets.Count == 0
+            StatusText.Text = _plan.Targets.Any(t => t.Type == "folder")
+                ? "폴더 전체 삭제는 파일 경계 검증 대기 중입니다. 개별 파일을 선택해 다시 검사하세요."
+                : _plan.BlockedTargets.Count == 0
                 ? "Dry Run 완료 · 확인 문구를 입력한 뒤 실행하세요."
                 : $"Dry Run 완료 · 보호 규칙으로 {_plan.BlockedTargets.Count}개를 차단했습니다.";
         }
@@ -271,14 +273,15 @@ public sealed partial class SecureDeleteCenterPage : Page
                 ProgressBar.Value = p.percent;
                 StatusText.Text = $"보안 삭제 진행 중 · {p.percent}% · {Path.GetFileName(p.detail)}";
             });
-            var result = await _service.ApplyAsync(
+            var result = await _service.ApplyDetailedAsync(
                 _plan,
                 ConfirmBox.Text ?? string.Empty,
                 _level,
                 progress,
                 _deleteCancellation.Token);
             StatusText.Text =
-                $"완료 · 삭제 {result.Deleted} · 실패 {result.Failed}\n" +
+                $"{result.StatusLabel} · 삭제 {result.Deleted} · 실패 {result.Failed}\n" +
+                "중단·실패한 파일에는 부분 덮어쓰기가 남을 수 있습니다. 원복을 보장하지 않습니다.\n" +
                 $"감사 체인: {(result.AuditValid ? "정상" : "주의")}";
             _targetSet.Clear();
             ResetPlan();
@@ -303,7 +306,7 @@ public sealed partial class SecureDeleteCenterPage : Page
 
     private void CancelDelete(object sender, RoutedEventArgs e)
     {
-        StatusText.Text = "현재 항목이 끝나는 대로 취소합니다…";
+        StatusText.Text = "취소 요청 중 · 이미 덮어쓴 데이터는 원복되지 않습니다…";
         _deleteCancellation?.Cancel();
     }
 
@@ -334,7 +337,7 @@ public sealed partial class SecureDeleteCenterPage : Page
         RemoveSelectedButton.IsEnabled = idle && _targetSet.Items.Count > 0;
         ClearTargetsButton.IsEnabled = idle && _targetSet.Items.Count > 0;
         DryRunButton.IsEnabled = idle && _targetSet.Items.Count > 0;
-        ApplyDeleteButton.IsEnabled = idle && _plan?.Targets.Count > 0;
+        ApplyDeleteButton.IsEnabled = idle && _plan?.Targets.Count > 0 && _plan.Targets.All(t => t.Type == "file");
         SecurityLevelBox.IsEnabled = idle;
         CancelDeleteButton.Visibility = _deleteInProgress ? Visibility.Visible : Visibility.Collapsed;
         CancelDeleteButton.IsEnabled = _deleteInProgress && _deleteCancellation?.IsCancellationRequested != true;

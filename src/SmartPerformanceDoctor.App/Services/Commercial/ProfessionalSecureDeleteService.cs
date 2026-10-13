@@ -38,6 +38,7 @@ public sealed class ProfessionalSecureDeleteService
         {
             if (!File.Exists(path) && !Directory.Exists(path))
             {
+                blocked.Add(new SecureDeleteTarget { Path = path, Blocked = true, Risk = "blocked", BlockReason = "대상 없음 · 검사 누락" });
                 continue;
             }
 
@@ -107,6 +108,7 @@ public sealed class ProfessionalSecureDeleteService
                 fingerprint = CaptureTargetFingerprint(path);
             }
             catch (Exception exception) when (exception is IOException
+                                               or InvalidDataException
                                                or UnauthorizedAccessException
                                                or FileNotFoundException
                                                or DirectoryNotFoundException)
@@ -201,12 +203,23 @@ public sealed class ProfessionalSecureDeleteService
     }
 
     public async Task<(int Deleted, int Failed, string AuditPath, bool AuditValid)> ApplyAsync(
+        SecureDeletePlan plan, string typedConfirmation, SecureDeleteSecurityLevel level = SecureDeleteSecurityLevel.Professional,
+        IProgress<(int percent, string detail)>? progress = null, CancellationToken cancellationToken = default)
+    {
+        var result = await ApplyDetailedAsync(plan, typedConfirmation, level, progress, cancellationToken);
+        return (result.Deleted, result.Failed, result.AuditPath, result.AuditValid);
+    }
+
+    public async Task<SecureDeleteExecutionResult> ApplyDetailedAsync(
         SecureDeletePlan plan,
         string typedConfirmation,
         SecureDeleteSecurityLevel level = SecureDeleteSecurityLevel.Professional,
         IProgress<(int percent, string detail)>? progress = null,
         CancellationToken cancellationToken = default)
     {
+        if (!System.Text.RegularExpressions.Regex.IsMatch(plan.OperationId, @"^secure-delete-\d{8}-\d{6}-[0-9a-f]{32}$")
+            || plan.SecurityLevel != level.ToString() || plan.Targets.Any(t => string.IsNullOrEmpty(t.TargetFingerprint)))
+            throw new InvalidDataException("ValidationFailed");
         var confirm = typedConfirmation.Trim();
         var phraseOk =
             string.Equals(confirm, AstraCareBranding.ShredIrreversibleConfirmation, StringComparison.Ordinal)
@@ -231,6 +244,7 @@ public sealed class ProfessionalSecureDeleteService
         var auditDir = Path.Combine(auditRoot, "audit");
         Directory.CreateDirectory(auditDir);
         var auditPath = Path.Combine(auditDir, $"{plan.OperationId}.log");
+        using var operationLock = new FileStream(auditPath + ".started", FileMode.CreateNew, FileAccess.Write, FileShare.None);
         var hmacKey = SecureDeleteAuditChain.EnsureOperationKey(plan.OperationId, auditRoot);
 
         var deleted = 0;
@@ -240,11 +254,15 @@ public sealed class ProfessionalSecureDeleteService
         var scannedVolumes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var shadowAdvisories = new List<string>();
 
+        var outcomes = new List<SecureDeleteItemResult>();
+        try
+        {
+        chain = SecureDeleteAuditChain.Append(auditPath, plan.OperationId, "n/a", "n/a", "file-clear", "started", chain, hmacKey);
         foreach (var target in plan.Targets)
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            if (cancellationToken.IsCancellationRequested) { outcomes.Add(new("Cancelled", false)); break; }
             index++;
-            progress?.Report(((int)(index / (double)plan.Targets.Count * 100), target.Path));
+            progress?.Report(((int)((index - 1) / (double)plan.Targets.Count * 100), target.Path));
 
             try
             {
@@ -260,8 +278,9 @@ public sealed class ProfessionalSecureDeleteService
                 {
                     throw new IOException("Dry Run 이후 파일 식별 스냅샷이 변경되어 삭제를 중단했습니다.");
                 }
+                var gate = PathSafetyGuard.Evaluate(target.Path);
                 var currentPreflight = SecureDeletePreflight.Inspect(
-                    target.Path, target.StorageType, target.FileSystem, level, true, "");
+                    target.Path, SecureDeleteStorageProfiler.Profile(target.Path), DetectFileSystem(target.Path), level, gate.Allowed, gate.Reason);
                 if (!currentPreflight.Passed)
                 {
                     throw new IOException("실행 직전 사전 검증이 달라져 삭제를 중단했습니다: " + currentPreflight.Summary);
@@ -277,11 +296,11 @@ public sealed class ProfessionalSecureDeleteService
                         target.Path,
                         target.StorageType,
                         level,
-                        cancellationToken);
+                        cancellationToken, target.TargetFingerprint);
                 }
                 else if (Directory.Exists(target.Path))
                 {
-                    await SecureDeleteDirectoryAsync(target.Path, target.TargetFingerprint, level, cancellationToken);
+                    throw new InvalidDataException("FolderExecutionRequiresHandleBoundDirectoryRemoval");
                 }
 
                 if (File.Exists(target.Path) || Directory.Exists(target.Path))
@@ -290,6 +309,7 @@ public sealed class ProfessionalSecureDeleteService
                 }
 
                 deleted++;
+                outcomes.Add(new("Completed", true));
                 var root = Path.GetPathRoot(Path.GetFullPath(target.Path));
                 if (!string.IsNullOrWhiteSpace(root) && scannedVolumes.Add(root))
                 {
@@ -303,9 +323,19 @@ public sealed class ProfessionalSecureDeleteService
                 chain = SecureDeleteAuditChain.Append(
                     auditPath, plan.OperationId, pathHash, contentHash, protocol, "deleted", chain, hmacKey);
             }
-            catch
+            catch (OperationCanceledException)
+            {
+                outcomes.Add(new("Cancelled", true));
+                chain = SecureDeleteAuditChain.Append(auditPath, plan.OperationId, HashPath(target.Path), "n/a",
+                    target.RecommendedProtocol, "cancelled-partial-write-possible", chain, hmacKey);
+                break;
+            }
+            catch (Exception error)
             {
                 failed++;
+                outcomes.Add(new(error is UnauthorizedAccessException ? "Unauthorized"
+                    : error.Message.Contains("TargetChanged", StringComparison.Ordinal) || error.Message.Contains("Dry Run", StringComparison.Ordinal) ? "TargetChanged"
+                    : error is InvalidDataException ? "ValidationFailed" : "Failed", true));
                 chain = SecureDeleteAuditChain.Append(
                     auditPath,
                     plan.OperationId,
@@ -320,63 +350,14 @@ public sealed class ProfessionalSecureDeleteService
 
         var auditValid = SecureDeleteAuditChain.Verify(auditPath, hmacKey);
         WriteSecureDeleteReport(plan, deleted, failed, auditPath, auditValid, level);
-        CryptographicOperations.ZeroMemory(hmacKey);
-        return (deleted, failed, auditPath, auditValid);
-    }
-
-    private static async Task SecureDeleteDirectoryAsync(
-        string directoryPath,
-        string expectedFingerprint,
-        SecureDeleteSecurityLevel level,
-        CancellationToken cancellationToken)
-    {
-        // Never re-enumerate a folder and start deleting immediately. First rebuild a
-        // fail-closed snapshot, then bind every file delete to that exact snapshot.
-        if (string.IsNullOrWhiteSpace(expectedFingerprint)
-            || !CryptographicOperations.FixedTimeEquals(
-                Convert.FromHexString(expectedFingerprint),
-                Convert.FromHexString(CaptureTargetFingerprint(directoryPath))))
-        {
-            throw new IOException("Dry Run 이후 폴더 구조 또는 파일 식별 스냅샷이 변경되어 삭제를 중단했습니다.");
+        var cancelled = outcomes.Any(o => o.Status == "Cancelled");
+        var status = cancelled ? "Cancelled" : failed > 0 ? (deleted > 0 ? "PartiallyCompleted" : "Failed") : "Completed";
+        if (status == "Completed") progress?.Report((100, "완료"));
+        var result = new SecureDeleteExecutionResult(deleted, failed, auditPath, auditValid, auditValid ? status : "RecoveryReviewRequired", outcomes);
+        File.WriteAllText(auditPath + ".result.json", JsonSerializer.Serialize(result));
+        return result;
         }
-
-        var storage = SecureDeleteStorageProfiler.Profile(directoryPath);
-        var fileSystem = DetectFileSystem(directoryPath);
-        var preflight = SecureDeletePreflight.Inspect(directoryPath, storage, fileSystem, level, true, "");
-        if (!preflight.Passed)
-        {
-            throw new IOException("폴더 실행 직전 사전 검증이 달라져 삭제를 중단했습니다: " + preflight.Summary);
-        }
-
-        var snapshot = CaptureDirectorySnapshot(directoryPath);
-        foreach (var file in snapshot.Files)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            EnsureFileMatchesSnapshot(file);
-            await ForensicSecureDeleteEngine.SecureDeleteFileAsync(file.Path, file.StorageType, level, cancellationToken);
-        }
-
-        foreach (var directory in snapshot.Directories.OrderByDescending(path => path.Length))
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            if (!Directory.Exists(directory)) continue;
-            if ((File.GetAttributes(directory) & FileAttributes.ReparsePoint) != 0)
-            {
-                throw new IOException("실행 중 재분석 지점이 감지되어 폴더 삭제를 중단했습니다.");
-            }
-
-            if (Directory.EnumerateFileSystemEntries(directory).Any())
-            {
-                throw new IOException("Dry Run 이후 폴더 내용이 바뀌었거나 일부 파일을 처리하지 못해 삭제를 중단했습니다.");
-            }
-
-            Directory.Delete(directory, false);
-        }
-
-        if (Directory.Exists(directoryPath))
-        {
-            throw new IOException("일부 파일 또는 폴더가 잠겨 있어 대상 전체를 삭제하지 못했습니다.");
-        }
+        finally { CryptographicOperations.ZeroMemory(hmacKey); }
     }
 
     private static DirectoryExecutionSnapshot CaptureDirectorySnapshot(string directoryPath)
@@ -461,36 +442,7 @@ public sealed class ProfessionalSecureDeleteService
         return Convert.ToHexString(hash.GetHashAndReset());
     }
 
-    private static string CaptureFileFingerprint(string path)
-    {
-        var info = new FileInfo(path);
-        var objectIdentity = "unavailable";
-        try
-        {
-            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
-            if (GetFileInformationByHandle(stream.SafeFileHandle, out var native))
-            {
-                objectIdentity = $"{native.VolumeSerialNumber:X8}:{native.FileIndexHigh:X8}{native.FileIndexLow:X8}:{native.NumberOfLinks}";
-            }
-        }
-        catch
-        {
-            // Preflight independently requires exclusive access before execution. If this
-            // read-only identity probe cannot run, metadata still binds the dry-run snapshot.
-        }
-
-        var data = Encoding.UTF8.GetBytes($"{Path.GetFullPath(path)}|{objectIdentity}|{info.Length}|{info.CreationTimeUtc.Ticks}|{info.LastWriteTimeUtc.Ticks}|{info.Attributes}");
-        return Convert.ToHexString(SHA256.HashData(data));
-    }
-
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool GetFileInformationByHandle(SafeFileHandle handle, out ByHandleFileInformation information);
-
-    [StructLayout(LayoutKind.Sequential)]
-    private struct ByHandleFileInformation
-    {
-        public uint FileAttributes, CreationTimeLow, CreationTimeHigh, LastAccessTimeLow, LastAccessTimeHigh, LastWriteTimeLow, LastWriteTimeHigh, VolumeSerialNumber, FileSizeHigh, FileSizeLow, NumberOfLinks, FileIndexHigh, FileIndexLow;
-    }
+    private static string CaptureFileFingerprint(string path) => ForensicSecureDeleteEngine.CaptureFingerprint(path);
 
     private sealed record DirectoryExecutionSnapshot(IReadOnlyList<string> Directories, IReadOnlyList<DirectoryExecutionFile> Files);
     private sealed record DirectoryExecutionFile(string Path, string Fingerprint, string StorageType);

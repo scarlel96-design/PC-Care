@@ -30,9 +30,9 @@ public static class SecureDeleteStorageProfiler
         ("HDD" or "USB-NTFS", SecureDeleteSecurityLevel.Maximum) => "file-clear.hdd.csprng-7pass.sample-verify.v7",
         ("HDD" or "USB-NTFS", SecureDeleteSecurityLevel.Professional) => "file-clear.hdd.csprng-3pass.sample-verify.v7",
         ("HDD" or "USB-NTFS", _) => "file-clear.hdd.csprng-1pass.sample-verify.v7",
-        ("SSD" or "NVMe", SecureDeleteSecurityLevel.Maximum) => "file-clear.ssd.csprng-3pass.sample-verify.trim.v7",
-        ("SSD" or "NVMe", SecureDeleteSecurityLevel.Professional) => "file-clear.ssd.csprng-2pass.sample-verify.trim.v7",
-        ("SSD" or "NVMe", _) => "file-clear.ssd.csprng-1pass.sample-verify.trim.v7",
+        ("SSD" or "NVMe", SecureDeleteSecurityLevel.Maximum) => "file-clear.ssd.csprng-3pass.sample-verify.v8",
+        ("SSD" or "NVMe", SecureDeleteSecurityLevel.Professional) => "file-clear.ssd.csprng-2pass.sample-verify.v8",
+        ("SSD" or "NVMe", _) => "file-clear.ssd.csprng-1pass.sample-verify.v8",
         _ => "file-clear.conservative.csprng-1pass.sample-verify.v7"
     };
 
@@ -51,7 +51,7 @@ public static class SecureDeleteStorageProfiler
 
     public static string BuildResistanceDisclaimer(string storage, SecureDeleteSecurityLevel level) => storage switch
     {
-        "SSD" or "NVMe" => "SSD/NVMe 파일 단위 Clear는 논리 영역에 대한 덮어쓰기·표본 검증·TRIM 요청입니다. 웨어 레벨링, 오버프로비저닝, 스냅샷·클라우드 사본 때문에 물리 셀 삭제나 복구 불가를 보장하지 않습니다.",
+        "SSD" or "NVMe" => "SSD/NVMe 파일 단위 Clear는 논리 영역에 대한 덮어쓰기·표본 검증입니다. 웨어 레벨링, 오버프로비저닝, 스냅샷·클라우드 사본 때문에 물리 셀 삭제나 복구 불가를 보장하지 않습니다.",
         "HDD" or "USB-NTFS" => "HDD 파일 단위 Clear는 파일의 논리 영역을 다중 덮어쓰기하고 표본 검증합니다. 섀도 복사본·백업·다른 하드링크는 이 작업 범위 밖입니다.",
         _ => "저장장치 유형을 신뢰성 있게 식별하지 못했습니다. 보수적인 1회 CSPRNG 덮어쓰기와 표본 검증만 계획하며, 복구 불가를 보장하지 않습니다."
     };

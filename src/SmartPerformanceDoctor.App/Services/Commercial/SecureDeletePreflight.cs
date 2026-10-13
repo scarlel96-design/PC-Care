@@ -21,7 +21,7 @@ internal static class SecureDeletePreflight
         var locked = items.Where(x => !CanOpenExclusively(x.Path)).Take(3).ToArray();
         Add(checks, "P02", locked.Length > 0 ? "fail" : "pass", locked.Length > 0 ? $"배타적으로 열 수 없는 파일: {string.Join(", ", locked.Select(x => Path.GetFileName(x.Path)))}" : "모든 파일 배타적 열기 가능");
         var readOnly = items.Count(x => x.Attributes.HasFlag(FileAttributes.ReadOnly));
-        Add(checks, "P03", readOnly > 0 ? "warn" : "pass", readOnly > 0 ? $"읽기 전용 파일 {readOnly}개는 실행 시 속성을 해제합니다." : "읽기 전용 파일 없음");
+        Add(checks, "P03", readOnly > 0 ? "fail" : "pass", readOnly > 0 ? $"읽기 전용 파일 {readOnly}개는 별도 검토가 필요합니다." : "읽기 전용 파일 없음");
 
         var hardLinks = items.Where(x => GetHardLinkCount(x.Path) > 1).Take(3).ToArray();
         Add(checks, "P05", hardLinks.Length > 0 ? "fail" : "pass", hardLinks.Length > 0 ? $"하드링크가 있는 파일은 다른 경로의 데이터에 영향을 줄 수 있어 차단했습니다: {string.Join(", ", hardLinks.Select(x => Path.GetFileName(x.Path)))}" : "하드링크 미감지");
@@ -32,7 +32,7 @@ internal static class SecureDeletePreflight
         Add(checks, "P08", fileSystem.Equals("NTFS", StringComparison.OrdinalIgnoreCase) ? "pass" : "warn", $"파일 시스템: {fileSystem}");
 
         var shadow = ForensicSecureDeleteEngine.ScanShadowCopyRisk(path);
-        Add(checks, "P09", shadow.HasRisk ? "warn" : "pass", shadow.HasRisk ? "섀도 복사본이 감지되었습니다. 이 작업은 VSS·백업·클라우드 사본을 삭제하지 않습니다." : "섀도 복사본 위험 미감지");
+        Add(checks, "P09", "warn", shadow.HasRisk ? "섀도 복사본이 감지되었습니다. 이 작업은 VSS·백업·클라우드 사본을 삭제하지 않습니다." : "VSS 부재는 검증되지 않았습니다. 백업·클라우드 사본은 처리하지 않습니다.");
         var special = items.Count(x => x.Attributes.HasFlag(FileAttributes.Compressed) || x.Attributes.HasFlag(FileAttributes.Encrypted) || x.Attributes.HasFlag(FileAttributes.SparseFile) || x.Attributes.HasFlag(FileAttributes.Offline));
         Add(checks, "P10", special > 0 ? "fail" : "pass", special > 0 ? $"압축·EFS·희소·오프라인 파일 {special}개는 파일 단위 Clear의 범위를 벗어나므로 실행을 차단했습니다." : "특수 할당 속성 미감지");
         var freeBytes = TryGetAvailableFreeSpace(path);
@@ -47,16 +47,27 @@ internal static class SecureDeletePreflight
     private static List<TargetFile> EnumerateTarget(string path, out bool error)
     {
         error = false; var result = new List<TargetFile>();
+        var timer = System.Diagnostics.Stopwatch.StartNew();
+        var visited = 0;
         try
         {
             if (File.Exists(path)) { result.Add(new(path, File.GetAttributes(path))); return result; }
             var pending = new Stack<string>(); pending.Push(path);
             while (pending.Count > 0)
             {
+                if (++visited > 512 || timer.ElapsedMilliseconds > 5000) { error = true; break; }
                 var current = pending.Pop(); var attrs = File.GetAttributes(current);
                 if (attrs.HasFlag(FileAttributes.ReparsePoint)) { error = true; continue; }
-                foreach (var file in Directory.EnumerateFiles(current, "*", SearchOption.TopDirectoryOnly)) result.Add(new(file, File.GetAttributes(file)));
-                foreach (var dir in Directory.EnumerateDirectories(current, "*", SearchOption.TopDirectoryOnly)) pending.Push(dir);
+                foreach (var file in Directory.EnumerateFiles(current, "*", SearchOption.TopDirectoryOnly))
+                {
+                    if (result.Count >= 512 || timer.ElapsedMilliseconds > 5000) { error = true; return result; }
+                    result.Add(new(file, File.GetAttributes(file)));
+                }
+                foreach (var dir in Directory.EnumerateDirectories(current, "*", SearchOption.TopDirectoryOnly))
+                {
+                    if (pending.Count + visited >= 512) { error = true; return result; }
+                    pending.Push(dir);
+                }
             }
         }
         catch { error = true; }
@@ -70,7 +81,7 @@ internal static class SecureDeletePreflight
 
     private static int GetHardLinkCount(string path)
     {
-        try { using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete); return GetFileInformationByHandle(stream.SafeFileHandle, out var info) ? (int)info.NumberOfLinks : 1; } catch { return 1; }
+        try { using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete); return GetFileInformationByHandle(stream.SafeFileHandle, out var info) ? (int)info.NumberOfLinks : int.MaxValue; } catch { return int.MaxValue; }
     }
     private static int CountAlternateDataStreams(string path)
     {

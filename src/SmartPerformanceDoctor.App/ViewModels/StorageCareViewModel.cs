@@ -22,7 +22,7 @@ public sealed class StorageCareViewModel : ObservableObject
     {
         if (!lifecycle.TryBegin(out var lease) || lease is null) return;
         IsBusy = true; Candidates.Clear(); Drives.Clear();
-        Status = "파일 신원·소유권·크기 검사 중 · 최대 512개 / 5초";
+        Status = "파일 신원·소유권·크기 검사 중 · 최대 512개 / 깊이 2 / 5초";
         try
         {
             var result = await Task.Run(() => StorageInventory.CaptureUserTemp(lease.Token), lease.Token);
@@ -30,7 +30,7 @@ public sealed class StorageCareViewModel : ObservableObject
             foreach (var drive in result.Drives)
                 Drives.Add($"{drive.Drive} · 전체 {Format(drive.CapacityBytes)} · 사용 가능 {Format(drive.AvailableBytes)} · 전체 여유 {Format(drive.TotalFreeBytes)} · {(drive.Status == "Measured" ? "측정 완료" : "측정 제한")}");
             foreach (var row in result.Candidates) Candidates.Add(row);
-            Summary = $"측정 파일 {result.MeasuredLogicalBytes:N0} B · 제외 {result.ExcludedCount}개 · {result.ElapsedMs:N0} ms";
+            Summary = $"논리 크기 {result.MeasuredLogicalBytes:N0} B · 할당 크기 {(result.MeasuredAllocatedBytes is long allocated ? allocated.ToString("N0") + " B" : "미확인")} · 제외 {result.ExcludedCount}개 · {result.ElapsedMs:N0} ms";
             Status = result.Limitation;
             Preview = "격리 0 B · 복원 가능 0 B · 최종 삭제 0 B · 실제 확보 공간 미측정";
         }
