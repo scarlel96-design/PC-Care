@@ -65,7 +65,9 @@ jobs:
           ./scripts/wo11-sandbox-validation.ps1 -OutputDirectory artifacts/wo11-sandbox
           dotnet build tools/SmartPerformanceDoctor.CleanupProbe -c Release -p:Platform=x64 -m:1 -v:minimal
           if ($LASTEXITCODE -ne 0) { throw "cleanup probe build failed" }
-          & tools/SmartPerformanceDoctor.CleanupProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.CleanupProbe.exe --synthetic artifacts/wo11-ci
+          $fixtureParent = Join-Path $env:RUNNER_TEMP 'wo17-isolated-fixtures'
+          New-Item -ItemType Directory -Force $fixtureParent | Out-Null
+          & tools/SmartPerformanceDoctor.CleanupProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.CleanupProbe.exe --synthetic artifacts/wo11-ci $fixtureParent
           if ($LASTEXITCODE -ne 0) { throw "cleanup roundtrip failed" }
           dotnet build tools/SmartPerformanceDoctor.GuiProbe -c Release -p:Platform=x64 -v:minimal
           if ($LASTEXITCODE -ne 0) { throw "UIA harness build failed" }
@@ -159,7 +161,9 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'WO17 probe build failed' }
           dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO17' --logger 'trx;LogFileName=wo17-focused.trx' -v:minimal
           if ($LASTEXITCODE -ne 0) { throw 'WO17 tests failed' }
-          dotnet tools/SmartPerformanceDoctor.StorageCareProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.StorageCareProbe.dll --synthetic artifacts/wo17-ci
+          $fixtureParent = Join-Path $env:RUNNER_TEMP 'wo17-isolated-fixtures'
+          New-Item -ItemType Directory -Force $fixtureParent | Out-Null
+          dotnet tools/SmartPerformanceDoctor.StorageCareProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.StorageCareProbe.dll --synthetic artifacts/wo17-ci $fixtureParent
           if ($LASTEXITCODE -ne 0) { throw 'WO17 synthetic qualification failed' }
           pwsh -NoProfile -File scripts/wo17-ui-source-validation.ps1
           if ($LASTEXITCODE -ne 0) { throw 'WO17 UI source validation failed' }

@@ -4,5 +4,6 @@
     <ProjectReference Include="../../src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj"/>
     <Compile Include="../SmartPerformanceDoctor.RecoverySandbox/SandboxRecovery.cs" Link="SandboxRecovery.cs"/>
     <Compile Include="../../src/SmartPerformanceDoctor.App/Services/SystemCare/StorageInventory.cs" Link="StorageInventory.cs"/>
+    <Compile Include="../../src/SmartPerformanceDoctor.App/Services/SystemCare/StorageTargetPolicy.cs" Link="StorageTargetPolicy.cs"/>
   </ItemGroup>
 </Project>

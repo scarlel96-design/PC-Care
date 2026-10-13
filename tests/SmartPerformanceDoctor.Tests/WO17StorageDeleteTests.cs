@@ -8,7 +8,8 @@ namespace SmartPerformanceDoctor.Tests;
 
 public sealed class WO17StorageDeleteTests : IDisposable
 {
-    private readonly string parent = Path.Combine(Path.GetTempPath(), "wo17-" + Guid.NewGuid().ToString("N"));
+    private readonly string parent = Path.Combine(Environment.GetEnvironmentVariable("RUNNER_TEMP")
+        ?? Directory.GetParent(Environment.CurrentDirectory)!.FullName, "wo17-" + Guid.NewGuid().ToString("N"));
     public WO17StorageDeleteTests() => Directory.CreateDirectory(parent);
     private string FileFixture(int bytes = 4096)
     {

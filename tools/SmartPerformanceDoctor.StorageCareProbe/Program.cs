@@ -5,10 +5,10 @@ using SmartPerformanceDoctor.App.Services.SystemCare;
 using SmartPerformanceDoctor.App.Services.Commercial;
 using SmartPerformanceDoctor.RecoverySandbox;
 
-if (args is not ["--synthetic", var output]) return 2;
+if (args is not ["--synthetic", var output, var fixtureParent]) return 2;
 var evidence = Path.GetFullPath(output);
 Directory.CreateDirectory(evidence);
-var parent = Path.Combine(Path.GetTempPath(), "wo17-probe-" + Guid.NewGuid().ToString("N"));
+var parent = Path.Combine(Path.GetFullPath(fixtureParent), "wo17-probe-" + Guid.NewGuid().ToString("N"));
 Directory.CreateDirectory(parent);
 void Save(string name, object value) => File.WriteAllText(Path.Combine(evidence, name), JsonSerializer.Serialize(value,
     new JsonSerializerOptions { WriteIndented = true }).Replace(parent, "<SYNTHETIC_ROOT>", StringComparison.OrdinalIgnoreCase));

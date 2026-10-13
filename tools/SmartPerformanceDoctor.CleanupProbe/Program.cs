@@ -15,9 +15,9 @@ if (args is ["--readonly-user-temp", var inventoryOutput])
     Console.WriteLine($"WO11_READONLY_INVENTORY candidates={result.Candidates.Count} excluded={result.ExcludedCount} complete={result.Complete} fileMutations=0");
     return 0;
 }
-if (args is not ["--synthetic", var output]) return 2;
+if (args is not ["--synthetic", var output, var fixtureParent]) return 2;
 Directory.CreateDirectory(output);
-var parent = Path.Combine(Path.GetFullPath(output), "fixture-" + Guid.NewGuid().ToString("N"));
+var parent = Path.Combine(Path.GetFullPath(fixtureParent), "wo11-probe-" + Guid.NewGuid().ToString("N"));
 Directory.CreateDirectory(parent);
 var sandbox = SandboxRecovery.CreateSynthetic(parent, 8 * 1024 * 1024);
 var original = Path.Combine(sandbox.Root, "fixture.dat");
