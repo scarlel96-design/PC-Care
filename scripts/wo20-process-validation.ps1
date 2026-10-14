@@ -26,7 +26,7 @@ function Kill-Probe([string]$Verb,[string]$Root){
   if(!(Test-Path -LiteralPath $signal)){throw "Checkpoint not reached: $Verb $(Get-Content $err -Raw)"}
   $checkpoint=Get-Content -LiteralPath $signal -Raw
   $process.Kill();$process.WaitForExit();$code=$process.ExitCode
-  $records.Add(@{Command="WO20Probe $Verb <SYNTHETIC_ROOT>";Checkpoint=$checkpoint;ExitCode=$code;Output=(Get-Content $out -Raw).Trim();Termination='Parent killed separate process';Environment='Synthetic filesystem'})
+  $records.Add(@{Command="WO20Probe $Verb <SYNTHETIC_ROOT>";Checkpoint=$checkpoint;ExitCode=$code;Output=([string](Get-Content -LiteralPath $out -Raw)).Trim();Termination='Parent killed separate process';Environment='Synthetic filesystem'})
   if($code -ne -1){throw "Unexpected termination exit $code"}
  }finally{if(!$process.HasExited){$process.Kill();$process.WaitForExit()};$process.Dispose()}
 }
