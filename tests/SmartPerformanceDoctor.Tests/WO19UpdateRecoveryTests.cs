@@ -134,17 +134,14 @@ public sealed class WO19UpdateRecoveryTests
             journal.Stage = UpdateStage.Applying;
             File.WriteAllText(path, JsonSerializer.Serialize(journal));
         }
+        var before = Directory.GetFiles(f.Install).ToDictionary(path => path,
+            path => Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(path))));
         var result = f.Transaction.Recover(f.Install);
-        if (result.Stage == UpdateStage.Restored)
-        {
-            Assert.All(paths, path => Assert.Equal(UpdateStage.Restored,
-                JsonSerializer.Deserialize<UpdateJournal>(File.ReadAllText(path))!.Stage));
-            Assert.Equal(UpdateRecoveryState.RecoveryCompleted, f.Transaction.InspectRecovery(f.Install).State);
-        }
-        else
-        {
-            Assert.Equal(UpdateStage.RecoveryRequired, result.Stage);
-            Assert.NotEqual(UpdateRecoveryState.RecoveryCompleted, f.Transaction.InspectRecovery(f.Install).State);
-        }
+        Assert.Equal(UpdateStage.RecoveryRequired, result.Stage);
+        Assert.Equal("MULTIPLE-PENDING-TRANSACTIONS", result.Code);
+        Assert.All(paths, path => Assert.Equal(UpdateStage.Applying,
+            JsonSerializer.Deserialize<UpdateJournal>(File.ReadAllText(path))!.Stage));
+        foreach (var file in before)
+            Assert.Equal(file.Value, Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(file.Key))));
     }
 }

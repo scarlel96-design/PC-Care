@@ -428,6 +428,16 @@ public sealed partial class UpdateTransaction
         using var workPin = WindowsFileBoundary.PinDirectory(_workRoot);
         using var gate = WindowsFileBoundary.OpenExclusive(_workRoot, "update.lock", !File.Exists(Path.Combine(_workRoot, "update.lock")));
         VerifyProtectedFile(gate, _workRoot);
+        var pendingMutations = 0;
+        foreach (var directory in Directory.EnumerateDirectories(_workRoot, "tx-*"))
+        {
+            if (!TryReadTrustedJournal(directory, installRoot, out var candidate, out var error) || candidate is null)
+                return new(UpdateStage.RecoveryRequired, error, "", 0);
+            if (candidate.Stage is not (UpdateStage.Committed or UpdateStage.Restored) && candidate.Stage >= UpdateStage.Applying)
+                pendingMutations++;
+        }
+        if (pendingMutations > 1)
+            return new(UpdateStage.RecoveryRequired, "MULTIPLE-PENDING-TRANSACTIONS", "", 0);
         TransactionResult? restored = null;
         foreach (var dir in Directory.EnumerateDirectories(_workRoot, "tx-*").OrderBy(x => x, StringComparer.Ordinal))
         {
