@@ -36,6 +36,8 @@ jobs:
           $owner = (Get-Acl -LiteralPath $ownerProbe).GetOwner([Security.Principal.SecurityIdentifier])
           $ownerKind = if ($owner -eq $sid) { 'CurrentSid' } elseif ($owner.Value -eq 'S-1-5-32-544') { 'Administrators' } else { 'Other' }
           @{DefaultFixtureOwner=$ownerKind;ExplicitFixtureOwner='CurrentSid';ProductionOwnershipGateChanged=$false} | ConvertTo-Json | Set-Content artifacts/wo18-ci/OWNER_ENVIRONMENT.json
+          dotnet build tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO18 x64 test build failed' }
           dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO18' --logger 'trx;LogFileName=wo18-tests.trx' -v:minimal
           if ($LASTEXITCODE -ne 0) { throw 'WO18 regression failed' }
           dotnet build tools/SmartPerformanceDoctor.DeleteProbe -c Release -p:Platform=x64 -m:1 -v:minimal
