@@ -18,9 +18,9 @@ try
         new PropertyCondition(AutomationElement.AutomationIdProperty,id)) ?? throw new InvalidOperationException("ControlMissing:"+id);
     if(args[0]=="--inspect-update-page")
     {
-        var status=Find("UpdateRecoveryStatus");var refresh=Find("UpdateRecoveryRefresh");var close=Find("UpdateRecoveryClose");
+        var updateStatus=Find("UpdateRecoveryStatus");var refresh=Find("UpdateRecoveryRefresh");var close=Find("UpdateRecoveryClose");
         refresh.SetFocus();((InvokePattern)refresh.GetCurrentPattern(InvokePattern.Pattern)).Invoke();
-        Console.WriteLine(JsonSerializer.Serialize(new{status="PARTIAL",guiExecuted=true,statusAccessible=status.Current.Name.Length>0,refreshEnabled=refresh.Current.IsEnabled,closeEnabled=close.Current.IsEnabled,destructiveAction=false,notTested=new[]{"UAC","LegacyRestore","ScreenReader","HighDpi"}}));return 0;
+        Console.WriteLine(JsonSerializer.Serialize(new{status="PARTIAL",guiExecuted=true,statusAccessible=updateStatus.Current.Name.Length>0,refreshEnabled=refresh.Current.IsEnabled,closeEnabled=close.Current.IsEnabled,destructiveAction=false,notTested=new[]{"UAC","LegacyRestore","ScreenReader","HighDpi"}}));return 0;
     }
     if (args[0] == "--inspect-vault-page")
     {
