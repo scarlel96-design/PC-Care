@@ -51,5 +51,8 @@ LOCAL FULL EXIT CODE: 0
 BASELINE RETRY PROVENANCE: Existing compiled assembly was not freshly pinned. Do not use it as the authoritative full baseline.
 AUTHORITATIVE BASELINE: prior Windows CI source matched the base implementation paths; 1139 PASS / 111 SKIP / 0 FAIL.
 CHANGED FIELDS: nullable AllocatedBytes; MissingReasons; ExecutionEnabled=false; SecureDeleteExecutionResult.Status; PartialWritePossible; same-handle Clear and delete.
-RESTORE WARNING/ERROR CLAIM: Local restore succeeded. Final CI build warning detail refresh is pending. Do not infer warning counts from SUCCESS alone.
+RESTORE/RELEASE: Final Windows CI Restore step success. Full job log has no warning NU/error NU lines. Release output: 0 Warning(s), 0 Error(s). CI_BUILD_RECOVERY_RESULT.txt preserves the excerpt.
 DOCUMENT COMMIT: separate from the CI source. Resolve its HEAD through the submitted branch ref.
+
+REMOTE EVIDENCE VERIFIED: da9f20f12e4ff24ae20dce542cf65470205cc234; tree 8e7d428525e11d3652ba3627aa69e29c86ede97b; 15 reports; 54 evidence blobs; executable rollback mode 100755.
+PUBLICATION NOTE: Final evidence-only commit does not change CI-qualified implementation paths. Resolve final HEAD from the branch ref.

@@ -1,0 +1,100 @@
+WORK ITEM: WO17 Windows CI build and recovery
+STATUS: PASS
+SOURCE SHA: 63febc9ca94d8da90e5bfb3696f85f4ccc0ec125
+ENVIRONMENT: GitHub-hosted windows-latest; .NET 10.0.x
+COMMAND: github_fetch_workflow_job_logs(job_id=115432784982)
+INPUT: CI run 38436799177
+TOOL RESULT: success; no shell exit code for connector call
+WORKFLOW RELEASE COMMAND: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+WORKFLOW RESTORE COMMAND: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
+WORKFLOW STEP RESULTS: Restore success; Release build success; synthetic recovery success
+OUTPUT:
+2026-10-13T17:14:52.6339653Z Build succeeded.
+2026-10-13T17:14:52.6340202Z     0 Warning(s)
+2026-10-13T17:14:52.6340511Z     0 Error(s)
+2026-10-13T17:15:50.4665412Z Passed!  - Failed:     0, Passed:   128, Skipped:     0, Total:   128, Duration: 31 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+2026-10-13T17:16:04.1998051Z Passed!  - Failed:     0, Passed:   233, Skipped:     0, Total:   233, Duration: 6 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+2026-10-13T17:16:06.6187077Z Build succeeded.
+2026-10-13T17:16:06.6188670Z     0 Warning(s)
+2026-10-13T17:16:06.6189372Z     0 Error(s)
+2026-10-13T17:16:40.7607152Z Build succeeded.
+2026-10-13T17:16:40.7608800Z     0 Warning(s)
+2026-10-13T17:16:40.7613804Z     0 Error(s)
+2026-10-13T17:19:19.9601948Z Build succeeded.
+2026-10-13T17:19:19.9603405Z     0 Warning(s)
+2026-10-13T17:19:19.9604066Z     0 Error(s)
+2026-10-13T17:19:32.2728196Z WO11_SANDBOX_PASS crashScenarios=6 hardLinkRejected=1 bytesRestored=6 irreversibleReviewCases=2
+2026-10-13T17:19:34.5088874Z Build succeeded.
+2026-10-13T17:19:34.5090136Z     0 Warning(s)
+2026-10-13T17:19:34.5090560Z     0 Error(s)
+2026-10-13T17:19:37.1052142Z Build succeeded.
+2026-10-13T17:19:37.1052767Z     0 Warning(s)
+2026-10-13T17:19:37.1053345Z     0 Error(s)
+2026-10-13T17:19:40.1308879Z Build succeeded.
+2026-10-13T17:19:40.1310145Z     0 Warning(s)
+2026-10-13T17:19:40.1310420Z     0 Error(s)
+2026-10-13T17:20:10.4969432Z Build succeeded.
+2026-10-13T17:20:10.4970832Z     0 Warning(s)
+2026-10-13T17:20:10.4971139Z     0 Error(s)
+2026-10-13T17:20:13.3017899Z Build succeeded.
+2026-10-13T17:20:13.3019076Z     0 Warning(s)
+2026-10-13T17:20:13.3019409Z     0 Error(s)
+2026-10-13T17:20:15.4584258Z Build succeeded.
+2026-10-13T17:20:15.4585807Z     0 Warning(s)
+2026-10-13T17:20:15.4586450Z     0 Error(s)
+2026-10-13T17:20:46.3066594Z Build succeeded.
+2026-10-13T17:20:46.3067208Z     0 Warning(s)
+2026-10-13T17:20:46.3067714Z     0 Error(s)
+2026-10-13T17:21:06.5478263Z Passed!  - Failed:     0, Passed:    17, Skipped:     0, Total:    17, Duration: 17 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+2026-10-13T17:21:09.4109787Z Build succeeded.
+2026-10-13T17:21:09.4111273Z     0 Warning(s)
+2026-10-13T17:21:09.4111540Z     0 Error(s)
+2026-10-13T17:23:07.8617410Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 43 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+2026-10-13T17:26:08.2155994Z Passed!  - Failed:     0, Passed:    30, Skipped:     0, Total:    30, Duration: 1 m 20 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+2026-10-13T17:29:05.2081130Z Passed!  - Failed:     0, Passed:    23, Skipped:     0, Total:    23, Duration: 21 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+2026-10-13T17:32:03.7521514Z Passed!  - Failed:     0, Passed:    31, Skipped:     0, Total:    31, Duration: 1 m 20 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+2026-10-13T17:34:28.2485301Z Build succeeded.
+2026-10-13T17:34:28.2486506Z     0 Warning(s)
+2026-10-13T17:34:28.2487413Z     0 Error(s)
+2026-10-13T17:34:50.7264745Z Passed!  - Failed:     0, Passed:    39, Skipped:     0, Total:    39, Duration: 19 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+2026-10-13T17:35:00.1778212Z WO17_SYNTHETIC=PASS;QUARANTINE_SHA256_MATCH=TRUE;DELETE=1;CANCEL_PRESERVED=TRUE;PRODUCTION_CLEANUP=FALSE
+2026-10-13T17:43:27.7880391Z Passed!  - Failed:     0, Passed:  1178, Skipped:   111, Total:  1289, Duration: 8 m 24 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+2026-10-13T17:45:00.4217631Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 28 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+RESTORE OUTPUT:
+2026-10-13T17:13:06.9172980Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.SecurityLab\SmartPerformanceDoctor.SecurityLab.csproj (in 3.54 sec).
+2026-10-13T17:13:12.6874678Z   Restored D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.DiagnosticsProbe\SmartPerformanceDoctor.DiagnosticsProbe.csproj (in 9.35 sec).
+2026-10-13T17:13:12.7132291Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateHelper\SmartPerformanceDoctor.UpdateHelper.csproj (in 4 ms).
+2026-10-13T17:13:12.7252057Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\SmartPerformanceDoctor.UpdateEngine.csproj (in 2 ms).
+2026-10-13T17:13:12.7380421Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Setup\SmartPerformanceDoctor.Setup.csproj (in 4 ms).
+2026-10-13T17:13:31.5405562Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Diagnostics\SmartPerformanceDoctor.Diagnostics.csproj (in 18.71 sec).
+2026-10-13T17:13:36.1806079Z   Restored D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.SecurityLab.Tests\SmartPerformanceDoctor.SecurityLab.Tests.csproj (in 32.78 sec).
+2026-10-13T17:13:36.1851407Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Contracts\SmartPerformanceDoctor.Contracts.csproj (in 1 ms).
+2026-10-13T17:13:36.1917732Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AstraVault\SmartPerformanceDoctor.AstraVault.csproj (in 3 ms).
+2026-10-13T17:13:36.2395450Z   Restored D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.SecurityLab.Cli\SmartPerformanceDoctor.SecurityLab.Cli.csproj (in 2 ms).
+2026-10-13T17:13:39.8397009Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Data\SmartPerformanceDoctor.Data.csproj (in 8.16 sec).
+2026-10-13T17:13:44.9035713Z   Restored D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.ReferenceProbe\SmartPerformanceDoctor.ReferenceProbe.csproj (in 8.66 sec).
+2026-10-13T17:13:44.9117712Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Aegis\SmartPerformanceDoctor.Aegis.csproj (in 4 ms).
+2026-10-13T17:13:44.9551524Z   Restored D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.AstraVault.KillWorker\SmartPerformanceDoctor.AstraVault.KillWorker.csproj (in 35.9 sec).
+2026-10-13T17:13:44.9626242Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryHelper\SmartPerformanceDoctor.AegisRecoveryHelper.csproj (in 2 ms).
+2026-10-13T17:13:50.5577570Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryService\SmartPerformanceDoctor.AegisRecoveryService.csproj (in 5.64 sec).
+2026-10-13T17:13:53.0312406Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj (in 13.19 sec).
+2026-10-13T17:13:53.0327256Z   Restored D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\SmartPerformanceDoctor.Tests.csproj (in 49.7 sec).
+2026-10-13T17:19:19.1332797Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\SmartPerformanceDoctor.UpdateEngine.csproj (in 249 ms).
+2026-10-13T17:19:19.1334579Z   Restored D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.RecoverySandbox\SmartPerformanceDoctor.RecoverySandbox.csproj (in 263 ms).
+2026-10-13T17:19:33.6991685Z   Restored D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.CleanupProbe\SmartPerformanceDoctor.CleanupProbe.csproj (in 264 ms).
+2026-10-13T17:19:36.5111113Z   Restored D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.GuiProbe\SmartPerformanceDoctor.GuiProbe.csproj (in 102 ms).
+2026-10-13T17:19:39.3144668Z   Restored D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.UpdateRecoveryProbe\SmartPerformanceDoctor.UpdateRecoveryProbe.csproj (in 272 ms).
+2026-10-13T17:20:09.4584409Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.SecurityLab\SmartPerformanceDoctor.SecurityLab.csproj (in 329 ms).
+2026-10-13T17:20:09.4615656Z   Restored D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.VMTestKit\SmartPerformanceDoctor.VMTestKit.csproj (in 329 ms).
+2026-10-13T17:20:12.3801768Z   Restored D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.VaultRecovery\SmartPerformanceDoctor.VaultRecovery.csproj (in 334 ms).
+2026-10-13T17:21:08.0877556Z   Restored D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.VaultProbe\SmartPerformanceDoctor.VaultProbe.csproj (in 321 ms).
+2026-10-13T17:33:38.0484254Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Contracts\SmartPerformanceDoctor.Contracts.csproj (in 190 ms).
+2026-10-13T17:33:38.2377455Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AstraVault\SmartPerformanceDoctor.AstraVault.csproj (in 400 ms).
+2026-10-13T17:33:38.2378798Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Data\SmartPerformanceDoctor.Data.csproj (in 401 ms).
+2026-10-13T17:33:38.2672574Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Diagnostics\SmartPerformanceDoctor.Diagnostics.csproj (in 199 ms).
+2026-10-13T17:33:38.2765256Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Aegis\SmartPerformanceDoctor.Aegis.csproj (in 25 ms).
+2026-10-13T17:33:38.3009644Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryHelper\SmartPerformanceDoctor.AegisRecoveryHelper.csproj (in 7 ms).
+2026-10-13T17:33:38.3071449Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\SmartPerformanceDoctor.App.csproj (in 457 ms).
+2026-10-13T17:33:38.3075026Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateHelper\SmartPerformanceDoctor.UpdateHelper.csproj (in 4 ms).
+2026-10-13T17:33:38.3095686Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryService\SmartPerformanceDoctor.AegisRecoveryService.csproj (in 49 ms).
+2026-10-13T17:33:38.3822070Z   Restored D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.StorageCareProbe\SmartPerformanceDoctor.StorageCareProbe.csproj (in 89 ms).
