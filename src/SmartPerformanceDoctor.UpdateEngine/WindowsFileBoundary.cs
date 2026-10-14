@@ -51,7 +51,7 @@ public static class WindowsFileBoundary
 
         private void Add(string path)
         {
-            var handle = CreateFileW(path, 0x80, 3, IntPtr.Zero, 3, OpenReparse | BackupSemantics, IntPtr.Zero);
+            var handle = CreateFileW(NativePath(path), 0x80, 3, IntPtr.Zero, 3, OpenReparse | BackupSemantics, IntPtr.Zero);
             if (handle.IsInvalid) { handle.Dispose(); throw Error("DIRECTORY-PIN"); }
             try
             {
@@ -80,6 +80,7 @@ public static class WindowsFileBoundary
         private readonly DirectoryPin _parent;
         private string _path;
         public FileStream Stream { get; }
+        private DirectoryPin? _publicationParent;
         public string Identity { get; }
 
         internal FileLease(string root, string relative, bool write, bool create, bool deletable, bool exclusive = false)
@@ -99,7 +100,7 @@ public static class WindowsFileBoundary
             SafeFileHandle? handle = null;
             try
             {
-                handle = CreateFileW(target, Read | 0x20000 | (write ? Write : 0) | (deletable ? Delete : 0),
+                handle = CreateFileW(NativePath(target), Read | 0x20000 | (write ? Write : 0) | (deletable ? Delete : 0),
                     exclusive ? 0u : 1u, IntPtr.Zero, create ? 1u : 3u, OpenReparse | (write ? 0x80000000u : 0), IntPtr.Zero);
                 if (handle.IsInvalid) throw Error("FILE-OPEN");
                 Identity = Check(handle, target, directory: false);
@@ -113,6 +114,7 @@ public static class WindowsFileBoundary
         public void Validate(string? expectedIdentity = null)
         {
             _parent.Validate();
+            _publicationParent?.Validate();
             if (Check(Stream.SafeFileHandle, _path, directory: false) != Identity ||
                 (expectedIdentity is not null && Identity != expectedIdentity))
                 throw new IOException("FILE-IDENTITY-CHANGED");
@@ -143,13 +145,28 @@ public static class WindowsFileBoundary
                 throw new InvalidDataException("FILE-INTEGRITY");
         }
 
-        public void CopyFrom(FileLease source)
+        public void CopyFrom(FileLease source, Action? afterFirstWrite = null)
         {
             source.Validate();
             Validate();
             source.Stream.Position = 0;
             Stream.Position = 0;
-            source.Stream.CopyTo(Stream);
+            if (afterFirstWrite is null) source.Stream.CopyTo(Stream);
+            else
+            {
+                var buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(128 * 1024);
+                try
+                {
+                    var first = true; int count;
+                    while ((count = source.Stream.Read(buffer)) != 0)
+                    {
+                        Stream.Write(buffer, 0, count);
+                        if (first) { first = false; afterFirstWrite(); }
+                    }
+                    if (first) afterFirstWrite();
+                }
+                finally { CryptographicOperations.ZeroMemory(buffer); System.Buffers.ArrayPool<byte>.Shared.Return(buffer); }
+            }
             Stream.SetLength(Stream.Position);
             Stream.Flush(flushToDisk: true);
             source.Validate();
@@ -170,7 +187,12 @@ public static class WindowsFileBoundary
             var full = Path.GetFullPath(destination);
             if (!string.Equals(Path.GetDirectoryName(full), Path.GetDirectoryName(_path), StringComparison.OrdinalIgnoreCase))
                 throw new IOException("RENAME-PARENT-MISMATCH");
-            var name = Encoding.Unicode.GetBytes(full);
+            RenameCore(full);
+        }
+
+        private void RenameCore(string full)
+        {
+            var name = Encoding.Unicode.GetBytes(NativePath(full));
             var offset = IntPtr.Size == 8 ? 20 : 12;
             var size = offset + name.Length + 2;
             var buffer = Marshal.AllocHGlobal(size);
@@ -187,7 +209,32 @@ public static class WindowsFileBoundary
             finally { Marshal.FreeHGlobal(buffer); }
         }
 
-        public void Dispose() { Stream.Dispose(); _parent.Dispose(); }
+        /// <summary>Publish a verified file without replacing an existing destination.</summary>
+        public void PublishOpenedFile(string destinationRoot, string relative)
+        {
+            Validate();
+            if (_publicationParent is not null) throw new IOException("ALREADY-PUBLISHED");
+            var full = Path.GetFullPath(Path.Combine(destinationRoot, relative));
+            var rootPrefix = Path.GetFullPath(destinationRoot).TrimEnd('\\') + "\\";
+            if (Path.IsPathRooted(relative) || !full.StartsWith(rootPrefix, StringComparison.OrdinalIgnoreCase) ||
+                relative.Split('\\', '/').Any(p => p is ".." or "." or "" || p.Contains(':')))
+                throw new IOException("PUBLISH-RELATIVE-PATH");
+            if (!string.Equals(Path.GetPathRoot(full), Path.GetPathRoot(_path), StringComparison.OrdinalIgnoreCase))
+                throw new IOException("PUBLISH-SAME-VOLUME-REQUIRED");
+            using var root = PinDirectory(destinationRoot);
+            var parent = PinDirectory(Path.GetDirectoryName(full)!, create: true);
+            try
+            {
+                root.Validate(); parent.Validate(); Validate();
+                if (File.Exists(full) || Directory.Exists(full)) throw new IOException("PUBLISH-DESTINATION-EXISTS");
+                _publicationParent = parent;
+                RenameCore(full);
+                root.Validate(); parent.Validate(); Validate();
+            }
+            catch { if (_publicationParent == parent) _publicationParent = null; parent.Dispose(); throw; }
+        }
+
+        public void Dispose() { Stream.Dispose(); _publicationParent?.Dispose(); _parent.Dispose(); }
     }
 
     public static DirectoryPin PinDirectory(string root, bool create = false) => new(root, create);
@@ -218,6 +265,7 @@ public static class WindowsFileBoundary
         var error = new Win32Exception(Marshal.GetLastWin32Error());
         return new IOException(code + ": " + error.Message, error);
     }
+    private static string NativePath(string path) => "\\\\?\\" + Path.GetFullPath(path);
     [StructLayout(LayoutKind.Sequential)] private struct FileIdInfo { public ulong Volume, Low, High; }
     [StructLayout(LayoutKind.Sequential)] private struct BasicInfo
     {

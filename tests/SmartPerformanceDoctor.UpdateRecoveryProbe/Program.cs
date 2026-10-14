@@ -93,7 +93,8 @@ try
     if (args[0].StartsWith("kill:", StringComparison.Ordinal))
     {
         if (!Enum.TryParse<UpdateFaultPoint>(args[0][5..], out var target) || !Enum.IsDefined(target)) return 2;
-        var armed = false;
+        var armed = target is UpdateFaultPoint.AfterPackageVerification or UpdateFaultPoint.AfterStagingCreated or
+            UpdateFaultPoint.DuringStageExtraction or UpdateFaultPoint.DuringBackupCreation or UpdateFaultPoint.AfterBackupVerification;
         transaction.Apply(packagePath, install, "51.0.4", faultInjector: point =>
         {
             if (point == UpdateFaultPoint.AfterApplyingJournal) armed = true;
@@ -145,13 +146,14 @@ try
     var status = transaction.InspectRecovery(install);
     if (args[0] == "verify-orphan")
     {
-        var orphans = Directory.GetFiles(install, ".pccare-*.pending").Length;
+        var orphans = Directory.GetFiles(work, ".pccare-*.pending", SearchOption.AllDirectories).Length;
         Console.WriteLine($"APP={app} VAULT={vault} STATUS={status.State} ORPHANS={orphans}");
-        return app == "old" && vault == "vault-marker" && status.State == UpdateRecoveryState.RecoveryFailed &&
+        return app == "old" && vault == "vault-marker" && status.State == UpdateRecoveryState.RecoveryCompleted &&
             orphans == 1 && !File.Exists(Path.Combine(install, "new.txt")) ? 0 : 6;
     }
     Console.WriteLine($"APP={app} VAULT={vault} STATUS={status.State}");
-    return app == "old" && vault == "vault-marker" && !File.Exists(Path.Combine(install, "new.txt")) && status.State == UpdateRecoveryState.RecoveryCompleted
+    return app == "old" && vault == "vault-marker" && !File.Exists(Path.Combine(install, "new.txt")) &&
+        status.State is UpdateRecoveryState.RecoveryCompleted or UpdateRecoveryState.NoPendingTransaction
         ? 0 : 6;
 }
 catch (Exception ex)

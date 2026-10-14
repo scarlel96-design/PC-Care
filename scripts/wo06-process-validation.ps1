@@ -14,24 +14,32 @@ function Invoke-Probe([string]$Verb,[string]$Fixture,[string]$Expected) {
     $lines = @(& $probe $Verb $Fixture 2>&1 | ForEach-Object { $_.ToString() })
     $code = $LASTEXITCODE
     $records.Add([pscustomobject]@{Command="$probe $Verb $Fixture";Input=$Fixture;Output=$lines;ExitCode=$code;Expected=$Expected})
+    if ($Verb.Contains('kill') -and ($code -ne -1 -or $lines.Count -eq 0)) {
+        throw "The required crash checkpoint was not reached: $Verb : $code"
+    }
     if (($Expected -eq 'ZERO' -and $code -ne 0) -or ($Expected -eq 'NONZERO' -and $code -eq 0)) {
         throw "Unexpected result for $Verb : $code"
     }
 }
 try {
-    $points = @('AfterNewFileIntent','AfterNewFileCreated','AfterNewFileIdentity','BeforeNewFileRename','AfterNewFileRename',
+    $points = @('AfterPackageVerification','AfterBackupVerification','AfterApplyingJournal',
+        'AfterNewFileIntent','AfterNewFileCreated','AfterNewFileIdentity','DuringNewFileContent',
+        'BeforeNewFileVerification','AfterNewFileVerification','BeforeNewFileRename','AfterNewFileRename',
+        'AfterFirstReplacement','AfterLastReplacement','DuringPostApplyVerification',
         'JournalTempCreated','JournalPartialWrite','JournalFlushed','JournalBeforeReplace','JournalAfterReplace','BeforeCommittedJournal')
     foreach ($point in $points) {
         $fixture = Join-Path $output $point
         Invoke-Probe 'prepare' $fixture 'ZERO'
         Invoke-Probe ('kill:'+$point) $fixture 'NONZERO'
         if ($point -eq 'AfterNewFileCreated') {
-            Invoke-Probe 'recover' $fixture 'NONZERO'
+            Invoke-Probe 'recover' $fixture 'ZERO'
             Invoke-Probe 'verify-orphan' $fixture 'ZERO'
         } else {
             Invoke-Probe 'recover' $fixture 'ZERO'
             Invoke-Probe 'verify' $fixture 'ZERO'
         }
+        Invoke-Probe 'apply' $fixture 'ZERO'
+        Invoke-Probe 'verify-updated' $fixture 'ZERO'
     }
     $fixture = Join-Path $output 'rollback-reentry'
     Invoke-Probe 'prepare' $fixture 'ZERO'

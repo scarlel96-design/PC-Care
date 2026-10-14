@@ -43,6 +43,13 @@ public partial class App : Application
     public App()
     {
         AppLaunchOptions.Parse(Environment.GetCommandLineArgs());
+        if (AppLaunchOptions.ReadOnlyUpdateStatus)
+        {
+            // This entry point has no product services or background startup tasks.
+            WinUiResourceLayoutGuard.EnsureOrThrow();
+            InitializeComponent();
+            return;
+        }
         StartupDiagnostics.Write("app-ctor", AppContext.BaseDirectory);
 
         // 50.3.0: SecurityLab vault v4 + shred-next product host (disable with PCCARE_SECURITYLAB=0)
@@ -142,6 +149,15 @@ public partial class App : Application
     }
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
+        var recovery = Services.Update.UpdateRecoveryCoordinator.Inspect();
+        if (AppLaunchOptions.ReadOnlyUpdateStatus || recovery.State is
+            UpdateEngine.UpdateRecoveryState.RecoveryAvailable or UpdateEngine.UpdateRecoveryState.RecoveryInProgress or
+            UpdateEngine.UpdateRecoveryState.RecoveryRequired or UpdateEngine.UpdateRecoveryState.RecoveryFailed)
+        {
+            _window = new UpdateRecoveryWindow(recovery, AppLaunchOptions.ReadOnlyUpdateStatus);
+            _window.Activate();
+            return;
+        }
         StartupDiagnostics.Write("on-launched", "begin");
 
         // WinUI top-level Window must be created from OnLaunched directly — not inside DispatcherQueue

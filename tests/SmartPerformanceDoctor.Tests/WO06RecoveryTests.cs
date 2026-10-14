@@ -10,7 +10,7 @@ public sealed class WO06RecoveryTests
 {
     [Theory]
     [InlineData(UpdateFaultPoint.AfterNewFileIntent, UpdateStage.Restored)]
-    [InlineData(UpdateFaultPoint.AfterNewFileCreated, UpdateStage.RecoveryRequired)]
+    [InlineData(UpdateFaultPoint.AfterNewFileCreated, UpdateStage.Restored)]
     [InlineData(UpdateFaultPoint.AfterNewFileIdentity, UpdateStage.Restored)]
     [InlineData(UpdateFaultPoint.BeforeNewFileRename, UpdateStage.Restored)]
     [InlineData(UpdateFaultPoint.AfterNewFileRename, UpdateStage.Restored)]
@@ -25,9 +25,10 @@ public sealed class WO06RecoveryTests
         Assert.Equal(expected, result.Stage);
         Assert.Equal("old", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
         Assert.False(File.Exists(Path.Combine(f.Install, "second.txt")));
-        if (expected == UpdateStage.RecoveryRequired)
+        if (point == UpdateFaultPoint.AfterNewFileCreated)
         {
-            Assert.Single(Directory.GetFiles(f.Install, ".pccare-*.pending"));
+            Assert.Single(Directory.GetFiles(f.Work, ".pccare-*.pending", SearchOption.AllDirectories));
+            Assert.Empty(Directory.GetFiles(f.Install, ".pccare-*.pending", SearchOption.AllDirectories));
             Assert.Equal(expected, f.Transaction.Recover(f.Install).Stage);
         }
         else Assert.Empty(Directory.GetFiles(f.Install, ".pccare-*.pending"));

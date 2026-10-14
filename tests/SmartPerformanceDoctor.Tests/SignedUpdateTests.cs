@@ -370,13 +370,13 @@ public sealed class SignedUpdateTests
 
         public string Package(string mutation = "")
         {
-            var first = System.Text.Encoding.UTF8.GetBytes("new");
-            var second = System.Text.Encoding.UTF8.GetBytes("second");
+            var first = System.Text.Encoding.UTF8.GetBytes(mutation == "original-version" ? "old" : "new");
+            var second = System.Text.Encoding.UTF8.GetBytes(mutation == "original-version" ? "old-second" : "second");
             var manifest = new SignedManifest
             {
                 Publisher = mutation == "other-publisher" ? "Other" : "WO03-Test-Only",
-                KeyId = "test-key", PackageId = Guid.NewGuid().ToString("N"), FromVersion = "51.0.4",
-                ToVersion = mutation == "downgrade" ? "51.0.3" : "51.0.5",
+                KeyId = "test-key", PackageId = Guid.NewGuid().ToString("N"), FromVersion = mutation == "original-version" ? "51.0.3" : "51.0.4",
+                ToVersion = mutation == "original-version" ? "51.0.4" : mutation == "downgrade" ? "51.0.3" : "51.0.5",
                 MinimumSupportedVersion = "51.0.0", CreatedAt = Clock.AddDays(-1),
                 ExpiresAt = Clock.AddDays(1),
                 Files =

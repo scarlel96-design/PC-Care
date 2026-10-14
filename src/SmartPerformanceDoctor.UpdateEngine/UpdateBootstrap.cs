@@ -1,6 +1,9 @@
 using System.Diagnostics;
 using System.Security.AccessControl;
 using System.Text.Json;
+using System.IO.Compression;
+using System.Reflection.Metadata;
+using System.Reflection.PortableExecutable;
 
 namespace SmartPerformanceDoctor.UpdateEngine;
 
@@ -15,6 +18,78 @@ public static class UpdateBootstrap
         "SmartPerformanceDoctor.UpdateHelper.deps.json", "SmartPerformanceDoctor.UpdateHelper.runtimeconfig.json"];
     public static string WorkRoot => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
         "PC-Care", "UpdateTransactions");
+
+    /// <summary>Prepare the first transition without executing or replacing the installed helper.</summary>
+    public static string PrepareTransition(string installRoot, string packagePath, string currentVersion, int callerPid)
+    {
+        if (callerPid <= 0) throw new InvalidDataException("BOOTSTRAP-COMMAND");
+        ValidateInstallRoot(installRoot);
+        using var install = WindowsFileBoundary.PinDirectory(installRoot);
+        var packageFull = Path.GetFullPath(packagePath);
+        using var package = WindowsFileBoundary.OpenRead(Path.GetDirectoryName(packageFull)!, Path.GetFileName(packageFull));
+        var verified = SignedPackage.Verify(package.Stream, currentVersion, BuildPublisherTrust.Current);
+        if (!verified.CanApply || verified.Manifest is null) throw new InvalidDataException("TRANSITION-PUBLISHER-UNVERIFIED");
+        new UpdateTransaction(BuildPublisherTrust.Current, WorkRoot, true).InitializeProtectedRoot();
+        var id = Guid.NewGuid().ToString("N");
+        var directory = Path.Combine(WorkRoot, "bootstrap-" + id);
+        Directory.CreateDirectory(directory);
+        using var execution = WindowsFileBoundary.PinDirectory(directory);
+        ValidateAcl(directory);
+        using (var copy = WindowsFileBoundary.OpenWrite(directory, "transition.spdup", true))
+        { copy.CopyFrom(package); copy.Verify(package.Stream.Length, package.Hash()); }
+        var files = new List<BootstrapFile>();
+        package.Stream.Position = 0;
+        using (var zip = new ZipArchive(package.Stream, ZipArchiveMode.Read, true))
+        {
+            foreach (var name in RuntimeFiles)
+            {
+                var path = "payload/engine/" + name;
+                var expected = verified.Manifest.Files.SingleOrDefault(file => file.Path == path)
+                    ?? throw new InvalidDataException("TRANSITION-RUNTIME-MISSING:" + name);
+                using var input = zip.GetEntry(path)!.Open();
+                using var target = WindowsFileBoundary.OpenWrite(directory, name, true);
+                input.CopyTo(target.Stream); target.Stream.Flush(true);
+                target.Verify(expected.Length, expected.Sha256);
+                VerifyPublisher(directory, name, target);
+                files.Add(new(name, target.Identity, target.Stream.Length, target.Hash()));
+            }
+        }
+        if (!SupportsSnapshotProtocol(Path.Combine(directory, RuntimeFiles[1])))
+            throw new InvalidDataException("TRANSITION-HELPER-PROTOCOL");
+        install.Validate(); package.Validate(); execution.Validate();
+        var binding = new BootstrapBinding(id, Path.GetFullPath(installRoot), install.Identity,
+            execution.Identity, "--apply", Path.Combine(directory, "transition.spdup"), callerPid, Environment.ProcessId, files);
+        using (var record = WindowsFileBoundary.OpenWrite(directory, "binding.json", true))
+        { record.Stream.Write(JsonSerializer.SerializeToUtf8Bytes(binding)); record.Stream.Flush(true); }
+        Validate(directory, id);
+        return directory;
+    }
+
+    public static bool SupportsSnapshotProtocol(string helperDll)
+    {
+        try
+        {
+            using var file = WindowsFileBoundary.OpenRead(Path.GetDirectoryName(Path.GetFullPath(helperDll))!, Path.GetFileName(helperDll));
+            using var pe = new PEReader(file.Stream, PEStreamOptions.LeaveOpen);
+            if (!pe.HasMetadata) return false;
+            var metadata = pe.GetMetadataReader();
+            foreach (var handle in metadata.GetAssemblyDefinition().GetCustomAttributes())
+            {
+                var attribute = metadata.GetCustomAttribute(handle);
+                if (attribute.Constructor.Kind != HandleKind.MemberReference) continue;
+                var member = metadata.GetMemberReference((MemberReferenceHandle)attribute.Constructor);
+                if (member.Parent.Kind != HandleKind.TypeReference) continue;
+                var type = metadata.GetTypeReference((TypeReferenceHandle)member.Parent);
+                if (metadata.GetString(type.Namespace) != "System.Reflection" ||
+                    metadata.GetString(type.Name) != "AssemblyMetadataAttribute") continue;
+                var value = metadata.GetBlobReader(attribute.Value);
+                if (value.ReadUInt16() == 1 && value.ReadSerializedString() == "PC-Care.UpdateBootstrapProtocol" &&
+                    value.ReadSerializedString() == "1") { file.Validate(); return true; }
+            }
+            return false;
+        }
+        catch (Exception ex) when (ex is IOException or BadImageFormatException or InvalidOperationException) { return false; }
+    }
 
     public static string Prepare(string installRoot, string verb, string package, int callerPid)
     {
@@ -179,6 +254,8 @@ public static class UpdateBootstrap
             throw new InvalidDataException("BOOTSTRAP-COMMAND");
         ValidateInstallRoot(installRoot);
         var engine = Path.Combine(installRoot, "engine");
+        if (!SupportsSnapshotProtocol(Path.Combine(engine, RuntimeFiles[1])))
+            throw new InvalidDataException("FIRST-BOOTSTRAP-TRANSITION-REQUIRED");
         using var installPin = WindowsFileBoundary.PinDirectory(installRoot);
         var leases = new List<WindowsFileBoundary.FileLease>();
         try

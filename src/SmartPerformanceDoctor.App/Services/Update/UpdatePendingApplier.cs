@@ -24,19 +24,8 @@ public sealed class UpdatePendingApplier
             // A setup repair/direct install may already have placed this exact
             // version on disk. Do not leave a stale pending marker that keeps
             // asking the user to finish an update that is already present.
-            var alreadyInstalled = AppVersionService.VerifyInstalledVersion(toVersion);
-            if (alreadyInstalled.Success)
-            {
-                AppVersionService.WriteInstalledVersion(toVersion, "startup-pending-already-installed");
-                CleanupPending(packagePath, stagingDir);
-                AppendApplyLog($"[startup] stale pending {toVersion} cleared; {alreadyInstalled.Details}");
-                return new PendingApplyResult(
-                    true,
-                    0,
-                    $"{toVersion}이 이미 설치되어 남은 업데이트 대기 상태를 정리했습니다.",
-                    toVersion,
-                    true);
-            }
+            // A version string does not authenticate the complete installed file set.
+            // Keep legacy evidence until a signed manifest and transaction establish completion.
 
             AppendApplyLog($"[startup] legacy pending {toVersion} blocked: no authenticated publisher/transaction binding");
             return new PendingApplyResult(
