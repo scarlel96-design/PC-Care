@@ -1,0 +1,22 @@
+{
+  "SourceSha": "347a34fa1f273db7064f40e3c53ecea4fd10ecee",
+  "Limitation": "No verified disposable VM or snapshot was supplied. Command discovery is not a full host inventory.",
+  "HyperVServiceFound": false,
+  "ExitCode": 0,
+  "Command": "Get-Command Get-VM, vmrun, VBoxManage; Get-Service vmms",
+  "IndependentTestSidProvisioned": false,
+  "Status": "NOT TESTED",
+  "HyperVCommandAvailable": false,
+  "SnapshotVerified": false,
+  "Tools": [
+    {
+      "Available": false,
+      "Name": "vmrun"
+    },
+    {
+      "Available": false,
+      "Name": "VBoxManage"
+    }
+  ],
+  "HyperVServiceStatus": null
+}

@@ -1,0 +1,433 @@
+{
+  "SourceSha": "347a34fa1f273db7064f40e3c53ecea4fd10ecee",
+  "Environment": "Local Windows and final GitHub-hosted Windows CI are distinguished in each report.",
+  "RawPaths": "Private raw logs remain outside the repository. WORKSPACE is the repository root.",
+  "LocalEvidenceSources": {
+    "Baseline": "58e5e9ec08b677425b89050c6a85c076c3d87ff8",
+    "FinalUpdater": "347a34fa1f273db7064f40e3c53ecea4fd10ecee",
+    "FullApp": "75844a9018216fe4f0b53187592241c43462b94d",
+    "Gui": "1fa021ef142e6589f5baf040744a462dc85437d1",
+    "PerformanceAndLocalSecurityLab": "6bef12fbe7f507c005f71f0129acbb412764da9a"
+  },
+  "CiSource": "347a34fa1f273db7064f40e3c53ecea4fd10ecee",
+  "CI": "CI_FINAL_RESULT.json; CI_JOB_LOG.txt; CI_*.trx",
+  "OriginalToModifiedField": "UpdateFileJournal.TemporaryInTransaction; NewLength; protected preparation and no-replace handle publication",
+  "UnchangedSkipNames": 111,
+  "Files": [
+    {
+      "File": "ACL_BOUNDARY_RESULT.json",
+      "Sha256": "3502fad9181c576964ab71ef9439eb25d6ef913e0407424cc7667155fa21d41a",
+      "Length": 412
+    },
+    {
+      "File": "ACL_TEST_RESULT.txt",
+      "Sha256": "fcc9ae2a6b17c05b66d394bf26233f871ac8c00ffa408b9385183c372559ddd3",
+      "Length": 473
+    },
+    {
+      "File": "BASELINE_BUILD_RESULT.txt",
+      "Sha256": "14b58b2020928f684e495472236e15b83d3ccf371ce445580af1a49a7f86ca36",
+      "Length": 2153
+    },
+    {
+      "File": "BASELINE_RESULT.txt",
+      "Sha256": "f62b3de7e37c00ad77c110938bff77c77cc06d4b9b7326de8e510d35f242e5e8",
+      "Length": 28600
+    },
+    {
+      "File": "BOOTSTRAP_TRANSITION_RESULT.json",
+      "Sha256": "d624acc596d3245092fc23f6e92597b88d51f7ec217ba566c4269c9d5ae4fe7e",
+      "Length": 579
+    },
+    {
+      "File": "BRIDGE_BUILD_RESULT.txt",
+      "Sha256": "3283ef5f1d03f9ac33c0022c0a90cc5b46ff5b1c1b9eeb047f278e36dfeea210",
+      "Length": 759
+    },
+    {
+      "File": "BUILD_RESULT.txt",
+      "Sha256": "bc2da8912aa7faacac548ef8847b4f344127895e2b1e967e8b3633384f7a922c",
+      "Length": 2945
+    },
+    {
+      "File": "CI_BUILD_RESULT.txt",
+      "Sha256": "bc79542f97d46b267db87bb85cebb9cc0380eb1d924dfa175ead590e7da2f7d7",
+      "Length": 5693
+    },
+    {
+      "File": "CI_DELETE_CRASH_MATRIX.json",
+      "Sha256": "36083dd28c7490074688ad0540d5bf22a9e428568636c49581f9838bf593f4a4",
+      "Length": 16444
+    },
+    {
+      "File": "CI_FINAL_RESULT.json",
+      "Sha256": "12e106df1a37f1148a7d699cbf011e8718c163fa9eac447e9ed8e2d1978c2fc0",
+      "Length": 1991
+    },
+    {
+      "File": "CI_JOB_LOG.txt",
+      "Sha256": "34d63e221fc608ea8ead3a78789bdc075257cdcaa6250c79857517f9981ed793",
+      "Length": 183433
+    },
+    {
+      "File": "CI_PRIOR_RESULT.json",
+      "Sha256": "0f7754f3c7653a200f3b32d8f4acc17ac093c01ce22e045ec4de45bb2ee1190d",
+      "Length": 299
+    },
+    {
+      "File": "CI_PROCESS_RESULT.json",
+      "Sha256": "82a493097608e8eab02b7580f371db867d4485b5700e74689755a815c88ed523",
+      "Length": 99322
+    },
+    {
+      "File": "CI_QUARANTINE_CRASH_RESULT.json",
+      "Sha256": "da7b5734dbe96333323d26ebd34739961382a6eb80394634464867bba0df910d",
+      "Length": 3383
+    },
+    {
+      "File": "CI_QUARANTINE_RESULT.json",
+      "Sha256": "db0fd00a970390aae2d3ef4cc1500626b5eb83fb42e798b4a60f0fe638bdf52f",
+      "Length": 965
+    },
+    {
+      "File": "CI_wo06-full.trx",
+      "Sha256": "812ce8414a1dc5d9cb9af2f99aefe51402edcdfbe6cf208a9c9a68a9e420f736",
+      "Length": 1995212
+    },
+    {
+      "File": "CI_wo06-securitylab.trx",
+      "Sha256": "b1db1dc908cf423fad11164a7ed7175ae98808a1fe030e278b4ec5b0ac9c4e10",
+      "Length": 55375
+    },
+    {
+      "File": "CI_wo06-signed-updater.trx",
+      "Sha256": "f141ac1b8ed4d3b3a2fc7ad4507306da395d6ccba7ddf1dad4242be2feee1356",
+      "Length": 190166
+    },
+    {
+      "File": "CI_wo09-performance.trx",
+      "Sha256": "e8ce4350ca1ce49b16422534af6234b7a6145330960145028c59e960fa4b9e00",
+      "Length": 331964
+    },
+    {
+      "File": "CI_wo12-vault.trx",
+      "Sha256": "007100490fed396544d170d25b1c3866c7b96b573e1cbca747749d5a4ae5ae81",
+      "Length": 26861
+    },
+    {
+      "File": "CI_wo13-vault.trx",
+      "Sha256": "8b0700e4616f9d654eca354691caef0c66ace0c098c53d68629bb8d834c5ca73",
+      "Length": 56450
+    },
+    {
+      "File": "CI_wo14-vault.trx",
+      "Sha256": "014a3255f15a439e2bc415d281d39cfa54b8a678e3f72dde3728c46933b4a0ef",
+      "Length": 46447
+    },
+    {
+      "File": "CI_wo15-vault.trx",
+      "Sha256": "8319361061f2b4b47b931507d149047896c9cc163cc1fb80129aedcc7772ef3e",
+      "Length": 35226
+    },
+    {
+      "File": "CI_wo16-vault.trx",
+      "Sha256": "6fbbe51be1f7eb081aceb8d37b5784e958fe5e6fde7c2e25194b989aaa8dcf33",
+      "Length": 48407
+    },
+    {
+      "File": "CI_wo17-focused.trx",
+      "Sha256": "e2c13bd836ee8715e6b8b60c2b9036fb5e0198261bfee5c68325c5debb4e9202",
+      "Length": 58268
+    },
+    {
+      "File": "CI_wo18-tests.trx",
+      "Sha256": "c2fbdcc4b6a88dd578156790563a64eb5cb17be6ec0f01823239759d6a510041",
+      "Length": 55607
+    },
+    {
+      "File": "CI_wo19-tests.trx",
+      "Sha256": "4fce49a06d7008f0f07004b8dd17ca02fa490eb80bfff7645c3c5c9e417dbb0b",
+      "Length": 25513
+    },
+    {
+      "File": "DAYBREAK_DEFERRED.txt",
+      "Sha256": "ffd9c85295f15c13306ff4ec61cdc9d17117d26a4fbccca5207ce11ad47294b8",
+      "Length": 978
+    },
+    {
+      "File": "DIFF_FILE",
+      "Sha256": "949794f9472581095a604ce5b12bb73d58e838a1123c0a834bcf5cf6b7861a3c",
+      "Length": 11534
+    },
+    {
+      "File": "ENGINE_BUILD_RESULT.txt",
+      "Sha256": "2c5b24a250d9db598e1f15a7586701a74ac0f5a72ba33c2b1f1b307024b6bf18",
+      "Length": 259
+    },
+    {
+      "File": "EXPANDED_PROCESS_RESULT.txt",
+      "Sha256": "c47fbf6aa3a071dcc41ff22d0d66ec1d2bd6d559cd27737311b0b27fbfba9e41",
+      "Length": 76
+    },
+    {
+      "File": "FINAL_BINARY_PROVENANCE.json",
+      "Sha256": "5cad56ea595fa2a9921adfcfc387e371b81211807fdad9148dd2cf217c75709f",
+      "Length": 1072
+    },
+    {
+      "File": "FINAL_BUILD_RESULT.txt",
+      "Sha256": "e52e1a7d6e8e1d2c05c5a0e3ccc936f0a94e3bcdac2f52040f4c1d738c6ab942",
+      "Length": 2140
+    },
+    {
+      "File": "FINAL_PROBE_BUILD_RESULT.txt",
+      "Sha256": "ce37897231e13c95a1d70b9df2381608f1ef482ab44db1f842b20ba1f7d9b38f",
+      "Length": 454
+    },
+    {
+      "File": "FINAL_SOURCE_PROBE_BUILD.txt",
+      "Sha256": "a1a15ff1b20e534f0afa3927b00d0ffeba9de30e3a1984de89eb00b69ba140c4",
+      "Length": 454
+    },
+    {
+      "File": "FINAL_SOURCE_PROCESS_RESULT.txt",
+      "Sha256": "c47fbf6aa3a071dcc41ff22d0d66ec1d2bd6d559cd27737311b0b27fbfba9e41",
+      "Length": 76
+    },
+    {
+      "File": "FULL_TEST_RESULT.txt",
+      "Sha256": "f0dd05755659e6862f0fd93870bdde9bb1d7f3901136b26cf44daf8e594bc609",
+      "Length": 26521
+    },
+    {
+      "File": "FULL_TEST_RESULT_MISSING_FIXTURE_ENV.txt",
+      "Sha256": "09734ce1ca273a81484e6646c8e3328ab58436222b3fa90e96724fecb0ef8c93",
+      "Length": 62331
+    },
+    {
+      "File": "GITHUB_RESULT.txt",
+      "Sha256": "8c9c88a6f5ea67db8f0452debd915ba6df55ca91b3a67b7f090a9b77e317b541",
+      "Length": 680
+    },
+    {
+      "File": "GUI_LAUNCH_RESULT.json",
+      "Sha256": "68e66a646f281ae03231462f024e8989456348317b0cecdcdf6a3b2d337ccc26",
+      "Length": 187
+    },
+    {
+      "File": "GUI_READONLY_STATUS.jpg",
+      "Sha256": "4242a3a2ff88f5071c8f5306a828fca617ed3405b6ee69aa064232524c435f40",
+      "Length": 44516
+    },
+    {
+      "File": "GUI_TEST_RESULT.txt",
+      "Sha256": "010ef9d8b8cb3c910d0f444b43f074e80ff0f76e6c3a37437461c0a4550f67ef",
+      "Length": 714
+    },
+    {
+      "File": "IMAGE_PROCESS_RESULT.txt",
+      "Sha256": "c47fbf6aa3a071dcc41ff22d0d66ec1d2bd6d559cd27737311b0b27fbfba9e41",
+      "Length": 76
+    },
+    {
+      "File": "LEGACY_JOURNAL_RESULT.json",
+      "Sha256": "de83acf1d7892ff0eb6a606a2971942d5ce894f44963c9911ef211548dc2afc0",
+      "Length": 815
+    },
+    {
+      "File": "LOCAL_ENVIRONMENT.json",
+      "Sha256": "3e4e6372fe05eb1fd3c6fe375228386be89a38ed836b9790050b2198fc6c0ba9",
+      "Length": 527
+    },
+    {
+      "File": "LOCAL_TRX_COUNTS.json",
+      "Sha256": "e02a3c0d2fa124e4366d2893b59ac8d66b2e3a9c99943b2b91a5da96e407c1c4",
+      "Length": 949
+    },
+    {
+      "File": "LOCAL_VALIDATION_SOURCE.txt",
+      "Sha256": "634910a1b891f564f8ee2085394d312e7055050a9d97b19293064d1334bc3da5",
+      "Length": 41
+    },
+    {
+      "File": "MODIFIED_FILE",
+      "Sha256": "2889d76b5b72ec10df152318104c6116bbf4b68a6f2cf8ad6a62ae2bafbde400",
+      "Length": 57257
+    },
+    {
+      "File": "NEW_FILE_CRASH_RESULT.json",
+      "Sha256": "93b7c72a9e540c4abe27715eac30750594e1e4d2dad14d9327332bf487260da6",
+      "Length": 98859
+    },
+    {
+      "File": "NEW_FILE_TEST_RESULT.txt",
+      "Sha256": "f25d696abe7803e5195ae4782e8735e00dc82058a54db631433d01ea96959146",
+      "Length": 4432
+    },
+    {
+      "File": "NEW_FILE_TEST_RESULT_FINAL.txt",
+      "Sha256": "608a868ac2594b5beeac1a88816ef3c3fe7e4860d714f7490d4d597cdf54bab5",
+      "Length": 2536
+    },
+    {
+      "File": "ORIGINAL_FILE",
+      "Sha256": "0e04527306ffe4a0d8512e11bd4b2eb889a09b8002996bc8e26903e884b5d79f",
+      "Length": 54840
+    },
+    {
+      "File": "PACKAGE_TRUST_RESULT.json",
+      "Sha256": "aee5c5664a9b6c34c0534b0c5f4fa7015f59a77cbd9c20cf8666d42f4ca0676f",
+      "Length": 621
+    },
+    {
+      "File": "PROBE_BUILD_RESULT.txt",
+      "Sha256": "83a38130916cbd61de51ecaa0aa59621a86dd855f1c4a71165f3f0c4f4264736",
+      "Length": 454
+    },
+    {
+      "File": "PROBE_BUILD_RESULT_FINAL.txt",
+      "Sha256": "977194a9e6cad6ff235ba50b251b84e2e691acef4889b30ab2410774aa66bf2c",
+      "Length": 454
+    },
+    {
+      "File": "PROCESS_RESULT_FINAL.txt",
+      "Sha256": "c47fbf6aa3a071dcc41ff22d0d66ec1d2bd6d559cd27737311b0b27fbfba9e41",
+      "Length": 76
+    },
+    {
+      "File": "PUBLIC_LOG_REDACTION.json",
+      "Sha256": "5c214735bd1efd3d50321030566dc87ed24be803b01db58c496e6f494446acd1",
+      "Length": 13489
+    },
+    {
+      "File": "RECOVERY_PREFLIGHT_TEST_RESULT.txt",
+      "Sha256": "9096522eab2ec0cb74c76d59e683c2749c8d49c19ebf54d62af84b3c863f64ca",
+      "Length": 2541
+    },
+    {
+      "File": "ROLLBACK.sh",
+      "Sha256": "8654da54bed48380dbf292e3a3f3e6d4224c1743b3f25b9e721bf1a4e235efa7",
+      "Length": 896
+    },
+    {
+      "File": "SECURITYLAB_RESULT.txt",
+      "Sha256": "c2fa15bd65ebf681a1618236f199b938fb567859ccd844d984e9f3721eb1eb8f",
+      "Length": 855
+    },
+    {
+      "File": "SKIP_POLICY_RESULT.json",
+      "Sha256": "46203681c248ba2008a261855da8427624b2b22f4d14e5a4ea27df94fbebc154",
+      "Length": 11037
+    },
+    {
+      "File": "SOURCE_ROLLBACK_FINAL_SOURCE.txt",
+      "Sha256": "229d59f7bff0a6519b0f1903dd613f95eab6967e118d5b5263b861dd02795f13",
+      "Length": 103
+    },
+    {
+      "File": "SOURCE_ROLLBACK_INPUT.json",
+      "Sha256": "4b0d204ee60422206314d2d328c840b7bc054a9519cc6f9646b200cb16a951f1",
+      "Length": 261
+    },
+    {
+      "File": "SOURCE_ROLLBACK_RESULT.txt",
+      "Sha256": "229d59f7bff0a6519b0f1903dd613f95eab6967e118d5b5263b861dd02795f13",
+      "Length": 103
+    },
+    {
+      "File": "SOURCE_ROLLBACK_RESULT_FINAL.txt",
+      "Sha256": "a840fb59d200b3cf87f9cf4929ac25e2f52b7be7ab571a7f60dbe7f2f5e8498c",
+      "Length": 13
+    },
+    {
+      "File": "SOURCE_ROLLBACK_RESULT_FINAL_2.txt",
+      "Sha256": "229d59f7bff0a6519b0f1903dd613f95eab6967e118d5b5263b861dd02795f13",
+      "Length": 103
+    },
+    {
+      "File": "UI_SOURCE_RESULT.txt",
+      "Sha256": "17a4826d60f99c70b0edffbf85c92f00db87087de2ea8ec75bc94807174a3657",
+      "Length": 45
+    },
+    {
+      "File": "UPDATE_PERFORMANCE_RESULT.json",
+      "Sha256": "5cbfdf5e10951406ff56b64da2f3eca51817a3ca73f88f907fe79c747bfa31a6",
+      "Length": 678
+    },
+    {
+      "File": "UPDATE_ROLLBACK_RESULT.json",
+      "Sha256": "45aede96f931c832c5f4e5d10dbe00bb0498ef01b52ad866c279692dffd8fe8a",
+      "Length": 493
+    },
+    {
+      "File": "UPDATER_TEST_RESULT.txt",
+      "Sha256": "509314ed45ad0705e6b79776df70191114226568729a9a3d7a68aa39628934ec",
+      "Length": 4334
+    },
+    {
+      "File": "UPDATER_TEST_RESULT_FINAL.txt",
+      "Sha256": "ef4c3af2c4e8ef17bed6c531793a05bd01d0399ce4e90d040b668829eb00dbe0",
+      "Length": 2536
+    },
+    {
+      "File": "VERIFICATION.txt",
+      "Sha256": "d96b06f9e39512a9c17b32aee3fbc50f11e5f71a76f5d8fdfd1549484798fb06",
+      "Length": 4396
+    },
+    {
+      "File": "VM_ENVIRONMENT_RESULT.json",
+      "Sha256": "02ac33af60c34dcaf3246894f4ea6212fb14b224a9c5751845e655748fcffcec",
+      "Length": 608
+    },
+    {
+      "File": "wo19-acl-final.trx",
+      "Sha256": "efddb3d2dd2eb4e818fbbafc7d7d8c783e0e4a1b99ee94c283cb48809b7d0fe9",
+      "Length": 47040
+    },
+    {
+      "File": "wo19-baseline.trx",
+      "Sha256": "17b3f9dea57d47d0cb697b104f16d0b167a6b947ff80fafacd4cf887872ef98d",
+      "Length": 1953771
+    },
+    {
+      "File": "wo19-focused-final.trx",
+      "Sha256": "9c6dabf281a49666eb0975a455352ee94a8f7ec962cab356a8865271632eafbb",
+      "Length": 63324
+    },
+    {
+      "File": "wo19-focused.trx",
+      "Sha256": "f343b6a4dc3bfa46d517ac5e762073aeeb88355097772a11468a460b3b3a8f7c",
+      "Length": 67439
+    },
+    {
+      "File": "wo19-full-final.trx",
+      "Sha256": "47eadfca845527affc2ba961176f477d5db53c1ca72c515087c12de410b6f360",
+      "Length": 1972840
+    },
+    {
+      "File": "wo19-full.trx",
+      "Sha256": "74ead8ba74a7d8fef366aeedae10aba60d07d5d56cb78b18b68dceb9d40e27f5",
+      "Length": 2043956
+    },
+    {
+      "File": "wo19-recovery-preflight.trx",
+      "Sha256": "2c465895649f1a955f5f925611dff6bd81683a75ffa174c43f734867b75809c8",
+      "Length": 211140
+    },
+    {
+      "File": "wo19-securitylab.trx",
+      "Sha256": "62d8b9ed695485e63104c133e31edddc57be31275355aa75e2eccb86a3ba41fc",
+      "Length": 54650
+    },
+    {
+      "File": "wo19-updater-final.trx",
+      "Sha256": "695ffec5f28849c8f812727a1b6ca65f4be45a1453263f03056b32d0dd45d6ee",
+      "Length": 211140
+    },
+    {
+      "File": "wo19-updater.trx",
+      "Sha256": "5075005e7dc912cd07fa6853ada2b173868720cdd1041e8b438f481eed38dbd3",
+      "Length": 215129
+    }
+  ]
+}

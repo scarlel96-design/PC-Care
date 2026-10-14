@@ -1,0 +1,10 @@
+{
+  "Status": "PARTIAL",
+  "SourceSha": "347a34fa1f273db7064f40e3c53ecea4fd10ecee",
+  "Command": "dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO19|FullyQualifiedName~WO06|FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests' --logger 'trx;LogFileName=wo19-recovery-preflight.trx' -v:minimal",
+  "Input": "Synthetic schema1 Applying journals; trusted and untrusted original-version packages",
+  "Output": "144 PASS; trusted/untrusted legacy plan assertions included. Assertion outcomes are not standalone console output.",
+  "ExitCode": 0,
+  "Evidence": "RECOVERY_PREFLIGHT_TEST_RESULT.txt and wo19-recovery-preflight.trx",
+  "AdministratorRestore": "NOT IMPLEMENTED"
+}

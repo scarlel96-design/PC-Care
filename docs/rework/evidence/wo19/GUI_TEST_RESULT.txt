@@ -1,0 +1,9 @@
+STATUS: PARTIAL
+COMMAND: SmartPerformanceDoctor.exe --readonly-update-status
+INPUT: Newly built Release binary; read-only status mode; no product services constructed.
+OUTPUT: Window displayed Korean no-pending state. Refresh clicked. Tab moved focus to Close. Return closed the window.
+EXIT CODE: NOT CAPTURED. The window and process ended after the keyboard close action.
+LIVE GUI: Read-only updater window only.
+ACCESSIBILITY: Tool returned null accessibility tree. Keyboard focus observed visually.
+NOT TESTED: Normal product shell, five feature pages, screen reader, high DPI, narrow window, UAC, independent SID.
+CONTROL SESSION: Reset immediately after test. Reconnect only for a later screen-control task.

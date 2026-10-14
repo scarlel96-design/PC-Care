@@ -1,0 +1,15 @@
+{
+  "Status": "PASS",
+  "SourceSha": "6bef12fbe7f507c005f71f0129acbb412764da9a",
+  "Command": "UpdateRecoveryProbe prepare-large SAMPLE; UpdateRecoveryProbe apply SAMPLE",
+  "Input": "Two 64MiB synthetic payload files, one 3-byte original; signed ephemeral package; strictAcl=false",
+  "Output": "RESULT=Committed:COMMITTED FAILURE=\r\n",
+  "ExitCode": 0,
+  "ElapsedSeconds": 5.2881774,
+  "CpuSeconds": 4.5625,
+  "MaximumSampleWorkingSetBytes": 53698560,
+  "SampleIntervalMilliseconds": 20,
+  "LogicalPayloadBytes": 134217728,
+  "PackageBytes": 131438,
+  "Scope": "Synthetic update; no hardware generalization; no production signature; vault marker is not an encrypted vault"
+}

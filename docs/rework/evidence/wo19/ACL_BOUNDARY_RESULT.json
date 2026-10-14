@@ -1,0 +1,9 @@
+{
+  "Status": "PARTIAL",
+  "SourceSha": "347a34fa1f273db7064f40e3c53ecea4fd10ecee",
+  "Implemented": "Strict read-only startup ACL verification; retained file and directory IDs; no-replace publication; extended Windows paths",
+  "Tests": "WO05 compatibility and WO19 synthetic tests",
+  "InstalledStandardSidAcl": "NOT TESTED",
+  "UacApprovalAndRejection": "NOT TESTED",
+  "RebootAclPersistence": "NOT TESTED"
+}

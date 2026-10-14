@@ -1,0 +1,37 @@
+SOURCE SHA: 347a34fa1f273db7064f40e3c53ecea4fd10ecee
+COMMAND: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
+COMMAND: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+INPUT: Clean windows-latest CI checkout; .NET 10 SDK
+OUTPUT: Restore succeeded; Release 0 Warning(s), 0 Error(s)
+EXIT CODE: 0
+
+windows-validation	Release build	﻿2026-10-14T13:59:34.9014965Z ##[group]Run dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+windows-validation	Release build	2026-10-14T13:59:34.9016498Z ^[[36;1mdotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal^[[0m
+windows-validation	Release build	2026-10-14T13:59:34.9087987Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	Release build	2026-10-14T13:59:34.9088366Z env:
+windows-validation	Release build	2026-10-14T13:59:34.9088576Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	Release build	2026-10-14T13:59:34.9088864Z ##[endgroup]
+windows-validation	Release build	2026-10-14T13:59:43.0641386Z   SmartPerformanceDoctor.Diagnostics -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Diagnostics\bin\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Diagnostics.dll
+windows-validation	Release build	2026-10-14T13:59:43.6505038Z   SmartPerformanceDoctor.Aegis -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Aegis\bin\Release\net10.0-windows\SmartPerformanceDoctor.Aegis.dll
+windows-validation	Release build	2026-10-14T13:59:44.0527382Z   SmartPerformanceDoctor.Contracts -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Contracts\bin\Release\net10.0\SmartPerformanceDoctor.Contracts.dll
+windows-validation	Release build	2026-10-14T13:59:44.4307427Z   SmartPerformanceDoctor.Data -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Data\bin\Release\net10.0\SmartPerformanceDoctor.Data.dll
+windows-validation	Release build	2026-10-14T13:59:45.6610156Z   SmartPerformanceDoctor.SecurityLab -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.SecurityLab\bin\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+windows-validation	Release build	2026-10-14T13:59:46.8352217Z   SmartPerformanceDoctor.AstraVault -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AstraVault\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.dll
+windows-validation	Release build	2026-10-14T13:59:47.3957438Z   SmartPerformanceDoctor.UpdateEngine -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	Release build	2026-10-14T13:59:47.6518917Z   SmartPerformanceDoctor.UpdateHelper -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateHelper\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateHelper.dll
+windows-validation	Release build	2026-10-14T13:59:47.8353483Z   SmartPerformanceDoctor.AegisRecoveryHelper -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryHelper\bin\x64\Release\net10.0-windows\AegisRecoveryHelper.dll
+windows-validation	Release build	2026-10-14T13:59:48.1582668Z   SmartPerformanceDoctor.AegisRecoveryService -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.AegisRecoveryService\bin\x64\Release\net10.0-windows\AegisRecoveryService.dll
+windows-validation	Release build	2026-10-14T14:00:26.4537186Z   SmartPerformanceDoctor.App -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.dll
+windows-validation	Release build	2026-10-14T14:00:32.7417573Z   SmartPerformanceDoctor.Tests -> D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll
+windows-validation	Release build	2026-10-14T14:00:32.9821183Z   SmartPerformanceDoctor.AstraVault.KillWorker -> D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.AstraVault.KillWorker\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.KillWorker.dll
+windows-validation	Release build	2026-10-14T14:00:33.4024258Z   SmartPerformanceDoctor.Setup -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.Setup\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.Setup.dll
+windows-validation	Release build	2026-10-14T14:00:33.7739572Z   SmartPerformanceDoctor.SecurityLab.Tests -> D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.SecurityLab.Tests\bin\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.Tests.dll
+windows-validation	Release build	2026-10-14T14:00:33.9629962Z   SmartPerformanceDoctor.SecurityLab.Cli -> D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.SecurityLab.Cli\bin\Release\net10.0-windows\SecurityLab.Cli.dll
+windows-validation	Release build	2026-10-14T14:00:34.1898053Z   SmartPerformanceDoctor.DiagnosticsProbe -> D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.DiagnosticsProbe\bin\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.DiagnosticsProbe.dll
+windows-validation	Release build	2026-10-14T14:00:34.4574686Z   SmartPerformanceDoctor.ReferenceProbe -> D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.ReferenceProbe\bin\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.ReferenceProbe.dll
+windows-validation	Release build	2026-10-14T14:00:34.4676761Z 
+windows-validation	Release build	2026-10-14T14:00:34.4683949Z Build succeeded.
+windows-validation	Release build	2026-10-14T14:00:34.4685520Z     0 Warning(s)
+windows-validation	Release build	2026-10-14T14:00:34.4685815Z     0 Error(s)
+windows-validation	Release build	2026-10-14T14:00:34.4686928Z 
+windows-validation	Release build	2026-10-14T14:00:34.4687617Z Time Elapsed 00:00:58.97

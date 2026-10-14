@@ -1,0 +1,84 @@
+{
+  "Status": "PASS",
+  "SourceSha": "347a34fa1f273db7064f40e3c53ecea4fd10ecee",
+  "SourceTree": "8eedac7639287294ac158f52ea8f57f97b046aa7",
+  "RunId": 38576304293,
+  "Url": "https://github.com/scarlel96-design/PC-Care/actions/runs/38576304293",
+  "Command": "gh run view 38576304293 --json status,conclusion,headSha,url; gh run download 38576304293 -n wo19-windows-evidence -D artifacts/wo19-ci-final-evidence",
+  "ExitCode": 0,
+  "Environment": "GitHub-hosted windows-latest; no dedicated VM or GUI proof",
+  "TrxCounts": {
+    "wo06-full.trx": {
+      "Passed": 1230,
+      "Failed": 0,
+      "NotExecuted": 111
+    },
+    "wo06-signed-updater.trx": {
+      "Passed": 128,
+      "Failed": 0,
+      "NotExecuted": 0
+    },
+    "wo09-performance.trx": {
+      "Passed": 233,
+      "Failed": 0,
+      "NotExecuted": 0
+    },
+    "wo12-vault.trx": {
+      "Passed": 17,
+      "Failed": 0,
+      "NotExecuted": 0
+    },
+    "wo13-vault.trx": {
+      "Passed": 36,
+      "Failed": 0,
+      "NotExecuted": 0
+    },
+    "wo14-vault.trx": {
+      "Passed": 30,
+      "Failed": 0,
+      "NotExecuted": 0
+    },
+    "wo15-vault.trx": {
+      "Passed": 23,
+      "Failed": 0,
+      "NotExecuted": 0
+    },
+    "wo16-vault.trx": {
+      "Passed": 31,
+      "Failed": 0,
+      "NotExecuted": 0
+    },
+    "wo17-focused.trx": {
+      "Passed": 39,
+      "Failed": 0,
+      "NotExecuted": 0
+    },
+    "wo18-tests.trx": {
+      "Passed": 36,
+      "Failed": 0,
+      "NotExecuted": 0
+    },
+    "wo19-tests.trx": {
+      "Passed": 16,
+      "Failed": 0,
+      "NotExecuted": 0
+    },
+    "wo06-securitylab.trx": {
+      "Passed": 36,
+      "Failed": 0,
+      "NotExecuted": 0
+    }
+  },
+  "ProcessCommands": 197,
+  "ForcedTerminationCommands": 46,
+  "ExpectedLockRejections": 2,
+  "ApplyCrashes": 20,
+  "RecoveryCrashes": 13,
+  "DeleteCrashes": 17,
+  "QuarantineCrashes": 6,
+  "RestoreWarnings": 0,
+  "RestoreErrors": 0,
+  "ReleaseWarnings": 0,
+  "ReleaseErrors": 0,
+  "PhysicalPowerLoss": "NOT TESTED"
+}

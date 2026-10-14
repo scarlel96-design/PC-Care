@@ -1,0 +1,564 @@
+WORKSPACE\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+[xUnit.net 00:00:00.57]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_DecisionGate_NotProductionEnable [SKIP]
+[xUnit.net 00:00:00.58]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_DecisionRecord_NotProductionEnable [SKIP]
+[xUnit.net 00:00:00.60]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenAnchorMissing [SKIP]
+[xUnit.net 00:00:00.60]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ExternalReviewCompletedCodeRemainsFalse [SKIP]
+[xUnit.net 00:00:00.60]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_DecisionRecord_NotProductionEnable [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_DecisionGate_NotProductionEnable [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenAnchorMissing [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ExternalReviewCompletedCodeRemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:00.62]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenXChaCha24Missing [SKIP]
+[xUnit.net 00:00:00.63]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenSClassUnsatisfied [SKIP]
+[xUnit.net 00:00:00.63]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_SpdVaultUnchanged_NoMigration [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenXChaCha24Missing [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenSClassUnsatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_SpdVaultUnchanged_NoMigration [1 ms]
+[xUnit.net 00:00:00.63]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ProductionWriterStillNotAuthorized [SKIP]
+[xUnit.net 00:00:00.63]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:00.63]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SClassStillNotSatisfied [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ProductionWriterStillNotAuthorized [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SClassStillNotSatisfied [1 ms]
+[xUnit.net 00:00:00.63]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:00.63]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:00.77]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: "BeforeAudit") [FAIL]
+[xUnit.net 00:00:00.78]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: "BeforeResultJson") [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: "BeforeAudit") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: "BeforeResultJson") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[xUnit.net 00:00:00.78]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: "AfterResultJson") [FAIL]
+[xUnit.net 00:00:00.79]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: "AfterAudit") [FAIL]
+[xUnit.net 00:00:00.79]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CancellationAfterOneDeletedTargetRetainsCompletedAndIncompleteCounts [FAIL]
+[xUnit.net 00:00:00.79]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CompletedAuditUsesFinalHandleIdentityAndHash [FAIL]
+[xUnit.net 00:00:00.79]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IntentRecordFailurePreventsMutation(point: "JournalBeforeFlush:DestructiveWriteIntent") [FAIL]
+[xUnit.net 00:00:00.79]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IntentRecordFailurePreventsMutation(point: "JournalBeforeWrite:DestructiveWriteIntent") [FAIL]
+[xUnit.net 00:00:00.79]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.JournalRejectsInvalidTransitionAndEmptyAudit [FAIL]
+[xUnit.net 00:00:00.79]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "missing-key") [FAIL]
+[xUnit.net 00:00:00.79]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "tamper") [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: "AfterResultJson") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: "AfterAudit") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CancellationAfterOneDeletedTargetRetainsCompletedAndIncompleteCounts [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CompletedAuditUsesFinalHandleIdentityAndHash [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IntentRecordFailurePreventsMutation(point: "JournalBeforeFlush:DestructiveWriteIntent") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IntentRecordFailurePreventsMutation(point: "JournalBeforeWrite:DestructiveWriteIntent") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.JournalRejectsInvalidTransitionAndEmptyAudit [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "missing-key") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "tamper") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[xUnit.net 00:00:00.80]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "result-tamper") [FAIL]
+[xUnit.net 00:00:00.81]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "truncate") [FAIL]
+[xUnit.net 00:00:00.81]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "empty") [FAIL]
+[xUnit.net 00:00:00.81]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.ReconciliationRejectsUntrustedOperationNames(operation: "../../outside") [FAIL]
+[xUnit.net 00:00:00.82]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.ReconciliationRejectsUntrustedOperationNames(operation: "secure-delete-evil") [FAIL]
+[xUnit.net 00:00:00.82]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.ReplacementAtOldPathIsPreservedByReconciliation [FAIL]
+[xUnit.net 00:00:00.82]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CancellationBeforeMutationIsIndependentFromPartialCompletion [FAIL]
+[xUnit.net 00:00:00.82]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IdenticalOperationCannotExecuteTwice [FAIL]
+[xUnit.net 00:00:00.82]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CancellationDuringWriteNeverRepeatsDestruction [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "result-tamper") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "truncate") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "empty") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.ReconciliationRejectsUntrustedOperationNames(operation: "../../outside") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.ReconciliationRejectsUntrustedOperationNames(operation: "secure-delete-evil") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.ReplacementAtOldPathIsPreservedByReconciliation [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CancellationBeforeMutationIsIndependentFromPartialCompletion [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IdenticalOperationCannotExecuteTwice [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CancellationDuringWriteNeverRepeatsDestruction [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[xUnit.net 00:00:00.84]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:00.84]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_StabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:00.84]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:00.84]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_FullRollbackMatrix_StabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:00.85]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_TrustedAnchorSignoff_PreflightEvidenceCurrent [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_StabilityRepeat_Skipped [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_FullRollbackMatrix_StabilityRepeat_Skipped [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_TrustedAnchorSignoff_PreflightEvidenceCurrent [1 ms]
+[xUnit.net 00:00:00.86]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_DiskDurabilityStillOpen [SKIP]
+[xUnit.net 00:00:00.86]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:00.98]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:00.98]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_DiskDurabilityStillOpen [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:01.52]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_HarnessProvider_Signed [SKIP]
+[xUnit.net 00:00:01.52]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionAnchorImplemented_RemainsFalse [SKIP]
+[xUnit.net 00:00:01.52]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:01.52]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionEnableAuthorized_RemainsFalse [SKIP]
+[xUnit.net 00:00:01.52]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_XChaCha24Implemented_RemainsFalseSignedCandidate [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_HarnessProvider_Signed [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionAnchorImplemented_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionEnableAuthorized_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_XChaCha24Implemented_RemainsFalseSignedCandidate [1 ms]
+[xUnit.net 00:00:01.57]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+[xUnit.net 00:00:01.57]     SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalWitnessStub_SignedButNotProductionLive [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalWitnessStub_SignedButNotProductionLive [1 ms]
+[xUnit.net 00:00:01.64]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_M01M02Closed_CurrentEvidenceConsistent [SKIP]
+[xUnit.net 00:00:01.66]     SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_ExternalReviewCompletedCodeRemainsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_M01M02Closed_CurrentEvidenceConsistent [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_ExternalReviewCompletedCodeRemainsFalse [1 ms]
+[xUnit.net 00:00:01.68]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_Preflight_CurrentEvidenceSourceOfTruthMatchesActual [SKIP]
+[xUnit.net 00:00:01.70]     SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenActualDiskDurabilityMissing [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_Preflight_CurrentEvidenceSourceOfTruthMatchesActual [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenActualDiskDurabilityMissing [1 ms]
+[xUnit.net 00:00:02.19]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorStabilityRepeat_Skipped [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorStabilityRepeat_Skipped [1 ms]
+[xUnit.net 00:00:02.37]     SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse [1 ms]
+[xUnit.net 00:00:02.53]     SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SpdVaultUnchanged_NoMigration [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SpdVaultUnchanged_NoMigration [1 ms]
+[xUnit.net 00:00:03.41]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_EnableFlagsRemainFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_EnableFlagsRemainFalse [1 ms]
+[xUnit.net 00:00:03.66]     SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SClassStillNotSatisfied [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SClassStillNotSatisfied [1 ms]
+[xUnit.net 00:00:09.41]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Implemented_RemainsFalseUntilSignoff [SKIP]
+[xUnit.net 00:00:09.41]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.JournalRecorder_ProductionRoute_Fails_WhenJournalDisabled [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Implemented_RemainsFalseUntilSignoff [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.JournalRecorder_ProductionRoute_Fails_WhenJournalDisabled [1 ms]
+[xUnit.net 00:00:09.42]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.PhaseGate_E6_DisabledProductionWriter_NotAuthorized [SKIP]
+[xUnit.net 00:00:10.61]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionAnchorImplemented_RemainsFalse [SKIP]
+[xUnit.net 00:00:10.63]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SpdVaultUnchanged_NoMigration [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.PhaseGate_E6_DisabledProductionWriter_NotAuthorized [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionAnchorImplemented_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SpdVaultUnchanged_NoMigration [1 ms]
+[xUnit.net 00:00:10.66]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ReadOnlyValidator_XChaCha24_Pass [SKIP]
+[xUnit.net 00:00:10.66]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionEnableAuthorized_RemainsFalse [SKIP]
+[xUnit.net 00:00:10.67]     SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ReadOnlyValidator_XChaCha24_Pass [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionEnableAuthorized_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+[xUnit.net 00:00:11.38]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.PhaseGate_E62_ReviewFixes_ProductionStillDisabled [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.PhaseGate_E62_ReviewFixes_ProductionStillDisabled [1 ms]
+[xUnit.net 00:00:11.53]     SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.FolderExecutionPreservesAllFilesUntilQualified [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.FolderExecutionPreservesAllFilesUntilQualified [191 ms]
+  오류 메시지:
+   System.InvalidOperationException : 삭제 가능한 대상이 없습니다. dry-run 결과를 확인하세요.
+  스택 추적:
+     at SmartPerformanceDoctor.App.Services.Commercial.ProfessionalSecureDeleteService.ApplyDetailedAsync(SecureDeletePlan plan, String typedConfirmation, SecureDeleteSecurityLevel level, IProgress`1 progress, CancellationToken cancellationToken) in WORKSPACE\src\SmartPerformanceDoctor.App\Services\Commercial\ProfessionalSecureDeleteService.cs:line 238
+   at SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.FolderExecutionPreservesAllFilesUntilQualified() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO17StorageDeleteTests.cs:line 153
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:12.00]     SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.OpenedHandleRejectsReplacementAndConcurrentWrite [FAIL]
+[xUnit.net 00:00:12.24]     SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.OperationCannotRunTwice [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.OpenedHandleRejectsReplacementAndConcurrentWrite [66 ms]
+  오류 메시지:
+   System.IO.InvalidDataException : 금고·복구·신뢰 상태·백업 보호 경로입니다.
+  스택 추적:
+     at SmartPerformanceDoctor.App.Services.Commercial.ForensicSecureDeleteEngine.SecureDeleteFileAsync(String path, String storageType, SecureDeleteSecurityLevel level, CancellationToken cancellationToken, String expectedFingerprint, Action`1 checkpoint, Action`2 durableCheckpoint) in WORKSPACE\src\SmartPerformanceDoctor.App\Services\Commercial\ForensicSecureDeleteEngine.cs:line 54
+   at SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.OpenedHandleRejectsReplacementAndConcurrentWrite() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO17StorageDeleteTests.cs:line 96
+--- End of stack trace from previous location ---
+  실패 SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.OperationCannotRunTwice [29 ms]
+  오류 메시지:
+   System.InvalidOperationException : 삭제 가능한 대상이 없습니다. dry-run 결과를 확인하세요.
+  스택 추적:
+     at SmartPerformanceDoctor.App.Services.Commercial.ProfessionalSecureDeleteService.ApplyDetailedAsync(SecureDeletePlan plan, String typedConfirmation, SecureDeleteSecurityLevel level, IProgress`1 progress, CancellationToken cancellationToken) in WORKSPACE\src\SmartPerformanceDoctor.App\Services\Commercial\ProfessionalSecureDeleteService.cs:line 238
+   at SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.OperationCannotRunTwice() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO17StorageDeleteTests.cs:line 145
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:12.31]     SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.DetailedCancellationDoesNotReportCompleted [FAIL]
+[xUnit.net 00:00:12.61]     SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.CancelAfterWritePreservesPartialFile [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.DetailedCancellationDoesNotReportCompleted [83 ms]
+  오류 메시지:
+   System.InvalidOperationException : 삭제 가능한 대상이 없습니다. dry-run 결과를 확인하세요.
+  스택 추적:
+     at SmartPerformanceDoctor.App.Services.Commercial.ProfessionalSecureDeleteService.ApplyDetailedAsync(SecureDeletePlan plan, String typedConfirmation, SecureDeleteSecurityLevel level, IProgress`1 progress, CancellationToken cancellationToken) in WORKSPACE\src\SmartPerformanceDoctor.App\Services\Commercial\ProfessionalSecureDeleteService.cs:line 238
+   at SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.DetailedCancellationDoesNotReportCompleted() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO17StorageDeleteTests.cs:line 120
+--- End of stack trace from previous location ---
+  실패 SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.CancelAfterWritePreservesPartialFile [91 ms]
+  오류 메시지:
+   Assert.ThrowsAny() Failure: Exception type was not compatible
+Expected: typeof(System.OperationCanceledException)
+Actual:   typeof(System.IO.InvalidDataException)
+---- System.IO.InvalidDataException : 금고·복구·신뢰 상태·백업 보호 경로입니다.
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.CancelAfterWritePreservesPartialFile() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO17StorageDeleteTests.cs:line 89
+--- End of stack trace from previous location ---
+----- Inner Stack Trace -----
+   at SmartPerformanceDoctor.App.Services.Commercial.ForensicSecureDeleteEngine.SecureDeleteFileAsync(String path, String storageType, SecureDeleteSecurityLevel level, CancellationToken cancellationToken, String expectedFingerprint, Action`1 checkpoint, Action`2 durableCheckpoint) in WORKSPACE\src\SmartPerformanceDoctor.App\Services\Commercial\ForensicSecureDeleteEngine.cs:line 54
+[xUnit.net 00:00:13.81]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_AnchorDesign_NotImplemented [SKIP]
+[xUnit.net 00:00:13.82]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable [SKIP]
+[xUnit.net 00:00:13.82]     SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.PhaseGate_E5_ProductionWriterDesign_NotWriterEnable [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_AnchorDesign_NotImplemented [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.PhaseGate_E5_ProductionWriterDesign_NotWriterEnable [1 ms]
+[xUnit.net 00:00:16.68]     SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.BoundedChildInventoryPreservesProtectedTree [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.BoundedChildInventoryPreservesProtectedTree [4 s]
+  오류 메시지:
+   Assert.Single() Failure: The collection did not contain any matching items
+Expected:   (predicate expression)
+Collection: [CleanupCandidate { CandidateId = 9f226b7fe12843659c5ce569233e29a8, Disposition = Protected, LogicalBytes = , LastWriteUtc = , Reason = 하위 폴더 제외 · 보호 또는 깊이 제한, Identity = , Root = WORKSPACE\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\wo17-3ba116237a8943578fcca36551e3bd11\pccare-wo10-5d4a23d924914b56b2cf9c48b8348e88, RelativePath = anchors, Display = anchors · 보호 대상 · 크기 미확인 · 하위 폴더 제외 · 보호 또는 깊이 제한, DispositionLabel = 보호 대상, AllocatedBytes = , CanExecute = False }, CleanupCandidate { CandidateId = 527869fe2ae742e88eed0cb505871982, Disposition = Protected, LogicalBytes = , LastWriteUtc = , Reason = 하위 폴더 제외 · 보호 또는 깊이 제한, Identity = , Root = WORKSPACE\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\wo17-3ba116237a8943578fcca36551e3bd11\pccare-wo10-5d4a23d924914b56b2cf9c48b8348e88, RelativePath = cache, Display = cache · 보호 대상 · 크기 미확인 · 하위 폴더 제외 · 보호 또는 깊이 제한, DispositionLabel = 보호 대상, AllocatedBytes = , CanExecute = False }, CleanupCandidate { CandidateId = c08278f617f24ced8a1669d734d18f96, Disposition = Protected, LogicalBytes = 680, LastWriteUtc = 2026-10-14 오후 1:27:30, Reason = 보호 대상, Identity = ExactTargetIdentity { RootId = A2927E354C7F0BAC:00030000003C07BF0000000000000000, FileId = A2927E354C7F0BAC:00010000003C081B0000000000000000, Length = 680, LastWriteUtc = 2026-10-14 오후 1:27:30 }, Root = WORKSPACE\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\wo17-3ba116237a8943578fcca36551e3bd11\pccare-wo10-5d4a23d924914b56b2cf9c48b8348e88, RelativePath = execution.json, Display = execution.json · 보호 대상 · 680 B · 보호 대상, DispositionLabel = 보호 대상, AllocatedBytes = 4096, CanExecute = False }, CleanupCandidate { CandidateId = a1a62d5ef84e440d8d2cfa00a3fd869e, Disposition = Protected, LogicalBytes = 4096, LastWriteUtc = 2026-10-14 오후 1:27:29, Reason = 보호 대상, Identity = ExactTargetIdentity { RootId = A2927E354C7F0BAC:00030000003C07BF0000000000000000, FileId = A2927E354C7F0BAC:00010000003C07CE0000000000000000, Length = 4096, LastWriteUtc = 2026-10-14 오후 1:27:29 }, Root = WORKSPACE\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\wo17-3ba116237a8943578fcca36551e3bd11\pccare-wo10-5d4a23d924914b56b2cf9c48b8348e88, RelativePath = fixture.dat, Display = fixture.dat · 보호 대상 · 4,096 B · 보호 대상, DispositionLabel = 보호 대상, AllocatedBytes = 4096, CanExecute = False }, CleanupCandidate { CandidateId = bfc15486a0654f5f99004fe3ebf2e367, Disposition = Protected, LogicalBytes = 32, LastWriteUtc = 2026-10-14 오후 1:27:29, Reason = 보호 대상, Identity = ExactTargetIdentity { RootId = A2927E354C7F0BAC:00030000003C07BF0000000000000000, FileId = A2927E354C7F0BAC:00010000003C07CD0000000000000000, Length = 32, LastWriteUtc = 2026-10-14 오후 1:27:29 }, Root = WORKSPACE\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\wo17-3ba116237a8943578fcca36551e3bd11\pccare-wo10-5d4a23d924914b56b2cf9c48b8348e88, RelativePath = key.bin, Display = key.bin · 보호 대상 · 32 B · 보호 대상, DispositionLabel = 보호 대상, AllocatedBytes = 32, CanExecute = False }]
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.BoundedChildInventoryPreservesProtectedTree() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO17StorageDeleteTests.cs:line 42
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:18.32]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionOpenSession_Throws_Blocked [SKIP]
+[xUnit.net 00:00:18.33]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.DurableStore_RelativePathEscape_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionOpenSession_Throws_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.DurableStore_RelativePathEscape_Blocked [1 ms]
+[xUnit.net 00:00:19.75]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_WritePolicy_ProductionDisabled [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_WritePolicy_ProductionDisabled [1 ms]
+[xUnit.net 00:00:20.26]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_E6Recovery_EqualGenerationConflictingRoot_CorruptBlocked [SKIP]
+[xUnit.net 00:00:20.26]     SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_Rollback_PreviousRootMismatch_MatchesE4_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_E6Recovery_EqualGenerationConflictingRoot_CorruptBlocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_Rollback_PreviousRootMismatch_MatchesE4_CorruptBlocked [1 ms]
+[xUnit.net 00:00:21.25]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_NonHarnessProductionRouteStillDenied [SKIP]
+[xUnit.net 00:00:21.25]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444 [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_NonHarnessProductionRouteStillDenied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444 [1 ms]
+[xUnit.net 00:00:21.26]     SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_StabilityRepeat_Skipped [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_StabilityRepeat_Skipped [1 ms]
+[xUnit.net 00:00:21.95]     SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.SameHandleClearDeletesOnlyFixture [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.SameHandleClearDeletesOnlyFixture [45 ms]
+  오류 메시지:
+   System.IO.InvalidDataException : 금고·복구·신뢰 상태·백업 보호 경로입니다.
+  스택 추적:
+     at SmartPerformanceDoctor.App.Services.Commercial.ForensicSecureDeleteEngine.SecureDeleteFileAsync(String path, String storageType, SecureDeleteSecurityLevel level, CancellationToken cancellationToken, String expectedFingerprint, Action`1 checkpoint, Action`2 durableCheckpoint) in WORKSPACE\src\SmartPerformanceDoctor.App\Services\Commercial\ForensicSecureDeleteEngine.cs:line 54
+   at SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.SameHandleClearDeletesOnlyFixture() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO17StorageDeleteTests.cs:line 68
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:22.77]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:22.79]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionRouteDenied [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionRouteDenied [1 ms]
+[xUnit.net 00:00:22.80]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ReadOnlyValidatorComplete [SKIP]
+[xUnit.net 00:00:22.82]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SClassStillNotSatisfied [SKIP]
+[xUnit.net 00:00:22.82]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_PreflightEvidenceCurrent [SKIP]
+[xUnit.net 00:00:22.90]     SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SpdVaultUnchangedNoMigration [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ReadOnlyValidatorComplete [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SClassStillNotSatisfied [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_PreflightEvidenceCurrent [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SpdVaultUnchangedNoMigration [1 ms]
+[xUnit.net 00:00:23.40]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryIdentityDetectsOrBlocksRootRename [FAIL]
+[xUnit.net 00:00:23.47]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticFactoryRejectsNonFixtureNames(name: "../escape.tmp") [FAIL]
+[xUnit.net 00:00:23.48]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticFactoryRejectsNonFixtureNames(name: "key.bin") [FAIL]
+[xUnit.net 00:00:23.48]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticFactoryRejectsNonFixtureNames(name: "vault.header") [FAIL]
+[xUnit.net 00:00:23.48]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.RegisteredStoreProtectsOrdinaryNamesAndReloads [FAIL]
+[xUnit.net 00:00:23.48]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.CorruptRegistryCannotForgetExistingProtectionSilently [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryIdentityDetectsOrBlocksRootRename [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 13
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticFactoryRejectsNonFixtureNames(name: "../escape.tmp") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 13
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticFactoryRejectsNonFixtureNames(name: "key.bin") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 13
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticFactoryRejectsNonFixtureNames(name: "vault.header") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 13
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.RegisteredStoreProtectsOrdinaryNamesAndReloads [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 13
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.CorruptRegistryCannotForgetExistingProtectionSilently [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 13
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[xUnit.net 00:00:23.50]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryBudgetExhaustionFailsClosed [FAIL]
+[xUnit.net 00:00:23.50]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedTargetRestoreCollisionPreservesBothFiles [FAIL]
+[xUnit.net 00:00:23.51]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.ExistingProductionStorageGateRemainsFalse [FAIL]
+[xUnit.net 00:00:23.52]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryLockedFileCannotBeQualified [FAIL]
+[xUnit.net 00:00:23.52]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryNewEntryInvalidatesApprovalSnapshot [FAIL]
+[xUnit.net 00:00:23.52]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryChangedBytesInvalidatesSnapshot [FAIL]
+[xUnit.net 00:00:23.54]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.RemovedCatalogCannotBeSilentlyReinitialized [FAIL]
+[xUnit.net 00:00:23.54]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.AllowlistHasNoExecutionCapability [FAIL]
+[xUnit.net 00:00:23.55]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(name: "selected.tmp") [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryBudgetExhaustionFailsClosed [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 13
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedTargetRestoreCollisionPreservesBothFiles [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 13
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.ExistingProductionStorageGateRemainsFalse [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 13
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryLockedFileCannotBeQualified [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 13
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryNewEntryInvalidatesApprovalSnapshot [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 13
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryChangedBytesInvalidatesSnapshot [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 13
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.RemovedCatalogCannotBeSilentlyReinitialized [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 13
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.AllowlistHasNoExecutionCapability [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 13
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(name: "selected.tmp") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 13
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[xUnit.net 00:00:23.55]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(name: "한글.cache") [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(name: "한글.cache") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 13
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[xUnit.net 00:00:26.09]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SClassStillNotSatisfied [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SClassStillNotSatisfied [1 ms]
+[xUnit.net 00:00:26.12]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionEnableAuthorized_RemainsFalse [SKIP]
+[xUnit.net 00:00:26.13]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionAnchorImplemented_RemainsFalse [SKIP]
+[xUnit.net 00:00:26.15]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ExternalReviewCompletedCode_RemainsFalse [SKIP]
+[xUnit.net 00:00:26.15]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:26.15]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_DiskDurabilityStillOpen [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionEnableAuthorized_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionAnchorImplemented_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ExternalReviewCompletedCode_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_DiskDurabilityStillOpen [1 ms]
+[xUnit.net 00:00:26.16]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SpdVaultUnchanged_NoMigration [SKIP]
+[xUnit.net 00:00:26.16]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_AnchorSignoff_HarnessCandidateOnly_NotProductionImplemented [SKIP]
+[xUnit.net 00:00:26.16]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_XChaCha24StillOpen [SKIP]
+[xUnit.net 00:00:26.17]     SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_TrustedMonotonicAnchorRequired_ForFullVaultRollbackClosure [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SpdVaultUnchanged_NoMigration [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_AnchorSignoff_HarnessCandidateOnly_NotProductionImplemented [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_XChaCha24StillOpen [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_TrustedMonotonicAnchorRequired_ForFullVaultRollbackClosure [1 ms]
+[xUnit.net 00:00:27.58]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OrchestratorCommitAsync_Blocked [SKIP]
+[xUnit.net 00:00:27.59]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ConcurrentCommit_SecondBlocked [SKIP]
+[xUnit.net 00:00:27.59]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OpenWriteSessionAsync_Blocked [SKIP]
+[xUnit.net 00:00:28.60]     SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.DepthBudgetReportsMissingRange [FAIL]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OrchestratorCommitAsync_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ConcurrentCommit_SecondBlocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OpenWriteSessionAsync_Blocked [1 ms]
+  실패 SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.DepthBudgetReportsMissingRange [5 s]
+  오류 메시지:
+   Assert.False() Failure
+Expected: False
+Actual:   True
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO17StorageDeleteTests.DepthBudgetReportsMissingRange() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO17StorageDeleteTests.cs:line 52
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:38.23]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityReview_PreflightEvidenceCurrent [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityReview_PreflightEvidenceCurrent [1 ms]
+[xUnit.net 00:00:39.24]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SClassStillNotSatisfied [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SClassStillNotSatisfied [1 ms]
+[xUnit.net 00:00:39.31]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SpdVaultUnchanged_NoMigration [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SpdVaultUnchanged_NoMigration [1 ms]
+[xUnit.net 00:00:39.34]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityInvariant_StabilityRepeat_Skipped [SKIP]
+[xUnit.net 00:00:39.40]     SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_EnableFlagsRemainFalse [SKIP]
+[xUnit.net 00:00:39.40]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_NonHarnessCommitSession_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityInvariant_StabilityRepeat_Skipped [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_EnableFlagsRemainFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_NonHarnessCommitSession_Blocked [1 ms]
+[xUnit.net 00:00:40.54]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_ProductionWriterGate_RemainsFalse [SKIP]
+[xUnit.net 00:00:40.88]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ReentrantCommit_Blocked [SKIP]
+[xUnit.net 00:00:40.88]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_FactoryProductionCreate_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_ProductionWriterGate_RemainsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ReentrantCommit_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_FactoryProductionCreate_Blocked [1 ms]
+[xUnit.net 00:00:42.75]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Recovery_EqualGenerationConflictingRoot_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Recovery_EqualGenerationConflictingRoot_CorruptBlocked [1 ms]
+[xUnit.net 00:00:43.34]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionCommit_Throws_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionCommit_Throws_Blocked [1 ms]
+[xUnit.net 00:00:44.66]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.PhaseGate_E7_PreEnableHardening_EnableFlagsFalse [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.PhaseGate_E7_PreEnableHardening_EnableFlagsFalse [1 ms]
+[xUnit.net 00:00:44.68]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_DuplicateTransactionId_Blocked [SKIP]
+[xUnit.net 00:00:44.68]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_ProductionDurableStore_Blocked [SKIP]
+[xUnit.net 00:00:44.71]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_JournalRecorderProductionRoute_Blocked [SKIP]
+[xUnit.net 00:00:44.71]     SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_TransactionCoordinator_NonHarness_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_DuplicateTransactionId_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_ProductionDurableStore_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_JournalRecorderProductionRoute_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_TransactionCoordinator_NonHarness_Blocked [1 ms]
+[xUnit.net 00:00:46.66]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.WriterFactory_ProductionCreate_Fails_WhenProductionWriterDisabled [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.WriterFactory_ProductionCreate_Fails_WhenProductionWriterDisabled [1 ms]
+[xUnit.net 00:00:47.24]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_ProductionRoute_AppHostViewModel_NoWriter [SKIP]
+[xUnit.net 00:00:47.25]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DurableStore_RootEscape_Blocked [SKIP]
+[xUnit.net 00:00:47.49]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_CommitThreeCopyAsync_Production_Blocked [SKIP]
+[xUnit.net 00:00:47.49]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_DenyMigrationRoute_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_ProductionRoute_AppHostViewModel_NoWriter [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DurableStore_RootEscape_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_CommitThreeCopyAsync_Production_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_DenyMigrationRoute_Blocked [1 ms]
+[xUnit.net 00:00:47.51]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_TryOpenProductionSession_Blocked [SKIP]
+[xUnit.net 00:00:47.52]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.PhaseGate_E71_ReviewFixes_AllEnableFlagsFalse [SKIP]
+[xUnit.net 00:00:47.52]     SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_JournalWriterGate_False [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_TryOpenProductionSession_Blocked [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.PhaseGate_E71_ReviewFixes_AllEnableFlagsFalse [1 ms]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_JournalWriterGate_False [1 ms]
+[xUnit.net 00:00:48.64]     SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_HeaderConflict_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_HeaderConflict_CorruptBlocked [1 ms]
+[xUnit.net 00:00:59.82]     SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.PhaseGate_E8_LimitedDryRun_EnableFlagsFalse [SKIP]
+[xUnit.net 00:01:00.51]     SmartPerformanceDoctor.Tests.SystemCareStabilityTests.CareFolderScanner_TempPath_CompletesQuickly [FAIL]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.PhaseGate_E8_LimitedDryRun_EnableFlagsFalse [1 ms]
+  실패 SmartPerformanceDoctor.Tests.SystemCareStabilityTests.CareFolderScanner_TempPath_CompletesQuickly [10 s]
+  오류 메시지:
+   System.OperationCanceledException : The operation was canceled.
+  스택 추적:
+     at System.Threading.CancellationToken.ThrowOperationCanceledException()
+   at System.Threading.CancellationToken.ThrowIfCancellationRequested()
+   at SmartPerformanceDoctor.App.Services.SystemCare.CareFolderScanner.ScanDirectory(String directory, Int32 depth, ScanContext ctx) in WORKSPACE\src\SmartPerformanceDoctor.App\Services\SystemCare\CareFolderScanner.cs:line 120
+   at SmartPerformanceDoctor.App.Services.SystemCare.CareFolderScanner.ScanDirectory(String directory, Int32 depth, ScanContext ctx) in WORKSPACE\src\SmartPerformanceDoctor.App\Services\SystemCare\CareFolderScanner.cs:line 208
+   at SmartPerformanceDoctor.App.Services.SystemCare.CareFolderScanner.Measure(String path, CancellationToken cancellationToken, Int32 maxDepth, Int32 maxFiles, Boolean tempFolder, Boolean topLevelOnly) in WORKSPACE\src\SmartPerformanceDoctor.App\Services\SystemCare\CareFolderScanner.cs:line 39
+   at SmartPerformanceDoctor.Tests.SystemCareStabilityTests.CareFolderScanner_TempPath_CompletesQuickly() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\SystemCareStabilityTests.cs:line 79
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:01:04.38]     SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.PhaseGate_E3_ActualKillHarness_DocumentationOnly [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.PhaseGate_E3_ActualKillHarness_DocumentationOnly [1 ms]
+[xUnit.net 00:01:08.24]     SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_Conflict_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_Conflict_CorruptBlocked [1 ms]
+[xUnit.net 00:01:08.54]     SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NonHarnessWriterInvocation_Blocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NonHarnessWriterInvocation_Blocked [1 ms]
+[xUnit.net 00:01:18.64]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.WriterEnableChecklist_State_NoGo [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.WriterEnableChecklist_State_NoGo [1 ms]
+[xUnit.net 00:01:18.97]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.PhaseGate_E4_HighRiskClosure_NotWriterEnable [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.PhaseGate_E4_HighRiskClosure_NotWriterEnable [1 ms]
+[xUnit.net 00:01:20.44]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R9_Migration_RemainsDisabled_NoWriterCollision [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R9_Migration_RemainsDisabled_NoWriterCollision [1 ms]
+[xUnit.net 00:01:22.43]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_EqualGenerationDifferentRoot_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_EqualGenerationDifferentRoot_CorruptBlocked [1 ms]
+[xUnit.net 00:01:23.25]     SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked [SKIP]
+  건너뜀 SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked [1 ms]
+결과 파일: WORKSPACE\tests\SmartPerformanceDoctor.Tests\TestResults\wo19-full.trx
+
+실패!  - 실패:    45, 통과:  1185, 건너뜀:   111, 전체:  1341, 기간: 9 m 10 s - SmartPerformanceDoctor.Tests.dll (net10.0)

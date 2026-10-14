@@ -1,0 +1,12 @@
+{
+  "Status": "PASS",
+  "Command": "scripts/wo06-process-validation.ps1 -OutputDirectory artifacts/wo19-final-source-process",
+  "Input": "Fresh isolated copied executable/DLL fixtures",
+  "Output": "WINDOWS_SYNTHETIC_PROCESS=PASS; VM_E2E=NOT_TESTED; UNKNOWN_ORPHAN=PRESERVED",
+  "ExitCode": 0,
+  "SourceSha": "347a34fa1f273db7064f40e3c53ecea4fd10ecee",
+  "ApplyCrashes": 20,
+  "RecoveryCrashes": 13,
+  "OriginalInstallationHashesVerified": true,
+  "EncryptedVaultAfterUpdate": "NOT TESTED"
+}

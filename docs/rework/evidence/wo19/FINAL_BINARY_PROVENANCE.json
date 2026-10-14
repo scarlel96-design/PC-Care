@@ -1,0 +1,20 @@
+{
+  "Command": "dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger trx;LogFileName=wo19-full-final.trx -v:minimal",
+  "Binaries": [
+    {
+      "Hash": "DCC35C4E17348D0B465F82D0CB5E105F91A8523CE4FD62DD21648C3D9F809123",
+      "Path": "WORKSPACE\\tests\\SmartPerformanceDoctor.Tests\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.Tests.dll"
+    },
+    {
+      "Hash": "981476DA95B789C42D463D193838890D1727DDAB6055B94499A90D7946F72B37",
+      "Path": "WORKSPACE\\tests\\SmartPerformanceDoctor.Tests\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.dll"
+    },
+    {
+      "Hash": "119D89672660787DA730453A92A67BADCF217A08D6F22D88EACF3D16E4812E86",
+      "Path": "WORKSPACE\\tests\\SmartPerformanceDoctor.Tests\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateEngine.dll"
+    }
+  ],
+  "SourceSha": "75844a9018216fe4f0b53187592241c43462b94d",
+  "RUNNER_TEMP": "WORKSPACE/artifacts/wo19-isolated",
+  "BuildEvidence": "FINAL_BUILD_RESULT.txt"
+}

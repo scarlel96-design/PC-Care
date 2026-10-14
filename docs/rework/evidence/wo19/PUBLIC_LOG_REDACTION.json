@@ -1,0 +1,284 @@
+{
+  "Scope": "Public logs replace local user paths with WORKSPACE or HOST_USER. Numeric results and error text are retained. Source evidence bytes are unchanged.",
+  "Mappings": [
+    "repository absolute path -> WORKSPACE",
+    "local user home -> HOST_USER"
+  ],
+  "Files": [
+    {
+      "File": "ACL_BOUNDARY_RESULT.json",
+      "PreRedactionSha256": "fc8a97333f6b04837f848db0e92466184f0599d52135fbf2f5b61dffec0017dc",
+      "PublicSha256": "3502fad9181c576964ab71ef9439eb25d6ef913e0407424cc7667155fa21d41a"
+    },
+    {
+      "File": "ACL_TEST_RESULT.txt",
+      "PreRedactionSha256": "44f158ee4909854a93f6280115b10162aad1990251bab69a76438cc1fc2f7890",
+      "PublicSha256": "fcc9ae2a6b17c05b66d394bf26233f871ac8c00ffa408b9385183c372559ddd3"
+    },
+    {
+      "File": "BASELINE_BUILD_RESULT.txt",
+      "PreRedactionSha256": "80f463a421153976010afbab3c4a1db82b9aa4fcbfa40c43e16a810fedf411a0",
+      "PublicSha256": "14b58b2020928f684e495472236e15b83d3ccf371ce445580af1a49a7f86ca36"
+    },
+    {
+      "File": "BASELINE_RESULT.txt",
+      "PreRedactionSha256": "1f5dfc38a991c4e1423adc104b7ce8b42a9c84d354b8e3b9292f9851f62dad6b",
+      "PublicSha256": "f62b3de7e37c00ad77c110938bff77c77cc06d4b9b7326de8e510d35f242e5e8"
+    },
+    {
+      "File": "BOOTSTRAP_TRANSITION_RESULT.json",
+      "PreRedactionSha256": "e4cb7cb673f4db5a1de48c563894d180aa678d46a94ad03fcef273a3eedd6ace",
+      "PublicSha256": "c52ca758c2989570e283c737e039e99d05f4de123b7044f1cf2a18829c5a102f"
+    },
+    {
+      "File": "BRIDGE_BUILD_RESULT.txt",
+      "PreRedactionSha256": "70c1452946402a50760836f1a61a44f987b48377e60965b2696fb87f662481fd",
+      "PublicSha256": "3283ef5f1d03f9ac33c0022c0a90cc5b46ff5b1c1b9eeb047f278e36dfeea210"
+    },
+    {
+      "File": "BUILD_RESULT.txt",
+      "PreRedactionSha256": "bd93c02d4f3adaf4c4128f17f0d753f96ff20686eb1ff44a5555ce68a19e9b07",
+      "PublicSha256": "bc2da8912aa7faacac548ef8847b4f344127895e2b1e967e8b3633384f7a922c"
+    },
+    {
+      "File": "CI_PRIOR_RESULT.json",
+      "PreRedactionSha256": "3bdb4c44e11416dbc4f08586b8e84e40a9ac3bb6fa556e01f05005b1b69a11c9",
+      "PublicSha256": "0f7754f3c7653a200f3b32d8f4acc17ac093c01ce22e045ec4de45bb2ee1190d"
+    },
+    {
+      "File": "DAYBREAK_DEFERRED.txt",
+      "PreRedactionSha256": "cd94500f687a07589e84e5a3dd8212c5c2933543143b05e0517da5c6762c9fef",
+      "PublicSha256": "ffd9c85295f15c13306ff4ec61cdc9d17117d26a4fbccca5207ce11ad47294b8"
+    },
+    {
+      "File": "ENGINE_BUILD_RESULT.txt",
+      "PreRedactionSha256": "150645e993e5d961a8a1b798b2f242a352ff002795ecb25ca92de8be40504d04",
+      "PublicSha256": "2c5b24a250d9db598e1f15a7586701a74ac0f5a72ba33c2b1f1b307024b6bf18"
+    },
+    {
+      "File": "EXPANDED_PROCESS_RESULT.txt",
+      "PreRedactionSha256": "1cd55d893e19d50690d18b6382c983766bba7892b099dfdfe171556e011311b0",
+      "PublicSha256": "c47fbf6aa3a071dcc41ff22d0d66ec1d2bd6d559cd27737311b0b27fbfba9e41"
+    },
+    {
+      "File": "FINAL_BINARY_PROVENANCE.json",
+      "PreRedactionSha256": "14c06d1aa4900a516ba6e1f55f407aca68fadbc385bccffd168f8a0fd97b0617",
+      "PublicSha256": "5cad56ea595fa2a9921adfcfc387e371b81211807fdad9148dd2cf217c75709f"
+    },
+    {
+      "File": "FINAL_BUILD_RESULT.txt",
+      "PreRedactionSha256": "2a50a255b91ddb2d785f82409dca424d3a6d2b2cefbb62fe25c31b32e4465c99",
+      "PublicSha256": "e52e1a7d6e8e1d2c05c5a0e3ccc936f0a94e3bcdac2f52040f4c1d738c6ab942"
+    },
+    {
+      "File": "FINAL_PROBE_BUILD_RESULT.txt",
+      "PreRedactionSha256": "b54cbd7940bd1f1dfd6191d1bde55646b1af17af2b44110e1f6b2c1fecebb006",
+      "PublicSha256": "ce37897231e13c95a1d70b9df2381608f1ef482ab44db1f842b20ba1f7d9b38f"
+    },
+    {
+      "File": "FINAL_SOURCE_PROBE_BUILD.txt",
+      "PreRedactionSha256": "88f5a1efe1230f5d8c466084c7d532c610afdea95592cc010c6cd581ef2fa47a",
+      "PublicSha256": "a1a15ff1b20e534f0afa3927b00d0ffeba9de30e3a1984de89eb00b69ba140c4"
+    },
+    {
+      "File": "FINAL_SOURCE_PROCESS_RESULT.txt",
+      "PreRedactionSha256": "1cd55d893e19d50690d18b6382c983766bba7892b099dfdfe171556e011311b0",
+      "PublicSha256": "c47fbf6aa3a071dcc41ff22d0d66ec1d2bd6d559cd27737311b0b27fbfba9e41"
+    },
+    {
+      "File": "FULL_TEST_RESULT.txt",
+      "PreRedactionSha256": "151251eb207aecf929f37fb9fce9446cd0ec5d01531a101548f3bc0fb3eb4a52",
+      "PublicSha256": "f0dd05755659e6862f0fd93870bdde9bb1d7f3901136b26cf44daf8e594bc609"
+    },
+    {
+      "File": "FULL_TEST_RESULT_MISSING_FIXTURE_ENV.txt",
+      "PreRedactionSha256": "c4f706edf3633aac968592e5ffaa70704a151fb29eacccc3be932fa43407f34e",
+      "PublicSha256": "09734ce1ca273a81484e6646c8e3328ab58436222b3fa90e96724fecb0ef8c93"
+    },
+    {
+      "File": "GUI_LAUNCH_RESULT.json",
+      "PreRedactionSha256": "7fff708c1c41f7f633b189e92db5cbc72075671dddaeaaf38208a3f175745b12",
+      "PublicSha256": "68e66a646f281ae03231462f024e8989456348317b0cecdcdf6a3b2d337ccc26"
+    },
+    {
+      "File": "GUI_TEST_RESULT.txt",
+      "PreRedactionSha256": "6bc839093221dd7f75e872c669f38e0385c73354f0f2ee3f231b5c6bcf0dadce",
+      "PublicSha256": "010ef9d8b8cb3c910d0f444b43f074e80ff0f76e6c3a37437461c0a4550f67ef"
+    },
+    {
+      "File": "IMAGE_PROCESS_RESULT.txt",
+      "PreRedactionSha256": "1cd55d893e19d50690d18b6382c983766bba7892b099dfdfe171556e011311b0",
+      "PublicSha256": "c47fbf6aa3a071dcc41ff22d0d66ec1d2bd6d559cd27737311b0b27fbfba9e41"
+    },
+    {
+      "File": "LEGACY_JOURNAL_RESULT.json",
+      "PreRedactionSha256": "9bb7b6ac26c8e36776a48a5ffbe2a1ec3ddfaa38f335a6294b58099aaab0e15e",
+      "PublicSha256": "e55474059fe48e5213273931c6487837d9751517f470201847a977c5213fd3c9"
+    },
+    {
+      "File": "LOCAL_ENVIRONMENT.json",
+      "PreRedactionSha256": "c79db7dc85e768947e4868a4b64100729809c9e5b147bb4b1f8ab50f1d99a2d2",
+      "PublicSha256": "3e4e6372fe05eb1fd3c6fe375228386be89a38ed836b9790050b2198fc6c0ba9"
+    },
+    {
+      "File": "LOCAL_TRX_COUNTS.json",
+      "PreRedactionSha256": "382dc986a0e7c3792789fead3a9b70cf699b0161664e6035afbb8f6070e54159",
+      "PublicSha256": "e02a3c0d2fa124e4366d2893b59ac8d66b2e3a9c99943b2b91a5da96e407c1c4"
+    },
+    {
+      "File": "LOCAL_VALIDATION_SOURCE.txt",
+      "PreRedactionSha256": "5092f2f69657612bd67ddc45bb2e57f112fe9601ad0a1ce1f8b9bfac3173bf5a",
+      "PublicSha256": "634910a1b891f564f8ee2085394d312e7055050a9d97b19293064d1334bc3da5"
+    },
+    {
+      "File": "NEW_FILE_CRASH_RESULT.json",
+      "PreRedactionSha256": "94c85f036316ba32300d3be5e51c1e9e6a14e1007b5bb56ff675653bbc7aa0ab",
+      "PublicSha256": "93b7c72a9e540c4abe27715eac30750594e1e4d2dad14d9327332bf487260da6"
+    },
+    {
+      "File": "NEW_FILE_TEST_RESULT.txt",
+      "PreRedactionSha256": "44391023bb40d4392b395d9c7c7fb1e37d95c6728dea355dcdcd47218a5b8b74",
+      "PublicSha256": "f25d696abe7803e5195ae4782e8735e00dc82058a54db631433d01ea96959146"
+    },
+    {
+      "File": "NEW_FILE_TEST_RESULT_FINAL.txt",
+      "PreRedactionSha256": "e612caad30c5e7de16b4997e0993526650b38bedb32c561c9bc1c3b695e7322b",
+      "PublicSha256": "608a868ac2594b5beeac1a88816ef3c3fe7e4860d714f7490d4d597cdf54bab5"
+    },
+    {
+      "File": "PACKAGE_TRUST_RESULT.json",
+      "PreRedactionSha256": "670a1a918493aa5762f33e5f9835b9e5849c760f16a448740d394f812cd93c5f",
+      "PublicSha256": "aee5c5664a9b6c34c0534b0c5f4fa7015f59a77cbd9c20cf8666d42f4ca0676f"
+    },
+    {
+      "File": "PROBE_BUILD_RESULT.txt",
+      "PreRedactionSha256": "8bbb446c5a6c6a71f31bac0f8baa7e97097df547015246e5a40fd396d30a5358",
+      "PublicSha256": "83a38130916cbd61de51ecaa0aa59621a86dd855f1c4a71165f3f0c4f4264736"
+    },
+    {
+      "File": "PROBE_BUILD_RESULT_FINAL.txt",
+      "PreRedactionSha256": "5e1cdc502a7a1ac91e44198f2bd96f96a3ac99cb8c6bef75604001167ae3904e",
+      "PublicSha256": "977194a9e6cad6ff235ba50b251b84e2e691acef4889b30ab2410774aa66bf2c"
+    },
+    {
+      "File": "PROCESS_RESULT_FINAL.txt",
+      "PreRedactionSha256": "1cd55d893e19d50690d18b6382c983766bba7892b099dfdfe171556e011311b0",
+      "PublicSha256": "c47fbf6aa3a071dcc41ff22d0d66ec1d2bd6d559cd27737311b0b27fbfba9e41"
+    },
+    {
+      "File": "RECOVERY_PREFLIGHT_TEST_RESULT.txt",
+      "PreRedactionSha256": "ee637bbb29cec45eb67a41fb580b2980ba082c82818a01668d1d76ae57b19bae",
+      "PublicSha256": "9096522eab2ec0cb74c76d59e683c2749c8d49c19ebf54d62af84b3c863f64ca"
+    },
+    {
+      "File": "SECURITYLAB_RESULT.txt",
+      "PreRedactionSha256": "3edfa2459a97bc9c8273510d4c6cdcb7a6f673641e26615311c98ebae68d3f73",
+      "PublicSha256": "c2fa15bd65ebf681a1618236f199b938fb567859ccd844d984e9f3721eb1eb8f"
+    },
+    {
+      "File": "SOURCE_ROLLBACK_FINAL_SOURCE.txt",
+      "PreRedactionSha256": "c6c3bb1a0afae899801beffbab7b83e09f877881e7d3a272545d22e8f7a1ef61",
+      "PublicSha256": "229d59f7bff0a6519b0f1903dd613f95eab6967e118d5b5263b861dd02795f13"
+    },
+    {
+      "File": "SOURCE_ROLLBACK_INPUT.json",
+      "PreRedactionSha256": "34d51d7dc498caef2c45c6bd85310dad5aa8b65a2b9a0beab608788d0381c806",
+      "PublicSha256": "4b0d204ee60422206314d2d328c840b7bc054a9519cc6f9646b200cb16a951f1"
+    },
+    {
+      "File": "SOURCE_ROLLBACK_RESULT.txt",
+      "PreRedactionSha256": "c6c3bb1a0afae899801beffbab7b83e09f877881e7d3a272545d22e8f7a1ef61",
+      "PublicSha256": "229d59f7bff0a6519b0f1903dd613f95eab6967e118d5b5263b861dd02795f13"
+    },
+    {
+      "File": "SOURCE_ROLLBACK_RESULT_FINAL.txt",
+      "PreRedactionSha256": "3bd9b5e5a6e6002112a2b4b8b6bd0185980a84937cfd80c1d2a2f7723976947c",
+      "PublicSha256": "a840fb59d200b3cf87f9cf4929ac25e2f52b7be7ab571a7f60dbe7f2f5e8498c"
+    },
+    {
+      "File": "SOURCE_ROLLBACK_RESULT_FINAL_2.txt",
+      "PreRedactionSha256": "c6c3bb1a0afae899801beffbab7b83e09f877881e7d3a272545d22e8f7a1ef61",
+      "PublicSha256": "229d59f7bff0a6519b0f1903dd613f95eab6967e118d5b5263b861dd02795f13"
+    },
+    {
+      "File": "UI_SOURCE_RESULT.txt",
+      "PreRedactionSha256": "036e63580d540aaadc0abdf7ee04b7911ea10b67bde85e910cc3cbb9c477d6fa",
+      "PublicSha256": "17a4826d60f99c70b0edffbf85c92f00db87087de2ea8ec75bc94807174a3657"
+    },
+    {
+      "File": "UPDATER_TEST_RESULT.txt",
+      "PreRedactionSha256": "c320a1e1581bd10ce08643c86b40137eb9acfb718e54de6bde633d6f09d406cb",
+      "PublicSha256": "509314ed45ad0705e6b79776df70191114226568729a9a3d7a68aa39628934ec"
+    },
+    {
+      "File": "UPDATER_TEST_RESULT_FINAL.txt",
+      "PreRedactionSha256": "6be36f7b1b9fb47823726a469230d7caa79cb02766cec2786a970d9c828c7fcb",
+      "PublicSha256": "ef4c3af2c4e8ef17bed6c531793a05bd01d0399ce4e90d040b668829eb00dbe0"
+    },
+    {
+      "File": "UPDATE_PERFORMANCE_RESULT.json",
+      "PreRedactionSha256": "46af344d2e5184da540e798c3ed99e279a37c24779e5ef0c37e4c6cfd7189ba3",
+      "PublicSha256": "5cbfdf5e10951406ff56b64da2f3eca51817a3ca73f88f907fe79c747bfa31a6"
+    },
+    {
+      "File": "UPDATE_ROLLBACK_RESULT.json",
+      "PreRedactionSha256": "051e76db46f8f3b65a2bce9eb602a6d8ba9cb202a44505f8af7c79aaf5bc238d",
+      "PublicSha256": "45aede96f931c832c5f4e5d10dbe00bb0498ef01b52ad866c279692dffd8fe8a"
+    },
+    {
+      "File": "VERIFICATION.txt",
+      "PreRedactionSha256": "4b2356765073c8904ea4f94c73642b76b26bf8644948c195c7a8227e77ed5478",
+      "PublicSha256": "6dda8c613d4d16944158273edda2b9e9fa1b73d10d5b8b4808e34394c572b031"
+    },
+    {
+      "File": "wo19-acl-final.trx",
+      "PreRedactionSha256": "c51564bb99694d97ff27e51790f6088d7598822b578aa57c5e33ba458d9ce607",
+      "PublicSha256": "efddb3d2dd2eb4e818fbbafc7d7d8c783e0e4a1b99ee94c283cb48809b7d0fe9"
+    },
+    {
+      "File": "wo19-baseline.trx",
+      "PreRedactionSha256": "44560a3f29c43c9d69faf19ca92a9b062f3a8aecb50e24fed7d4163b261df15d",
+      "PublicSha256": "17b3f9dea57d47d0cb697b104f16d0b167a6b947ff80fafacd4cf887872ef98d"
+    },
+    {
+      "File": "wo19-focused-final.trx",
+      "PreRedactionSha256": "378dcdca6482c5810a9542bed9eb8ee8a8ec76337cbbaa67ec1d0a22e67dfbc6",
+      "PublicSha256": "9c6dabf281a49666eb0975a455352ee94a8f7ec962cab356a8865271632eafbb"
+    },
+    {
+      "File": "wo19-focused.trx",
+      "PreRedactionSha256": "5ad1c0421a76d7cd46b44bda0df147c30eab06e68b40727fc1c60f74d1abc8b1",
+      "PublicSha256": "f343b6a4dc3bfa46d517ac5e762073aeeb88355097772a11468a460b3b3a8f7c"
+    },
+    {
+      "File": "wo19-full-final.trx",
+      "PreRedactionSha256": "8197cc0d2ea8b53caea260f4219b98eb7f5f1e7332108ccee75dad056b1130d1",
+      "PublicSha256": "47eadfca845527affc2ba961176f477d5db53c1ca72c515087c12de410b6f360"
+    },
+    {
+      "File": "wo19-full.trx",
+      "PreRedactionSha256": "60d1986e9e6ab733614cb8b939f461c3976184613119ce00d30001ed4ba71ade",
+      "PublicSha256": "74ead8ba74a7d8fef366aeedae10aba60d07d5d56cb78b18b68dceb9d40e27f5"
+    },
+    {
+      "File": "wo19-recovery-preflight.trx",
+      "PreRedactionSha256": "6e153fd14ed1537f0a144c05884ed2f775f934084639f98405b7c27a141a4e67",
+      "PublicSha256": "2c465895649f1a955f5f925611dff6bd81683a75ffa174c43f734867b75809c8"
+    },
+    {
+      "File": "wo19-securitylab.trx",
+      "PreRedactionSha256": "83b2136b1961845c72ae96f0759d13f812aa450f4bff62829e6f28b6a6fbfccc",
+      "PublicSha256": "62d8b9ed695485e63104c133e31edddc57be31275355aa75e2eccb86a3ba41fc"
+    },
+    {
+      "File": "wo19-updater-final.trx",
+      "PreRedactionSha256": "34466101c3fac83e7aec1211127152e84332b24f11fcddf9079349bf2e06a9e0",
+      "PublicSha256": "695ffec5f28849c8f812727a1b6ca65f4be45a1453263f03056b32d0dd45d6ee"
+    },
+    {
+      "File": "wo19-updater.trx",
+      "PreRedactionSha256": "f0f882cf396819a97c605b78b558a8fe1b9f6efe87d9bf73e4494341b2e27ef4",
+      "PublicSha256": "5075005e7dc912cd07fa6853ada2b173868720cdd1041e8b438f481eed38dbd3"
+    }
+  ]
+}

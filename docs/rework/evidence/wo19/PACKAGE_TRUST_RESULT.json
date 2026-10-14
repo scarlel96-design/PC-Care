@@ -1,0 +1,9 @@
+{
+  "Status": "PASS",
+  "SourceSha": "347a34fa1f273db7064f40e3c53ecea4fd10ecee",
+  "Command": "dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO19|FullyQualifiedName~WO06|FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests' --logger 'trx;LogFileName=wo19-recovery-preflight.trx' -v:minimal",
+  "Input": "Ephemeral signed synthetic packages and production empty-key policy",
+  "Output": "144 PASS / 0 FAIL / 0 SKIP",
+  "ExitCode": 0,
+  "OfficialProductionSigning": "BLOCKED"
+}

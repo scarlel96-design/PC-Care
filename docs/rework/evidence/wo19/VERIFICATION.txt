@@ -1,0 +1,48 @@
+BRANCH: codex/pccare-wo19-update-recovery-closure
+CHANGED FIELD: UpdateFileJournal.TemporaryInTransaction; NewLength; protected preparation and handle-bound publication.
+ORIGINAL SHA256: 0e04527306ffe4a0d8512e11bd4b2eb889a09b8002996bc8e26903e884b5d79f
+MODIFIED SHA256: 2889d76b5b72ec10df152318104c6116bbf4b68a6f2cf8ad6a62ae2bafbde400
+BASELINE COMMAND: dotnet build tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+BASELINE INPUT: source 58e5e9ec08b677425b89050c6a85c076c3d87ff8; RUNNER_TEMP=isolated fixture parent.
+BASELINE BUILD OUTPUT: 0 warnings / 0 errors
+BASELINE BUILD EXIT CODE: 0
+BASELINE TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo19-baseline.trx' -v:minimal
+BASELINE TEST LITERAL OUTPUT: 실패!  - 실패:     1, 통과:  1213, 건너뜀:   111, 전체:  1325, 기간: 12 m 58 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+BASELINE TEST EXIT CODE: 1
+BASELINE FAILURE: CareFolderScanner_TempPath_CompletesQuickly timed out; formal WO18 CI baseline remains separate.
+MODIFIED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO19|FullyQualifiedName~WO06|FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests' --logger 'trx;LogFileName=wo19-updater-final.trx' -v:minimal
+MODIFIED INPUT: source 1fa021ef142e6589f5baf040744a462dc85437d1; synthetic files; ephemeral signed manifests.
+MODIFIED LITERAL OUTPUT: 통과!  - 실패:     0, 통과:   144, 건너뜀:     0, 전체:   144, 기간: 51 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+MODIFIED EXIT CODE: 0
+ROLLBACK COMMAND: bash docs/rework/evidence/wo19/ROLLBACK.sh artifacts/wo19-rollback-bb79bc9994c043aabb22c99a6645e752/RESTORE_COPY
+ROLLBACK INPUT: independent copy of MODIFIED_FILE; approved copy hash and name.
+ROLLBACK LITERAL OUTPUT: ROLLBACK_SHA256_RESTORED=0e04527306ffe4a0d8512e11bd4b2eb889a09b8002996bc8e26903e884b5d79f
+ROLLBACK EXIT CODE: 0
+RESTORED STATUS: independent source-copy SHA256 equals ORIGINAL_FILE; MODIFIED_FILE and working source remain changed.
+TRANSACTION ROLLBACK: 197 process commands; 20 apply crashes; 13 recovery crashes; original executable/DLL and synthetic user-data hashes verified.
+SOURCE COPY RESTORATION DOES NOT PROVE VAULT DATA RESTORATION OR PHYSICAL POWER-LOSS DURABILITY.
+FILES:
+docs/rework/evidence/wo19/ORIGINAL_FILE
+docs/rework/evidence/wo19/MODIFIED_FILE
+docs/rework/evidence/wo19/DIFF_FILE
+docs/rework/evidence/wo19/ROLLBACK.sh
+docs/rework/evidence/wo19/VERIFICATION.txt
+
+FINAL MODIFIED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO19|FullyQualifiedName~WO06|FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests' --logger 'trx;LogFileName=wo19-recovery-preflight.trx' -v:minimal
+FINAL MODIFIED INPUT: source 347a34fa1f273db7064f40e3c53ecea4fd10ecee; synthetic fixtures; multiple pending journals checked before mutation.
+FINAL MODIFIED LITERAL OUTPUT: 통과!  - 실패:     0, 통과:   144, 건너뜀:     0, 전체:   144, 기간: 49 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+FINAL MODIFIED EXIT CODE: 0
+FINAL TRANSACTION COMMAND: scripts/wo06-process-validation.ps1 -OutputDirectory artifacts/wo19-final-source-process
+FINAL TRANSACTION LITERAL OUTPUT: WINDOWS_SYNTHETIC_PROCESS=PASS; VM_E2E=NOT_TESTED; UNKNOWN_ORPHAN=PRESERVED
+FINAL TRANSACTION EXIT CODE: 0
+
+CI SOURCE: 347a34fa1f273db7064f40e3c53ecea4fd10ecee
+CI TREE: 8eedac7639287294ac158f52ea8f57f97b046aa7
+CI RUN: 38576304293
+CI OUTPUT: success; application 1230 PASS / 111 SKIP / 0 FAIL; SecurityLab 36 PASS
+CI EXIT CODE: 0
+PUBLICATION ARTIFACTS:
+https://github.com/scarlel96-design/PC-Care/blob/codex/pccare-wo19-update-recovery-closure/docs/rework/evidence/wo19/MODIFIED_FILE
+https://github.com/scarlel96-design/PC-Care/blob/codex/pccare-wo19-update-recovery-closure/docs/rework/evidence/wo19/DIFF_FILE
+https://github.com/scarlel96-design/PC-Care/blob/codex/pccare-wo19-update-recovery-closure/docs/rework/evidence/wo19/VERIFICATION.txt
+https://github.com/scarlel96-design/PC-Care/blob/codex/pccare-wo19-update-recovery-closure/docs/rework/evidence/wo19/ROLLBACK.sh

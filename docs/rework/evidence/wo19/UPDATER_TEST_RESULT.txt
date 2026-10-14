@@ -1,0 +1,40 @@
+  SmartPerformanceDoctor.Diagnostics -> WORKSPACE\src\SmartPerformanceDoctor.Diagnostics\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Diagnostics.dll
+  SmartPerformanceDoctor.AstraVault -> WORKSPACE\src\SmartPerformanceDoctor.AstraVault\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.dll
+  SmartPerformanceDoctor.Data -> WORKSPACE\src\SmartPerformanceDoctor.Data\bin\x64\Release\net10.0\SmartPerformanceDoctor.Data.dll
+  SmartPerformanceDoctor.Contracts -> WORKSPACE\src\SmartPerformanceDoctor.Contracts\bin\x64\Release\net10.0\SmartPerformanceDoctor.Contracts.dll
+  SmartPerformanceDoctor.Aegis -> WORKSPACE\src\SmartPerformanceDoctor.Aegis\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.Aegis.dll
+  SmartPerformanceDoctor.SecurityLab -> WORKSPACE\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+  SmartPerformanceDoctor.UpdateEngine -> WORKSPACE\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+  SmartPerformanceDoctor.UpdateHelper -> WORKSPACE\src\SmartPerformanceDoctor.UpdateHelper\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryHelper -> WORKSPACE\src\SmartPerformanceDoctor.AegisRecoveryHelper\bin\x64\Release\net10.0-windows\AegisRecoveryHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryService -> WORKSPACE\src\SmartPerformanceDoctor.AegisRecoveryService\bin\x64\Release\net10.0-windows\AegisRecoveryService.dll
+  SmartPerformanceDoctor.App -> WORKSPACE\src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.dll
+  SmartPerformanceDoctor.Tests -> WORKSPACE\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll
+  SmartPerformanceDoctor.AstraVault.KillWorker -> WORKSPACE\tests\SmartPerformanceDoctor.AstraVault.KillWorker\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.KillWorker.dll
+WORKSPACE\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+[xUnit.net 00:00:28.28]     SmartPerformanceDoctor.Tests.WO19UpdateRecoveryTests.RecoveryExaminesAllPendingTransactions [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO19UpdateRecoveryTests.RecoveryExaminesAllPendingTransactions [2 s]
+  오류 메시지:
+   Assert.Equal() Failure: Values differ
+Expected: Restored
+Actual:   RecoveryRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO19UpdateRecoveryTests.RecoveryExaminesAllPendingTransactions() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO19UpdateRecoveryTests.cs:line 136
+   at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:30.95]     SmartPerformanceDoctor.Tests.WO19UpdateRecoveryTests.SnapshotProtocolReadsMetadataWithoutLoadingAssembly [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO19UpdateRecoveryTests.SnapshotProtocolReadsMetadataWithoutLoadingAssembly [9 ms]
+  오류 메시지:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO19UpdateRecoveryTests.SnapshotProtocolReadsMetadataWithoutLoadingAssembly() in WORKSPACE\tests\SmartPerformanceDoctor.Tests\WO19UpdateRecoveryTests.cs:line 51
+   at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+결과 파일: WORKSPACE\tests\SmartPerformanceDoctor.Tests\TestResults\wo19-updater.trx
+
+실패!  - 실패:     2, 통과:   142, 건너뜀:     0, 전체:   144, 기간: 43 s - SmartPerformanceDoctor.Tests.dll (net10.0)

@@ -1,0 +1,1780 @@
+{
+  "Status": "PASS",
+  "SourceSha": "347a34fa1f273db7064f40e3c53ecea4fd10ecee",
+  "Scope": "Windows synthetic file system; real executable and DLL copies; not protected production installation",
+  "Records": [
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\AfterPackageVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterPackageVerification",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterPackageVerification WORKSPACE\\artifacts\\wo19-final-source-process\\AfterPackageVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterPackageVerification",
+      "Output": [
+        "WO06 fixture process termination: AfterPackageVerification"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\AfterPackageVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterPackageVerification",
+      "Output": [
+        "BEFORE=NoPendingTransaction:NO-PENDING RESULT=Restored:NO-PENDING"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\AfterPackageVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterPackageVerification",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=NoPendingTransaction"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\AfterPackageVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterPackageVerification",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\AfterPackageVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterPackageVerification",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\AfterBackupVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterBackupVerification",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterBackupVerification WORKSPACE\\artifacts\\wo19-final-source-process\\AfterBackupVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterBackupVerification",
+      "Output": [
+        "WO06 fixture process termination: AfterBackupVerification"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\AfterBackupVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterBackupVerification",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:NO-PENDING"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\AfterBackupVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterBackupVerification",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\AfterBackupVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterBackupVerification",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\AfterBackupVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterBackupVerification",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\AfterApplyingJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterApplyingJournal",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterApplyingJournal WORKSPACE\\artifacts\\wo19-final-source-process\\AfterApplyingJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterApplyingJournal",
+      "Output": [
+        "WO06 fixture process termination: AfterApplyingJournal"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\AfterApplyingJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterApplyingJournal",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\AfterApplyingJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterApplyingJournal",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\AfterApplyingJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterApplyingJournal",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\AfterApplyingJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterApplyingJournal",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIntent",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIntent",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileIntent WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIntent",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIntent",
+      "Output": [
+        "WO06 fixture process termination: AfterNewFileIntent"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIntent",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIntent",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIntent",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIntent",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIntent",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIntent",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIntent",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIntent",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileCreated",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileCreated WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileCreated",
+      "Output": [
+        "WO06 fixture process termination: AfterNewFileCreated"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileCreated",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-orphan WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileCreated",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted ORPHANS=1"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileCreated",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileCreated",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIdentity",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIdentity",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileIdentity WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIdentity",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIdentity",
+      "Output": [
+        "WO06 fixture process termination: AfterNewFileIdentity"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIdentity",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIdentity",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIdentity",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIdentity",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIdentity",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIdentity",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIdentity",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileIdentity",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\DuringNewFileContent",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\DuringNewFileContent",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:DuringNewFileContent WORKSPACE\\artifacts\\wo19-final-source-process\\DuringNewFileContent",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\DuringNewFileContent",
+      "Output": [
+        "WO06 fixture process termination: DuringNewFileContent"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\DuringNewFileContent",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\DuringNewFileContent",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\DuringNewFileContent",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\DuringNewFileContent",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\DuringNewFileContent",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\DuringNewFileContent",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\DuringNewFileContent",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\DuringNewFileContent",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileVerification",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:BeforeNewFileVerification WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileVerification",
+      "Output": [
+        "WO06 fixture process termination: BeforeNewFileVerification"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileVerification",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileVerification",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileVerification",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileVerification",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileVerification",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileVerification WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileVerification",
+      "Output": [
+        "WO06 fixture process termination: AfterNewFileVerification"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileVerification",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileVerification",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileVerification",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileVerification",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileRename",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileRename",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:BeforeNewFileRename WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileRename",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileRename",
+      "Output": [
+        "WO06 fixture process termination: BeforeNewFileRename"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileRename",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileRename",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileRename",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileRename",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileRename",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileRename",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileRename",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeNewFileRename",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileRename",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileRename",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileRename WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileRename",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileRename",
+      "Output": [
+        "WO06 fixture process termination: AfterNewFileRename"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileRename",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileRename",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileRename",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileRename",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileRename",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileRename",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileRename",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterNewFileRename",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\AfterFirstReplacement",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterFirstReplacement",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterFirstReplacement WORKSPACE\\artifacts\\wo19-final-source-process\\AfterFirstReplacement",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterFirstReplacement",
+      "Output": [
+        "WO06 fixture process termination: AfterFirstReplacement"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\AfterFirstReplacement",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterFirstReplacement",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\AfterFirstReplacement",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterFirstReplacement",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\AfterFirstReplacement",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterFirstReplacement",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\AfterFirstReplacement",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterFirstReplacement",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\AfterLastReplacement",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterLastReplacement",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterLastReplacement WORKSPACE\\artifacts\\wo19-final-source-process\\AfterLastReplacement",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterLastReplacement",
+      "Output": [
+        "WO06 fixture process termination: AfterLastReplacement"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\AfterLastReplacement",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterLastReplacement",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\AfterLastReplacement",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterLastReplacement",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\AfterLastReplacement",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterLastReplacement",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\AfterLastReplacement",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\AfterLastReplacement",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\DuringPostApplyVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\DuringPostApplyVerification",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:DuringPostApplyVerification WORKSPACE\\artifacts\\wo19-final-source-process\\DuringPostApplyVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\DuringPostApplyVerification",
+      "Output": [
+        "WO06 fixture process termination: DuringPostApplyVerification"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\DuringPostApplyVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\DuringPostApplyVerification",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\DuringPostApplyVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\DuringPostApplyVerification",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\DuringPostApplyVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\DuringPostApplyVerification",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\DuringPostApplyVerification",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\DuringPostApplyVerification",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\JournalTempCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalTempCreated",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalTempCreated WORKSPACE\\artifacts\\wo19-final-source-process\\JournalTempCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalTempCreated",
+      "Output": [
+        "WO06 fixture process termination: JournalTempCreated"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\JournalTempCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalTempCreated",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\JournalTempCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalTempCreated",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\JournalTempCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalTempCreated",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\JournalTempCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalTempCreated",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\JournalPartialWrite",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalPartialWrite",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalPartialWrite WORKSPACE\\artifacts\\wo19-final-source-process\\JournalPartialWrite",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalPartialWrite",
+      "Output": [
+        "WO06 fixture process termination: JournalPartialWrite"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\JournalPartialWrite",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalPartialWrite",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\JournalPartialWrite",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalPartialWrite",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\JournalPartialWrite",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalPartialWrite",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\JournalPartialWrite",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalPartialWrite",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\JournalFlushed",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalFlushed",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalFlushed WORKSPACE\\artifacts\\wo19-final-source-process\\JournalFlushed",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalFlushed",
+      "Output": [
+        "WO06 fixture process termination: JournalFlushed"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\JournalFlushed",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalFlushed",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\JournalFlushed",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalFlushed",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\JournalFlushed",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalFlushed",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\JournalFlushed",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalFlushed",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\JournalBeforeReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalBeforeReplace",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalBeforeReplace WORKSPACE\\artifacts\\wo19-final-source-process\\JournalBeforeReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalBeforeReplace",
+      "Output": [
+        "WO06 fixture process termination: JournalBeforeReplace"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\JournalBeforeReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalBeforeReplace",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\JournalBeforeReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalBeforeReplace",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\JournalBeforeReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalBeforeReplace",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\JournalBeforeReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalBeforeReplace",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\JournalAfterReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalAfterReplace",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalAfterReplace WORKSPACE\\artifacts\\wo19-final-source-process\\JournalAfterReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalAfterReplace",
+      "Output": [
+        "WO06 fixture process termination: JournalAfterReplace"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\JournalAfterReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalAfterReplace",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\JournalAfterReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalAfterReplace",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\JournalAfterReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalAfterReplace",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\JournalAfterReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\JournalAfterReplace",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeCommittedJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeCommittedJournal",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:BeforeCommittedJournal WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeCommittedJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeCommittedJournal",
+      "Output": [
+        "WO06 fixture process termination: BeforeCommittedJournal"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeCommittedJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeCommittedJournal",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeCommittedJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeCommittedJournal",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeCommittedJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeCommittedJournal",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeCommittedJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\BeforeCommittedJournal",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare WORKSPACE\\artifacts\\wo19-final-source-process\\rollback-reentry",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\rollback-reentry",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill WORKSPACE\\artifacts\\wo19-final-source-process\\rollback-reentry",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\rollback-reentry",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill WORKSPACE\\artifacts\\wo19-final-source-process\\rollback-reentry",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\rollback-reentry",
+      "Output": [
+        "WO05 synthetic termination during rollback copy"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\rollback-reentry",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\rollback-reentry",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\rollback-reentry",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\rollback-reentry",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-AfterRollbackStarted",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-AfterRollbackStarted",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-AfterRollbackStarted",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-AfterRollbackStarted",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:AfterRollbackStarted WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-AfterRollbackStarted",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-AfterRollbackStarted",
+      "Output": [
+        "WO06 synthetic recovery termination: AfterRollbackStarted"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-AfterRollbackStarted",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-AfterRollbackStarted",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-AfterRollbackStarted",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-AfterRollbackStarted",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-BeforeRestoredJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-BeforeRestoredJournal",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-BeforeRestoredJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-BeforeRestoredJournal",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:BeforeRestoredJournal WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-BeforeRestoredJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-BeforeRestoredJournal",
+      "Output": [
+        "WO06 synthetic recovery termination: BeforeRestoredJournal"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-BeforeRestoredJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-BeforeRestoredJournal",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-BeforeRestoredJournal",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-BeforeRestoredJournal",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalTempCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalTempCreated",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalTempCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalTempCreated",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalTempCreated WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalTempCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalTempCreated",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalTempCreated"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalTempCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalTempCreated",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalTempCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalTempCreated",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalPartialWrite",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalPartialWrite",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalPartialWrite",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalPartialWrite",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalPartialWrite WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalPartialWrite",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalPartialWrite",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalPartialWrite"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalPartialWrite",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalPartialWrite",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalPartialWrite",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalPartialWrite",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalFlushed",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalFlushed",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalFlushed",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalFlushed",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalFlushed WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalFlushed",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalFlushed",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalFlushed"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalFlushed",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalFlushed",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalFlushed",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalFlushed",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalBeforeReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalBeforeReplace",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalBeforeReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalBeforeReplace",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalBeforeReplace WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalBeforeReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalBeforeReplace",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalBeforeReplace"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalBeforeReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalBeforeReplace",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalBeforeReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalBeforeReplace",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalAfterReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalAfterReplace",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalAfterReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalAfterReplace",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalAfterReplace WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalAfterReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalAfterReplace",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalAfterReplace"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalAfterReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalAfterReplace",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalAfterReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\recovery-JournalAfterReplace",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalTempCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalTempCreated",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalTempCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalTempCreated",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalTempCreated WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalTempCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalTempCreated",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalTempCreated"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalTempCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalTempCreated",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalTempCreated",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalTempCreated",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalPartialWrite",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalPartialWrite",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalPartialWrite",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalPartialWrite",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalPartialWrite WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalPartialWrite",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalPartialWrite",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalPartialWrite"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalPartialWrite",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalPartialWrite",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalPartialWrite",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalPartialWrite",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalFlushed",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalFlushed",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalFlushed",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalFlushed",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalFlushed WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalFlushed",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalFlushed",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalFlushed"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalFlushed",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalFlushed",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalFlushed",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalFlushed",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalBeforeReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalBeforeReplace",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalBeforeReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalBeforeReplace",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalBeforeReplace WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalBeforeReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalBeforeReplace",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalBeforeReplace"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalBeforeReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalBeforeReplace",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalBeforeReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalBeforeReplace",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalAfterReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalAfterReplace",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalAfterReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalAfterReplace",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalAfterReplace WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalAfterReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalAfterReplace",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalAfterReplace"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalAfterReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalAfterReplace",
+      "Output": [
+        "BEFORE=RecoveryCompleted:RESTORED RESULT=Restored:NO-PENDING"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalAfterReplace",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\restored-journal-JournalAfterReplace",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\detached-image",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\detached-image",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\detached-image",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\detached-image",
+      "Output": [
+        "RESULT=RecoveryRequired:ROLLBACK-FAIL FAILURE=IOException: FILE-OPEN: 다른 프로세스가 파일을 사용 중이기 때문에 프로세스가 액세스 할 수 없습니다.; rollback: IOException: FILE-OPEN: 다른 프로세스가 파일을 사용 중이기 때문에 프로세스가 액세스 할 수 없습니다."
+      ],
+      "ExitCode": 5,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\detached-image",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\detached-image",
+      "Output": [
+        "BEFORE=RecoveryFailed:ROLLBACK-FAIL RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\detached-image",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\detached-image",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\detached-image",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\detached-image",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\detached-image",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\detached-image",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self WORKSPACE\\artifacts\\wo19-final-source-process\\dll-handle-lock",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\dll-handle-lock",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\dll-handle-lock",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\dll-handle-lock",
+      "Output": [
+        "RESULT=RecoveryRequired:ROLLBACK-FAIL FAILURE=IOException: FILE-OPEN: 다른 프로세스가 파일을 사용 중이기 때문에 프로세스가 액세스 할 수 없습니다.; rollback: IOException: FILE-OPEN: 다른 프로세스가 파일을 사용 중이기 때문에 프로세스가 액세스 할 수 없습니다."
+      ],
+      "ExitCode": 5,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover WORKSPACE\\artifacts\\wo19-final-source-process\\dll-handle-lock",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\dll-handle-lock",
+      "Output": [
+        "BEFORE=RecoveryFailed:ROLLBACK-FAIL RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify WORKSPACE\\artifacts\\wo19-final-source-process\\dll-handle-lock",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\dll-handle-lock",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply WORKSPACE\\artifacts\\wo19-final-source-process\\dll-handle-lock",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\dll-handle-lock",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "WORKSPACE\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated WORKSPACE\\artifacts\\wo19-final-source-process\\dll-handle-lock",
+      "Input": "WORKSPACE\\artifacts\\wo19-final-source-process\\dll-handle-lock",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    }
+  ]
+}

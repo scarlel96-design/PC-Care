@@ -1,0 +1,13 @@
+{
+  "Status": "PARTIAL",
+  "SourceSha": "347a34fa1f273db7064f40e3c53ecea4fd10ecee",
+  "Command": "dotnet build tools/SmartPerformanceDoctor.UpdateBridge -c Release -p:Platform=x64 -m:1 -v:minimal",
+  "Input": "Production trust profile with empty publisher roots",
+  "Output": "Build succeeded; 0 warnings; 0 errors",
+  "ExitCode": 0,
+  "ProtocolMetadataTest": "PASS",
+  "SignedFirstTransitionE2E": "NOT TESTED",
+  "AutomaticUiBridgeDispatch": "NOT IMPLEMENTED",
+  "ExecutionEnvironment": "Final CI 38576304293, windows-latest",
+  "Evidence": "CI_JOB_LOG.txt; CI_wo19-tests.trx"
+}

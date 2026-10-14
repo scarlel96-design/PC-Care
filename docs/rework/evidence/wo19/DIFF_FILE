@@ -1,0 +1,162 @@
+diff --git a/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs b/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
+index d3d9a83..7f0d2e0 100644
+--- a/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
++++ b/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
+@@ -34,6 +34,8 @@ public sealed class UpdateFileJournal
+     public string InstalledIdentity { get; set; } = "";
+     public string TemporaryPath { get; set; } = "";
+     public bool TemporaryReady { get; set; }
++    public bool TemporaryInTransaction { get; set; }
++    public long NewLength { get; set; } = -1;
+     public string Path { get; set; } = "";
+     public bool Existed { get; set; }
+     public long OriginalLength { get; set; }
+@@ -62,6 +64,7 @@ public enum UpdateFaultPoint
+     DuringPostApplyVerification, BeforeCommittedJournal, AfterRollbackStarted,
+     DuringRollbackCopy, BeforeRestoredJournal, BeforeFailureJournal,
+     AfterNewFileIntent, AfterNewFileCreated, AfterNewFileIdentity, BeforeNewFileRename, AfterNewFileRename,
++    DuringNewFileContent, BeforeNewFileVerification, AfterNewFileVerification,
+     JournalTempCreated, JournalPartialWrite, JournalFlushed, JournalBeforeReplace, JournalAfterReplace
+ }
+ 
+@@ -72,7 +75,7 @@ public sealed record LegacyFileObservation(string Path, string InstalledState, s
+ public sealed record LegacyJournalDiagnostic(string TransactionId, string Stage, string JournalHash,
+     string InstallIdentity, string TransactionIdentity, string Code, List<LegacyFileObservation> Files);
+ 
+-public sealed class UpdateTransaction
++public sealed partial class UpdateTransaction
+ {
+     private readonly PublisherTrustPolicy _policy;
+     private readonly string _workRoot;
+@@ -286,7 +289,7 @@ public sealed class UpdateTransaction
+                 var target = Resolve(installRoot, relative);
+                 GuardExistingPath(installRoot, relative);
+                 var backup = Resolve(backupDir, relative);
+-                var entry = new UpdateFileJournal { Path = item.Path, NewSha256 = item.Sha256 };
++                var entry = new UpdateFileJournal { Path = item.Path, NewSha256 = item.Sha256, NewLength = item.Length };
+                 if (File.Exists(target))
+                 {
+                     entry.Existed = true;
+@@ -322,12 +325,13 @@ public sealed class UpdateTransaction
+                 sourceLease.Verify(expected.Length, expected.Sha256);
+                 if (!entry.Existed)
+                 {
+-                    entry.TemporaryPath = Path.Combine(Path.GetDirectoryName(relative) ?? "",
++                    entry.TemporaryInTransaction = true;
++                    entry.TemporaryPath = Path.Combine("newfiles", Path.GetDirectoryName(relative) ?? "",
+                         ".pccare-" + id + "-" + Guid.NewGuid().ToString("N") + ".pending");
+                     WriteJournal(txDir, journal);
+                     faultInjector?.Invoke(UpdateFaultPoint.AfterNewFileIntent);
+                 }
+-                var targetLease = WindowsFileBoundary.OpenWrite(installRoot,
++                var targetLease = WindowsFileBoundary.OpenWrite(entry.Existed ? installRoot : txDir,
+                     entry.Existed ? relative : entry.TemporaryPath, create: !entry.Existed, deletable: !entry.Existed);
+                 retained.Add(targetLease);
+                 if (!entry.Existed) faultInjector?.Invoke(UpdateFaultPoint.AfterNewFileCreated);
+@@ -344,14 +348,17 @@ public sealed class UpdateTransaction
+                 var (sourceLease, targetLease) = prepared[entry.Path];
+                 var expected = manifest.Files.Single(file => file.Path == entry.Path);
+                 faultInjector?.Invoke(UpdateFaultPoint.BeforeReplacement);
+-                targetLease.CopyFrom(sourceLease);
++                targetLease.CopyFrom(sourceLease, entry.Existed ? null :
++                    () => faultInjector?.Invoke(UpdateFaultPoint.DuringNewFileContent));
++                if (!entry.Existed) faultInjector?.Invoke(UpdateFaultPoint.BeforeNewFileVerification);
+                 targetLease.Verify(expected.Length, expected.Sha256);
++                if (!entry.Existed) faultInjector?.Invoke(UpdateFaultPoint.AfterNewFileVerification);
+                 if (!entry.Existed)
+                 {
+                     entry.TemporaryReady = true;
+                     WriteJournal(txDir, journal);
+                     faultInjector?.Invoke(UpdateFaultPoint.BeforeNewFileRename);
+-                    targetLease.RenameOpenedFile(Resolve(installRoot, Relative(entry.Path)));
++                    targetLease.PublishOpenedFile(installRoot, Relative(entry.Path));
+                     faultInjector?.Invoke(UpdateFaultPoint.AfterNewFileRename);
+                 }
+                 entry.Applied = true;
+@@ -421,6 +428,17 @@ public sealed class UpdateTransaction
+         using var workPin = WindowsFileBoundary.PinDirectory(_workRoot);
+         using var gate = WindowsFileBoundary.OpenExclusive(_workRoot, "update.lock", !File.Exists(Path.Combine(_workRoot, "update.lock")));
+         VerifyProtectedFile(gate, _workRoot);
++        var pendingMutations = 0;
++        foreach (var directory in Directory.EnumerateDirectories(_workRoot, "tx-*"))
++        {
++            if (!TryReadTrustedJournal(directory, installRoot, out var candidate, out var error) || candidate is null)
++                return new(UpdateStage.RecoveryRequired, error, "", 0);
++            if (candidate.Stage is not (UpdateStage.Committed or UpdateStage.Restored) && candidate.Stage >= UpdateStage.Applying)
++                pendingMutations++;
++        }
++        if (pendingMutations > 1)
++            return new(UpdateStage.RecoveryRequired, "MULTIPLE-PENDING-TRANSACTIONS", "", 0);
++        TransactionResult? restored = null;
+         foreach (var dir in Directory.EnumerateDirectories(_workRoot, "tx-*").OrderBy(x => x, StringComparer.Ordinal))
+         {
+             if (!TryReadTrustedJournal(dir, installRoot, out var journal, out var reason))
+@@ -438,9 +456,11 @@ public sealed class UpdateTransaction
+                 WriteJournal(dir, journal);
+                 continue;
+             }
+-            return RollbackCore(dir, installRoot, journal, faultInjector);
++            var result = RollbackCore(dir, installRoot, journal, faultInjector);
++            if (result.Stage != UpdateStage.Restored) return result;
++            restored = result;
+         }
+-        return new(UpdateStage.Restored, "NO-PENDING", "", 0);
++        return restored ?? new(UpdateStage.Restored, "NO-PENDING", "", 0);
+     }
+ 
+     /// <summary>Read-only startup probe. It never creates a lock, journal, or directory.</summary>
+@@ -537,11 +557,14 @@ public sealed class UpdateTransaction
+                     entry.InstalledIdentity is null ||
+                     (entry.InstalledIdentity.Length != 0 && !IsIdentity(entry.InstalledIdentity)))
+                     return false;
++                if (entry.NewLength < -1 || (entry.TemporaryInTransaction && (entry.Existed || entry.NewLength < 0))) return false;
+                 if (entry.TemporaryPath is null || (entry.TemporaryPath.Length != 0 &&
+                     (entry.Existed || !SignedPackage.SafeRelativePath("payload/" + entry.TemporaryPath.Replace('\\', '/')) ||
+                      !Path.GetFileName(entry.TemporaryPath).StartsWith(".pccare-" + journal.TransactionId + "-", StringComparison.Ordinal) ||
+                      !entry.TemporaryPath.EndsWith(".pending", StringComparison.Ordinal) ||
+-                     Path.GetDirectoryName(entry.TemporaryPath) != Path.GetDirectoryName(Relative(entry.Path))))) return false;
++                     Path.GetDirectoryName(entry.TemporaryPath) != (entry.TemporaryInTransaction
++                         ? Path.Combine("newfiles", Path.GetDirectoryName(Relative(entry.Path)) ?? "")
++                         : Path.GetDirectoryName(Relative(entry.Path)))))) return false;
+             }
+             var backup = Path.Combine(directory, "backup");
+             if (Directory.Exists(backup))
+@@ -674,15 +697,23 @@ public sealed class UpdateTransaction
+                         if (!IsIdentity(entry.InstalledIdentity)) throw new InvalidDataException("DELETE-IDENTITY-MISSING");
+                         target = WindowsFileBoundary.OpenWrite(installRoot, relative, deletable: true);
+                         target.Validate(entry.InstalledIdentity);
+-                        if ((entry.Applied || entry.TemporaryReady) && target.Hash() != entry.NewSha256)
++                        if ((entry.Applied || entry.TemporaryReady) && (target.Hash() != entry.NewSha256 ||
++                            entry.NewLength >= 0 && target.Stream.Length != entry.NewLength))
+                             throw new InvalidDataException("DELETE-TARGET-CONTENT-CHANGED");
+                     }
+-                    else if (entry.TemporaryPath.Length != 0 && File.Exists(Resolve(installRoot, entry.TemporaryPath)))
++                    else if (entry.TemporaryPath.Length != 0 && File.Exists(Resolve(entry.TemporaryInTransaction ? txDir : installRoot, entry.TemporaryPath)))
+                     {
+-                        if (!IsIdentity(entry.InstalledIdentity)) throw new InvalidDataException("TEMPORARY-IDENTITY-MISSING");
+-                        target = WindowsFileBoundary.OpenWrite(installRoot, entry.TemporaryPath, deletable: true);
++                        if (!IsIdentity(entry.InstalledIdentity))
++                        {
++                            if (!entry.TemporaryInTransaction) throw new InvalidDataException("TEMPORARY-IDENTITY-MISSING");
++                            // Preserve unidentified staging residue. It never entered the installation.
++                            leases.Add((entry, null, null));
++                            continue;
++                        }
++                        target = WindowsFileBoundary.OpenWrite(entry.TemporaryInTransaction ? txDir : installRoot, entry.TemporaryPath, deletable: true);
+                         target.Validate(entry.InstalledIdentity);
+-                        if (entry.TemporaryReady && target.Hash() != entry.NewSha256)
++                        if (entry.TemporaryReady && (target.Hash() != entry.NewSha256 ||
++                            entry.NewLength >= 0 && target.Stream.Length != entry.NewLength))
+                             throw new InvalidDataException("TEMPORARY-CONTENT-CHANGED");
+                     }
+                     leases.Add((entry, backup, target));
+@@ -989,7 +1020,8 @@ public sealed class UpdateTransaction
+                 Path = file.Path, Existed = true, OriginalLength = long.MaxValue,
+                 OriginalSha256 = new string('F', 64), NewSha256 = file.Sha256,
+                 OriginalIdentity = new string('F', 49), BackupIdentity = new string('F', 49), InstalledIdentity = new string('F', 49),
+-                TemporaryPath = Path.Combine(Path.GetDirectoryName(Relative(file.Path)) ?? "", ".pccare-" + new string('f', 32) + "-" + new string('f', 32) + ".pending"),
++                TemporaryInTransaction = true, NewLength = long.MaxValue,
++                TemporaryPath = Path.Combine("newfiles", Path.GetDirectoryName(Relative(file.Path)) ?? "", ".pccare-" + new string('f', 32) + "-" + new string('f', 32) + ".pending"),
+                 Applied = false, Restored = false
+             }).ToList()
+         };
