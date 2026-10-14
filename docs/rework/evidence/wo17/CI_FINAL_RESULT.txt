@@ -1,0 +1,23 @@
+WORK ITEM: WO17 final Windows CI
+STATUS: PASS
+SOURCE SHA: 63febc9ca94d8da90e5bfb3696f85f4ccc0ec125
+SOURCE TREE: 4d14aecd85a0962cd8664ea4bf8a1ec6e2dfdaba
+ENVIRONMENT: GitHub-hosted windows-latest; setup-dotnet 10.0.x. Exact runner hardware is not recorded in this excerpt.
+COMMAND: gh run view 38436799177 --log | Select-String 'Passed!|WO17_SYNTHETIC|WO17_STORAGE_IDS'
+INPUT: workflow wo17-windows-validation.yml; synthetic regression data
+OUTPUT SOURCE: previously completed GitHub log fetch; preserved verbatim below
+EXIT CODE: 0
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38436799177
+OUTPUT:
+windows-validation	UNKNOWN STEP	2026-10-13T17:15:50.4665412Z Passed!  - Failed:     0, Passed:   128, Skipped:     0, Total:   128, Duration: 31 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	UNKNOWN STEP	2026-10-13T17:16:04.1998051Z Passed!  - Failed:     0, Passed:   233, Skipped:     0, Total:   233, Duration: 6 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	UNKNOWN STEP	2026-10-13T17:21:06.5478263Z Passed!  - Failed:     0, Passed:    17, Skipped:     0, Total:    17, Duration: 17 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	UNKNOWN STEP	2026-10-13T17:23:07.8617410Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 43 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	UNKNOWN STEP	2026-10-13T17:26:08.2155994Z Passed!  - Failed:     0, Passed:    30, Skipped:     0, Total:    30, Duration: 1 m 20 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	UNKNOWN STEP	2026-10-13T17:29:05.2081130Z Passed!  - Failed:     0, Passed:    23, Skipped:     0, Total:    23, Duration: 21 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	UNKNOWN STEP	2026-10-13T17:32:03.7521514Z Passed!  - Failed:     0, Passed:    31, Skipped:     0, Total:    31, Duration: 1 m 20 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	UNKNOWN STEP	2026-10-13T17:34:50.7264745Z Passed!  - Failed:     0, Passed:    39, Skipped:     0, Total:    39, Duration: 19 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	UNKNOWN STEP	2026-10-13T17:35:00.1778212Z WO17_SYNTHETIC=PASS;QUARANTINE_SHA256_MATCH=TRUE;DELETE=1;CANCEL_PRESERVED=TRUE;PRODUCTION_CLEANUP=FALSE
+windows-validation	UNKNOWN STEP	2026-10-13T17:35:00.7374894Z WO17_STORAGE_IDS=6;DELETE_RESULT_STATE=CONNECTED;FOLDER_EXECUTION=DISABLED;GUI=NOT_TESTED
+windows-validation	UNKNOWN STEP	2026-10-13T17:43:27.7880391Z Passed!  - Failed:     0, Passed:  1178, Skipped:   111, Total:  1289, Duration: 8 m 24 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	UNKNOWN STEP	2026-10-13T17:45:00.4217631Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 28 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)

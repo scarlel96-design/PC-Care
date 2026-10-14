@@ -1,0 +1,8 @@
+WORK ITEM: WO17
+SOURCE SHA: 63febc9ca94d8da90e5bfb3696f85f4ccc0ec125
+ENVIRONMENT: Windows 11 Pro 26200; .NET SDK 10.0.401; 24 logical processors; synthetic local fixed-disk fixtures
+COMMAND: pwsh -NoProfile -File scripts/wo11-sandbox-validation.ps1 -OutputDirectory artifacts/wo17-sandbox
+INPUT: synthetic fixtures; no user documents or vaults
+OUTPUT:
+WO11_SANDBOX_PASS crashScenarios=6 hardLinkRejected=1 bytesRestored=6 irreversibleReviewCases=2
+EXIT CODE: 0

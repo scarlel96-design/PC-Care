@@ -1,0 +1,28 @@
+{
+  "ElapsedMs": 119.1,
+  "CollectorCpuMs": 109.375,
+  "WorkingSetBytes": 44154880,
+  "quarantined": {
+    "CandidateBytes": 1048576,
+    "QuarantinedBytes": 1048576,
+    "RestorableBytes": 1048576,
+    "FinalDeletedBytes": 0,
+    "AvailableBefore": 72532021248,
+    "AvailableAfter": 72531419136,
+    "ObservedFreeSpaceDelta": -602112,
+    "AttributableFreedBytes": 0,
+    "ElapsedMs": 740.0385,
+    "Limitation": "Same-volume rename releases no payload allocation. Global free-space delta is not cleanup gain."
+  },
+  "SpeedImprovement": null,
+  "Conditions": "Synthetic 1MiB file; one run; no Windows speed claim",
+  "_Evidence": {
+    "sourceSha": "63febc9ca94d8da90e5bfb3696f85f4ccc0ec125",
+    "environment": "Windows 11 Pro 26200; .NET SDK 10.0.401; 24 logical processors; synthetic local fixed-disk fixtures",
+    "command": "dotnet tools/SmartPerformanceDoctor.StorageCareProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.StorageCareProbe.dll --synthetic docs/rework/evidence/wo17 <WORKSPACE_SYNTHETIC_PARENT>",
+    "input": "generated synthetic fixtures",
+    "exitCode": 0,
+    "outputFile": "PERFORMANCE_BEFORE_AFTER_RESULT.json",
+    "scope": "Windows synthetic filesystem; no physical sanitization or GUI claim"
+  }
+}

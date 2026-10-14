@@ -1,0 +1,12 @@
+WORK ITEM: WO17
+SOURCE SHA: bc5c740ed79502f3cf1256f515aae5f955273685
+ENVIRONMENT: Windows 11 Pro 26200; .NET SDK 10.0.401; 24 logical processors; synthetic local fixed-disk fixtures
+COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter "FullyQualifiedName~WO17" --logger "trx;LogFileName=wo17-final-focused.trx" -v:minimal
+INPUT: synthetic fixtures; no user documents or vaults
+OUTPUT:
+<REPOSITORY>\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+결과 파일: <REPOSITORY>\tests\SmartPerformanceDoctor.Tests\TestResults\wo17-final-focused.trx
+
+통과!  - 실패:     0, 통과:    39, 건너뜀:     0, 전체:    39, 기간: 55 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+EXIT CODE: 0

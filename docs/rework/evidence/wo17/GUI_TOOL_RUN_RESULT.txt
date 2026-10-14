@@ -1,0 +1,8 @@
+WORK ITEM: WO17
+SOURCE SHA: 63febc9ca94d8da90e5bfb3696f85f4ccc0ec125
+ENVIRONMENT: Windows 11 Pro 26200; .NET SDK 10.0.401; 24 logical processors; synthetic local fixed-disk fixtures
+COMMAND: dotnet tools/SmartPerformanceDoctor.GuiProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.GuiProbe.dll
+INPUT: synthetic fixtures; no user documents or vaults
+OUTPUT:
+{"status":"NOT TESTED","reason":"Explicit interactive test process and diagnostics page are required.","guiExecuted":false}
+EXIT CODE: 0

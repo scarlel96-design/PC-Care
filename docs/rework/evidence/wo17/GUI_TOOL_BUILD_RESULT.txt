@@ -1,0 +1,14 @@
+WORK ITEM: WO17
+SOURCE SHA: 63febc9ca94d8da90e5bfb3696f85f4ccc0ec125
+ENVIRONMENT: Windows 11 Pro 26200; .NET SDK 10.0.401; 24 logical processors; synthetic local fixed-disk fixtures
+COMMAND: dotnet build tools/SmartPerformanceDoctor.GuiProbe -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+INPUT: synthetic fixtures; no user documents or vaults
+OUTPUT:
+  SmartPerformanceDoctor.GuiProbe -> <REPOSITORY>\tools\SmartPerformanceDoctor.GuiProbe\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.GuiProbe.dll
+
+빌드했습니다.
+    경고 0개
+    오류 0개
+
+경과 시간: 00:00:05.69
+EXIT CODE: 0

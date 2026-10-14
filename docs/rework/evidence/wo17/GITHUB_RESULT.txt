@@ -1,0 +1,30 @@
+WORK ITEM: WO17 GitHub submission
+STATUS: PARTIAL - final evidence publication pending
+BRANCH: codex/pccare-wo17-safe-storagecare-secure-delete
+BASELINE SHA: 229ede0c0488c2e878f212a4d6420bfb10c44a36
+UPLOADED IMPLEMENTATION SHA: 63febc9ca94d8da90e5bfb3696f85f4ccc0ec125
+UPLOADED IMPLEMENTATION TREE: 4d14aecd85a0962cd8664ea4bf8a1ec6e2dfdaba
+CI VERIFIED SOURCE: 63febc9ca94d8da90e5bfb3696f85f4ccc0ec125
+CI RUN: 38436799177
+CI STATUS: SUCCESS
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38436799177
+TEST OUTPUT: CI_FINAL_RESULT.txt
+APP: 1178 PASS / 0 FAIL / 111 SKIP / 1289 TOTAL
+WO17: 39 PASS, included in APP
+UPDATER: 128 PASS, included in APP
+PERFORMANCE: 233 PASS, included in APP
+SECURITYLAB: 36 PASS / 0 FAIL / 0 SKIP, separate
+FIRST CI: 38435267878 FAIL - CleanupProbe omitted StorageTargetPolicy source link.
+FIX: Restore the source link. Require an explicit synthetic fixture parent.
+SOURCE COMMITS: bc5c740ed79502f3cf1256f515aae5f955273685; 63febc9ca94d8da90e5bfb3696f85f4ccc0ec125
+FINAL EVIDENCE COMMIT: Resolve the submitted branch ref after publication. A commit does not contain its own hash.
+COMMAND: gh api repos/scarlel96-design/PC-Care/actions/runs/38436799177
+INPUT: completed source CI run
+PRESERVED RESULT: completed / success / head_sha=63febc9ca94d8da90e5bfb3696f85f4ccc0ec125
+PRESERVED EXIT CODE: 0
+LATEST REFRESH: sandbox network connection failed; exit 1. Two approval reviews timed out before process creation.
+CONNECTOR REFRESH: GitHub fetch transport failed at chatgpt.com/backend-api/ps/mcp.
+NEXT: Commit documentation. Push the branch. Compare local and remote HEAD and tree. Verify artifact inventory.
+PHASE 1: NO-GO
+MAIN MERGE: not performed
+OFFICIAL RELEASE: not created

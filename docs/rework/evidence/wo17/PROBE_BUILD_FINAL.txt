@@ -1,0 +1,25 @@
+WORK ITEM: WO17
+SOURCE SHA: 63febc9ca94d8da90e5bfb3696f85f4ccc0ec125
+ENVIRONMENT: Windows 11 Pro 26200; .NET SDK 10.0.401; 24 logical processors; synthetic local fixed-disk fixtures
+COMMAND: dotnet build tools/SmartPerformanceDoctor.StorageCareProbe -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+INPUT: synthetic fixtures; no user documents or vaults
+OUTPUT:
+  SmartPerformanceDoctor.Diagnostics -> <REPOSITORY>\src\SmartPerformanceDoctor.Diagnostics\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Diagnostics.dll
+  SmartPerformanceDoctor.AstraVault -> <REPOSITORY>\src\SmartPerformanceDoctor.AstraVault\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.dll
+  SmartPerformanceDoctor.Aegis -> <REPOSITORY>\src\SmartPerformanceDoctor.Aegis\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.Aegis.dll
+  SmartPerformanceDoctor.Contracts -> <REPOSITORY>\src\SmartPerformanceDoctor.Contracts\bin\x64\Release\net10.0\SmartPerformanceDoctor.Contracts.dll
+  SmartPerformanceDoctor.Data -> <REPOSITORY>\src\SmartPerformanceDoctor.Data\bin\x64\Release\net10.0\SmartPerformanceDoctor.Data.dll
+  SmartPerformanceDoctor.SecurityLab -> <REPOSITORY>\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+  SmartPerformanceDoctor.UpdateEngine -> <REPOSITORY>\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+  SmartPerformanceDoctor.UpdateHelper -> <REPOSITORY>\src\SmartPerformanceDoctor.UpdateHelper\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryHelper -> <REPOSITORY>\src\SmartPerformanceDoctor.AegisRecoveryHelper\bin\x64\Release\net10.0-windows\AegisRecoveryHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryService -> <REPOSITORY>\src\SmartPerformanceDoctor.AegisRecoveryService\bin\x64\Release\net10.0-windows\AegisRecoveryService.dll
+  SmartPerformanceDoctor.App -> <REPOSITORY>\src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.dll
+  SmartPerformanceDoctor.StorageCareProbe -> <REPOSITORY>\tools\SmartPerformanceDoctor.StorageCareProbe\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.StorageCareProbe.dll
+
+빌드했습니다.
+    경고 0개
+    오류 0개
+
+경과 시간: 00:03:20.79
+EXIT CODE: 0

@@ -1,0 +1,17 @@
+{
+  "Status": "Completed",
+  "Deleted": 1,
+  "Failed": 0,
+  "AuditValid": true,
+  "DeletedFixtureMissing": true,
+  "OtherFixtureHash": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+  "_Evidence": {
+    "sourceSha": "63febc9ca94d8da90e5bfb3696f85f4ccc0ec125",
+    "environment": "Windows 11 Pro 26200; .NET SDK 10.0.401; 24 logical processors; synthetic local fixed-disk fixtures",
+    "command": "dotnet tools/SmartPerformanceDoctor.StorageCareProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.StorageCareProbe.dll --synthetic docs/rework/evidence/wo17 <WORKSPACE_SYNTHETIC_PARENT>",
+    "input": "generated synthetic fixtures",
+    "exitCode": 0,
+    "outputFile": "SECURE_DELETE_IDENTITY_RESULT.json",
+    "scope": "Windows synthetic filesystem; no physical sanitization or GUI claim"
+  }
+}

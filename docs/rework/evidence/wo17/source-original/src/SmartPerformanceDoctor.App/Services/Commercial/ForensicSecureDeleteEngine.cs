@@ -1,0 +1,564 @@
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using Microsoft.Win32.SafeHandles;
+using SmartPerformanceDoctor.App.Branding;
+
+namespace SmartPerformanceDoctor.App.Services.Commercial;
+
+internal static class ForensicSecureDeleteEngine
+{
+    private const uint FsctlFileLevelTrim = 0x00098208;
+    private const uint FsctlSetZeroData = 0x000980C8;
+
+    public static IReadOnlyList<string> BuildChainSteps(string storageType, SecureDeleteSecurityLevel level)
+    {
+        var steps = new List<string> { "읽기전용 해제", "대체 데이터 스트림(ADS) 제거" };
+        var passes = SecureDeleteStorageProfiler.GetOverwritePasses(storageType, level);
+        if (passes > 0)
+        {
+            steps.Add($"데이터 영역 {passes}회 덮어쓰기 ({SecureDeleteStorageProfiler.SelectProtocol(storageType, level)})");
+        }
+        else
+        {
+            var crypto = SecureDeleteStorageProfiler.GetFileClearPasses(storageType, level);
+            steps.Add($"SSD/NVMe: 파일 CSPRNG 덮어쓰기 {crypto}회 · 표본 검증 · TRIM 요청 (장치 crypto erase 아님)");
+        }
+
+        steps.Add("파일명 난수화");
+        steps.Add("메타데이터 축소 후 삭제");
+        steps.Add("섀도 복사본(VSS) 잔존 위험 스캔 및 고지");
+        return steps;
+    }
+
+    public static async Task SecureDeleteFileAsync(
+        string path,
+        string storageType,
+        SecureDeleteSecurityLevel level,
+        CancellationToken cancellationToken)
+    {
+        if (!File.Exists(path))
+        {
+            return;
+        }
+
+        ClearReadOnlyAttributes(path);
+        WipeAlternateDataStreams(path);
+        EnsureAlternateDataStreamsCleared(path);
+
+        if (storageType is "SSD" or "NVMe")
+        {
+            // Logical file Clear only; this is not a device cryptographic erase.
+            await SsdFileClearAsync(path, level, cancellationToken);
+            // Obfuscation is intentionally disabled: it cannot prove physical-cell erasure.
+        }
+        else
+        {
+            // Unknown and removable file systems still require a conservative logical clear before deletion.
+            var passes = Math.Max(1, SecureDeleteStorageProfiler.GetOverwritePasses(storageType, level));
+            await OverwriteFileAsync(path, passes, storageType, cancellationToken);
+        }
+
+        TryTrimOrZeroData(path);
+        await RandomizeNameAndDeleteAsync(path, cancellationToken);
+        if (storageType is "SSD" or "NVMe")
+        {
+            TryVolumeRetrim(path);
+        }
+    }
+
+    public static ShadowCopyRiskReport ScanShadowCopyRisk(string path)
+    {
+        var report = new ShadowCopyRiskReport();
+        try
+        {
+            var root = Path.GetPathRoot(Path.GetFullPath(path));
+            if (string.IsNullOrWhiteSpace(root))
+            {
+                return report;
+            }
+
+            var drive = root.TrimEnd('\\');
+            using var process = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "powershell.exe",
+                Arguments =
+                    $"-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"" +
+                    $"$d='{drive}'; " +
+                    "(Get-CimInstance Win32_ShadowCopy -ErrorAction SilentlyContinue | " +
+                    "Where-Object { $_.VolumeName -like ('*' + $d.Replace('\\\\','') + '*') }).Count\"",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            });
+
+            if (process is null)
+            {
+                return report;
+            }
+
+            var output = process.StandardOutput.ReadToEnd().Trim();
+            process.WaitForExit(5000);
+            if (int.TryParse(output, out var count) && count > 0)
+            {
+                report.ShadowCopyCount = count;
+                report.Volume = drive;
+                report.Advisory =
+                    $"볼륨 {drive}에 섀도 복사본 {count}개가 감지되었습니다. " +
+                    "삭제한 파일의 이전 버전이 시스템 보호/복구 지점에 남아 있을 수 있습니다. " +
+                    "Windows 설정 > 시스템 > 저장소 > 고급 저장소 설정 > 시스템 보호에서 관리자 정책을 확인하세요.";
+            }
+        }
+        catch
+        {
+            // Scan-only; never mutate VSS.
+        }
+
+        return report;
+    }
+
+    internal sealed class ShadowCopyRiskReport
+    {
+        public string Volume { get; set; } = "";
+        public int ShadowCopyCount { get; set; }
+        public string Advisory { get; set; } = "";
+        public bool HasRisk => ShadowCopyCount > 0;
+    }
+
+    private static void ClearReadOnlyAttributes(string path)
+    {
+        try
+        {
+            File.SetAttributes(path, FileAttributes.Normal);
+        }
+        catch
+        {
+            // Continue with best effort.
+        }
+    }
+
+    private static void WipeAlternateDataStreams(string path)
+    {
+        try
+        {
+            // FindFirstStreamW enumerates :stream names correctly (Directory.EnumerateFiles "file:*" is unreliable).
+            var findData = new WIN32_FIND_STREAM_DATA();
+            var handle = FindFirstStreamW(path, 0, ref findData, 0);
+            if (handle == IntPtr.Zero || handle == new IntPtr(-1))
+            {
+                return;
+            }
+
+            try
+            {
+                do
+                {
+                    var streamName = findData.cStreamName;
+                    if (string.IsNullOrWhiteSpace(streamName) || streamName is "::$DATA")
+                    {
+                        continue;
+                    }
+
+                    // streamName looks like ":Zone.Identifier:$DATA"
+                    var colon = streamName.IndexOf(':', 1);
+                    var bare = colon > 1 ? streamName[1..colon] : streamName.TrimStart(':').Replace(":$DATA", "", StringComparison.OrdinalIgnoreCase);
+                    if (string.IsNullOrWhiteSpace(bare))
+                    {
+                        continue;
+                    }
+
+                    var adsPath = path + ":" + bare;
+                    try
+                    {
+                        if (File.Exists(adsPath))
+                        {
+                            File.SetAttributes(adsPath, FileAttributes.Normal);
+                            // Overwrite small ADS then delete.
+                            try
+                            {
+                                using var fs = new FileStream(adsPath, FileMode.Open, FileAccess.Write, FileShare.None);
+                                var len = fs.Length;
+                                if (len > 0)
+                                {
+                                    var buf = new byte[Math.Min(4096, (int)Math.Min(int.MaxValue, len))];
+                                    RandomNumberGenerator.Fill(buf);
+                                    fs.Position = 0;
+                                    long rem = len;
+                                    while (rem > 0)
+                                    {
+                                        var n = (int)Math.Min(buf.Length, rem);
+                                        fs.Write(buf, 0, n);
+                                        rem -= n;
+                                    }
+
+                                    fs.Flush(true);
+                                }
+                            }
+                            catch
+                            {
+                                // Continue to delete attempt.
+                            }
+
+                            File.Delete(adsPath);
+                        }
+                    }
+                    catch
+                    {
+                        // Ignore individual ADS failures.
+                    }
+                }
+                while (FindNextStreamW(handle, ref findData));
+            }
+            finally
+            {
+                FindClose(handle);
+            }
+        }
+        catch
+        {
+            // ADS enumeration may fail on non-NTFS volumes.
+        }
+    }
+
+    private static void EnsureAlternateDataStreamsCleared(string path)
+    {
+        try
+        {
+            var findData = new WIN32_FIND_STREAM_DATA();
+            var handle = FindFirstStreamW(path, 0, ref findData, 0);
+            if (handle == IntPtr.Zero || handle == new IntPtr(-1))
+            {
+                // Non-NTFS and files without ADS both return no stream handle. There is nothing to verify.
+                return;
+            }
+
+            try
+            {
+                do
+                {
+                    if (!string.IsNullOrWhiteSpace(findData.cStreamName)
+                        && !string.Equals(findData.cStreamName, "::$DATA", StringComparison.OrdinalIgnoreCase))
+                    {
+                        throw new IOException("대체 데이터 스트림을 제거하지 못해 보안 삭제를 중단했습니다.");
+                    }
+                }
+                while (FindNextStreamW(handle, ref findData));
+            }
+            finally
+            {
+                FindClose(handle);
+            }
+        }
+        catch (IOException)
+        {
+            throw;
+        }
+        catch
+        {
+            // A failed enumeration is not evidence of an ADS. The preflight result retains this limitation.
+        }
+    }
+    private static async Task OverwriteFileAsync(
+        string path,
+        int passes,
+        string storageType,
+        CancellationToken cancellationToken)
+    {
+        var len = new FileInfo(path).Length;
+        if (len <= 0) return;
+        var useWriteThrough = storageType is "HDD" or "USB-NTFS";
+        var options = FileOptions.SequentialScan | (useWriteThrough ? FileOptions.WriteThrough : FileOptions.None);
+        var buffer = new byte[Math.Min(65536, Math.Max(1, len))];
+        await using (var fs = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.None, 4096, options))
+        {
+            for (var pass = 0; pass < passes; pass++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                FillOverwriteBuffer(buffer, pass, passes);
+                fs.Position = 0;
+                for (var remaining = len; remaining > 0;)
+                {
+                    var chunk = (int)Math.Min(buffer.Length, remaining);
+                    await fs.WriteAsync(buffer.AsMemory(0, chunk), cancellationToken);
+                    remaining -= chunk;
+                }
+                await fs.FlushAsync(cancellationToken);
+                fs.Flush(true);
+                if (useWriteThrough) FlushFileBuffers(fs.SafeFileHandle);
+            }
+        }
+        await VerifyOverwriteSamplesAsync(path, len, buffer, cancellationToken);
+    }
+    private static async Task VerifyOverwriteSamplesAsync(string path, long length, byte[] expected, CancellationToken cancellationToken)
+    {
+        if (length <= 0 || expected.Length == 0) return;
+        var offsets = new[] { 0L, Math.Max(0, length / 2), Math.Max(0, length - Math.Min(512, length)) }
+            .Distinct()
+            .ToArray();
+        await using var input = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.RandomAccess);
+        var actual = new byte[512];
+        foreach (var offset in offsets)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            input.Position = offset;
+            var wanted = (int)Math.Min(actual.Length, length - offset);
+            var read = await input.ReadAsync(actual.AsMemory(0, wanted), cancellationToken);
+            if (read != wanted) throw new IOException("덮어쓰기 사후 검증을 완료하지 못했습니다.");
+            for (var index = 0; index < read; index++)
+            {
+                if (actual[index] != expected[(int)((offset + index) % expected.Length)])
+                    throw new IOException("덮어쓰기 사후 검증이 일치하지 않습니다.");
+            }
+        }
+    }
+
+    private static void FillOverwriteBuffer(byte[] buffer, int pass, int totalPasses)
+    {
+        if (totalPasses >= 7)
+        {
+            switch (pass)
+            {
+                case 0:
+                    Array.Fill(buffer, (byte)0x00);
+                    return;
+                case 1:
+                    Array.Fill(buffer, (byte)0xFF);
+                    return;
+                default:
+                    RandomNumberGenerator.Fill(buffer);
+                    return;
+            }
+        }
+
+        switch (pass)
+        {
+            case 0:
+                Array.Fill(buffer, (byte)0x00);
+                break;
+            case 1:
+                Array.Fill(buffer, (byte)0xFF);
+                break;
+            default:
+                RandomNumberGenerator.Fill(buffer);
+                break;
+        }
+    }
+
+    private static async Task SsdFileClearAsync(
+        string path,
+        SecureDeleteSecurityLevel level,
+        CancellationToken cancellationToken)
+    {
+        var len = new FileInfo(path).Length;
+        if (len <= 0) return;
+        var passes = SecureDeleteStorageProfiler.GetFileClearPasses("SSD", level);
+        var buffer = new byte[Math.Min(65536, Math.Max(1, len))];
+        await using (var fs = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.None, 4096, FileOptions.WriteThrough))
+        {
+            for (var pass = 0; pass < passes; pass++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                RandomNumberGenerator.Fill(buffer);
+                fs.Position = 0;
+                for (var remaining = len; remaining > 0;)
+                {
+                    var chunk = (int)Math.Min(buffer.Length, remaining);
+                    await fs.WriteAsync(buffer.AsMemory(0, chunk), cancellationToken);
+                    remaining -= chunk;
+                }
+                await fs.FlushAsync(cancellationToken);
+                fs.Flush(true);
+            }
+        }
+        await VerifyOverwriteSamplesAsync(path, len, buffer, cancellationToken);
+    }
+    private static void TryTrimOrZeroData(string path)
+    {
+        try
+        {
+            using var handle = CreateFile(
+                path,
+                unchecked((int)0x80000000) | 0x40000000,
+                FileShare.ReadWrite | FileShare.Delete,
+                IntPtr.Zero,
+                3,
+                0,
+                IntPtr.Zero);
+            if (handle.IsInvalid)
+            {
+                return;
+            }
+
+            var fileSize = new FileInfo(path).Length;
+            if (fileSize > 0)
+            {
+                var zero = new FILE_ZERO_DATA_INFORMATION
+                {
+                    FileOffset = 0,
+                    BeyondFinalZero = fileSize
+                };
+                _ = DeviceIoControl(
+                    handle,
+                    FsctlSetZeroData,
+                    ref zero,
+                    Marshal.SizeOf<FILE_ZERO_DATA_INFORMATION>(),
+                    IntPtr.Zero,
+                    0,
+                    out _,
+                    IntPtr.Zero);
+            }
+
+            var range = new FILE_ALLOCATED_RANGE_BUFFER
+            {
+                FileOffset = 0,
+                Length = Math.Max(1, fileSize)
+            };
+            _ = DeviceIoControl(
+                handle,
+                FsctlFileLevelTrim,
+                ref range,
+                Marshal.SizeOf<FILE_ALLOCATED_RANGE_BUFFER>(),
+                IntPtr.Zero,
+                0,
+                out _,
+                IntPtr.Zero);
+        }
+        catch
+        {
+            try
+            {
+                using var fs = new FileStream(path, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+                fs.SetLength(0);
+            }
+            catch
+            {
+                // Best-effort deallocation.
+            }
+        }
+    }
+
+    public static void TryVolumeRetrim(string path)
+    {
+        try
+        {
+            var root = Path.GetPathRoot(Path.GetFullPath(path));
+            if (string.IsNullOrWhiteSpace(root))
+            {
+                return;
+            }
+
+            var drive = root.TrimEnd('\\');
+            using var process = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "powershell.exe",
+                Arguments =
+                    $"-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"" +
+                    $"Optimize-Volume -DriveLetter '{drive.TrimEnd(':')}' -ReTrim -ErrorAction SilentlyContinue\"",
+                UseShellExecute = false,
+                CreateNoWindow = true
+            });
+            process?.WaitForExit(12000);
+        }
+        catch
+        {
+            // Best-effort volume retrim; deletion chain already applied.
+        }
+    }
+
+    private static async Task RandomizeNameAndDeleteAsync(string path, CancellationToken cancellationToken)
+    {
+        var directory = Path.GetDirectoryName(path);
+        if (string.IsNullOrWhiteSpace(directory))
+        {
+            File.Delete(path);
+            return;
+        }
+
+        var firstRandomName = Path.Combine(directory, ".pcc-shred-" + Guid.NewGuid().ToString("N"));
+        var secondRandomName = Path.Combine(directory, ".pcc-shred-" + Guid.NewGuid().ToString("N"));
+        if (File.Exists(path))
+        {
+            File.Move(path, firstRandomName);
+            File.Move(firstRandomName, secondRandomName);
+            await using (var fs = new FileStream(secondRandomName, FileMode.Open, FileAccess.Write, FileShare.None))
+            {
+                fs.SetLength(0);
+                await fs.FlushAsync(cancellationToken);
+                fs.Flush(true);
+            }
+
+            File.Delete(secondRandomName);
+        }
+    }
+
+    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    private static extern SafeFileHandle CreateFile(
+        string lpFileName,
+        int dwDesiredAccess,
+        FileShare dwShareMode,
+        IntPtr lpSecurityAttributes,
+        int dwCreationDisposition,
+        int dwFlagsAndAttributes,
+        IntPtr hTemplateFile);
+
+    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    private static extern IntPtr FindFirstStreamW(
+        string lpFileName,
+        int InfoLevel,
+        ref WIN32_FIND_STREAM_DATA lpFindStreamData,
+        int dwFlags);
+
+    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool FindNextStreamW(IntPtr hFindStream, ref WIN32_FIND_STREAM_DATA lpFindStreamData);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool FindClose(IntPtr hFindFile);
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    private struct WIN32_FIND_STREAM_DATA
+    {
+        public long StreamSize;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 296)]
+        public string cStreamName;
+    }
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool DeviceIoControl(
+        SafeFileHandle hDevice,
+        uint dwIoControlCode,
+        ref FILE_ZERO_DATA_INFORMATION lpInBuffer,
+        int nInBufferSize,
+        IntPtr lpOutBuffer,
+        int nOutBufferSize,
+        out int lpBytesReturned,
+        IntPtr lpOverlapped);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool DeviceIoControl(
+        SafeFileHandle hDevice,
+        uint dwIoControlCode,
+        ref FILE_ALLOCATED_RANGE_BUFFER lpInBuffer,
+        int nInBufferSize,
+        IntPtr lpOutBuffer,
+        int nOutBufferSize,
+        out int lpBytesReturned,
+        IntPtr lpOverlapped);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool FlushFileBuffers(SafeFileHandle hFile);
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct FILE_ZERO_DATA_INFORMATION
+    {
+        public long FileOffset;
+        public long BeyondFinalZero;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct FILE_ALLOCATED_RANGE_BUFFER
+    {
+        public long FileOffset;
+        public long Length;
+    }
+}

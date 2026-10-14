@@ -1,0 +1,67 @@
+{
+  "TargetCount": 1,
+  "BlockedCount": 0,
+  "Checks": [
+    {
+      "Code": "P01",
+      "Status": "pass"
+    },
+    {
+      "Code": "P06",
+      "Status": "pass"
+    },
+    {
+      "Code": "P12",
+      "Status": "pass"
+    },
+    {
+      "Code": "P02",
+      "Status": "pass"
+    },
+    {
+      "Code": "P03",
+      "Status": "pass"
+    },
+    {
+      "Code": "P05",
+      "Status": "pass"
+    },
+    {
+      "Code": "P04",
+      "Status": "pass"
+    },
+    {
+      "Code": "P07",
+      "Status": "pass"
+    },
+    {
+      "Code": "P08",
+      "Status": "pass"
+    },
+    {
+      "Code": "P09",
+      "Status": "warn"
+    },
+    {
+      "Code": "P10",
+      "Status": "pass"
+    },
+    {
+      "Code": "P11",
+      "Status": "pass"
+    },
+    {
+      "Code": "E_ELEVATION_REQUIRED",
+      "Status": "pass"
+    }
+  ],
+  "_Evidence": {
+    "sourceSha": "63febc9ca94d8da90e5bfb3696f85f4ccc0ec125",
+    "environment": "Windows 11 Pro 26200; .NET SDK 10.0.401; 24 logical processors; synthetic local fixed-disk fixtures",
+    "command": "dotnet tools/SmartPerformanceDoctor.StorageCareProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.StorageCareProbe.dll --synthetic docs/rework/evidence/wo17 <WORKSPACE_SYNTHETIC_PARENT>",
+    "input": "generated synthetic fixtures",
+    "exitCode": 0,
+    "outputFile": "SECURE_DELETE_PREFLIGHT_RESULT.json",
+    "scope": "Windows synthetic filesystem; no physical sanitization or GUI claim"
+  }
+}

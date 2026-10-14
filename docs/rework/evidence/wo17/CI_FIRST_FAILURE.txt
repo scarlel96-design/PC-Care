@@ -1,0 +1,50 @@
+windows-validation	Synthetic recovery and UI Automation harness	﻿2026-10-13T17:07:13.9610035Z ##[group]Run dotnet build tools/SmartPerformanceDoctor.RecoverySandbox -c Release -p:Platform=x64 -m:1 -v:minimal
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:13.9610674Z ^[[36;1mdotnet build tools/SmartPerformanceDoctor.RecoverySandbox -c Release -p:Platform=x64 -m:1 -v:minimal^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:13.9611064Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw "sandbox build failed" }^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:13.9611405Z ^[[36;1m./scripts/wo10-sandbox-validation.ps1 -OutputDirectory artifacts/wo10-sandbox^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:13.9611783Z ^[[36;1m./scripts/wo11-sandbox-validation.ps1 -OutputDirectory artifacts/wo11-sandbox^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:13.9612240Z ^[[36;1mdotnet build tools/SmartPerformanceDoctor.CleanupProbe -c Release -p:Platform=x64 -m:1 -v:minimal^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:13.9612629Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw "cleanup probe build failed" }^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:13.9613159Z ^[[36;1m& tools/SmartPerformanceDoctor.CleanupProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.CleanupProbe.exe --synthetic artifacts/wo11-ci^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:13.9613733Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw "cleanup roundtrip failed" }^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:13.9614096Z ^[[36;1mdotnet build tools/SmartPerformanceDoctor.GuiProbe -c Release -p:Platform=x64 -v:minimal^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:13.9614461Z ^[[36;1mif ($LASTEXITCODE -ne 0) { throw "UIA harness build failed" }^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:13.9614949Z ^[[36;1m& tools/SmartPerformanceDoctor.GuiProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.GuiProbe.exe | Set-Content artifacts/wo10-sandbox/gui-status.json^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:13.9664275Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:13.9664556Z env:
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:13.9664732Z   DOTNET_ROOT: C:\Program Files\dotnet
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:13.9664936Z ##[endgroup]
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:14.6313782Z   Determining projects to restore...
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:14.9843907Z   Restored D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.RecoverySandbox\SmartPerformanceDoctor.RecoverySandbox.csproj (in 143 ms).
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:14.9855602Z   Restored D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\SmartPerformanceDoctor.UpdateEngine.csproj (in 136 ms).
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:15.2567099Z   SmartPerformanceDoctor.UpdateEngine -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:15.4583460Z   SmartPerformanceDoctor.RecoverySandbox -> D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.RecoverySandbox\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.RecoverySandbox.dll
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:15.4655414Z 
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:15.4659661Z Build succeeded.
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:15.4660082Z     0 Warning(s)
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:15.4660313Z     0 Error(s)
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:15.4661259Z 
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:15.4661578Z Time Elapsed 00:00:01.10
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:19.2052175Z WO10_SANDBOX_PASS crashScenarios=6 hardLinkRejected=1 bytesRestored=6
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:23.9835085Z WO11_SANDBOX_PASS crashScenarios=6 hardLinkRejected=1 bytesRestored=6 irreversibleReviewCases=2
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:24.4754130Z   Determining projects to restore...
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:24.8466814Z   Restored D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.CleanupProbe\SmartPerformanceDoctor.CleanupProbe.csproj (in 153 ms).
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:24.8493088Z   1 of 2 projects are up-to-date for restore.
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.1519209Z   SmartPerformanceDoctor.UpdateEngine -> D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.2637282Z ##[error]D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\Services\SystemCare\StorageInventory.cs(59,131): error CS0246: The type or namespace name 'StorageScanPolicy' could not be found (are you missing a using directive or an assembly reference?) [D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.CleanupProbe\SmartPerformanceDoctor.CleanupProbe.csproj]
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.2646725Z ##[error]D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\Services\SystemCare\StorageInventory.cs(68,64): error CS0246: The type or namespace name 'StorageScanPolicy' could not be found (are you missing a using directive or an assembly reference?) [D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.CleanupProbe\SmartPerformanceDoctor.CleanupProbe.csproj]
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.2700876Z 
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.2706994Z Build FAILED.
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.2707195Z 
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.2709882Z ##[error]D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\Services\SystemCare\StorageInventory.cs(59,131): error CS0246: The type or namespace name 'StorageScanPolicy' could not be found (are you missing a using directive or an assembly reference?) [D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.CleanupProbe\SmartPerformanceDoctor.CleanupProbe.csproj]
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.2712807Z ##[error]D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\Services\SystemCare\StorageInventory.cs(68,64): error CS0246: The type or namespace name 'StorageScanPolicy' could not be found (are you missing a using directive or an assembly reference?) [D:\a\PC-Care\PC-Care\tools\SmartPerformanceDoctor.CleanupProbe\SmartPerformanceDoctor.CleanupProbe.csproj]
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.2713882Z     0 Warning(s)
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.2714091Z     2 Error(s)
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.2714226Z 
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.2714332Z Time Elapsed 00:00:01.09
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.4043296Z ^[[31;1mException: ^[[0mD:\a\_temp\fc88b7ad-046e-4cf2-a668-f4eaf4d59176.ps1:7^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.4043893Z ^[[31;1m^[[0m^[[36;1mLine |^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.4044425Z ^[[31;1m^[[0m^[[36;1m^[[36;1m   7 | ^[[0m if ($LASTEXITCODE -ne 0) { ^[[36;1mthrow "cleanup probe build failed"^[[0m }^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.4045316Z ^[[31;1m^[[0m^[[36;1m^[[36;1m^[[0m^[[36;1m^[[0m^[[36;1m     | ^[[31;1m                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.4045805Z ^[[31;1m^[[0m^[[36;1m^[[36;1m^[[0m^[[36;1m^[[0m^[[36;1m^[[31;1m^[[31;1m^[[36;1m     | ^[[31;1mcleanup probe build failed^[[0m
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-13T17:07:25.4564224Z ##[error]Process completed with exit code 1.

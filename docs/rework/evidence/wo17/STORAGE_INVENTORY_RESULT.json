@@ -1,0 +1,112 @@
+{
+  "Drives": [
+    {
+      "Drive": "C:\\",
+      "CapacityBytes": 2047022723072,
+      "AvailableBytes": 72533622784,
+      "TotalFreeBytes": 72533622784,
+      "Status": "Measured"
+    },
+    {
+      "Drive": "D:\\",
+      "CapacityBytes": null,
+      "AvailableBytes": null,
+      "TotalFreeBytes": null,
+      "Status": "Unsupported"
+    },
+    {
+      "Drive": "E:\\",
+      "CapacityBytes": null,
+      "AvailableBytes": null,
+      "TotalFreeBytes": null,
+      "Status": "Unsupported"
+    },
+    {
+      "Drive": "F:\\",
+      "CapacityBytes": null,
+      "AvailableBytes": null,
+      "TotalFreeBytes": null,
+      "Status": "Unsupported"
+    }
+  ],
+  "Candidates": [
+    {
+      "CandidateId": "4cb2d9302b9e413a9265e072b83c135f",
+      "Disposition": 1,
+      "LogicalBytes": 683,
+      "LastWriteUtc": "2026-10-13T17:18:05.2834532Z",
+      "Reason": "사용 목적 확인 필요",
+      "Identity": {
+        "RootId": "A2927E354C7F0BAC:000B0000002EB2D60000000000000000",
+        "FileId": "A2927E354C7F0BAC:000B0000002EB2BC0000000000000000",
+        "Length": 683,
+        "LastWriteUtc": "2026-10-13T17:18:05.2834532Z"
+      },
+      "AllocatedBytes": 4096,
+      "CanExecute": false
+    },
+    {
+      "CandidateId": "75961ba5b1c14e35b0d995f905c5ff23",
+      "Disposition": 1,
+      "LogicalBytes": 1048576,
+      "LastWriteUtc": "2026-10-13T17:18:05.1103691Z",
+      "Reason": "사용 목적 확인 필요",
+      "Identity": {
+        "RootId": "A2927E354C7F0BAC:000B0000002EB2D60000000000000000",
+        "FileId": "A2927E354C7F0BAC:00090000002EB2E50000000000000000",
+        "Length": 1048576,
+        "LastWriteUtc": "2026-10-13T17:18:05.1103691Z"
+      },
+      "AllocatedBytes": 1048576,
+      "CanExecute": false
+    },
+    {
+      "CandidateId": "295ef04eed804cd4a4631b247be09a78",
+      "Disposition": 1,
+      "LogicalBytes": 32,
+      "LastWriteUtc": "2026-10-13T17:18:05.0878239Z",
+      "Reason": "사용 목적 확인 필요",
+      "Identity": {
+        "RootId": "A2927E354C7F0BAC:000B0000002EB2D60000000000000000",
+        "FileId": "A2927E354C7F0BAC:00090000002EB2E30000000000000000",
+        "Length": 32,
+        "LastWriteUtc": "2026-10-13T17:18:05.0878239Z"
+      },
+      "AllocatedBytes": 32,
+      "CanExecute": false
+    },
+    {
+      "CandidateId": "b06c22262d4246a1906d179e73a2b9c4",
+      "Disposition": 0,
+      "LogicalBytes": 65537,
+      "LastWriteUtc": "2026-10-04T17:18:05.3001565Z",
+      "Reason": "현재 사용자 소유의 7일 이상 된 임시 후보 · 실행 승인 아님",
+      "Identity": {
+        "RootId": "A2927E354C7F0BAC:000B0000002EB2D60000000000000000",
+        "FileId": "A2927E354C7F0BAC:000B0000002EB2760000000000000000",
+        "Length": 65537,
+        "LastWriteUtc": "2026-10-04T17:18:05.3001565Z"
+      },
+      "AllocatedBytes": 69632,
+      "CanExecute": false
+    }
+  ],
+  "MeasuredLogicalBytes": 1114828,
+  "ExcludedCount": 3,
+  "Complete": true,
+  "Limitation": "파일 논리 크기입니다. 할당 크기와 실제 확보 가능 공간은 미확인입니다. 검사 깊이와 항목 수를 제한합니다.",
+  "ElapsedMs": 119.1,
+  "CollectorCpuMs": 109.375,
+  "WorkingSetBytes": 44154880,
+  "MeasuredAllocatedBytes": 1122336,
+  "MissingReasons": [],
+  "_Evidence": {
+    "sourceSha": "63febc9ca94d8da90e5bfb3696f85f4ccc0ec125",
+    "environment": "Windows 11 Pro 26200; .NET SDK 10.0.401; 24 logical processors; synthetic local fixed-disk fixtures",
+    "command": "dotnet tools/SmartPerformanceDoctor.StorageCareProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.StorageCareProbe.dll --synthetic docs/rework/evidence/wo17 <WORKSPACE_SYNTHETIC_PARENT>",
+    "input": "generated synthetic fixtures",
+    "exitCode": 0,
+    "outputFile": "STORAGE_INVENTORY_RESULT.json",
+    "scope": "Windows synthetic filesystem; no physical sanitization or GUI claim"
+  }
+}

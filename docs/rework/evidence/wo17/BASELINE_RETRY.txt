@@ -1,0 +1,12 @@
+WORK ITEM: WO17
+SOURCE SHA: prior binary provenance not pinned before this subset run; use BASELINE_CI_RESULT.txt for the pinned baseline
+ENVIRONMENT: Windows 11 Pro 26200; .NET SDK 10.0.401; 24 logical processors; synthetic local fixed-disk fixtures
+COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --filter "FullyQualifiedName~WO16|FullyQualifiedName~WO11" --logger "trx;LogFileName=wo17-baseline-retry.trx" -v:minimal
+INPUT: synthetic fixtures; no user documents or vaults
+OUTPUT:
+<REPOSITORY>\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+결과 파일: <REPOSITORY>\tests\SmartPerformanceDoctor.Tests\TestResults\wo17-baseline-retry.trx
+
+통과!  - 실패:     0, 통과:    76, 건너뜀:     0, 전체:    76, 기간: 1 m 45 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+EXIT CODE: 0

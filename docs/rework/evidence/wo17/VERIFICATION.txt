@@ -1,0 +1,55 @@
+WORK ITEM: WO17 Safe StorageCare and Secure Delete Reliability
+STATUS: PARTIAL
+BRANCH: codex/pccare-wo17-safe-storagecare-secure-delete
+BASELINE SHA: 229ede0c0488c2e878f212a4d6420bfb10c44a36
+CI SOURCE SHA: 63febc9ca94d8da90e5bfb3696f85f4ccc0ec125
+SOURCE TREE: 4d14aecd85a0962cd8664ea4bf8a1ec6e2dfdaba
+CHANGED FIELDS: StorageScanPolicy; CleanupCandidate.AllocatedBytes; MissingReasons; ApplyDetailedAsync.Status; same-handle Clear.
+MODIFIED_FILE: docs/rework/evidence/wo17/MODIFIED_FILE
+DIFF_FILE: docs/rework/evidence/wo17/DIFF_FILE
+VERIFICATION: docs/rework/evidence/wo17/VERIFICATION.txt
+ROLLBACK: docs/rework/evidence/wo17/ROLLBACK.sh
+ORIGINAL SHA256: 1c2cf13ca59e650948924e32d38807368a7b33d62017896f2633466b3b26b464
+MODIFIED SHA256: 6a915f84716f861241c35ebf106acdcc6508950172ea9de9799e7b8bb4f5625c
+BASELINE COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --logger trx;LogFileName=wo17-baseline.trx -v:minimal
+BASELINE INPUT: prior WO16 compiled test assembly; synthetic regression fixtures
+BASELINE RESULT: testhost connection timed out after 90 seconds; aborted; EXIT 1.
+BASELINE RETRY COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --filter FullyQualifiedName~WO16|FullyQualifiedName~WO11 -v:minimal
+BASELINE RETRY OUTPUT: Failed 0, Passed 76, Skipped 0, Total 76; EXIT 0.
+MODIFIED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter FullyQualifiedName~WO17 --logger trx;LogFileName=wo17-final-focused.trx -v:minimal
+MODIFIED INPUT: synthetic files; bounded inventory; Clear and cancellation fixtures.
+MODIFIED OUTPUT: Failed 0, Passed 39, Skipped 0, Total 39; EXIT 0.
+PROBE COMMAND: dotnet tools/SmartPerformanceDoctor.StorageCareProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.StorageCareProbe.dll --synthetic docs/rework/evidence/wo17 <WORKSPACE_SYNTHETIC_PARENT>
+PROBE OUTPUT: WO17_SYNTHETIC=PASS;QUARANTINE_SHA256_MATCH=TRUE;DELETE=1;CANCEL_PRESERVED=TRUE;PRODUCTION_CLEANUP=FALSE
+PROBE EXIT: 0
+ROLLBACK COMMAND: bash docs/rework/evidence/wo17/ROLLBACK.sh <WO17_ROLLBACK_COPY>/RESTORE_COPY
+ROLLBACK INPUT: independent copy of MODIFIED_FILE
+ROLLBACK OUTPUT/EXIT: ROLLBACK_SHA256_RESTORED=1c2cf13ca59e650948924e32d38807368a7b33d62017896f2633466b3b26b464; EXIT 0.
+RESTORED BEHAVIOR: only the independent source copy is restored. Product source remains modified.
+REAL FILE RECOVERY: SHA256 checked in QUARANTINE_RECOVERY_RESULT.json. Separate-process cases: CRASH_RECOVERY_RESULT.json.
+GUI: NOT TESTED. Static IDs and build are not GUI interaction.
+PHYSICAL POWER LOSS: NOT TESTED.
+PHASE 1: NO-GO.
+
+BASELINE CI: 38419949642 SUCCESS. Source 1ca80b98f63ec953c952647fcf28f8032ac986a7.
+BASELINE CI LITERAL OUTPUT: Passed! - Failed: 0, Passed: 1139, Skipped: 111, Total: 1250.
+LOCAL FULL COMMAND: RUNNER_TEMP=<WORKSPACE_SYNTHETIC_PARENT>; dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --logger "trx;LogFileName=wo17-source63-isolated-full.trx" -v:minimal
+LOCAL FULL OUTPUT: see FULL_TEST_RESULT.txt for exact literal output and exit code.
+REAL SYNTHETIC RESTORE: 6/6 process termination cases restored all 1MiB bytes. SHA256 F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5.
+RESTORED SOURCE SHA256: 1c2cf13ca59e650948924e32d38807368a7b33d62017896f2633466b3b26b464.
+MODIFIED SOURCE RETAINED SHA256: 6a915f84716f861241c35ebf106acdcc6508950172ea9de9799e7b8bb4f5625c.
+TESTS: no existing test removal; no Skip policy change. New WO17 cases: 39.
+REVIEW REJECTION: combined build/probe action with real-user TEMP fixture placement was rejected. No restricted TEMP retry followed.
+RESOLUTION: tools now require an explicit synthetic parent. Local probes used a generated workspace directory. CI uses disposable RUNNER_TEMP.
+REMAINING P0: generic cleanup execution contract; directory deletion identity; interrupted destructive execution journal reconciliation.
+REMAINING P1: audit content hash is collected before final handle binding; independent audit trust; registered custom protection roots.
+
+FINAL WINDOWS CI: 38436799177 SUCCESS; SOURCE 63febc9ca94d8da90e5bfb3696f85f4ccc0ec125; TREE 4d14aecd85a0962cd8664ea4bf8a1ec6e2dfdaba.
+CI OUTPUT: Passed! - Failed: 0, Passed: 1178, Skipped: 111, Total: 1289.
+LOCAL FULL LITERAL OUTPUT: 통과!  - 실패:     0, 통과:  1178, 건너뜀:   111, 전체:  1289, 기간: 4 m 9 s.
+LOCAL FULL EXIT CODE: 0
+BASELINE RETRY PROVENANCE: Existing compiled assembly was not freshly pinned. Do not use it as the authoritative full baseline.
+AUTHORITATIVE BASELINE: prior Windows CI source matched the base implementation paths; 1139 PASS / 111 SKIP / 0 FAIL.
+CHANGED FIELDS: nullable AllocatedBytes; MissingReasons; ExecutionEnabled=false; SecureDeleteExecutionResult.Status; PartialWritePossible; same-handle Clear and delete.
+RESTORE WARNING/ERROR CLAIM: Local restore succeeded. Final CI build warning detail refresh is pending. Do not infer warning counts from SUCCESS alone.
+DOCUMENT COMMIT: separate from the CI source. Resolve its HEAD through the submitted branch ref.

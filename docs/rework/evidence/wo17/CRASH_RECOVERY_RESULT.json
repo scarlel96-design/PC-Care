@@ -1,0 +1,120 @@
+{
+  "Results": [
+    {
+      "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "aclProtected": true,
+      "exitCode": 0,
+      "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+      "scenario": "Prepared",
+      "termination": "Separate process forcibly terminated",
+      "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":0}",
+      "status": "PASS",
+      "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5"
+    },
+    {
+      "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "aclProtected": true,
+      "exitCode": 0,
+      "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+      "scenario": "Moved",
+      "termination": "Separate process forcibly terminated",
+      "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":1}",
+      "status": "PASS",
+      "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5"
+    },
+    {
+      "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "aclProtected": true,
+      "exitCode": 0,
+      "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+      "scenario": "Quarantined",
+      "termination": "Separate process forcibly terminated",
+      "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":1}",
+      "status": "PASS",
+      "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5"
+    },
+    {
+      "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "aclProtected": true,
+      "exitCode": 0,
+      "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+      "scenario": "RollingBack",
+      "termination": "Separate process forcibly terminated",
+      "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":1}",
+      "status": "PASS",
+      "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5"
+    },
+    {
+      "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "aclProtected": true,
+      "exitCode": 0,
+      "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+      "scenario": "RestoredMove",
+      "termination": "Separate process forcibly terminated",
+      "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":0}",
+      "status": "PASS",
+      "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5"
+    },
+    {
+      "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "aclProtected": true,
+      "exitCode": 0,
+      "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+      "scenario": "Restored",
+      "termination": "Separate process forcibly terminated",
+      "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":0}",
+      "status": "PASS",
+      "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5"
+    },
+    {
+      "status": "PASS",
+      "exitCode": 3,
+      "output": "SANDBOX_BLOCKED IOException",
+      "originalPreserved": true,
+      "scenario": "HardLink"
+    },
+    {
+      "status": "PASS",
+      "exitCode": 3,
+      "output": "SANDBOX_BLOCKED IOException",
+      "originalPreserved": true,
+      "scenario": "Junction"
+    },
+    {
+      "status": "PASS",
+      "exitCode": 3,
+      "output": "SANDBOX_BLOCKED IOException",
+      "originalPreserved": true,
+      "scenario": "SymbolicLink"
+    },
+    {
+      "scenario": "DeletePrepared",
+      "quarantinePreserved": true,
+      "exitCode": 3,
+      "journalUnchanged": true,
+      "output": "SANDBOX_BLOCKED InvalidDataException",
+      "rollback": "BLOCKED: irreversible state needs review",
+      "status": "PASS",
+      "termination": "Separate process forcibly terminated"
+    },
+    {
+      "scenario": "Deleted",
+      "quarantinePreserved": false,
+      "exitCode": 3,
+      "journalUnchanged": true,
+      "output": "SANDBOX_BLOCKED InvalidDataException",
+      "rollback": "BLOCKED: irreversible state needs review",
+      "status": "PASS",
+      "termination": "Separate process forcibly terminated"
+    }
+  ],
+  "_Evidence": {
+    "sourceSha": "63febc9ca94d8da90e5bfb3696f85f4ccc0ec125",
+    "environment": "Windows 11 Pro 26200; .NET SDK 10.0.401; 24 logical processors; synthetic local fixed-disk fixtures",
+    "command": "pwsh -NoProfile -File scripts/wo11-sandbox-validation.ps1 -OutputDirectory artifacts/wo17-sandbox",
+    "input": "generated synthetic fixtures",
+    "exitCode": 0,
+    "outputFile": "CRASH_RECOVERY_RESULT.json",
+    "scope": "Windows synthetic filesystem; no physical sanitization or GUI claim"
+  }
+}

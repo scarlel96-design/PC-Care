@@ -1,0 +1,2676 @@
+diff --git a/.github/workflows/wo17-windows-validation.yml b/.github/workflows/wo17-windows-validation.yml
+new file mode 100644
+index 0000000..af1269b
+--- /dev/null
++++ b/.github/workflows/wo17-windows-validation.yml
+@@ -0,0 +1,220 @@
++name: WO17 safe storagecare and secure delete
++
++on:
++  push:
++    branches:
++      - codex/pccare-wo17-safe-storagecare-secure-delete
++    paths-ignore:
++      - 'docs/**'
++      - '.gitattributes'
++  pull_request:
++
++jobs:
++  windows-validation:
++    runs-on: windows-latest
++    timeout-minutes: 55
++    permissions:
++      contents: read
++    steps:
++      - uses: actions/checkout@v4
++      - uses: actions/setup-dotnet@v4
++        with:
++          dotnet-version: '10.0.x'
++      - name: Restore
++        run: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
++      - name: Release build
++        run: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
++      - name: Signed package, publisher, transaction, recovery and staging tests
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests|FullyQualifiedName~WO06' --logger 'trx;LogFileName=wo06-signed-updater.trx' -v:minimal
++      - name: Performance diagnostics scenarios
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO07|FullyQualifiedName~WO08|FullyQualifiedName~WO09|FullyQualifiedName~WO10|FullyQualifiedName~WO11' --logger 'trx;LogFileName=wo09-performance.trx' -v:minimal
++      - name: Read-only Windows collector smoke
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-restore -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'probe build failed' }
++          New-Item -ItemType Directory -Force artifacts/wo07-ci | Out-Null
++          dotnet run --project tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-build --no-restore -- 30 artifacts/wo07-ci/measurement.json
++          if ($LASTEXITCODE -ne 0) { throw 'CPU or memory collector unavailable' }
++          $measurement = Get-Content artifacts/wo07-ci/measurement.json -Raw | ConvertFrom-Json
++          if ($measurement.environment.elevated) {
++            if ($measurement.snapshot.Errors.Where({ $_.Provider.StartsWith('ETW') }).Count -gt 0) { throw 'Elevated ETW collection failed' }
++            if ($measurement.snapshot.EventsReceived -le 0) { throw 'Elevated ETW delivered no events' }
++            if ($null -eq $measurement.remainingOwnedSessions -or $measurement.remainingOwnedSessions -ne 0) { throw 'ETW session cleanup not verified' }
++          }
++      - name: Diagnostic profiles and controlled workloads
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-restore -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'Reference analyzer build failed' }
++          dotnet run --project tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-build --no-restore -- --verify-time-contract
++          if ($LASTEXITCODE -ne 0) { throw 'SDK converted timestamp contract failed' }
++          ./scripts/wo08-measurement.ps1 -OutputDirectory artifacts/wo08-ci -RunControlledWorkloads
++          ./scripts/wo09-disk-identity.ps1 -OutputDirectory artifacts/wo09-ci
++          # CPU reference qualification remains a separate unresolved task.
++      - name: Synthetic recovery and UI Automation harness
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.RecoverySandbox -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw "sandbox build failed" }
++          ./scripts/wo10-sandbox-validation.ps1 -OutputDirectory artifacts/wo10-sandbox
++          ./scripts/wo11-sandbox-validation.ps1 -OutputDirectory artifacts/wo11-sandbox
++          dotnet build tools/SmartPerformanceDoctor.CleanupProbe -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw "cleanup probe build failed" }
++          $fixtureParent = Join-Path $env:RUNNER_TEMP 'wo17-isolated-fixtures'
++          New-Item -ItemType Directory -Force $fixtureParent | Out-Null
++          & tools/SmartPerformanceDoctor.CleanupProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.CleanupProbe.exe --synthetic artifacts/wo11-ci $fixtureParent
++          if ($LASTEXITCODE -ne 0) { throw "cleanup roundtrip failed" }
++          dotnet build tools/SmartPerformanceDoctor.GuiProbe -c Release -p:Platform=x64 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw "UIA harness build failed" }
++          & tools/SmartPerformanceDoctor.GuiProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.GuiProbe.exe | Set-Content artifacts/wo10-sandbox/gui-status.json
++      - name: Separate-process termination and recovery
++        shell: pwsh
++        run: |
++          dotnet build tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          ./scripts/wo06-process-validation.ps1 -OutputDirectory artifacts/wo06-ci-process
++      - name: Production profile and isolated test profile
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'test kit build failed' }
++          dotnet build tools/SmartPerformanceDoctor.VaultRecovery/SmartPerformanceDoctor.VaultRecovery.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'data recovery build failed' }
++          $kit = 'tools/SmartPerformanceDoctor.VMTestKit/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.VMTestKit.exe'
++          $engine = 'src/SmartPerformanceDoctor.UpdateEngine/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateEngine.dll'
++          & $kit audit-production $engine
++          if ($LASTEXITCODE -ne 0) { throw 'test trust leaked into production' }
++          & $kit audit-production 'src/SmartPerformanceDoctor.App/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.dll'
++          if ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production app' }
++          & $kit audit-production 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.dll'
++          if ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production helper' }
++          $profile = Join-Path $env:RUNNER_TEMP 'wo06-test-profile'
++          & $kit fixture-profile $profile ('0' * 40)
++          if ($LASTEXITCODE -ne 0) { throw 'profile generation failed' }
++          $source = Join-Path $profile 'TestVmTrust.g.cs'
++          dotnet build src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -o (Join-Path $profile 'output') -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'test profile build failed' }
++          & $kit audit-production (Join-Path $profile 'output/SmartPerformanceDoctor.UpdateEngine.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test artifact' }
++          dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -m:1 -o (Join-Path $profile 'app-output') -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'VM Release application profile build failed' }
++          & $kit audit-production (Join-Path $profile 'app-output/SmartPerformanceDoctor.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test application' }
++          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateHelper.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'VM application copied a production update helper' }
++          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateEngine.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'VM helper copied a production update engine' }
++          exit 0
++      - name: Vault reliability and separate-process crash recovery
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO12VaultReliabilityTests' --logger 'trx;LogFileName=wo12-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'vault reliability failed' }
++          dotnet build tools/SmartPerformanceDoctor.VaultProbe -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'vault probe build failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --synthetic artifacts/wo12-ci
++          if ($LASTEXITCODE -ne 0) { throw 'vault crash preservation failed' }
++      - name: Authenticated generations and password crash recovery
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO13' --logger 'trx;LogFileName=wo13-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO13 regression failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --crash-safe artifacts/wo13-ci
++          if ($LASTEXITCODE -ne 0) { throw 'authenticated vault recovery failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --recovery-crash artifacts/wo13-ci
++          if ($LASTEXITCODE -ne 0) { throw 'authenticated recovery code persistence failed' }
++      - name: Legacy v5 transition and authenticated recovery
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO14' --logger 'trx;LogFileName=wo14-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO14 regression failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo14 artifacts/wo14-ci
++          if ($LASTEXITCODE -ne 0) { throw 'legacy transition or recovery failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo14-memory artifacts/wo14-memory
++          if ($LASTEXITCODE -ne 0) { throw 'streaming integrity or memory probe failed' }
++      - name: Trusted recovery receipts and replay boundaries
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO15' --logger 'trx;LogFileName=wo15-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO15 regression failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo15 artifacts/wo15-ci
++          if ($LASTEXITCODE -ne 0) { throw 'WO15 receipt or replay probe failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo15-memory artifacts/wo15-memory
++          if ($LASTEXITCODE -ne 0) { throw 'WO15 export-only memory or integrity probe failed' }
++      - name: WO16 receipt reconciliation and authenticated v5 read-only recovery
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO16' --logger 'trx;LogFileName=wo16-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO16 regression failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo16 artifacts/wo16-ci
++          if ($LASTEXITCODE -ne 0) { throw 'WO16 reconciliation or recovery failed' }
++          pwsh -NoProfile -File scripts/wo16-ui-source-validation.ps1
++          if ($LASTEXITCODE -ne 0) { throw 'WO16 UI source contract failed' }
++      - name: WO17 storage and file Clear qualification
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.StorageCareProbe -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO17 probe build failed' }
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO17' --logger 'trx;LogFileName=wo17-focused.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO17 tests failed' }
++          $fixtureParent = Join-Path $env:RUNNER_TEMP 'wo17-isolated-fixtures'
++          New-Item -ItemType Directory -Force $fixtureParent | Out-Null
++          dotnet tools/SmartPerformanceDoctor.StorageCareProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.StorageCareProbe.dll --synthetic artifacts/wo17-ci $fixtureParent
++          if ($LASTEXITCODE -ne 0) { throw 'WO17 synthetic qualification failed' }
++          pwsh -NoProfile -File scripts/wo17-ui-source-validation.ps1
++          if ($LASTEXITCODE -ne 0) { throw 'WO17 UI source validation failed' }
++      - name: Full application regression
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger 'trx;LogFileName=wo06-full.trx' -v:minimal
++      - name: SecurityLab regression
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo06-securitylab.trx' -v:minimal
++      - name: Reject unsupported helper verb
++        shell: pwsh
++        run: |
++          $helper = 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe'
++          $process = Start-Process -FilePath $helper -ArgumentList @('--exec', 'arbitrary') -Wait -PassThru -NoNewWindow
++          if ($process.ExitCode -ne 2) { throw "Unexpected helper exit code: $($process.ExitCode)" }
++      - name: Upload test evidence
++        if: always()
++        uses: actions/upload-artifact@v4
++        with:
++          name: wo17-windows-evidence
++          path: |
++            tests/SmartPerformanceDoctor.Tests/TestResults/*.trx
++            tests/SmartPerformanceDoctor.SecurityLab.Tests/TestResults/*.trx
++            artifacts/wo06-ci-process/process-results.json
++            artifacts/wo07-ci/measurement.json
++            artifacts/wo08-ci/**/*.json
++            artifacts/wo09-ci/**/*.json
++            artifacts/wo10-ci/**/*.json
++            artifacts/wo10-sandbox/sandbox-results.json
++            artifacts/wo10-sandbox/gui-status.json
++            artifacts/wo11-ci/*.json
++            artifacts/wo11-sandbox/sandbox-results.json
++            artifacts/wo12-ci/crash-results.json
++            artifacts/wo12-ci/performance.json
++            artifacts/wo13-ci/commit-recovery.json
++            artifacts/wo13-ci/password-crash.json
++            artifacts/wo13-ci/streaming-export.json
++            artifacts/wo13-ci/recovery-code-crash.json
++            artifacts/wo14-ci/transition.json
++            artifacts/wo14-ci/transition-crash.json
++            artifacts/wo14-ci/metadata-ready.json
++            artifacts/wo14-ci/password-crash.json
++            artifacts/wo14-ci/replay.json
++            artifacts/wo14-memory/streaming-memory.json
++            artifacts/wo15-ci/REPLAY_ATTACK_RESULT.json
++            artifacts/wo15-ci/RECOVERY_RECEIPT_RESULT.json
++            artifacts/wo15-ci/V5_PASSWORD_CRASH_RESULT.json
++            artifacts/wo15-memory/PERFORMANCE_RESULT.json
++
++            artifacts/wo16-ci/*.json
++
++            artifacts/wo17-ci/*.json
+diff --git a/scripts/wo17-ui-source-validation.ps1 b/scripts/wo17-ui-source-validation.ps1
+new file mode 100644
+index 0000000..45d95d2
+--- /dev/null
++++ b/scripts/wo17-ui-source-validation.ps1
+@@ -0,0 +1,13 @@
++$ErrorActionPreference = 'Stop'
++$repo = Split-Path $PSScriptRoot -Parent
++$care = [xml](Get-Content -Raw (Join-Path $repo 'src/SmartPerformanceDoctor.App/Views/SystemCareCenterPage.xaml'))
++$ids = $care.SelectNodes('//@*[local-name()="AutomationProperties.AutomationId"]') | ForEach-Object Value
++foreach ($id in @('StorageCareStatus','StorageCareStart','StorageCareStop','StorageCarePreview','StorageCareCandidates','StorageCarePlan')) {
++    if (@($ids | Where-Object { $_ -eq $id }).Count -ne 1) { throw "Missing or duplicate automation ID: $id" }
++}
++$delete = [xml](Get-Content -Raw (Join-Path $repo 'src/SmartPerformanceDoctor.App/Views/SecureDeleteCenterPage.xaml'))
++$code = Get-Content -Raw (Join-Path $repo 'src/SmartPerformanceDoctor.App/Views/SecureDeleteCenterPage.xaml.cs')
++if ($code -notmatch 'ApplyDetailedAsync' -or $code -notmatch 'StatusLabel' -or $code -notmatch 'Targets.All') { throw 'Delete UI state contract missing' }
++& (Join-Path $PSScriptRoot 'wo16-ui-source-validation.ps1')
++if (-not $?) { throw 'Vault gate regression failed' }
++Write-Output 'WO17_STORAGE_IDS=6;DELETE_RESULT_STATE=CONNECTED;FOLDER_EXECUTION=DISABLED;GUI=NOT_TESTED'
+diff --git a/src/SmartPerformanceDoctor.App/Services/Commercial/ForensicSecureDeleteEngine.cs b/src/SmartPerformanceDoctor.App/Services/Commercial/ForensicSecureDeleteEngine.cs
+index c738957..60eaecc 100644
+--- a/src/SmartPerformanceDoctor.App/Services/Commercial/ForensicSecureDeleteEngine.cs
++++ b/src/SmartPerformanceDoctor.App/Services/Commercial/ForensicSecureDeleteEngine.cs
+@@ -1,564 +1,212 @@
+-using System.Runtime.InteropServices;
+-using System.Security.Cryptography;
+-using Microsoft.Win32.SafeHandles;
+-using SmartPerformanceDoctor.App.Branding;
+-
+-namespace SmartPerformanceDoctor.App.Services.Commercial;
+-
+-internal static class ForensicSecureDeleteEngine
+-{
+-    private const uint FsctlFileLevelTrim = 0x00098208;
+-    private const uint FsctlSetZeroData = 0x000980C8;
+-
+-    public static IReadOnlyList<string> BuildChainSteps(string storageType, SecureDeleteSecurityLevel level)
+-    {
+-        var steps = new List<string> { "읽기전용 해제", "대체 데이터 스트림(ADS) 제거" };
+-        var passes = SecureDeleteStorageProfiler.GetOverwritePasses(storageType, level);
+-        if (passes > 0)
+-        {
+-            steps.Add($"데이터 영역 {passes}회 덮어쓰기 ({SecureDeleteStorageProfiler.SelectProtocol(storageType, level)})");
+-        }
+-        else
+-        {
+-            var crypto = SecureDeleteStorageProfiler.GetFileClearPasses(storageType, level);
+-            steps.Add($"SSD/NVMe: 파일 CSPRNG 덮어쓰기 {crypto}회 · 표본 검증 · TRIM 요청 (장치 crypto erase 아님)");
+-        }
+-
+-        steps.Add("파일명 난수화");
+-        steps.Add("메타데이터 축소 후 삭제");
+-        steps.Add("섀도 복사본(VSS) 잔존 위험 스캔 및 고지");
+-        return steps;
+-    }
+-
+-    public static async Task SecureDeleteFileAsync(
+-        string path,
+-        string storageType,
+-        SecureDeleteSecurityLevel level,
+-        CancellationToken cancellationToken)
+-    {
+-        if (!File.Exists(path))
+-        {
+-            return;
+-        }
+-
+-        ClearReadOnlyAttributes(path);
+-        WipeAlternateDataStreams(path);
+-        EnsureAlternateDataStreamsCleared(path);
+-
+-        if (storageType is "SSD" or "NVMe")
+-        {
+-            // Logical file Clear only; this is not a device cryptographic erase.
+-            await SsdFileClearAsync(path, level, cancellationToken);
+-            // Obfuscation is intentionally disabled: it cannot prove physical-cell erasure.
+-        }
++using System.Runtime.InteropServices;
++using System.Security.Cryptography;
++
++using SmartPerformanceDoctor.App.Branding;
++
++namespace SmartPerformanceDoctor.App.Services.Commercial;
++
++internal static class ForensicSecureDeleteEngine
++{
++
++
++
++    public static IReadOnlyList<string> BuildChainSteps(string storageType, SecureDeleteSecurityLevel level)
++    {
++        var steps = new List<string> { "파일 핸들·신원·소유권 재검증", "읽기 전용·ADS 대상 검토 차단" };
++        var passes = SecureDeleteStorageProfiler.GetOverwritePasses(storageType, level);
++        if (passes > 0)
++        {
++            steps.Add($"데이터 영역 {passes}회 덮어쓰기 ({SecureDeleteStorageProfiler.SelectProtocol(storageType, level)})");
++        }
+         else
+         {
+-            // Unknown and removable file systems still require a conservative logical clear before deletion.
+-            var passes = Math.Max(1, SecureDeleteStorageProfiler.GetOverwritePasses(storageType, level));
+-            await OverwriteFileAsync(path, passes, storageType, cancellationToken);
+-        }
+-
+-        TryTrimOrZeroData(path);
+-        await RandomizeNameAndDeleteAsync(path, cancellationToken);
+-        if (storageType is "SSD" or "NVMe")
+-        {
+-            TryVolumeRetrim(path);
+-        }
+-    }
+-
+-    public static ShadowCopyRiskReport ScanShadowCopyRisk(string path)
+-    {
+-        var report = new ShadowCopyRiskReport();
+-        try
+-        {
+-            var root = Path.GetPathRoot(Path.GetFullPath(path));
+-            if (string.IsNullOrWhiteSpace(root))
+-            {
+-                return report;
+-            }
+-
+-            var drive = root.TrimEnd('\\');
+-            using var process = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+-            {
+-                FileName = "powershell.exe",
+-                Arguments =
+-                    $"-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"" +
+-                    $"$d='{drive}'; " +
+-                    "(Get-CimInstance Win32_ShadowCopy -ErrorAction SilentlyContinue | " +
+-                    "Where-Object { $_.VolumeName -like ('*' + $d.Replace('\\\\','') + '*') }).Count\"",
+-                UseShellExecute = false,
+-                RedirectStandardOutput = true,
+-                CreateNoWindow = true
+-            });
+-
+-            if (process is null)
+-            {
+-                return report;
+-            }
+-
+-            var output = process.StandardOutput.ReadToEnd().Trim();
+-            process.WaitForExit(5000);
+-            if (int.TryParse(output, out var count) && count > 0)
+-            {
+-                report.ShadowCopyCount = count;
+-                report.Volume = drive;
+-                report.Advisory =
+-                    $"볼륨 {drive}에 섀도 복사본 {count}개가 감지되었습니다. " +
+-                    "삭제한 파일의 이전 버전이 시스템 보호/복구 지점에 남아 있을 수 있습니다. " +
+-                    "Windows 설정 > 시스템 > 저장소 > 고급 저장소 설정 > 시스템 보호에서 관리자 정책을 확인하세요.";
+-            }
+-        }
+-        catch
+-        {
+-            // Scan-only; never mutate VSS.
+-        }
+-
+-        return report;
+-    }
+-
+-    internal sealed class ShadowCopyRiskReport
+-    {
+-        public string Volume { get; set; } = "";
+-        public int ShadowCopyCount { get; set; }
+-        public string Advisory { get; set; } = "";
+-        public bool HasRisk => ShadowCopyCount > 0;
+-    }
+-
+-    private static void ClearReadOnlyAttributes(string path)
+-    {
+-        try
+-        {
+-            File.SetAttributes(path, FileAttributes.Normal);
+-        }
+-        catch
+-        {
+-            // Continue with best effort.
+-        }
+-    }
+-
+-    private static void WipeAlternateDataStreams(string path)
+-    {
+-        try
+-        {
+-            // FindFirstStreamW enumerates :stream names correctly (Directory.EnumerateFiles "file:*" is unreliable).
+-            var findData = new WIN32_FIND_STREAM_DATA();
+-            var handle = FindFirstStreamW(path, 0, ref findData, 0);
+-            if (handle == IntPtr.Zero || handle == new IntPtr(-1))
+-            {
+-                return;
+-            }
+-
+-            try
+-            {
+-                do
+-                {
+-                    var streamName = findData.cStreamName;
+-                    if (string.IsNullOrWhiteSpace(streamName) || streamName is "::$DATA")
+-                    {
+-                        continue;
+-                    }
+-
+-                    // streamName looks like ":Zone.Identifier:$DATA"
+-                    var colon = streamName.IndexOf(':', 1);
+-                    var bare = colon > 1 ? streamName[1..colon] : streamName.TrimStart(':').Replace(":$DATA", "", StringComparison.OrdinalIgnoreCase);
+-                    if (string.IsNullOrWhiteSpace(bare))
+-                    {
+-                        continue;
+-                    }
+-
+-                    var adsPath = path + ":" + bare;
+-                    try
+-                    {
+-                        if (File.Exists(adsPath))
+-                        {
+-                            File.SetAttributes(adsPath, FileAttributes.Normal);
+-                            // Overwrite small ADS then delete.
+-                            try
+-                            {
+-                                using var fs = new FileStream(adsPath, FileMode.Open, FileAccess.Write, FileShare.None);
+-                                var len = fs.Length;
+-                                if (len > 0)
+-                                {
+-                                    var buf = new byte[Math.Min(4096, (int)Math.Min(int.MaxValue, len))];
+-                                    RandomNumberGenerator.Fill(buf);
+-                                    fs.Position = 0;
+-                                    long rem = len;
+-                                    while (rem > 0)
+-                                    {
+-                                        var n = (int)Math.Min(buf.Length, rem);
+-                                        fs.Write(buf, 0, n);
+-                                        rem -= n;
+-                                    }
+-
+-                                    fs.Flush(true);
+-                                }
+-                            }
+-                            catch
+-                            {
+-                                // Continue to delete attempt.
+-                            }
+-
+-                            File.Delete(adsPath);
+-                        }
+-                    }
+-                    catch
+-                    {
+-                        // Ignore individual ADS failures.
+-                    }
+-                }
+-                while (FindNextStreamW(handle, ref findData));
+-            }
+-            finally
+-            {
+-                FindClose(handle);
+-            }
+-        }
+-        catch
+-        {
+-            // ADS enumeration may fail on non-NTFS volumes.
+-        }
+-    }
+-
+-    private static void EnsureAlternateDataStreamsCleared(string path)
++            var crypto = SecureDeleteStorageProfiler.GetFileClearPasses(storageType, level);
++            steps.Add($"SSD/NVMe: 파일 CSPRNG 덮어쓰기 {crypto}회 · 표본 검증 (장치 crypto erase 아님)");
++        }
++
++        steps.Add("동일 핸들 표본 검증");
++        steps.Add("동일 핸들 파일 삭제");
++        steps.Add("섀도 복사본(VSS) 잔존 위험 스캔 및 고지");
++        return steps;
++    }
++
++    internal static string CaptureFingerprint(string path)
++    {
++        using var file = SmartPerformanceDoctor.UpdateEngine.WindowsFileBoundary.OpenRead(
++            Path.GetDirectoryName(Path.GetFullPath(path))!, Path.GetFileName(path));
++        return Fingerprint(file);
++    }
++
++    private static string Fingerprint(SmartPerformanceDoctor.UpdateEngine.WindowsFileBoundary.FileLease file)
+     {
++        file.Validate();
++        var h = file.Stream.SafeFileHandle;
++        var data = $"{file.Identity}|{file.Stream.Length}|{File.GetCreationTimeUtc(h).Ticks}|{File.GetLastWriteTimeUtc(h).Ticks}|{File.GetAttributes(h)}|{file.Hash()}";
++        return Convert.ToHexString(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(data)));
++    }
++
++    public static async Task SecureDeleteFileAsync(string path, string storageType, SecureDeleteSecurityLevel level,
++        CancellationToken cancellationToken, string? expectedFingerprint = null, Action<string>? checkpoint = null)
++    {
++        cancellationToken.ThrowIfCancellationRequested();
++        var full = Path.GetFullPath(path);
++        var safety = PathSafetyGuard.Evaluate(full);
++        if (!safety.Allowed) throw new InvalidDataException(safety.Reason);
++        expectedFingerprint ??= CaptureFingerprint(full);
++        using var file = SmartPerformanceDoctor.UpdateEngine.WindowsFileBoundary.OpenWrite(
++            Path.GetDirectoryName(full)!, Path.GetFileName(full), deletable: true);
++        if (!CryptographicOperations.FixedTimeEquals(Convert.FromHexString(expectedFingerprint), Convert.FromHexString(Fingerprint(file))))
++            throw new InvalidDataException("TargetChanged");
++        var attributes = File.GetAttributes(file.Stream.SafeFileHandle);
++        if ((attributes & (FileAttributes.ReadOnly | FileAttributes.System | FileAttributes.Hidden
++            | FileAttributes.Compressed | FileAttributes.Encrypted | FileAttributes.SparseFile | FileAttributes.Offline)) != 0)
++            throw new InvalidDataException("UnsupportedAttributes");
++        var owner = file.ReadSecurity().GetOwner(typeof(System.Security.Principal.SecurityIdentifier));
++        var user = System.Security.Principal.WindowsIdentity.GetCurrent().User;
++        var administrators = new System.Security.Principal.SecurityIdentifier(System.Security.Principal.WellKnownSidType.BuiltinAdministratorsSid, null);
++        if (owner != user && !(owner == administrators && ProcessElevationService.IsAdministrator()))
++            throw new UnauthorizedAccessException("UnknownOwnership");
++        EnsureNoAlternateStreams(full);
++        checkpoint?.Invoke("Opened");
++        var length = file.Stream.Length;
++        var passes = storageType is "SSD" or "NVMe" ? SecureDeleteStorageProfiler.GetFileClearPasses(storageType, level)
++            : Math.Max(1, SecureDeleteStorageProfiler.GetOverwritePasses(storageType, level));
++        var buffer = new byte[(int)Math.Min(65536, Math.Max(1, length))];
++        var actual = new byte[512];
+         try
+         {
+-            var findData = new WIN32_FIND_STREAM_DATA();
+-            var handle = FindFirstStreamW(path, 0, ref findData, 0);
+-            if (handle == IntPtr.Zero || handle == new IntPtr(-1))
+-            {
+-                // Non-NTFS and files without ADS both return no stream handle. There is nothing to verify.
+-                return;
+-            }
+-
+-            try
++            for (var pass = 0; pass < passes; pass++)
+             {
+-                do
++                cancellationToken.ThrowIfCancellationRequested();
++                if (storageType is "SSD" or "NVMe") RandomNumberGenerator.Fill(buffer);
++                else RandomNumberGenerator.Fill(buffer);
++                file.Stream.Position = 0;
++                for (long written = 0; written < length;)
+                 {
+-                    if (!string.IsNullOrWhiteSpace(findData.cStreamName)
+-                        && !string.Equals(findData.cStreamName, "::$DATA", StringComparison.OrdinalIgnoreCase))
+-                    {
+-                        throw new IOException("대체 데이터 스트림을 제거하지 못해 보안 삭제를 중단했습니다.");
+-                    }
++                    cancellationToken.ThrowIfCancellationRequested(); file.Validate();
++                    var count = (int)Math.Min(buffer.Length, length - written);
++                    await file.Stream.WriteAsync(buffer.AsMemory(0, count), cancellationToken);
++                    written += count;
++                    checkpoint?.Invoke("Written");
+                 }
+-                while (FindNextStreamW(handle, ref findData));
++                file.Stream.Flush(true);
+             }
+-            finally
++            foreach (var offset in new[] { 0L, length / 2, Math.Max(0, length - 512) }.Distinct())
+             {
+-                FindClose(handle);
++                cancellationToken.ThrowIfCancellationRequested(); file.Validate();
++                file.Stream.Position = offset;
++                var count = (int)Math.Min(actual.Length, length - offset);
++                file.Stream.ReadExactly(actual.AsSpan(0, count));
++                for (var i = 0; i < count; i++)
++                    if (actual[i] != buffer[(int)((offset + i) % buffer.Length)]) throw new IOException("OverwriteVerificationFailed");
+             }
++            checkpoint?.Invoke("Verified");
++            cancellationToken.ThrowIfCancellationRequested(); file.Validate();
++            file.DeleteOpenedFile();
+         }
+-        catch (IOException)
++        finally { CryptographicOperations.ZeroMemory(buffer); CryptographicOperations.ZeroMemory(actual); }
++    }
++
++    private static void EnsureNoAlternateStreams(string path)
++    {
++        var data = new WIN32_FIND_STREAM_DATA();
++        var handle = FindFirstStreamW(path, 0, ref data, 0);
++        if (handle == IntPtr.Zero || handle == new IntPtr(-1))
+         {
+-            throw;
++            var error = Marshal.GetLastWin32Error();
++            if (error != 38) throw new IOException("AdsEnumerationUnavailable");
++            return;
+         }
+-        catch
++        try
+         {
+-            // A failed enumeration is not evidence of an ADS. The preflight result retains this limitation.
++            do
++            {
++                if (data.cStreamName != "::$DATA") throw new InvalidDataException("AdsRequiresReview");
++            } while (FindNextStreamW(handle, ref data));
++            if (Marshal.GetLastWin32Error() != 38) throw new IOException("AdsEnumerationIncomplete");
+         }
++        finally { FindClose(handle); }
+     }
+-    private static async Task OverwriteFileAsync(
+-        string path,
+-        int passes,
+-        string storageType,
+-        CancellationToken cancellationToken)
++
++    public static ShadowCopyRiskReport ScanShadowCopyRisk(string path)
+     {
+-        var len = new FileInfo(path).Length;
+-        if (len <= 0) return;
+-        var useWriteThrough = storageType is "HDD" or "USB-NTFS";
+-        var options = FileOptions.SequentialScan | (useWriteThrough ? FileOptions.WriteThrough : FileOptions.None);
+-        var buffer = new byte[Math.Min(65536, Math.Max(1, len))];
+-        await using (var fs = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.None, 4096, options))
++        var report = new ShadowCopyRiskReport();
++        try
+         {
+-            for (var pass = 0; pass < passes; pass++)
++            var root = Path.GetPathRoot(Path.GetFullPath(path));
++            if (string.IsNullOrWhiteSpace(root))
+             {
+-                cancellationToken.ThrowIfCancellationRequested();
+-                FillOverwriteBuffer(buffer, pass, passes);
+-                fs.Position = 0;
+-                for (var remaining = len; remaining > 0;)
+-                {
+-                    var chunk = (int)Math.Min(buffer.Length, remaining);
+-                    await fs.WriteAsync(buffer.AsMemory(0, chunk), cancellationToken);
+-                    remaining -= chunk;
+-                }
+-                await fs.FlushAsync(cancellationToken);
+-                fs.Flush(true);
+-                if (useWriteThrough) FlushFileBuffers(fs.SafeFileHandle);
++                return report;
+             }
+-        }
+-        await VerifyOverwriteSamplesAsync(path, len, buffer, cancellationToken);
+-    }
+-    private static async Task VerifyOverwriteSamplesAsync(string path, long length, byte[] expected, CancellationToken cancellationToken)
+-    {
+-        if (length <= 0 || expected.Length == 0) return;
+-        var offsets = new[] { 0L, Math.Max(0, length / 2), Math.Max(0, length - Math.Min(512, length)) }
+-            .Distinct()
+-            .ToArray();
+-        await using var input = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.RandomAccess);
+-        var actual = new byte[512];
+-        foreach (var offset in offsets)
+-        {
+-            cancellationToken.ThrowIfCancellationRequested();
+-            input.Position = offset;
+-            var wanted = (int)Math.Min(actual.Length, length - offset);
+-            var read = await input.ReadAsync(actual.AsMemory(0, wanted), cancellationToken);
+-            if (read != wanted) throw new IOException("덮어쓰기 사후 검증을 완료하지 못했습니다.");
+-            for (var index = 0; index < read; index++)
+-            {
+-                if (actual[index] != expected[(int)((offset + index) % expected.Length)])
+-                    throw new IOException("덮어쓰기 사후 검증이 일치하지 않습니다.");
+-            }
+-        }
+-    }
+-
+-    private static void FillOverwriteBuffer(byte[] buffer, int pass, int totalPasses)
+-    {
+-        if (totalPasses >= 7)
+-        {
+-            switch (pass)
+-            {
+-                case 0:
+-                    Array.Fill(buffer, (byte)0x00);
+-                    return;
+-                case 1:
+-                    Array.Fill(buffer, (byte)0xFF);
+-                    return;
+-                default:
+-                    RandomNumberGenerator.Fill(buffer);
+-                    return;
+-            }
+-        }
+-
+-        switch (pass)
+-        {
+-            case 0:
+-                Array.Fill(buffer, (byte)0x00);
+-                break;
+-            case 1:
+-                Array.Fill(buffer, (byte)0xFF);
+-                break;
+-            default:
+-                RandomNumberGenerator.Fill(buffer);
+-                break;
+-        }
+-    }
+-
+-    private static async Task SsdFileClearAsync(
+-        string path,
+-        SecureDeleteSecurityLevel level,
+-        CancellationToken cancellationToken)
+-    {
+-        var len = new FileInfo(path).Length;
+-        if (len <= 0) return;
+-        var passes = SecureDeleteStorageProfiler.GetFileClearPasses("SSD", level);
+-        var buffer = new byte[Math.Min(65536, Math.Max(1, len))];
+-        await using (var fs = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.None, 4096, FileOptions.WriteThrough))
+-        {
+-            for (var pass = 0; pass < passes; pass++)
++
++            var drive = root.TrimEnd('\\');
++            using var process = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+             {
+-                cancellationToken.ThrowIfCancellationRequested();
+-                RandomNumberGenerator.Fill(buffer);
+-                fs.Position = 0;
+-                for (var remaining = len; remaining > 0;)
+-                {
+-                    var chunk = (int)Math.Min(buffer.Length, remaining);
+-                    await fs.WriteAsync(buffer.AsMemory(0, chunk), cancellationToken);
+-                    remaining -= chunk;
+-                }
+-                await fs.FlushAsync(cancellationToken);
+-                fs.Flush(true);
++                FileName = "powershell.exe",
++                Arguments =
++                    $"-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"" +
++                    $"$d='{drive}'; " +
++                    "(Get-CimInstance Win32_ShadowCopy -ErrorAction SilentlyContinue | " +
++                    "Where-Object { $_.VolumeName -like ('*' + $d.Replace('\\\\','') + '*') }).Count\"",
++                UseShellExecute = false,
++                RedirectStandardOutput = true,
++                CreateNoWindow = true
++            });
++
++            if (process is null)
++            {
++                return report;
++            }
++
++            var output = process.StandardOutput.ReadToEnd().Trim();
++            process.WaitForExit(5000);
++            if (int.TryParse(output, out var count) && count > 0)
++            {
++                report.ShadowCopyCount = count;
++                report.Volume = drive;
++                report.Advisory =
++                    $"볼륨 {drive}에 섀도 복사본 {count}개가 감지되었습니다. " +
++                    "삭제한 파일의 이전 버전이 시스템 보호/복구 지점에 남아 있을 수 있습니다. " +
++                    "Windows 설정 > 시스템 > 저장소 > 고급 저장소 설정 > 시스템 보호에서 관리자 정책을 확인하세요.";
+             }
+         }
+-        await VerifyOverwriteSamplesAsync(path, len, buffer, cancellationToken);
++        catch
++        {
++            // Scan-only; never mutate VSS.
++        }
++
++        return report;
++    }
++
++    internal sealed class ShadowCopyRiskReport
++    {
++        public string Volume { get; set; } = "";
++        public int ShadowCopyCount { get; set; }
++        public string Advisory { get; set; } = "";
++        public bool HasRisk => ShadowCopyCount > 0;
++    }
++
++    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
++    private static extern IntPtr FindFirstStreamW(
++        string lpFileName,
++        int InfoLevel,
++        ref WIN32_FIND_STREAM_DATA lpFindStreamData,
++        int dwFlags);
++
++    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
++    [return: MarshalAs(UnmanagedType.Bool)]
++    private static extern bool FindNextStreamW(IntPtr hFindStream, ref WIN32_FIND_STREAM_DATA lpFindStreamData);
++
++    [DllImport("kernel32.dll", SetLastError = true)]
++    [return: MarshalAs(UnmanagedType.Bool)]
++    private static extern bool FindClose(IntPtr hFindFile);
++
++    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
++    private struct WIN32_FIND_STREAM_DATA
++    {
++        public long StreamSize;
++        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 296)]
++        public string cStreamName;
+     }
+-    private static void TryTrimOrZeroData(string path)
+-    {
+-        try
+-        {
+-            using var handle = CreateFile(
+-                path,
+-                unchecked((int)0x80000000) | 0x40000000,
+-                FileShare.ReadWrite | FileShare.Delete,
+-                IntPtr.Zero,
+-                3,
+-                0,
+-                IntPtr.Zero);
+-            if (handle.IsInvalid)
+-            {
+-                return;
+-            }
+-
+-            var fileSize = new FileInfo(path).Length;
+-            if (fileSize > 0)
+-            {
+-                var zero = new FILE_ZERO_DATA_INFORMATION
+-                {
+-                    FileOffset = 0,
+-                    BeyondFinalZero = fileSize
+-                };
+-                _ = DeviceIoControl(
+-                    handle,
+-                    FsctlSetZeroData,
+-                    ref zero,
+-                    Marshal.SizeOf<FILE_ZERO_DATA_INFORMATION>(),
+-                    IntPtr.Zero,
+-                    0,
+-                    out _,
+-                    IntPtr.Zero);
+-            }
+-
+-            var range = new FILE_ALLOCATED_RANGE_BUFFER
+-            {
+-                FileOffset = 0,
+-                Length = Math.Max(1, fileSize)
+-            };
+-            _ = DeviceIoControl(
+-                handle,
+-                FsctlFileLevelTrim,
+-                ref range,
+-                Marshal.SizeOf<FILE_ALLOCATED_RANGE_BUFFER>(),
+-                IntPtr.Zero,
+-                0,
+-                out _,
+-                IntPtr.Zero);
+-        }
+-        catch
+-        {
+-            try
+-            {
+-                using var fs = new FileStream(path, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+-                fs.SetLength(0);
+-            }
+-            catch
+-            {
+-                // Best-effort deallocation.
+-            }
+-        }
+-    }
+-
+-    public static void TryVolumeRetrim(string path)
+-    {
+-        try
+-        {
+-            var root = Path.GetPathRoot(Path.GetFullPath(path));
+-            if (string.IsNullOrWhiteSpace(root))
+-            {
+-                return;
+-            }
+-
+-            var drive = root.TrimEnd('\\');
+-            using var process = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+-            {
+-                FileName = "powershell.exe",
+-                Arguments =
+-                    $"-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"" +
+-                    $"Optimize-Volume -DriveLetter '{drive.TrimEnd(':')}' -ReTrim -ErrorAction SilentlyContinue\"",
+-                UseShellExecute = false,
+-                CreateNoWindow = true
+-            });
+-            process?.WaitForExit(12000);
+-        }
+-        catch
+-        {
+-            // Best-effort volume retrim; deletion chain already applied.
+-        }
+-    }
+-
+-    private static async Task RandomizeNameAndDeleteAsync(string path, CancellationToken cancellationToken)
+-    {
+-        var directory = Path.GetDirectoryName(path);
+-        if (string.IsNullOrWhiteSpace(directory))
+-        {
+-            File.Delete(path);
+-            return;
+-        }
+-
+-        var firstRandomName = Path.Combine(directory, ".pcc-shred-" + Guid.NewGuid().ToString("N"));
+-        var secondRandomName = Path.Combine(directory, ".pcc-shred-" + Guid.NewGuid().ToString("N"));
+-        if (File.Exists(path))
+-        {
+-            File.Move(path, firstRandomName);
+-            File.Move(firstRandomName, secondRandomName);
+-            await using (var fs = new FileStream(secondRandomName, FileMode.Open, FileAccess.Write, FileShare.None))
+-            {
+-                fs.SetLength(0);
+-                await fs.FlushAsync(cancellationToken);
+-                fs.Flush(true);
+-            }
+-
+-            File.Delete(secondRandomName);
+-        }
+-    }
+-
+-    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+-    private static extern SafeFileHandle CreateFile(
+-        string lpFileName,
+-        int dwDesiredAccess,
+-        FileShare dwShareMode,
+-        IntPtr lpSecurityAttributes,
+-        int dwCreationDisposition,
+-        int dwFlagsAndAttributes,
+-        IntPtr hTemplateFile);
+-
+-    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+-    private static extern IntPtr FindFirstStreamW(
+-        string lpFileName,
+-        int InfoLevel,
+-        ref WIN32_FIND_STREAM_DATA lpFindStreamData,
+-        int dwFlags);
+-
+-    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+-    [return: MarshalAs(UnmanagedType.Bool)]
+-    private static extern bool FindNextStreamW(IntPtr hFindStream, ref WIN32_FIND_STREAM_DATA lpFindStreamData);
+-
+-    [DllImport("kernel32.dll", SetLastError = true)]
+-    [return: MarshalAs(UnmanagedType.Bool)]
+-    private static extern bool FindClose(IntPtr hFindFile);
+-
+-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+-    private struct WIN32_FIND_STREAM_DATA
+-    {
+-        public long StreamSize;
+-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 296)]
+-        public string cStreamName;
+-    }
+-
+-    [DllImport("kernel32.dll", SetLastError = true)]
+-    private static extern bool DeviceIoControl(
+-        SafeFileHandle hDevice,
+-        uint dwIoControlCode,
+-        ref FILE_ZERO_DATA_INFORMATION lpInBuffer,
+-        int nInBufferSize,
+-        IntPtr lpOutBuffer,
+-        int nOutBufferSize,
+-        out int lpBytesReturned,
+-        IntPtr lpOverlapped);
+-
+-    [DllImport("kernel32.dll", SetLastError = true)]
+-    private static extern bool DeviceIoControl(
+-        SafeFileHandle hDevice,
+-        uint dwIoControlCode,
+-        ref FILE_ALLOCATED_RANGE_BUFFER lpInBuffer,
+-        int nInBufferSize,
+-        IntPtr lpOutBuffer,
+-        int nOutBufferSize,
+-        out int lpBytesReturned,
+-        IntPtr lpOverlapped);
+-
+-    [DllImport("kernel32.dll", SetLastError = true)]
+-    private static extern bool FlushFileBuffers(SafeFileHandle hFile);
+-
+-    [StructLayout(LayoutKind.Sequential)]
+-    private struct FILE_ZERO_DATA_INFORMATION
+-    {
+-        public long FileOffset;
+-        public long BeyondFinalZero;
+-    }
+-
+-    [StructLayout(LayoutKind.Sequential)]
+-    private struct FILE_ALLOCATED_RANGE_BUFFER
+-    {
+-        public long FileOffset;
+-        public long Length;
+-    }
+-}
++
++}
+diff --git a/src/SmartPerformanceDoctor.App/Services/Commercial/PathSafetyGuard.cs b/src/SmartPerformanceDoctor.App/Services/Commercial/PathSafetyGuard.cs
+index 243d034..ca3a80e 100644
+--- a/src/SmartPerformanceDoctor.App/Services/Commercial/PathSafetyGuard.cs
++++ b/src/SmartPerformanceDoctor.App/Services/Commercial/PathSafetyGuard.cs
+@@ -28,6 +28,8 @@ public static class PathSafetyGuard
+             return (false, "네트워크·UNC·장치 경로는 파일 단위 보안 삭제를 보장할 수 없어 차단됩니다.");
+         }
+ 
++        if (SmartPerformanceDoctor.App.Services.SystemCare.StorageTargetPolicy.IsProtected(full))
++            return (false, "금고·복구·신뢰 상태·백업 보호 경로입니다.");
+         var root = Path.GetPathRoot(full) ?? "";
+         if (string.Equals(full.TrimEnd('\\'), root.TrimEnd('\\'), StringComparison.OrdinalIgnoreCase))
+         {
+diff --git a/src/SmartPerformanceDoctor.App/Services/Commercial/ProfessionalSecureDeleteService.cs b/src/SmartPerformanceDoctor.App/Services/Commercial/ProfessionalSecureDeleteService.cs
+index f5e6c6b..e03a02f 100644
+--- a/src/SmartPerformanceDoctor.App/Services/Commercial/ProfessionalSecureDeleteService.cs
++++ b/src/SmartPerformanceDoctor.App/Services/Commercial/ProfessionalSecureDeleteService.cs
+@@ -1,16 +1,16 @@
+-using System.Security.Cryptography;
+-using System.Runtime.InteropServices;
+-using System.Text;
+-using Microsoft.Win32.SafeHandles;
+-using System.Text.Json;
+-using SmartPerformanceDoctor.App.Branding;
+-using SmartPerformanceDoctor.App.Models.Commercial;
+-using SmartPerformanceDoctor.SecurityLab.Hardening;
+-using SmartPerformanceDoctor.SecurityLab.ProductBridge;
+-using SmartPerformanceDoctor.SecurityLab.ShredNext;
+-
+-namespace SmartPerformanceDoctor.App.Services.Commercial;
+-
++using System.Security.Cryptography;
++using System.Runtime.InteropServices;
++using System.Text;
++using Microsoft.Win32.SafeHandles;
++using System.Text.Json;
++using SmartPerformanceDoctor.App.Branding;
++using SmartPerformanceDoctor.App.Models.Commercial;
++using SmartPerformanceDoctor.SecurityLab.Hardening;
++using SmartPerformanceDoctor.SecurityLab.ProductBridge;
++using SmartPerformanceDoctor.SecurityLab.ShredNext;
++
++namespace SmartPerformanceDoctor.App.Services.Commercial;
++
+ public sealed class ProfessionalSecureDeleteService
+ {
+     private readonly string? _auditStorageRoot;
+@@ -25,74 +25,75 @@ public sealed class ProfessionalSecureDeleteService
+             : Path.GetFullPath(auditStorageRoot);
+     }
+ 
+-    public SecureDeletePlan PlanDryRun(
+-        IReadOnlyList<string> paths,
+-        SecureDeleteSecurityLevel level = SecureDeleteSecurityLevel.Professional)
+-    {
+-        var operationId = $"secure-delete-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}-{Guid.NewGuid():N}";
+-        var targets = new List<SecureDeleteTarget>();
+-        var blocked = new List<SecureDeleteTarget>();
+-        var useLab = ProductFeatureFlags.ShredNextEnabled;
+-
+-        foreach (var path in paths.Distinct(StringComparer.OrdinalIgnoreCase))
+-        {
+-            if (!File.Exists(path) && !Directory.Exists(path))
+-            {
+-                continue;
+-            }
+-
+-            var (allowed, reason) = PathSafetyGuard.Evaluate(path);
+-            // 50.3.0: SecurityLab path policy (UNC / special roots) as additional gate
+-            if (allowed && useLab)
+-            {
+-                var lab = LabSecurePath.Evaluate(path);
+-                if (!lab.Allowed)
+-                {
+-                    allowed = false;
+-                    reason = "Lab: " + lab.Reason;
+-                }
+-            }
+-
+-            if (!allowed)
+-            {
+-                blocked.Add(new SecureDeleteTarget
+-                {
+-                    Path = path,
+-                    Type = Directory.Exists(path) ? "folder" : "file",
+-                    Size = 0,
+-                    StorageType = "Unknown",
+-                    FileSystem = "Unknown",
+-                    Risk = "blocked",
+-                    RecommendedProtocol = "blocked-before-profiling",
+-                    OverwritePasses = 0,
+-                    Blocked = true,
+-                    BlockReason = reason
+-                });
+-                continue;
+-            }
+-
+-            var storage = SecureDeleteStorageProfiler.Profile(path);
+-            var fs = DetectFileSystem(path);
+-            var size = File.Exists(path) ? new FileInfo(path).Length : EstimateDirectorySize(path);
+-            var preflight = SecureDeletePreflight.Inspect(path, storage, fs, level, allowed, reason);
+-            if (!preflight.Passed)
+-            {
+-                blocked.Add(new SecureDeleteTarget
+-                {
+-                    Path = path,
+-                    Type = Directory.Exists(path) ? "folder" : "file",
+-                    Size = size,
+-                    StorageType = storage,
+-                    FileSystem = fs,
+-                    Risk = "blocked",
+-                    RecommendedProtocol = "blocked-by-preflight",
+-                    OverwritePasses = 0,
+-                    Blocked = true,
+-                    BlockReason = string.IsNullOrWhiteSpace(preflight.Summary) ? "사전 검사 실패" : preflight.Summary,
+-                    Preflight = preflight
+-                });
+-                continue;
+-            }
++    public SecureDeletePlan PlanDryRun(
++        IReadOnlyList<string> paths,
++        SecureDeleteSecurityLevel level = SecureDeleteSecurityLevel.Professional)
++    {
++        var operationId = $"secure-delete-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}-{Guid.NewGuid():N}";
++        var targets = new List<SecureDeleteTarget>();
++        var blocked = new List<SecureDeleteTarget>();
++        var useLab = ProductFeatureFlags.ShredNextEnabled;
++
++        foreach (var path in paths.Distinct(StringComparer.OrdinalIgnoreCase))
++        {
++            if (!File.Exists(path) && !Directory.Exists(path))
++            {
++                blocked.Add(new SecureDeleteTarget { Path = path, Blocked = true, Risk = "blocked", BlockReason = "대상 없음 · 검사 누락" });
++                continue;
++            }
++
++            var (allowed, reason) = PathSafetyGuard.Evaluate(path);
++            // 50.3.0: SecurityLab path policy (UNC / special roots) as additional gate
++            if (allowed && useLab)
++            {
++                var lab = LabSecurePath.Evaluate(path);
++                if (!lab.Allowed)
++                {
++                    allowed = false;
++                    reason = "Lab: " + lab.Reason;
++                }
++            }
++
++            if (!allowed)
++            {
++                blocked.Add(new SecureDeleteTarget
++                {
++                    Path = path,
++                    Type = Directory.Exists(path) ? "folder" : "file",
++                    Size = 0,
++                    StorageType = "Unknown",
++                    FileSystem = "Unknown",
++                    Risk = "blocked",
++                    RecommendedProtocol = "blocked-before-profiling",
++                    OverwritePasses = 0,
++                    Blocked = true,
++                    BlockReason = reason
++                });
++                continue;
++            }
++
++            var storage = SecureDeleteStorageProfiler.Profile(path);
++            var fs = DetectFileSystem(path);
++            var size = File.Exists(path) ? new FileInfo(path).Length : EstimateDirectorySize(path);
++            var preflight = SecureDeletePreflight.Inspect(path, storage, fs, level, allowed, reason);
++            if (!preflight.Passed)
++            {
++                blocked.Add(new SecureDeleteTarget
++                {
++                    Path = path,
++                    Type = Directory.Exists(path) ? "folder" : "file",
++                    Size = size,
++                    StorageType = storage,
++                    FileSystem = fs,
++                    Risk = "blocked",
++                    RecommendedProtocol = "blocked-by-preflight",
++                    OverwritePasses = 0,
++                    Blocked = true,
++                    BlockReason = string.IsNullOrWhiteSpace(preflight.Summary) ? "사전 검사 실패" : preflight.Summary,
++                    Preflight = preflight
++                });
++                continue;
++            }
+             var protocol = useLab && File.Exists(path)
+                 ? "lab.shred-next.v1+" + SecureDeleteStorageProfiler.SelectProtocol(storage, level)
+                 : SecureDeleteStorageProfiler.SelectProtocol(storage, level);
+@@ -107,6 +108,7 @@ public sealed class ProfessionalSecureDeleteService
+                 fingerprint = CaptureTargetFingerprint(path);
+             }
+             catch (Exception exception) when (exception is IOException
++                                               or InvalidDataException
+                                                or UnauthorizedAccessException
+                                                or FileNotFoundException
+                                                or DirectoryNotFoundException)
+@@ -129,101 +131,112 @@ public sealed class ProfessionalSecureDeleteService
+             }
+ 
+             var target = new SecureDeleteTarget
+-            {
+-                Path = path,
+-                Type = Directory.Exists(path) ? "folder" : "file",
+-                Size = size,
+-                StorageType = storage,
+-                FileSystem = fs,
+-                Risk = allowed ? "high" : "blocked",
+-                RecommendedProtocol = protocol,
+-                OverwritePasses = passes,
+-                Blocked = !allowed,
+-                BlockReason = reason,
++            {
++                Path = path,
++                Type = Directory.Exists(path) ? "folder" : "file",
++                Size = size,
++                StorageType = storage,
++                FileSystem = fs,
++                Risk = allowed ? "high" : "blocked",
++                RecommendedProtocol = protocol,
++                OverwritePasses = passes,
++                Blocked = !allowed,
++                BlockReason = reason,
+                 TargetFingerprint = fingerprint,
+-                Preflight = preflight
+-            };
+-
+-            targets.Add(target);
+-        }
+-
+-        var primaryStorage = targets.Count == 0 ? "Unknown" : targets[0].StorageType;
+-        // A file-level Clear is never a certified sanitization or a device Purge.
+-        var maxCertified = targets.Count == 0 ? 0 : Math.Min(3,
+-            targets.Max(t => SecureDeleteStorageProfiler.EstimateCertifiedResistanceLevel(t.StorageType, level)));
+-        var maxIntensity = targets.Count == 0
+-            ? 0
+-            : targets.Max(t => SecureDeleteStorageProfiler.GetTechnicalDeletionIntensity(t.StorageType, level));
+-        var level5Certified = false;
+-        var disclaimer = SecureDeleteStorageProfiler.BuildResistanceDisclaimer(primaryStorage, level);
+-        var chainSummary = targets.Count == 0
+-            ? ""
+-            : string.Join(" → ", ForensicSecureDeleteEngine.BuildChainSteps(targets[0].StorageType, level));
+-
+-        var recoveryRisk = maxCertified >= 4 && level5Certified
+-            ? "very-low"
+-            : maxCertified >= 3
+-                ? "low"
+-                : "storage-dependent";
+-        return new SecureDeletePlan
+-        {
+-            OperationId = operationId,
+-            Mode = "dry-run",
+-            SecurityLevel = level.ToString(),
+-            Targets = targets,
+-            BlockedTargets = blocked,
+-            RecoveryResistanceLevel = maxCertified,
+-            TechnicalDeletionIntensity = maxIntensity,
+-            Level5Certified = level5Certified,
+-            CertifiedResistanceLabel = targets.Count == 0 ? "대상 없음" : "인증 아님 · 파일 단위 Clear",
+-            ResistanceDisclaimer = disclaimer,
+-            ProfessionalRecoveryRisk = recoveryRisk,
+-            Limitations =
+-                "보안 삭제 원칙: (1) P01~P12 사전 검사 (2) dry-run (3) 확인 문구 " +
+-                $"「{AstraCareBranding.ShredIrreversibleConfirmation}」 (4) 저장장치별 체인 " +
+-                "(HDD 다중 패스 / SSD·미확인 매체 CSPRNG 덮어쓰기+표본 검증+TRIM 요청) (5) ADS 실제 열거·제거 (6) VSS 잔존 고지.\n" +
+-
+-                "이 작업은 인증 또는 장치 Purge가 아닌 파일 단위 Clear입니다. 장치·컨트롤러 수준의 Sanitize/Purge는 별도 단계에서만 제공합니다.\n" +
+-                "금고 내부 데이터 삭제는 키 파기(crypto-shred)가 핵심입니다.\n" +
+-                "섀도 복사본/복구 지점/클라우드 사본은 자동 삭제하지 않습니다.\n" +
+-                (string.IsNullOrWhiteSpace(disclaimer) ? AstraCareBranding.ShredSsdLimitation : disclaimer),
+-            EstimatedDuration = TimeSpan.FromSeconds(Math.Max(
+-                12,
+-                targets.Sum(t =>
+-                    t.StorageType is "SSD" or "NVMe"
+-                        ? SecureDeleteStorageProfiler.GetFileClearPasses(t.StorageType, level) * 2 + 8
+-                        : Math.Max(1, t.OverwritePasses) * 3 + 6))).ToString(@"mm\:ss"),
+-            ChainSummary = chainSummary,
+-            RequestedPcLevel = "파일 단위 Clear",
+-            MaximumAchievablePcLevel = "파일 단위 Clear (장치 Purge 아님)",
+-            VerifyMatrix = targets.SelectMany(target => target.Preflight?.Checks ?? Array.Empty<SecureDeletePreflightCheck>()).ToArray()
+-        };
+-    }
+-
+-    public async Task<(int Deleted, int Failed, string AuditPath, bool AuditValid)> ApplyAsync(
+-        SecureDeletePlan plan,
+-        string typedConfirmation,
+-        SecureDeleteSecurityLevel level = SecureDeleteSecurityLevel.Professional,
+-        IProgress<(int percent, string detail)>? progress = null,
+-        CancellationToken cancellationToken = default)
+-    {
+-        var confirm = typedConfirmation.Trim();
+-        var phraseOk =
+-            string.Equals(confirm, AstraCareBranding.ShredIrreversibleConfirmation, StringComparison.Ordinal)
+-            || string.Equals(confirm, AstraCareBranding.ShredConfirmation, StringComparison.Ordinal)
+-            || string.Equals(confirm, AstraCareBranding.LegacyShredConfirmation, StringComparison.Ordinal);
+-        if (!phraseOk)
+-        {
+-            throw new InvalidOperationException(
+-                $"확인 문구가 일치하지 않습니다. 다음 중 하나를 정확히 입력하세요: " +
+-                $"「{AstraCareBranding.ShredIrreversibleConfirmation}」 또는 「{AstraCareBranding.ShredConfirmation}」");
+-        }
+-
+-        if (plan.Targets.Count == 0)
+-        {
+-            throw new InvalidOperationException("삭제 가능한 대상이 없습니다. dry-run 결과를 확인하세요.");
+-        }
+-
++                Preflight = preflight
++            };
++
++            targets.Add(target);
++        }
++
++        var primaryStorage = targets.Count == 0 ? "Unknown" : targets[0].StorageType;
++        // A file-level Clear is never a certified sanitization or a device Purge.
++        var maxCertified = targets.Count == 0 ? 0 : Math.Min(3,
++            targets.Max(t => SecureDeleteStorageProfiler.EstimateCertifiedResistanceLevel(t.StorageType, level)));
++        var maxIntensity = targets.Count == 0
++            ? 0
++            : targets.Max(t => SecureDeleteStorageProfiler.GetTechnicalDeletionIntensity(t.StorageType, level));
++        var level5Certified = false;
++        var disclaimer = SecureDeleteStorageProfiler.BuildResistanceDisclaimer(primaryStorage, level);
++        var chainSummary = targets.Count == 0
++            ? ""
++            : string.Join(" → ", ForensicSecureDeleteEngine.BuildChainSteps(targets[0].StorageType, level));
++
++        var recoveryRisk = maxCertified >= 4 && level5Certified
++            ? "very-low"
++            : maxCertified >= 3
++                ? "low"
++                : "storage-dependent";
++        return new SecureDeletePlan
++        {
++            OperationId = operationId,
++            Mode = "dry-run",
++            SecurityLevel = level.ToString(),
++            Targets = targets,
++            BlockedTargets = blocked,
++            RecoveryResistanceLevel = maxCertified,
++            TechnicalDeletionIntensity = maxIntensity,
++            Level5Certified = level5Certified,
++            CertifiedResistanceLabel = targets.Count == 0 ? "대상 없음" : "인증 아님 · 파일 단위 Clear",
++            ResistanceDisclaimer = disclaimer,
++            ProfessionalRecoveryRisk = recoveryRisk,
++            Limitations =
++                "보안 삭제 원칙: (1) P01~P12 사전 검사 (2) dry-run (3) 확인 문구 " +
++                $"「{AstraCareBranding.ShredIrreversibleConfirmation}」 (4) 저장장치별 체인 " +
++                "(HDD 다중 패스 / SSD·미확인 매체 CSPRNG 덮어쓰기+표본 검증+TRIM 요청) (5) ADS 실제 열거·제거 (6) VSS 잔존 고지.\n" +
++
++                "이 작업은 인증 또는 장치 Purge가 아닌 파일 단위 Clear입니다. 장치·컨트롤러 수준의 Sanitize/Purge는 별도 단계에서만 제공합니다.\n" +
++                "금고 내부 데이터 삭제는 키 파기(crypto-shred)가 핵심입니다.\n" +
++                "섀도 복사본/복구 지점/클라우드 사본은 자동 삭제하지 않습니다.\n" +
++                (string.IsNullOrWhiteSpace(disclaimer) ? AstraCareBranding.ShredSsdLimitation : disclaimer),
++            EstimatedDuration = TimeSpan.FromSeconds(Math.Max(
++                12,
++                targets.Sum(t =>
++                    t.StorageType is "SSD" or "NVMe"
++                        ? SecureDeleteStorageProfiler.GetFileClearPasses(t.StorageType, level) * 2 + 8
++                        : Math.Max(1, t.OverwritePasses) * 3 + 6))).ToString(@"mm\:ss"),
++            ChainSummary = chainSummary,
++            RequestedPcLevel = "파일 단위 Clear",
++            MaximumAchievablePcLevel = "파일 단위 Clear (장치 Purge 아님)",
++            VerifyMatrix = targets.SelectMany(target => target.Preflight?.Checks ?? Array.Empty<SecureDeletePreflightCheck>()).ToArray()
++        };
++    }
++
++    public async Task<(int Deleted, int Failed, string AuditPath, bool AuditValid)> ApplyAsync(
++        SecureDeletePlan plan, string typedConfirmation, SecureDeleteSecurityLevel level = SecureDeleteSecurityLevel.Professional,
++        IProgress<(int percent, string detail)>? progress = null, CancellationToken cancellationToken = default)
++    {
++        var result = await ApplyDetailedAsync(plan, typedConfirmation, level, progress, cancellationToken);
++        return (result.Deleted, result.Failed, result.AuditPath, result.AuditValid);
++    }
++
++    public async Task<SecureDeleteExecutionResult> ApplyDetailedAsync(
++        SecureDeletePlan plan,
++        string typedConfirmation,
++        SecureDeleteSecurityLevel level = SecureDeleteSecurityLevel.Professional,
++        IProgress<(int percent, string detail)>? progress = null,
++        CancellationToken cancellationToken = default)
++    {
++        if (!System.Text.RegularExpressions.Regex.IsMatch(plan.OperationId, @"^secure-delete-\d{8}-\d{6}-[0-9a-f]{32}$")
++            || plan.SecurityLevel != level.ToString() || plan.Targets.Any(t => string.IsNullOrEmpty(t.TargetFingerprint)))
++            throw new InvalidDataException("ValidationFailed");
++        var confirm = typedConfirmation.Trim();
++        var phraseOk =
++            string.Equals(confirm, AstraCareBranding.ShredIrreversibleConfirmation, StringComparison.Ordinal)
++            || string.Equals(confirm, AstraCareBranding.ShredConfirmation, StringComparison.Ordinal)
++            || string.Equals(confirm, AstraCareBranding.LegacyShredConfirmation, StringComparison.Ordinal);
++        if (!phraseOk)
++        {
++            throw new InvalidOperationException(
++                $"확인 문구가 일치하지 않습니다. 다음 중 하나를 정확히 입력하세요: " +
++                $"「{AstraCareBranding.ShredIrreversibleConfirmation}」 또는 「{AstraCareBranding.ShredConfirmation}」");
++        }
++
++        if (plan.Targets.Count == 0)
++        {
++            throw new InvalidOperationException("삭제 가능한 대상이 없습니다. dry-run 결과를 확인하세요.");
++        }
++
+         var auditRoot = _auditStorageRoot ?? Path.Combine(
+             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+             "PC-Care",
+@@ -231,28 +244,33 @@ public sealed class ProfessionalSecureDeleteService
+         var auditDir = Path.Combine(auditRoot, "audit");
+         Directory.CreateDirectory(auditDir);
+         var auditPath = Path.Combine(auditDir, $"{plan.OperationId}.log");
++        using var operationLock = new FileStream(auditPath + ".started", FileMode.CreateNew, FileAccess.Write, FileShare.None);
+         var hmacKey = SecureDeleteAuditChain.EnsureOperationKey(plan.OperationId, auditRoot);
+-
+-        var deleted = 0;
+-        var failed = 0;
+-        var index = 0;
+-        var chain = "GENESIS";
+-        var scannedVolumes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+-        var shadowAdvisories = new List<string>();
+-
+-        foreach (var target in plan.Targets)
+-        {
+-            cancellationToken.ThrowIfCancellationRequested();
+-            index++;
+-            progress?.Report(((int)(index / (double)plan.Targets.Count * 100), target.Path));
+-
+-            try
+-            {
+-                if (!File.Exists(target.Path) && !Directory.Exists(target.Path))
+-                {
+-                    throw new FileNotFoundException("Dry Run 이후 대상이 사라졌습니다.", target.Path);
+-                }
+-
++
++        var deleted = 0;
++        var failed = 0;
++        var index = 0;
++        var chain = "GENESIS";
++        var scannedVolumes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
++        var shadowAdvisories = new List<string>();
++
++        var outcomes = new List<SecureDeleteItemResult>();
++        try
++        {
++        chain = SecureDeleteAuditChain.Append(auditPath, plan.OperationId, "n/a", "n/a", "file-clear", "started", chain, hmacKey);
++        foreach (var target in plan.Targets)
++        {
++            if (cancellationToken.IsCancellationRequested) { outcomes.Add(new("Cancelled", false)); break; }
++            index++;
++            progress?.Report(((int)((index - 1) / (double)plan.Targets.Count * 100), target.Path));
++
++            try
++            {
++                if (!File.Exists(target.Path) && !Directory.Exists(target.Path))
++                {
++                    throw new FileNotFoundException("Dry Run 이후 대상이 사라졌습니다.", target.Path);
++                }
++
+                 if (!string.IsNullOrWhiteSpace(target.TargetFingerprint)
+                     && !CryptographicOperations.FixedTimeEquals(
+                         Convert.FromHexString(target.TargetFingerprint),
+@@ -260,123 +278,86 @@ public sealed class ProfessionalSecureDeleteService
+                 {
+                     throw new IOException("Dry Run 이후 파일 식별 스냅샷이 변경되어 삭제를 중단했습니다.");
+                 }
+-                var currentPreflight = SecureDeletePreflight.Inspect(
+-                    target.Path, target.StorageType, target.FileSystem, level, true, "");
+-                if (!currentPreflight.Passed)
+-                {
+-                    throw new IOException("실행 직전 사전 검증이 달라져 삭제를 중단했습니다: " + currentPreflight.Summary);
+-                }
+-
+-                var contentHash = SecureDeleteAuditChain.ProtectContentFingerprint(ComputeTargetHash(target.Path), hmacKey);
+-                var pathHash = HashPath(target.Path);
+-                var protocol = SecureDeleteStorageProfiler.SelectProtocol(target.StorageType, level);
+-
+-                if (File.Exists(target.Path))
+-                {
+-                    await ForensicSecureDeleteEngine.SecureDeleteFileAsync(
+-                        target.Path,
+-                        target.StorageType,
+-                        level,
+-                        cancellationToken);
+-                }
+-                else if (Directory.Exists(target.Path))
+-                {
+-                    await SecureDeleteDirectoryAsync(target.Path, target.TargetFingerprint, level, cancellationToken);
+-                }
+-
+-                if (File.Exists(target.Path) || Directory.Exists(target.Path))
+-                {
+-                    throw new IOException("삭제 후 경로 검증에 실패했습니다.");
+-                }
+-
+-                deleted++;
+-                var root = Path.GetPathRoot(Path.GetFullPath(target.Path));
+-                if (!string.IsNullOrWhiteSpace(root) && scannedVolumes.Add(root))
+-                {
+-                    var shadowRisk = ForensicSecureDeleteEngine.ScanShadowCopyRisk(target.Path);
+-                    if (shadowRisk.HasRisk && !string.IsNullOrWhiteSpace(shadowRisk.Advisory))
+-                    {
+-                        shadowAdvisories.Add(shadowRisk.Advisory);
+-                    }
+-                }
+-
+-                chain = SecureDeleteAuditChain.Append(
+-                    auditPath, plan.OperationId, pathHash, contentHash, protocol, "deleted", chain, hmacKey);
+-            }
+-            catch
+-            {
+-                failed++;
+-                chain = SecureDeleteAuditChain.Append(
+-                    auditPath,
+-                    plan.OperationId,
+-                    HashPath(target.Path),
+-                    "n/a",
+-                    target.RecommendedProtocol,
+-                    "failed",
+-                    chain,
+-                    hmacKey);
+-            }
+-        }
+-
+-        var auditValid = SecureDeleteAuditChain.Verify(auditPath, hmacKey);
+-        WriteSecureDeleteReport(plan, deleted, failed, auditPath, auditValid, level);
+-        CryptographicOperations.ZeroMemory(hmacKey);
+-        return (deleted, failed, auditPath, auditValid);
+-    }
+-
+-    private static async Task SecureDeleteDirectoryAsync(
+-        string directoryPath,
+-        string expectedFingerprint,
+-        SecureDeleteSecurityLevel level,
+-        CancellationToken cancellationToken)
+-    {
+-        // Never re-enumerate a folder and start deleting immediately. First rebuild a
+-        // fail-closed snapshot, then bind every file delete to that exact snapshot.
+-        if (string.IsNullOrWhiteSpace(expectedFingerprint)
+-            || !CryptographicOperations.FixedTimeEquals(
+-                Convert.FromHexString(expectedFingerprint),
+-                Convert.FromHexString(CaptureTargetFingerprint(directoryPath))))
+-        {
+-            throw new IOException("Dry Run 이후 폴더 구조 또는 파일 식별 스냅샷이 변경되어 삭제를 중단했습니다.");
+-        }
++                var gate = PathSafetyGuard.Evaluate(target.Path);
++                var currentPreflight = SecureDeletePreflight.Inspect(
++                    target.Path, SecureDeleteStorageProfiler.Profile(target.Path), DetectFileSystem(target.Path), level, gate.Allowed, gate.Reason);
++                if (!currentPreflight.Passed)
++                {
++                    throw new IOException("실행 직전 사전 검증이 달라져 삭제를 중단했습니다: " + currentPreflight.Summary);
++                }
+ 
+-        var storage = SecureDeleteStorageProfiler.Profile(directoryPath);
+-        var fileSystem = DetectFileSystem(directoryPath);
+-        var preflight = SecureDeletePreflight.Inspect(directoryPath, storage, fileSystem, level, true, "");
+-        if (!preflight.Passed)
+-        {
+-            throw new IOException("폴더 실행 직전 사전 검증이 달라져 삭제를 중단했습니다: " + preflight.Summary);
+-        }
++                var contentHash = SecureDeleteAuditChain.ProtectContentFingerprint(ComputeTargetHash(target.Path), hmacKey);
++                var pathHash = HashPath(target.Path);
++                var protocol = SecureDeleteStorageProfiler.SelectProtocol(target.StorageType, level);
+ 
+-        var snapshot = CaptureDirectorySnapshot(directoryPath);
+-        foreach (var file in snapshot.Files)
+-        {
+-            cancellationToken.ThrowIfCancellationRequested();
+-            EnsureFileMatchesSnapshot(file);
+-            await ForensicSecureDeleteEngine.SecureDeleteFileAsync(file.Path, file.StorageType, level, cancellationToken);
+-        }
++                if (File.Exists(target.Path))
++                {
++                    await ForensicSecureDeleteEngine.SecureDeleteFileAsync(
++                        target.Path,
++                        target.StorageType,
++                        level,
++                        cancellationToken, target.TargetFingerprint);
++                }
++                else if (Directory.Exists(target.Path))
++                {
++                    throw new InvalidDataException("FolderExecutionRequiresHandleBoundDirectoryRemoval");
++                }
+ 
+-        foreach (var directory in snapshot.Directories.OrderByDescending(path => path.Length))
+-        {
+-            cancellationToken.ThrowIfCancellationRequested();
+-            if (!Directory.Exists(directory)) continue;
+-            if ((File.GetAttributes(directory) & FileAttributes.ReparsePoint) != 0)
++                if (File.Exists(target.Path) || Directory.Exists(target.Path))
++                {
++                    throw new IOException("삭제 후 경로 검증에 실패했습니다.");
++                }
++
++                deleted++;
++                outcomes.Add(new("Completed", true));
++                var root = Path.GetPathRoot(Path.GetFullPath(target.Path));
++                if (!string.IsNullOrWhiteSpace(root) && scannedVolumes.Add(root))
++                {
++                    var shadowRisk = ForensicSecureDeleteEngine.ScanShadowCopyRisk(target.Path);
++                    if (shadowRisk.HasRisk && !string.IsNullOrWhiteSpace(shadowRisk.Advisory))
++                    {
++                        shadowAdvisories.Add(shadowRisk.Advisory);
++                    }
++                }
++
++                chain = SecureDeleteAuditChain.Append(
++                    auditPath, plan.OperationId, pathHash, contentHash, protocol, "deleted", chain, hmacKey);
++            }
++            catch (OperationCanceledException)
+             {
+-                throw new IOException("실행 중 재분석 지점이 감지되어 폴더 삭제를 중단했습니다.");
++                outcomes.Add(new("Cancelled", true));
++                chain = SecureDeleteAuditChain.Append(auditPath, plan.OperationId, HashPath(target.Path), "n/a",
++                    target.RecommendedProtocol, "cancelled-partial-write-possible", chain, hmacKey);
++                break;
+             }
+-
+-            if (Directory.EnumerateFileSystemEntries(directory).Any())
++            catch (Exception error)
+             {
+-                throw new IOException("Dry Run 이후 폴더 내용이 바뀌었거나 일부 파일을 처리하지 못해 삭제를 중단했습니다.");
++                failed++;
++                outcomes.Add(new(error is UnauthorizedAccessException ? "Unauthorized"
++                    : error.Message.Contains("TargetChanged", StringComparison.Ordinal) || error.Message.Contains("Dry Run", StringComparison.Ordinal) ? "TargetChanged"
++                    : error is InvalidDataException ? "ValidationFailed" : "Failed", true));
++                chain = SecureDeleteAuditChain.Append(
++                    auditPath,
++                    plan.OperationId,
++                    HashPath(target.Path),
++                    "n/a",
++                    target.RecommendedProtocol,
++                    "failed",
++                    chain,
++                    hmacKey);
+             }
+-
+-            Directory.Delete(directory, false);
+         }
+ 
+-        if (Directory.Exists(directoryPath))
+-        {
+-            throw new IOException("일부 파일 또는 폴더가 잠겨 있어 대상 전체를 삭제하지 못했습니다.");
++        var auditValid = SecureDeleteAuditChain.Verify(auditPath, hmacKey);
++        WriteSecureDeleteReport(plan, deleted, failed, auditPath, auditValid, level);
++        var cancelled = outcomes.Any(o => o.Status == "Cancelled");
++        var status = cancelled ? "Cancelled" : failed > 0 ? (deleted > 0 ? "PartiallyCompleted" : "Failed") : "Completed";
++        if (status == "Completed") progress?.Report((100, "완료"));
++        var result = new SecureDeleteExecutionResult(deleted, failed, auditPath, auditValid, auditValid ? status : "RecoveryReviewRequired", outcomes);
++        File.WriteAllText(auditPath + ".result.json", JsonSerializer.Serialize(result));
++        return result;
+         }
++        finally { CryptographicOperations.ZeroMemory(hmacKey); }
+     }
+ 
+     private static DirectoryExecutionSnapshot CaptureDirectorySnapshot(string directoryPath)
+@@ -461,177 +442,148 @@ public sealed class ProfessionalSecureDeleteService
+         return Convert.ToHexString(hash.GetHashAndReset());
+     }
+ 
+-    private static string CaptureFileFingerprint(string path)
++    private static string CaptureFileFingerprint(string path) => ForensicSecureDeleteEngine.CaptureFingerprint(path);
++
++    private sealed record DirectoryExecutionSnapshot(IReadOnlyList<string> Directories, IReadOnlyList<DirectoryExecutionFile> Files);
++    private sealed record DirectoryExecutionFile(string Path, string Fingerprint, string StorageType);
++
++    private static string ComputeTargetHash(string path)
+     {
+-        var info = new FileInfo(path);
+-        var objectIdentity = "unavailable";
++        if (!File.Exists(path))
++        {
++            return "dir:" + HashPath(path);
++        }
++
+         try
+         {
+-            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+-            if (GetFileInformationByHandle(stream.SafeFileHandle, out var native))
+-            {
+-                objectIdentity = $"{native.VolumeSerialNumber:X8}:{native.FileIndexHigh:X8}{native.FileIndexLow:X8}:{native.NumberOfLinks}";
+-            }
++            using var sha = SHA256.Create();
++            using var fs = File.OpenRead(path);
++            return Convert.ToHexString(sha.ComputeHash(fs)).ToLowerInvariant();
+         }
+         catch
+         {
+-            // Preflight independently requires exclusive access before execution. If this
+-            // read-only identity probe cannot run, metadata still binds the dry-run snapshot.
++            return "unreadable:" + HashPath(path);
+         }
+-
+-        var data = Encoding.UTF8.GetBytes($"{Path.GetFullPath(path)}|{objectIdentity}|{info.Length}|{info.CreationTimeUtc.Ticks}|{info.LastWriteTimeUtc.Ticks}|{info.Attributes}");
+-        return Convert.ToHexString(SHA256.HashData(data));
+     }
+ 
+-    [DllImport("kernel32.dll", SetLastError = true)]
+-    private static extern bool GetFileInformationByHandle(SafeFileHandle handle, out ByHandleFileInformation information);
++    private static string HashPath(string path) =>
++        Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(path))).ToLowerInvariant()[..16];
+ 
+-    [StructLayout(LayoutKind.Sequential)]
+-    private struct ByHandleFileInformation
++    private static string DetectFileSystem(string path)
+     {
+-        public uint FileAttributes, CreationTimeLow, CreationTimeHigh, LastAccessTimeLow, LastAccessTimeHigh, LastWriteTimeLow, LastWriteTimeHigh, VolumeSerialNumber, FileSizeHigh, FileSizeLow, NumberOfLinks, FileIndexHigh, FileIndexLow;
++        try
++        {
++            var root = Path.GetPathRoot(Path.GetFullPath(path)) ?? "C:\\";
++            return new DriveInfo(root).DriveFormat;
++        }
++        catch
++        {
++            return "Unknown";
++        }
+     }
+ 
+-    private sealed record DirectoryExecutionSnapshot(IReadOnlyList<string> Directories, IReadOnlyList<DirectoryExecutionFile> Files);
+-    private sealed record DirectoryExecutionFile(string Path, string Fingerprint, string StorageType);
+-
+-    private static string ComputeTargetHash(string path)
+-    {
+-        if (!File.Exists(path))
+-        {
+-            return "dir:" + HashPath(path);
+-        }
+-
+-        try
+-        {
+-            using var sha = SHA256.Create();
+-            using var fs = File.OpenRead(path);
+-            return Convert.ToHexString(sha.ComputeHash(fs)).ToLowerInvariant();
+-        }
+-        catch
+-        {
+-            return "unreadable:" + HashPath(path);
+-        }
+-    }
+-
+-    private static string HashPath(string path) =>
+-        Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(path))).ToLowerInvariant()[..16];
+-
+-    private static string DetectFileSystem(string path)
+-    {
+-        try
+-        {
+-            var root = Path.GetPathRoot(Path.GetFullPath(path)) ?? "C:\\";
+-            return new DriveInfo(root).DriveFormat;
+-        }
+-        catch
+-        {
+-            return "Unknown";
+-        }
+-    }
+-
+-    private static long EstimateDirectorySize(string dir)
+-    {
+-        long total = 0;
+-        var pending = new Stack<string>();
+-        pending.Push(dir);
+-        while (pending.Count > 0)
+-        {
+-            var current = pending.Pop();
+-            try
+-            {
+-                if ((File.GetAttributes(current) & FileAttributes.ReparsePoint) != 0)
+-                {
+-                    continue;
+-                }
+-
+-                foreach (var file in Directory.EnumerateFiles(current, "*", SearchOption.TopDirectoryOnly))
+-                {
+-                    try
+-                    {
+-                        var info = new FileInfo(file);
+-                        if ((info.Attributes & FileAttributes.ReparsePoint) == 0)
+-                        {
+-                            total = checked(total + info.Length);
+-                        }
+-                    }
+-                    catch (OverflowException)
+-                    {
+-                        return long.MaxValue;
+-                    }
+-                    catch
+-                    {
+-                        // Inaccessible files are excluded from the estimate.
+-                    }
+-                }
+-
+-                foreach (var child in Directory.EnumerateDirectories(current, "*", SearchOption.TopDirectoryOnly))
+-                {
+-                    pending.Push(child);
+-                }
+-            }
+-            catch
+-            {
+-                // Inaccessible branches are excluded from the estimate.
+-            }
+-        }
+-
+-        return total;
+-    }
++    private static long EstimateDirectorySize(string dir)
++    {
++        long total = 0;
++        var pending = new Stack<string>();
++        pending.Push(dir);
++        while (pending.Count > 0)
++        {
++            var current = pending.Pop();
++            try
++            {
++                if ((File.GetAttributes(current) & FileAttributes.ReparsePoint) != 0)
++                {
++                    continue;
++                }
++
++                foreach (var file in Directory.EnumerateFiles(current, "*", SearchOption.TopDirectoryOnly))
++                {
++                    try
++                    {
++                        var info = new FileInfo(file);
++                        if ((info.Attributes & FileAttributes.ReparsePoint) == 0)
++                        {
++                            total = checked(total + info.Length);
++                        }
++                    }
++                    catch (OverflowException)
++                    {
++                        return long.MaxValue;
++                    }
++                    catch
++                    {
++                        // Inaccessible files are excluded from the estimate.
++                    }
++                }
++
++                foreach (var child in Directory.EnumerateDirectories(current, "*", SearchOption.TopDirectoryOnly))
++                {
++                    pending.Push(child);
++                }
++            }
++            catch
++            {
++                // Inaccessible branches are excluded from the estimate.
++            }
++        }
++
++        return total;
++    }
+     private void WriteSecureDeleteReport(
+-        SecureDeletePlan plan,
+-        int deleted,
+-        int failed,
+-        string auditPath,
+-        bool auditValid,
+-        SecureDeleteSecurityLevel level)
+-    {
++        SecureDeletePlan plan,
++        int deleted,
++        int failed,
++        string auditPath,
++        bool auditValid,
++        SecureDeleteSecurityLevel level)
++    {
+         var auditRoot = _auditStorageRoot ?? Path.Combine(
+             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+             "PC-Care",
+             "secure_delete");
+         var root = Path.Combine(auditRoot, "reports");
+-        Directory.CreateDirectory(root);
+-        var basePath = Path.Combine(root, plan.OperationId);
+-        var payload = new
+-        {
+-            plan.OperationId,
+-            protocol = "pc-care.file-clear.v7",
+-            securityLevel = level.ToString(),
+-            plan.RecoveryResistanceLevel,
+-            plan.TechnicalDeletionIntensity,
+-            plan.Level5Certified,
+-            plan.CertifiedResistanceLabel,
+-            plan.ResistanceDisclaimer,
+-            plan.ProfessionalRecoveryRisk,
+-            plan.ChainSummary,
+-            plan.Limitations,
+-            deleted,
+-            failed,
+-            auditPath,
+-            auditChainValid = auditValid,
+-            completedAt = DateTimeOffset.Now.ToString("o")
+-        };
+-
+-        File.WriteAllText($"{basePath}.json", JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true }));
+-        File.WriteAllText(
+-            $"{basePath}.html",
+-            $"""
+-            <html><head><meta charset="utf-8"/><title>Secure Delete Report</title></head>
+-            <body style="font-family:Segoe UI,sans-serif;padding:24px">
+-            <h1>PC Care 파일 단위 Clear 보고서</h1>
+-            <p><b>작업 ID:</b> {plan.OperationId}</p>
+-            <p><b>보안 등급:</b> {level}</p>
+-            <p><b>체인:</b> {plan.ChainSummary}</p>
+-            <p><b>삭제:</b> {deleted} · <b>실패:</b> {failed}</p>
+-            <p><b>작업 범위:</b> {plan.CertifiedResistanceLabel}</p>
+-            <p><b>기술 삭제 강도 Tier:</b> {plan.TechnicalDeletionIntensity}</p>
+-            <p><b>인증/장치 Purge:</b> 제공하지 않음 (파일 단위 Clear 보고서)</p>
+-            {(string.IsNullOrWhiteSpace(plan.ResistanceDisclaimer) ? "" : $"<p><b>고지:</b> {plan.ResistanceDisclaimer}</p>")}
+-            <p><b>감사 체인:</b> {(auditValid ? "정상" : "주의")}</p>
+-            <p><b>감사 로그:</b> {auditPath}</p>
+-            <p style="color:#666">{plan.Limitations}</p>
+-            </body></html>
+-            """);
+-    }
+-}
++        Directory.CreateDirectory(root);
++        var basePath = Path.Combine(root, plan.OperationId);
++        var payload = new
++        {
++            plan.OperationId,
++            protocol = "pc-care.file-clear.v7",
++            securityLevel = level.ToString(),
++            plan.RecoveryResistanceLevel,
++            plan.TechnicalDeletionIntensity,
++            plan.Level5Certified,
++            plan.CertifiedResistanceLabel,
++            plan.ResistanceDisclaimer,
++            plan.ProfessionalRecoveryRisk,
++            plan.ChainSummary,
++            plan.Limitations,
++            deleted,
++            failed,
++            auditPath,
++            auditChainValid = auditValid,
++            completedAt = DateTimeOffset.Now.ToString("o")
++        };
++
++        File.WriteAllText($"{basePath}.json", JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true }));
++        File.WriteAllText(
++            $"{basePath}.html",
++            $"""
++            <html><head><meta charset="utf-8"/><title>Secure Delete Report</title></head>
++            <body style="font-family:Segoe UI,sans-serif;padding:24px">
++            <h1>PC Care 파일 단위 Clear 보고서</h1>
++            <p><b>작업 ID:</b> {plan.OperationId}</p>
++            <p><b>보안 등급:</b> {level}</p>
++            <p><b>체인:</b> {plan.ChainSummary}</p>
++            <p><b>삭제:</b> {deleted} · <b>실패:</b> {failed}</p>
++            <p><b>작업 범위:</b> {plan.CertifiedResistanceLabel}</p>
++            <p><b>기술 삭제 강도 Tier:</b> {plan.TechnicalDeletionIntensity}</p>
++            <p><b>인증/장치 Purge:</b> 제공하지 않음 (파일 단위 Clear 보고서)</p>
++            {(string.IsNullOrWhiteSpace(plan.ResistanceDisclaimer) ? "" : $"<p><b>고지:</b> {plan.ResistanceDisclaimer}</p>")}
++            <p><b>감사 체인:</b> {(auditValid ? "정상" : "주의")}</p>
++            <p><b>감사 로그:</b> {auditPath}</p>
++            <p style="color:#666">{plan.Limitations}</p>
++            </body></html>
++            """);
++    }
++}
+diff --git a/src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeleteExecutionResult.cs b/src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeleteExecutionResult.cs
+new file mode 100644
+index 0000000..eeee8e9
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeleteExecutionResult.cs
+@@ -0,0 +1,14 @@
++namespace SmartPerformanceDoctor.App.Services.Commercial;
++
++public sealed record SecureDeleteItemResult(string Status, bool PartialWritePossible);
++public sealed record SecureDeleteExecutionResult(int Deleted, int Failed, string AuditPath, bool AuditValid,
++    string Status, IReadOnlyList<SecureDeleteItemResult> Items)
++{
++    public string StatusLabel => Status switch
++    {
++        "Completed" => "완료",
++        "Cancelled" => "취소됨",
++        "PartiallyCompleted" => "일부 완료",
++        _ => "실패 · 결과 확인 필요"
++    };
++}
+diff --git a/src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeletePreflight.cs b/src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeletePreflight.cs
+index a2be228..069e522 100644
+--- a/src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeletePreflight.cs
++++ b/src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeletePreflight.cs
+@@ -21,7 +21,7 @@ internal static class SecureDeletePreflight
+         var locked = items.Where(x => !CanOpenExclusively(x.Path)).Take(3).ToArray();
+         Add(checks, "P02", locked.Length > 0 ? "fail" : "pass", locked.Length > 0 ? $"배타적으로 열 수 없는 파일: {string.Join(", ", locked.Select(x => Path.GetFileName(x.Path)))}" : "모든 파일 배타적 열기 가능");
+         var readOnly = items.Count(x => x.Attributes.HasFlag(FileAttributes.ReadOnly));
+-        Add(checks, "P03", readOnly > 0 ? "warn" : "pass", readOnly > 0 ? $"읽기 전용 파일 {readOnly}개는 실행 시 속성을 해제합니다." : "읽기 전용 파일 없음");
++        Add(checks, "P03", readOnly > 0 ? "fail" : "pass", readOnly > 0 ? $"읽기 전용 파일 {readOnly}개는 별도 검토가 필요합니다." : "읽기 전용 파일 없음");
+ 
+         var hardLinks = items.Where(x => GetHardLinkCount(x.Path) > 1).Take(3).ToArray();
+         Add(checks, "P05", hardLinks.Length > 0 ? "fail" : "pass", hardLinks.Length > 0 ? $"하드링크가 있는 파일은 다른 경로의 데이터에 영향을 줄 수 있어 차단했습니다: {string.Join(", ", hardLinks.Select(x => Path.GetFileName(x.Path)))}" : "하드링크 미감지");
+@@ -32,7 +32,7 @@ internal static class SecureDeletePreflight
+         Add(checks, "P08", fileSystem.Equals("NTFS", StringComparison.OrdinalIgnoreCase) ? "pass" : "warn", $"파일 시스템: {fileSystem}");
+ 
+         var shadow = ForensicSecureDeleteEngine.ScanShadowCopyRisk(path);
+-        Add(checks, "P09", shadow.HasRisk ? "warn" : "pass", shadow.HasRisk ? "섀도 복사본이 감지되었습니다. 이 작업은 VSS·백업·클라우드 사본을 삭제하지 않습니다." : "섀도 복사본 위험 미감지");
++        Add(checks, "P09", "warn", shadow.HasRisk ? "섀도 복사본이 감지되었습니다. 이 작업은 VSS·백업·클라우드 사본을 삭제하지 않습니다." : "VSS 부재는 검증되지 않았습니다. 백업·클라우드 사본은 처리하지 않습니다.");
+         var special = items.Count(x => x.Attributes.HasFlag(FileAttributes.Compressed) || x.Attributes.HasFlag(FileAttributes.Encrypted) || x.Attributes.HasFlag(FileAttributes.SparseFile) || x.Attributes.HasFlag(FileAttributes.Offline));
+         Add(checks, "P10", special > 0 ? "fail" : "pass", special > 0 ? $"압축·EFS·희소·오프라인 파일 {special}개는 파일 단위 Clear의 범위를 벗어나므로 실행을 차단했습니다." : "특수 할당 속성 미감지");
+         var freeBytes = TryGetAvailableFreeSpace(path);
+@@ -47,16 +47,27 @@ internal static class SecureDeletePreflight
+     private static List<TargetFile> EnumerateTarget(string path, out bool error)
+     {
+         error = false; var result = new List<TargetFile>();
++        var timer = System.Diagnostics.Stopwatch.StartNew();
++        var visited = 0;
+         try
+         {
+             if (File.Exists(path)) { result.Add(new(path, File.GetAttributes(path))); return result; }
+             var pending = new Stack<string>(); pending.Push(path);
+             while (pending.Count > 0)
+             {
++                if (++visited > 512 || timer.ElapsedMilliseconds > 5000) { error = true; break; }
+                 var current = pending.Pop(); var attrs = File.GetAttributes(current);
+                 if (attrs.HasFlag(FileAttributes.ReparsePoint)) { error = true; continue; }
+-                foreach (var file in Directory.EnumerateFiles(current, "*", SearchOption.TopDirectoryOnly)) result.Add(new(file, File.GetAttributes(file)));
+-                foreach (var dir in Directory.EnumerateDirectories(current, "*", SearchOption.TopDirectoryOnly)) pending.Push(dir);
++                foreach (var file in Directory.EnumerateFiles(current, "*", SearchOption.TopDirectoryOnly))
++                {
++                    if (result.Count >= 512 || timer.ElapsedMilliseconds > 5000) { error = true; return result; }
++                    result.Add(new(file, File.GetAttributes(file)));
++                }
++                foreach (var dir in Directory.EnumerateDirectories(current, "*", SearchOption.TopDirectoryOnly))
++                {
++                    if (pending.Count + visited >= 512) { error = true; return result; }
++                    pending.Push(dir);
++                }
+             }
+         }
+         catch { error = true; }
+@@ -70,7 +81,7 @@ internal static class SecureDeletePreflight
+ 
+     private static int GetHardLinkCount(string path)
+     {
+-        try { using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete); return GetFileInformationByHandle(stream.SafeFileHandle, out var info) ? (int)info.NumberOfLinks : 1; } catch { return 1; }
++        try { using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete); return GetFileInformationByHandle(stream.SafeFileHandle, out var info) ? (int)info.NumberOfLinks : int.MaxValue; } catch { return int.MaxValue; }
+     }
+     private static int CountAlternateDataStreams(string path)
+     {
+diff --git a/src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeleteStorageProfiler.cs b/src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeleteStorageProfiler.cs
+index e150415..030535c 100644
+--- a/src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeleteStorageProfiler.cs
++++ b/src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeleteStorageProfiler.cs
+@@ -30,9 +30,9 @@ public static class SecureDeleteStorageProfiler
+         ("HDD" or "USB-NTFS", SecureDeleteSecurityLevel.Maximum) => "file-clear.hdd.csprng-7pass.sample-verify.v7",
+         ("HDD" or "USB-NTFS", SecureDeleteSecurityLevel.Professional) => "file-clear.hdd.csprng-3pass.sample-verify.v7",
+         ("HDD" or "USB-NTFS", _) => "file-clear.hdd.csprng-1pass.sample-verify.v7",
+-        ("SSD" or "NVMe", SecureDeleteSecurityLevel.Maximum) => "file-clear.ssd.csprng-3pass.sample-verify.trim.v7",
+-        ("SSD" or "NVMe", SecureDeleteSecurityLevel.Professional) => "file-clear.ssd.csprng-2pass.sample-verify.trim.v7",
+-        ("SSD" or "NVMe", _) => "file-clear.ssd.csprng-1pass.sample-verify.trim.v7",
++        ("SSD" or "NVMe", SecureDeleteSecurityLevel.Maximum) => "file-clear.ssd.csprng-3pass.sample-verify.v8",
++        ("SSD" or "NVMe", SecureDeleteSecurityLevel.Professional) => "file-clear.ssd.csprng-2pass.sample-verify.v8",
++        ("SSD" or "NVMe", _) => "file-clear.ssd.csprng-1pass.sample-verify.v8",
+         _ => "file-clear.conservative.csprng-1pass.sample-verify.v7"
+     };
+ 
+@@ -51,7 +51,7 @@ public static class SecureDeleteStorageProfiler
+ 
+     public static string BuildResistanceDisclaimer(string storage, SecureDeleteSecurityLevel level) => storage switch
+     {
+-        "SSD" or "NVMe" => "SSD/NVMe 파일 단위 Clear는 논리 영역에 대한 덮어쓰기·표본 검증·TRIM 요청입니다. 웨어 레벨링, 오버프로비저닝, 스냅샷·클라우드 사본 때문에 물리 셀 삭제나 복구 불가를 보장하지 않습니다.",
++        "SSD" or "NVMe" => "SSD/NVMe 파일 단위 Clear는 논리 영역에 대한 덮어쓰기·표본 검증입니다. 웨어 레벨링, 오버프로비저닝, 스냅샷·클라우드 사본 때문에 물리 셀 삭제나 복구 불가를 보장하지 않습니다.",
+         "HDD" or "USB-NTFS" => "HDD 파일 단위 Clear는 파일의 논리 영역을 다중 덮어쓰기하고 표본 검증합니다. 섀도 복사본·백업·다른 하드링크는 이 작업 범위 밖입니다.",
+         _ => "저장장치 유형을 신뢰성 있게 식별하지 못했습니다. 보수적인 1회 CSPRNG 덮어쓰기와 표본 검증만 계획하며, 복구 불가를 보장하지 않습니다."
+     };
+diff --git a/src/SmartPerformanceDoctor.App/Services/SystemCare/StorageInventory.cs b/src/SmartPerformanceDoctor.App/Services/SystemCare/StorageInventory.cs
+index b331fff..66948aa 100644
+--- a/src/SmartPerformanceDoctor.App/Services/SystemCare/StorageInventory.cs
++++ b/src/SmartPerformanceDoctor.App/Services/SystemCare/StorageInventory.cs
+@@ -23,12 +23,18 @@ public sealed record CleanupCandidate(string CandidateId, CleanupDisposition Dis
+         CleanupDisposition.ScanIncomplete => "검사 미완료",
+         _ => "지원하지 않는 항목"
+     };
++    public long? AllocatedBytes { get; init; }
+     public bool CanExecute => false;
+ }
+ public sealed record DriveSpace(string Drive, long? CapacityBytes, long? AvailableBytes, long? TotalFreeBytes, string Status);
+ public sealed record StorageInventoryResult(IReadOnlyList<DriveSpace> Drives, IReadOnlyList<CleanupCandidate> Candidates,
+     long MeasuredLogicalBytes, int ExcludedCount, bool Complete, string Limitation, double ElapsedMs,
+-    double CollectorCpuMs, long WorkingSetBytes);
++    double CollectorCpuMs, long WorkingSetBytes)
++{
++    public long? MeasuredAllocatedBytes => Candidates.Where(c => c.LogicalBytes.HasValue).All(c => c.AllocatedBytes.HasValue)
++        ? Candidates.Sum(c => c.AllocatedBytes ?? 0) : null;
++    public IReadOnlyList<string> MissingReasons { get; init; } = [];
++}
+ public sealed record CleanupPreview(int SelectedCount, long CandidateBytes, long QuarantinedBytes,
+     long? ActualFreedBytes, long RestorableBytes, long FinalDeletedBytes, bool ExecutionEnabled,
+     int SystemMutations, IReadOnlyList<string> Checks, string Status);
+@@ -47,40 +53,60 @@ public static class StorageInventory
+     }).ToArray();
+ 
+     public static StorageInventoryResult CaptureUserTemp(CancellationToken token = default) =>
+-        Capture(Path.GetTempPath(), FileBudget, token);
++        Capture(Path.GetTempPath(), new StorageScanPolicy(), token);
+ 
+     // Test callers use generated roots. This method grants no execution capability.
+-    public static StorageInventoryResult CaptureIsolated(string root, int budget = FileBudget, CancellationToken token = default)
++    public static StorageInventoryResult CaptureIsolated(string root, int budget = FileBudget, CancellationToken token = default, StorageScanPolicy? policy = null)
+     {
+         var name = Path.GetFileName(Path.TrimEndingDirectorySeparator(root));
+         if (!name.StartsWith("pccare-wo10-", StringComparison.Ordinal)
+             || !Guid.TryParseExact(name[12..], "N", out _))
+             throw new InvalidDataException("SyntheticInventoryRootRequired");
+-        return Capture(root, Math.Clamp(budget, 1, FileBudget), token);
++        return Capture(root, policy ?? new StorageScanPolicy(0, Math.Clamp(budget, 1, FileBudget)), token);
+     }
+ 
+-    private static StorageInventoryResult Capture(string root, int budget, CancellationToken token)
++    private static StorageInventoryResult Capture(string root, StorageScanPolicy policy, CancellationToken token)
+     {
++        policy.Validate();
++        var missing = new List<string>();
+         var timer = Stopwatch.StartNew();
+         using var process = Process.GetCurrentProcess();
+         var cpu = process.TotalProcessorTime;
+         var rows = new List<CleanupCandidate>();
+         var seen = new HashSet<string>(StringComparer.Ordinal);
+         var complete = true;
+-        var limitation = "파일 논리 크기입니다. 할당 크기와 실제 확보 가능 공간은 미확인입니다. 하위 폴더는 검사하지 않습니다.";
++        var limitation = "파일 논리 크기입니다. 할당 크기와 실제 확보 가능 공간은 미확인입니다. 검사 깊이와 항목 수를 제한합니다.";
+         var sid = WindowsIdentity.GetCurrent().User?.Value;
+         try
+         {
+             using var directory = WindowsFileBoundary.PinDirectory(root);
+-            foreach (var path in Directory.EnumerateFileSystemEntries(directory.Root))
++            var pending = new Stack<(string Path, int Depth)>();
++            pending.Push((directory.Root, 0));
++            while (pending.Count > 0)
++            {
++            var current = pending.Pop();
++            using var currentPin = WindowsFileBoundary.PinDirectory(current.Path);
++            foreach (var path in Directory.EnumerateFileSystemEntries(currentPin.Root))
+             {
+                 token.ThrowIfCancellationRequested();
+-                if (rows.Count >= budget || timer.Elapsed > TimeSpan.FromSeconds(5)) { complete = false; break; }
+-                var relative = Path.GetFileName(path);
++                if (rows.Count >= policy.MaximumEntries || timer.ElapsedMilliseconds >= policy.MaximumMilliseconds) { complete = false; missing.Add("EntryOrTimeBudget"); pending.Clear(); break; }
++                var relative = Path.GetRelativePath(directory.Root, path);
+                 var id = Guid.NewGuid().ToString("N");
+                 if (Directory.Exists(path))
+                 {
+-                    rows.Add(new(id, CleanupDisposition.Protected, null, null, "하위 폴더 제외", null, root, relative));
++                    var attrs = File.GetAttributes(path);
++                    var protectedDirectory = StorageTargetPolicy.IsProtected(path)
++                        || (attrs & (FileAttributes.ReparsePoint | FileAttributes.System | FileAttributes.Hidden)) != 0;
++                    if (!protectedDirectory && current.Depth < policy.MaximumDepth)
++                    {
++                        pending.Push((path, current.Depth + 1));
++                        rows.Add(new(id, CleanupDisposition.RequiresReview, null, null, "제한된 하위 검사", null, root, relative));
++                    }
++                    else
++                    {
++                        rows.Add(new(id, CleanupDisposition.Protected, null, null, "하위 폴더 제외 · 보호 또는 깊이 제한", null, root, relative));
++                        if (!protectedDirectory) { complete = false; missing.Add("DepthBudget"); }
++                    }
+                     continue;
+                 }
+                 try
+@@ -94,9 +120,10 @@ public static class StorageInventory
+                     if (length != file.Stream.Length || modified != File.GetLastWriteTimeUtc(file.Stream.SafeFileHandle))
+                         throw new IOException("ScanChanged");
+                     if (!seen.Add(file.Identity)) continue;
+-                    var disposition = Classify(relative, owner == sid && sid is not null, attributes, modified, DateTime.UtcNow);
++                    var disposition = Classify(path, owner == sid && sid is not null, attributes, modified, DateTime.UtcNow);
+                     rows.Add(new(id, disposition, length, modified, Reason(disposition),
+-                        new(directory.Identity, file.Identity, length, modified), directory.Root, relative));
++                        new(directory.Identity, file.Identity, length, modified), directory.Root, relative)
++                    { AllocatedBytes = StorageTargetPolicy.AllocatedBytes(file.Stream.SafeFileHandle) });
+                 }
+                 catch (Exception e) when (e is IOException or InvalidDataException or UnauthorizedAccessException or Win32Exception)
+                 {
+@@ -105,9 +132,10 @@ public static class StorageInventory
+                         : e is UnauthorizedAccessException || native?.NativeErrorCode == 5 ? CleanupDisposition.UnknownOwnership
+                         : CleanupDisposition.Unsupported;
+                     rows.Add(new(id, disposition, null, null, Reason(disposition), null, root, relative));
+-                    complete = false;
++                    complete = false; missing.Add(disposition.ToString());
+                 }
+             }
++            }
+         }
+         catch (Exception e) when (e is IOException or InvalidDataException or UnauthorizedAccessException or Win32Exception)
+         { complete = false; limitation += " 검사 루트 접근 제한."; }
+@@ -115,21 +143,23 @@ public static class StorageInventory
+         process.Refresh();
+         return new(CaptureDrives(), rows, rows.Sum(r => r.LogicalBytes ?? 0),
+             rows.Count(r => r.Disposition != CleanupDisposition.SafeCandidate), complete, limitation,
+-            timer.Elapsed.TotalMilliseconds, (process.TotalProcessorTime - cpu).TotalMilliseconds, process.WorkingSet64);
++            timer.Elapsed.TotalMilliseconds, (process.TotalProcessorTime - cpu).TotalMilliseconds, process.WorkingSet64) { MissingReasons = missing.Distinct().ToArray() };
+     }
+ 
+     public static CleanupDisposition Classify(string name, bool owned, FileAttributes attributes, DateTime modified, DateTime now)
+     {
+         var extension = Path.GetExtension(name).ToLowerInvariant();
++        if (StorageTargetPolicy.IsProtected(name)) return CleanupDisposition.Protected;
+         if (name.StartsWith("vault.", StringComparison.OrdinalIgnoreCase)
+             || name.StartsWith("recovery_slots.", StringComparison.OrdinalIgnoreCase)
+             || name.Equals("state.dpapi", StringComparison.OrdinalIgnoreCase)
+             || name.StartsWith("state.dpapi.", StringComparison.OrdinalIgnoreCase)
+             || extension is ".avpack" or ".dpapi") return CleanupDisposition.Protected;
+-        if ((attributes & (FileAttributes.ReparsePoint | FileAttributes.Directory | FileAttributes.System)) != 0
++        if ((attributes & (FileAttributes.ReparsePoint | FileAttributes.Directory | FileAttributes.System | FileAttributes.Hidden)) != 0
+             || extension is ".av3" or ".av4" or ".av5" or ".vault" or ".exe" or ".dll" or ".bak") return CleanupDisposition.Protected;
+         if (!owned) return CleanupDisposition.UnknownOwnership;
+-        if ((attributes & FileAttributes.ReadOnly) != 0 || modified > now || now - modified < TimeSpan.FromDays(7)) return CleanupDisposition.RequiresReview;
++        if ((attributes & (FileAttributes.ReadOnly | FileAttributes.SparseFile | FileAttributes.Compressed | FileAttributes.Encrypted | FileAttributes.Offline)) != 0
++            || modified > now || now - modified < TimeSpan.FromDays(7)) return CleanupDisposition.RequiresReview;
+         return extension.Equals(".tmp", StringComparison.OrdinalIgnoreCase) || extension.Equals(".cache", StringComparison.OrdinalIgnoreCase)
+             ? CleanupDisposition.SafeCandidate : CleanupDisposition.RequiresReview;
+     }
+@@ -137,7 +167,8 @@ public static class StorageInventory
+     public static CleanupPreview DryRun(IReadOnlyList<CleanupCandidate> selected, CancellationToken token = default)
+     {
+         var checks = new List<string>(); long bytes = 0;
+-        if (selected.Count > FileBudget || selected.Select(c => c.CandidateId).Distinct().Count() != selected.Count)
++        if (selected.Count > FileBudget || selected.Select(c => c.CandidateId).Distinct().Count() != selected.Count
++            || selected.Where(c => c.Identity != null).Select(c => c.Identity!.FileId).Distinct().Count() != selected.Count(c => c.Identity != null))
+             return new(selected.Count, 0, 0, null, 0, 0, false, 0, ["중복 선택 또는 예산 초과"], "Blocked");
+         foreach (var candidate in selected)
+         {
+@@ -154,7 +185,7 @@ public static class StorageInventory
+                     throw new InvalidDataException("TargetChanged");
+                 if (file.ReadSecurity().GetOwner(typeof(SecurityIdentifier))?.Value != WindowsIdentity.GetCurrent().User?.Value)
+                     throw new InvalidDataException("OwnerChanged");
+-                if (Classify(candidate.RelativePath, true, File.GetAttributes(file.Stream.SafeFileHandle),
++                if (Classify(Path.Combine(candidate.Root, candidate.RelativePath), true, File.GetAttributes(file.Stream.SafeFileHandle),
+                     expected.LastWriteUtc, DateTime.UtcNow) != CleanupDisposition.SafeCandidate)
+                     throw new InvalidDataException("CandidatePolicyChanged");
+                 bytes += expected.Length; checks.Add("파일 ID·소유자·크기·수정 시각 재검증 완료");
+diff --git a/src/SmartPerformanceDoctor.App/Services/SystemCare/StorageTargetPolicy.cs b/src/SmartPerformanceDoctor.App/Services/SystemCare/StorageTargetPolicy.cs
+new file mode 100644
+index 0000000..9a77a66
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.App/Services/SystemCare/StorageTargetPolicy.cs
+@@ -0,0 +1,66 @@
++using System.Runtime.InteropServices;
++using Microsoft.Win32.SafeHandles;
++
++namespace SmartPerformanceDoctor.App.Services.SystemCare;
++
++public static class StorageTargetPolicy
++{
++    // Evaluate every ancestor. A renamed cache inside a protected store remains protected.
++    public static bool IsProtected(string path)
++    {
++        var parts = path.Split(['\\', '/'], StringSplitOptions.RemoveEmptyEntries);
++        return parts.Any(part => part.Equals("vault", StringComparison.OrdinalIgnoreCase)
++            || part.Equals("objects", StringComparison.OrdinalIgnoreCase)
++            || part.Equals("generations", StringComparison.OrdinalIgnoreCase)
++            || part.Equals("anchors", StringComparison.OrdinalIgnoreCase)
++            || part.Equals("receipts", StringComparison.OrdinalIgnoreCase)
++            || part.Equals("transactions", StringComparison.OrdinalIgnoreCase)
++            || part.Equals("backups", StringComparison.OrdinalIgnoreCase)
++            || part.Equals("recovery", StringComparison.OrdinalIgnoreCase)
++            || part.Equals("PC-Care", StringComparison.OrdinalIgnoreCase)
++            || part.Equals("AstraVault", StringComparison.OrdinalIgnoreCase)
++            || part.StartsWith("vault.", StringComparison.OrdinalIgnoreCase)
++            || part.StartsWith("recovery_slots.", StringComparison.OrdinalIgnoreCase)
++            || part.StartsWith("state.dpapi", StringComparison.OrdinalIgnoreCase)
++            || part.StartsWith("witness", StringComparison.OrdinalIgnoreCase)
++            || part.StartsWith("journal", StringComparison.OrdinalIgnoreCase)
++            || part.StartsWith("anchor", StringComparison.OrdinalIgnoreCase)
++            || part.StartsWith("receipt", StringComparison.OrdinalIgnoreCase)
++            || Path.GetExtension(part).ToLowerInvariant() is ".av3" or ".av4" or ".av5" or ".avpack"
++                or ".vault" or ".dpapi" or ".bak" or ".pfx" or ".pem" or ".key" or ".cer");
++    }
++
++    public static long? AllocatedBytes(SafeFileHandle handle)
++    {
++        return GetFileInformationByHandleEx(handle, 1, out var info, (uint)Marshal.SizeOf<StandardInfo>())
++            && info.AllocationSize >= 0 ? info.AllocationSize : null;
++    }
++    [StructLayout(LayoutKind.Sequential)]
++    private struct StandardInfo
++    {
++        public long AllocationSize, EndOfFile;
++        public uint NumberOfLinks;
++        public byte DeletePending, Directory;
++    }
++    [DllImport("kernel32.dll", SetLastError = true)]
++    [return: MarshalAs(UnmanagedType.Bool)]
++    private static extern bool GetFileInformationByHandleEx(SafeFileHandle handle, int type, out StandardInfo info, uint size);
++}
++
++public sealed record StorageScanPolicy(int MaximumDepth = 2, int MaximumEntries = 512, int MaximumMilliseconds = 5000)
++{
++    public void Validate()
++    {
++        if (MaximumDepth is < 0 or > 4 || MaximumEntries is < 1 or > 512
++            || MaximumMilliseconds is < 1 or > 5000) throw new ArgumentOutOfRangeException(nameof(StorageScanPolicy));
++    }
++}
++
++public sealed record StorageSpaceAccounting(long LogicalBytes, long? AllocatedBytes, long CandidateBytes,
++    long QuarantinedBytes, long RestorableBytes, long FinalDeletedBytes, long? VerifiedFreedBytes,
++    long? UnattributedVolumeDelta)
++{
++    public static StorageSpaceAccounting Observe(long logical, long? allocated, long quarantined, long deleted,
++        long? before, long? after) => new(logical, allocated, logical, quarantined, quarantined, deleted,
++            deleted == 0 ? 0 : null, before.HasValue && after.HasValue ? after - before : null);
++}
+diff --git a/src/SmartPerformanceDoctor.App/ViewModels/StorageCareViewModel.cs b/src/SmartPerformanceDoctor.App/ViewModels/StorageCareViewModel.cs
+index cd97b5d..e68ffc5 100644
+--- a/src/SmartPerformanceDoctor.App/ViewModels/StorageCareViewModel.cs
++++ b/src/SmartPerformanceDoctor.App/ViewModels/StorageCareViewModel.cs
+@@ -22,7 +22,7 @@ public sealed class StorageCareViewModel : ObservableObject
+     {
+         if (!lifecycle.TryBegin(out var lease) || lease is null) return;
+         IsBusy = true; Candidates.Clear(); Drives.Clear();
+-        Status = "파일 신원·소유권·크기 검사 중 · 최대 512개 / 5초";
++        Status = "파일 신원·소유권·크기 검사 중 · 최대 512개 / 깊이 2 / 5초";
+         try
+         {
+             var result = await Task.Run(() => StorageInventory.CaptureUserTemp(lease.Token), lease.Token);
+@@ -30,7 +30,7 @@ public sealed class StorageCareViewModel : ObservableObject
+             foreach (var drive in result.Drives)
+                 Drives.Add($"{drive.Drive} · 전체 {Format(drive.CapacityBytes)} · 사용 가능 {Format(drive.AvailableBytes)} · 전체 여유 {Format(drive.TotalFreeBytes)} · {(drive.Status == "Measured" ? "측정 완료" : "측정 제한")}");
+             foreach (var row in result.Candidates) Candidates.Add(row);
+-            Summary = $"측정 파일 {result.MeasuredLogicalBytes:N0} B · 제외 {result.ExcludedCount}개 · {result.ElapsedMs:N0} ms";
++            Summary = $"논리 크기 {result.MeasuredLogicalBytes:N0} B · 할당 크기 {(result.MeasuredAllocatedBytes is long allocated ? allocated.ToString("N0") + " B" : "미확인")} · 제외 {result.ExcludedCount}개 · {result.ElapsedMs:N0} ms";
+             Status = result.Limitation;
+             Preview = "격리 0 B · 복원 가능 0 B · 최종 삭제 0 B · 실제 확보 공간 미측정";
+         }
+diff --git a/src/SmartPerformanceDoctor.App/Views/SecureDeleteCenterPage.xaml.cs b/src/SmartPerformanceDoctor.App/Views/SecureDeleteCenterPage.xaml.cs
+index 25f4cc3..ecacbc0 100644
+--- a/src/SmartPerformanceDoctor.App/Views/SecureDeleteCenterPage.xaml.cs
++++ b/src/SmartPerformanceDoctor.App/Views/SecureDeleteCenterPage.xaml.cs
+@@ -225,11 +225,13 @@ public sealed partial class SecureDeleteCenterPage : Page
+                 $"작업 ID: {_plan.OperationId}\n" +
+                 $"보안 등급: {_plan.SecurityLevel}\n" +
+                 $"대상 {_plan.Targets.Count}개 · 차단 {_plan.BlockedTargets.Count}개\n" +
+-                $"복구 저항 Level {_plan.RecoveryResistanceLevel} · 위험: {_plan.ProfessionalRecoveryRisk}\n" +
++                $"파일 단위 Clear · 인증 및 장치 Purge 미지원 · 위험: {_plan.ProfessionalRecoveryRisk}\n" +
+                 $"풀체인: {_plan.ChainSummary}\n" +
+                 $"예상 시간: {_plan.EstimatedDuration}\n" +
+                 _plan.Limitations;
+-            StatusText.Text = _plan.BlockedTargets.Count == 0
++            StatusText.Text = _plan.Targets.Any(t => t.Type == "folder")
++                ? "폴더 전체 삭제는 파일 경계 검증 대기 중입니다. 개별 파일을 선택해 다시 검사하세요."
++                : _plan.BlockedTargets.Count == 0
+                 ? "Dry Run 완료 · 확인 문구를 입력한 뒤 실행하세요."
+                 : $"Dry Run 완료 · 보호 규칙으로 {_plan.BlockedTargets.Count}개를 차단했습니다.";
+         }
+@@ -271,14 +273,15 @@ public sealed partial class SecureDeleteCenterPage : Page
+                 ProgressBar.Value = p.percent;
+                 StatusText.Text = $"보안 삭제 진행 중 · {p.percent}% · {Path.GetFileName(p.detail)}";
+             });
+-            var result = await _service.ApplyAsync(
++            var result = await _service.ApplyDetailedAsync(
+                 _plan,
+                 ConfirmBox.Text ?? string.Empty,
+                 _level,
+                 progress,
+                 _deleteCancellation.Token);
+             StatusText.Text =
+-                $"완료 · 삭제 {result.Deleted} · 실패 {result.Failed}\n" +
++                $"{result.StatusLabel} · 삭제 {result.Deleted} · 실패 {result.Failed}\n" +
++                "중단·실패한 파일에는 부분 덮어쓰기가 남을 수 있습니다. 원복을 보장하지 않습니다.\n" +
+                 $"감사 체인: {(result.AuditValid ? "정상" : "주의")}";
+             _targetSet.Clear();
+             ResetPlan();
+@@ -303,7 +306,7 @@ public sealed partial class SecureDeleteCenterPage : Page
+ 
+     private void CancelDelete(object sender, RoutedEventArgs e)
+     {
+-        StatusText.Text = "현재 항목이 끝나는 대로 취소합니다…";
++        StatusText.Text = "취소 요청 중 · 이미 덮어쓴 데이터는 원복되지 않습니다…";
+         _deleteCancellation?.Cancel();
+     }
+ 
+@@ -334,9 +337,9 @@ public sealed partial class SecureDeleteCenterPage : Page
+         RemoveSelectedButton.IsEnabled = idle && _targetSet.Items.Count > 0;
+         ClearTargetsButton.IsEnabled = idle && _targetSet.Items.Count > 0;
+         DryRunButton.IsEnabled = idle && _targetSet.Items.Count > 0;
+-        ApplyDeleteButton.IsEnabled = idle && _plan?.Targets.Count > 0;
++        ApplyDeleteButton.IsEnabled = idle && _plan?.Targets.Count > 0 && _plan.Targets.All(t => t.Type == "file");
+         SecurityLevelBox.IsEnabled = idle;
+         CancelDeleteButton.Visibility = _deleteInProgress ? Visibility.Visible : Visibility.Collapsed;
+         CancelDeleteButton.IsEnabled = _deleteInProgress && _deleteCancellation?.IsCancellationRequested != true;
+     }
+-}
+\ No newline at end of file
++}
+diff --git a/tests/SmartPerformanceDoctor.Tests/WO17StorageDeleteTests.cs b/tests/SmartPerformanceDoctor.Tests/WO17StorageDeleteTests.cs
+new file mode 100644
+index 0000000..ea813f2
+--- /dev/null
++++ b/tests/SmartPerformanceDoctor.Tests/WO17StorageDeleteTests.cs
+@@ -0,0 +1,166 @@
++using System.Security.Cryptography;
++using SmartPerformanceDoctor.App.Services.Commercial;
++using SmartPerformanceDoctor.App.Services.SystemCare;
++using SmartPerformanceDoctor.RecoverySandbox;
++using Xunit;
++
++namespace SmartPerformanceDoctor.Tests;
++
++public sealed class WO17StorageDeleteTests : IDisposable
++{
++    private readonly string parent = Path.Combine(Environment.GetEnvironmentVariable("RUNNER_TEMP")
++        ?? Directory.GetParent(Environment.CurrentDirectory)!.FullName, "wo17-" + Guid.NewGuid().ToString("N"));
++    public WO17StorageDeleteTests() => Directory.CreateDirectory(parent);
++    private string FileFixture(int bytes = 4096)
++    {
++        var path = Path.Combine(parent, Guid.NewGuid().ToString("N") + ".tmp");
++        File.WriteAllBytes(path, RandomNumberGenerator.GetBytes(bytes));
++        return path;
++    }
++    [Theory]
++    [InlineData("vault/ordinary.tmp")][InlineData("anchors/ordinary.cache")]
++    [InlineData("transactions/payload.tmp")][InlineData("backups/a.tmp")]
++    [InlineData("receipts/x.cache")][InlineData("journal.json")]
++    [InlineData("vault.header.tmp")][InlineData("recovery_slots.new")]
++    [InlineData("state.dpapi.old")][InlineData("secret.pem")][InlineData("key.pfx")]
++    public void ProtectedAncestorsCannotBecomeCandidates(string relative)
++    {
++        Assert.True(StorageTargetPolicy.IsProtected(relative));
++        Assert.Equal(CleanupDisposition.Protected, StorageInventory.Classify(relative, true, FileAttributes.Normal,
++            DateTime.UtcNow.AddDays(-9), DateTime.UtcNow));
++    }
++    [Fact] public void HiddenFileRequiresProtection() => Assert.Equal(CleanupDisposition.Protected,
++        StorageInventory.Classify("old.tmp", true, FileAttributes.Hidden, DateTime.UtcNow.AddDays(-9), DateTime.UtcNow));
++    [Fact] public void BoundedChildInventoryPreservesProtectedTree()
++    {
++        var sandbox = SandboxRecovery.Create(parent);
++        Directory.CreateDirectory(Path.Combine(sandbox.Root, "cache"));
++        Directory.CreateDirectory(Path.Combine(sandbox.Root, "anchors"));
++        File.WriteAllBytes(Path.Combine(sandbox.Root, "cache", "old.tmp"), new byte[4097]);
++        File.WriteAllBytes(Path.Combine(sandbox.Root, "anchors", "old.tmp"), new byte[4097]);
++        var result = StorageInventory.CaptureIsolated(sandbox.Root, policy: new StorageScanPolicy());
++        var file = Assert.Single(result.Candidates, c => c.RelativePath == Path.Combine("cache", "old.tmp"));
++        Assert.Equal(4097, file.LogicalBytes);
++        Assert.NotNull(file.AllocatedBytes);
++        Assert.DoesNotContain(result.Candidates, c => c.RelativePath == Path.Combine("anchors", "old.tmp"));
++    }
++    [Fact] public void DepthBudgetReportsMissingRange()
++    {
++        var sandbox = SandboxRecovery.Create(parent);
++        Directory.CreateDirectory(Path.Combine(sandbox.Root, "cache", "deep"));
++        var result = StorageInventory.CaptureIsolated(sandbox.Root, policy: new StorageScanPolicy(1));
++        Assert.False(result.Complete); Assert.Contains("DepthBudget", result.MissingReasons);
++    }
++    [Theory][InlineData(-1,512,5000)][InlineData(5,512,5000)][InlineData(2,513,5000)][InlineData(2,512,5001)]
++    public void UnlimitedScanPolicyRejected(int depth, int entries, int ms)
++        => Assert.Throws<ArgumentOutOfRangeException>(() => new StorageScanPolicy(depth, entries, ms).Validate());
++    [Fact] public void QuarantineDoesNotClaimVolumeDelta()
++    {
++        var result = StorageSpaceAccounting.Observe(4000, 4096, 4000, 0, 100, 900);
++        Assert.Equal(0, result.VerifiedFreedBytes); Assert.Equal(800, result.UnattributedVolumeDelta);
++        Assert.Equal(4000, result.RestorableBytes);
++    }
++    [Fact] public void FinalDeletionDoesNotAttributeExternalVolumeChanges()
++        => Assert.Null(StorageSpaceAccounting.Observe(4000, 4096, 0, 4000, 100, 900).VerifiedFreedBytes);
++    [Fact] public async Task SameHandleClearDeletesOnlyFixture()
++    {
++        var path = FileFixture(65537); var other = FileFixture(); var hash = SHA256.HashData(File.ReadAllBytes(other));
++        await ForensicSecureDeleteEngine.SecureDeleteFileAsync(path, "Unknown", SecureDeleteSecurityLevel.Standard, default);
++        Assert.False(File.Exists(path)); Assert.Equal(hash, SHA256.HashData(File.ReadAllBytes(other)));
++    }
++    [Fact] public async Task MetadataPreservingContentChangeRejected()
++    {
++        var path = FileFixture(); var old = ForensicSecureDeleteEngine.CaptureFingerprint(path);
++        var modified = File.GetLastWriteTimeUtc(path); File.WriteAllBytes(path, new byte[4096]); File.SetLastWriteTimeUtc(path, modified);
++        await Assert.ThrowsAsync<InvalidDataException>(() => ForensicSecureDeleteEngine.SecureDeleteFileAsync(path,
++            "Unknown", SecureDeleteSecurityLevel.Standard, default, old));
++        Assert.Equal(new byte[4096], File.ReadAllBytes(path));
++    }
++    [Fact] public async Task CancelBeforeOpenPreservesBytes()
++    {
++        var path = FileFixture(); var before = File.ReadAllBytes(path); using var cts = new CancellationTokenSource(); cts.Cancel();
++        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => ForensicSecureDeleteEngine.SecureDeleteFileAsync(path,
++            "Unknown", SecureDeleteSecurityLevel.Standard, cts.Token));
++        Assert.Equal(before, File.ReadAllBytes(path));
++    }
++    [Fact] public async Task CancelAfterWritePreservesPartialFile()
++    {
++        var path = FileFixture(1048576); using var cts = new CancellationTokenSource();
++        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => ForensicSecureDeleteEngine.SecureDeleteFileAsync(path,
++            "Unknown", SecureDeleteSecurityLevel.Standard, cts.Token, checkpoint: p => { if(p == "Written") cts.Cancel(); }));
++        Assert.True(File.Exists(path)); Assert.Equal(1048576, new FileInfo(path).Length);
++    }
++    [Fact] public async Task OpenedHandleRejectsReplacementAndConcurrentWrite()
++    {
++        var path = FileFixture(); var blocked = 0;
++        await ForensicSecureDeleteEngine.SecureDeleteFileAsync(path, "Unknown", SecureDeleteSecurityLevel.Standard, default,
++            checkpoint: p => { if (p != "Opened") return;
++                Assert.Throws<IOException>(() => File.Move(path, path + ".replacement"));
++                Assert.Throws<IOException>(() => File.Open(path, FileMode.Open, FileAccess.Write, FileShare.ReadWrite).Dispose()); blocked++; });
++        Assert.Equal(1, blocked); Assert.False(File.Exists(path));
++    }
++    [Fact] public async Task ReadOnlyFixtureIsNotSilentlyModified()
++    {
++        var path = FileFixture(); var before = File.ReadAllBytes(path); File.SetAttributes(path, FileAttributes.ReadOnly);
++        try { await Assert.ThrowsAnyAsync<Exception>(() => ForensicSecureDeleteEngine.SecureDeleteFileAsync(path,
++            "Unknown", SecureDeleteSecurityLevel.Standard, default)); Assert.Equal(before, File.ReadAllBytes(path)); }
++        finally { File.SetAttributes(path, FileAttributes.Normal); }
++    }
++    [Fact] public async Task AdsFixtureRequiresReviewAndPreservesBothStreams()
++    {
++        var path = FileFixture(); File.WriteAllText(path + ":wo17", "synthetic"); var before = File.ReadAllBytes(path);
++        await Assert.ThrowsAsync<InvalidDataException>(() => ForensicSecureDeleteEngine.SecureDeleteFileAsync(path,
++            "Unknown", SecureDeleteSecurityLevel.Standard, default));
++        Assert.Equal(before, File.ReadAllBytes(path)); Assert.Equal("synthetic", File.ReadAllText(path + ":wo17"));
++    }
++    [Fact] public async Task DetailedCancellationDoesNotReportCompleted()
++    {
++        var path = FileFixture(); var service = new ProfessionalSecureDeleteService(parent); var plan = service.PlanDryRun([path]);
++        using var cts = new CancellationTokenSource(); cts.Cancel();
++        var result = await service.ApplyDetailedAsync(plan, "보안 삭제에 동의합니다", cancellationToken: cts.Token);
++        Assert.Equal("Cancelled", result.Status); Assert.Equal(0, result.Deleted); Assert.True(File.Exists(path));
++    }
++    [Fact] public void ProtectedVaultPathRejectedAtDeleteSelection()
++    { Assert.False(PathSafetyGuard.Evaluate(Path.Combine(parent,"vault","ordinary.tmp")).Allowed); }
++    [Fact] public void UnknownAllocationRemainsUnknown() => Assert.Null(StorageSpaceAccounting.Observe(1,null,0,0,null,null).AllocatedBytes);
++    [Fact] public void MissingDeleteTargetIsVisible()
++    { var plan = new ProfessionalSecureDeleteService(parent).PlanDryRun([Path.Combine(parent,"missing.tmp")]); Assert.Empty(plan.Targets); Assert.Single(plan.BlockedTargets); }
++    [Fact] public async Task ArbitraryOperationPathRejectedBeforeAuditWrite()
++    {
++        var path = FileFixture(); var service = new ProfessionalSecureDeleteService(parent); var plan = service.PlanDryRun([path]);
++        var forged = new SmartPerformanceDoctor.App.Models.Commercial.SecureDeletePlan { OperationId = "../forged", Targets = plan.Targets };
++        await Assert.ThrowsAsync<InvalidDataException>(() => service.ApplyDetailedAsync(forged,"보안 삭제에 동의합니다")); Assert.True(File.Exists(path));
++    }
++    [Fact] public async Task MissingIdentityCannotAuthorizeDelete()
++    {
++        var path = FileFixture(); var service = new ProfessionalSecureDeleteService(parent); var plan = service.PlanDryRun([path]);
++        var forged = new SmartPerformanceDoctor.App.Models.Commercial.SecureDeletePlan { OperationId = plan.OperationId,
++            Targets = [new SmartPerformanceDoctor.App.Models.Commercial.SecureDeleteTarget { Path = path }] };
++        await Assert.ThrowsAsync<InvalidDataException>(() => service.ApplyDetailedAsync(forged,"보안 삭제에 동의합니다")); Assert.True(File.Exists(path));
++    }
++    [Fact] public async Task OperationCannotRunTwice()
++    {
++        var path = FileFixture(); var service = new ProfessionalSecureDeleteService(parent); var plan = service.PlanDryRun([path]);
++        using var cts = new CancellationTokenSource(); cts.Cancel();
++        await service.ApplyDetailedAsync(plan,"보안 삭제에 동의합니다",cancellationToken:cts.Token);
++        await Assert.ThrowsAsync<IOException>(() => service.ApplyDetailedAsync(plan,"보안 삭제에 동의합니다")); Assert.True(File.Exists(path));
++    }
++    [Fact] public async Task FolderExecutionPreservesAllFilesUntilQualified()
++    {
++        var folder = Path.Combine(parent,"unqualified-folder"); Directory.CreateDirectory(folder);
++        File.WriteAllBytes(Path.Combine(folder,"data.tmp"),new byte[4096]);
++        var service = new ProfessionalSecureDeleteService(parent); var plan = service.PlanDryRun([folder]);
++        var result = await service.ApplyDetailedAsync(plan,"보안 삭제에 동의합니다");
++        Assert.Equal("Failed",result.Status); Assert.Equal(0,result.Deleted); Assert.True(File.Exists(Path.Combine(folder,"data.tmp")));
++    }
++    [Fact] public void DuplicateFileIdentitySelectionIsBlocked()
++    {
++        var s = SandboxRecovery.Create(parent); var path = Path.Combine(s.Root,"old.tmp"); File.WriteAllBytes(path,new byte[4096]);
++        File.SetLastWriteTimeUtc(path,DateTime.UtcNow.AddDays(-9)); var candidate = StorageInventory.CaptureIsolated(s.Root).Candidates.Single(c=>c.RelativePath=="old.tmp");
++        Assert.Equal("Blocked",StorageInventory.DryRun([candidate,candidate with {CandidateId=Guid.NewGuid().ToString("N")}]).Status);
++    }
++    [Theory][InlineData(FileAttributes.SparseFile)][InlineData(FileAttributes.Compressed)][InlineData(FileAttributes.Offline)]
++    public void SpecialAllocationNeverAutoQualifies(FileAttributes attributes)
++        => Assert.Equal(CleanupDisposition.RequiresReview,StorageInventory.Classify("old.tmp",true,attributes,DateTime.UtcNow.AddDays(-9),DateTime.UtcNow));
++    public void Dispose() { if (Directory.Exists(parent)) Directory.Delete(parent, true); }
++}
+diff --git a/tools/SmartPerformanceDoctor.CleanupProbe/Program.cs b/tools/SmartPerformanceDoctor.CleanupProbe/Program.cs
+index 7904fa3..6d26fd5 100644
+--- a/tools/SmartPerformanceDoctor.CleanupProbe/Program.cs
++++ b/tools/SmartPerformanceDoctor.CleanupProbe/Program.cs
+@@ -15,9 +15,9 @@ if (args is ["--readonly-user-temp", var inventoryOutput])
+     Console.WriteLine($"WO11_READONLY_INVENTORY candidates={result.Candidates.Count} excluded={result.ExcludedCount} complete={result.Complete} fileMutations=0");
+     return 0;
+ }
+-if (args is not ["--synthetic", var output]) return 2;
++if (args is not ["--synthetic", var output, var fixtureParent]) return 2;
+ Directory.CreateDirectory(output);
+-var parent = Path.Combine(Path.GetFullPath(output), "fixture-" + Guid.NewGuid().ToString("N"));
++var parent = Path.Combine(Path.GetFullPath(fixtureParent), "wo11-probe-" + Guid.NewGuid().ToString("N"));
+ Directory.CreateDirectory(parent);
+ var sandbox = SandboxRecovery.CreateSynthetic(parent, 8 * 1024 * 1024);
+ var original = Path.Combine(sandbox.Root, "fixture.dat");
+diff --git a/tools/SmartPerformanceDoctor.CleanupProbe/SmartPerformanceDoctor.CleanupProbe.csproj b/tools/SmartPerformanceDoctor.CleanupProbe/SmartPerformanceDoctor.CleanupProbe.csproj
+index ca4607a..39adeaf 100644
+--- a/tools/SmartPerformanceDoctor.CleanupProbe/SmartPerformanceDoctor.CleanupProbe.csproj
++++ b/tools/SmartPerformanceDoctor.CleanupProbe/SmartPerformanceDoctor.CleanupProbe.csproj
+@@ -4,5 +4,6 @@
+     <ProjectReference Include="../../src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj"/>
+     <Compile Include="../SmartPerformanceDoctor.RecoverySandbox/SandboxRecovery.cs" Link="SandboxRecovery.cs"/>
+     <Compile Include="../../src/SmartPerformanceDoctor.App/Services/SystemCare/StorageInventory.cs" Link="StorageInventory.cs"/>
++    <Compile Include="../../src/SmartPerformanceDoctor.App/Services/SystemCare/StorageTargetPolicy.cs" Link="StorageTargetPolicy.cs"/>
+   </ItemGroup>
+ </Project>
+diff --git a/tools/SmartPerformanceDoctor.StorageCareProbe/Program.cs b/tools/SmartPerformanceDoctor.StorageCareProbe/Program.cs
+new file mode 100644
+index 0000000..a54bc83
+--- /dev/null
++++ b/tools/SmartPerformanceDoctor.StorageCareProbe/Program.cs
+@@ -0,0 +1,66 @@
++using System.Diagnostics;
++using System.Security.Cryptography;
++using System.Text.Json;
++using SmartPerformanceDoctor.App.Services.SystemCare;
++using SmartPerformanceDoctor.App.Services.Commercial;
++using SmartPerformanceDoctor.RecoverySandbox;
++
++if (args is not ["--synthetic", var output, var fixtureParent]) return 2;
++var evidence = Path.GetFullPath(output);
++Directory.CreateDirectory(evidence);
++var parent = Path.Combine(Path.GetFullPath(fixtureParent), "wo17-probe-" + Guid.NewGuid().ToString("N"));
++Directory.CreateDirectory(parent);
++void Save(string name, object value) => File.WriteAllText(Path.Combine(evidence, name), JsonSerializer.Serialize(value,
++    new JsonSerializerOptions { WriteIndented = true }).Replace(parent, "<SYNTHETIC_ROOT>", StringComparison.OrdinalIgnoreCase));
++try
++{
++    var sandbox = SandboxRecovery.CreateSynthetic(parent, 1048576);
++    var target = Path.Combine(sandbox.Root, "old.tmp");
++    File.WriteAllBytes(target, RandomNumberGenerator.GetBytes(65537));
++    File.SetLastWriteTimeUtc(target, DateTime.UtcNow.AddDays(-9));
++    var ownerInfo = new FileInfo(target);
++    var acl = System.IO.FileSystemAclExtensions.GetAccessControl(ownerInfo);
++    acl.SetOwner(System.Security.Principal.WindowsIdentity.GetCurrent().User!);
++    System.IO.FileSystemAclExtensions.SetAccessControl(ownerInfo, acl);
++    var sw = Stopwatch.StartNew();
++    var inventory = StorageInventory.CaptureIsolated(sandbox.Root, policy: new StorageScanPolicy());
++    Save("STORAGE_INVENTORY_RESULT.json", inventory);
++    var candidate = inventory.Candidates.Single(c => c.RelativePath == "old.tmp");
++    var preview = StorageInventory.DryRun([candidate]);
++    Save("DRY_RUN_RESULT.json", preview);
++    var beforeHash = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(Path.Combine(sandbox.Root, "fixture.dat"))));
++    var freeBefore = new DriveInfo(Path.GetPathRoot(sandbox.Root)!).AvailableFreeSpace;
++    sandbox.Execute(sandbox.Approve());
++    var quarantined = sandbox.MeasureQuarantine(freeBefore, sw.Elapsed.TotalMilliseconds);
++    var recovery = sandbox.Recover();
++    var afterHash = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(Path.Combine(sandbox.Root, "fixture.dat"))));
++    if (!recovery.BytesVerified || beforeHash != afterHash) throw new IOException("RoundTripMismatch");
++    Save("QUARANTINE_RECOVERY_RESULT.json", new { recovery, beforeHash, afterHash, quarantined });
++    Save("STORAGE_ACCOUNTING_RESULT.json", StorageSpaceAccounting.Observe(1048576, null, 1048576, 0,
++        quarantined.AvailableBefore, quarantined.AvailableAfter));
++    Save("PERFORMANCE_BEFORE_AFTER_RESULT.json", new { inventory.ElapsedMs, inventory.CollectorCpuMs,
++        inventory.WorkingSetBytes, quarantined, SpeedImprovement = (double?)null, Conditions = "Synthetic 1MiB file; one run; no Windows speed claim" });
++    var service = new ProfessionalSecureDeleteService(Path.Combine(parent, "audit-output"));
++    var plan = service.PlanDryRun([target]);
++    Save("SECURE_DELETE_PREFLIGHT_RESULT.json", new { TargetCount = plan.Targets.Count, BlockedCount = plan.BlockedTargets.Count,
++        Checks = plan.Targets.SelectMany(t => t.Preflight!.Checks).Select(c => new {c.Code,c.Status}) });
++    var result = await service.ApplyDetailedAsync(plan, "보안 삭제에 동의합니다");
++    Save("SECURE_DELETE_IDENTITY_RESULT.json", new { result.Status, result.Deleted, result.Failed, result.AuditValid,
++        DeletedFixtureMissing = !File.Exists(target), OtherFixtureHash = afterHash });
++    if (result.Deleted != 1 || !result.AuditValid || File.Exists(target)) throw new IOException("DeleteFailed");
++    target = Path.Combine(sandbox.Root, "cancel.tmp"); File.WriteAllBytes(target, new byte[4096]);
++    plan = service.PlanDryRun([target]); using var cts = new CancellationTokenSource(); cts.Cancel();
++    result = await service.ApplyDetailedAsync(plan, "보안 삭제에 동의합니다", cancellationToken: cts.Token);
++    Save("SECURE_DELETE_CANCELLATION_RESULT.json", new { result.Status, result.Deleted, result.Failed,
++        OriginalPreserved = File.Exists(target), result.AuditValid });
++    if (result.Status != "Cancelled" || !File.Exists(target)) throw new IOException("CancellationMismatch");
++    Save("PROTECTED_TARGET_RESULT.json", new { VaultProtected = StorageTargetPolicy.IsProtected("vault/ordinary.tmp"),
++        AnchorProtected = StorageTargetPolicy.IsProtected("anchors/ordinary.tmp"), ProductionCleanupEnabled = candidate.CanExecute });
++    Save("STORAGE_MEDIA_RESULT.json", new { ActualReportedMedia = SecureDeleteStorageProfiler.Profile(target),
++        FileSystem = new DriveInfo(Path.GetPathRoot(target)!).DriveFormat, PhysicalSanitizeTest = "NOT TESTED",
++        Policy = new[] {"HDD: logical file Clear", "SSD/NVMe: physical erasure unverified", "Unknown: conservative Clear"} });
++    Console.WriteLine("WO17_SYNTHETIC=PASS;QUARANTINE_SHA256_MATCH=TRUE;DELETE=1;CANCEL_PRESERVED=TRUE;PRODUCTION_CLEANUP=FALSE");
++    return 0;
++}
++catch (Exception error) { Console.Error.WriteLine("WO17_PROBE_FAIL " + error.GetType().Name); return 1; }
++// Preserve fixtures for local review. Do not publish fixture contents or audit keys.
+diff --git a/tools/SmartPerformanceDoctor.StorageCareProbe/SmartPerformanceDoctor.StorageCareProbe.csproj b/tools/SmartPerformanceDoctor.StorageCareProbe/SmartPerformanceDoctor.StorageCareProbe.csproj
+new file mode 100644
+index 0000000..4326753
+--- /dev/null
++++ b/tools/SmartPerformanceDoctor.StorageCareProbe/SmartPerformanceDoctor.StorageCareProbe.csproj
+@@ -0,0 +1,13 @@
++<Project Sdk="Microsoft.NET.Sdk">
++  <PropertyGroup>
++    <OutputType>Exe</OutputType>
++    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
++    <ImplicitUsings>enable</ImplicitUsings>
++    <Nullable>enable</Nullable>
++    <Platforms>x64</Platforms>
++  </PropertyGroup>
++  <ItemGroup>
++    <ProjectReference Include="../../src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj" />
++    <Compile Include="../SmartPerformanceDoctor.RecoverySandbox/SandboxRecovery.cs" Link="SandboxRecovery.cs" />
++  </ItemGroup>
++</Project>

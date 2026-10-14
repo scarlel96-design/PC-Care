@@ -1,0 +1,8 @@
+WORK ITEM: WO17
+SOURCE SHA: 63febc9ca94d8da90e5bfb3696f85f4ccc0ec125
+ENVIRONMENT: Windows 11 Pro 26200; .NET SDK 10.0.401; 24 logical processors; synthetic local fixed-disk fixtures
+COMMAND: bash docs/rework/evidence/wo17/ROLLBACK.sh <WO17_ROLLBACK_COPY>/RESTORE_COPY
+INPUT: synthetic fixtures; no user documents or vaults
+OUTPUT:
+ROLLBACK_SHA256_RESTORED=1c2cf13ca59e650948924e32d38807368a7b33d62017896f2633466b3b26b464
+EXIT CODE: 0

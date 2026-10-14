@@ -1,0 +1,9 @@
+WORK ITEM: WO17
+SOURCE SHA: 63febc9ca94d8da90e5bfb3696f85f4ccc0ec125
+ENVIRONMENT: Windows 11 Pro 26200; .NET SDK 10.0.401; 24 logical processors; synthetic local fixed-disk fixtures
+COMMAND: pwsh -NoProfile -File scripts/wo17-ui-source-validation.ps1
+INPUT: synthetic fixtures; no user documents or vaults
+OUTPUT:
+UI_SOURCE_IDS=6;SCRIPT_SYNTAX=2;AV3_FALSE_GATES=6;GUI=NOT_TESTED
+WO17_STORAGE_IDS=6;DELETE_RESULT_STATE=CONNECTED;FOLDER_EXECUTION=DISABLED;GUI=NOT_TESTED
+EXIT CODE: 0

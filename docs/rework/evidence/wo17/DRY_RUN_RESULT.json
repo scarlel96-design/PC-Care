@@ -1,0 +1,25 @@
+{
+  "SelectedCount": 1,
+  "CandidateBytes": 65537,
+  "QuarantinedBytes": 0,
+  "ActualFreedBytes": null,
+  "RestorableBytes": 0,
+  "FinalDeletedBytes": 0,
+  "ExecutionEnabled": false,
+  "SystemMutations": 0,
+  "Checks": [
+    "파일 ID·소유자·크기·수정 시각 재검증 완료",
+    "위험: 파일 격리 / 권한: 일반 사용자 / 동의: 실행 직전 필요",
+    "생산 정리 실행은 검증 대기 중입니다. 동일 볼륨 격리만으로 확보 공간이 늘지 않습니다."
+  ],
+  "Status": "PreviewOnly",
+  "_Evidence": {
+    "sourceSha": "63febc9ca94d8da90e5bfb3696f85f4ccc0ec125",
+    "environment": "Windows 11 Pro 26200; .NET SDK 10.0.401; 24 logical processors; synthetic local fixed-disk fixtures",
+    "command": "dotnet tools/SmartPerformanceDoctor.StorageCareProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.StorageCareProbe.dll --synthetic docs/rework/evidence/wo17 <WORKSPACE_SYNTHETIC_PARENT>",
+    "input": "generated synthetic fixtures",
+    "exitCode": 0,
+    "outputFile": "DRY_RUN_RESULT.json",
+    "scope": "Windows synthetic filesystem; no physical sanitization or GUI claim"
+  }
+}
