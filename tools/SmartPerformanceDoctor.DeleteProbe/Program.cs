@@ -16,16 +16,19 @@ try
     {
         var transaction=SandboxRecovery.CreateSelectedSynthetic(selectedParent,"selected.tmp",1048576);
         var source=Path.Combine(transaction.Root,"selected.tmp");var before=Hash(source);
-        var consent=transaction.Approve();var executed=transaction.Execute(consent);
-        var measurement=transaction.MeasureQuarantine(new DriveInfo(Path.GetPathRoot(source)!).AvailableFreeSpace,0);
+        var consent=transaction.Approve();var availableBefore=new DriveInfo(Path.GetPathRoot(source)!).AvailableFreeSpace;
+        var actionTimer=Stopwatch.StartNew();var executed=transaction.Execute(consent);
+        var measurement=transaction.MeasureQuarantine(availableBefore,actionTimer.Elapsed.TotalMilliseconds);
         var restored=SandboxRecovery.Open(transaction.Root).Recover();var after=Hash(source);
+        var repeated=SandboxRecovery.Open(transaction.Root).Recover();
+        if(!repeated.BytesVerified||repeated.Mutations!=0||Hash(source)!=after)throw new IOException("RepeatedRestoreChangedBytes");
         if(before!=after||!restored.BytesVerified)throw new IOException("SelectedRoundTripMismatch");
         var collision=SandboxRecovery.CreateSelectedSynthetic(selectedParent,"collision.tmp");collision.Execute(collision.Approve());
         var conflict=Path.Combine(collision.Root,"collision.tmp");File.WriteAllBytes(conflict,RandomNumberGenerator.GetBytes(4096));
         var conflictHash=Hash(conflict);var blocked=false;
         try{collision.Recover();}catch(IOException){blocked=true;}
         if(!blocked||Hash(conflict)!=conflictHash)throw new IOException("RestoreCollisionOverwritten");
-        Console.WriteLine(JsonSerializer.Serialize(new{Quarantine=new{BeforeHash=before,AfterHash=after,executed,restored,measurement},
+        Console.WriteLine(JsonSerializer.Serialize(new{Quarantine=new{BeforeHash=before,AfterHash=after,executed,restored,repeated,measurement},
             RestoreCollision=new{Blocked=blocked,ExistingBytesPreserved=true,QuarantineRetained=File.Exists(Path.Combine(collision.Root,"fixture.quarantine"))},ProductionExecutionEnabled=false}));
         return 0;
     }

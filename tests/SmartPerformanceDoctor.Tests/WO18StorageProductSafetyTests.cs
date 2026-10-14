@@ -34,6 +34,9 @@ public sealed class WO18StorageProductSafetyTests : IDisposable
         Assert.Null(measurement.AllocatedBytes);Assert.Equal(measurement.ObservedFreeSpaceDelta,measurement.UnattributedVolumeDelta);
         var reopened=SandboxRecovery.Open(transaction.Root);Assert.True(reopened.Recover().BytesVerified);
         Assert.Equal(before,SHA256.HashData(File.ReadAllBytes(path)));
+        var repeated = SandboxRecovery.Open(transaction.Root).Recover();
+        Assert.True(repeated.BytesVerified); Assert.Equal(0, repeated.Mutations);
+        Assert.Equal(before,SHA256.HashData(File.ReadAllBytes(path)));
     }
     [Fact]public void SelectedTargetRestoreCollisionPreservesBothFiles()
     {

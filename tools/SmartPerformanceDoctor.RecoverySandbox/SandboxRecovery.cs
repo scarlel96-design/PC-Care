@@ -179,7 +179,7 @@ public sealed class SandboxRecovery
         var quarantineExists = File.Exists(Path.Combine(Root, Quarantine));
         if (journal.State == "Restored" && quarantineExists) throw new IOException("RecoveryRequired:RestoredStateMismatch");
         if (originalExists == quarantineExists) throw new IOException("RecoveryRequired:MissingOrConflictingTargets");
-        using var file = WindowsFileBoundary.OpenWrite(Root, originalExists ? Original : Quarantine, deletable: true);
+        using var file = WindowsFileBoundary.OpenWrite(Root, originalExists ? journal.Action.Target : Quarantine, deletable: true);
         Verify(file, journal.Target);
         Save(journal with { State = "RollingBack" }); checkpoint?.Invoke("RollingBack");
         if (!originalExists) file.RenameOpenedFile(Path.Combine(Root, journal.Action.Target));
