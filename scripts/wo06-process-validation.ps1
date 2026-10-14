@@ -29,7 +29,11 @@ try {
         'JournalTempCreated','JournalPartialWrite','JournalFlushed','JournalBeforeReplace','JournalAfterReplace','BeforeCommittedJournal')
     foreach ($point in $points) {
         $fixture = Join-Path $output $point
-        Invoke-Probe 'prepare' $fixture 'ZERO'
+        Invoke-Probe 'prepare-self' $fixture 'ZERO'
+        $before = @{}
+        Get-ChildItem -LiteralPath (Join-Path $fixture 'install') -File -Recurse | ForEach-Object {
+            $before[$_.FullName] = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash
+        }
         Invoke-Probe ('kill:'+$point) $fixture 'NONZERO'
         if ($point -eq 'AfterNewFileCreated') {
             Invoke-Probe 'recover' $fixture 'ZERO'
@@ -37,6 +41,11 @@ try {
         } else {
             Invoke-Probe 'recover' $fixture 'ZERO'
             Invoke-Probe 'verify' $fixture 'ZERO'
+        }
+        foreach ($path in $before.Keys) {
+            if (!(Test-Path -LiteralPath $path) -or (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash -ne $before[$path]) {
+                throw 'A recovered executable, DLL, or synthetic user-data file differs from its original hash.'
+            }
         }
         Invoke-Probe 'apply' $fixture 'ZERO'
         Invoke-Probe 'verify-updated' $fixture 'ZERO'

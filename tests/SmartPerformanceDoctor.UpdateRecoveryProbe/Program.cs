@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using SmartPerformanceDoctor.UpdateEngine;
 
-if (args.Length != 2 || (args[0] is not ("prepare" or "prepare-self" or "hold" or "verify-updated" or "apply" or "apply-kill" or "recover-kill" or "recover" or "verify" or "verify-orphan") &&
+if (args.Length != 2 || (args[0] is not ("prepare" or "prepare-self" or "prepare-large" or "hold" or "verify-updated" or "apply" or "apply-kill" or "recover-kill" or "recover" or "verify" or "verify-orphan") &&
     !args[0].StartsWith("kill:", StringComparison.Ordinal) &&
     !args[0].StartsWith("recover-kill:", StringComparison.Ordinal) &&
     !args[0].StartsWith("recover-final-kill:", StringComparison.Ordinal))) return 2;
@@ -20,7 +20,7 @@ try
         for (var index = 0; index < 600; index++) await Task.Delay(100);
         return 0;
     }
-    if (args[0] is "prepare" or "prepare-self")
+    if (args[0] is "prepare" or "prepare-self" or "prepare-large")
     {
         if (Directory.Exists(root)) return 3;
         Directory.CreateDirectory(install);
@@ -29,7 +29,8 @@ try
         File.WriteAllText(Path.Combine(install, "synthetic-vault.txt"), "vault-marker");
         using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
         File.WriteAllBytes(publicKeyPath, key.ExportSubjectPublicKeyInfo());
-        var payload = "new"u8.ToArray();
+        var payload = args[0] == "prepare-large" ? new byte[64 * 1024 * 1024] : "new"u8.ToArray();
+        if (args[0] == "prepare-large") Array.Fill(payload, (byte)0x57);
         var selfPayloads = new Dictionary<string, byte[]>();
         if (args[0] == "prepare-self")
         {
