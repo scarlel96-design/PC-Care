@@ -38,7 +38,8 @@ jobs:
       - name: WO20 environment, authorization, vault and interruption tests
         shell: pwsh
         run: |
-          . ./scripts/wo20-test-environment.ps1 -OutputDirectory artifacts/wo20-ci-environment
+          . ./scripts/wo20-test-environment.ps1 -OutputDirectory artifacts/wo20-ci-environment -FixtureRoot (Join-Path $env:RUNNER_TEMP 'wo20-isolated-fixtures')
+          "RUNNER_TEMP=$env:RUNNER_TEMP" | Add-Content $env:GITHUB_ENV
           ./scripts/wo20-source-contract.ps1
           New-Item -ItemType Directory -Force artifacts/wo20-ci | Out-Null
           git rev-parse HEAD | Set-Content artifacts/wo20-ci/SOURCE_SHA.txt

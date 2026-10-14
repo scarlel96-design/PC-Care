@@ -9,16 +9,16 @@ $parent=[IO.Path]::GetFullPath($env:RUNNER_TEMP)
 if($parent.StartsWith((Join-Path $repo 'tests'),[StringComparison]::OrdinalIgnoreCase)){throw 'WO20_TEST_ROOT_PROTECTED'}
 New-Item -ItemType Directory -Force $parent | Out-Null
 $probe=Join-Path $repo 'tools/SmartPerformanceDoctor.WO20Probe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.WO20Probe.exe'
-$records=[Collections.Generic.List[object]]::new()
+$script:wo20Records=[Collections.Generic.List[object]]::new()
 function Invoke-Probe([string]$Verb,[string]$Root){
  $text=& $probe $Verb $Root 2>&1
  $code=$LASTEXITCODE
- $records.Add(@{Command="WO20Probe $Verb <SYNTHETIC_ROOT>";Input=$Verb;Output=($text|Out-String).Trim();ExitCode=$code;Environment='Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E'})
+ $script:wo20Records.Add(@{Command="WO20Probe $Verb <SYNTHETIC_ROOT>";Input=$Verb;Output=($text|Out-String).Trim();ExitCode=$code;Environment='Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E'})
  if($code -ne 0){throw "Probe failed $Verb : $text"}
 }
 function Kill-Probe([string]$Verb,[string]$Root){
- $out=Join-Path $Root 'worker-output.txt';$err=Join-Path $Root 'worker-error.txt'
- $process=Start-Process -FilePath $probe -ArgumentList @($Verb,('"'+$Root+'"')) -WindowStyle Hidden -RedirectStandardOutput $out -RedirectStandardError $err -PassThru
+ $workerOut=Join-Path $Root 'worker-output.txt';$err=Join-Path $Root 'worker-error.txt'
+ $process=Start-Process -FilePath $probe -ArgumentList @($Verb,('"'+$Root+'"')) -WindowStyle Hidden -RedirectStandardOutput $workerOut -RedirectStandardError $err -PassThru
  try{
   $signal=Join-Path $Root 'checkpoint.signal'
   $timer=[Diagnostics.Stopwatch]::StartNew()
@@ -26,7 +26,7 @@ function Kill-Probe([string]$Verb,[string]$Root){
   if(!(Test-Path -LiteralPath $signal)){throw "Checkpoint not reached: $Verb $(Get-Content $err -Raw)"}
   $checkpoint=Get-Content -LiteralPath $signal -Raw
   $process.Kill();$process.WaitForExit();$code=$process.ExitCode
-  $records.Add(@{Command="WO20Probe $Verb <SYNTHETIC_ROOT>";Checkpoint=$checkpoint;ExitCode=$code;Output=([string](Get-Content -LiteralPath $out -Raw)).Trim();Termination='Parent killed separate process';Environment='Synthetic filesystem'})
+  $script:wo20Records.Add(@{Command="WO20Probe $Verb <SYNTHETIC_ROOT>";Checkpoint=$checkpoint;ExitCode=$code;Output=([string](Get-Content -LiteralPath $workerOut -Raw)).Trim();Termination='Parent killed separate process';Environment='Synthetic filesystem'})
   if($code -ne -1){throw "Unexpected termination exit $code"}
  }finally{if(!$process.HasExited){$process.Kill();$process.WaitForExit()};$process.Dispose()}
 }
@@ -48,4 +48,4 @@ try{
   Invoke-Probe 'verify-original' $root;Invoke-Probe 'vault-check' $root
  }
  'WO20_WINDOWS_SYNTHETIC=PASS; AUTHENTICODE_E2E=NOT_TESTED; REBOOT=NOT_TESTED'
-}finally{$records|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $output 'process-results.json') -Encoding UTF8}
+}finally{$script:wo20Records|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $output 'process-results.json') -Encoding UTF8}
