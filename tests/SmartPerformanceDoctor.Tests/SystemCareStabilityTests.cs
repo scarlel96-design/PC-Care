@@ -6,6 +6,8 @@ namespace SmartPerformanceDoctor.Tests;
 
 public sealed class SystemCareStabilityTests
 {
+    private readonly Xunit.Abstractions.ITestOutputHelper _output;
+    public SystemCareStabilityTests(Xunit.Abstractions.ITestOutputHelper output)=>_output=output;
     [Fact]
     public void CareRollback_RecoversMoveBeforeCompletionRecord_AndRejectsTamper()
     {
@@ -76,14 +78,17 @@ public sealed class SystemCareStabilityTests
     {
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
         var sw = System.Diagnostics.Stopwatch.StartNew();
-        var result = CareFolderScanner.Measure(
-            Path.GetTempPath(),
-            cts.Token,
-            maxDepth: 2,
-            maxFiles: 500,
-            tempFolder: true);
-
-        sw.Stop();
+        var start=DateTimeOffset.UtcNow;
+        using var process=System.Diagnostics.Process.GetCurrentProcess();var cpu=process.TotalProcessorTime;
+        var gc0=GC.CollectionCount(0);var gc1=GC.CollectionCount(1);var gc2=GC.CollectionCount(2);
+        CareFolderScanner.FolderScanResult result;
+        try { result=CareFolderScanner.Measure(Path.GetTempPath(),cts.Token,maxDepth:2,maxFiles:500,tempFolder:true); }
+        finally
+        {
+            sw.Stop();
+            _output.WriteLine($"SCAN_START={start:O}; SCAN_END={DateTimeOffset.UtcNow:O}; ELAPSED_MS={sw.Elapsed.TotalMilliseconds}; CPU_MS={(process.TotalProcessorTime-cpu).TotalMilliseconds}; THREADPOOL_THREADS={ThreadPool.ThreadCount}; GC0_DELTA={GC.CollectionCount(0)-gc0}; GC1_DELTA={GC.CollectionCount(1)-gc1}; GC2_DELTA={GC.CollectionCount(2)-gc2}; DISK_IO=NOT_MEASURED; BACKGROUND_EFFECT=UNKNOWN");
+        }
+        _output.WriteLine($"FILE_COUNT={result.FileCount}; NOTE={result.Note}; ESTIMATED={result.Estimated}");
         Assert.True(result.FileCount >= 0);
         Assert.True(sw.Elapsed < TimeSpan.FromSeconds(15), $"scan took {sw.Elapsed}");
         Assert.True(result.Note is "complete" or "estimated" or "file_cap");

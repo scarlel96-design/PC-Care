@@ -9,6 +9,7 @@ namespace SmartPerformanceDoctor.App;
 public partial class App : Application
 {
     private Window? _window;
+    private UpdateEngine.UpdateRecoveryStatus? _startupRecovery;
     private static int _handlingUnhandled;
 
     public static MainWindow? Shell { get; private set; }
@@ -43,7 +44,10 @@ public partial class App : Application
     public App()
     {
         AppLaunchOptions.Parse(Environment.GetCommandLineArgs());
-        if (AppLaunchOptions.ReadOnlyUpdateStatus)
+        _startupRecovery=Services.Update.UpdateRecoveryCoordinator.Inspect();
+        if (AppLaunchOptions.ReadOnlyUpdateStatus || _startupRecovery.State is
+            UpdateEngine.UpdateRecoveryState.RecoveryAvailable or UpdateEngine.UpdateRecoveryState.RecoveryInProgress or
+            UpdateEngine.UpdateRecoveryState.RecoveryRequired or UpdateEngine.UpdateRecoveryState.RecoveryFailed)
         {
             // This entry point has no product services or background startup tasks.
             WinUiResourceLayoutGuard.EnsureOrThrow();
@@ -150,6 +154,8 @@ public partial class App : Application
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         var recovery = Services.Update.UpdateRecoveryCoordinator.Inspect();
+        if(_startupRecovery?.State is UpdateEngine.UpdateRecoveryState.RecoveryAvailable or UpdateEngine.UpdateRecoveryState.RecoveryInProgress or
+            UpdateEngine.UpdateRecoveryState.RecoveryRequired or UpdateEngine.UpdateRecoveryState.RecoveryFailed) recovery=_startupRecovery;
         if (AppLaunchOptions.ReadOnlyUpdateStatus || recovery.State is
             UpdateEngine.UpdateRecoveryState.RecoveryAvailable or UpdateEngine.UpdateRecoveryState.RecoveryInProgress or
             UpdateEngine.UpdateRecoveryState.RecoveryRequired or UpdateEngine.UpdateRecoveryState.RecoveryFailed)
@@ -196,6 +202,8 @@ public partial class App : Application
     private void RunDeferredStartupWork()
     {
         var recovery = Services.Update.UpdateRecoveryCoordinator.Inspect();
+        if(_startupRecovery?.State is UpdateEngine.UpdateRecoveryState.RecoveryAvailable or UpdateEngine.UpdateRecoveryState.RecoveryInProgress or
+            UpdateEngine.UpdateRecoveryState.RecoveryRequired or UpdateEngine.UpdateRecoveryState.RecoveryFailed) recovery=_startupRecovery;
         StartupDiagnostics.Write("signed-update-recovery", $"{recovery.State}:{recovery.Code}:{recovery.TransactionId}");
         if (recovery.State is SmartPerformanceDoctor.UpdateEngine.UpdateRecoveryState.RecoveryAvailable or
             SmartPerformanceDoctor.UpdateEngine.UpdateRecoveryState.RecoveryRequired or

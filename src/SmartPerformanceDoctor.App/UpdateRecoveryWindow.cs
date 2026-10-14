@@ -38,6 +38,38 @@ public sealed class UpdateRecoveryWindow : Window
                 if (result == RecoveryLaunchResult.Launched) Application.Current.Exit();
             };
             panel.Children.Add(recover);
+            var package=new TextBox {Header="이전 버전의 서명된 패키지 경로"};
+            var previous=new TextBox {Header="패키지의 이전 버전",PlaceholderText="예: 51.0.3"};
+            var consent=new CheckBox {Content="확인한 설치 파일을 이전 버전으로 복원하는 데 동의합니다."};
+            var review=new Button {Content="구형 거래의 복원 계획 검사"};
+            var execute=new Button {Content="검증된 관리자 복원 요청",IsEnabled=false};
+            AutomationProperties.SetAutomationId(review,"LegacyRecoveryReview");
+            AutomationProperties.SetAutomationId(execute,"LegacyRecoveryExecute");
+            LegacyRecoveryPlan? plan=null;
+            review.Click+=async(_,_)=>
+            {
+                execute.IsEnabled=false;review.IsEnabled=false;plan=null;
+                try
+                {
+                    var path=package.Text;var version=previous.Text;
+                    plan=await Task.Run(()=>UpdateRecoveryCoordinator.ReviewLegacy(path,version));
+                    _status.Text=$"복원 계획: {plan.Status} · {plan.Targets.Count}개. 실행 직전에 서명·신원·해시를 다시 검사합니다.";
+                    execute.IsEnabled=plan.Targets.Count>0&&plan.Targets.All(t=>t.Status=="BackupVerified")&&UpdateRecoveryCoordinator.CanRequestLegacyRecovery();
+                    if(!execute.IsEnabled)_status.Text+=" 신뢰된 전환 도구 또는 복원 증거의 추가 확인이 필요합니다.";
+                }
+                catch(Exception){_status.Text="인증된 복원 계획을 확인하지 못했습니다. 원본 설치와 기록을 보존했습니다.";}
+                finally{review.IsEnabled=true;}
+            };
+            execute.Click+=(_,_)=>
+            {
+                if(plan is null||consent.IsChecked!=true){_status.Text="복원 계획과 명시적 동의를 먼저 확인하세요.";return;}
+                execute.IsEnabled=false;
+                var result=UpdateRecoveryCoordinator.LaunchLegacy(plan,package.Text,previous.Text,true);
+                _status.Text=result.Message;
+                if(result.ProcessLaunched)Application.Current.Exit();
+            };
+            foreach(var control in new FrameworkElement[]{package,previous,consent,review,execute})panel.Children.Add(control);
+
         }
         var close = new Button { Content = "닫기" };
         AutomationProperties.SetAutomationId(close, "UpdateRecoveryClose");
@@ -47,9 +79,10 @@ public sealed class UpdateRecoveryWindow : Window
         Show(status);
     }
 
-    private void Show(UpdateRecoveryStatus status) => _status.Text = status.State switch
+    private void Show(UpdateRecoveryStatus status) => _status.Text = status.Code == "SIGNED-INSTALLATION-VERIFIED"
+        ? "서명된 설치 목록과 실제 파일 해시를 확인했습니다." : status.State switch
     {
-        UpdateRecoveryState.NoPendingTransaction => "미완료 업데이트가 없습니다.",
+        UpdateRecoveryState.NoPendingTransaction => "미완료 업데이트가 없습니다. 전체 설치 신뢰 상태는 별도로 확인합니다.",
         UpdateRecoveryState.RecoveryCompleted => "이전 설치 상태의 복구가 완료됐습니다. 앱을 다시 실행하세요.",
         UpdateRecoveryState.RecoveryInProgress => "업데이트 복구가 진행 중입니다.",
         UpdateRecoveryState.RecoveryAvailable => "미완료 업데이트가 발견됐습니다. 복구 결과 확인이 필요합니다.",

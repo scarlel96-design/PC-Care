@@ -381,6 +381,7 @@ public sealed partial class UpdateTransaction
             faultInjector?.Invoke(UpdateFaultPoint.BeforeCommittedJournal);
             journal.Stage = UpdateStage.Committed;
             WriteJournal(txDir, journal);
+            RecordInstallation(txDir, journal, manifest, packageLease.Stream);
             // Keep the package handle pinned through commit. Cleanup occurs after it closes.
             return new(UpdateStage.Committed, "COMMITTED", id, count);
         }

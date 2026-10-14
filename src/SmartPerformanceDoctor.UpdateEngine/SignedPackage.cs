@@ -190,6 +190,22 @@ public static class SignedPackage
         catch (Exception ex) { return Fail("VERIFY-FAIL", ex.GetType().Name); }
     }
 
+    /// <summary>Verify a historical signed declaration. Check installed file content separately.</summary>
+    public static bool VerifyDeclaration(SignedManifest manifest, string encodedSignature, PublisherTrustPolicy policy)
+    {
+        try
+        {
+            if(manifest.Format!="spd-update-v2"||manifest.Product!="PC-Care"||manifest.Channel!="stable"||manifest.Algorithm!="ECDSA-P256-SHA256-P1363"||
+                manifest.Files is null || manifest.Files.Count is <1 or >10000 || manifest.Files.Select(f=>f.Path).Distinct(StringComparer.OrdinalIgnoreCase).Count()!=manifest.Files.Count ||
+                manifest.Files.Any(f=>!SafeRelativePath(f.Path)||f.Length<0||f.Sha256.Length!=64||!f.Sha256.All(Uri.IsHexDigit)))return false;
+            var key=policy.Find(manifest);if(key is null)return false;
+            var signature=Convert.FromBase64String(encodedSignature);if(signature.Length!=64)return false;
+            using var ecdsa=ECDsa.Create();ecdsa.ImportSubjectPublicKeyInfo(key.SubjectPublicKeyInfo,out _);
+            return ecdsa.KeySize==256&&ecdsa.VerifyData(CanonicalBytes(manifest),signature,HashAlgorithmName.SHA256,DSASignatureFormat.IeeeP1363FixedFieldConcatenation);
+        }
+        catch{return false;}
+    }
+
     private static PackageVerification Fail(string code, string? detail = null) =>
         new(PublisherVerification.VerificationFailed, code, detail ?? code, null);
 

@@ -89,9 +89,12 @@ public sealed class UpdateInstallerService
                 : current.Message;
             return Task.FromResult(new UpdateApplyResult(false, AppInfo.Version, "", message, false, 0, 0));
         }
+        var route=BootstrapDispatch.InspectRoute(UpdatePaths.AppInstallDirectory);
+        if(route.State is not (BootstrapTransitionState.BootstrapNotRequired or BootstrapTransitionState.BootstrapTransitionRequired))
+            return Task.FromResult(new UpdateApplyResult(false,AppInfo.Version,"",route.Code+" · "+route.Message,false,0,0));
         _pendingSignedPackage = current.PackagePath;
         return Task.FromResult(new UpdateApplyResult(true, AppInfo.Version, current.Manifest.ToVersion,
-            "발행자와 파일 내용 검증 완료. 관리자 업데이트 도우미로 적용을 시작합니다.", true, 0, 0));
+            route.Message+" Windows 관리자 승인 후 적용을 시작합니다.", true, 0, 0));
     }
 
     public static bool EnsurePendingApplyScript(string stagingDir, string toVersion)
@@ -101,21 +104,13 @@ public sealed class UpdateInstallerService
         return false;
     }
 
-    public static bool LaunchPendingRestart()
+    public static BootstrapDispatchResult LaunchPendingRestartDetailed()
     {
-        var package = _pendingSignedPackage;
-        if (package is null) return false;
-        var helper = Path.Combine(UpdatePaths.AppInstallDirectory, "engine", "SmartPerformanceDoctor.UpdateHelper.exe");
-        if (!File.Exists(helper) || (File.GetAttributes(helper) & FileAttributes.ReparsePoint) != 0) return false;
-        try
-        {
-            if (UpdateBootstrap.LaunchInstalled(UpdatePaths.AppInstallDirectory, "--apply", package, Environment.ProcessId) is null) return false;
-            _pendingSignedPackage = null;
-            return true;
-        }
-        catch (Win32Exception) { return false; }
-        catch (InvalidOperationException) { return false; }
-        catch (IOException) { return false; }
-        catch (UnauthorizedAccessException) { return false; }
+        var package=_pendingSignedPackage;
+        if(package is null)return BootstrapDispatch.Result(BootstrapTransitionState.SignedPackageRejected);
+        var result=BootstrapDispatch.Launch(UpdatePaths.AppInstallDirectory,package,AppInfo.Version,Environment.ProcessId);
+        if(result.ProcessLaunched)_pendingSignedPackage=null;
+        return result;
     }
+    public static bool LaunchPendingRestart()=>LaunchPendingRestartDetailed().ProcessLaunched;
 }

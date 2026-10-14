@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Windows.Automation;
 
-if (args.Length != 2 || args[0] is not ("--exercise-readonly-page" or "--exercise-storage-page" or "--inspect-vault-page"))
+if (args.Length != 2 || args[0] is not ("--exercise-readonly-page" or "--exercise-storage-page" or "--inspect-vault-page" or "--inspect-update-page"))
 {
     Console.WriteLine(JsonSerializer.Serialize(new { status="NOT TESTED", reason="Explicit interactive test process and diagnostics page are required.", guiExecuted=false }));
     return 0;
@@ -16,6 +16,12 @@ try
     var window = AutomationElement.FromHandle(process.MainWindowHandle);
     AutomationElement Find(string id) => window.FindFirst(TreeScope.Descendants,
         new PropertyCondition(AutomationElement.AutomationIdProperty,id)) ?? throw new InvalidOperationException("ControlMissing:"+id);
+    if(args[0]=="--inspect-update-page")
+    {
+        var status=Find("UpdateRecoveryStatus");var refresh=Find("UpdateRecoveryRefresh");var close=Find("UpdateRecoveryClose");
+        refresh.SetFocus();((InvokePattern)refresh.GetCurrentPattern(InvokePattern.Pattern)).Invoke();
+        Console.WriteLine(JsonSerializer.Serialize(new{status="PARTIAL",guiExecuted=true,statusAccessible=status.Current.Name.Length>0,refreshEnabled=refresh.Current.IsEnabled,closeEnabled=close.Current.IsEnabled,destructiveAction=false,notTested=new[]{"UAC","LegacyRestore","ScreenReader","HighDpi"}}));return 0;
+    }
     if (args[0] == "--inspect-vault-page")
     {
         var vaultStatus = Find("VaultStatus");

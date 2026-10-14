@@ -1,6 +1,6 @@
 namespace SmartPerformanceDoctor.App.Services.SystemCare;
 
-/// <summary>Fast bounded folder measurement — parallel scan, reparse skip, size extrapolation when capped.</summary>
+/// <summary>Bound folder measurement work. Skip reparse points and report capped estimates.</summary>
 public static class CareFolderScanner
 {
     public const int DefaultMaxFiles = 3500;
@@ -58,6 +58,12 @@ public static class CareFolderScanner
         private int _sizedFiles;
         private int _extraPaths;
         private long _totalBytes;
+        private int _directories;
+        public bool TryEnterDirectory()
+        {
+            if(++_directories>Math.Max(64,MaxFiles)){Truncated=true;Exhausted=true;return false;}
+            return true;
+        }
 
         public ScanContext(int maxFiles, int maxDepth, CancellationToken cancellationToken)
         {
@@ -168,46 +174,20 @@ public static class CareFolderScanner
             return;
         }
 
-        string[] subdirs;
+        // Enumerate lazily. Bound directory work without queuing nested thread-pool scans.
         try
         {
-            subdirs = Directory.EnumerateDirectories(directory)
-                .Where(d => !IsReparsePoint(d))
-                .ToArray();
-        }
-        catch
-        {
-            return;
-        }
-
-        if (subdirs.Length == 0)
-        {
-            return;
-        }
-
-        if (depth < 1 && subdirs.Length > 1 && !ctx.CountOnly)
-        {
-            Parallel.ForEach(
-                subdirs,
-                new ParallelOptions
-                {
-                    MaxDegreeOfParallelism = Math.Min(4, subdirs.Length),
-                    CancellationToken = ctx.CancellationToken
-                },
-                sub => ScanDirectory(sub, depth + 1, ctx));
-        }
-        else
-        {
-            foreach (var sub in subdirs)
+            foreach(var sub in Directory.EnumerateDirectories(directory))
             {
-                if (ctx.Exhausted)
-                {
-                    return;
-                }
-
-                ScanDirectory(sub, depth + 1, ctx);
+                ctx.CancellationToken.ThrowIfCancellationRequested();
+                if(ctx.Exhausted)return;
+                if(!ctx.TryEnterDirectory())return;
+                if(IsReparsePoint(sub))continue;
+                ScanDirectory(sub,depth+1,ctx);
             }
         }
+        catch(UnauthorizedAccessException){ctx.Truncated=true;}
+        catch(IOException){ctx.Truncated=true;}
     }
 
     private static bool IsReparsePoint(string path)
@@ -219,7 +199,7 @@ public static class CareFolderScanner
         }
         catch
         {
-            return false;
+            return true;
         }
     }
 }

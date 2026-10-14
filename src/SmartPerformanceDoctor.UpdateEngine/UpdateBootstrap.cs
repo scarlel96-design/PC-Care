@@ -11,6 +11,8 @@ public sealed record BootstrapFile(string Name, string Identity, long Length, st
 public sealed record BootstrapBinding(string Id, string InstallRoot, string InstallIdentity,
     string ExecutionIdentity, string Verb, string Package, int CallerPid, int ParentPid, List<BootstrapFile> Files);
 
+public enum BootstrapFaultPoint { BeforePackageVerification, AfterPackageVerification, AfterSnapshotCreated, DuringRuntimeCopy, BeforeBindingWrite, AfterBindingWrite }
+
 public static class UpdateBootstrap
 {
     private static readonly string[] RuntimeFiles = ["SmartPerformanceDoctor.UpdateHelper.exe",
@@ -20,21 +22,24 @@ public static class UpdateBootstrap
         "PC-Care", "UpdateTransactions");
 
     /// <summary>Prepare the first transition without executing or replacing the installed helper.</summary>
-    public static string PrepareTransition(string installRoot, string packagePath, string currentVersion, int callerPid)
+    public static string PrepareTransition(string installRoot, string packagePath, string currentVersion, int callerPid, Action<BootstrapFaultPoint>? fault = null)
     {
         if (callerPid <= 0) throw new InvalidDataException("BOOTSTRAP-COMMAND");
         ValidateInstallRoot(installRoot);
         using var install = WindowsFileBoundary.PinDirectory(installRoot);
         var packageFull = Path.GetFullPath(packagePath);
         using var package = WindowsFileBoundary.OpenRead(Path.GetDirectoryName(packageFull)!, Path.GetFileName(packageFull));
+        fault?.Invoke(BootstrapFaultPoint.BeforePackageVerification);
         var verified = SignedPackage.Verify(package.Stream, currentVersion, BuildPublisherTrust.Current);
         if (!verified.CanApply || verified.Manifest is null) throw new InvalidDataException("TRANSITION-PUBLISHER-UNVERIFIED");
+        fault?.Invoke(BootstrapFaultPoint.AfterPackageVerification);
         new UpdateTransaction(BuildPublisherTrust.Current, WorkRoot, true).InitializeProtectedRoot();
         var id = Guid.NewGuid().ToString("N");
         var directory = Path.Combine(WorkRoot, "bootstrap-" + id);
         Directory.CreateDirectory(directory);
         using var execution = WindowsFileBoundary.PinDirectory(directory);
         ValidateAcl(directory);
+        fault?.Invoke(BootstrapFaultPoint.AfterSnapshotCreated);
         using (var copy = WindowsFileBoundary.OpenWrite(directory, "transition.spdup", true))
         { copy.CopyFrom(package); copy.Verify(package.Stream.Length, package.Hash()); }
         var files = new List<BootstrapFile>();
@@ -49,6 +54,7 @@ public static class UpdateBootstrap
                 using var input = zip.GetEntry(path)!.Open();
                 using var target = WindowsFileBoundary.OpenWrite(directory, name, true);
                 input.CopyTo(target.Stream); target.Stream.Flush(true);
+                fault?.Invoke(BootstrapFaultPoint.DuringRuntimeCopy);
                 target.Verify(expected.Length, expected.Sha256);
                 VerifyPublisher(directory, name, target);
                 files.Add(new(name, target.Identity, target.Stream.Length, target.Hash()));
@@ -59,8 +65,10 @@ public static class UpdateBootstrap
         install.Validate(); package.Validate(); execution.Validate();
         var binding = new BootstrapBinding(id, Path.GetFullPath(installRoot), install.Identity,
             execution.Identity, "--apply", Path.Combine(directory, "transition.spdup"), callerPid, Environment.ProcessId, files);
+        fault?.Invoke(BootstrapFaultPoint.BeforeBindingWrite);
         using (var record = WindowsFileBoundary.OpenWrite(directory, "binding.json", true))
         { record.Stream.Write(JsonSerializer.SerializeToUtf8Bytes(binding)); record.Stream.Flush(true); }
+        fault?.Invoke(BootstrapFaultPoint.AfterBindingWrite);
         Validate(directory, id);
         return directory;
     }
@@ -248,6 +256,13 @@ public static class UpdateBootstrap
         catch { foreach (var file in files) file.Dispose(); throw; }
     }
 
+    public static void ValidateInstalledRuntime(string installRoot)
+    {
+        ValidateInstallRoot(installRoot);
+        var engine=Path.Combine(installRoot,"engine");
+        foreach(var name in RuntimeFiles)
+        { using var file=WindowsFileBoundary.OpenRead(engine,name);UpdateTransaction.ValidateProtectedSecurity(file.ReadSecurity(),false);VerifyPublisher(engine,name,file); }
+    }
     public static Process? LaunchInstalled(string installRoot, string verb, string package, int callerPid)
     {
         if (verb is not ("--apply" or "--recover") || callerPid <= 0)
