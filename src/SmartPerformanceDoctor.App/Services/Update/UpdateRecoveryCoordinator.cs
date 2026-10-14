@@ -13,7 +13,7 @@ public static class UpdateRecoveryCoordinator
         "PC-Care", "UpdateTransactions");
 
     public static UpdateRecoveryStatus Inspect() =>
-        new UpdateTransaction(SmartPerformanceDoctor.UpdateEngine.BuildPublisherTrust.Current, WorkRoot, strictAcl: false)
+        new UpdateTransaction(SmartPerformanceDoctor.UpdateEngine.BuildPublisherTrust.Current, WorkRoot, strictAcl: true)
             .InspectRecovery(UpdatePaths.AppInstallDirectory);
 
     public static RecoveryLaunchResult LaunchElevatedRecovery()
