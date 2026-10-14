@@ -1,0 +1,9 @@
+SOURCE: 640d2cd0e9d506a4cb66629592ed7d7296e04456
+STATUS: NOT TESTED
+PREPARATION: GuiProbe build; source automation IDs; isolated profile runbook.
+COMMAND: dotnet build tools/SmartPerformanceDoctor.GuiProbe -c Release -p:Platform=x64 -m:1 -v:minimal
+OUTPUT: See GUI_BUILD_RESULT_FINAL.txt.
+EXIT CODE: 0
+LIVE GUI COMMAND: NOT EXECUTED
+SCREEN CONTROL: Not reconnected.
+ENVIRONMENT: No verified disposable VM snapshot or independent SID.

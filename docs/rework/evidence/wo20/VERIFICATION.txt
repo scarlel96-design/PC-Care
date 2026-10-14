@@ -1,0 +1,83 @@
+WORK ITEM: WO20
+STATUS: PARTIAL / Phase 1 NO-GO
+BRANCH: codex/pccare-wo20-bootstrap-legacy-recovery-e2e
+BASELINE SHA: 2c140dd51d1eabe35c609d1608e30059d0d6b531
+IMPLEMENTATION SOURCE: 640d2cd0e9d506a4cb66629592ed7d7296e04456
+SOURCE TREE: 312830c10ff936c85e7fd81365ff4ae77cf92114
+FINAL SHA: See GITHUB_RESULT.txt and external final handoff report.
+ROOT CAUSE: updater UI had no trusted external Bridge dispatch; legacy plans lacked an authorized fresh-check executor.
+CHANGED BRANCH/FIELDS: BootstrapDispatch.State; LegacyRecoveryTarget.CurrentLength/CurrentSecurity; LegacyRecoveryPlan.PackageIdentity; InstallationPointer.
+CHANGED FILES: CHANGED_FILES.txt
+
+BASELINE COMMAND: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+BASELINE INPUT: WO19 base source; synthetic scanner test
+BASELINE OUTPUT: 0 warnings / 0 errors; original scanner 1 PASS, 0 FAIL, 0 SKIP
+BASELINE EXIT CODE: 0
+BASELINE FORMAL CI: 38576304293; source347a34fa1f273db7064f40e3c53ecea4fd10ecee;1230 PASS/111 SKIP/0 FAIL
+
+MODIFIED COMMAND: pwsh scripts/wo20-process-validation.ps1 -OutputDirectory artifacts/wo20-ci-equivalent
+MODIFIED INPUT: explicit RUNNER_TEMP from wo20-test-environment.ps1; synthetic signed packages and encrypted v5 fixtures
+MODIFIED OUTPUT: WO20_WINDOWS_SYNTHETIC=PASS; AUTHENTICODE_E2E=NOT_TESTED; REBOOT=NOT_TESTED
+MODIFIED EXIT CODE: 0
+MODIFIED DETAILS: 83 records; 9 parent-killed workers; 33 authenticated vault checks;132 full SHA-256 comparisons
+EXISTING COMMAND: scripts/wo06-process-validation.ps1 -OutputDirectory <NEW_REPOSITORY_ARTIFACT_DIRECTORY>
+EXISTING OUTPUT: WINDOWS_SYNTHETIC_PROCESS=PASS; VM_E2E=NOT_TESTED; UNKNOWN_ORPHAN=PRESERVED
+EXISTING EXIT CODE: 0
+
+ROLLBACK COMMAND: bash docs/rework/evidence/wo20/ROLLBACK.sh artifacts/wo20-rollback-verified/RESTORE_COPY
+ROLLBACK INPUT: independent MODIFIED_FILE copy; no product checkout mutation
+ROLLBACK OUTPUT: SOURCE_COPY_RESTORED; ORIGINAL_SHA256=f93f7c73fb1872360f04acd1810dcaac161e4ea3b2680be709933e2e5bac7c63
+ROLLBACK EXIT CODE: 0
+RESTORED STATUS: original source bytes match SHA-256; modified artifact remains changed
+ORIGINAL SHA256: f93f7c73fb1872360f04acd1810dcaac161e4ea3b2680be709933e2e5bac7c63
+MODIFIED SHA256: c94c81de66cb0798972c63c924af4b587ca232a3c0993862802292e78e4567f7
+FOUR PATHS: docs/rework/evidence/wo20/MODIFIED_FILE; DIFF_FILE; VERIFICATION.txt; ROLLBACK.sh
+
+FULL TEST COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --logger trx;LogFileName=wo20-full-final.trx -v:minimal
+FULL TEST OUTPUT/EXIT: FULL_TEST_RESULT.txt and wo20-full-final.trx, finalized after process completion
+SECURITYLAB COMMAND: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests -c Release --no-build --logger trx;LogFileName=wo20-securitylab.trx -v:minimal
+SECURITYLAB OUTPUT: 36 PASS/0 FAIL/0 SKIP
+SECURITYLAB EXIT CODE: 0
+RELEASE COMMAND: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+RELEASE OUTPUT: 0 warnings / 0 errors; BUILD_RESULT.txt
+RELEASE EXIT CODE: 0
+GUI TOOL COMMAND: dotnet build tools/SmartPerformanceDoctor.GuiProbe -c Release -p:Platform=x64 -m:1 -v:minimal
+GUI TOOL OUTPUT: 0 warnings / 0 errors; GUI_BUILD_RESULT_FINAL.txt
+GUI TOOL EXIT CODE: 0
+LIVE GUI COMMAND: NOT EXECUTED
+SOURCE CONTRACT COMMAND: scripts/wo20-source-contract.ps1
+SOURCE CONTRACT OUTPUT: WO20_UI_CONTRACT=PASS; LIVE_GUI=NOT_TESTED
+SOURCE CONTRACT EXIT CODE: 0
+
+REMAINING P0: trusted signed Bridge deployment, actual administrator legacy restore, native prestart boundary, unknown partial-byte restore, installed ACL/UAC/reboot
+REMAINING P1: actual GUI, low-end hardware, historical scanner timeout causality, v4/v6 update-specific qualification
+SAFETY: six AV3 flags false; StorageCare execution false; folder delete blocked; v4/v5 dangerous password change blocked
+DAYBREAK: no special gate encountered; future special-approval tasks deferred
+
+LOCAL FULL OBSERVED: {"Passed": 1260, "NotExecuted": 111}
+FULL EXIT CODE: 0
+
+FINAL LOCAL COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO20' --logger 'trx;LogFileName=wo20-final-31.trx' -v:minimal
+FINAL LOCAL INPUT: exact source 640d2cd0e9d506a4cb66629592ed7d7296e04456; explicit isolated RUNNER_TEMP; direct x64 project build
+FINAL LOCAL OUTPUT: {"Passed": 31}
+FINAL LOCAL EXIT CODE: 0
+FINAL FULL COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --logger 'trx;LogFileName=wo20-final-full.trx' -v:minimal
+FINAL FULL OUTPUT: {"Passed": 1261, "NotExecuted": 111}
+FINAL FULL EXIT CODE: 0
+SOLUTION REBUILD COMMAND: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -t:Rebuild -v:minimal
+SOLUTION REBUILD OUTPUT: 0 warnings / 0 errors; elapsed 50.19 seconds
+SOLUTION REBUILD EXIT CODE: 0
+BUILD PATH DIAGNOSIS: solution maps app test build to bin/Release; x64 --no-build uses bin/x64/Release.
+DIRECT PROJECT BUILD: required before x64 --no-build; final focused and full records use the correct fresh binary.
+FAILED ATTEMPTS: initial fixture policy/hash errors; protected-root full run29 failures; concurrent copy lock failure; three failed CI harness runs.
+CI: https://github.com/scarlel96-design/PC-Care/actions/runs/38641969661
+CI SOURCE: 640d2cd0e9d506a4cb66629592ed7d7296e04456
+OBSOLETE TEST RUN: the second bin/x64 stale run was stopped after build-path mismatch was confirmed.
+OBSOLETE TESTHOST: PID49928; no recovery success was counted for that stopped run.
+CONCURRENT BUILD: failed with MSB3027/MSB3021; corrected by waiting for testhost and rebuilding sequentially.
+
+WINDOWS CI: 38641969661 SUCCESS; SOURCE=640d2cd0e9d506a4cb66629592ed7d7296e04456
+CI FULL OUTPUT: 1261 PASS /111 SKIP /0 FAIL
+CI SECURITYLAB OUTPUT:36 PASS /0 FAIL /0 SKIP
+CI EXIT:0
+CI SOURCE AND FINAL DOCUMENTATION HEAD: code comparison and remote blob receipt in final local handoff.

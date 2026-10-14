@@ -1,0 +1,16 @@
+STATUS: PASS for source publication and clean-checkout Windows CI
+BRANCH: codex/pccare-wo20-bootstrap-legacy-recovery-e2e
+BASE HEAD: 2c140dd51d1eabe35c609d1608e30059d0d6b531
+CI SOURCE: 640d2cd0e9d506a4cb66629592ed7d7296e04456
+CI SOURCE TREE: 312830c10ff936c85e7fd81365ff4ae77cf92114
+WINDOWS CI: https://github.com/scarlel96-design/PC-Care/actions/runs/38641969661
+CI RESULT: SUCCESS;1261 PASS/111 SKIP/0 FAIL;SecurityLab36 PASS
+FAILED RUNS:38590528234(source31968e),38592283861(source80ec867),38592410444(source2f67a96)
+FAILURE: null expression during crash-worker record construction; combined scope/output correction verified by final run
+DOCUMENT PUBLICATION PARENT: 640d2cd0e9d506a4cb66629592ed7d7296e04456
+FINAL DOCUMENTATION HEAD/TREE: resolve the remote branch after this evidence commit; exact values in WO20_FINAL_REPORT.md
+REMOTE BLOB RECEIPT: WO20_REMOTE_BLOB_VERIFICATION.json in the local handoff directory
+FINAL SOURCE COMPARISON: git diff CI_SOURCE FINAL_HEAD -- src tests scripts tools .github must be empty
+MAIN MERGE: NOT PERFORMED
+OFFICIAL RELEASE: NOT PERFORMED
+PHASE1: NO-GO

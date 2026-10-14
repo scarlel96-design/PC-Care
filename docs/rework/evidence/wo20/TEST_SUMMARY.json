@@ -1,0 +1,18 @@
+{
+  "Source": "640d2cd0e9d506a4cb66629592ed7d7296e04456",
+  "LocalFinal": {
+    "Passed": 1261,
+    "NotExecuted": 111
+  },
+  "SourceFocused": {
+    "Passed": 31
+  },
+  "HistoricalBaseline": {
+    "Passed": 1230,
+    "NotExecuted": 111
+  },
+  "Prior1260Result": "Older x64 test binary; solution x64 mapped tests to bin/Release, not bin/x64/Release",
+  "ProductionSourceChange": "No changes after source freeze",
+  "CiRun": "38641969661",
+  "ExistingSkipNamesUnchanged": true
+}

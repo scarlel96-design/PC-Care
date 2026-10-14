@@ -1,0 +1,81 @@
+{
+  "Source": "640d2cd0e9d506a4cb66629592ed7d7296e04456",
+  "ProductSourceBuilt": "31968e52bbb6e33c3b131c70c96172d3a6004bde",
+  "ProductSourceEquivalence": "git diff --quiet 31968e5 640d2cd -- src tests; exit 0",
+  "Environment": "Windows local synthetic fixtures; strictAcl=false; ephemeral ECDSA package key",
+  "Command": "pwsh: . ./scripts/wo20-test-environment.ps1 -FixtureRoot <WORKSPACE>/wo20-ci-equivalent; ./scripts/wo20-source-contract.ps1; ./scripts/wo20-process-validation.ps1 -OutputDirectory artifacts/wo20-ci-equivalent",
+  "ExitCode": 0,
+  "Status": "PASS",
+  "Cases": [
+    {
+      "Input": "prepare",
+      "Preparation": {
+        "Status": "PREPARED",
+        "LogicalBytes": 9,
+        "PackageBytes": 1102,
+        "ExistingBytes": 13
+      },
+      "MeasuredApply": {
+        "Status": "Committed",
+        "Code": "COMMITTED",
+        "ElapsedMs": 1856.5113,
+        "CpuMs": 1218.75,
+        "PeakWorkingSetBytes": 54870016,
+        "Attestation": {
+          "Verified": true,
+          "RequiresReview": false,
+          "Code": "SIGNED-INSTALLATION-VERIFIED"
+        }
+      },
+      "KdfIncluded": false
+    },
+    {
+      "Input": "prepare-random",
+      "Preparation": {
+        "Status": "PREPARED",
+        "LogicalBytes": 33554438,
+        "PackageBytes": 35390348,
+        "ExistingBytes": 16777226
+      },
+      "MeasuredApply": {
+        "Status": "Committed",
+        "Code": "COMMITTED",
+        "ElapsedMs": 4629.2019,
+        "CpuMs": 4203.125,
+        "PeakWorkingSetBytes": 58335232,
+        "Attestation": {
+          "Verified": true,
+          "RequiresReview": false,
+          "Code": "SIGNED-INSTALLATION-VERIFIED"
+        }
+      },
+      "KdfIncluded": false
+    },
+    {
+      "Input": "prepare-many",
+      "Preparation": {
+        "Status": "PREPARED",
+        "LogicalBytes": 1048585,
+        "PackageBytes": 1153792,
+        "ExistingBytes": 524301
+      },
+      "MeasuredApply": {
+        "Status": "Committed",
+        "Code": "COMMITTED",
+        "ElapsedMs": 53839.1218,
+        "CpuMs": 49234.375,
+        "PeakWorkingSetBytes": 190554112,
+        "Attestation": {
+          "Verified": true,
+          "RequiresReview": false,
+          "Code": "SIGNED-INSTALLATION-VERIFIED"
+        }
+      },
+      "KdfIncluded": false
+    }
+  ],
+  "SampleCountPerCondition": 1,
+  "CancellationResponse": "NOT MEASURED; Apply has no CancellationToken",
+  "LowEndHardware": "NOT TESTED",
+  "Scope": "Synthetic update cost; not Windows speed improvement"
+}

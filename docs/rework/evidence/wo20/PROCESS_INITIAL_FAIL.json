@@ -1,0 +1,7 @@
+{
+  "Command": "WO20Probe prepare <SYNTHETIC_ROOT>",
+  "ExitCode": 11,
+  "Input": "prepare",
+  "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+  "Output": "InvalidDataException:VAULT-CREATE"
+}

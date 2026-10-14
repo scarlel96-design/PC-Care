@@ -1,0 +1,16 @@
+[
+  {
+    "Input": "prepare",
+    "Command": "WO20Probe prepare <SYNTHETIC_ROOT>",
+    "ExitCode": 0,
+    "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+    "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1094,\"ExistingBytes\":13}"
+  },
+  {
+    "Input": "vault-check",
+    "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+    "ExitCode": 11,
+    "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+    "Output": "InvalidDataException:VAULT-BYTES"
+  }
+]

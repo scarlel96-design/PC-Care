@@ -1,0 +1,12 @@
+BASELINE SHA: 2c140dd51d1eabe35c609d1608e30059d0d6b531
+BASELINE TREE: 94b554e6fa022f2af9fbac06087c9e121bce0886
+CI SOURCE: 347a34fa1f273db7064f40e3c53ecea4fd10ecee
+CI: https://github.com/scarlel96-design/PC-Care/actions/runs/38576304293
+FORMAL BASELINE: 1230 PASS / 111 SKIP / 0 FAIL; SecurityLab 36 PASS.
+COMMAND: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+OUTPUT: BASELINE_BUILD_RESULT.txt; 0 warnings / 0 errors
+EXIT CODE: 0
+COMMAND: original CareFolderScanner_TempPath filtered test
+OUTPUT: SCANNER_BASELINE_RESULT.txt; 1 PASS / 0 FAIL / 0 SKIP
+EXIT CODE: 0
+Historical local timeout NOT REPRODUCED. Disk I/O and background impact NOT MEASURED.
