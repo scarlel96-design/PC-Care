@@ -8,6 +8,7 @@ public static class StorageTargetPolicy
     // Evaluate every ancestor. A renamed cache inside a protected store remains protected.
     public static bool IsProtected(string path)
     {
+        if (StorageProtectionRegistry.DefaultContains(path)) return true;
         var parts = path.Split(['\\', '/'], StringSplitOptions.RemoveEmptyEntries);
         return parts.Any(part => part.Equals("vault", StringComparison.OrdinalIgnoreCase)
             || part.Equals("objects", StringComparison.OrdinalIgnoreCase)

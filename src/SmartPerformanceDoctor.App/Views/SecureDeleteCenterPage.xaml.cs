@@ -25,6 +25,16 @@ public sealed partial class SecureDeleteCenterPage : Page
         StatusText.Text = "대기 · 파일 또는 폴더를 추가한 뒤 Dry Run으로 안전성을 확인하세요.";
         RefreshTargetList();
         RefreshButtons();
+        Loaded += async (_, _) =>
+        {
+            try
+            {
+                var pending = await Task.Run(_service.InspectInterruptedOperations);
+                if (pending.Count > 0 && !_deleteInProgress && _targetSet.Items.Count == 0)
+                    StatusText.Text = $"이전 삭제 작업 {pending.Count}건의 결과를 추가 확인해야 합니다. 자동 재실행하지 않습니다.";
+            }
+            catch { StatusText.Text = "이전 삭제 기록을 확인하지 못했습니다. 원본과 기록을 보존하고 추가 확인하세요."; }
+        };
     }
 
     private async void SecurityLevelChanged(object sender, SelectionChangedEventArgs e)
@@ -273,17 +283,15 @@ public sealed partial class SecureDeleteCenterPage : Page
                 ProgressBar.Value = p.percent;
                 StatusText.Text = $"보안 삭제 진행 중 · {p.percent}% · {Path.GetFileName(p.detail)}";
             });
-            var result = await _service.ApplyDetailedAsync(
-                _plan,
-                ConfirmBox.Text ?? string.Empty,
-                _level,
-                progress,
-                _deleteCancellation.Token);
+            var plan = _plan; var confirmation = ConfirmBox.Text ?? string.Empty; var level = _level;
+            var cancellation = _deleteCancellation.Token;
+            var result = await Task.Run(() => _service.ApplyDetailedAsync(plan, confirmation, level, progress, cancellation));
             StatusText.Text =
-                $"{result.StatusLabel} · 삭제 {result.Deleted} · 실패 {result.Failed}\n" +
+                $"{result.StatusLabel} · 삭제 {result.CompletedTargets} · 미완료 {result.IncompleteTargets} · 실패 {result.Failed}\n" +
+                $"취소 요청: {(result.WasCancellationRequested ? "있음" : "없음")} · 추가 확인: {(result.RequiresManualReview ? "필요" : "없음")}\n" +
                 "중단·실패한 파일에는 부분 덮어쓰기가 남을 수 있습니다. 원복을 보장하지 않습니다.\n" +
                 $"감사 체인: {(result.AuditValid ? "정상" : "주의")}";
-            _targetSet.Clear();
+            if (result.Status == "Completed" && !result.RequiresManualReview) _targetSet.Clear();
             ResetPlan();
             RefreshTargetList();
         }

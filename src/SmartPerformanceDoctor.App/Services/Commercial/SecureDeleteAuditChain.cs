@@ -1,5 +1,8 @@
 using System.Security.Cryptography;
 using System.Text;
+using System.Security.AccessControl;
+using System.Security.Principal;
+using SmartPerformanceDoctor.UpdateEngine;
 
 namespace SmartPerformanceDoctor.App.Services.Commercial;
 
@@ -14,17 +17,22 @@ internal static class SecureDeleteAuditChain
             "PC-Care",
             "secure_delete");
         var keyDir = Path.Combine(storageRoot ?? defaultRoot, "keys");
-        Directory.CreateDirectory(keyDir);
+        PrepareDirectory(keyDir);
         var keyPath = Path.Combine(keyDir, $"{operationId}.key");
 
         if (File.Exists(keyPath))
         {
-            return Unprotect(File.ReadAllBytes(keyPath));
+            return ReadKey(keyDir, Path.GetFileName(keyPath));
         }
 
         var key = RandomNumberGenerator.GetBytes(32);
-        File.WriteAllBytes(keyPath, Protect(key));
-        return key;
+        try
+        {
+            using var file = WindowsFileBoundary.OpenExclusive(keyDir, Path.GetFileName(keyPath), true);
+            file.Stream.Write(Protect(key)); file.Stream.Flush(true); file.Validate();
+            return key;
+        }
+        catch { CryptographicOperations.ZeroMemory(key); throw; }
     }
 
     public static string Append(
@@ -40,7 +48,10 @@ internal static class SecureDeleteAuditChain
         var line = $"{DateTimeOffset.Now:o}|{operationId}|{pathHash}|{contentHash}|{protocol}|{result}|{previousHash}";
         using var hmac = new HMACSHA256(hmacKey);
         var signature = Convert.ToHexString(hmac.ComputeHash(Encoding.UTF8.GetBytes(line))).ToLowerInvariant();
-        File.AppendAllText(auditPath, $"{line}|{signature}\n", Encoding.UTF8);
+        var root = Path.GetDirectoryName(Path.GetFullPath(auditPath))!;
+        using var file = WindowsFileBoundary.OpenExclusive(root, Path.GetFileName(auditPath), !File.Exists(auditPath));
+        file.Stream.Position = file.Stream.Length;
+        file.Stream.Write(Encoding.UTF8.GetBytes($"{line}|{signature}\n")); file.Stream.Flush(true); file.Validate();
         return signature;
     }
 
@@ -55,20 +66,25 @@ internal static class SecureDeleteAuditChain
     {
         if (!File.Exists(auditPath))
         {
-            return true;
+            return false;
         }
 
+        using var file = WindowsFileBoundary.OpenRead(Path.GetDirectoryName(Path.GetFullPath(auditPath))!, Path.GetFileName(auditPath));
+        if (file.Stream.Length is <= 0 or > 16 * 1024 * 1024) return false;
+        using var reader = new StreamReader(file.Stream, Encoding.UTF8, leaveOpen: true);
+        var text = reader.ReadToEnd(); file.Validate();
+        if (!text.EndsWith('\n')) return false;
         var previous = "GENESIS";
-        foreach (var rawLine in File.ReadAllLines(auditPath))
+        foreach (var rawLine in text.Split('\n')[..^1])
         {
             var line = rawLine.Trim();
             if (line.Length == 0)
             {
-                continue;
+                return false;
             }
 
             var parts = line.Split('|');
-            if (parts.Length < 8)
+            if (parts.Length != 8)
             {
                 return false;
             }
@@ -91,6 +107,49 @@ internal static class SecureDeleteAuditChain
         }
 
         return true;
+    }
+
+    public static byte[] LoadOperationKey(string operation, string root)
+    {
+        SecureDeleteJournal.ValidateOperation(operation);
+        return ReadKey(Path.Combine(root, "keys"), operation + ".key");
+    }
+
+    private static byte[] ReadKey(string root, string name)
+    {
+        using var file = WindowsFileBoundary.OpenRead(root, name);
+        if (file.Stream.Length is <= 0 or > 4096) throw new InvalidDataException("AuditKeySize");
+        using var data = new MemoryStream(); file.Stream.CopyTo(data); file.Validate();
+        var key = Unprotect(data.ToArray());
+        if (key.Length != 32) { CryptographicOperations.ZeroMemory(key); throw new InvalidDataException("AuditKeyLength"); }
+        return key;
+    }
+
+    public static void PrepareDirectory(string root)
+    {
+        var created = !Directory.Exists(root);
+        var directory = Directory.CreateDirectory(root);
+        using var pin = WindowsFileBoundary.PinDirectory(root);
+        var sid = WindowsIdentity.GetCurrent().User ?? throw new UnauthorizedAccessException("AuditSidMissing");
+        if (created)
+        {
+            var acl = new DirectorySecurity(); acl.SetOwner(sid); acl.SetAccessRuleProtection(true, false);
+            foreach (var principal in new[] {sid, new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null)})
+                acl.AddAccessRule(new FileSystemAccessRule(principal, FileSystemRights.FullControl,
+                    InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, AccessControlType.Allow));
+            directory.SetAccessControl(acl);
+        }
+        else
+        {
+            var acl = directory.GetAccessControl();
+            if (acl.GetOwner(typeof(SecurityIdentifier)) != sid) throw new UnauthorizedAccessException("AuditOwnerMismatch");
+            foreach (FileSystemAccessRule rule in acl.GetAccessRules(true, true, typeof(SecurityIdentifier)))
+                if (rule.AccessControlType == AccessControlType.Allow && rule.IdentityReference != sid
+                    && rule.IdentityReference.Value is not ("S-1-5-18" or "S-1-5-32-544")
+                    && (rule.FileSystemRights & (FileSystemRights.Write | FileSystemRights.Delete | FileSystemRights.ChangePermissions | FileSystemRights.TakeOwnership)) != 0)
+                    throw new UnauthorizedAccessException("AuditWritableByOtherUser");
+        }
+        pin.Validate();
     }
 
     private static byte[] Protect(byte[] data) =>

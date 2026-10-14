@@ -87,8 +87,10 @@ public static class SecureDeleteStorageProfiler
                 CreateNoWindow = true
             });
             if (process is null) return "Unknown";
-            var output = process.StandardOutput.ReadToEnd().Trim();
+            var pendingOutput = process.StandardOutput.ReadToEndAsync();
             if (!process.WaitForExit(5000)) { try { process.Kill(true); } catch { } return "Unknown"; }
+            if (!pendingOutput.Wait(1000)) return "Unknown";
+            var output = pendingOutput.Result.Trim();
             return output.Contains("NVMe", StringComparison.OrdinalIgnoreCase) ? "NVMe"
                 : output.Contains("SSD", StringComparison.OrdinalIgnoreCase) ? "SSD"
                 : output.Contains("HDD", StringComparison.OrdinalIgnoreCase) ? "HDD"

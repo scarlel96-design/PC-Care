@@ -15,7 +15,13 @@ public sealed record RecoveryResult(string State, bool BytesVerified, int Mutati
 public sealed record FinalDeleteConsent(string ActionId, string FileId, DateTimeOffset ExpiresUtc, bool Approved);
 public sealed record CleanupMeasurement(long CandidateBytes, long QuarantinedBytes, long RestorableBytes,
     long FinalDeletedBytes, long AvailableBefore, long AvailableAfter, long ObservedFreeSpaceDelta,
-    long? AttributableFreedBytes, double ElapsedMs, string Limitation);
+    long? AttributableFreedBytes, double ElapsedMs, string Limitation)
+{
+    public long LogicalBytes => CandidateBytes;
+    public long? AllocatedBytes => null;
+    public long? VerifiedFreedBytes => AttributableFreedBytes;
+    public long UnattributedVolumeDelta => ObservedFreeSpaceDelta - (AttributableFreedBytes ?? 0);
+}
 
 /// <summary>Execute only fixed synthetic fixtures. This tool is absent from the product dependency graph.</summary>
 public sealed class SandboxRecovery
@@ -58,6 +64,25 @@ public sealed class SandboxRecovery
         return sandbox;
     }
 
+    public static SandboxRecovery CreateSelectedSynthetic(string parent, string name, int bytes = 4096)
+    {
+        if (!ValidSelectedName(name)) throw new InvalidDataException("SyntheticTargetNameRequired");
+        var sandbox = CreateSynthetic(parent, bytes);
+        var journal = sandbox.Read();
+        using (var file = WindowsFileBoundary.OpenWrite(sandbox.Root, Original, deletable: true))
+        {
+            Verify(file, journal.Target);
+            file.RenameOpenedFile(Path.Combine(sandbox.Root, name));
+            Verify(file, journal.Target);
+        }
+        sandbox.Save(journal with { Schema = 3, Action = journal.Action with {Target = name} });
+        return sandbox;
+    }
+
+    private static bool ValidSelectedName(string name) => Path.GetFileName(name) == name
+        && name.IndexOfAny(Path.GetInvalidFileNameChars()) < 0 && name.Length <= 128
+        && Path.GetExtension(name).ToLowerInvariant() is ".tmp" or ".cache";
+
     public static SandboxRecovery Open(string root)
     {
         var full = Path.GetFullPath(root);
@@ -98,7 +123,7 @@ public sealed class SandboxRecovery
             file.DeleteOpenedFile();
         }
         checkpoint?.Invoke("Deleted");
-        if (File.Exists(Path.Combine(Root, Quarantine)) || File.Exists(Path.Combine(Root, Original)))
+        if (File.Exists(Path.Combine(Root, Quarantine)) || File.Exists(Path.Combine(Root, journal.Action.Target)))
             throw new IOException("FinalDeleteVerificationFailed");
         Save(journal with { State = "FinalDeleted" });
         var after = new DriveInfo(Path.GetPathRoot(Root)!).AvailableFreeSpace;
@@ -124,7 +149,7 @@ public sealed class SandboxRecovery
         if (journal.State is "DeletePrepared" or "FinalDeleted")
             throw new InvalidOperationException("IrreversibleDeleteRequiresReview:PreserveEvidence");
         if (journal.State != "Ready") throw new InvalidOperationException("DuplicateOrPendingExecution");
-        using var file = WindowsFileBoundary.OpenWrite(Root, Original, deletable: true);
+        using var file = WindowsFileBoundary.OpenWrite(Root, journal.Action.Target, deletable: true);
         Verify(file, journal.Target); root.Validate();
         checkpoint?.Invoke("PreflightValidated"); cancellation.ThrowIfCancellationRequested();
         if (!consent.Approved || consent.ExpiresUtc <= DateTimeOffset.UtcNow || consent.ActionId != journal.Action.ActionId
@@ -146,18 +171,18 @@ public sealed class SandboxRecovery
             throw new InvalidDataException("IrreversibleDeleteRequiresReview:PreserveEvidence");
         if (journal.State == "Ready")
         {
-            using var ready = WindowsFileBoundary.OpenRead(Root, Original);
+            using var ready = WindowsFileBoundary.OpenRead(Root, journal.Action.Target);
             Verify(ready, journal.Target); return new("Ready", true, 0);
         }
         if (journal.State is not ("Prepared" or "Quarantined" or "RollingBack" or "Restored")) throw new InvalidDataException("InvalidState");
-        var originalExists = File.Exists(Path.Combine(Root, Original));
+        var originalExists = File.Exists(Path.Combine(Root, journal.Action.Target));
         var quarantineExists = File.Exists(Path.Combine(Root, Quarantine));
         if (journal.State == "Restored" && quarantineExists) throw new IOException("RecoveryRequired:RestoredStateMismatch");
         if (originalExists == quarantineExists) throw new IOException("RecoveryRequired:MissingOrConflictingTargets");
         using var file = WindowsFileBoundary.OpenWrite(Root, originalExists ? Original : Quarantine, deletable: true);
         Verify(file, journal.Target);
         Save(journal with { State = "RollingBack" }); checkpoint?.Invoke("RollingBack");
-        if (!originalExists) file.RenameOpenedFile(Path.Combine(Root, Original));
+        if (!originalExists) file.RenameOpenedFile(Path.Combine(Root, journal.Action.Target));
         checkpoint?.Invoke("RestoredMove"); Verify(file, journal.Target);
         Save(journal with { State = "Restored" }); checkpoint?.Invoke("Restored");
         return new("Restored", true, originalExists ? 0 : 1);
@@ -176,7 +201,7 @@ public sealed class SandboxRecovery
         var expected = Sign(payload);
         if (!CryptographicOperations.FixedTimeEquals(Convert.FromHexString(mac), Convert.FromHexString(expected))) throw new InvalidDataException("JournalAuthentication");
         var journal = JsonSerializer.Deserialize<ExecutionJournal>(payload) ?? throw new InvalidDataException("JournalMissing");
-        if (journal.Schema is not (1 or 2) || journal.Action.Target != Original || journal.Action.Quarantine != Quarantine
+        if (journal.Schema is not (1 or 2 or 3) || (journal.Schema == 3 ? !ValidSelectedName(journal.Action.Target) : journal.Action.Target != Original) || journal.Action.Quarantine != Quarantine
             || journal.Action.RiskLevel != "SyntheticOnly" || !Guid.TryParseExact(journal.Action.ActionId, "N", out _)
             || journal.Target.RootId != root.Identity || journal.Target.Length < 4096 || journal.Target.Length > 32 * 1024 * 1024
             || journal.Target.Sha256 != ExpectedHash(journal.Target.Length)

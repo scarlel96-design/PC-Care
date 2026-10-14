@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="SmartPerformanceDoctor.Tests" />
+    <InternalsVisibleTo Include="SmartPerformanceDoctor.DeleteProbe" />
     <RuntimeHostConfigurationOption Include="CSWINRT_USE_WINDOWS_UI_XAML_PROJECTIONS" Value="true" />
   </ItemGroup>
 

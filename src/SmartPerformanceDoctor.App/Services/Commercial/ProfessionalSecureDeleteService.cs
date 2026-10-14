@@ -14,6 +14,7 @@ namespace SmartPerformanceDoctor.App.Services.Commercial;
 public sealed class ProfessionalSecureDeleteService
 {
     private readonly string? _auditStorageRoot;
+    internal Action<string>? TestCheckpoint { get; set; }
 
     // The default remains per-user LocalAppData. An explicit root is used by
     // isolated tests and recovery tooling so audit availability can be tested
@@ -238,126 +239,141 @@ public sealed class ProfessionalSecureDeleteService
         }
 
         var auditRoot = _auditStorageRoot ?? Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "PC-Care",
-            "secure_delete");
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PC-Care", "secure_delete");
         var auditDir = Path.Combine(auditRoot, "audit");
-        Directory.CreateDirectory(auditDir);
-        var auditPath = Path.Combine(auditDir, $"{plan.OperationId}.log");
+        SecureDeleteAuditChain.PrepareDirectory(auditDir);
+        var auditPath = Path.Combine(auditDir, plan.OperationId + ".log");
+        TestCheckpoint?.Invoke("BeforeJournalCreate");
         using var operationLock = new FileStream(auditPath + ".started", FileMode.CreateNew, FileAccess.Write, FileShare.None);
-        var hmacKey = SecureDeleteAuditChain.EnsureOperationKey(plan.OperationId, auditRoot);
-
-        var deleted = 0;
-        var failed = 0;
-        var index = 0;
-        var chain = "GENESIS";
-        var scannedVolumes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        var shadowAdvisories = new List<string>();
-
+        var key = SecureDeleteAuditChain.EnsureOperationKey(plan.OperationId, auditDir);
         var outcomes = new List<SecureDeleteItemResult>();
+        var deleted = 0; var failed = 0; var cancelled = false; var review = false; var anyMutation = false;
+        var chain = "GENESIS";
         try
         {
-        chain = SecureDeleteAuditChain.Append(auditPath, plan.OperationId, "n/a", "n/a", "file-clear", "started", chain, hmacKey);
-        foreach (var target in plan.Targets)
-        {
-            if (cancellationToken.IsCancellationRequested) { outcomes.Add(new("Cancelled", false)); break; }
-            index++;
-            progress?.Report(((int)((index - 1) / (double)plan.Targets.Count * 100), target.Path));
-
+            using var journal = new SecureDeleteJournal(auditDir, plan.OperationId, key, TestCheckpoint);
+            TestCheckpoint?.Invoke("JournalCreated");
+            chain = SecureDeleteAuditChain.Append(auditPath, plan.OperationId, "n/a", "n/a", "file-clear", "started", chain, key);
+            for (var i = 0; i < plan.Targets.Count; i++)
+            {
+                var target = plan.Targets[i]; DeleteHandleEvidence? bound = null;
+                var mutation = false; var completed = false; var state = "Planned";
+                var protocol = SecureDeleteStorageProfiler.SelectProtocol(target.StorageType, level);
+                journal.Append(i, "Planned", target.Path, protocol: protocol, media: target.StorageType);
+                try
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    progress?.Report(((int)(i / (double)plan.Targets.Count * 99), Path.GetFileName(target.Path)));
+                    if (!File.Exists(target.Path) && !Directory.Exists(target.Path)) throw new FileNotFoundException("TargetAbsent");
+                    if (Directory.Exists(target.Path)) throw new InvalidDataException("FolderExecutionRequiresHandleBoundDirectoryRemoval");
+                    var gate = PathSafetyGuard.Evaluate(target.Path);
+                    var media = SecureDeleteStorageProfiler.Profile(target.Path);
+                    protocol = SecureDeleteStorageProfiler.SelectProtocol(media, level);
+                    var preflight = SecureDeletePreflight.Inspect(target.Path, media, DetectFileSystem(target.Path), level, gate.Allowed, gate.Reason);
+                    if (!preflight.Passed) throw new InvalidDataException("PreflightChanged");
+                    journal.Append(i, "PreflightVerified", target.Path, protocol: protocol, media: media);
+                    state = "PreflightVerified";
+                    await ForensicSecureDeleteEngine.SecureDeleteFileAsync(target.Path, media, level, cancellationToken,
+                        target.TargetFingerprint, checkpoint => TestCheckpoint?.Invoke(checkpoint), (next, evidence) =>
+                        {
+                            if (next == "TargetHandleBound")
+                            {
+                                bound = evidence;
+                                ReserveIdentity(auditDir, plan.OperationId, evidence.Identity);
+                            }
+                            journal.Append(i, next, target.Path, evidence, protocol, media);
+                            state = next;
+                            if (next == "DeletionObserved") deleted++;
+                            if (next is "WriteInProgress" or "DeleteDispositionAccepted") { mutation = true; anyMutation = true; }
+                        });
+                    TestCheckpoint?.Invoke("BeforeAudit");
+                    var content = SecureDeleteAuditChain.ProtectContentFingerprint(bound!.ContentHash, key);
+                    chain = SecureDeleteAuditChain.Append(auditPath, plan.OperationId,
+                        HashPath(target.Path) + ":" + bound.Identity, content, protocol, "deleted", chain, key);
+                    TestCheckpoint?.Invoke("AfterAudit");
+                    journal.Append(i, "AuditCommitted", target.Path, bound, protocol, media);
+                    state = "AuditCommitted";
+                    journal.Append(i, "Completed", target.Path, bound, protocol, media);
+                    completed = true;
+                    outcomes.Add(new("Completed", false) {TargetIndex=i, MutationStarted=mutation});
+                }
+                catch (OperationCanceledException)
+                {
+                    cancelled = true;
+                    var terminal = mutation || state == "DestructiveWriteIntent" ? "RecoveryReviewRequired" : "CancelledBeforeMutation";
+                    try { journal.Append(i, terminal, target.Path, bound, protocol, target.StorageType, "Cancellation"); }
+                    catch { review = true; }
+                    review |= terminal == "RecoveryReviewRequired";
+                    outcomes.Add(new("Cancelled", mutation) {TargetIndex=i, MutationStarted=mutation});
+                    break;
+                }
+                catch (Exception error)
+                {
+                    failed++; review |= mutation || error.Message.Contains("RequiresReview", StringComparison.Ordinal);
+                    try { journal.Append(i, "RecoveryReviewRequired", target.Path, bound, protocol, target.StorageType, error.GetType().Name); }
+                    catch { review = true; }
+                    outcomes.Add(new(error is UnauthorizedAccessException ? "Unauthorized"
+                        : error.Message.Contains("TargetChanged", StringComparison.Ordinal) ? "TargetChanged"
+                        : error is InvalidDataException ? "ValidationFailed" : "Failed", mutation) {TargetIndex=i, MutationStarted=mutation});
+                    if (review) break;
+                }
+                if (!completed && mutation) break;
+            }
+            var auditValid = SecureDeleteAuditChain.Verify(auditPath, key)
+                && outcomes.Where(o => o.MutationStarted).All(o => o.Status == "Completed");
+            review |= !auditValid;
+            var status = review ? "RecoveryReviewRequired" : cancelled ? "Cancelled"
+                : failed > 0 ? (deleted > 0 ? "PartiallyCompleted" : "Failed") : "Completed";
+            var result = new SecureDeleteExecutionResult(deleted, failed, auditPath, auditValid, status, outcomes)
+            {
+                WasCancellationRequested = cancelled || cancellationToken.IsCancellationRequested,
+                AnyMutationStarted = anyMutation, IncompleteTargets = plan.Targets.Count - outcomes.Count(o => o.Status == "Completed"),
+                RequiresManualReview = review, JournalPath = journal.Path
+            };
             try
             {
-                if (!File.Exists(target.Path) && !Directory.Exists(target.Path))
-                {
-                    throw new FileNotFoundException("Dry Run 이후 대상이 사라졌습니다.", target.Path);
-                }
-
-                if (!string.IsNullOrWhiteSpace(target.TargetFingerprint)
-                    && !CryptographicOperations.FixedTimeEquals(
-                        Convert.FromHexString(target.TargetFingerprint),
-                        Convert.FromHexString(CaptureTargetFingerprint(target.Path))))
-                {
-                    throw new IOException("Dry Run 이후 파일 식별 스냅샷이 변경되어 삭제를 중단했습니다.");
-                }
-                var gate = PathSafetyGuard.Evaluate(target.Path);
-                var currentPreflight = SecureDeletePreflight.Inspect(
-                    target.Path, SecureDeleteStorageProfiler.Profile(target.Path), DetectFileSystem(target.Path), level, gate.Allowed, gate.Reason);
-                if (!currentPreflight.Passed)
-                {
-                    throw new IOException("실행 직전 사전 검증이 달라져 삭제를 중단했습니다: " + currentPreflight.Summary);
-                }
-
-                var contentHash = SecureDeleteAuditChain.ProtectContentFingerprint(ComputeTargetHash(target.Path), hmacKey);
-                var pathHash = HashPath(target.Path);
-                var protocol = SecureDeleteStorageProfiler.SelectProtocol(target.StorageType, level);
-
-                if (File.Exists(target.Path))
-                {
-                    await ForensicSecureDeleteEngine.SecureDeleteFileAsync(
-                        target.Path,
-                        target.StorageType,
-                        level,
-                        cancellationToken, target.TargetFingerprint);
-                }
-                else if (Directory.Exists(target.Path))
-                {
-                    throw new InvalidDataException("FolderExecutionRequiresHandleBoundDirectoryRemoval");
-                }
-
-                if (File.Exists(target.Path) || Directory.Exists(target.Path))
-                {
-                    throw new IOException("삭제 후 경로 검증에 실패했습니다.");
-                }
-
-                deleted++;
-                outcomes.Add(new("Completed", true));
-                var root = Path.GetPathRoot(Path.GetFullPath(target.Path));
-                if (!string.IsNullOrWhiteSpace(root) && scannedVolumes.Add(root))
-                {
-                    var shadowRisk = ForensicSecureDeleteEngine.ScanShadowCopyRisk(target.Path);
-                    if (shadowRisk.HasRisk && !string.IsNullOrWhiteSpace(shadowRisk.Advisory))
-                    {
-                        shadowAdvisories.Add(shadowRisk.Advisory);
-                    }
-                }
-
-                chain = SecureDeleteAuditChain.Append(
-                    auditPath, plan.OperationId, pathHash, contentHash, protocol, "deleted", chain, hmacKey);
+                journal.Append(-1, "AuditCommitted");
+                TestCheckpoint?.Invoke("BeforeResultJson");
+                var data = JsonSerializer.SerializeToUtf8Bytes(result);
+                using (var output = SmartPerformanceDoctor.UpdateEngine.WindowsFileBoundary.OpenExclusive(auditDir, plan.OperationId + ".log.result.json", true))
+                { output.Stream.Write(data); output.Stream.Flush(true); output.Validate(); }
+                TestCheckpoint?.Invoke("AfterResultJson");
+                journal.Append(-1, "Completed", error: "ResultSha:" + Convert.ToHexString(SHA256.HashData(data)));
             }
-            catch (OperationCanceledException)
-            {
-                outcomes.Add(new("Cancelled", true));
-                chain = SecureDeleteAuditChain.Append(auditPath, plan.OperationId, HashPath(target.Path), "n/a",
-                    target.RecommendedProtocol, "cancelled-partial-write-possible", chain, hmacKey);
-                break;
-            }
-            catch (Exception error)
-            {
-                failed++;
-                outcomes.Add(new(error is UnauthorizedAccessException ? "Unauthorized"
-                    : error.Message.Contains("TargetChanged", StringComparison.Ordinal) || error.Message.Contains("Dry Run", StringComparison.Ordinal) ? "TargetChanged"
-                    : error is InvalidDataException ? "ValidationFailed" : "Failed", true));
-                chain = SecureDeleteAuditChain.Append(
-                    auditPath,
-                    plan.OperationId,
-                    HashPath(target.Path),
-                    "n/a",
-                    target.RecommendedProtocol,
-                    "failed",
-                    chain,
-                    hmacKey);
-            }
+            catch { result = result with {Status="RecoveryReviewRequired", RequiresManualReview=true}; }
+            if (result.Status == "Completed" && !result.RequiresManualReview) progress?.Report((100, "완료"));
+            return result;
         }
+        finally { CryptographicOperations.ZeroMemory(key); }
+    }
 
-        var auditValid = SecureDeleteAuditChain.Verify(auditPath, hmacKey);
-        WriteSecureDeleteReport(plan, deleted, failed, auditPath, auditValid, level);
-        var cancelled = outcomes.Any(o => o.Status == "Cancelled");
-        var status = cancelled ? "Cancelled" : failed > 0 ? (deleted > 0 ? "PartiallyCompleted" : "Failed") : "Completed";
-        if (status == "Completed") progress?.Report((100, "완료"));
-        var result = new SecureDeleteExecutionResult(deleted, failed, auditPath, auditValid, auditValid ? status : "RecoveryReviewRequired", outcomes);
-        File.WriteAllText(auditPath + ".result.json", JsonSerializer.Serialize(result));
-        return result;
+    public IReadOnlyList<DeleteReconciliationResult> InspectInterruptedOperations()
+    {
+        var root = Path.Combine(_auditStorageRoot ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "PC-Care", "secure_delete"), "audit");
+        if (!Directory.Exists(root)) return [];
+        var results = new List<DeleteReconciliationResult>();
+        var timer = System.Diagnostics.Stopwatch.StartNew();
+        foreach (var file in Directory.EnumerateFiles(root, "*.log.started").Take(32))
+        {
+            if (timer.ElapsedMilliseconds > 5000) break;
+            var operation = Path.GetFileName(file)[..^12];
+            try { var result = SecureDeleteJournal.Reconcile(root, operation); if (result.RequiresManualReview) results.Add(result); }
+            catch (InvalidDataException) { results.Add(new(operation,"RecoveryReviewRequired",false,false,true,[])); }
         }
-        finally { CryptographicOperations.ZeroMemory(hmacKey); }
+        return results;
+    }
+
+    private static void ReserveIdentity(string auditDir, string operation, string identity)
+    {
+        var root = Path.Combine(auditDir, "reservations"); SecureDeleteAuditChain.PrepareDirectory(root);
+        var name = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(identity))) + ".claim";
+        try
+        {
+            using var file = SmartPerformanceDoctor.UpdateEngine.WindowsFileBoundary.OpenExclusive(root, name, true);
+            file.Stream.Write(Encoding.UTF8.GetBytes(operation)); file.Stream.Flush(true); file.Validate();
+        }
+        catch (IOException error) { throw new InvalidDataException("PendingIdentityReservationRequiresReview", error); }
     }
 
     private static DirectoryExecutionSnapshot CaptureDirectorySnapshot(string directoryPath)

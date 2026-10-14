@@ -37,16 +37,16 @@ internal static class ForensicSecureDeleteEngine
         return Fingerprint(file);
     }
 
-    private static string Fingerprint(SmartPerformanceDoctor.UpdateEngine.WindowsFileBoundary.FileLease file)
+    private static string Fingerprint(SmartPerformanceDoctor.UpdateEngine.WindowsFileBoundary.FileLease file, string? contentHash = null)
     {
         file.Validate();
         var h = file.Stream.SafeFileHandle;
-        var data = $"{file.Identity}|{file.Stream.Length}|{File.GetCreationTimeUtc(h).Ticks}|{File.GetLastWriteTimeUtc(h).Ticks}|{File.GetAttributes(h)}|{file.Hash()}";
+        var data = $"{file.Identity}|{file.Stream.Length}|{File.GetCreationTimeUtc(h).Ticks}|{File.GetLastWriteTimeUtc(h).Ticks}|{File.GetAttributes(h)}|{contentHash ?? file.Hash()}";
         return Convert.ToHexString(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(data)));
     }
 
     public static async Task SecureDeleteFileAsync(string path, string storageType, SecureDeleteSecurityLevel level,
-        CancellationToken cancellationToken, string? expectedFingerprint = null, Action<string>? checkpoint = null)
+        CancellationToken cancellationToken, string? expectedFingerprint = null, Action<string>? checkpoint = null, Action<string, DeleteHandleEvidence>? durableCheckpoint = null)
     {
         cancellationToken.ThrowIfCancellationRequested();
         var full = Path.GetFullPath(path);
@@ -55,7 +55,9 @@ internal static class ForensicSecureDeleteEngine
         expectedFingerprint ??= CaptureFingerprint(full);
         using var file = SmartPerformanceDoctor.UpdateEngine.WindowsFileBoundary.OpenWrite(
             Path.GetDirectoryName(full)!, Path.GetFileName(full), deletable: true);
-        if (!CryptographicOperations.FixedTimeEquals(Convert.FromHexString(expectedFingerprint), Convert.FromHexString(Fingerprint(file))))
+        checkpoint?.Invoke("HandleOpened");
+        var boundHash = file.Hash();
+        if (!CryptographicOperations.FixedTimeEquals(Convert.FromHexString(expectedFingerprint), Convert.FromHexString(Fingerprint(file, boundHash))))
             throw new InvalidDataException("TargetChanged");
         var attributes = File.GetAttributes(file.Stream.SafeFileHandle);
         if ((attributes & (FileAttributes.ReadOnly | FileAttributes.System | FileAttributes.Hidden
@@ -67,6 +69,9 @@ internal static class ForensicSecureDeleteEngine
         if (owner != user && !(owner == administrators && ProcessElevationService.IsAdministrator()))
             throw new UnauthorizedAccessException("UnknownOwnership");
         EnsureNoAlternateStreams(full);
+        checkpoint?.Invoke("TargetIdentityVerified");
+        var evidence = new DeleteHandleEvidence(file.Identity, file.Stream.Length, boundHash, owner?.Value ?? "");
+        durableCheckpoint?.Invoke("TargetHandleBound", evidence);
         checkpoint?.Invoke("Opened");
         var length = file.Stream.Length;
         var passes = storageType is "SSD" or "NVMe" ? SecureDeleteStorageProfiler.GetFileClearPasses(storageType, level)
@@ -75,6 +80,13 @@ internal static class ForensicSecureDeleteEngine
         var actual = new byte[512];
         try
         {
+            file.Verify(length, boundHash, evidence.Identity);
+            if (file.ReadSecurity().GetOwner(typeof(System.Security.Principal.SecurityIdentifier)) != owner)
+                throw new UnauthorizedAccessException("TargetOwnerChanged");
+            durableCheckpoint?.Invoke("DestructiveWriteIntent", evidence);
+            checkpoint?.Invoke("BeforeFirstWrite");
+            cancellationToken.ThrowIfCancellationRequested();
+            durableCheckpoint?.Invoke("WriteInProgress", evidence);
             for (var pass = 0; pass < passes; pass++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
@@ -87,10 +99,12 @@ internal static class ForensicSecureDeleteEngine
                     var count = (int)Math.Min(buffer.Length, length - written);
                     await file.Stream.WriteAsync(buffer.AsMemory(0, count), cancellationToken);
                     written += count;
-                    checkpoint?.Invoke("Written");
+                    checkpoint?.Invoke("Written"); checkpoint?.Invoke("DuringOverwrite");
                 }
-                file.Stream.Flush(true);
+                checkpoint?.Invoke("BeforeFlush"); file.Stream.Flush(true); checkpoint?.Invoke("AfterFlush");
             }
+            durableCheckpoint?.Invoke("WriteFinished", evidence);
+            checkpoint?.Invoke("BeforeVerification");
             foreach (var offset in new[] { 0L, length / 2, Math.Max(0, length - 512) }.Distinct())
             {
                 cancellationToken.ThrowIfCancellationRequested(); file.Validate();
@@ -101,8 +115,14 @@ internal static class ForensicSecureDeleteEngine
                     if (actual[i] != buffer[(int)((offset + i) % buffer.Length)]) throw new IOException("OverwriteVerificationFailed");
             }
             checkpoint?.Invoke("Verified");
+            durableCheckpoint?.Invoke("VerificationFinished", evidence); checkpoint?.Invoke("AfterVerification");
             cancellationToken.ThrowIfCancellationRequested(); file.Validate();
-            file.DeleteOpenedFile();
+            durableCheckpoint?.Invoke("DeleteRequested", evidence); checkpoint?.Invoke("BeforeDeleteRequest");
+            file.DeleteOpenedFile(); checkpoint?.Invoke("AfterDeleteRequest");
+            durableCheckpoint?.Invoke("DeleteDispositionAccepted", evidence);
+            file.Dispose();
+            if (File.Exists(full)) throw new IOException("DeletePendingOrPathReplacement");
+            durableCheckpoint?.Invoke("DeletionObserved", evidence);
         }
         finally { CryptographicOperations.ZeroMemory(buffer); CryptographicOperations.ZeroMemory(actual); }
     }
@@ -134,7 +154,7 @@ internal static class ForensicSecureDeleteEngine
         try
         {
             var root = Path.GetPathRoot(Path.GetFullPath(path));
-            if (string.IsNullOrWhiteSpace(root))
+            if (string.IsNullOrWhiteSpace(root) || root.Length != 3 || !char.IsAsciiLetter(root[0]) || root[1] != ':' || root[2] != '\\')
             {
                 return report;
             }
@@ -144,10 +164,10 @@ internal static class ForensicSecureDeleteEngine
             {
                 FileName = "powershell.exe",
                 Arguments =
-                    $"-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"" +
+                    $"-NoProfile -NonInteractive -Command \"" +
                     $"$d='{drive}'; " +
                     "(Get-CimInstance Win32_ShadowCopy -ErrorAction SilentlyContinue | " +
-                    "Where-Object { $_.VolumeName -like ('*' + $d.Replace('\\\\','') + '*') }).Count\"",
+                    "Where-Object { $_.VolumeName -like ('*' + $d.Replace('\\','') + '*') }).Count\"",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 CreateNoWindow = true
@@ -158,8 +178,10 @@ internal static class ForensicSecureDeleteEngine
                 return report;
             }
 
-            var output = process.StandardOutput.ReadToEnd().Trim();
-            process.WaitForExit(5000);
+            var pendingOutput = process.StandardOutput.ReadToEndAsync();
+            if (!process.WaitForExit(5000)) {try {process.Kill(true);}catch {} return report;}
+            if (!pendingOutput.Wait(1000)) return report;
+            var output = pendingOutput.Result.Trim();
             if (int.TryParse(output, out var count) && count > 0)
             {
                 report.ShadowCopyCount = count;

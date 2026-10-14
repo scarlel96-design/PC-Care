@@ -1,9 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0-windows10.0.26100.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><PlatformTarget>x64</PlatformTarget></PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../../src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj"/>
+    <ProjectReference Include="../../src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj"/>
     <Compile Include="../SmartPerformanceDoctor.RecoverySandbox/SandboxRecovery.cs" Link="SandboxRecovery.cs"/>
-    <Compile Include="../../src/SmartPerformanceDoctor.App/Services/SystemCare/StorageInventory.cs" Link="StorageInventory.cs"/>
-    <Compile Include="../../src/SmartPerformanceDoctor.App/Services/SystemCare/StorageTargetPolicy.cs" Link="StorageTargetPolicy.cs"/>
   </ItemGroup>
 </Project>

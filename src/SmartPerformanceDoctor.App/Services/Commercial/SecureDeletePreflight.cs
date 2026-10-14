@@ -90,7 +90,7 @@ internal static class SecureDeletePreflight
     }
     private static bool TryDetectBitLocker(string path)
     {
-        try { var root=Path.GetPathRoot(Path.GetFullPath(path)); if(string.IsNullOrWhiteSpace(root)) return false; using var p=System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo { FileName="manage-bde.exe", Arguments=$"-status {root.TrimEnd('\\')}", UseShellExecute=false, RedirectStandardOutput=true, CreateNoWindow=true }); if(p is null) return false; var output=p.StandardOutput.ReadToEnd(); p.WaitForExit(4000); return output.Contains("Protection On",StringComparison.OrdinalIgnoreCase)||output.Contains("보호 상태:    켜짐",StringComparison.OrdinalIgnoreCase); } catch { return false; }
+        try { var root=Path.GetPathRoot(Path.GetFullPath(path)); if(string.IsNullOrWhiteSpace(root)) return false; using var p=System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo { FileName="manage-bde.exe", Arguments=$"-status {root.TrimEnd('\\')}", UseShellExecute=false, RedirectStandardOutput=true, CreateNoWindow=true }); if(p is null) return false; var pendingOutput=p.StandardOutput.ReadToEndAsync(); if(!p.WaitForExit(4000)){try{p.Kill(true);}catch{}return false;} if(!pendingOutput.Wait(1000))return false; var output=pendingOutput.Result; return output.Contains("Protection On",StringComparison.OrdinalIgnoreCase)||output.Contains("보호 상태:    켜짐",StringComparison.OrdinalIgnoreCase); } catch { return false; }
     }
 
     [DllImport("kernel32.dll", SetLastError=true)] private static extern bool GetFileInformationByHandle(SafeFileHandle hFile, out BY_HANDLE_FILE_INFORMATION info);
