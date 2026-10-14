@@ -24,6 +24,27 @@ jobs:
         run: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
       - name: Release build
         run: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+      - name: WO18 durable deletion and product safety
+        shell: pwsh
+        env:
+          VSTEST_CONNECTION_TIMEOUT: '300'
+        run: |
+          New-Item -ItemType Directory -Force artifacts/wo18-ci | Out-Null
+          $ownerProbe = Join-Path $env:RUNNER_TEMP ('wo18-owner-' + [guid]::NewGuid().ToString('N') + '.tmp')
+          [IO.File]::WriteAllBytes($ownerProbe, [byte[]]@(0))
+          $sid = [Security.Principal.WindowsIdentity]::GetCurrent().User
+          $owner = (Get-Acl -LiteralPath $ownerProbe).GetOwner([Security.Principal.SecurityIdentifier])
+          $ownerKind = if ($owner -eq $sid) { 'CurrentSid' } elseif ($owner.Value -eq 'S-1-5-32-544') { 'Administrators' } else { 'Other' }
+          @{DefaultFixtureOwner=$ownerKind;ExplicitFixtureOwner='CurrentSid';ProductionOwnershipGateChanged=$false} | ConvertTo-Json | Set-Content artifacts/wo18-ci/OWNER_ENVIRONMENT.json
+          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO18' --logger 'trx;LogFileName=wo18-tests.trx' -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO18 regression failed' }
+          dotnet build tools/SmartPerformanceDoctor.DeleteProbe -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'DeleteProbe build failed' }
+          $fixtureParent = Join-Path $env:RUNNER_TEMP 'wo18-isolated-fixtures'
+          New-Item -ItemType Directory -Force $fixtureParent | Out-Null
+          ./scripts/wo18-delete-crash-validation.ps1 -FixtureParent $fixtureParent -OutputDirectory artifacts/wo18-ci
+          ./scripts/wo18-synthetic-validation.ps1 -FixtureParent $fixtureParent -OutputDirectory artifacts/wo18-ci/synthetic
+          ./scripts/wo17-ui-source-validation.ps1
       - name: Signed package, publisher, transaction, recovery and staging tests
         env:
           VSTEST_CONNECTION_TIMEOUT: '300'
@@ -167,20 +188,6 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'WO17 synthetic qualification failed' }
           pwsh -NoProfile -File scripts/wo17-ui-source-validation.ps1
           if ($LASTEXITCODE -ne 0) { throw 'WO17 UI source validation failed' }
-      - name: WO18 durable deletion and product safety
-        shell: pwsh
-        env:
-          VSTEST_CONNECTION_TIMEOUT: '300'
-        run: |
-          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO18' --logger 'trx;LogFileName=wo18-tests.trx' -v:minimal
-          if ($LASTEXITCODE -ne 0) { throw 'WO18 regression failed' }
-          dotnet build tools/SmartPerformanceDoctor.DeleteProbe -c Release -p:Platform=x64 -m:1 -v:minimal
-          if ($LASTEXITCODE -ne 0) { throw 'DeleteProbe build failed' }
-          $fixtureParent = Join-Path $env:RUNNER_TEMP 'wo18-isolated-fixtures'
-          New-Item -ItemType Directory -Force $fixtureParent | Out-Null
-          ./scripts/wo18-delete-crash-validation.ps1 -FixtureParent $fixtureParent -OutputDirectory artifacts/wo18-ci
-          ./scripts/wo18-synthetic-validation.ps1 -FixtureParent $fixtureParent -OutputDirectory artifacts/wo18-ci/synthetic
-          ./scripts/wo17-ui-source-validation.ps1
       - name: Full application regression
         env:
           VSTEST_CONNECTION_TIMEOUT: '300'

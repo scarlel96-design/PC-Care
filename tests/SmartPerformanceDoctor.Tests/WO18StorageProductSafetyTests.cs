@@ -1,4 +1,6 @@
 using System.Security.Cryptography;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using SmartPerformanceDoctor.App.Services.Commercial;
 using SmartPerformanceDoctor.App.Services.SystemCare;
 using SmartPerformanceDoctor.RecoverySandbox;
@@ -10,7 +12,16 @@ public sealed class WO18StorageProductSafetyTests : IDisposable
 {
     private readonly string parent=Path.Combine(Environment.GetEnvironmentVariable("RUNNER_TEMP")
         ??throw new InvalidOperationException("ExplicitSyntheticParentRequired"),"wo18-product-"+Guid.NewGuid().ToString("N"));
-    public WO18StorageProductSafetyTests()=>Directory.CreateDirectory(parent);
+    public WO18StorageProductSafetyTests()=>SecureDeleteAuditChain.PrepareDirectory(parent);
+    private static void WriteOwnedFixture(string path, byte[] bytes)
+    {
+        File.WriteAllBytes(path, bytes);
+        var file = new FileInfo(path);
+        var security = file.GetAccessControl();
+        var sid = WindowsIdentity.GetCurrent().User ?? throw new InvalidOperationException("FixtureSidMissing");
+        security.SetOwner(sid); file.SetAccessControl(security);
+        Assert.Equal(sid, file.GetAccessControl().GetOwner(typeof(SecurityIdentifier)));
+    }
     [Theory][InlineData("selected.tmp")][InlineData("한글.cache")]
     public void SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(string name)
     {
@@ -38,19 +49,19 @@ public sealed class WO18StorageProductSafetyTests : IDisposable
     [Fact]public void DirectoryNewEntryInvalidatesApprovalSnapshot()
     {
         var directory=Path.Combine(parent,"tree");Directory.CreateDirectory(directory);
-        File.WriteAllBytes(Path.Combine(directory,"one.tmp"),new byte[4096]);
+        WriteOwnedFixture(Path.Combine(directory,"one.tmp"),new byte[4096]);
         using var review=SecureDeleteDirectoryReview.Capture(directory);
         Assert.False(review.ProductionExecutionEnabled);
-        File.WriteAllBytes(Path.Combine(directory,"new.tmp"),new byte[4096]);
+        WriteOwnedFixture(Path.Combine(directory,"new.tmp"),new byte[4096]);
         Assert.Throws<IOException>(()=>review.ValidateUnchanged());
         Assert.True(File.Exists(Path.Combine(directory,"new.tmp")));
     }
     [Fact]public void DirectoryChangedBytesInvalidatesSnapshot()
     {
         var directory=Path.Combine(parent,"tree");Directory.CreateDirectory(directory);
-        var path=Path.Combine(directory,"one.tmp");File.WriteAllBytes(path,new byte[4096]);
+        var path=Path.Combine(directory,"one.tmp");WriteOwnedFixture(path,new byte[4096]);
         using var review=SecureDeleteDirectoryReview.Capture(directory);
-        File.WriteAllBytes(path,RandomNumberGenerator.GetBytes(4096));
+        WriteOwnedFixture(path,RandomNumberGenerator.GetBytes(4096));
         Assert.Throws<InvalidDataException>(()=>review.ValidateUnchanged());
     }
     [Fact]public void DirectoryIdentityDetectsOrBlocksRootRename()
@@ -65,14 +76,14 @@ public sealed class WO18StorageProductSafetyTests : IDisposable
     [Fact]public void DirectoryLockedFileCannotBeQualified()
     {
         var directory=Path.Combine(parent,"tree");Directory.CreateDirectory(directory);
-        var path=Path.Combine(directory,"one.tmp");File.WriteAllBytes(path,new byte[4096]);
+        var path=Path.Combine(directory,"one.tmp");WriteOwnedFixture(path,new byte[4096]);
         using var locked=File.Open(path,FileMode.Open,FileAccess.ReadWrite,FileShare.None);
         Assert.Throws<IOException>(()=>SecureDeleteDirectoryReview.Capture(directory));
     }
     [Fact]public void DirectoryBudgetExhaustionFailsClosed()
     {
         var directory=Path.Combine(parent,"tree");Directory.CreateDirectory(directory);
-        for(var i=0;i<513;i++)File.WriteAllBytes(Path.Combine(directory,$"{i}.tmp"),[]);
+        for(var i=0;i<513;i++)WriteOwnedFixture(Path.Combine(directory,$"{i}.tmp"),[]);
         Assert.Throws<InvalidDataException>(()=>SecureDeleteDirectoryReview.Capture(directory));
     }
     [Fact]public void RegisteredStoreProtectsOrdinaryNamesAndReloads()
