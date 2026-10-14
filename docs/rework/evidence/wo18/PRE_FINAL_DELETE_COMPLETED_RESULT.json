@@ -1,0 +1,48 @@
+{
+  "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+  "Command": "DeleteProbe execute <GENERATED_SYNTHETIC_ROOT>",
+  "Input": "1MiB generated fixture; separate unrelated 4KiB fixture",
+  "Environment": {
+    "OS": "Microsoft Windows NT 10.0.26200.0",
+    "LogicalProcessors": 24,
+    "Sdk": "10.0.402",
+    "Elevated": false,
+    "IndependentTestSid": false,
+    "SyntheticRoot": "Explicit workspace artifact parent",
+    "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+    "SourceTree": "b8ed8c88125a5d4ff66efa620c98494d9aeb81c6",
+    "PhysicalPowerLoss": "NOT TESTED"
+  },
+  "ExitCode": 0,
+  "ActualOutput": {
+    "Result": {
+      "Deleted": 1,
+      "Failed": 0,
+      "AuditPath": "<SYNTHETIC_ROOT>\\audit-output\\audit\\secure-delete-20261014-061317-81bfe551e8424f4f840e8eb9f182d958.log",
+      "AuditValid": true,
+      "Status": "Completed",
+      "Items": [
+        {
+          "Status": "Completed",
+          "PartialWritePossible": false,
+          "TargetIndex": 0,
+          "MutationStarted": true
+        }
+      ],
+      "WasCancellationRequested": false,
+      "AnyMutationStarted": true,
+      "CompletedTargets": 1,
+      "IncompleteTargets": 0,
+      "AuditVerified": true,
+      "RequiresManualReview": false,
+      "JournalPath": "<SYNTHETIC_ROOT>\\audit-output\\audit\\secure-delete-20261014-061317-81bfe551e8424f4f840e8eb9f182d958.journal",
+      "StatusLabel": "완료"
+    },
+    "InputPresent": false,
+    "OriginalContentMatches": false,
+    "OtherContentMatches": true,
+    "ElapsedMs": 11804.3343,
+    "CpuMs": 515.625,
+    "WorkingSetBytes": 56365056
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "SourceCommit": "d3467ea91ad916ff405705939f0c62c65e70153f",
+  "CiRun": 38537248047,
+  "Command": "pwsh -NoProfile -File scripts/wo11-sandbox-validation.ps1 -OutputDirectory artifacts/wo11-sandbox",
+  "Input": "Six reversible termination fixtures; protected failure and irreversible review scenarios",
+  "ExitCode": 0,
+  "RestoredCount": 6,
+  "ActualOutput": [
+    {
+      "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+      "status": "PASS",
+      "termination": "Separate process forcibly terminated",
+      "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "exitCode": 0,
+      "scenario": "Prepared",
+      "aclProtected": true,
+      "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":0}"
+    },
+    {
+      "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+      "status": "PASS",
+      "termination": "Separate process forcibly terminated",
+      "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "exitCode": 0,
+      "scenario": "Moved",
+      "aclProtected": true,
+      "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":1}"
+    },
+    {
+      "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+      "status": "PASS",
+      "termination": "Separate process forcibly terminated",
+      "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "exitCode": 0,
+      "scenario": "Quarantined",
+      "aclProtected": true,
+      "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":1}"
+    },
+    {
+      "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+      "status": "PASS",
+      "termination": "Separate process forcibly terminated",
+      "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "exitCode": 0,
+      "scenario": "RollingBack",
+      "aclProtected": true,
+      "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":1}"
+    },
+    {
+      "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+      "status": "PASS",
+      "termination": "Separate process forcibly terminated",
+      "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "exitCode": 0,
+      "scenario": "RestoredMove",
+      "aclProtected": true,
+      "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":0}"
+    },
+    {
+      "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+      "status": "PASS",
+      "termination": "Separate process forcibly terminated",
+      "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+      "exitCode": 0,
+      "scenario": "Restored",
+      "aclProtected": true,
+      "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":0}"
+    },
+    {
+      "originalPreserved": true,
+      "scenario": "HardLink",
+      "output": "SANDBOX_BLOCKED IOException",
+      "status": "PASS",
+      "exitCode": 3
+    },
+    {
+      "originalPreserved": true,
+      "scenario": "Junction",
+      "output": "SANDBOX_BLOCKED IOException",
+      "status": "PASS",
+      "exitCode": 3
+    },
+    {
+      "originalPreserved": true,
+      "scenario": "SymbolicLink",
+      "output": "SANDBOX_BLOCKED IOException",
+      "status": "PASS",
+      "exitCode": 3
+    },
+    {
+      "quarantinePreserved": true,
+      "status": "PASS",
+      "journalUnchanged": true,
+      "output": "SANDBOX_BLOCKED InvalidDataException",
+      "exitCode": 3,
+      "scenario": "DeletePrepared",
+      "rollback": "BLOCKED: irreversible state needs review",
+      "termination": "Separate process forcibly terminated"
+    },
+    {
+      "quarantinePreserved": false,
+      "status": "PASS",
+      "journalUnchanged": true,
+      "output": "SANDBOX_BLOCKED InvalidDataException",
+      "exitCode": 3,
+      "scenario": "Deleted",
+      "rollback": "BLOCKED: irreversible state needs review",
+      "termination": "Separate process forcibly terminated"
+    }
+  ],
+  "PhysicalPowerLoss": "NOT TESTED",
+  "Classification": "Six reversible states require Restored, BytesVerified and matching hashes. Other PASS scenarios mean safe blocking or review, not data restoration."
+}

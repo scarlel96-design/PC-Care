@@ -1,0 +1,108 @@
+CI RUN: 38535250961
+CI SOURCE: d303cec1af6912d40a3f49369994248fa47daac4
+EXIT CODE: 1
+WO18 TEST EXECUTION: NOT TESTED, x64 test DLL missing before test start
+2026-10-14T08:30:52.1951722Z [36;1mdotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO18' --logger 'trx;LogFileName=wo18-tests.trx' -v:minimal[0m
+2026-10-14T08:30:52.1952394Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'WO18 regression failed' }[0m
+2026-10-14T08:30:52.1952888Z [36;1mdotnet build tools/SmartPerformanceDoctor.DeleteProbe -c Release -p:Platform=x64 -m:1 -v:minimal[0m
+2026-10-14T08:30:52.1953408Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'DeleteProbe build failed' }[0m
+2026-10-14T08:30:52.1953816Z [36;1m$fixtureParent = Join-Path $env:RUNNER_TEMP 'wo18-isolated-fixtures'[0m
+2026-10-14T08:30:52.1954223Z [36;1mNew-Item -ItemType Directory -Force $fixtureParent | Out-Null[0m
+2026-10-14T08:30:52.1954749Z [36;1m./scripts/wo18-delete-crash-validation.ps1 -FixtureParent $fixtureParent -OutputDirectory artifacts/wo18-ci[0m
+2026-10-14T08:30:52.1955413Z [36;1m./scripts/wo18-synthetic-validation.ps1 -FixtureParent $fixtureParent -OutputDirectory artifacts/wo18-ci/synthetic[0m
+2026-10-14T08:30:52.1955907Z [36;1m./scripts/wo17-ui-source-validation.ps1[0m
+2026-10-14T08:30:52.2016140Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-14T08:30:52.2016473Z env:
+2026-10-14T08:30:52.2017394Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-14T08:30:52.2017669Z   VSTEST_CONNECTION_TIMEOUT: 300
+2026-10-14T08:30:52.2017910Z ##[endgroup]
+2026-10-14T08:30:53.4609119Z Test run for D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll (.NETCoreApp,Version=v10.0)
+2026-10-14T08:30:53.5726303Z The test source file "D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll" provided was not found.
+2026-10-14T08:30:53.7761903Z [31;1mException: [0mD:\a\_temp\30b6a03a-ad1b-4540-840a-949aae22d475.ps1:10[0m
+2026-10-14T08:30:53.7762650Z [31;1m[0m[36;1mLine |[0m
+2026-10-14T08:30:53.7763398Z [31;1m[0m[36;1m[36;1m  10 | [0m if ($LASTEXITCODE -ne 0) { [36;1mthrow 'WO18 regression failed'[0m }[0m
+2026-10-14T08:30:53.7764320Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m     | [31;1m                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+2026-10-14T08:30:53.7765193Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1mWO18 regression failed[0m
+2026-10-14T08:30:53.8318893Z ##[error]Process completed with exit code 1.
+2026-10-14T08:30:53.8527771Z ##[group]Run actions/upload-artifact@v4
+2026-10-14T08:30:53.8528050Z with:
+2026-10-14T08:30:53.8528204Z   name: wo18-windows-evidence
+2026-10-14T08:30:53.8531471Z   path: tests/SmartPerformanceDoctor.Tests/TestResults/*.trx
+tests/SmartPerformanceDoctor.SecurityLab.Tests/TestResults/*.trx
+artifacts/wo06-ci-process/process-results.json
+artifacts/wo07-ci/measurement.json
+artifacts/wo08-ci/**/*.json
+artifacts/wo09-ci/**/*.json
+artifacts/wo10-ci/**/*.json
+artifacts/wo10-sandbox/sandbox-results.json
+artifacts/wo10-sandbox/gui-status.json
+artifacts/wo11-ci/*.json
+artifacts/wo11-sandbox/sandbox-results.json
+artifacts/wo12-ci/crash-results.json
+artifacts/wo12-ci/performance.json
+artifacts/wo13-ci/commit-recovery.json
+artifacts/wo13-ci/password-crash.json
+artifacts/wo13-ci/streaming-export.json
+artifacts/wo13-ci/recovery-code-crash.json
+artifacts/wo14-ci/transition.json
+artifacts/wo14-ci/transition-crash.json
+artifacts/wo14-ci/metadata-ready.json
+artifacts/wo14-ci/password-crash.json
+artifacts/wo14-ci/replay.json
+artifacts/wo14-memory/streaming-memory.json
+artifacts/wo15-ci/REPLAY_ATTACK_RESULT.json
+artifacts/wo15-ci/RECOVERY_RECEIPT_RESULT.json
+artifacts/wo15-ci/V5_PASSWORD_CRASH_RESULT.json
+artifacts/wo15-memory/PERFORMANCE_RESULT.json
+
+artifacts/wo16-ci/*.json
+
+artifacts/wo17-ci/*.json
+artifacts/wo18-ci/**/*.json
+artifacts/wo18-ci/*.json
+
+2026-10-14T08:30:53.8534789Z   if-no-files-found: warn
+2026-10-14T08:30:53.8534963Z   compression-level: 6
+2026-10-14T08:30:53.8535124Z   overwrite: false
+2026-10-14T08:30:53.8535281Z   include-hidden-files: false
+2026-10-14T08:30:53.8535449Z env:
+2026-10-14T08:30:53.8535598Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-14T08:30:53.8535789Z ##[endgroup]
+2026-10-14T08:30:54.0380624Z (node:8008) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-14T08:30:54.0381214Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-14T08:30:54.0514792Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-14T08:30:54.0528118Z The least common ancestor is D:\a\PC-Care\PC-Care. This will be the root directory of the artifact
+2026-10-14T08:30:54.0529093Z With the provided path, there will be 1 file uploaded
+2026-10-14T08:30:54.0529705Z Artifact name is valid!
+2026-10-14T08:30:54.0530061Z Root directory input is valid!
+2026-10-14T08:30:54.3401127Z (node:8008) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-14T08:30:54.3404780Z Beginning upload of artifact content to blob storage
+2026-10-14T08:30:54.3405500Z Uploaded bytes 302
+2026-10-14T08:30:54.3406148Z Finished uploading artifact content to blob storage!
+2026-10-14T08:30:54.3406878Z SHA256 digest of uploaded artifact zip is 1d19d791e8cd22ccce2480878bec18842738287b330269408d31cc950d80d7ba
+2026-10-14T08:30:54.3407548Z Finalizing artifact upload
+2026-10-14T08:30:54.5401609Z Artifact wo18-windows-evidence.zip successfully finalized. Artifact ID 11879083926
+2026-10-14T08:30:54.5402763Z Artifact wo18-windows-evidence has been successfully uploaded! Final size is 302 bytes. Artifact ID is 11879083926
+2026-10-14T08:30:54.5412639Z Artifact download URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38535250961/artifacts/11879083926
+2026-10-14T08:30:54.5732890Z Post job cleanup.
+2026-10-14T08:30:54.7444744Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-14T08:30:54.7741313Z git version 2.55.0.windows.5
+2026-10-14T08:30:54.7805960Z Temporarily overriding HOME='D:\a\_temp\5c7c52d0-dccc-40e8-a940-f12188d18e37' before making global git config changes
+2026-10-14T08:30:54.7807033Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-14T08:30:54.7815819Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\PC-Care\PC-Care
+2026-10-14T08:30:54.8219401Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T08:30:54.8513162Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-14T08:30:55.5762499Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-14T08:30:55.5992679Z http.https://github.com/.extraheader
+2026-10-14T08:30:55.6036966Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-14T08:30:55.6317888Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-14T08:30:56.1584454Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T08:30:56.1868665Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-14T08:30:56.7537543Z Cleaning up orphan processes
+2026-10-14T08:30:56.7787135Z Terminate orphan process: pid (2804) (dotnet)
+2026-10-14T08:30:56.7946748Z Terminate orphan process: pid (4436) (dotnet)
+2026-10-14T08:30:56.8110064Z Terminate orphan process: pid (3328) (dotnet)
+2026-10-14T08:30:56.8818070Z Terminate orphan process: pid (8188) (VBCSCompiler)
+2026-10-14T08:30:56.8887094Z Terminate orphan process: pid (5640) (conhost)
+2026-10-14T08:30:56.8971344Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-dotnet@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+

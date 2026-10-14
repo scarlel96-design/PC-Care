@@ -1,0 +1,550 @@
+{
+  "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+  "Environment": {
+    "OS": "Microsoft Windows NT 10.0.26200.0",
+    "LogicalProcessors": 24,
+    "Sdk": "10.0.402",
+    "Elevated": false,
+    "IndependentTestSid": false,
+    "SyntheticRoot": "Explicit workspace artifact parent",
+    "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+    "SourceTree": "b8ed8c88125a5d4ff66efa620c98494d9aeb81c6",
+    "PhysicalPowerLoss": "NOT TESTED"
+  },
+  "Command": "pwsh -NoProfile -File scripts/wo18-delete-crash-validation.ps1 -FixtureParent <EXPLICIT_SYNTHETIC_PARENT> -OutputDirectory <EVIDENCE>",
+  "Input": "17 independently generated 1MiB/4KiB fixture tests; own worker termination",
+  "ExitCode": 0,
+  "ActualOutput": "WO18_DELETE_CRASH_PASS checkpoints=17 readonlyReconciliation=1 unrelatedBytesPreserved=1",
+  "Cases": [
+    {
+      "Checkpoint": "BeforeJournalCreate",
+      "Command": "DeleteProbe execute <SYNTHETIC_ROOT> BeforeJournalCreate",
+      "Termination": "Separate process killed",
+      "WorkerExitCode": -1,
+      "ReconcileCommand": "DeleteProbe reconcile <SYNTHETIC_ROOT>",
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061343-4d1a5532cb314356856eeae38a9e5d3c",
+          "Status": "NotStarted",
+          "JournalAuthenticated": false,
+          "AuditVerified": false,
+          "RequiresManualReview": false,
+          "Items": []
+        },
+        "InputPresent": true,
+        "OriginalContentMatches": true,
+        "OtherContentMatches": true,
+        "ElapsedMs": 10.6763,
+        "CpuMs": 15.625,
+        "WorkingSetBytes": 36712448
+      },
+      "Status": "PASS"
+    },
+    {
+      "Checkpoint": "JournalCreated",
+      "Command": "DeleteProbe execute <SYNTHETIC_ROOT> JournalCreated",
+      "Termination": "Separate process killed",
+      "WorkerExitCode": -1,
+      "ReconcileCommand": "DeleteProbe reconcile <SYNTHETIC_ROOT>",
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061353-ac8dc83decef44df8c605a701fb0fecd",
+          "Status": "RecoveryReviewRequired",
+          "JournalAuthenticated": true,
+          "AuditVerified": false,
+          "RequiresManualReview": true,
+          "Items": []
+        },
+        "InputPresent": true,
+        "OriginalContentMatches": true,
+        "OtherContentMatches": true,
+        "ElapsedMs": 29.2039,
+        "CpuMs": 31.25,
+        "WorkingSetBytes": 39215104
+      },
+      "Status": "PASS"
+    },
+    {
+      "Checkpoint": "HandleOpened",
+      "Command": "DeleteProbe execute <SYNTHETIC_ROOT> HandleOpened",
+      "Termination": "Separate process killed",
+      "WorkerExitCode": -1,
+      "ReconcileCommand": "DeleteProbe reconcile <SYNTHETIC_ROOT>",
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061402-e5896dd98af846efb93b559148c22976",
+          "Status": "RecoveryReviewRequired",
+          "JournalAuthenticated": true,
+          "AuditVerified": true,
+          "RequiresManualReview": true,
+          "Items": [
+            {
+              "TargetIndex": 0,
+              "State": "PreflightVerified",
+              "Observation": "NotStarted",
+              "MutationPossible": false
+            }
+          ]
+        },
+        "InputPresent": true,
+        "OriginalContentMatches": true,
+        "OtherContentMatches": true,
+        "ElapsedMs": 34.0743,
+        "CpuMs": 31.25,
+        "WorkingSetBytes": 40419328
+      },
+      "Status": "PASS"
+    },
+    {
+      "Checkpoint": "TargetIdentityVerified",
+      "Command": "DeleteProbe execute <SYNTHETIC_ROOT> TargetIdentityVerified",
+      "Termination": "Separate process killed",
+      "WorkerExitCode": -1,
+      "ReconcileCommand": "DeleteProbe reconcile <SYNTHETIC_ROOT>",
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061420-cb89b50c4ea141cbace59c0657476bde",
+          "Status": "RecoveryReviewRequired",
+          "JournalAuthenticated": true,
+          "AuditVerified": true,
+          "RequiresManualReview": true,
+          "Items": [
+            {
+              "TargetIndex": 0,
+              "State": "PreflightVerified",
+              "Observation": "NotStarted",
+              "MutationPossible": false
+            }
+          ]
+        },
+        "InputPresent": true,
+        "OriginalContentMatches": true,
+        "OtherContentMatches": true,
+        "ElapsedMs": 32.821,
+        "CpuMs": 31.25,
+        "WorkingSetBytes": 40321024
+      },
+      "Status": "PASS"
+    },
+    {
+      "Checkpoint": "BeforeFirstWrite",
+      "Command": "DeleteProbe execute <SYNTHETIC_ROOT> BeforeFirstWrite",
+      "Termination": "Separate process killed",
+      "WorkerExitCode": -1,
+      "ReconcileCommand": "DeleteProbe reconcile <SYNTHETIC_ROOT>",
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061438-df6cdefb8b3a43e98cc79892786af2ac",
+          "Status": "RecoveryReviewRequired",
+          "JournalAuthenticated": true,
+          "AuditVerified": true,
+          "RequiresManualReview": true,
+          "Items": [
+            {
+              "TargetIndex": 0,
+              "State": "DestructiveWriteIntent",
+              "Observation": "FileStillPresent",
+              "MutationPossible": true
+            }
+          ]
+        },
+        "InputPresent": true,
+        "OriginalContentMatches": true,
+        "OtherContentMatches": true,
+        "ElapsedMs": 48.8686,
+        "CpuMs": 46.875,
+        "WorkingSetBytes": 42201088
+      },
+      "Status": "PASS"
+    },
+    {
+      "Checkpoint": "DuringOverwrite",
+      "Command": "DeleteProbe execute <SYNTHETIC_ROOT> DuringOverwrite",
+      "Termination": "Separate process killed",
+      "WorkerExitCode": -1,
+      "ReconcileCommand": "DeleteProbe reconcile <SYNTHETIC_ROOT>",
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061457-8ce9867505dc402b92df195e9ac6758f",
+          "Status": "RecoveryReviewRequired",
+          "JournalAuthenticated": true,
+          "AuditVerified": true,
+          "RequiresManualReview": true,
+          "Items": [
+            {
+              "TargetIndex": 0,
+              "State": "WriteInProgress",
+              "Observation": "FileStillPresent",
+              "MutationPossible": true
+            }
+          ]
+        },
+        "InputPresent": true,
+        "OriginalContentMatches": true,
+        "OtherContentMatches": true,
+        "ElapsedMs": 55.7532,
+        "CpuMs": 46.875,
+        "WorkingSetBytes": 42479616
+      },
+      "Status": "PASS"
+    },
+    {
+      "Checkpoint": "BeforeFlush",
+      "Command": "DeleteProbe execute <SYNTHETIC_ROOT> BeforeFlush",
+      "Termination": "Separate process killed",
+      "WorkerExitCode": -1,
+      "ReconcileCommand": "DeleteProbe reconcile <SYNTHETIC_ROOT>",
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061515-8c991c925e4f4e2aac6560c4d29f4543",
+          "Status": "RecoveryReviewRequired",
+          "JournalAuthenticated": true,
+          "AuditVerified": true,
+          "RequiresManualReview": true,
+          "Items": [
+            {
+              "TargetIndex": 0,
+              "State": "WriteInProgress",
+              "Observation": "PartialWriteObserved",
+              "MutationPossible": true
+            }
+          ]
+        },
+        "InputPresent": true,
+        "OriginalContentMatches": false,
+        "OtherContentMatches": true,
+        "ElapsedMs": 44.1106,
+        "CpuMs": 46.875,
+        "WorkingSetBytes": 42254336
+      },
+      "Status": "PASS"
+    },
+    {
+      "Checkpoint": "AfterFlush",
+      "Command": "DeleteProbe execute <SYNTHETIC_ROOT> AfterFlush",
+      "Termination": "Separate process killed",
+      "WorkerExitCode": -1,
+      "ReconcileCommand": "DeleteProbe reconcile <SYNTHETIC_ROOT>",
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061534-d4ea201237b642aebaa076326df70419",
+          "Status": "RecoveryReviewRequired",
+          "JournalAuthenticated": true,
+          "AuditVerified": true,
+          "RequiresManualReview": true,
+          "Items": [
+            {
+              "TargetIndex": 0,
+              "State": "WriteInProgress",
+              "Observation": "PartialWriteObserved",
+              "MutationPossible": true
+            }
+          ]
+        },
+        "InputPresent": true,
+        "OriginalContentMatches": false,
+        "OtherContentMatches": true,
+        "ElapsedMs": 47.5041,
+        "CpuMs": 46.875,
+        "WorkingSetBytes": 42352640
+      },
+      "Status": "PASS"
+    },
+    {
+      "Checkpoint": "BeforeVerification",
+      "Command": "DeleteProbe execute <SYNTHETIC_ROOT> BeforeVerification",
+      "Termination": "Separate process killed",
+      "WorkerExitCode": -1,
+      "ReconcileCommand": "DeleteProbe reconcile <SYNTHETIC_ROOT>",
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061552-ad3a2bc3516d454c8408c828bf620d81",
+          "Status": "RecoveryReviewRequired",
+          "JournalAuthenticated": true,
+          "AuditVerified": true,
+          "RequiresManualReview": true,
+          "Items": [
+            {
+              "TargetIndex": 0,
+              "State": "WriteFinished",
+              "Observation": "FileStillPresent",
+              "MutationPossible": true
+            }
+          ]
+        },
+        "InputPresent": true,
+        "OriginalContentMatches": false,
+        "OtherContentMatches": true,
+        "ElapsedMs": 45.5669,
+        "CpuMs": 31.25,
+        "WorkingSetBytes": 42196992
+      },
+      "Status": "PASS"
+    },
+    {
+      "Checkpoint": "AfterVerification",
+      "Command": "DeleteProbe execute <SYNTHETIC_ROOT> AfterVerification",
+      "Termination": "Separate process killed",
+      "WorkerExitCode": -1,
+      "ReconcileCommand": "DeleteProbe reconcile <SYNTHETIC_ROOT>",
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061610-404a8ebb945c48c1bec8eba34cbdddb3",
+          "Status": "RecoveryReviewRequired",
+          "JournalAuthenticated": true,
+          "AuditVerified": true,
+          "RequiresManualReview": true,
+          "Items": [
+            {
+              "TargetIndex": 0,
+              "State": "VerificationFinished",
+              "Observation": "FileStillPresent",
+              "MutationPossible": true
+            }
+          ]
+        },
+        "InputPresent": true,
+        "OriginalContentMatches": false,
+        "OtherContentMatches": true,
+        "ElapsedMs": 53.1537,
+        "CpuMs": 46.875,
+        "WorkingSetBytes": 42504192
+      },
+      "Status": "PASS"
+    },
+    {
+      "Checkpoint": "BeforeDeleteRequest",
+      "Command": "DeleteProbe execute <SYNTHETIC_ROOT> BeforeDeleteRequest",
+      "Termination": "Separate process killed",
+      "WorkerExitCode": -1,
+      "ReconcileCommand": "DeleteProbe reconcile <SYNTHETIC_ROOT>",
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061627-98cee1953e5d4dc7992b4c6b35113b0b",
+          "Status": "RecoveryReviewRequired",
+          "JournalAuthenticated": true,
+          "AuditVerified": true,
+          "RequiresManualReview": true,
+          "Items": [
+            {
+              "TargetIndex": 0,
+              "State": "DeleteRequested",
+              "Observation": "FileStillPresent",
+              "MutationPossible": true
+            }
+          ]
+        },
+        "InputPresent": true,
+        "OriginalContentMatches": false,
+        "OtherContentMatches": true,
+        "ElapsedMs": 55.3454,
+        "CpuMs": 78.125,
+        "WorkingSetBytes": 42242048
+      },
+      "Status": "PASS"
+    },
+    {
+      "Checkpoint": "AfterDeleteRequest",
+      "Command": "DeleteProbe execute <SYNTHETIC_ROOT> AfterDeleteRequest",
+      "Termination": "Separate process killed",
+      "WorkerExitCode": -1,
+      "ReconcileCommand": "DeleteProbe reconcile <SYNTHETIC_ROOT>",
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061644-fab6a1a32e614f6a9c4ecccad760baaf",
+          "Status": "RecoveryReviewRequired",
+          "JournalAuthenticated": true,
+          "AuditVerified": true,
+          "RequiresManualReview": true,
+          "Items": [
+            {
+              "TargetIndex": 0,
+              "State": "DeleteRequested",
+              "Observation": "TargetAbsentUnconfirmed",
+              "MutationPossible": true
+            }
+          ]
+        },
+        "InputPresent": false,
+        "OriginalContentMatches": false,
+        "OtherContentMatches": true,
+        "ElapsedMs": 43.675,
+        "CpuMs": 46.875,
+        "WorkingSetBytes": 39366656
+      },
+      "Status": "PASS"
+    },
+    {
+      "Checkpoint": "BeforeAudit",
+      "Command": "DeleteProbe execute <SYNTHETIC_ROOT> BeforeAudit",
+      "Termination": "Separate process killed",
+      "WorkerExitCode": -1,
+      "ReconcileCommand": "DeleteProbe reconcile <SYNTHETIC_ROOT>",
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061701-dcbe861599ab4a8989fe1f5180fdb3d3",
+          "Status": "RecoveryReviewRequired",
+          "JournalAuthenticated": true,
+          "AuditVerified": true,
+          "RequiresManualReview": true,
+          "Items": [
+            {
+              "TargetIndex": 0,
+              "State": "DeletionObserved",
+              "Observation": "TargetAbsentUnconfirmed",
+              "MutationPossible": true
+            }
+          ]
+        },
+        "InputPresent": false,
+        "OriginalContentMatches": false,
+        "OtherContentMatches": true,
+        "ElapsedMs": 48.5856,
+        "CpuMs": 46.875,
+        "WorkingSetBytes": 39464960
+      },
+      "Status": "PASS"
+    },
+    {
+      "Checkpoint": "AfterAudit",
+      "Command": "DeleteProbe execute <SYNTHETIC_ROOT> AfterAudit",
+      "Termination": "Separate process killed",
+      "WorkerExitCode": -1,
+      "ReconcileCommand": "DeleteProbe reconcile <SYNTHETIC_ROOT>",
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061720-280c4336e5d44c6e9e7249e5b0aeed3b",
+          "Status": "RecoveryReviewRequired",
+          "JournalAuthenticated": true,
+          "AuditVerified": true,
+          "RequiresManualReview": true,
+          "Items": [
+            {
+              "TargetIndex": 0,
+              "State": "DeletionObserved",
+              "Observation": "TargetAbsentUnconfirmed",
+              "MutationPossible": true
+            }
+          ]
+        },
+        "InputPresent": false,
+        "OriginalContentMatches": false,
+        "OtherContentMatches": true,
+        "ElapsedMs": 50.4202,
+        "CpuMs": 62.5,
+        "WorkingSetBytes": 39366656
+      },
+      "Status": "PASS"
+    },
+    {
+      "Checkpoint": "BeforeResultJson",
+      "Command": "DeleteProbe execute <SYNTHETIC_ROOT> BeforeResultJson",
+      "Termination": "Separate process killed",
+      "WorkerExitCode": -1,
+      "ReconcileCommand": "DeleteProbe reconcile <SYNTHETIC_ROOT>",
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061741-437841cec51a4082b55004ae6aff4c31",
+          "Status": "RecoveryReviewRequired",
+          "JournalAuthenticated": true,
+          "AuditVerified": true,
+          "RequiresManualReview": true,
+          "Items": [
+            {
+              "TargetIndex": 0,
+              "State": "Completed",
+              "Observation": "DeletionConfirmedByAvailableEvidence",
+              "MutationPossible": true
+            }
+          ]
+        },
+        "InputPresent": false,
+        "OriginalContentMatches": false,
+        "OtherContentMatches": true,
+        "ElapsedMs": 40.1313,
+        "CpuMs": 31.25,
+        "WorkingSetBytes": 39395328
+      },
+      "Status": "PASS"
+    },
+    {
+      "Checkpoint": "AfterResultJson",
+      "Command": "DeleteProbe execute <SYNTHETIC_ROOT> AfterResultJson",
+      "Termination": "Separate process killed",
+      "WorkerExitCode": -1,
+      "ReconcileCommand": "DeleteProbe reconcile <SYNTHETIC_ROOT>",
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061801-18ec210ad66347d6ac596578dd646b9a",
+          "Status": "RecoveryReviewRequired",
+          "JournalAuthenticated": true,
+          "AuditVerified": true,
+          "RequiresManualReview": true,
+          "Items": [
+            {
+              "TargetIndex": 0,
+              "State": "Completed",
+              "Observation": "DeletionConfirmedByAvailableEvidence",
+              "MutationPossible": true
+            }
+          ]
+        },
+        "InputPresent": false,
+        "OriginalContentMatches": false,
+        "OtherContentMatches": true,
+        "ElapsedMs": 51.2513,
+        "CpuMs": 31.25,
+        "WorkingSetBytes": 39362560
+      },
+      "Status": "PASS"
+    },
+    {
+      "Checkpoint": "ReconciliationRead",
+      "Command": "DeleteProbe reconcile <SYNTHETIC_ROOT> ReconciliationRead",
+      "Termination": "Separate reconciliation process killed",
+      "WorkerExitCode": -1,
+      "ReconcileExitCode": 0,
+      "Output": {
+        "Result": {
+          "OperationId": "secure-delete-20261014-061801-18ec210ad66347d6ac596578dd646b9a",
+          "Status": "RecoveryReviewRequired",
+          "JournalAuthenticated": true,
+          "AuditVerified": true,
+          "RequiresManualReview": true,
+          "Items": [
+            {
+              "TargetIndex": 0,
+              "State": "Completed",
+              "Observation": "DeletionConfirmedByAvailableEvidence",
+              "MutationPossible": true
+            }
+          ]
+        },
+        "InputPresent": false,
+        "OriginalContentMatches": false,
+        "OtherContentMatches": true,
+        "ElapsedMs": 47.6379,
+        "CpuMs": 46.875,
+        "WorkingSetBytes": 39686144
+      },
+      "Status": "PASS"
+    }
+  ],
+  "PhysicalPowerLoss": "NOT TESTED"
+}

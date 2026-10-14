@@ -1,0 +1,45 @@
+PATH 환경 변수에 '<USER_HOME>\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\artifacts\dotnet-cli\.dotnet\tools'을(를) 추가하지 못했습니다. 'dotnet tool install'로 설치한 도구를 사용하려면 이 디렉터리를 PATH에 추가하세요.
+
+.NET 10.0을(를) 시작합니다.
+---------------------
+SDK 버전: 10.0.402
+
+원격 분석
+---------
+.NET 도구는 사용자 환경 개선을 위해 사용량 현황 데이터를 수집합니다. Microsoft에서 데이터를 수집하여 커뮤니티와 공유합니다. 원하는 셸을 사용하여 DOTNET_CLI_TELEMETRY_OPTOUT 환경 변수를 '1' 또는 'true'로 설정하여 원격 분석을 옵트아웃할 수 있습니다.
+
+.NET CLI 도구 원격 분석에 대한 자세한 내용은 https://aka.ms/dotnet-cli-telemetry를 참조하세요.
+
+----------------
+ASP.NET Core HTTPS 개발 인증서를 설치했습니다.
+인증서를 신뢰하려면 'dotnet dev-certs https --trust'를 실행하세요.
+HTTPS에 관한 자세한 정보: https://aka.ms/dotnet-https
+
+----------------
+첫 번째 앱 작성: https://aka.ms/dotnet-hello-world
+새로운 기능 확인: https://aka.ms/dotnet-whats-new
+설명서 살펴보기: https://aka.ms/dotnet-docs
+GitHub에서 문제 보고 및 소스 찾기: https://github.com/dotnet/core
+사용 가능한 명령을 보려면 'dotnet --help'를 사용하거나 https://aka.ms/dotnet-cli를 방문하세요.
+--------------------------------------------------------------------------------------
+워크로드를 확인하는 동안 문제가 발생했습니다. 자세한 내용을 확인하려면 "dotnet workload update"를 실행하세요.
+  SmartPerformanceDoctor.Diagnostics -> <WORKSPACE>\src\SmartPerformanceDoctor.Diagnostics\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Diagnostics.dll
+  SmartPerformanceDoctor.AstraVault -> <WORKSPACE>\src\SmartPerformanceDoctor.AstraVault\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.dll
+  SmartPerformanceDoctor.Data -> <WORKSPACE>\src\SmartPerformanceDoctor.Data\bin\x64\Release\net10.0\SmartPerformanceDoctor.Data.dll
+  SmartPerformanceDoctor.Contracts -> <WORKSPACE>\src\SmartPerformanceDoctor.Contracts\bin\x64\Release\net10.0\SmartPerformanceDoctor.Contracts.dll
+  SmartPerformanceDoctor.Aegis -> <WORKSPACE>\src\SmartPerformanceDoctor.Aegis\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.Aegis.dll
+  SmartPerformanceDoctor.SecurityLab -> <WORKSPACE>\src\SmartPerformanceDoctor.SecurityLab\bin\x64\Release\net10.0-windows\SmartPerformanceDoctor.SecurityLab.dll
+  SmartPerformanceDoctor.UpdateEngine -> <WORKSPACE>\src\SmartPerformanceDoctor.UpdateEngine\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateEngine.dll
+  SmartPerformanceDoctor.UpdateHelper -> <WORKSPACE>\src\SmartPerformanceDoctor.UpdateHelper\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.UpdateHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryHelper -> <WORKSPACE>\src\SmartPerformanceDoctor.AegisRecoveryHelper\bin\x64\Release\net10.0-windows\AegisRecoveryHelper.dll
+  SmartPerformanceDoctor.AegisRecoveryService -> <WORKSPACE>\src\SmartPerformanceDoctor.AegisRecoveryService\bin\x64\Release\net10.0-windows\AegisRecoveryService.dll
+  SmartPerformanceDoctor.App -> <WORKSPACE>\src\SmartPerformanceDoctor.App\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.dll
+  SmartPerformanceDoctor.Tests -> <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll
+  SmartPerformanceDoctor.AstraVault.KillWorker -> <WORKSPACE>\tests\SmartPerformanceDoctor.AstraVault.KillWorker\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.KillWorker.dll
+
+빌드했습니다.
+    경고 0개
+    오류 0개
+
+경과 시간: 00:01:17.91
+EXIT CODE: 0

@@ -1,0 +1,40 @@
+{
+  "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+  "Command": "DeleteProbe reconcile <GENERATED_SYNTHETIC_ROOT>",
+  "Input": "1MiB generated fixture; separate unrelated 4KiB fixture",
+  "Environment": {
+    "OS": "Microsoft Windows NT 10.0.26200.0",
+    "LogicalProcessors": 24,
+    "Sdk": "10.0.402",
+    "Elevated": false,
+    "IndependentTestSid": false,
+    "SyntheticRoot": "Explicit workspace artifact parent",
+    "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+    "SourceTree": "b8ed8c88125a5d4ff66efa620c98494d9aeb81c6",
+    "PhysicalPowerLoss": "NOT TESTED"
+  },
+  "ExitCode": 0,
+  "ActualOutput": {
+    "Result": {
+      "OperationId": "secure-delete-20261014-061317-81bfe551e8424f4f840e8eb9f182d958",
+      "Status": "DeletionConfirmedByAvailableEvidence",
+      "JournalAuthenticated": true,
+      "AuditVerified": true,
+      "RequiresManualReview": false,
+      "Items": [
+        {
+          "TargetIndex": 0,
+          "State": "Completed",
+          "Observation": "DeletionConfirmedByAvailableEvidence",
+          "MutationPossible": true
+        }
+      ]
+    },
+    "InputPresent": false,
+    "OriginalContentMatches": false,
+    "OtherContentMatches": true,
+    "ElapsedMs": 88.8216,
+    "CpuMs": 109.375,
+    "WorkingSetBytes": 41295872
+  }
+}

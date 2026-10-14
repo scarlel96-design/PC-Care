@@ -1,0 +1,226 @@
+{
+  "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+  "Counters": {
+    "total": "1325",
+    "executed": "1214",
+    "passed": "1214",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "NewWO18": 36,
+  "BaselinePass": 1178,
+  "BaselineSkip": 111,
+  "DeltaPass": 36,
+  "Command": "dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo18-full-final.trx' -v:minimal",
+  "ExitCode": 0,
+  "EarlierFullAttempt": {
+    "Passed": 1213,
+    "Failed": 1,
+    "Skip": 111,
+    "Failure": "CareFolderScanner_TempPath_CompletesQuickly timeout",
+    "SingleRetry": "1 PASS, 1s, exit0"
+  },
+  "NewTests": [
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.RemovedCatalogCannotBeSilentlyReinitialized",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.1325179"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryNewEntryInvalidatesApprovalSnapshot",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.1124231"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CancellationAfterOneDeletedTargetRetainsCompletedAndIncompleteCounts",
+      "Outcome": "Passed",
+      "Duration": "00:00:23.9699196"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.AllowlistHasNoExecutionCapability",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0160150"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IntentRecordFailurePreventsMutation(point: \"JournalBeforeFlush:DestructiveWriteIntent\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:15.7928630"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(name: \"selected.tmp\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:02.0171958"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: \"BeforeResultJson\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:26.1508417"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(name: \"한글.cache\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:01.6917917"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryBudgetExhaustionFailsClosed",
+      "Outcome": "Passed",
+      "Duration": "00:00:06.1982557"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryChangedBytesInvalidatesSnapshot",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.1329645"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CompletedAuditUsesFinalHandleIdentityAndHash",
+      "Outcome": "Passed",
+      "Duration": "00:00:16.5598072"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryLockedFileCannotBeQualified",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0339832"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: \"empty\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:22.4935938"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: \"truncate\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:21.5105716"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: \"result-tamper\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:16.4772351"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryIdentityDetectsOrBlocksRootRename",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0462965"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: \"AfterResultJson\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:23.0356099"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.JournalRejectsInvalidTransitionAndEmptyAudit",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0155420"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticFactoryRejectsNonFixtureNames(name: \"vault.header\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0028405"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedTargetRestoreCollisionPreservesBothFiles",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.7187306"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IdenticalOperationCannotExecuteTwice",
+      "Outcome": "Passed",
+      "Duration": "00:00:10.2699860"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.ReplacementAtOldPathIsPreservedByReconciliation",
+      "Outcome": "Passed",
+      "Duration": "00:00:22.6416341"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: \"missing-key\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:15.8616730"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: \"AfterAudit\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:19.2340966"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IntentRecordFailurePreventsMutation(point: \"JournalBeforeWrite:DestructiveWriteIntent\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:16.4962842"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CancellationDuringWriteNeverRepeatsDestruction",
+      "Outcome": "Passed",
+      "Duration": "00:00:42.7023637"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.ReconciliationRejectsUntrustedOperationNames(operation: \"secure-delete-evil\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0033029"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CancellationBeforeMutationIsIndependentFromPartialCompletion",
+      "Outcome": "Passed",
+      "Duration": "00:00:10.3358250"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.ExistingProductionStorageGateRemainsFalse",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.4531529"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.ReconciliationRejectsUntrustedOperationNames(operation: \"../../outside\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0026620"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: \"tamper\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:16.1635937"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.RegisteredStoreProtectsOrdinaryNamesAndReloads",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.1600281"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticFactoryRejectsNonFixtureNames(name: \"key.bin\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0037968"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: \"BeforeAudit\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:29.9761221"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticFactoryRejectsNonFixtureNames(name: \"../escape.tmp\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0152131"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.CorruptRegistryCannotForgetExistingProtectionSilently",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.1945191"
+    }
+  ],
+  "ParsedCounts": {
+    "Passed": 1214,
+    "Failed": 0,
+    "Skipped": 111,
+    "Total": 1325
+  },
+  "SkipCounting": "Count UnitTestResult Outcome=NotExecuted. The adapter summary notExecuted field is zero.",
+  "FinalCiSource": "d303cec1af6912d40a3f49369994248fa47daac4",
+  "LocalFullSource": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+  "ProductionSourceUnchangedByFixtureFix": true
+}

@@ -1,0 +1,36 @@
+  SmartPerformanceDoctor.Tests -> <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll
+  SmartPerformanceDoctor.AstraVault.KillWorker -> <WORKSPACE>\tests\SmartPerformanceDoctor.AstraVault.KillWorker\bin\x64\Release\net10.0\SmartPerformanceDoctor.AstraVault.KillWorker.dll
+<WORKSPACE>\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+[xUnit.net 00:00:01.33]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(name: "selected.tmp") [FAIL]
+[xUnit.net 00:00:01.73]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(name: "한글.cache") [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(name: "selected.tmp") [488 ms]
+  오류 메시지:
+   System.IO.IOException : FILE-OPEN: 지정된 파일을 찾을 수 없습니다.
+---- System.ComponentModel.Win32Exception : 지정된 파일을 찾을 수 없습니다.
+  스택 추적:
+     at SmartPerformanceDoctor.UpdateEngine.WindowsFileBoundary.FileLease..ctor(String root, String relative, Boolean write, Boolean create, Boolean deletable, Boolean exclusive) in <WORKSPACE>\src\SmartPerformanceDoctor.UpdateEngine\WindowsFileBoundary.cs:line 104
+   at SmartPerformanceDoctor.UpdateEngine.WindowsFileBoundary.OpenWrite(String root, String relative, Boolean create, Boolean deletable) in <WORKSPACE>\src\SmartPerformanceDoctor.UpdateEngine\WindowsFileBoundary.cs:line 196
+   at SmartPerformanceDoctor.RecoverySandbox.SandboxRecovery.Recover(Action`1 checkpoint) in <WORKSPACE>\tools\SmartPerformanceDoctor.RecoverySandbox\SandboxRecovery.cs:line 182
+   at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(String name) in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 37
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+----- Inner Stack Trace -----
+
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(name: "한글.cache") [409 ms]
+  오류 메시지:
+   System.IO.IOException : FILE-OPEN: 지정된 파일을 찾을 수 없습니다.
+---- System.ComponentModel.Win32Exception : 지정된 파일을 찾을 수 없습니다.
+  스택 추적:
+     at SmartPerformanceDoctor.UpdateEngine.WindowsFileBoundary.FileLease..ctor(String root, String relative, Boolean write, Boolean create, Boolean deletable, Boolean exclusive) in <WORKSPACE>\src\SmartPerformanceDoctor.UpdateEngine\WindowsFileBoundary.cs:line 104
+   at SmartPerformanceDoctor.UpdateEngine.WindowsFileBoundary.OpenWrite(String root, String relative, Boolean create, Boolean deletable) in <WORKSPACE>\src\SmartPerformanceDoctor.UpdateEngine\WindowsFileBoundary.cs:line 196
+   at SmartPerformanceDoctor.RecoverySandbox.SandboxRecovery.Recover(Action`1 checkpoint) in <WORKSPACE>\tools\SmartPerformanceDoctor.RecoverySandbox\SandboxRecovery.cs:line 182
+   at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(String name) in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 37
+   at InvokeStub_WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+----- Inner Stack Trace -----
+
+결과 파일: <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\TestResults\wo18-repeat-baseline.trx
+
+실패!  - 실패:     2, 통과:     0, 건너뜀:     0, 전체:     2, 기간: 926 ms - SmartPerformanceDoctor.Tests.dll (net10.0)
+EXIT CODE: 1

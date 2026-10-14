@@ -1,0 +1,35 @@
+WORK ITEM: WO-18
+STATUS: PARTIAL / Phase 1 NO-GO
+BRANCH: codex/pccare-wo18-durable-delete-recovery
+BASELINE SHA: 5a407ea6399bd86d36a1ff6ef230109d61e659ed
+BASELINE TREE: ba52e593ce599bca6ab162045b0bea31f7618e1c
+VERIFIED CODE HEAD: d3467ea91ad916ff405705939f0c62c65e70153f
+VERIFIED CODE TREE: 70902843929bfe50e16a2892ccb2f7b0932e8c82
+CI SOURCE: d3467ea91ad916ff405705939f0c62c65e70153f
+CI RUN: 38537248047
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38537248047
+CI RESULT: SUCCESS
+APP: 1214 PASS / 0 FAIL / 111 SKIP / 1325 TOTAL
+WO18: 36 PASS, included in app total
+PERFORMANCE: 233 PASS, included in app total
+UPDATER: 128 PASS, included in app total
+SECURITYLAB: 36 PASS, separate
+DELETE PROCESS TERMINATION: 17 checkpoints
+QUARANTINE PROCESS TERMINATION: 6 restored byte-verified fixtures
+RESTORE / RELEASE: 0 warnings / 0 errors
+GUI / INDEPENDENT SID / PHYSICAL POWER LOSS / LOW-SPEC HARDWARE: NOT TESTED
+STAGE 8: DAYBREAK_DEFERRED
+
+FINAL DOCUMENT REF: refs/heads/codex/pccare-wo18-durable-delete-recovery
+The document commit follows the CI code commit.
+Resolve the final document HEAD and tree from that ref and the final submitted report.
+A file cannot contain the SHA of the commit that includes its own final contents.
+The final submission reports the exact post-push document HEAD and tree.
+Confirm no source changes between CI SOURCE and FINAL DOCUMENT REF.
+
+COMMAND: git push origin codex/pccare-wo18-durable-delete-recovery
+INPUT: validated code and documented synthetic evidence
+CODE PUSH RESULT: source commit is present on GitHub; final CI used that commit
+FINAL DOCUMENT PUSH RESULT: recorded by the final submission after push
+main merge: not performed
+official release: not created

@@ -1,0 +1,212 @@
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+
+using SmartPerformanceDoctor.App.Branding;
+
+namespace SmartPerformanceDoctor.App.Services.Commercial;
+
+internal static class ForensicSecureDeleteEngine
+{
+
+
+
+    public static IReadOnlyList<string> BuildChainSteps(string storageType, SecureDeleteSecurityLevel level)
+    {
+        var steps = new List<string> { "파일 핸들·신원·소유권 재검증", "읽기 전용·ADS 대상 검토 차단" };
+        var passes = SecureDeleteStorageProfiler.GetOverwritePasses(storageType, level);
+        if (passes > 0)
+        {
+            steps.Add($"데이터 영역 {passes}회 덮어쓰기 ({SecureDeleteStorageProfiler.SelectProtocol(storageType, level)})");
+        }
+        else
+        {
+            var crypto = SecureDeleteStorageProfiler.GetFileClearPasses(storageType, level);
+            steps.Add($"SSD/NVMe: 파일 CSPRNG 덮어쓰기 {crypto}회 · 표본 검증 (장치 crypto erase 아님)");
+        }
+
+        steps.Add("동일 핸들 표본 검증");
+        steps.Add("동일 핸들 파일 삭제");
+        steps.Add("섀도 복사본(VSS) 잔존 위험 스캔 및 고지");
+        return steps;
+    }
+
+    internal static string CaptureFingerprint(string path)
+    {
+        using var file = SmartPerformanceDoctor.UpdateEngine.WindowsFileBoundary.OpenRead(
+            Path.GetDirectoryName(Path.GetFullPath(path))!, Path.GetFileName(path));
+        return Fingerprint(file);
+    }
+
+    private static string Fingerprint(SmartPerformanceDoctor.UpdateEngine.WindowsFileBoundary.FileLease file)
+    {
+        file.Validate();
+        var h = file.Stream.SafeFileHandle;
+        var data = $"{file.Identity}|{file.Stream.Length}|{File.GetCreationTimeUtc(h).Ticks}|{File.GetLastWriteTimeUtc(h).Ticks}|{File.GetAttributes(h)}|{file.Hash()}";
+        return Convert.ToHexString(SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(data)));
+    }
+
+    public static async Task SecureDeleteFileAsync(string path, string storageType, SecureDeleteSecurityLevel level,
+        CancellationToken cancellationToken, string? expectedFingerprint = null, Action<string>? checkpoint = null)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        var full = Path.GetFullPath(path);
+        var safety = PathSafetyGuard.Evaluate(full);
+        if (!safety.Allowed) throw new InvalidDataException(safety.Reason);
+        expectedFingerprint ??= CaptureFingerprint(full);
+        using var file = SmartPerformanceDoctor.UpdateEngine.WindowsFileBoundary.OpenWrite(
+            Path.GetDirectoryName(full)!, Path.GetFileName(full), deletable: true);
+        if (!CryptographicOperations.FixedTimeEquals(Convert.FromHexString(expectedFingerprint), Convert.FromHexString(Fingerprint(file))))
+            throw new InvalidDataException("TargetChanged");
+        var attributes = File.GetAttributes(file.Stream.SafeFileHandle);
+        if ((attributes & (FileAttributes.ReadOnly | FileAttributes.System | FileAttributes.Hidden
+            | FileAttributes.Compressed | FileAttributes.Encrypted | FileAttributes.SparseFile | FileAttributes.Offline)) != 0)
+            throw new InvalidDataException("UnsupportedAttributes");
+        var owner = file.ReadSecurity().GetOwner(typeof(System.Security.Principal.SecurityIdentifier));
+        var user = System.Security.Principal.WindowsIdentity.GetCurrent().User;
+        var administrators = new System.Security.Principal.SecurityIdentifier(System.Security.Principal.WellKnownSidType.BuiltinAdministratorsSid, null);
+        if (owner != user && !(owner == administrators && ProcessElevationService.IsAdministrator()))
+            throw new UnauthorizedAccessException("UnknownOwnership");
+        EnsureNoAlternateStreams(full);
+        checkpoint?.Invoke("Opened");
+        var length = file.Stream.Length;
+        var passes = storageType is "SSD" or "NVMe" ? SecureDeleteStorageProfiler.GetFileClearPasses(storageType, level)
+            : Math.Max(1, SecureDeleteStorageProfiler.GetOverwritePasses(storageType, level));
+        var buffer = new byte[(int)Math.Min(65536, Math.Max(1, length))];
+        var actual = new byte[512];
+        try
+        {
+            for (var pass = 0; pass < passes; pass++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                if (storageType is "SSD" or "NVMe") RandomNumberGenerator.Fill(buffer);
+                else RandomNumberGenerator.Fill(buffer);
+                file.Stream.Position = 0;
+                for (long written = 0; written < length;)
+                {
+                    cancellationToken.ThrowIfCancellationRequested(); file.Validate();
+                    var count = (int)Math.Min(buffer.Length, length - written);
+                    await file.Stream.WriteAsync(buffer.AsMemory(0, count), cancellationToken);
+                    written += count;
+                    checkpoint?.Invoke("Written");
+                }
+                file.Stream.Flush(true);
+            }
+            foreach (var offset in new[] { 0L, length / 2, Math.Max(0, length - 512) }.Distinct())
+            {
+                cancellationToken.ThrowIfCancellationRequested(); file.Validate();
+                file.Stream.Position = offset;
+                var count = (int)Math.Min(actual.Length, length - offset);
+                file.Stream.ReadExactly(actual.AsSpan(0, count));
+                for (var i = 0; i < count; i++)
+                    if (actual[i] != buffer[(int)((offset + i) % buffer.Length)]) throw new IOException("OverwriteVerificationFailed");
+            }
+            checkpoint?.Invoke("Verified");
+            cancellationToken.ThrowIfCancellationRequested(); file.Validate();
+            file.DeleteOpenedFile();
+        }
+        finally { CryptographicOperations.ZeroMemory(buffer); CryptographicOperations.ZeroMemory(actual); }
+    }
+
+    private static void EnsureNoAlternateStreams(string path)
+    {
+        var data = new WIN32_FIND_STREAM_DATA();
+        var handle = FindFirstStreamW(path, 0, ref data, 0);
+        if (handle == IntPtr.Zero || handle == new IntPtr(-1))
+        {
+            var error = Marshal.GetLastWin32Error();
+            if (error != 38) throw new IOException("AdsEnumerationUnavailable");
+            return;
+        }
+        try
+        {
+            do
+            {
+                if (data.cStreamName != "::$DATA") throw new InvalidDataException("AdsRequiresReview");
+            } while (FindNextStreamW(handle, ref data));
+            if (Marshal.GetLastWin32Error() != 38) throw new IOException("AdsEnumerationIncomplete");
+        }
+        finally { FindClose(handle); }
+    }
+
+    public static ShadowCopyRiskReport ScanShadowCopyRisk(string path)
+    {
+        var report = new ShadowCopyRiskReport();
+        try
+        {
+            var root = Path.GetPathRoot(Path.GetFullPath(path));
+            if (string.IsNullOrWhiteSpace(root))
+            {
+                return report;
+            }
+
+            var drive = root.TrimEnd('\\');
+            using var process = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "powershell.exe",
+                Arguments =
+                    $"-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command \"" +
+                    $"$d='{drive}'; " +
+                    "(Get-CimInstance Win32_ShadowCopy -ErrorAction SilentlyContinue | " +
+                    "Where-Object { $_.VolumeName -like ('*' + $d.Replace('\\\\','') + '*') }).Count\"",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            });
+
+            if (process is null)
+            {
+                return report;
+            }
+
+            var output = process.StandardOutput.ReadToEnd().Trim();
+            process.WaitForExit(5000);
+            if (int.TryParse(output, out var count) && count > 0)
+            {
+                report.ShadowCopyCount = count;
+                report.Volume = drive;
+                report.Advisory =
+                    $"볼륨 {drive}에 섀도 복사본 {count}개가 감지되었습니다. " +
+                    "삭제한 파일의 이전 버전이 시스템 보호/복구 지점에 남아 있을 수 있습니다. " +
+                    "Windows 설정 > 시스템 > 저장소 > 고급 저장소 설정 > 시스템 보호에서 관리자 정책을 확인하세요.";
+            }
+        }
+        catch
+        {
+            // Scan-only; never mutate VSS.
+        }
+
+        return report;
+    }
+
+    internal sealed class ShadowCopyRiskReport
+    {
+        public string Volume { get; set; } = "";
+        public int ShadowCopyCount { get; set; }
+        public string Advisory { get; set; } = "";
+        public bool HasRisk => ShadowCopyCount > 0;
+    }
+
+    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    private static extern IntPtr FindFirstStreamW(
+        string lpFileName,
+        int InfoLevel,
+        ref WIN32_FIND_STREAM_DATA lpFindStreamData,
+        int dwFlags);
+
+    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool FindNextStreamW(IntPtr hFindStream, ref WIN32_FIND_STREAM_DATA lpFindStreamData);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool FindClose(IntPtr hFindFile);
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    private struct WIN32_FIND_STREAM_DATA
+    {
+        public long StreamSize;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 296)]
+        public string cStreamName;
+    }
+
+}

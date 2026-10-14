@@ -1,0 +1,52 @@
+WORK ITEM: WO-18
+STATUS: PARTIAL / Phase 1 NO-GO
+BRANCH: codex/pccare-wo18-durable-delete-recovery
+BASELINE SHA: 5a407ea6399bd86d36a1ff6ef230109d61e659ed
+CI SOURCE: d3467ea91ad916ff405705939f0c62c65e70153f
+LOCAL FULL SOURCE: d3467ea91ad916ff405705939f0c62c65e70153f
+SOURCE TREE: 70902843929bfe50e16a2892ccb2f7b0932e8c82
+LOCAL FULL TREE: 70902843929bfe50e16a2892ccb2f7b0932e8c82
+FINAL DOCUMENT REF: refs/heads/codex/pccare-wo18-durable-delete-recovery
+Resolve the final document HEAD and tree from GITHUB_RESULT.txt and the final submission.
+
+CHANGED FIELDS: durable deletion state; authenticated sequence; final handle identity/content binding; cancellation and incomplete counts; readonly reconciliation; protected stores; synthetic quarantine accounting.
+ORIGINAL_FILE: docs/rework/evidence/wo18/ORIGINAL_FILE
+MODIFIED_FILE: docs/rework/evidence/wo18/MODIFIED_FILE
+DIFF_FILE: docs/rework/evidence/wo18/DIFF_FILE
+VERIFICATION: docs/rework/evidence/wo18/VERIFICATION.txt
+ROLLBACK: docs/rework/evidence/wo18/ROLLBACK.sh
+ORIGINAL SHA256: 6a915f84716f861241c35ebf106acdcc6508950172ea9de9799e7b8bb4f5625c
+MODIFIED SHA256: 0e117981c393bc0e9822328047d6f9fbbd4a2b4f4fded5b91c48a0c00ce47ae3
+
+BASELINE COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo18-baseline.trx' -v:minimal
+BASELINE INPUT: WO17 compiled baseline, synthetic regression fixtures
+BASELINE RESULT: 1178 PASS / 0 FAIL / 111 SKIP / 1289 TOTAL
+BASELINE EXIT CODE: 0
+BASELINE LITERAL OUTPUT: See BASELINE_RETRY.txt. The first sandbox sentinel failure is preserved separately.
+
+MODIFIED COMMAND: dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo18-final-source-full.trx' -v:minimal
+MODIFIED INPUT: source d3467ea91ad916ff405705939f0c62c65e70153f; explicit RUNNER_TEMP; generated fixtures
+MODIFIED RESULT: 1214 PASS / 0 FAIL / 111 SKIP / 1325 TOTAL
+MODIFIED EXIT CODE: 0
+MODIFIED LITERAL OUTPUT: See FULL_TEST_RESULT.txt.
+Earlier full failure: 1213 PASS / 1 FAIL / 111 SKIP. Preserve FULL_TEST_FIRST_RESULT.txt.
+That failed run was not reclassified as PASS.
+
+ROLLBACK COMMAND: bash docs/rework/evidence/wo18/ROLLBACK.sh <WORKSPACE>/artifacts/wo18-rollback-<GUID>/RESTORE_COPY
+ROLLBACK INPUT: Independent copy of MODIFIED_FILE. The actual repository source was not rolled back.
+ROLLBACK LITERAL OUTPUT: ROLLBACK_SHA256_RESTORED=6a915f84716f861241c35ebf106acdcc6508950172ea9de9799e7b8bb4f5625c
+ROLLBACK EXIT CODE: 0
+RESTORED STATUS: Exact baseline source bytes restored on independent copy; modified source remains changed.
+The first sandbox Bash failure is preserved in ROLLBACK_RESULT.txt. The normal-process retry passed.
+Source copy rollback does not reverse destructive deletion.
+Actual quarantine restore: 1MiB full SHA256 matched. Conflicting destination and quarantine copy were preserved.
+Actual destructive outcomes: 17 separate-process checkpoint tests; readonly reconciliation; unrelated bytes preserved.
+Physical power loss, GUI, independent SID and low-spec hardware: NOT TESTED.
+Stage 8: DAYBREAK_DEFERRED. No Daybreak denial encountered.
+
+CI RUN: 38537248047 / SUCCESS / source d3467ea91ad916ff405705939f0c62c65e70153f
+CI APP: 1214 PASS / 0 FAIL / 111 SKIP
+CI SECURITYLAB: 36 PASS / 0 FAIL
+CI process interruption and source checks: see CI_FINAL_RESULT.txt and ci-final/.
+Final local full-source retry: 1214 PASS / 0 FAIL / 111 SKIP; exit 0.
+Previous incomplete final-source run: exec wrapper exit 1; no final TRX; retained, not PASS.

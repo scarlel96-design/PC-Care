@@ -1,0 +1,109 @@
+[
+  {
+    "status": "PASS",
+    "exitCode": 0,
+    "termination": "Separate process forcibly terminated",
+    "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":0}",
+    "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "scenario": "Prepared",
+    "aclProtected": true
+  },
+  {
+    "status": "PASS",
+    "exitCode": 0,
+    "termination": "Separate process forcibly terminated",
+    "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":1}",
+    "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "scenario": "Moved",
+    "aclProtected": true
+  },
+  {
+    "status": "PASS",
+    "exitCode": 0,
+    "termination": "Separate process forcibly terminated",
+    "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":1}",
+    "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "scenario": "Quarantined",
+    "aclProtected": true
+  },
+  {
+    "status": "PASS",
+    "exitCode": 0,
+    "termination": "Separate process forcibly terminated",
+    "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":1}",
+    "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "scenario": "RollingBack",
+    "aclProtected": true
+  },
+  {
+    "status": "PASS",
+    "exitCode": 0,
+    "termination": "Separate process forcibly terminated",
+    "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":0}",
+    "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "scenario": "RestoredMove",
+    "aclProtected": true
+  },
+  {
+    "status": "PASS",
+    "exitCode": 0,
+    "termination": "Separate process forcibly terminated",
+    "afterSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "output": "{\"State\":\"Restored\",\"BytesVerified\":true,\"Mutations\":0}",
+    "beforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+    "recoveryCommand": "RecoverySandbox recover <SYNTHETIC_ROOT>",
+    "scenario": "Restored",
+    "aclProtected": true
+  },
+  {
+    "originalPreserved": true,
+    "status": "PASS",
+    "scenario": "HardLink",
+    "exitCode": 3,
+    "output": "SANDBOX_BLOCKED IOException"
+  },
+  {
+    "originalPreserved": true,
+    "status": "PASS",
+    "scenario": "Junction",
+    "exitCode": 3,
+    "output": "SANDBOX_BLOCKED IOException"
+  },
+  {
+    "originalPreserved": true,
+    "status": "PASS",
+    "scenario": "SymbolicLink",
+    "exitCode": 3,
+    "output": "SANDBOX_BLOCKED IOException"
+  },
+  {
+    "journalUnchanged": true,
+    "output": "SANDBOX_BLOCKED InvalidDataException",
+    "status": "PASS",
+    "termination": "Separate process forcibly terminated",
+    "exitCode": 3,
+    "quarantinePreserved": true,
+    "scenario": "DeletePrepared",
+    "rollback": "BLOCKED: irreversible state needs review"
+  },
+  {
+    "journalUnchanged": true,
+    "output": "SANDBOX_BLOCKED InvalidDataException",
+    "status": "PASS",
+    "termination": "Separate process forcibly terminated",
+    "exitCode": 3,
+    "quarantinePreserved": false,
+    "scenario": "Deleted",
+    "rollback": "BLOCKED: irreversible state needs review"
+  }
+]

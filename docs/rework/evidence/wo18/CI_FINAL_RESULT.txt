@@ -1,0 +1,70 @@
+SOURCE: d3467ea91ad916ff405705939f0c62c65e70153f
+RUN: 38537248047
+STATUS: SUCCESS
+COMMAND: gh run view 38537248047 --repo scarlel96-design/PC-Care --log
+EXIT CODE: 0
+OUTPUT: Selected literal completion and test lines. The full log remains available at the run URL.
+windows-validation	Release build	2026-10-14T08:46:49.2083190Z Build succeeded.
+windows-validation	Release build	2026-10-14T08:46:49.2084590Z     0 Warning(s)
+windows-validation	Release build	2026-10-14T08:46:49.2084918Z     0 Error(s)
+windows-validation	WO18 durable deletion and product safety	2026-10-14T08:47:13.8173831Z Build succeeded.
+windows-validation	WO18 durable deletion and product safety	2026-10-14T08:47:13.8175132Z     0 Warning(s)
+windows-validation	WO18 durable deletion and product safety	2026-10-14T08:47:13.8175646Z     0 Error(s)
+windows-validation	WO18 durable deletion and product safety	2026-10-14T08:48:36.5543650Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 19 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	WO18 durable deletion and product safety	2026-10-14T08:48:47.8504181Z Build succeeded.
+windows-validation	WO18 durable deletion and product safety	2026-10-14T08:48:47.8504728Z     0 Warning(s)
+windows-validation	WO18 durable deletion and product safety	2026-10-14T08:48:47.8505037Z     0 Error(s)
+windows-validation	WO18 durable deletion and product safety	2026-10-14T08:50:10.3161217Z WO18_DELETE_CRASH_PASS checkpoints=17 readonlyReconciliation=1 unrelatedBytesPreserved=1
+windows-validation	WO18 durable deletion and product safety	2026-10-14T08:50:16.2336131Z WO18_SYNTHETIC_PASS binding=1 reconciliation=1 quarantine=1 collisionPreserved=1
+windows-validation	Signed package, publisher, transaction, recovery and staging tests	2026-10-14T08:51:13.1355600Z Passed!  - Failed:     0, Passed:   128, Skipped:     0, Total:   128, Duration: 49 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Performance diagnostics scenarios	2026-10-14T08:51:28.5658058Z Passed!  - Failed:     0, Passed:   233, Skipped:     0, Total:   233, Duration: 8 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Read-only Windows collector smoke	2026-10-14T08:51:30.9631664Z Build succeeded.
+windows-validation	Read-only Windows collector smoke	2026-10-14T08:51:30.9632711Z     0 Warning(s)
+windows-validation	Read-only Windows collector smoke	2026-10-14T08:51:30.9633274Z     0 Error(s)
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-14T08:52:05.3739288Z Build succeeded.
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-14T08:52:05.3740716Z     0 Warning(s)
+windows-validation	Diagnostic profiles and controlled workloads	2026-10-14T08:52:05.3741405Z     0 Error(s)
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-14T08:54:44.5433462Z Build succeeded.
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-14T08:54:44.5434909Z     0 Warning(s)
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-14T08:54:44.5435258Z     0 Error(s)
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-14T08:54:50.3567317Z WO10_SANDBOX_PASS crashScenarios=6 hardLinkRejected=1 bytesRestored=6
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-14T08:54:57.0768737Z WO11_SANDBOX_PASS crashScenarios=6 hardLinkRejected=1 bytesRestored=6 irreversibleReviewCases=2
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-14T08:55:05.4787697Z Build succeeded.
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-14T08:55:05.4789272Z     0 Warning(s)
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-14T08:55:05.4789577Z     0 Error(s)
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-14T08:55:06.3311820Z WO11_CLEANUP_PASS inventory=1 quarantine=1 rollback=1 finalDelete=1 originalHashMatch=1 attributableQuarantineGain=0
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-14T08:55:08.1725863Z Build succeeded.
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-14T08:55:08.1727396Z     0 Warning(s)
+windows-validation	Synthetic recovery and UI Automation harness	2026-10-14T08:55:08.1728298Z     0 Error(s)
+windows-validation	Separate-process termination and recovery	2026-10-14T08:55:11.1996864Z Build succeeded.
+windows-validation	Separate-process termination and recovery	2026-10-14T08:55:11.1997921Z     0 Warning(s)
+windows-validation	Separate-process termination and recovery	2026-10-14T08:55:11.1998535Z     0 Error(s)
+windows-validation	Production profile and isolated test profile	2026-10-14T08:55:41.4866098Z Build succeeded.
+windows-validation	Production profile and isolated test profile	2026-10-14T08:55:41.4867363Z     0 Warning(s)
+windows-validation	Production profile and isolated test profile	2026-10-14T08:55:41.4868212Z     0 Error(s)
+windows-validation	Production profile and isolated test profile	2026-10-14T08:55:44.4036389Z Build succeeded.
+windows-validation	Production profile and isolated test profile	2026-10-14T08:55:44.4037381Z     0 Warning(s)
+windows-validation	Production profile and isolated test profile	2026-10-14T08:55:44.4038019Z     0 Error(s)
+windows-validation	Production profile and isolated test profile	2026-10-14T08:55:46.5340990Z Build succeeded.
+windows-validation	Production profile and isolated test profile	2026-10-14T08:55:46.5343122Z     0 Warning(s)
+windows-validation	Production profile and isolated test profile	2026-10-14T08:55:46.5354193Z     0 Error(s)
+windows-validation	Production profile and isolated test profile	2026-10-14T08:56:18.5042865Z Build succeeded.
+windows-validation	Production profile and isolated test profile	2026-10-14T08:56:18.5044143Z     0 Warning(s)
+windows-validation	Production profile and isolated test profile	2026-10-14T08:56:18.5044575Z     0 Error(s)
+windows-validation	Vault reliability and separate-process crash recovery	2026-10-14T08:56:36.0274212Z Passed!  - Failed:     0, Passed:    17, Skipped:     0, Total:    17, Duration: 14 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Vault reliability and separate-process crash recovery	2026-10-14T08:56:39.0107328Z Build succeeded.
+windows-validation	Vault reliability and separate-process crash recovery	2026-10-14T08:56:39.0108582Z     0 Warning(s)
+windows-validation	Vault reliability and separate-process crash recovery	2026-10-14T08:56:39.0108924Z     0 Error(s)
+windows-validation	Authenticated generations and password crash recovery	2026-10-14T08:58:32.7223877Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 37 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Authenticated generations and password crash recovery	2026-10-14T09:00:02.9177374Z RECOVERY_CRASH_SCENARIOS=4;FRESH_PASSWORD_READERS=4;BYTES=PASS;CONCURRENT_CONSUME=1_SUCCESS_1_REJECT;POWER_LOSS=NOT_TESTED
+windows-validation	Legacy v5 transition and authenticated recovery	2026-10-14T09:01:41.4571350Z Passed!  - Failed:     0, Passed:    30, Skipped:     0, Total:    30, Duration: 1 m 35 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Trusted recovery receipts and replay boundaries	2026-10-14T09:04:45.7001239Z Passed!  - Failed:     0, Passed:    23, Skipped:     0, Total:    23, Duration: 29 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Trusted recovery receipts and replay boundaries	2026-10-14T09:05:52.4923886Z SLOT_REPLAY=BLOCKED;WHOLE_VAULT_REPLAY=BLOCKED;JOINT_ANCHOR_REPLAY=UNSUPPORTED;RECEIPT_CRASH=15;LEGACY_PASSWORD_CRASH=6;ORIGINAL_BYTES=VERIFIED;POWER_LOSS=NOT_TESTED
+windows-validation	WO16 receipt reconciliation and authenticated v5 read-only recovery	2026-10-14T09:07:53.0858020Z Passed!  - Failed:     0, Passed:    31, Skipped:     0, Total:    31, Duration: 1 m 29 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	WO17 storage and file Clear qualification	2026-10-14T09:10:17.8349950Z Build succeeded.
+windows-validation	WO17 storage and file Clear qualification	2026-10-14T09:10:17.8350768Z     0 Warning(s)
+windows-validation	WO17 storage and file Clear qualification	2026-10-14T09:10:17.8351395Z     0 Error(s)
+windows-validation	WO17 storage and file Clear qualification	2026-10-14T09:10:38.9631333Z Passed!  - Failed:     0, Passed:    39, Skipped:     0, Total:    39, Duration: 17 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	Full application regression	2026-10-14T09:20:10.1985673Z Passed!  - Failed:     0, Passed:  1214, Skipped:   111, Total:  1325, Duration: 9 m 17 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+windows-validation	SecurityLab regression	2026-10-14T09:21:24.4778290Z Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 10 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+windows-validation	Upload test evidence	artifacts/wo15-ci/V5_PASSWORD_CRASH_RESULT.json

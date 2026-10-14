@@ -1,0 +1,31 @@
+{
+  "Result": {
+    "Deleted": 1,
+    "Failed": 0,
+    "AuditPath": "<SYNTHETIC_ROOT>\\audit-output\\audit\\secure-delete-20261014-084544-4506c781c8ef448e9e8db1b7e8b2a850.log",
+    "AuditValid": true,
+    "Status": "Completed",
+    "Items": [
+      {
+        "Status": "Completed",
+        "PartialWritePossible": false,
+        "TargetIndex": 0,
+        "MutationStarted": true
+      }
+    ],
+    "WasCancellationRequested": false,
+    "AnyMutationStarted": true,
+    "CompletedTargets": 1,
+    "IncompleteTargets": 0,
+    "AuditVerified": true,
+    "RequiresManualReview": false,
+    "JournalPath": "<SYNTHETIC_ROOT>\\audit-output\\audit\\secure-delete-20261014-084544-4506c781c8ef448e9e8db1b7e8b2a850.journal",
+    "StatusLabel": "완료"
+  },
+  "InputPresent": false,
+  "OriginalContentMatches": false,
+  "OtherContentMatches": true,
+  "ElapsedMs": 11606.2727,
+  "CpuMs": 609.375,
+  "WorkingSetBytes": 56569856
+}

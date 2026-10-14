@@ -1,0 +1,23 @@
+{
+  "Result": {
+    "OperationId": "secure-delete-20261014-084544-4506c781c8ef448e9e8db1b7e8b2a850",
+    "Status": "DeletionConfirmedByAvailableEvidence",
+    "JournalAuthenticated": true,
+    "AuditVerified": true,
+    "RequiresManualReview": false,
+    "Items": [
+      {
+        "TargetIndex": 0,
+        "State": "Completed",
+        "Observation": "DeletionConfirmedByAvailableEvidence",
+        "MutationPossible": true
+      }
+    ]
+  },
+  "InputPresent": false,
+  "OriginalContentMatches": false,
+  "OtherContentMatches": true,
+  "ElapsedMs": 190.5406,
+  "CpuMs": 171.875,
+  "WorkingSetBytes": 42876928
+}

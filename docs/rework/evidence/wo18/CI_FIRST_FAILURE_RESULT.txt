@@ -1,0 +1,140 @@
+CI RUN: 38520807911
+CI SOURCE: 92c3258e998b27b5a1b51570dbd4da7fc86d4e4f
+EXIT CODE: 1
+2026-10-14T06:30:42.3396516Z ##[group]Run dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO18' --logger 'trx;LogFileName=wo18-tests.trx' -v:minimal
+2026-10-14T06:30:42.3398105Z [36;1mdotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO18' --logger 'trx;LogFileName=wo18-tests.trx' -v:minimal[0m
+2026-10-14T06:30:42.3399527Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'WO18 regression failed' }[0m
+2026-10-14T06:30:42.3400056Z [36;1mdotnet build tools/SmartPerformanceDoctor.DeleteProbe -c Release -p:Platform=x64 -m:1 -v:minimal[0m
+2026-10-14T06:30:42.3400577Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'DeleteProbe build failed' }[0m
+2026-10-14T06:30:42.3400999Z [36;1m$fixtureParent = Join-Path $env:RUNNER_TEMP 'wo18-isolated-fixtures'[0m
+2026-10-14T06:30:42.3401423Z [36;1mNew-Item -ItemType Directory -Force $fixtureParent | Out-Null[0m
+2026-10-14T06:30:42.3402053Z [36;1m./scripts/wo18-delete-crash-validation.ps1 -FixtureParent $fixtureParent -OutputDirectory artifacts/wo18-ci[0m
+2026-10-14T06:30:42.3402771Z [36;1m./scripts/wo18-synthetic-validation.ps1 -FixtureParent $fixtureParent -OutputDirectory artifacts/wo18-ci/synthetic[0m
+2026-10-14T06:30:42.3403302Z [36;1m./scripts/wo17-ui-source-validation.ps1[0m
+2026-10-14T06:30:42.3460694Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-14T06:30:42.3461035Z env:
+2026-10-14T06:30:42.3461278Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-14T06:30:42.3461551Z   VSTEST_CONNECTION_TIMEOUT: 300
+2026-10-14T06:30:42.3461796Z ##[endgroup]
+2026-10-14T06:30:43.2030770Z Test run for D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll (.NETCoreApp,Version=v10.0)
+2026-10-14T06:30:43.3728697Z A total of 1 test files matched the specified pattern.
+2026-10-14T06:30:44.1696809Z [xUnit.net 00:00:00.48]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryBudgetExhaustionFailsClosed [FAIL]
+2026-10-14T06:30:44.2698595Z   Failed SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryBudgetExhaustionFailsClosed [88 ms]
+2026-10-14T06:30:44.2699509Z   Error Message:
+2026-10-14T06:30:44.2699879Z    Assert.Throws() Failure: Exception type was not an exact match
+2026-10-14T06:30:44.2700407Z Expected: typeof(System.IO.InvalidDataException)
+2026-10-14T06:30:44.2700921Z Actual:   typeof(System.UnauthorizedAccessException)
+2026-10-14T06:30:44.2702261Z [xUnit.net 00:00:00.57]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryNewEntryInvalidatesApprovalSnapshot [FAIL]
+2026-10-14T06:30:44.2704360Z [xUnit.net 00:00:00.57]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryChangedBytesInvalidatesSnapshot [FAIL]
+2026-10-14T06:30:44.2705476Z ---- System.UnauthorizedAccessException : DirectoryEntryOwnerUnknown
+2026-10-14T06:30:44.2706172Z   Stack Trace:
+2026-10-14T06:30:44.2707398Z      at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryBudgetExhaustionFailsClosed() in D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 76
+2026-10-14T06:30:44.2708973Z    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+2026-10-14T06:30:44.2709893Z    at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+2026-10-14T06:30:44.2710548Z ----- Inner Stack Trace -----
+2026-10-14T06:30:44.2711858Z    at SmartPerformanceDoctor.App.Services.Commercial.SecureDeleteDirectoryReview.Capture(String root, CancellationToken token) in D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\Services\Commercial\SecureDeleteDirectoryReview.cs:line 45
+2026-10-14T06:30:44.2716707Z    at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.<>c__DisplayClass9_0.<DirectoryBudgetExhaustionFailsClosed>b__0() in D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 76
+2026-10-14T06:30:45.7374781Z   Failed SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryNewEntryInvalidatesApprovalSnapshot [2 ms]
+2026-10-14T06:30:45.7375880Z   Error Message:
+2026-10-14T06:30:45.7376295Z    System.UnauthorizedAccessException : DirectoryEntryOwnerUnknown
+2026-10-14T06:30:45.7376782Z   Stack Trace:
+2026-10-14T06:30:45.7377851Z      at SmartPerformanceDoctor.App.Services.Commercial.SecureDeleteDirectoryReview.Capture(String root, CancellationToken token) in D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\Services\Commercial\SecureDeleteDirectoryReview.cs:line 45
+2026-10-14T06:30:45.7379186Z    at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryNewEntryInvalidatesApprovalSnapshot() in D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 42
+2026-10-14T06:30:45.7380268Z    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+2026-10-14T06:30:45.7380829Z    at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+2026-10-14T06:30:45.7381500Z   Failed SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryChangedBytesInvalidatesSnapshot [2 ms]
+2026-10-14T06:30:45.7381973Z   Error Message:
+2026-10-14T06:30:45.7382217Z    System.UnauthorizedAccessException : DirectoryEntryOwnerUnknown
+2026-10-14T06:30:45.7382501Z   Stack Trace:
+2026-10-14T06:30:45.7383241Z      at SmartPerformanceDoctor.App.Services.Commercial.SecureDeleteDirectoryReview.Capture(String root, CancellationToken token) in D:\a\PC-Care\PC-Care\src\SmartPerformanceDoctor.App\Services\Commercial\SecureDeleteDirectoryReview.cs:line 45
+2026-10-14T06:30:45.7384528Z    at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryChangedBytesInvalidatesSnapshot() in D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 52
+2026-10-14T06:30:45.7385387Z    at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+2026-10-14T06:30:45.7385896Z    at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+2026-10-14T06:31:53.6505563Z Results File: D:\a\PC-Care\PC-Care\tests\SmartPerformanceDoctor.Tests\TestResults\wo18-tests.trx
+2026-10-14T06:31:53.6507990Z 
+2026-10-14T06:31:53.6541680Z Failed!  - Failed:     3, Passed:    33, Skipped:     0, Total:    36, Duration: 1 m 9 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+2026-10-14T06:31:54.9285501Z [31;1mException: [0mD:\a\_temp\587dc08f-b634-4530-80d0-ebf17a37fd30.ps1:3[0m
+2026-10-14T06:31:54.9286137Z [31;1m[0m[36;1mLine |[0m
+2026-10-14T06:31:54.9286856Z [31;1m[0m[36;1m[36;1m   3 | [0m if ($LASTEXITCODE -ne 0) { [36;1mthrow 'WO18 regression failed'[0m }[0m
+2026-10-14T06:31:54.9287787Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m     | [31;1m                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+2026-10-14T06:31:54.9288651Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1mWO18 regression failed[0m
+2026-10-14T06:31:54.9520661Z ##[error]Process completed with exit code 1.
+2026-10-14T06:31:54.9696617Z ##[group]Run actions/upload-artifact@v4
+2026-10-14T06:31:54.9696990Z with:
+2026-10-14T06:31:54.9697212Z   name: wo18-windows-evidence
+2026-10-14T06:31:54.9700591Z   path: tests/SmartPerformanceDoctor.Tests/TestResults/*.trx
+tests/SmartPerformanceDoctor.SecurityLab.Tests/TestResults/*.trx
+artifacts/wo06-ci-process/process-results.json
+artifacts/wo07-ci/measurement.json
+artifacts/wo08-ci/**/*.json
+artifacts/wo09-ci/**/*.json
+artifacts/wo10-ci/**/*.json
+artifacts/wo10-sandbox/sandbox-results.json
+artifacts/wo10-sandbox/gui-status.json
+artifacts/wo11-ci/*.json
+artifacts/wo11-sandbox/sandbox-results.json
+artifacts/wo12-ci/crash-results.json
+artifacts/wo12-ci/performance.json
+artifacts/wo13-ci/commit-recovery.json
+artifacts/wo13-ci/password-crash.json
+artifacts/wo13-ci/streaming-export.json
+artifacts/wo13-ci/recovery-code-crash.json
+artifacts/wo14-ci/transition.json
+artifacts/wo14-ci/transition-crash.json
+artifacts/wo14-ci/metadata-ready.json
+artifacts/wo14-ci/password-crash.json
+artifacts/wo14-ci/replay.json
+artifacts/wo14-memory/streaming-memory.json
+artifacts/wo15-ci/REPLAY_ATTACK_RESULT.json
+artifacts/wo15-ci/RECOVERY_RECEIPT_RESULT.json
+artifacts/wo15-ci/V5_PASSWORD_CRASH_RESULT.json
+artifacts/wo15-memory/PERFORMANCE_RESULT.json
+
+artifacts/wo16-ci/*.json
+
+artifacts/wo17-ci/*.json
+artifacts/wo18-ci/**/*.json
+artifacts/wo18-ci/*.json
+
+2026-10-14T06:31:54.9704259Z   if-no-files-found: warn
+2026-10-14T06:31:54.9704442Z   compression-level: 6
+2026-10-14T06:31:54.9704606Z   overwrite: false
+2026-10-14T06:31:54.9704774Z   include-hidden-files: false
+2026-10-14T06:31:54.9704946Z env:
+2026-10-14T06:31:54.9705097Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-10-14T06:31:54.9705288Z ##[endgroup]
+2026-10-14T06:32:03.1480445Z (node:10144) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-14T06:32:03.1481640Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-14T06:32:03.2147307Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-14T06:32:03.2155864Z The least common ancestor is D:\a\PC-Care\PC-Care. This will be the root directory of the artifact
+2026-10-14T06:32:03.2156931Z With the provided path, there will be 68 files uploaded
+2026-10-14T06:32:03.2161291Z Artifact name is valid!
+2026-10-14T06:32:03.2162443Z Root directory input is valid!
+2026-10-14T06:32:03.5997674Z Beginning upload of artifact content to blob storage
+2026-10-14T06:32:03.7437298Z (node:10144) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-14T06:32:04.2339754Z Uploaded bytes 427269
+2026-10-14T06:32:04.2981343Z Finished uploading artifact content to blob storage!
+2026-10-14T06:32:04.2982255Z SHA256 digest of uploaded artifact zip is 104d573f284837f5db6127ad6d68dd8f80bd53a4dd4ee9aad44e275f86c6d9e2
+2026-10-14T06:32:04.2984475Z Finalizing artifact upload
+2026-10-14T06:32:04.5955105Z Artifact wo18-windows-evidence.zip successfully finalized. Artifact ID 11874337065
+2026-10-14T06:32:04.5956163Z Artifact wo18-windows-evidence has been successfully uploaded! Final size is 427269 bytes. Artifact ID is 11874337065
+2026-10-14T06:32:04.5968291Z Artifact download URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38520807911/artifacts/11874337065
+2026-10-14T06:32:04.6351506Z Post job cleanup.
+2026-10-14T06:32:04.8088757Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-14T06:32:04.9016882Z git version 2.55.0.windows.5
+2026-10-14T06:32:04.9081588Z Temporarily overriding HOME='D:\a\_temp\5734ddf6-df44-4903-a50b-bf965dc03cf4' before making global git config changes
+2026-10-14T06:32:04.9082563Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-14T06:32:04.9091585Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\PC-Care\PC-Care
+2026-10-14T06:32:04.9419996Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T06:32:04.9686190Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-14T06:32:05.5077924Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-14T06:32:05.5299090Z http.https://github.com/.extraheader
+2026-10-14T06:32:05.5335797Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-14T06:32:05.5586265Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-14T06:32:06.0601003Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T06:32:06.0849841Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-14T06:32:06.5974906Z Cleaning up orphan processes
+2026-10-14T06:32:06.6306865Z Terminate orphan process: pid (6768) (VBCSCompiler)
+2026-10-14T06:32:06.6371469Z Terminate orphan process: pid (8044) (conhost)
+2026-10-14T06:32:06.7441461Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-dotnet@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+

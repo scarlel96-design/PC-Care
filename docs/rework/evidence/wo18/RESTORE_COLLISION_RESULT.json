@@ -1,0 +1,24 @@
+{
+  "SourceCommit": "d3467ea91ad916ff405705939f0c62c65e70153f",
+  "SourceTree": "70902843929bfe50e16a2892ccb2f7b0932e8c82",
+  "Environment": {
+    "OS": "Microsoft Windows NT 10.0.26200.0",
+    "LogicalProcessors": 24,
+    "Sdk": "10.0.402",
+    "Elevated": false,
+    "IndependentTestSid": false,
+    "SyntheticRoot": "Explicit workspace artifact parent",
+    "SourceCommit": "d3467ea91ad916ff405705939f0c62c65e70153f",
+    "SourceTree": "70902843929bfe50e16a2892ccb2f7b0932e8c82",
+    "PhysicalPowerLoss": "NOT TESTED"
+  },
+  "Command": "pwsh -NoProfile -File scripts/wo18-synthetic-validation.ps1 -FixtureParent <EXPLICIT_SYNTHETIC_PARENT> -OutputDirectory <EVIDENCE>",
+  "Input": "Generated 1MiB selected.tmp; generated collision.tmp; generated conflicting destination",
+  "ExitCode": 0,
+  "ActualOutput": {
+    "Blocked": true,
+    "ExistingBytesPreserved": true,
+    "QuarantineRetained": true
+  },
+  "ExecutionEvidence": "restore-fixed-synthetic/execution.json"
+}

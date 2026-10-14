@@ -1,0 +1,82 @@
+{
+  "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+  "Environment": {
+    "OS": "Microsoft Windows NT 10.0.26200.0",
+    "LogicalProcessors": 24,
+    "Sdk": "10.0.402",
+    "Elevated": false,
+    "IndependentTestSid": false,
+    "SyntheticRoot": "Explicit workspace artifact parent",
+    "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+    "SourceTree": "b8ed8c88125a5d4ff66efa620c98494d9aeb81c6",
+    "PhysicalPowerLoss": "NOT TESTED"
+  },
+  "PathMasking": "WORKSPACE/USER_HOME and generated root names mask actual user paths. Commands otherwise preserve executed arguments.",
+  "Commands": [
+    {
+      "Command": "dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64",
+      "Input": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+      "OutputFile": "RESTORE_RESULT.txt",
+      "ExitCode": 0
+    },
+    {
+      "Command": "dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal",
+      "Input": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+      "OutputFile": "SOLUTION_BUILD_RESULT.txt",
+      "ExitCode": 0
+    },
+    {
+      "Command": "dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo18-full-final.trx' -v:minimal",
+      "Input": "explicit RUNNER_TEMP; generated fixtures",
+      "OutputFile": "FULL_TEST_RESULT.txt",
+      "ExitCode": 0
+    },
+    {
+      "Command": "dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo18-securitylab.trx' -v:minimal",
+      "Input": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+      "OutputFile": "SECURITYLAB_RESULT.txt",
+      "ExitCode": 0
+    },
+    {
+      "Command": "scripts/wo18-synthetic-validation.ps1 -FixtureParent <EXPLICIT_SYNTHETIC_PARENT> -OutputDirectory <EVIDENCE>",
+      "Input": "generated synthetic files",
+      "OutputFile": "SYNTHETIC_EXECUTION_RESULT.txt",
+      "ExitCode": 0
+    },
+    {
+      "Command": "scripts/wo18-delete-crash-validation.ps1 -FixtureParent <EXPLICIT_SYNTHETIC_PARENT> -OutputDirectory <EVIDENCE>",
+      "Input": "17 checkpoint fixtures",
+      "OutputFile": "FINAL_CRASH_EXECUTION_RESULT.txt",
+      "ExitCode": 0
+    },
+    {
+      "Command": "scripts/wo17-ui-source-validation.ps1",
+      "Input": "XAML, AV3 gate source, GUI scripts",
+      "OutputFile": "GUI_TEST_RESULT.txt",
+      "ExitCode": 0,
+      "ActualGui": "NOT TESTED"
+    },
+    {
+      "Command": "GuiProbe.exe",
+      "Input": "No interactive process supplied",
+      "OutputFile": "GUI_PROBE_STATUS.json",
+      "ExitCode": 0,
+      "ActualGui": "NOT TESTED"
+    },
+    {
+      "Command": "bash docs/rework/evidence/wo18/ROLLBACK.sh <INDEPENDENT_SOURCE_COPY>",
+      "Input": "MODIFIED_FILE copy",
+      "OutputFile": "ROLLBACK_RETRY_RESULT.txt",
+      "ExitCode": 0,
+      "DataRestoration": false
+    },
+    {
+      "Command": "dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo18-final-source-full.trx' -v:minimal",
+      "Input": "d3467ea91ad916ff405705939f0c62c65e70153f",
+      "OutputFile": "FULL_TEST_RESULT.txt",
+      "ExitCode": 0
+    }
+  ],
+  "FinalLocalFullSource": "d3467ea91ad916ff405705939f0c62c65e70153f",
+  "FinalLocalFullTree": "70902843929bfe50e16a2892ccb2f7b0932e8c82"
+}

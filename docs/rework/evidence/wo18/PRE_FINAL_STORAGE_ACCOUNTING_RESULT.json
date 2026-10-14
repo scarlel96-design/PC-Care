@@ -1,0 +1,36 @@
+{
+  "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+  "Command": "DeleteProbe quarantine <EXPLICIT_SYNTHETIC_PARENT>",
+  "Input": "1MiB same-volume quarantine; no final deletion",
+  "Environment": {
+    "OS": "Microsoft Windows NT 10.0.26200.0",
+    "LogicalProcessors": 24,
+    "Sdk": "10.0.402",
+    "Elevated": false,
+    "IndependentTestSid": false,
+    "SyntheticRoot": "Explicit workspace artifact parent",
+    "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+    "SourceTree": "b8ed8c88125a5d4ff66efa620c98494d9aeb81c6",
+    "PhysicalPowerLoss": "NOT TESTED"
+  },
+  "ExitCode": 0,
+  "ActualOutput": {
+    "CandidateBytes": 1048576,
+    "QuarantinedBytes": 1048576,
+    "RestorableBytes": 1048576,
+    "FinalDeletedBytes": 0,
+    "AvailableBefore": 46606209024,
+    "AvailableAfter": 46606209024,
+    "ObservedFreeSpaceDelta": 0,
+    "AttributableFreedBytes": 0,
+    "ElapsedMs": 0,
+    "Limitation": "Same-volume rename releases no payload allocation. Global free-space delta is not cleanup gain.",
+    "LogicalBytes": 1048576,
+    "AllocatedBytes": null,
+    "VerifiedFreedBytes": 0,
+    "UnattributedVolumeDelta": 0
+  },
+  "BeforeSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+  "RestoredSha256": "F904808A540AA6E24C853663E53116243A5110053E9D3034821AAD79EED953A5",
+  "PerformanceImprovement": "Unknown; not measured"
+}

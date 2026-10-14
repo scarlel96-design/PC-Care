@@ -1,0 +1,33 @@
+{
+  "SourceTree": "70902843929bfe50e16a2892ccb2f7b0932e8c82",
+  "Input": "Local Release assemblies used for final-source tests",
+  "Command": "SHA-256 read of local Release assemblies",
+  "ExitCode": 0,
+  "Files": [
+    {
+      "Path": "tests/SmartPerformanceDoctor.Tests/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.Tests.dll",
+      "Bytes": 677888,
+      "Sha256": "d0eb24fdb9ceb314a3194152b447ee84019adaa5a7cdcbff1a53a3e3bd5ca9f2",
+      "ModifiedUnixSeconds": 1791967355.5446882
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.App/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.dll",
+      "Bytes": 1542144,
+      "Sha256": "3b81edefc4748884e0626532122c18e3a7fd1a84738510a3904db2c7ce101315",
+      "ModifiedUnixSeconds": 1791959003.7123756
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateEngine.dll",
+      "Bytes": 89088,
+      "Sha256": "30f38932238306adf7038936dd647f8aaf70c89789b66bce96345c88f4a7c3ab",
+      "ModifiedUnixSeconds": 1791958982.4666462
+    },
+    {
+      "Path": "tools/SmartPerformanceDoctor.DeleteProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.DeleteProbe.dll",
+      "Bytes": 57344,
+      "Sha256": "20f37e9b8e756ea6982dda4c43f61419e01f1a87ad8dd1a4a8e28e3f345ac010",
+      "ModifiedUnixSeconds": 1791967464.3405964
+    }
+  ],
+  "Limitation": "The final CI separately rebuilds the clean source commit. Binary hashes are local provenance, not publisher authentication."
+}

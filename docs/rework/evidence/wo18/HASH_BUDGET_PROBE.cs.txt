@@ -1,0 +1,44 @@
+using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text.Json;
+using SmartPerformanceDoctor.UpdateEngine;
+
+if (args.Length != 1) return 2;
+using var parent = WindowsFileBoundary.PinDirectory(args[0]);
+var root = Path.Combine(parent.Root, "wo18-hash-" + Guid.NewGuid().ToString("N"));
+Directory.CreateDirectory(root);
+var rows = new List<object>();
+using var process = Process.GetCurrentProcess();
+foreach (var length in new[] { 1048576, 16 * 1048576, 64 * 1048576 })
+{
+    var name = length + ".synthetic";
+    var buffer = new byte[65536]; RandomNumberGenerator.Fill(buffer);
+    using var expectedHash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+    using (var output = new FileStream(Path.Combine(root, name), FileMode.CreateNew, FileAccess.Write, FileShare.None))
+    {
+        for (var written = 0; written < length; written += buffer.Length)
+        { output.Write(buffer); expectedHash.AppendData(buffer); }
+        output.Flush(true);
+    }
+    var expected = Convert.ToHexString(expectedHash.GetHashAndReset());
+    CryptographicOperations.ZeroMemory(buffer);
+    using var file = WindowsFileBoundary.OpenRead(root, name);
+    for (var repeat = 0; repeat < 3; repeat++)
+    {
+        process.Refresh(); var beforeWorkingSet = process.WorkingSet64;
+        var cpu = process.TotalProcessorTime; var allocated = GC.GetAllocatedBytesForCurrentThread();
+        var timer = Stopwatch.StartNew(); var actual = file.Hash(); timer.Stop();
+        var hashAllocated = GC.GetAllocatedBytesForCurrentThread() - allocated;
+        process.Refresh();
+        if (actual != expected || file.Stream.Length != length) throw new IOException("HashMismatch");
+        file.Validate();
+        rows.Add(new { LogicalBytes = length, Repeat = repeat, HashVerified = true,
+            ElapsedMs = timer.Elapsed.TotalMilliseconds, CpuMs = (process.TotalProcessorTime - cpu).TotalMilliseconds,
+            HashThreadAllocatedBytes = hashAllocated, WorkingSetBefore = beforeWorkingSet,
+            WorkingSetAfter = process.WorkingSet64, ProcessLifetimePeakWorkingSet = process.PeakWorkingSet64 });
+    }
+}
+Console.WriteLine(JsonSerializer.Serialize(new { Status = "PASS", Api = "WindowsFileBoundary.FileLease.Hash",
+    Scope = "Isolated hash cost. Includes handle validation inside Hash. No overwrite or deletion.",
+    FileCount = 3, MaximumFileBytes = 67108864, PhysicalPowerLoss = "NOT TESTED", Rows = rows }));
+return 0;

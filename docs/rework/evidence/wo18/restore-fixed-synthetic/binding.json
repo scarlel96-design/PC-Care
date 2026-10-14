@@ -1,0 +1,33 @@
+{
+  "Result": {
+    "Authenticated": true,
+    "RecordCount": 15,
+    "States": [
+      "Planned",
+      "Planned",
+      "PreflightVerified",
+      "TargetHandleBound",
+      "DestructiveWriteIntent",
+      "WriteInProgress",
+      "WriteFinished",
+      "VerificationFinished",
+      "DeleteRequested",
+      "DeleteDispositionAccepted",
+      "DeletionObserved",
+      "AuditCommitted",
+      "Completed",
+      "AuditCommitted",
+      "Completed"
+    ],
+    "ContentFingerprintMatches": true,
+    "SelectedFileIdMatches": true,
+    "VolumeIdPresent": true,
+    "OwnerBound": true
+  },
+  "InputPresent": false,
+  "OriginalContentMatches": false,
+  "OtherContentMatches": true,
+  "ElapsedMs": 115.238,
+  "CpuMs": 125,
+  "WorkingSetBytes": 40202240
+}

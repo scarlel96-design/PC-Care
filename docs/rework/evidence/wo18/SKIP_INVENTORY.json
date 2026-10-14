@@ -1,0 +1,451 @@
+{
+  "SourceCommit": "d3467ea91ad916ff405705939f0c62c65e70153f",
+  "Count": 111,
+  "Tests": [
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenAnchorMissing",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_XChaCha24Implemented_RemainsFalseSignedCandidate",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R9_Migration_RemainsDisabled_NoWriterCollision",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_NonHarnessWriterInvocation_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SClassStillNotSatisfied",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_DuplicateTransactionId_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.PhaseGate_E6_DisabledProductionWriter_NotAuthorized",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_CommitGuard_NonHarnessProductionRouteStillDenied",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_SpdVaultUnchanged_NoMigration",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.PhaseGate_E62_ReviewFixes_ProductionStillDisabled",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Recovery_EqualGenerationConflictingRoot_CorruptBlocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ExternalReviewCompletedCode_RemainsFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenXChaCha24Missing",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_EnableFlagsRemainFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionEnableAuthorized_RemainsFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_Rollback_PreviousRootMismatch_MatchesE4_CorruptBlocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R3_EqualGenerationDifferentRoot_CorruptBlocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ReentrantCommit_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SpdVaultUnchanged_NoMigration",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.PhaseGate_E4_HighRiskClosure_NotWriterEnable",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ProductionWriterStillNotAuthorized",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionCommit_Throws_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SClassStillNotSatisfied",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_TrustedAnchorSignoff_PreflightEvidenceCurrent",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_SpdVaultUnchanged_NoMigration",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.PhaseGate_E5_ProductionWriterDesign_NotWriterEnable",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SpdVaultUnchanged_NoMigration",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_EnableFlagsRemainFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ReadOnlyValidator_XChaCha24_Pass",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityReview_PreflightEvidenceCurrent",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_WritePolicy_ProductionDisabled",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_AnchorStabilityRepeat_Skipped",
+      "Reason": "50.4.0 production GO: stability matrix under pre-enable rules superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.PhaseGate_E7_PreEnableHardening_EnableFlagsFalse",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_DurableStore_RootEscape_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_EnableFlagsRemainFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OpenWriteSessionAsync_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_HarnessProvider_Signed",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_TransactionCoordinator_NonHarness_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SpdVaultUnchangedNoMigration",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SpdVaultUnchanged_NoMigration",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ProductionRouteDenied",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.JournalRecorder_ProductionRoute_Fails_WhenJournalDisabled",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.PhaseGate_E71_ReviewFixes_AllEnableFlagsFalse",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SpdVaultUnchanged_NoMigration",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.PhaseGate_E8_LimitedDryRun_EnableFlagsFalse",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_M01M02Closed_CurrentEvidenceConsistent",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_AnchorSignoff_HarnessCandidateOnly_NotProductionImplemented",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_EnableFlagsRemainFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE62Tests.E62_E6Recovery_EqualGenerationConflictingRoot_CorruptBlocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_EnableFlagsRemainFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_EnableFlagsRemainFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.Orchestrator_ProductionOpenSession_Throws_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalReviewCompletedCode_RemainsFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_Preflight_CurrentEvidenceSourceOfTruthMatchesActual",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_DenyMigrationRoute_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_XChaCha24Implemented_RemainsFalseUntilSignoff",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.E5_AnchorDesign_NotImplemented",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_ExternalReviewCompletedCodeRemainsFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_StabilityRepeat_Skipped",
+      "Reason": "50.4.0 production GO: stability matrix under pre-enable rules superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_ProductionAnchorImplemented_RemainsFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE8Tests.E8_ProductionRoute_AppHostViewModel_NoWriter",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_FactoryProductionCreate_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionAnchorImplemented_RemainsFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE5Tests.WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ProductionEnableAuthorized_RemainsFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_OrchestratorCommitAsync_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.HeaderCopy_Conflict_CorruptBlocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_DiskDurabilityInvariant_StabilityRepeat_Skipped",
+      "Reason": "50.4.0 production GO: stability matrix under pre-enable rules superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ExternalWitnessStub_SignedButNotProductionLive",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_JournalRecorderProductionRoute_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3FaultInjectionTests.Security_ProductionWriterGate_RemainsFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_DiskDurabilityStillOpen",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_CommitThreeCopyAsync_Production_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_TryOpenProductionSession_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE14Tests.E14_SClassStillNotSatisfied",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_ReadOnlyValidatorComplete",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_SpdVaultUnchanged_NoMigration",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_NegativeMatrix_ProductionDurableStore_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE9Tests.PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.DurableStore_RelativePathEscape_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_SClassStillNotSatisfied",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE3Tests.PhaseGate_E3_ActualKillHarness_DocumentationOnly",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_FullRollbackMatrix_StabilityRepeat_Skipped",
+      "Reason": "50.4.0 production GO: stability matrix under pre-enable rules superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.E6_HeaderConflict_CorruptBlocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_ExternalReviewCompletedCode_RemainsFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_TrustedMonotonicAnchorRequired_ForFullVaultRollbackClosure",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_ExternalReviewCompletedCodeRemainsFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_EnableFlagsRemainFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenSClassUnsatisfied",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE7Tests.E7_ConcurrentCommit_SecondBlocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE4Tests.WriterEnableChecklist_State_NoGo",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionEnableAuthorized_RemainsFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_ProductionAnchorImplemented_RemainsFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE91Tests.E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_DecisionGate_NotProductionEnable",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_StabilityRepeat_Skipped",
+      "Reason": "50.4.0 production GO: stability matrix under pre-enable rules superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE10SignoffTests.E10_WriterEnableReadinessNoGoWhenActualDiskDurabilityMissing",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3NamedSignoffTests.NamedSignoff_DecisionRecord_NotProductionEnable",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_XChaCha24StillOpen",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_EnableFlagsRemainFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE12Tests.E12_SClassStillNotSatisfied",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE11Tests.E11_SClassStillNotSatisfied",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE121Tests.E121_XChaCha24Signoff_PreflightEvidenceCurrent",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_JournalWriterGate_False",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_SpdVaultUnchanged_NoMigration",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE71Tests.E71_NegativeMatrix_NonHarnessCommitSession_Blocked",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE111Tests.E111_SClassStillNotSatisfied",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE6Tests.WriterFactory_ProductionCreate_Fails_WhenProductionWriterDisabled",
+      "Reason": "50.4.0 production GO: disable-matrix superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE131Tests.E131_DiskDurabilityStillOpen",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.Av3PhaseE13Tests.E13_EnableFlagsRemainFalse",
+      "Reason": "50.4.0 production GO: pre-enable assertion superseded"
+    }
+  ],
+  "Limitation": "Some legacy reasons mention old production GO. These are not current authorization. AV3 gates remain false."
+}

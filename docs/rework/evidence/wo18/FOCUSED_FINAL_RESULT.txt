@@ -1,0 +1,258 @@
+<WORKSPACE>\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+[xUnit.net 00:00:00.38]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: "BeforeAudit") [FAIL]
+[xUnit.net 00:00:00.39]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryIdentityDetectsOrBlocksRootRename [FAIL]
+[xUnit.net 00:00:00.39]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: "BeforeResultJson") [FAIL]
+[xUnit.net 00:00:00.40]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: "AfterResultJson") [FAIL]
+[xUnit.net 00:00:00.40]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: "AfterAudit") [FAIL]
+[xUnit.net 00:00:00.40]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CancellationAfterOneDeletedTargetRetainsCompletedAndIncompleteCounts [FAIL]
+[xUnit.net 00:00:00.40]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CompletedAuditUsesFinalHandleIdentityAndHash [FAIL]
+[xUnit.net 00:00:00.40]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticFactoryRejectsNonFixtureNames(name: "../escape.tmp") [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: "BeforeAudit") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryIdentityDetectsOrBlocksRootRename [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: "BeforeResultJson") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: "AfterResultJson") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.PostDeletionRecordFailureIsVisible(point: "AfterAudit") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CancellationAfterOneDeletedTargetRetainsCompletedAndIncompleteCounts [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CompletedAuditUsesFinalHandleIdentityAndHash [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticFactoryRejectsNonFixtureNames(name: "../escape.tmp") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IntentRecordFailurePreventsMutation(point: "JournalBeforeFlush:DestructiveWriteIntent") [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticFactoryRejectsNonFixtureNames(name: "key.bin") [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IntentRecordFailurePreventsMutation(point: "JournalBeforeWrite:DestructiveWriteIntent") [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticFactoryRejectsNonFixtureNames(name: "vault.header") [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.JournalRejectsInvalidTransitionAndEmptyAudit [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.RegisteredStoreProtectsOrdinaryNamesAndReloads [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "missing-key") [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.CorruptRegistryCannotForgetExistingProtectionSilently [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IntentRecordFailurePreventsMutation(point: "JournalBeforeFlush:DestructiveWriteIntent") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticFactoryRejectsNonFixtureNames(name: "key.bin") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IntentRecordFailurePreventsMutation(point: "JournalBeforeWrite:DestructiveWriteIntent") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticFactoryRejectsNonFixtureNames(name: "vault.header") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.JournalRejectsInvalidTransitionAndEmptyAudit [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.RegisteredStoreProtectsOrdinaryNamesAndReloads [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "missing-key") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.CorruptRegistryCannotForgetExistingProtectionSilently [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "tamper") [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryBudgetExhaustionFailsClosed [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "result-tamper") [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedTargetRestoreCollisionPreservesBothFiles [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "truncate") [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.ExistingProductionStorageGateRemainsFalse [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "empty") [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryLockedFileCannotBeQualified [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "tamper") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryBudgetExhaustionFailsClosed [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "result-tamper") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedTargetRestoreCollisionPreservesBothFiles [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "truncate") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.ExistingProductionStorageGateRemainsFalse [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: "empty") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryLockedFileCannotBeQualified [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.ReconciliationRejectsUntrustedOperationNames(operation: "../../outside") [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryNewEntryInvalidatesApprovalSnapshot [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.ReconciliationRejectsUntrustedOperationNames(operation: "secure-delete-evil") [FAIL]
+[xUnit.net 00:00:00.41]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryChangedBytesInvalidatesSnapshot [FAIL]
+[xUnit.net 00:00:00.42]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.ReplacementAtOldPathIsPreservedByReconciliation [FAIL]
+[xUnit.net 00:00:00.42]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.RemovedCatalogCannotBeSilentlyReinitialized [FAIL]
+[xUnit.net 00:00:00.42]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CancellationBeforeMutationIsIndependentFromPartialCompletion [FAIL]
+[xUnit.net 00:00:00.42]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.AllowlistHasNoExecutionCapability [FAIL]
+[xUnit.net 00:00:00.42]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IdenticalOperationCannotExecuteTwice [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.ReconciliationRejectsUntrustedOperationNames(operation: "../../outside") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryNewEntryInvalidatesApprovalSnapshot [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.ReconciliationRejectsUntrustedOperationNames(operation: "secure-delete-evil") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryChangedBytesInvalidatesSnapshot [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.ReplacementAtOldPathIsPreservedByReconciliation [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.RemovedCatalogCannotBeSilentlyReinitialized [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CancellationBeforeMutationIsIndependentFromPartialCompletion [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.AllowlistHasNoExecutionCapability [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IdenticalOperationCannotExecuteTwice [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[xUnit.net 00:00:00.42]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(name: "selected.tmp") [FAIL]
+[xUnit.net 00:00:00.42]     SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CancellationDuringWriteNeverRepeatsDestruction [FAIL]
+[xUnit.net 00:00:00.42]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(name: "한글.cache") [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(name: "selected.tmp") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.CancellationDuringWriteNeverRepeatsDestruction [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18DeleteTransactionsTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.SelectedSyntheticTargetRoundTripsThroughExistingRecoveryEngine(name: "한글.cache") [1 ms]
+  오류 메시지:
+   System.InvalidOperationException : ExplicitSyntheticParentRequired
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests..ctor() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 11
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+결과 파일: <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\TestResults\wo18-final.trx
+
+실패!  - 실패:    36, 통과:     0, 건너뜀:     0, 전체:    36, 기간: 55 ms - SmartPerformanceDoctor.Tests.dll (net10.0)
+EXIT CODE: 1

@@ -1,0 +1,48 @@
+{
+  "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+  "Environment": {
+    "OS": "Microsoft Windows NT 10.0.26200.0",
+    "LogicalProcessors": 24,
+    "Sdk": "10.0.402",
+    "Elevated": false,
+    "IndependentTestSid": false,
+    "SyntheticRoot": "Explicit workspace artifact parent",
+    "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+    "SourceTree": "b8ed8c88125a5d4ff66efa620c98494d9aeb81c6",
+    "PhysicalPowerLoss": "NOT TESTED"
+  },
+  "Command": "dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo18-full-final.trx' -v:minimal",
+  "Input": "CSPRNG file fixtures; bounded deterministic quarantine fixtures; explicit RUNNER_TEMP",
+  "ExitCode": 0,
+  "EvidenceType": "Automated Windows synthetic filesystem assertions",
+  "ActualGuiExecuted": false,
+  "Status": "PASS",
+  "Tests": [
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.RemovedCatalogCannotBeSilentlyReinitialized",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.1325179"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.AllowlistHasNoExecutionCapability",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0160150"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.ExistingProductionStorageGateRemainsFalse",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.4531529"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.RegisteredStoreProtectsOrdinaryNamesAndReloads",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.1600281"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.CorruptRegistryCannotForgetExistingProtectionSilently",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.1945191"
+    }
+  ],
+  "Interpretation": "These are actual test assertions. They do not certify all attack models or physical media."
+}

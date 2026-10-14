@@ -1,0 +1,63 @@
+{
+  "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+  "Environment": {
+    "OS": "Microsoft Windows NT 10.0.26200.0",
+    "LogicalProcessors": 24,
+    "Sdk": "10.0.402",
+    "Elevated": false,
+    "IndependentTestSid": false,
+    "SyntheticRoot": "Explicit workspace artifact parent",
+    "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+    "SourceTree": "b8ed8c88125a5d4ff66efa620c98494d9aeb81c6",
+    "PhysicalPowerLoss": "NOT TESTED"
+  },
+  "Command": "dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger 'trx;LogFileName=wo18-full-final.trx' -v:minimal",
+  "Input": "CSPRNG file fixtures; bounded deterministic quarantine fixtures; explicit RUNNER_TEMP",
+  "ExitCode": 0,
+  "EvidenceType": "Automated Windows synthetic filesystem assertions",
+  "ActualGuiExecuted": false,
+  "Status": "PASS",
+  "Tests": [
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IntentRecordFailurePreventsMutation(point: \"JournalBeforeFlush:DestructiveWriteIntent\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:15.7928630"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: \"empty\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:22.4935938"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: \"truncate\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:21.5105716"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: \"result-tamper\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:16.4772351"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.JournalRejectsInvalidTransitionAndEmptyAudit",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0155420"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: \"missing-key\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:15.8616730"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.IntentRecordFailurePreventsMutation(point: \"JournalBeforeWrite:DestructiveWriteIntent\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:16.4962842"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO18DeleteTransactionsTests.UnauthenticatedOrIncompleteEvidenceCannotCertifyDeletion(damage: \"tamper\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:16.1635937"
+    }
+  ],
+  "Interpretation": "These are actual test assertions. They do not certify all attack models or physical media."
+}

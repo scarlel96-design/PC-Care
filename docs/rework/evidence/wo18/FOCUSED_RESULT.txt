@@ -1,0 +1,15 @@
+<WORKSPACE>\tests\SmartPerformanceDoctor.Tests\bin\x64\Release\net10.0-windows10.0.26100.0\SmartPerformanceDoctor.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+[xUnit.net 00:00:04.84]     SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryPinRejectsRootRename [FAIL]
+  실패 SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryPinRejectsRootRename [20 ms]
+  오류 메시지:
+   Assert.Throws() Failure: No exception was thrown
+Expected: typeof(System.IO.IOException)
+  스택 추적:
+     at SmartPerformanceDoctor.Tests.WO18StorageProductSafetyTests.DirectoryPinRejectsRootRename() in <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\WO18StorageProductSafetyTests.cs:line 57
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+결과 파일: <WORKSPACE>\tests\SmartPerformanceDoctor.Tests\TestResults\wo18-focused.trx
+
+실패!  - 실패:     1, 통과:    35, 건너뜀:     0, 전체:    36, 기간: 5 m 15 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+EXIT CODE: 1

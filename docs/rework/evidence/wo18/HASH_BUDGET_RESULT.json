@@ -1,0 +1,128 @@
+{
+  "SourceCommit": "d303cec1af6912d40a3f49369994248fa47daac4",
+  "ProductionApiSourceUnchangedFrom": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+  "ProbeSourceSha256": "11903bc4fdcedb60efb9a7cd1805403f50b3cddf6b9806f1f0f96591b5f45f93",
+  "Command": "dotnet run --project <WORKSPACE>/artifacts/wo18-hash-budget-probe/HashBudget.csproj -c Release -- <EXPLICIT_SYNTHETIC_PARENT>",
+  "Input": "Generated 1/16/64MiB files; each hashed three times; warm-cache repeats",
+  "ExitCode": 0,
+  "Environment": {
+    "OS": "Microsoft Windows NT 10.0.26200.0",
+    "LogicalProcessors": 24,
+    "Sdk": "10.0.402",
+    "Elevated": false,
+    "IndependentTestSid": false,
+    "SyntheticRoot": "Explicit workspace artifact parent",
+    "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+    "SourceTree": "b8ed8c88125a5d4ff66efa620c98494d9aeb81c6",
+    "PhysicalPowerLoss": "NOT TESTED"
+  },
+  "ActualOutput": {
+    "Status": "PASS",
+    "Api": "WindowsFileBoundary.FileLease.Hash",
+    "Scope": "Isolated hash cost. Includes handle validation inside Hash. No overwrite or deletion.",
+    "FileCount": 3,
+    "MaximumFileBytes": 67108864,
+    "PhysicalPowerLoss": "NOT TESTED",
+    "Rows": [
+      {
+        "LogicalBytes": 1048576,
+        "Repeat": 0,
+        "HashVerified": true,
+        "ElapsedMs": 3.3273,
+        "CpuMs": 15.625,
+        "HashThreadAllocatedBytes": 1589552,
+        "WorkingSetBefore": 30019584,
+        "WorkingSetAfter": 30724096,
+        "ProcessLifetimePeakWorkingSet": 30724096
+      },
+      {
+        "LogicalBytes": 1048576,
+        "Repeat": 1,
+        "HashVerified": true,
+        "ElapsedMs": 2.2034,
+        "CpuMs": 0,
+        "HashThreadAllocatedBytes": 1453064,
+        "WorkingSetBefore": 30728192,
+        "WorkingSetAfter": 31109120,
+        "ProcessLifetimePeakWorkingSet": 31109120
+      },
+      {
+        "LogicalBytes": 1048576,
+        "Repeat": 2,
+        "HashVerified": true,
+        "ElapsedMs": 2.0063,
+        "CpuMs": 0,
+        "HashThreadAllocatedBytes": 1453064,
+        "WorkingSetBefore": 31109120,
+        "WorkingSetAfter": 31490048,
+        "ProcessLifetimePeakWorkingSet": 31490048
+      },
+      {
+        "LogicalBytes": 16777216,
+        "Repeat": 0,
+        "HashVerified": true,
+        "ElapsedMs": 18.4147,
+        "CpuMs": 15.625,
+        "HashThreadAllocatedBytes": 1584160,
+        "WorkingSetBefore": 31940608,
+        "WorkingSetAfter": 32468992,
+        "ProcessLifetimePeakWorkingSet": 32468992
+      },
+      {
+        "LogicalBytes": 16777216,
+        "Repeat": 1,
+        "HashVerified": true,
+        "ElapsedMs": 19.6378,
+        "CpuMs": 15.625,
+        "HashThreadAllocatedBytes": 1453064,
+        "WorkingSetBefore": 32468992,
+        "WorkingSetAfter": 33468416,
+        "ProcessLifetimePeakWorkingSet": 33468416
+      },
+      {
+        "LogicalBytes": 16777216,
+        "Repeat": 2,
+        "HashVerified": true,
+        "ElapsedMs": 21.1554,
+        "CpuMs": 0,
+        "HashThreadAllocatedBytes": 1453288,
+        "WorkingSetBefore": 33468416,
+        "WorkingSetAfter": 33779712,
+        "ProcessLifetimePeakWorkingSet": 33779712
+      },
+      {
+        "LogicalBytes": 67108864,
+        "Repeat": 0,
+        "HashVerified": true,
+        "ElapsedMs": 80.7034,
+        "CpuMs": 93.75,
+        "HashThreadAllocatedBytes": 1584952,
+        "WorkingSetBefore": 34074624,
+        "WorkingSetAfter": 35110912,
+        "ProcessLifetimePeakWorkingSet": 35110912
+      },
+      {
+        "LogicalBytes": 67108864,
+        "Repeat": 1,
+        "HashVerified": true,
+        "ElapsedMs": 78.7344,
+        "CpuMs": 78.125,
+        "HashThreadAllocatedBytes": 1454648,
+        "WorkingSetBefore": 35110912,
+        "WorkingSetAfter": 35266560,
+        "ProcessLifetimePeakWorkingSet": 35266560
+      },
+      {
+        "LogicalBytes": 67108864,
+        "Repeat": 2,
+        "HashVerified": true,
+        "ElapsedMs": 73.0868,
+        "CpuMs": 93.75,
+        "HashThreadAllocatedBytes": 1454648,
+        "WorkingSetBefore": 35266560,
+        "WorkingSetAfter": 36499456,
+        "ProcessLifetimePeakWorkingSet": 36499456
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "SourceCommit": "d3467ea91ad916ff405705939f0c62c65e70153f",
+  "Files": [
+    ".github/workflows/wo18-windows-validation.yml",
+    "scripts/wo18-delete-crash-validation.ps1",
+    "scripts/wo18-gui-preflight.ps1",
+    "scripts/wo18-synthetic-validation.ps1",
+    "src/SmartPerformanceDoctor.App/Services/Commercial/ForensicSecureDeleteEngine.cs",
+    "src/SmartPerformanceDoctor.App/Services/Commercial/ProfessionalSecureDeleteService.cs",
+    "src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeleteAuditChain.cs",
+    "src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeleteDirectoryReview.cs",
+    "src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeleteExecutionResult.cs",
+    "src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeleteJournal.cs",
+    "src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeletePreflight.cs",
+    "src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeleteStorageProfiler.cs",
+    "src/SmartPerformanceDoctor.App/Services/SystemCare/StorageProtectionRegistry.cs",
+    "src/SmartPerformanceDoctor.App/Services/SystemCare/StorageTargetPolicy.cs",
+    "src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj",
+    "src/SmartPerformanceDoctor.App/Views/SecureDeleteCenterPage.xaml.cs",
+    "tests/SmartPerformanceDoctor.Tests/WO18DeleteTransactionsTests.cs",
+    "tests/SmartPerformanceDoctor.Tests/WO18StorageProductSafetyTests.cs",
+    "tools/SmartPerformanceDoctor.CleanupProbe/SmartPerformanceDoctor.CleanupProbe.csproj",
+    "tools/SmartPerformanceDoctor.DeleteProbe/Program.cs",
+    "tools/SmartPerformanceDoctor.DeleteProbe/SmartPerformanceDoctor.DeleteProbe.csproj",
+    "tools/SmartPerformanceDoctor.RecoverySandbox/SandboxRecovery.cs"
+  ],
+  "Count": 22
+}

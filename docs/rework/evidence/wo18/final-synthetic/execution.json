@@ -1,0 +1,10 @@
+{
+  "SourceCommit": "92c3258e998b27b5a1b51570dbd4da7fc86d4e4f",
+  "OS": "Microsoft Windows NT 10.0.26200.0",
+  "Command": "pwsh -NoProfile -File scripts/wo18-synthetic-validation.ps1 -FixtureParent <EXPLICIT_SYNTHETIC_PARENT> -OutputDirectory <EVIDENCE>",
+  "Input": "Generated 1MiB deletion fixture; generated 1MiB selected quarantine fixture",
+  "ExitCode": 0,
+  "Result": "WO18_SYNTHETIC_PASS binding=1 reconciliation=1 quarantine=1 collisionPreserved=1",
+  "ProductionFolderDeleteEnabled": false,
+  "ProductionCleanupEnabled": false
+}

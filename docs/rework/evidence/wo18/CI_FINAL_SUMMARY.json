@@ -1,0 +1,261 @@
+{
+  "SourceCommit": "d3467ea91ad916ff405705939f0c62c65e70153f",
+  "SourceTree": "70902843929bfe50e16a2892ccb2f7b0932e8c82",
+  "RunId": 38537248047,
+  "RunUrl": "https://github.com/scarlel96-design/PC-Care/actions/runs/38537248047",
+  "Status": "PASS",
+  "JobStatus": {
+    "conclusion": "success",
+    "databaseId": 38537248047,
+    "headSha": "d3467ea91ad916ff405705939f0c62c65e70153f",
+    "jobs": [
+      {
+        "completedAt": "2026-10-14T09:21:31Z",
+        "conclusion": "success",
+        "databaseId": 115763020550,
+        "name": "windows-validation",
+        "startedAt": "2026-10-14T08:44:22Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-14T08:44:24Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-14T08:44:23Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T08:44:32Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-14T08:44:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T08:45:01Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-dotnet@v4",
+            "number": 3,
+            "startedAt": "2026-10-14T08:44:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T08:45:46Z",
+            "conclusion": "success",
+            "name": "Restore",
+            "number": 4,
+            "startedAt": "2026-10-14T08:45:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T08:46:49Z",
+            "conclusion": "success",
+            "name": "Release build",
+            "number": 5,
+            "startedAt": "2026-10-14T08:45:46Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T08:50:16Z",
+            "conclusion": "success",
+            "name": "WO18 durable deletion and product safety",
+            "number": 6,
+            "startedAt": "2026-10-14T08:46:49Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T08:51:13Z",
+            "conclusion": "success",
+            "name": "Signed package, publisher, transaction, recovery and staging tests",
+            "number": 7,
+            "startedAt": "2026-10-14T08:50:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T08:51:29Z",
+            "conclusion": "success",
+            "name": "Performance diagnostics scenarios",
+            "number": 8,
+            "startedAt": "2026-10-14T08:51:13Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T08:52:03Z",
+            "conclusion": "success",
+            "name": "Read-only Windows collector smoke",
+            "number": 9,
+            "startedAt": "2026-10-14T08:51:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T08:54:41Z",
+            "conclusion": "success",
+            "name": "Diagnostic profiles and controlled workloads",
+            "number": 10,
+            "startedAt": "2026-10-14T08:52:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T08:55:08Z",
+            "conclusion": "success",
+            "name": "Synthetic recovery and UI Automation harness",
+            "number": 11,
+            "startedAt": "2026-10-14T08:54:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T08:55:38Z",
+            "conclusion": "success",
+            "name": "Separate-process termination and recovery",
+            "number": 12,
+            "startedAt": "2026-10-14T08:55:08Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T08:56:18Z",
+            "conclusion": "success",
+            "name": "Production profile and isolated test profile",
+            "number": 13,
+            "startedAt": "2026-10-14T08:55:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T08:56:52Z",
+            "conclusion": "success",
+            "name": "Vault reliability and separate-process crash recovery",
+            "number": 14,
+            "startedAt": "2026-10-14T08:56:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T09:00:03Z",
+            "conclusion": "success",
+            "name": "Authenticated generations and password crash recovery",
+            "number": 15,
+            "startedAt": "2026-10-14T08:56:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T09:04:13Z",
+            "conclusion": "success",
+            "name": "Legacy v5 transition and authenticated recovery",
+            "number": 16,
+            "startedAt": "2026-10-14T09:00:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T09:06:20Z",
+            "conclusion": "success",
+            "name": "Trusted recovery receipts and replay boundaries",
+            "number": 17,
+            "startedAt": "2026-10-14T09:04:13Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T09:09:16Z",
+            "conclusion": "success",
+            "name": "WO16 receipt reconciliation and authenticated v5 read-only recovery",
+            "number": 18,
+            "startedAt": "2026-10-14T09:06:20Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T09:10:49Z",
+            "conclusion": "success",
+            "name": "WO17 storage and file Clear qualification",
+            "number": 19,
+            "startedAt": "2026-10-14T09:09:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T09:20:10Z",
+            "conclusion": "success",
+            "name": "Full application regression",
+            "number": 20,
+            "startedAt": "2026-10-14T09:10:49Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T09:21:24Z",
+            "conclusion": "success",
+            "name": "SecurityLab regression",
+            "number": 21,
+            "startedAt": "2026-10-14T09:20:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T09:21:25Z",
+            "conclusion": "success",
+            "name": "Reject unsupported helper verb",
+            "number": 22,
+            "startedAt": "2026-10-14T09:21:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T09:21:27Z",
+            "conclusion": "success",
+            "name": "Upload test evidence",
+            "number": 23,
+            "startedAt": "2026-10-14T09:21:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T09:21:27Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-dotnet@v4",
+            "number": 45,
+            "startedAt": "2026-10-14T09:21:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T09:21:29Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 46,
+            "startedAt": "2026-10-14T09:21:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T09:21:29Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 47,
+            "startedAt": "2026-10-14T09:21:29Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/38537248047/job/115763020550"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/38537248047"
+  },
+  "Counts": {
+    "FullApplication": {
+      "Passed": 1214,
+      "Failed": 0,
+      "Skipped": 111,
+      "Total": 1325
+    },
+    "SecurityLab": {
+      "Passed": 36,
+      "Failed": 0,
+      "Skipped": 0,
+      "Total": 36
+    },
+    "WO18": {
+      "Passed": 36,
+      "Failed": 0,
+      "Skipped": 0,
+      "Total": 36
+    }
+  },
+  "Command": "gh run download 38537248047 --repo scarlel96-design/PC-Care -n wo18-windows-evidence -D <ARTIFACT_DIRECTORY>",
+  "Input": "GitHub Actions artifact for the final code source",
+  "ExitCode": 0,
+  "ActualGui": "NOT TESTED",
+  "PhysicalPowerLoss": "NOT TESTED",
+  "IndependentSid": "NOT TESTED"
+}
