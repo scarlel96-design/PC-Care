@@ -22,6 +22,7 @@ public sealed partial class UpdateTransaction
         {
             var diagnostics=DiagnoseLegacy(installRoot);
             if(diagnostics.Count!=1)return Result(diagnostics.Count>1?"MultiplePendingTransactions":"ManualReviewRequired");
+            if(HasConflictingLegacyRecovery(installRoot,transactionId))return Result("MultiplePendingTransactions");
             var diagnosis=diagnostics.Single();journalHash=diagnosis.JournalHash;
             if(diagnosis.TransactionId!=transactionId||!diagnosis.Code.StartsWith("READONLY-MANUAL-REVIEW",StringComparison.Ordinal))return Result("ManualReviewRequired");
             using var package=WindowsFileBoundary.OpenRead(Path.GetDirectoryName(Path.GetFullPath(packagePath))!,Path.GetFileName(packagePath));

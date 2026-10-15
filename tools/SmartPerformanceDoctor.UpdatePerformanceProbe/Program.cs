@@ -11,7 +11,7 @@ var policy=new PublisherTrustPolicy([new TrustedPublisherKey("WO20-Fixture","eph
 var engine=new UpdateTransaction(policy,Path.Combine(root,"work"),false){PerformanceProfile=new()};
 var process=Process.GetCurrentProcess();var cpu=process.TotalProcessorTime;var allocated=GC.GetTotalAllocatedBytes(true);var clock=Stopwatch.StartNew();
 var result=engine.Apply(Path.Combine(root,"update.spdup"),Path.Combine(root,"install"),"51.0.4");
-clock.Stop();var allocations=GC.GetTotalAllocatedBytes(true)-allocated;process.Refresh();
+clock.Stop();var cpuElapsed=(process.TotalProcessorTime-cpu).TotalMilliseconds;var allocations=GC.GetTotalAllocatedBytes(true)-allocated;process.Refresh();
 var verified=engine.InspectInstallation(Path.Combine(root,"install"));
-Console.WriteLine(JsonSerializer.Serialize(new{result.Stage,result.Code,ElapsedMs=clock.Elapsed.TotalMilliseconds,CpuMs=(process.TotalProcessorTime-cpu).TotalMilliseconds,AllocatedBytes=allocations,PeakWorkingSetBytes=process.PeakWorkingSet64,Verified=verified.Verified,Phases=engine.PerformanceProfile.Snapshot()}));
+Console.WriteLine(JsonSerializer.Serialize(new{result.Stage,result.Code,ElapsedMs=clock.Elapsed.TotalMilliseconds,CpuMs=cpuElapsed,AllocatedBytes=allocations,PeakWorkingSetBytes=process.PeakWorkingSet64,Verified=verified.Verified,Phases=engine.PerformanceProfile.Snapshot()}));
 return result.Stage==UpdateStage.Committed&&verified.Verified?0:10;

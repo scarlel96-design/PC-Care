@@ -85,6 +85,9 @@ public static class WindowsFileBoundary
 
         internal FileLease(string root, string relative, bool write, bool create, bool deletable, bool exclusive = false)
         {
+#if !PCCARE_VAULT_BOUNDARY
+            using var openingMeasurement=UpdatePerformanceProfile.Active?.Measure(create?"FileCreateAndBind":"FileOpenAndBind");
+#endif
 #if PCCARE_VAULT_BOUNDARY
             if (Path.IsPathRooted(relative) || relative.Split(['\\', '/']).Any(part =>
                     string.IsNullOrEmpty(part) || part is "." or ".." || part.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0))
@@ -182,7 +185,11 @@ public static class WindowsFileBoundary
                 finally { CryptographicOperations.ZeroMemory(buffer); System.Buffers.ArrayPool<byte>.Shared.Return(buffer); }
             }
             Stream.SetLength(Stream.Position);
+#if !PCCARE_VAULT_BOUNDARY
+            using(UpdatePerformanceProfile.Active?.Measure("PayloadFlush")) Stream.Flush(flushToDisk: true);
+#else
             Stream.Flush(flushToDisk: true);
+#endif
             source.Validate();
             Validate();
         }

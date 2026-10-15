@@ -16,6 +16,17 @@ public sealed record LegacyApprovalObservation(string RequestId, string Transact
 
 public sealed partial class UpdateTransaction
 {
+    private bool HasConflictingLegacyRecovery(string installRoot,string transactionId)
+    {
+        foreach(var directory in Directory.EnumerateDirectories(_workRoot,"tx-*"))
+        {
+            if(Path.GetFileName(directory)=="tx-"+transactionId)continue;
+            if(_strictAcl)VerifyProtectedAcl(directory);
+            if(!TryReadTrustedJournal(directory,installRoot,out var journal,out _) || journal is null ||
+                journal.Stage is not (UpdateStage.Committed or UpdateStage.Restored))return true;
+        }
+        return false;
+    }
     /// <summary>Reconcile protected approval evidence and actual bytes. Never mutate or resume work.</summary>
     public LegacyApprovalObservation InspectLegacyApproval(string installRoot, string requestPath, string expectedRequestHash)
     {
@@ -32,6 +43,7 @@ public sealed partial class UpdateTransaction
             if (request.Approval is null || !Guid.TryParseExact(request.Approval.RequestId, "N", out _)) return Review("LEGACY-REQUEST-ID");
             requestId = request.Approval.RequestId; transactionId = request.Plan.TransactionId;
             if (!Guid.TryParseExact(transactionId, "N", out _)) return Review("LEGACY-TRANSACTION-ID");
+            if(HasConflictingLegacyRecovery(installRoot,transactionId))return Review("MULTIPLE-PENDING-TRANSACTIONS");
             var receiptName = "legacy-approval-" + requestId + ".json";
             if (!File.Exists(Path.Combine(_workRoot, receiptName)))
             {

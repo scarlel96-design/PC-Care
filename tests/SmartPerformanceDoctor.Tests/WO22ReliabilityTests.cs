@@ -205,3 +205,20 @@ public sealed class WO22TrustFailureTests
         Assert.Contains(result.Targets,t=>t.Result=="SecurityChanged");Assert.False(result.CanExecute);}
     }
 }
+
+public sealed class WO22ConflictingRecoveryTests
+{
+    [Fact] public void CompanionPendingTransactionBlocksReadOnlyResumeAdvice()
+    {
+        var(f,plan,r,h)=WO22ApprovalLifecycleTests.Create();using(f){
+        Assert.Throws<IOException>(()=>f.Transaction.ExecuteLegacyRecoveryRequest(f.Install,r,h,_=>true,p=>{if(p==LegacyRestoreFaultPoint.AuthorizationVerified)throw new IOException("injected");}));
+        var id=Guid.NewGuid().ToString("N");var directory=Path.Combine(f.Work,"tx-"+id);Directory.CreateDirectory(directory);
+        using(var pin=WindowsFileBoundary.PinDirectory(directory))
+        File.WriteAllText(Path.Combine(directory,"journal.json"),JsonSerializer.Serialize(new UpdateJournal{TransactionId=id,InstallRoot=f.Install,InstallIdentity=plan.InstallIdentity,TransactionIdentity=pin.Identity,Stage=UpdateStage.Applying}));
+        var query=f.Transaction.InspectLegacyApproval(f.Install,r,h);
+        Assert.Equal(LegacyApprovalState.RecoveryReviewRequired,query.State);Assert.False(query.CanResumeRecovery);Assert.False(query.FilesVerified);
+        var review=f.Transaction.ReviewLegacyContent(f.Install,plan.TransactionId,f.Package("original-version"),"51.0.3",plan);
+        Assert.Equal("MultiplePendingTransactions",review.Result);Assert.False(review.CanExecute);
+        }
+    }
+}

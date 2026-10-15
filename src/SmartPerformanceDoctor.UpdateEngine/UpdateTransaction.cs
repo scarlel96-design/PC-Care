@@ -297,7 +297,7 @@ public sealed partial class UpdateTransaction
                     {
                         input.CopyToAsync(output.Stream,128*1024,cancellationToken).GetAwaiter().GetResult();
                         cancellationToken.ThrowIfCancellationRequested();
-                        output.Stream.Flush(flushToDisk: true);
+                        using(PerformanceProfile?.Measure("PayloadFlush"))output.Stream.Flush(flushToDisk: true);
                         output.Verify(item.Length, item.Sha256);
                     }
                     VerifyFile(stageFile, item.Length, item.Sha256);
@@ -403,6 +403,7 @@ public sealed partial class UpdateTransaction
             WriteJournal(txDir, journal);
             foreach (var item in manifest.Files)
             {
+                using var postVerification=PerformanceProfile?.Measure("PostApplyFileVerification");
                 faultInjector?.Invoke(UpdateFaultPoint.DuringPostApplyVerification);
                 prepared[item.Path].Target.Verify(item.Length,item.Sha256);
             }
