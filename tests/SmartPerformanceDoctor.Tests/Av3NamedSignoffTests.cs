@@ -14,7 +14,7 @@ public sealed class Av3NamedSignoffTests
     private const string CommitPrefix = "SmartPerformanceDoctor.AstraVault.Commit";
     private const string DryRunPrefix = "SmartPerformanceDoctor.AstraVault.DryRun";
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void NamedSignoff_M01M02Closed_CurrentEvidenceConsistent()
     {
         Assert.True(Av3PhaseGate.E91ExternalReviewFixesApplied);
@@ -41,7 +41,7 @@ public sealed class Av3NamedSignoffTests
         Assert.NotNull(typeof(IAv3CommitGuardLease));
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void NamedSignoff_DecisionRecord_NotProductionEnable()
     {
         var text = File.ReadAllText(Path.Combine(ResolveSecurityDocsRoot(), "ASTRA_VAULT_WRITER_ENABLE_DECISION_RECORD.md"));
@@ -53,7 +53,7 @@ public sealed class Av3NamedSignoffTests
         Assert.DoesNotContain("S-Class satisfied", text, StringComparison.OrdinalIgnoreCase);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void NamedSignoff_EnableFlagsRemainFalse()
     {
         Assert.False(Av3PhaseGate.ProductionWriterEnabled);
@@ -66,7 +66,7 @@ public sealed class Av3NamedSignoffTests
         Assert.True(Av3EnableReadinessChecklist.AllWriterGatesClosed);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void NamedSignoff_ExternalReviewCompletedCodeRemainsFalse()
     {
         Assert.False(Av3PhaseGate.ExternalReviewCompleted);
@@ -85,7 +85,7 @@ public sealed class Av3NamedSignoffTests
         AssertNoNamespace(typeof(SecureVaultViewModel).Assembly, DryRunPrefix);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void NamedSignoff_SpdVaultUnchanged_NoMigration()
     {
         Assert.False(Av3PhaseGate.MigrationEnabled);

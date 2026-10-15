@@ -15,7 +15,7 @@ public sealed class Av3PhaseE9Tests
     private const string DryRunPrefix = "SmartPerformanceDoctor.AstraVault.DryRun";
     private const string WriterDesignPrefix = "SmartPerformanceDoctor.AstraVault.WriterDesign";
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void PhaseGate_E9_ExternalSignoffPrep_EnableFlagsFalse()
     {
         Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);

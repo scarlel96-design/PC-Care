@@ -21,7 +21,7 @@ public sealed class Av3PhaseE62Tests
     private const string WriterDesignNamespacePrefix = "SmartPerformanceDoctor.AstraVault.WriterDesign";
     private const string SecretMarker = "X-SECRET-MARKER-E62-9c11";
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void PhaseGate_E62_ReviewFixes_ProductionStillDisabled()
     {
         Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
@@ -160,7 +160,7 @@ public sealed class Av3PhaseE62Tests
         Assert.NotEqual(Av3RecoveryClassification.NewGenerationOpen, recovery);
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void E62_E6Recovery_EqualGenerationConflictingRoot_CorruptBlocked()
     {
         var snapshot = new Av3CommitSnapshot { EqualGenerationConflictingRoot = true };
@@ -186,7 +186,7 @@ public sealed class Av3PhaseE62Tests
         Assert.Equal(Av3RecoveryClassification.PreviousGenerationOpen, Av3RollbackDetector.Classify(observation));
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void E62_Rollback_PreviousRootMismatch_MatchesE4_CorruptBlocked()
     {
         var observation = new Av3RollbackObservation

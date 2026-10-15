@@ -53,7 +53,7 @@ public sealed class UpdateRecoveryWindow : Window
                 {
                     var path=package.Text;var version=previous.Text;
                     plan=await Task.Run(()=>UpdateRecoveryCoordinator.ReviewLegacy(path,version));
-                    _status.Text=$"복원 계획: {plan.Status} · {plan.Targets.Count}개. 관리자 도구에서 대상 목록을 다시 확인하고 승인합니다.";
+                    _status.Text=$"복원 계획: {plan.Status} · {plan.Targets.Count}개. 관리자 도구에서 대상 목록을 다시 확인하고 승인합니다.\n"+string.Join("\n",plan.Targets.Select(t=>$"{t.Path} · {t.OriginalLength} bytes · {t.CurrentContentState}"));
                     execute.IsEnabled=plan.Targets.Count>0&&plan.Targets.All(t=>t.Status=="BackupVerified"&&t.CurrentContentState is "OriginalVerified" or "UpdatedVerified")&&UpdateRecoveryCoordinator.CanRequestLegacyRecovery();
                     if(!execute.IsEnabled)_status.Text+=" 신뢰된 전환 도구 또는 복원 증거의 추가 확인이 필요합니다.";
                 }
@@ -71,6 +71,13 @@ public sealed class UpdateRecoveryWindow : Window
             foreach(var control in new FrameworkElement[]{package,previous,consent,review,execute})panel.Children.Add(control);
 
         }
+        var requestId=new TextBox{Header="승인 요청 ID",PlaceholderText="32자리 요청 ID"};
+        AutomationProperties.SetAutomationId(requestId,"LegacyApprovalRequestId");
+        var query=new Button{Content="승인·복원 결과 조회 (읽기 전용)"};
+        AutomationProperties.SetAutomationId(query,"LegacyApprovalQuery");
+        query.Click+=async(_,_)=>{query.IsEnabled=false;try{var id=requestId.Text;var observation=await Task.Run(()=>UpdateRecoveryCoordinator.InspectApproval(id));_status.Text=UpdateStateText.Approval(observation);}
+            catch(Exception){_status.Text="승인 결과를 확인하지 못했습니다. 기록과 파일을 보존하며 추가 확인이 필요합니다.";}finally{query.IsEnabled=true;}};
+        panel.Children.Add(requestId);panel.Children.Add(query);
         var close = new Button { Content = "닫기" };
         AutomationProperties.SetAutomationId(close, "UpdateRecoveryClose");
         close.Click += (_, _) => { Close(); Application.Current.Exit(); };
@@ -79,7 +86,8 @@ public sealed class UpdateRecoveryWindow : Window
         Show(status);
     }
 
-    private void Show(UpdateRecoveryStatus status) => _status.Text = status.Code == "SIGNED-INSTALLATION-VERIFIED"
+    private void Show(UpdateRecoveryStatus status) => _status.Text = status.Code.StartsWith("INSTALLATION-",StringComparison.Ordinal)
+        ? UpdateStateText.Installation(status.Code) : status.Code == "SIGNED-INSTALLATION-VERIFIED"
         ? "서명된 설치 목록과 실제 파일 해시를 확인했습니다." : status.State switch
     {
         UpdateRecoveryState.NoPendingTransaction => "미완료 업데이트가 없습니다. 전체 설치 신뢰 상태는 별도로 확인합니다.",

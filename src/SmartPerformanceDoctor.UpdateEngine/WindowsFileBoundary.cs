@@ -154,7 +154,7 @@ public static class WindowsFileBoundary
                 throw new InvalidDataException("FILE-INTEGRITY");
         }
 
-        public void CopyFrom(FileLease source, Action? afterFirstWrite = null)
+        public void CopyFrom(FileLease source, Action? afterFirstWrite = null, CancellationToken cancellationToken = default)
         {
 #if !PCCARE_VAULT_BOUNDARY
             using var measurement = UpdatePerformanceProfile.Active?.Measure("CopyAndFlush");
@@ -163,7 +163,8 @@ public static class WindowsFileBoundary
             Validate();
             source.Stream.Position = 0;
             Stream.Position = 0;
-            if (afterFirstWrite is null) source.Stream.CopyTo(Stream);
+            cancellationToken.ThrowIfCancellationRequested();
+            if (afterFirstWrite is null && !cancellationToken.CanBeCanceled) source.Stream.CopyTo(Stream);
             else
             {
                 var buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(128 * 1024);
@@ -172,10 +173,11 @@ public static class WindowsFileBoundary
                     var first = true; int count;
                     while ((count = source.Stream.Read(buffer)) != 0)
                     {
+                        cancellationToken.ThrowIfCancellationRequested();
                         Stream.Write(buffer, 0, count);
-                        if (first) { first = false; afterFirstWrite(); }
+                        if (first) { first = false; afterFirstWrite?.Invoke(); }
                     }
-                    if (first) afterFirstWrite();
+                    if (first) afterFirstWrite?.Invoke();
                 }
                 finally { CryptographicOperations.ZeroMemory(buffer); System.Buffers.ArrayPool<byte>.Shared.Return(buffer); }
             }

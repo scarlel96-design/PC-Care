@@ -104,6 +104,26 @@ try
   var result=tx.ExecuteLegacyRecovery(install,fresh,Path.Combine(root,"original.spdup"),"51.0.3",fresh.ConsentBinding,true);
   Check(result.Stage==UpdateStage.RecoveryRequired&&Hash(File.ReadAllBytes(current))==before,"UNKNOWN-CONTENT-MUTATED");Print(new{Status="RecoveryReviewRequired",Before=before,After=Hash(File.ReadAllBytes(current)),ContentStates=fresh.Targets.Select(t=>t.CurrentContentState)});return 0;
  }
+ if(args[0] is "approval-query" or "approval-replay")
+ {
+  var request=Path.Combine(root,"request.json");var hash=Hash(File.ReadAllBytes(request));
+  if(args[0]=="approval-replay")
+  {var rejected=false;try{tx.ExecuteLegacyRecoveryRequest(install,request,hash,_=>true);}catch(IOException){rejected=true;}Check(rejected,"APPROVAL-REPLAY-ACCEPTED");}
+  Print(tx.InspectLegacyApproval(install,request,hash));return 0;
+ }
+ if(args[0]=="legacy-review")
+ {var plan=JsonSerializer.Deserialize<LegacyRecoveryPlan>(File.ReadAllText(Path.Combine(root,"plan.json")))!;
+  Print(tx.ReviewLegacyContent(install,plan.TransactionId,Path.Combine(root,"original.spdup"),"51.0.3",plan));return 0;}
+ if(args[0]=="trust-query"){Print(tx.InspectInstallationTrust(install));return 0;}
+ if(args[0].StartsWith("enroll-kill:",StringComparison.Ordinal))
+ {var point=args[0][12..];tx.EnrollInstallation(install,Path.Combine(root,"original.spdup"),"51.0.3",true,p=>{if(p.ToString()==point)Barrier(point);});return 13;}
+ if(args[0].StartsWith("cancel:",StringComparison.Ordinal))
+ {
+  using var cancel=new CancellationTokenSource();var point=args[0][7..];
+  var result=tx.Apply(package,install,"51.0.4",faultInjector:p=>{if(p.ToString()==point)cancel.Cancel();},cancellationToken:cancel.Token);
+  Check(result.WasCancellationRequested,"CANCELLATION-NOT-OBSERVED");
+  Print(result);return 0;
+ }
  if(args[0].StartsWith("approved",StringComparison.Ordinal))
  {
   var request=Path.Combine(root,"request.json");var point=args[0].StartsWith("approved-kill:")?args[0][14..]:"";

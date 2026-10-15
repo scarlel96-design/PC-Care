@@ -56,9 +56,16 @@ try{
   $receipt=Get-Content -LiteralPath $receiptPath -Raw | ConvertFrom-Json
   if($receipt.Source -ne $head -or $receipt.InputDigest -ne $digest){throw 'WO21_STALE_BUILD_SOURCE'}
   $actual=@(Binaries);if(($actual|ConvertTo-Json -Depth 4 -Compress) -ne ($receipt.Binaries|ForEach-Object {[ordered]@{Name=$_.Name;Hash=$_.Hash}}|ConvertTo-Json -Depth 4 -Compress)){throw 'WO21_BINARY_CHANGED'}
-  $arguments=@('test','tests/SmartPerformanceDoctor.Tests','-c','Release','-p:Platform=x64','--no-build','--no-restore','-m:1','--logger','trx;LogFileName=wo21-qualified.trx','-v:minimal')
+  $trxName='wo21-qualified-'+[guid]::NewGuid().ToString('N')+'.trx'
+  $arguments=@('test','tests/SmartPerformanceDoctor.Tests','-c','Release','-p:Platform=x64','--no-build','--no-restore','-m:1','--logger',('trx;LogFileName='+$trxName),'-v:minimal')
   if($Filter){$arguments+=@('--filter',$Filter)}
   Run 'test' $arguments
+  $trxPath=Join-Path $repo ('tests/SmartPerformanceDoctor.Tests/TestResults/'+$trxName)
+  if(!(Test-Path -LiteralPath $trxPath)){throw 'WO22_FRESH_TRX_MISSING'}
+  Copy-Item -LiteralPath $trxPath -Destination (Join-Path $output 'test.trx')
+  $testReceipt=Get-Content (Join-Path $output 'test-command.json') -Raw|ConvertFrom-Json
+  $testReceipt|Add-Member -NotePropertyName TrxFile -NotePropertyValue $trxName
+  $testReceipt|ConvertTo-Json|Set-Content (Join-Path $output 'test-command.json')
   if((Fingerprint) -ne $digest){throw 'WO21_SOURCE_CHANGED_DURING_TEST'}
   Get-Content (Join-Path $output 'test.txt') -Tail 4
  }

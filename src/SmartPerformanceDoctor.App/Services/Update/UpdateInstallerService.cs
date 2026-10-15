@@ -76,25 +76,26 @@ public sealed class UpdateInstallerService
 
     public void InvalidateInspectionCache() => _pendingSignedPackage = null;
 
-    public Task<UpdateApplyResult> ApplyAsync(UpdatePackageInspection inspection,
+    public async Task<UpdateApplyResult> ApplyAsync(UpdatePackageInspection inspection,
         IProgress<UpdateProgressReport>? progress = null, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         _ = progress;
-        var current = Inspect(inspection.PackagePath);
+        var current = await InspectAsync(inspection.PackagePath,progress,cancellationToken).ConfigureAwait(false);
         if (!current.CanApply || current.Manifest is null)
         {
             var message = current.PublisherTrust == UpdatePublisherTrustLevel.ContentVerifiedOnly
                 ? "발행자 인증이 없는 업데이트는 앱에서 적용할 수 없습니다. 공식 설치 파일로 직접 업데이트해 주세요."
                 : current.Message;
-            return Task.FromResult(new UpdateApplyResult(false, AppInfo.Version, "", message, false, 0, 0));
+            return new UpdateApplyResult(false, AppInfo.Version, "", message, false, 0, 0);
         }
         var route=BootstrapDispatch.InspectRoute(UpdatePaths.AppInstallDirectory);
         if(route.State is not (BootstrapTransitionState.BootstrapNotRequired or BootstrapTransitionState.BootstrapTransitionRequired))
-            return Task.FromResult(new UpdateApplyResult(false,AppInfo.Version,"",route.Code+" · "+route.Message,false,0,0));
+            return new UpdateApplyResult(false,AppInfo.Version,"",route.Code+" · "+route.Message,false,0,0);
+        cancellationToken.ThrowIfCancellationRequested();
         _pendingSignedPackage = current.PackagePath;
-        return Task.FromResult(new UpdateApplyResult(true, AppInfo.Version, current.Manifest.ToVersion,
-            route.Message+" Windows 관리자 승인 후 적용을 시작합니다.", true, 0, 0));
+        return new UpdateApplyResult(true, AppInfo.Version, current.Manifest.ToVersion,
+            route.Message+" Windows 관리자 승인 후 적용을 시작합니다.", true, 0, 0);
     }
 
     public static bool EnsurePendingApplyScript(string stagingDir, string toVersion)

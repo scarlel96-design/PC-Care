@@ -20,7 +20,7 @@ public sealed class Av3PhaseE8Tests
     private const string DryRunPrefix = "SmartPerformanceDoctor.AstraVault.DryRun";
     private const string SecretMarker = "X-SECRET-MARKER-E8-7a21";
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void PhaseGate_E8_LimitedDryRun_EnableFlagsFalse()
     {
         Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
@@ -203,7 +203,7 @@ public sealed class Av3PhaseE8Tests
         }
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void E8_ProductionRoute_AppHostViewModel_NoWriter()
     {
         AssertNoTypeReferences(typeof(SecureVaultService).Assembly, CommitPrefix);
@@ -213,7 +213,7 @@ public sealed class Av3PhaseE8Tests
         AssertNoTypeReferences(typeof(SecureVaultViewModel).Assembly, typeof(IAv3VaultWriter).FullName!);
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public async Task E8_DurableStore_RootEscape_Blocked()
     {
         var root = Av3DryRunScope.CreateRoot();

@@ -17,7 +17,7 @@ public sealed class Av3PhaseE14Tests
     private const string DryRunPrefix = "SmartPerformanceDoctor.AstraVault.DryRun";
     private const string DiskDurabilityPrefix = "SmartPerformanceDoctor.AstraVault.DiskDurability";
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E14_DiskDurabilityReview_PreflightEvidenceCurrent()
     {
         var sot = LoadSourceOfTruth();
@@ -301,7 +301,7 @@ public sealed class Av3PhaseE14Tests
         Assert.True(Av3DiskDurabilityInvariantValidator.ValidatePhaseGates().Passed);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E14_EnableFlagsRemainFalse()
     {
         Assert.True(Av3PhaseGate.E14DiskDurabilityReviewPackageComplete);
@@ -351,14 +351,14 @@ public sealed class Av3PhaseE14Tests
         AssertNoNamespace(typeof(SecureVaultService).Assembly, DiskDurabilityPrefix);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E14_SpdVaultUnchanged_NoMigration()
     {
         Assert.False(Av3PhaseGate.MigrationEnabled);
         Assert.False(Av3CommitRecoveryManager.PerformsAutomaticRepair);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E14_SClassStillNotSatisfied()
     {
         Assert.False(Av3PhaseGate.SClassTargetSatisfied);
@@ -395,7 +395,7 @@ public sealed class Av3PhaseE14Tests
         }
     }
 
-    [Fact(Skip = "50.4.0 production GO: stability matrix under pre-enable rules superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: stability matrix under pre-enable rules superseded")]
     public void E14_DiskDurabilityInvariant_StabilityRepeat_Skipped()
     {
     }

@@ -19,7 +19,7 @@ public sealed class Av3PhaseE6Tests
     private const string WriterDesignNamespacePrefix = "SmartPerformanceDoctor.AstraVault.WriterDesign";
     private const string SecretMarker = "X-SECRET-MARKER-E6-7f3a";
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void PhaseGate_E6_DisabledProductionWriter_NotAuthorized()
     {
         Assert.True(Av3PhaseGate.JournalLeakScannerDeterministic);
@@ -39,7 +39,7 @@ public sealed class Av3PhaseE6Tests
             || r.Contains("WriterEnableReady=false", StringComparison.Ordinal));
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void WriterFactory_ProductionCreate_Fails_WhenProductionWriterDisabled()
     {
         var result = Av3WriterHarnessFactory.TryCreateProductionRoute();
@@ -48,7 +48,7 @@ public sealed class Av3PhaseE6Tests
         Assert.Null(result.Writer);
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public async Task Orchestrator_ProductionCommit_Throws_Blocked()
     {
         var options = BuildHarnessOptions();
@@ -63,7 +63,7 @@ public sealed class Av3PhaseE6Tests
         CleanupRoot(options.VaultRoot);
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public async Task Orchestrator_ProductionOpenSession_Throws_Blocked()
     {
         var options = BuildHarnessOptions();
@@ -78,7 +78,7 @@ public sealed class Av3PhaseE6Tests
         CleanupRoot(options.VaultRoot);
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public async Task JournalRecorder_ProductionRoute_Fails_WhenJournalDisabled()
     {
         var recorder = new Av3CommitJournalRecorder(harnessRoute: false);
@@ -110,7 +110,7 @@ public sealed class Av3PhaseE6Tests
         Assert.Equal(Av3WriterAccessGate.ErrorHarnessOnly, harnessOnly.PublicErrorClass);
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public async Task DurableStore_RelativePathEscape_Blocked()
     {
         var root = IsolatedHarnessRoot();
@@ -240,7 +240,7 @@ public sealed class Av3PhaseE6Tests
         }
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public async Task E6_HeaderConflict_CorruptBlocked()
     {
         var options = BuildHarnessOptions(simulation => simulation.HeaderCopyConflict = true);
@@ -320,7 +320,7 @@ public sealed class Av3PhaseE6Tests
         }
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E6_WritePolicy_ProductionDisabled()
     {
         var policy = Av3DefaultWritePolicy.Instance;

@@ -17,7 +17,7 @@ public sealed class Av3PhaseE131Tests
     private const string CommitPrefix = "SmartPerformanceDoctor.AstraVault.Commit";
     private const string DryRunPrefix = "SmartPerformanceDoctor.AstraVault.DryRun";
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E131_TrustedAnchorSignoff_PreflightEvidenceCurrent()
     {
         var sot = LoadSourceOfTruth();
@@ -46,7 +46,7 @@ public sealed class Av3PhaseE131Tests
         Assert.Contains("IAv3TrustedAnchorProvider", text, StringComparison.Ordinal);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E131_HarnessProvider_Signed()
     {
         Assert.Equal(Av3TrustedAnchorProviderKind.HarnessSynthetic, new Av3HarnessTrustedAnchorProvider().ProviderKind);
@@ -65,7 +65,7 @@ public sealed class Av3PhaseE131Tests
         Assert.False(Av3TrustedAnchorClassifier.SameDiskAnchorCanCloseFullVaultRollback(Av3TrustedAnchorProviderKind.SameDiskLocalUntrusted));
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E131_ExternalWitnessStub_SignedButNotProductionLive()
     {
         var text = File.ReadAllText(ResolveDoc("ASTRA_VAULT_E13_1_PRODUCTION_ANCHOR_DECISION.md"));
@@ -111,7 +111,7 @@ public sealed class Av3PhaseE131Tests
         Assert.Contains("B-1", decision, StringComparison.Ordinal);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E131_ProductionAnchorImplemented_RemainsFalse()
     {
         Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
@@ -119,11 +119,11 @@ public sealed class Av3PhaseE131Tests
         Assert.False(Av3TrustedAnchorPolicy.ProductionAnchorImplemented);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E131_ProductionEnableAuthorized_RemainsFalse() =>
         Assert.False(Av3PhaseGate.ProductionEnableAuthorized);
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E131_EnableFlagsRemainFalse()
     {
         Assert.False(Av3PhaseGate.ProductionWriterEnabled);
@@ -137,14 +137,14 @@ public sealed class Av3PhaseE131Tests
         Assert.True(Av3EnableReadinessChecklist.AllWriterGatesClosed);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E131_ExternalReviewCompletedCode_RemainsFalse()
     {
         Assert.False(Av3PhaseGate.ExternalReviewCompleted);
         Assert.False(Av3EnableReadinessChecklist.ExternalReviewCompleted);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E131_XChaCha24Implemented_RemainsFalseSignedCandidate()
     {
         Assert.False(Av3PhaseGate.XChaCha24Implemented);
@@ -162,7 +162,7 @@ public sealed class Av3PhaseE131Tests
         AssertNoNamespace(typeof(SecureVaultService).Assembly, DryRunPrefix);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E131_SpdVaultUnchanged_NoMigration()
     {
         Assert.False(Av3PhaseGate.MigrationEnabled);
@@ -170,7 +170,7 @@ public sealed class Av3PhaseE131Tests
         Assert.False(Av3TrustedAnchorRecoveryPolicy.AutomaticRepairEnabled);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E131_SClassStillNotSatisfied()
     {
         Assert.False(Av3PhaseGate.SClassTargetSatisfied);
@@ -178,7 +178,7 @@ public sealed class Av3PhaseE131Tests
         Assert.Contains("NOT YET SATISFIED", text, StringComparison.Ordinal);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E131_DiskDurabilityStillOpen() =>
         Assert.False(Av3EnableReadinessChecklist.ActualDiskDurabilityReviewed);
 
@@ -191,7 +191,7 @@ public sealed class Av3PhaseE131Tests
         Assert.Contains("NO-GO", text, StringComparison.Ordinal);
     }
 
-    [Fact(Skip = "50.4.0 production GO: stability matrix under pre-enable rules superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: stability matrix under pre-enable rules superseded")]
     public void E131_StabilityRepeat_Skipped()
     {
     }

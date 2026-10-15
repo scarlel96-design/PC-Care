@@ -37,13 +37,18 @@ public sealed partial class UpdateTransaction
             return new(UpdateStage.RecoveryRequired, "LEGACY-APPROVAL-EXPIRED-OR-MISSING", request.Plan.TransactionId, 0);
         if (_strictAcl && !new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator))
             throw new UnauthorizedAccessException("LEGACY-ADMIN-REQUIRED");
+        fault?.Invoke(LegacyRestoreFaultPoint.RequestVerified);
+        if (File.Exists(Path.Combine(_workRoot,"legacy-approval-"+request.Approval!.RequestId+".json")))
+            throw new IOException("LEGACY-APPROVAL-CONSUMED; QUERY-RESULT");
         var fresh = PlanLegacyRecovery(installRoot, request.Plan.TransactionId, request.OriginalPackage, request.PackagePreviousVersion);
         if (fresh.ConsentBinding != request.Plan.ConsentBinding || fresh.Status != "ManualReviewRequired" ||
             fresh.Targets.Count == 0 || fresh.Targets.Any(t => t.Status != "BackupVerified" ||
                 t.CurrentContentState is not ("OriginalVerified" or "UpdatedVerified")))
             return new(UpdateStage.RecoveryRequired, "LEGACY-APPROVAL-SCOPE-CHANGED", request.Plan.TransactionId, 0);
+        fault?.Invoke(LegacyRestoreFaultPoint.BeforeOperatorConfirmation);
         if (!confirm(fresh))
             return new(UpdateStage.RecoveryRequired, "LEGACY-APPROVAL-CANCELLED", request.Plan.TransactionId, 0);
+        fault?.Invoke(LegacyRestoreFaultPoint.AfterOperatorConfirmation);
         if (!LegacyApprovalPolicy.IsCurrent(request.Approval, DateTimeOffset.UtcNow))
             return new(UpdateStage.RecoveryRequired, "LEGACY-APPROVAL-EXPIRED", request.Plan.TransactionId, 0);
         requestFile.Verify(requestFile.Stream.Length, expectedRequestHash);
@@ -52,17 +57,21 @@ public sealed partial class UpdateTransaction
         // CreateNew prevents reuse after success, failure, or an interrupted approval.
         using var receipt = WindowsFileBoundary.OpenExclusive(_workRoot, "legacy-approval-" + request.Approval!.RequestId + ".json", true);
         VerifyProtectedFile(receipt, _workRoot);
+        fault?.Invoke(LegacyRestoreFaultPoint.ApprovalCreated);
         var scope = new LegacyApprovalScope(request.Approval.RequestId, fresh.TransactionId, fresh.PackageIdentity,
             fresh.ConsentBinding, requestFile.Identity, expectedRequestHash, DateTimeOffset.UtcNow,
             WindowsIdentity.GetCurrent().User!.Value, Guid.NewGuid().ToString("N"), fresh.Targets);
         receipt.Stream.Write(JsonSerializer.SerializeToUtf8Bytes(scope));
         receipt.Stream.Flush(true);
+        fault?.Invoke(LegacyRestoreFaultPoint.ApprovalFlushed);
         root.Validate(); requestFile.Validate(); receipt.Validate();
         _approvedLegacyBinding.Value = fresh.ConsentBinding;
         try
         {
-            return ExecuteLegacyRecovery(installRoot, fresh, request.OriginalPackage, request.PackagePreviousVersion,
+            var result = ExecuteLegacyRecovery(installRoot, fresh, request.OriginalPackage, request.PackagePreviousVersion,
                 fresh.ConsentBinding, true, fault);
+            fault?.Invoke(LegacyRestoreFaultPoint.BeforeResultReturn);
+            return result;
         }
         finally { _approvedLegacyBinding.Value = null; }
     }

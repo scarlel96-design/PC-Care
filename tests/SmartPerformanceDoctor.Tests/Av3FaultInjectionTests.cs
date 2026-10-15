@@ -214,13 +214,13 @@ public sealed class Av3FaultInjectionTests
         Assert.DoesNotContain(SecretMarker, ex.ToString(), StringComparison.Ordinal);
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void Security_NonHarnessWriterInvocation_Blocked()
     {
         Assert.Throws<InvalidOperationException>(() => Av3ExperimentalWriterAccess.EnsureHarnessOnly(false));
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void Security_ProductionWriterGate_RemainsFalse()
     {
         Assert.False(Av3PhaseGate.ProductionWriterEnabled);
@@ -265,7 +265,7 @@ public sealed class Av3FaultInjectionTests
         Assert.Equal(2ul, parsed.TargetGeneration);
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void Recovery_EqualGenerationConflictingRoot_CorruptBlocked()
     {
         var snapshot = new Av3CommitSnapshot

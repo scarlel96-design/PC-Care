@@ -45,6 +45,21 @@ public static class UpdateRecoveryCoordinator
         catch (Exception ex) when (ex is Win32Exception or InvalidOperationException or IOException or InvalidDataException or UnauthorizedAccessException)
         { return RecoveryLaunchResult.Failed; }
     }
+    public static LegacyApprovalObservation InspectApproval(string requestId)
+    {
+        if(!Guid.TryParseExact(requestId,"N",out _))throw new InvalidDataException("요청 ID를 확인하세요.");
+        var matches=new List<(string Path,string Hash)>();
+        foreach(var path in Directory.EnumerateFiles(UpdatePaths.Inbox,"legacy-request-*.json").Take(128))
+        {
+            using var file=WindowsFileBoundary.OpenRead(UpdatePaths.Inbox,Path.GetFileName(path));
+            if(file.Stream.Length>1024*1024)continue;
+            var request=System.Text.Json.JsonSerializer.Deserialize<LegacyRestoreRequest>(file.Stream);
+            if(request?.Approval?.RequestId==requestId)matches.Add((path,file.Hash()));
+        }
+        if(matches.Count!=1)throw new InvalidDataException("단일 승인 요청을 찾지 못했습니다. 원본 기록을 보존하세요.");
+        return new UpdateTransaction(BuildPublisherTrust.Current,WorkRoot,true)
+            .InspectLegacyApproval(UpdatePaths.AppInstallDirectory,matches[0].Path,matches[0].Hash);
+    }
     public static bool CanRequestLegacyRecovery()
     {
         try { var files=BootstrapDispatch.PinBridge();foreach(var file in files)file.Dispose();return true; }

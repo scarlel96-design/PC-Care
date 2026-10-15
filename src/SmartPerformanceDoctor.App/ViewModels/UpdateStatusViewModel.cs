@@ -27,6 +27,11 @@ public sealed class UpdateStatusViewModel : ObservableObject
     private double _progress;
     private bool _isBusy;
     private bool _canApply;
+    private CancellationTokenSource? _preparationCancellation;
+    private bool _canCancelPreparation;
+    public bool CanCancelPreparation {get=>_canCancelPreparation;private set{Set(ref _canCancelPreparation,value);OnPropertyChanged(nameof(IsProgressIndeterminate));}}
+    public void CancelPreparation()=>_preparationCancellation?.Cancel();
+    public bool IsProgressIndeterminate => IsBusy && CanCancelPreparation;
     private bool _canDownloadGitHub;
     private string _githubLine = "GitHub 릴리즈를 확인하려면 [확인]을 누르세요.";
     private RemoteUpdateCheckResult? _lastGitHubCheck;
@@ -48,7 +53,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
     public string VerifyLine { get => _verifyLine; private set => Set(ref _verifyLine, value); }
     public string SelectedPackagePath { get => _selectedPackagePath; private set => Set(ref _selectedPackagePath, value); }
     public double Progress { get => _progress; private set => Set(ref _progress, value); }
-    public bool IsBusy { get => _isBusy; private set => Set(ref _isBusy, value); }
+    public bool IsBusy { get => _isBusy; private set { Set(ref _isBusy,value);OnPropertyChanged(nameof(IsProgressIndeterminate)); } }
     public bool CanApply { get => _canApply; private set => Set(ref _canApply, value); }
     public bool CanDownloadGitHub { get => _canDownloadGitHub; private set => Set(ref _canDownloadGitHub, value); }
     public RemoteUpdateCheckResult? AvailableGitHubUpdate => _lastGitHubCheck;
@@ -263,7 +268,9 @@ public sealed class UpdateStatusViewModel : ObservableObject
             return null;
         }
 
-        RunOnUi(() => BeginWork("적용", "업데이트 적용을 준비합니다…"));
+        using var preparation=CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        _preparationCancellation=preparation;cancellationToken=preparation.Token;
+        RunOnUi(() => {BeginWork("적용", "설치 변경 전 검증을 준비합니다. 이 단계에서는 취소할 수 있습니다.");CanCancelPreparation=true;});
 
         try
         {
@@ -307,6 +314,8 @@ public sealed class UpdateStatusViewModel : ObservableObject
             {
                 AppendLog("앱을 종료한 뒤 보류 파일을 적용합니다. (Program Files면 UAC 관리자 확인이 필요할 수 있습니다)");
                 RunOnUi(() => History = _channel.LoadHistory());
+                cancellationToken.ThrowIfCancellationRequested();
+                RunOnUi(()=>CanCancelPreparation=false);
                 var launch = UpdateInstallerService.LaunchPendingRestartDetailed();
                 AppendLog(launch.Code + " · " + launch.Message);
                 if (launch.ProcessLaunched)
@@ -331,6 +340,12 @@ public sealed class UpdateStatusViewModel : ObservableObject
 
             return result;
         }
+        catch(OperationCanceledException) when(cancellationToken.IsCancellationRequested)
+        {
+            _installer.InvalidateInspectionCache();
+            RunOnUi(()=>{StatusLine="설치 파일 변경 전 준비를 취소했습니다.";PhaseLine="취소됨";ActionLine="변경 전 취소";DetailLine="관리자 적용을 시작하지 않았습니다.";Progress=0;});
+            AppendLog("사용자 요청으로 적용 준비 취소");return null;
+        }
         catch (Exception ex)
         {
             RunOnUi(() =>
@@ -346,7 +361,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
         {
             RunOnUi(() =>
             {
-                IsBusy = false;
+                IsBusy = false;CanCancelPreparation=false;_preparationCancellation=null;
                 CanApply = _lastInspection?.CanApply == true;
             });
         }

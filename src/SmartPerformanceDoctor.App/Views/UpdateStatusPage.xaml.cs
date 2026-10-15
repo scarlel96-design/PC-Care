@@ -46,6 +46,8 @@ public sealed partial class UpdateStatusPage : Page
         }
     }
 
+    private void CancelPreparation(object sender,RoutedEventArgs e)=>_viewModel.CancelPreparation();
+
     private void RefreshStatus(object sender, RoutedEventArgs e)
     {
         _viewModel.Refresh();

@@ -304,7 +304,7 @@ public sealed class Av3PhaseE11Tests
         AssertNoNamespace(typeof(SecureVaultService).Assembly, DryRunPrefix);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E11_SpdVaultUnchanged_NoMigration()
     {
         Assert.False(Av3PhaseGate.MigrationEnabled);
@@ -312,7 +312,7 @@ public sealed class Av3PhaseE11Tests
         Assert.True(Av3EnableReadinessChecklist.MigrationSeparated);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E11_EnableFlagsRemainFalse()
     {
         Assert.True(Av3PhaseGate.E11AnchorHarnessEnabled);
@@ -327,7 +327,7 @@ public sealed class Av3PhaseE11Tests
         Assert.True(Av3AnchorDesignPolicy.ProductionAnchorImplementationCandidate);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E11_SClassStillNotSatisfied()
     {
         Assert.False(Av3PhaseGate.SClassTargetSatisfied);
@@ -347,7 +347,7 @@ public sealed class Av3PhaseE11Tests
         Assert.Contains("same-disk untrusted anchor alone cannot prove full-vault rollback resistance", text, StringComparison.Ordinal);
     }
 
-    [Fact(Skip = "50.4.0 production GO: stability matrix under pre-enable rules superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: stability matrix under pre-enable rules superseded")]
     public void E11_AnchorStabilityRepeat_Skipped()
     {
     }

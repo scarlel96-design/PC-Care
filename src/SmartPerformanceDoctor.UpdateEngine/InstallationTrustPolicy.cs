@@ -27,38 +27,43 @@ public sealed partial class UpdateTransaction
         {
             var result = InspectInstallation(installRoot);
             if (result.Verified) return new(InstallationTrustState.SignedInstallationVerified, true, false, result.Code);
-            var state = result.Code == "INSTALLATION-CONTENT-MISMATCH" ? InstallationTrustState.SignedInstallationMismatch :
+            if(result.Code!="RESTORED-INSTALLATION-NOT-ATTESTED" || !File.Exists(Path.Combine(_workRoot,"installation-enrollment.json")))
+            {
+            var state = result.Code is "INSTALLATION-CONTENT-MISMATCH" or "INSTALLATION-IDENTITY-MISMATCH" or "INSTALLATION-ACL-MISMATCH" or "INSTALLATION-SIGNATURE-REJECTED" ? InstallationTrustState.SignedInstallationMismatch :
                 result.RequiresReview ? InstallationTrustState.AttestationCorrupted : InstallationTrustState.MigrationReviewRequired;
             return new(state, false, true, result.Code);
+            }
         }
         if (File.Exists(Path.Combine(_workRoot, "installation-enrollment.json")))
         {
             try
             {
                 using var install = WindowsFileBoundary.PinDirectory(installRoot);
-                if (_strictAcl) ValidateProtectedSecurity(new DirectoryInfo(installRoot).GetAccessControl(), false);
+                if(_strictAcl)CheckInstallationAcl(new DirectoryInfo(installRoot).GetAccessControl());
                 using var record = WindowsFileBoundary.OpenRead(_workRoot, "installation-enrollment.json");
                 VerifyProtectedFile(record, _workRoot);
                 if (record.Stream.Length > 2 * 1024 * 1024) throw new InvalidDataException("ENROLLMENT-LIMIT");
                 using var doc = JsonDocument.Parse(record.Stream); ValidateJsonProperties(doc.RootElement);
                 var saved = doc.RootElement.Deserialize<InstallationEnrollment>()!;
-                if (saved.InstallIdentity != install.Identity || !SignedPackage.VerifyDeclaration(saved.Manifest, saved.Signature, _policy) ||
-                    saved.Files.Count != saved.Manifest.Files.Count) throw new InvalidDataException("ENROLLMENT-UNTRUSTED");
+                if(saved.InstallIdentity!=install.Identity)throw new InvalidDataException("INSTALLATION-IDENTITY-MISMATCH");
+                if(!SignedPackage.VerifyDeclaration(saved.Manifest,saved.Signature,_policy))throw new InvalidDataException("INSTALLATION-SIGNATURE-REJECTED");
+                if(saved.Files.Count!=saved.Manifest.Files.Count)throw new InvalidDataException("ENROLLMENT-SCOPE");
                 foreach (var expected in saved.Manifest.Files)
                 {
                     var bound = saved.Files.Single(f => f.Path == expected.Path);
                     if (bound.Hash != expected.Sha256 || bound.Length != expected.Length) throw new InvalidDataException("ENROLLMENT-SCOPE");
                     using var target = WindowsFileBoundary.OpenRead(installRoot, Relative(expected.Path));
-                    if (_strictAcl) ValidateProtectedSecurity(target.ReadSecurity(), false);
-                    target.Verify(expected.Length, expected.Sha256, bound.Identity);
+                    VerifyInstallationFile(target,expected.Length,expected.Sha256,bound.Identity);
                 }
                 install.Validate(); record.Validate();
                 return new(InstallationTrustState.SignedInstallationVerified, true, false, "SIGNED-ENROLLMENT-VERIFIED");
             }
             catch (JsonException) { return new(InstallationTrustState.AttestationCorrupted, false, true, "ENROLLMENT-CORRUPTED"); }
             catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException or InvalidOperationException or NullReferenceException)
-            { return new(InstallationTrustState.SignedInstallationMismatch, false, true, "ENROLLMENT-REVIEW-REQUIRED"); }
+            { return new(InstallationTrustState.SignedInstallationMismatch, false, true,ex.Message=="FILE-INTEGRITY"?"INSTALLATION-CONTENT-MISMATCH":InstallationFailureCode(ex)); }
         }
+        if(Directory.Exists(_workRoot) && Directory.EnumerateFiles(_workRoot,"installation-enrollment-*.new").Any())
+            return new(InstallationTrustState.MigrationReviewRequired,false,true,"ENROLLMENT-PREPARATION-INCOMPLETE");
         if (Directory.Exists(_workRoot) && Directory.EnumerateDirectories(_workRoot, "tx-*").Any())
             return new(InstallationTrustState.AttestationMissing, false, true, "ATTESTATION-MISSING-WITH-HISTORY");
         var existing = Directory.Exists(installRoot) && Directory.EnumerateFileSystemEntries(installRoot).Any();
@@ -67,7 +72,7 @@ public sealed partial class UpdateTransaction
     }
 
     /// <summary>Enroll matching installed bytes from a signed package. Preserve existing records.</summary>
-    public InstallationTrustDecision EnrollInstallation(string installRoot, string packagePath, string previousVersion, bool consent)
+    public InstallationTrustDecision EnrollInstallation(string installRoot, string packagePath, string previousVersion, bool consent,Action<EnrollmentFaultPoint>? fault=null)
     {
         if (!consent) return new(InstallationTrustState.MigrationReviewRequired, false, true, "ENROLLMENT-CONSENT-REQUIRED");
         if (_strictAcl)
@@ -106,12 +111,18 @@ public sealed partial class UpdateTransaction
             using var zip = new ZipArchive(package.Stream, ZipArchiveMode.Read, true);
             using var signature = zip.GetEntry(SignedPackage.SignatureName)!.Open();
             var envelope = JsonSerializer.Deserialize<SignatureEnvelope>(signature)!;
-            using var record = WindowsFileBoundary.OpenWrite(_workRoot, "installation-enrollment.json", true);
+            var pending="installation-enrollment-"+Guid.NewGuid().ToString("N")+".new";
+            using var record = WindowsFileBoundary.OpenWrite(_workRoot, pending, true);
             VerifyProtectedFile(record, _workRoot);
+            fault?.Invoke(EnrollmentFaultPoint.PreparedRecordCreated);
             record.Stream.Write(JsonSerializer.SerializeToUtf8Bytes(new InstallationEnrollment(install.Identity, verified.Manifest,
                 envelope.Signature, files, DateTimeOffset.UtcNow)));
-            record.Stream.Flush(true); record.Validate(); install.Validate(); work.Validate(); package.Validate();
+            record.Stream.Flush(true);fault?.Invoke(EnrollmentFaultPoint.RecordFlushed);
+            record.Validate(); install.Validate(); work.Validate(); package.Validate();
             foreach (var file in pinned) file.Validate();
+            record.Dispose();fault?.Invoke(EnrollmentFaultPoint.BeforeActivation);
+            File.Move(Path.Combine(_workRoot,pending),Path.Combine(_workRoot,"installation-enrollment.json"));
+            fault?.Invoke(EnrollmentFaultPoint.Activated);
             return new(InstallationTrustState.SignedInstallationVerified, true, false, "SIGNED-ENROLLMENT-CREATED");
         }
         finally { foreach (var file in pinned) file.Dispose(); }

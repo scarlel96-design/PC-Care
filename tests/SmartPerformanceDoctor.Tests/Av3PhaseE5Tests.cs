@@ -12,7 +12,7 @@ public sealed class Av3PhaseE5Tests
 {
     private const string WriterDesignNamespacePrefix = "SmartPerformanceDoctor.AstraVault.WriterDesign";
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void PhaseGate_E5_ProductionWriterDesign_NotWriterEnable()
     {
         Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
@@ -29,7 +29,7 @@ public sealed class Av3PhaseE5Tests
         Assert.True(Av3PhaseGate.HighRiskClosureGateLocked);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void WriterEnableChecklist_E5_1_HarnessClosed_NotProductionEnable()
     {
         Assert.False(Av3EnableReadinessChecklist.WriterEnableReady);
@@ -104,7 +104,7 @@ public sealed class Av3PhaseE5Tests
         }
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E5_AnchorDesign_NotImplemented()
     {
         Assert.False(Av3AnchorDesignPolicy.ProductionAnchorImplemented);

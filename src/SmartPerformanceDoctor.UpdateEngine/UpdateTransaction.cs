@@ -48,6 +48,9 @@ public sealed class UpdateFileJournal
 public sealed record TransactionResult(UpdateStage Stage, string Code, string TransactionId, int FilesApplied)
 {
     public string Failure { get; init; } = "";
+    public bool WasCancellationRequested { get; init; }
+    public bool AnyMutationStarted { get; init; }
+    public string CancellationDisposition { get; init; } = "NotRequested";
 }
 
 public enum UpdateRecoveryState
@@ -187,7 +190,17 @@ public sealed partial class UpdateTransaction
 
     public TransactionResult Apply(string packagePath, string installRoot, string currentVersion,
         Action<int>? afterFileApplied = null, Func<string, bool>? postApplyVersionCheck = null,
-        Action<UpdateFaultPoint>? faultInjector = null)
+        Action<UpdateFaultPoint>? faultInjector = null, CancellationToken cancellationToken = default)
+    {
+        if(cancellationToken.IsCancellationRequested)return new(UpdateStage.Prepared,"CANCELLED-PREPARATION","",0)
+            {WasCancellationRequested=true,CancellationDisposition="BeforeMutation"};
+        try { return ApplyCore(packagePath,installRoot,currentVersion,afterFileApplied,postApplyVersionCheck,faultInjector,cancellationToken); }
+        catch(OperationCanceledException) when(cancellationToken.IsCancellationRequested)
+        { return new(UpdateStage.Prepared,"CANCELLED-PREPARATION","",0){WasCancellationRequested=true,CancellationDisposition="BeforeMutation"}; }
+    }
+
+    private TransactionResult ApplyCore(string packagePath,string installRoot,string currentVersion,Action<int>? afterFileApplied,
+        Func<string,bool>? postApplyVersionCheck,Action<UpdateFaultPoint>? faultInjector,CancellationToken cancellationToken)
     {
         using var measurements = PerformanceProfile?.Activate();
         _journalFault = faultInjector;
@@ -215,13 +228,14 @@ public sealed partial class UpdateTransaction
         var fullPackage = Path.GetFullPath(packagePath);
         using var inputPackage = WindowsFileBoundary.OpenRead(Path.GetDirectoryName(fullPackage)!, Path.GetFileName(fullPackage));
         var packageTimer = PerformanceProfile?.Measure("PackageVerification");
-        var source = SignedPackage.Verify(inputPackage.Stream, currentVersion, _policy);
+        var source = SignedPackage.Verify(inputPackage.Stream, currentVersion, _policy, cancellationToken:cancellationToken);
         packageTimer?.Dispose();
         if (!source.CanApply || source.Manifest is null)
             return new(UpdateStage.Prepared, source.Code, "", 0);
         if (!FitsRecoveryJournal(source.Manifest, installRoot, currentVersion))
             return new(UpdateStage.Prepared, "RECOVERY-JOURNAL-LIMIT", "", 0);
         faultInjector?.Invoke(UpdateFaultPoint.AfterPackageVerification);
+        cancellationToken.ThrowIfCancellationRequested();
         if (priorJournals.Any(prior => prior.Stage == UpdateStage.Committed &&
             string.Equals(prior.PackageId, source.Manifest.PackageId, StringComparison.OrdinalIgnoreCase)))
             return new(UpdateStage.Prepared, "REPLAY", "", 0);
@@ -243,15 +257,17 @@ public sealed partial class UpdateTransaction
         var backupDir = Path.Combine(txDir, "backup");
         var retained = new List<WindowsFileBoundary.FileLease>();
         var packageIdentity = "";
+        var mutationStarted = false;
         try
         {
             faultInjector?.Invoke(UpdateFaultPoint.AfterStagingCreated);
+            cancellationToken.ThrowIfCancellationRequested();
             using (var outputPackage = WindowsFileBoundary.OpenWrite(txDir, "package.spdup", create: true))
-                outputPackage.CopyFrom(inputPackage);
+                outputPackage.CopyFrom(inputPackage,cancellationToken:cancellationToken);
             using var packageLease = WindowsFileBoundary.OpenRead(txDir, "package.spdup");
             VerifyProtectedFile(packageLease, txDir);
             packageIdentity = packageLease.Identity;
-            var stagedVerification = SignedPackage.Verify(packageLease.Stream, currentVersion, _policy);
+            var stagedVerification = SignedPackage.Verify(packageLease.Stream, currentVersion, _policy,cancellationToken:cancellationToken);
             if (!stagedVerification.CanApply || stagedVerification.Manifest is null)
             {
                 journal.Stage = UpdateStage.Restored;
@@ -279,18 +295,21 @@ public sealed partial class UpdateTransaction
                     using (var input = archive.GetEntry(item.Path)!.Open())
                     using (var output = WindowsFileBoundary.OpenWrite(stageDir, relative, create: true))
                     {
-                        input.CopyTo(output.Stream);
+                        input.CopyToAsync(output.Stream,128*1024,cancellationToken).GetAwaiter().GetResult();
+                        cancellationToken.ThrowIfCancellationRequested();
                         output.Stream.Flush(flushToDisk: true);
                         output.Verify(item.Length, item.Sha256);
                     }
                     VerifyFile(stageFile, item.Length, item.Sha256);
                     faultInjector?.Invoke(UpdateFaultPoint.DuringStageExtraction);
+                    cancellationToken.ThrowIfCancellationRequested();
                 }
             }
             journal.Stage = UpdateStage.Staged;
             WriteJournal(txDir, journal);
             foreach (var item in manifest.Files)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 using var phase = PerformanceProfile?.Measure("BackupAndIdentity");
                 var relative = Relative(item.Path);
                 var target = Resolve(installRoot, relative);
@@ -306,9 +325,10 @@ public sealed partial class UpdateTransaction
                     entry.OriginalSha256 = original.Hash();
                     using var backupLease = WindowsFileBoundary.OpenWrite(backupDir, relative, create: true);
                     VerifyProtectedFile(backupLease, Path.GetDirectoryName(backup)!);
-                    backupLease.CopyFrom(original);
+                    backupLease.CopyFrom(original,cancellationToken:cancellationToken);
                     entry.BackupIdentity = backupLease.Identity;
                     faultInjector?.Invoke(UpdateFaultPoint.DuringBackupCreation);
+                    cancellationToken.ThrowIfCancellationRequested();
                     backupLease.Verify(entry.OriginalLength, entry.OriginalSha256);
                 }
                 journal.Files.Add(entry);
@@ -317,6 +337,7 @@ public sealed partial class UpdateTransaction
             journal.Stage = UpdateStage.BackupVerified;
             WriteJournal(txDir, journal);
             faultInjector?.Invoke(UpdateFaultPoint.AfterBackupVerification);
+            cancellationToken.ThrowIfCancellationRequested();
             journal.Stage = UpdateStage.Applying;
             WriteJournal(txDir, journal); // durable before the first file mutation
             faultInjector?.Invoke(UpdateFaultPoint.AfterApplyingJournal);
@@ -356,6 +377,8 @@ public sealed partial class UpdateTransaction
                 var (sourceLease, targetLease) = prepared[entry.Path];
                 var expected = manifestByPath[entry.Path];
                 faultInjector?.Invoke(UpdateFaultPoint.BeforeReplacement);
+                if(!mutationStarted)cancellationToken.ThrowIfCancellationRequested();
+                mutationStarted=true;
                 targetLease.CopyFrom(sourceLease, entry.Existed ? null :
                     () => faultInjector?.Invoke(UpdateFaultPoint.DuringNewFileContent));
                 if (!entry.Existed) faultInjector?.Invoke(UpdateFaultPoint.BeforeNewFileVerification);
@@ -381,8 +404,7 @@ public sealed partial class UpdateTransaction
             foreach (var item in manifest.Files)
             {
                 faultInjector?.Invoke(UpdateFaultPoint.DuringPostApplyVerification);
-                retained.Single(file => file.Identity == journal.Files.Single(entry => entry.Path == item.Path).InstalledIdentity)
-                    .Verify(item.Length, item.Sha256);
+                prepared[item.Path].Target.Verify(item.Length,item.Sha256);
             }
             if (postApplyVersionCheck is not null && !postApplyVersionCheck(manifest.ToVersion))
                 throw new InvalidDataException("installed version postcondition");
@@ -391,7 +413,19 @@ public sealed partial class UpdateTransaction
             WriteJournal(txDir, journal);
             RecordInstallation(txDir, journal, manifest, packageLease.Stream);
             // Keep the package handle pinned through commit. Cleanup occurs after it closes.
-            return new(UpdateStage.Committed, "COMMITTED", id, count);
+            return new(UpdateStage.Committed, "COMMITTED", id, count)
+            {AnyMutationStarted=mutationStarted,WasCancellationRequested=cancellationToken.IsCancellationRequested,
+                CancellationDisposition=cancellationToken.IsCancellationRequested?"DeferredUntilSafeCompletion":"NotRequested"};
+        }
+        catch (OperationCanceledException) when(!mutationStarted && cancellationToken.IsCancellationRequested)
+        {
+            foreach(var file in retained)file.Dispose();retained.Clear();
+            journal.Stage=UpdateStage.Restored;journal.Failure="CANCELLED-PREPARATION";
+            try { WriteJournal(txDir,journal); }
+            catch(Exception ex) { return new(UpdateStage.RecoveryRequired,"CANCELLATION-JOURNAL-FAIL",id,0)
+                {Failure=ex.GetType().Name,WasCancellationRequested=true,CancellationDisposition="ReviewRequired"}; }
+            return new(UpdateStage.Restored,"CANCELLED-PREPARATION",id,0)
+                {WasCancellationRequested=true,CancellationDisposition="BeforeMutation"};
         }
         catch (Exception ex)
         {
@@ -404,7 +438,9 @@ public sealed partial class UpdateTransaction
             {
                 return FailureResult(journal, ex, journalError);
             }
-            return RollbackCore(txDir, installRoot, journal, faultInjector);
+            return RollbackCore(txDir, installRoot, journal, faultInjector) with
+            {AnyMutationStarted=mutationStarted,WasCancellationRequested=cancellationToken.IsCancellationRequested,
+                CancellationDisposition=cancellationToken.IsCancellationRequested?"DeferredUntilSafeCompletion":"NotRequested"};
         }
         finally
         {
@@ -425,7 +461,15 @@ public sealed partial class UpdateTransaction
         }
     }
 
-    public TransactionResult Recover(string installRoot, Action<UpdateFaultPoint>? faultInjector = null)
+    public TransactionResult Recover(string installRoot, Action<UpdateFaultPoint>? faultInjector = null,CancellationToken cancellationToken=default)
+    {
+        if(cancellationToken.IsCancellationRequested)return new(UpdateStage.RecoveryRequired,"RECOVERY-CANCELLED-BEFORE-START","",0)
+            {WasCancellationRequested=true,CancellationDisposition="BeforeRecovery"};
+        var result=RecoverCore(installRoot,faultInjector);
+        return result with {WasCancellationRequested=cancellationToken.IsCancellationRequested,
+            AnyMutationStarted=result.Code!="NO-PENDING",CancellationDisposition=cancellationToken.IsCancellationRequested?"DeferredUntilSafeCompletion":"NotRequested"};
+    }
+    private TransactionResult RecoverCore(string installRoot,Action<UpdateFaultPoint>? faultInjector)
     {
         using var measurements = PerformanceProfile?.Activate();
         _journalFault = faultInjector;
@@ -504,7 +548,24 @@ public sealed partial class UpdateTransaction
                 if (_strictAcl) VerifyProtectedAcl(dir);
                 if (journal is null)
                     return new(UpdateRecoveryState.RecoveryRequired, "JOURNAL-MISSING", "");
-                if (journal.Stage == UpdateStage.Restored) completed = true;
+                if (journal.Stage == UpdateStage.Restored)
+                {
+                    if(journal.Failure=="CANCELLED-PREPARATION")continue;
+                    try
+                    {
+                        foreach(var entry in journal.Files)
+                        {
+                            if(!entry.Existed)
+                            {if(File.Exists(Resolve(installRoot,Relative(entry.Path))))throw new InvalidDataException("RESTORED-NEW-FILE-PRESENT");continue;}
+                            using var target=WindowsFileBoundary.OpenRead(installRoot,Relative(entry.Path));
+                            if(_strictAcl)ValidateProtectedSecurity(target.ReadSecurity(),false);
+                            target.Verify(entry.OriginalLength,entry.OriginalSha256,entry.OriginalIdentity);
+                        }
+                    }
+                    catch(Exception ex) when(ex is IOException or InvalidDataException or UnauthorizedAccessException)
+                    {return new(UpdateRecoveryState.RecoveryRequired,"RESTORATION-CONTENT-REVIEW",journal.TransactionId);}
+                    completed = true;
+                }
                 else if (journal.Stage == UpdateStage.RecoveryRequired &&
                          (journal.Failure?.Contains("rollback:", StringComparison.OrdinalIgnoreCase) ?? false))
                     return new(UpdateRecoveryState.RecoveryFailed, "ROLLBACK-FAIL", journal.TransactionId);

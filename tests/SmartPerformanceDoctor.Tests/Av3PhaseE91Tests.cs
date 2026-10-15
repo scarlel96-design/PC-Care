@@ -34,7 +34,7 @@ public sealed class Av3PhaseE91Tests
         Assert.True(Av3WriterInvariantValidator.InvariantExpectWriterGatesClosed());
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E91_Documentation_CurrentEvidence_MatchesSourceOfTruth_NoStale444()
     {
         var sot = LoadSourceOfTruth();
@@ -177,7 +177,7 @@ public sealed class Av3PhaseE91Tests
         }
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void E91_CommitGuard_NonHarnessProductionRouteStillDenied()
     {
         var create = Av3WriterHarnessFactory.TryCreateProductionRoute();
@@ -188,7 +188,7 @@ public sealed class Av3PhaseE91Tests
         Assert.False(Av3PhaseGate.WriterEnableReady);
     }
 
-    [Fact(Skip = "50.4.0 production GO: stability matrix under pre-enable rules superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: stability matrix under pre-enable rules superseded")]
     public void E91_StabilityRepeat_Skipped()
     {
     }

@@ -22,7 +22,7 @@ public sealed class Av3PhaseE4Tests
 
     private const string SecretMarker = "X-SECRET-MARKER-E4-91ac";
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void PhaseGate_E4_HighRiskClosure_NotWriterEnable()
     {
         Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
@@ -99,7 +99,7 @@ public sealed class Av3PhaseE4Tests
         }
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void R2_HeaderRepair_ZeroValid_Copy_CorruptBlocked()
     {
         var plan = Av3HeaderRepairClassifier.Plan([], lastAuthenticatedGeneration: 3, activationAuthenticated: true);
@@ -145,7 +145,7 @@ public sealed class Av3PhaseE4Tests
         Assert.True(plan.StaleCopiesPresent);
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void R3_EqualGenerationDifferentRoot_CorruptBlocked()
     {
         var a = SampleValidCopies(1, 4)[0];
@@ -386,7 +386,7 @@ public sealed class Av3PhaseE4Tests
         Assert.False(bad.Passed);
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void WriterEnableChecklist_State_NoGo()
     {
         Assert.False(Av3EnableReadinessChecklist.WriterEnableReady);
@@ -404,7 +404,7 @@ public sealed class Av3PhaseE4Tests
         Assert.True(File.Exists(Path.Combine(root, "docs/security/ASTRA_VAULT_WRITER_ENABLE_CHECKLIST.md")));
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void R9_Migration_RemainsDisabled_NoWriterCollision()
     {
         Assert.False(Av3PhaseGate.MigrationEnabled);

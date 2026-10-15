@@ -1,0 +1,17 @@
+using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text.Json;
+using SmartPerformanceDoctor.UpdateEngine;
+if(args.Length!=1)return 2;
+var root=Path.GetFullPath(args[0]);var parent=Environment.GetEnvironmentVariable("RUNNER_TEMP");
+if(string.IsNullOrEmpty(parent)||!root.StartsWith(Path.GetFullPath(parent).TrimEnd('\\')+"\\",StringComparison.OrdinalIgnoreCase)||!Path.GetFileName(root).StartsWith("wo20-"))return 3;
+using var pin=WindowsFileBoundary.PinDirectory(root);
+if(File.ReadAllText(Path.Combine(root,"fixture.marker"))!="WO20_SYNTHETIC_ONLY")return 4;
+var policy=new PublisherTrustPolicy([new TrustedPublisherKey("WO20-Fixture","ephemeral","stable",File.ReadAllBytes(Path.Combine(root,"public-key.bin")))]);
+var engine=new UpdateTransaction(policy,Path.Combine(root,"work"),false){PerformanceProfile=new()};
+var process=Process.GetCurrentProcess();var cpu=process.TotalProcessorTime;var allocated=GC.GetTotalAllocatedBytes(true);var clock=Stopwatch.StartNew();
+var result=engine.Apply(Path.Combine(root,"update.spdup"),Path.Combine(root,"install"),"51.0.4");
+clock.Stop();var allocations=GC.GetTotalAllocatedBytes(true)-allocated;process.Refresh();
+var verified=engine.InspectInstallation(Path.Combine(root,"install"));
+Console.WriteLine(JsonSerializer.Serialize(new{result.Stage,result.Code,ElapsedMs=clock.Elapsed.TotalMilliseconds,CpuMs=(process.TotalProcessorTime-cpu).TotalMilliseconds,AllocatedBytes=allocations,PeakWorkingSetBytes=process.PeakWorkingSet64,Verified=verified.Verified,Phases=engine.PerformanceProfile.Snapshot()}));
+return result.Stage==UpdateStage.Committed&&verified.Verified?0:10;

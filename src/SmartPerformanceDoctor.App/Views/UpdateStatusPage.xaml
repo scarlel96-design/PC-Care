@@ -72,7 +72,9 @@
                         <TextBlock Text="업데이트 진행" Style="{StaticResource MacSectionHeaderStyle}"/>
                         <TextBlock Grid.Column="1" Text="{Binding StepLine}" Foreground="{StaticResource SpdAccentBrush}" FontWeight="SemiBold"/>
                     </Grid>
-                    <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress, Mode=OneWay}" Height="8"/>
+                    <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress, Mode=OneWay}" IsIndeterminate="{Binding IsProgressIndeterminate}" Height="8"/>
+                    <Button Content="준비 취소" IsEnabled="{Binding CanCancelPreparation}" Click="CancelPreparation"
+                            AutomationProperties.AutomationId="UpdatePreparationCancel" AutomationProperties.Name="설치 변경 전 업데이트 준비 취소"/>
                     <TextBlock Text="{Binding ActionLine}" FontWeight="SemiBold"/>
                     <TextBlock Text="{Binding DetailLine}" TextWrapping="Wrap" Style="{StaticResource MacInlineStatusTextStyle}"/>
                     <TextBlock Text="{Binding FileLine}" TextWrapping="Wrap" Foreground="{StaticResource SpdMutedTextBrush}"

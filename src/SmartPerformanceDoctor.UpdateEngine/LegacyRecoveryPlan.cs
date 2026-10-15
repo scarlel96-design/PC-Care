@@ -76,7 +76,7 @@ public sealed partial class UpdateTransaction
 }
 
 
-public enum LegacyRestoreFaultPoint { AuthorizationVerified, BeforePromotion, AfterPromotion, BeforeRestore, AfterFileRestore, BeforeRestoredJournal, AfterRestoredJournal }
+public enum LegacyRestoreFaultPoint { AuthorizationVerified, BeforePromotion, AfterPromotion, BeforeRestore, AfterFileRestore, BeforeRestoredJournal, AfterRestoredJournal, RequestVerified, BeforeOperatorConfirmation, AfterOperatorConfirmation, ApprovalCreated, ApprovalFlushed, AfterLastFileRestore, BeforeResultReturn }
 
 public sealed partial class UpdateTransaction
 {
@@ -158,9 +158,11 @@ public sealed partial class UpdateTransaction
         finally { foreach(var lease in leases) lease.Dispose(); }
         fault?.Invoke(LegacyRestoreFaultPoint.AfterPromotion);
         fault?.Invoke(LegacyRestoreFaultPoint.BeforeRestore);
+        var restoredCount=0;
         var result=RollbackCore(tx,installRoot,journal,p=>
         {
-            if(p==UpdateFaultPoint.DuringRollbackCopy) fault?.Invoke(LegacyRestoreFaultPoint.AfterFileRestore);
+            if(p==UpdateFaultPoint.DuringRollbackCopy)
+            { fault?.Invoke(LegacyRestoreFaultPoint.AfterFileRestore); if(++restoredCount==journal.Files.Count)fault?.Invoke(LegacyRestoreFaultPoint.AfterLastFileRestore); }
             if(p==UpdateFaultPoint.BeforeRestoredJournal) fault?.Invoke(LegacyRestoreFaultPoint.BeforeRestoredJournal);
         });
         if(result.Stage==UpdateStage.Restored) fault?.Invoke(LegacyRestoreFaultPoint.AfterRestoredJournal);

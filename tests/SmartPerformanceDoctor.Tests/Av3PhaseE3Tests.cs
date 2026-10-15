@@ -17,7 +17,7 @@ public sealed class Av3PhaseE3Tests
 
     private static bool KillSupported => Av3ChildProcessKillHarness.IsSupported;
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void PhaseGate_E3_ActualKillHarness_DocumentationOnly()
     {
         Assert.Contains("READ-ONLY VALIDATED", Av3PhaseGate.PhaseLabel, StringComparison.Ordinal);
@@ -216,7 +216,7 @@ public sealed class Av3PhaseE3Tests
         }
     }
 
-    [Fact(Skip = "50.4.0 production GO: disable-matrix superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: disable-matrix superseded")]
     public void HeaderCopy_Conflict_CorruptBlocked()
     {
         var root = Path.Combine(Path.GetTempPath(), "av3-e3-header-" + Guid.NewGuid().ToString("N"));

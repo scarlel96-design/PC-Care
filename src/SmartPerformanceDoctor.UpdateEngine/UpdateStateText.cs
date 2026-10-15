@@ -1,0 +1,24 @@
+namespace SmartPerformanceDoctor.UpdateEngine;
+
+public static class UpdateStateText
+{
+    public static string Installation(string code) => code switch
+    {
+        "INSTALLATION-CONTENT-MISMATCH" => "설치 파일 내용이 검증된 목록과 다릅니다. 파일과 복구 기록을 보존합니다.",
+        "INSTALLATION-IDENTITY-MISMATCH" => "설치 파일 또는 폴더가 바뀌었습니다. 원래 대상을 다시 확인해야 합니다.",
+        "INSTALLATION-ACL-MISMATCH" => "설치 위치의 접근 권한이 보호 정책과 다릅니다. 관리자 검토가 필요합니다.",
+        "INSTALLATION-SIGNATURE-REJECTED" => "설치 선언의 발행자를 인증하지 못했습니다. 일반 실행을 보류합니다.",
+        "INSTALLATION-NOT-ATTESTED" => "기존 설치에 서명된 검증 기록이 없습니다. 검증 완료 상태는 아닙니다.",
+        "CANCELLED-PREPARATION" => "설치 파일을 변경하기 전에 준비를 취소했습니다.",
+        _ => "설치 상태의 추가 확인이 필요합니다. 기존 파일과 기록을 보존합니다."
+    };
+    public static string Approval(LegacyApprovalObservation value) => value.State switch
+    {
+        LegacyApprovalState.RestorationCommitted => "복원 저널과 모든 대상 파일의 원본 해시를 확인했습니다. 결과 전달 여부는 별도로 확인합니다.",
+        LegacyApprovalState.ApprovalRequested => "승인 예약이 없습니다. 새 관리자 승인 후에만 복원을 시작할 수 있습니다.",
+        LegacyApprovalState.ApprovalReserved => "이전 승인이 소비됐지만 복원 시작은 확인되지 않았습니다. 대상 재검토와 새 승인이 필요합니다.",
+        LegacyApprovalState.RestorationInterrupted => "복원 중단 기록을 확인했습니다. 이전 승인을 재사용하지 말고 관리자 복구로 이어가세요.",
+        LegacyApprovalState.RestorationInProgress => "복원 작업이 실행 중입니다. 종료 후 상태를 다시 확인하세요.",
+        _ => "복원 완료를 확인하지 못했습니다. 파일과 승인 기록을 보존하며 수동 검토가 필요합니다."
+    };
+}

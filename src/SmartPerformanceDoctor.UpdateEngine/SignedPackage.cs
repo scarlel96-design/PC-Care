@@ -150,6 +150,9 @@ public static class SignedPackage
                 entries.Count != manifest.Files.Count + 2) return Fail("ALLOWLIST");
             long total = 0;
             var paths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(128*1024);
+            try
+            {
             foreach (var expected in manifest.Files)
             {
                 if (!SafeRelativePath(expected.Path) || !paths.Add(expected.Path) ||
@@ -160,7 +163,6 @@ public static class SignedPackage
                 total += entry.Length;
                 using var stream = entry.Open();
                 using var sha = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
-                var buffer = new byte[128 * 1024];
                 long read = 0;
                 int size;
                 while ((size = stream.Read(buffer)) > 0)
@@ -173,6 +175,8 @@ public static class SignedPackage
                 if (read != expected.Length || !Convert.ToHexString(sha.GetHashAndReset()).Equals(expected.Sha256,
                     StringComparison.OrdinalIgnoreCase)) return Fail("CONTENT-HASH");
             }
+            }
+            finally { CryptographicOperations.ZeroMemory(buffer);System.Buffers.ArrayPool<byte>.Shared.Return(buffer); }
             byte[] signature;
             try { signature = Convert.FromBase64String(envelope.Signature); }
             catch (FormatException) { return Fail("SIGNATURE-FORMAT"); }

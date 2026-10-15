@@ -114,7 +114,7 @@ public sealed class Av3PhaseE12Tests
             Av3AeadAlgorithmId.ChaCha12Transitional).Passed);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E12_ReadOnlyValidator_XChaCha24_Pass()
     {
         var plan = new Av3WritePlan
@@ -184,7 +184,7 @@ public sealed class Av3PhaseE12Tests
         Assert.StartsWith("av3_crypto_", summary, StringComparison.Ordinal);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E12_XChaCha24Implemented_RemainsFalseUntilSignoff()
     {
         Assert.True(Av3PhaseGate.E12XChaCha24ClosurePackageComplete);
@@ -193,7 +193,7 @@ public sealed class Av3PhaseE12Tests
         Assert.True(Av3PhaseGate.ChaCha12ByteNonceBelowSClass);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E12_EnableFlagsRemainFalse()
     {
         Assert.False(Av3PhaseGate.ProductionWriterEnabled);
@@ -205,15 +205,15 @@ public sealed class Av3PhaseE12Tests
         Assert.True(Av3EnableReadinessChecklist.AllWriterGatesClosed);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E12_ProductionEnableAuthorized_RemainsFalse() =>
         Assert.False(Av3PhaseGate.ProductionEnableAuthorized);
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E12_ExternalReviewCompletedCode_RemainsFalse() =>
         Assert.False(Av3PhaseGate.ExternalReviewCompleted);
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E12_ProductionAnchorImplemented_RemainsFalse() =>
         Assert.False(Av3PhaseGate.ProductionAnchorImplemented);
 
@@ -226,14 +226,14 @@ public sealed class Av3PhaseE12Tests
         AssertNoNamespace(typeof(SecureVaultService).Assembly, CommitPrefix);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E12_SpdVaultUnchanged_NoMigration()
     {
         Assert.False(Av3PhaseGate.MigrationEnabled);
         Assert.False(Av3CommitRecoveryManager.PerformsAutomaticRepair);
     }
 
-    [Fact(Skip = "50.4.0 production GO: pre-enable assertion superseded")]
+    [Fact(Skip = "Historical AV3 fixture pending review; current production gates remain disabled. Legacy reason: pre-enable assertion superseded")]
     public void E12_SClassStillNotSatisfied() =>
         Assert.False(Av3PhaseGate.SClassTargetSatisfied);
 
