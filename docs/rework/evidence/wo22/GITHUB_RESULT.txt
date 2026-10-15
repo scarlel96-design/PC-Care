@@ -10,3 +10,16 @@ EXIT CODE:0
 Final documentation/evidence publication follows the tested source.
 External WO22_FINAL_REPORT.md records final local/remote HEAD and tree.
 Earlier runs38694163708 and38695398470 were superseded and cancelled. Run38695788701 failed on empty worker-output recording. Run38699054040 failed on an old signing preparation output directory. Both failures were preserved and fixed without product-code changes.
+
+VERIFIED PUBLICATION SNAPSHOT (before this receipt commit):
+LOCAL HEAD: fe050981e82f61d7b362e30399a35d43d463d701
+REMOTE HEAD: fe050981e82f61d7b362e30399a35d43d463d701
+TREE: 641aaa447b5c0d9f540ac21b63d16a752aead004
+CHANGED BLOBS VERIFIED: 123
+SOURCE/CODE DIFFERENCE FROM CI: EMPTY
+ROLLBACK MODE:100755
+REMOTE RAW ARTIFACT CONTENTS:5 matching SHA-256 values
+COMMAND: python verify_wo22_remote.py
+EXIT CODE:0
+SCOPE: REMOTE_PUBLICATION_SNAPSHOT.json records the preceding publication commit.
+The final external report records the following receipt commit and its independently verified remote state.
