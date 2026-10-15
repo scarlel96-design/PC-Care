@@ -77,11 +77,12 @@ public sealed record LegacyJournalDiagnostic(string TransactionId, string Stage,
 
 public sealed partial class UpdateTransaction
 {
+    public UpdatePerformanceProfile? PerformanceProfile { get; set; }
     private readonly PublisherTrustPolicy _policy;
     private readonly string _workRoot;
     private readonly bool _strictAcl;
     private Action<UpdateFaultPoint>? _journalFault;
-    private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
+    private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = false };
     private const int MaxJournalFiles = 4096;
     private const int MaxJournalBytes = 1024 * 1024;
     private const int MaxFailureCharacters = 2048;
@@ -188,6 +189,7 @@ public sealed partial class UpdateTransaction
         Action<int>? afterFileApplied = null, Func<string, bool>? postApplyVersionCheck = null,
         Action<UpdateFaultPoint>? faultInjector = null)
     {
+        using var measurements = PerformanceProfile?.Activate();
         _journalFault = faultInjector;
         installRoot = Path.GetFullPath(installRoot);
         EnsureRoot(installRoot);
@@ -212,7 +214,9 @@ public sealed partial class UpdateTransaction
 
         var fullPackage = Path.GetFullPath(packagePath);
         using var inputPackage = WindowsFileBoundary.OpenRead(Path.GetDirectoryName(fullPackage)!, Path.GetFileName(fullPackage));
+        var packageTimer = PerformanceProfile?.Measure("PackageVerification");
         var source = SignedPackage.Verify(inputPackage.Stream, currentVersion, _policy);
+        packageTimer?.Dispose();
         if (!source.CanApply || source.Manifest is null)
             return new(UpdateStage.Prepared, source.Code, "", 0);
         if (!FitsRecoveryJournal(source.Manifest, installRoot, currentVersion))
@@ -256,6 +260,7 @@ public sealed partial class UpdateTransaction
                 return new(UpdateStage.Restored, "STAGED-PACKAGE-FAIL", id, 0);
             }
             var manifest = stagedVerification.Manifest;
+            var manifestByPath = manifest.Files.ToDictionary(file => file.Path, StringComparer.Ordinal);
             if (!FitsRecoveryJournal(manifest, installRoot, currentVersion))
                 throw new InvalidDataException("RECOVERY-JOURNAL-LIMIT");
             journal.ToVersion = manifest.ToVersion;
@@ -268,6 +273,7 @@ public sealed partial class UpdateTransaction
             {
                 foreach (var item in manifest.Files)
                 {
+                    using var phase = PerformanceProfile?.Measure("ExtractionAndVerification");
                     var relative = Relative(item.Path);
                     var stageFile = Resolve(stageDir, relative);
                     using (var input = archive.GetEntry(item.Path)!.Open())
@@ -285,6 +291,7 @@ public sealed partial class UpdateTransaction
             WriteJournal(txDir, journal);
             foreach (var item in manifest.Files)
             {
+                using var phase = PerformanceProfile?.Measure("BackupAndIdentity");
                 var relative = Relative(item.Path);
                 var target = Resolve(installRoot, relative);
                 GuardExistingPath(installRoot, relative);
@@ -318,7 +325,7 @@ public sealed partial class UpdateTransaction
             {
                 var relative = Relative(entry.Path);
                 GuardExistingPath(installRoot, relative);
-                var expected = manifest.Files.Single(f => f.Path == entry.Path);
+                var expected = manifestByPath[entry.Path];
                 var sourceLease = WindowsFileBoundary.OpenRead(stageDir, relative);
                 retained.Add(sourceLease);
                 VerifyProtectedFile(sourceLease, Path.GetDirectoryName(Resolve(stageDir, relative))!);
@@ -345,8 +352,9 @@ public sealed partial class UpdateTransaction
             var count = 0;
             foreach (var entry in journal.Files)
             {
+                using var phase = PerformanceProfile?.Measure("ReplacementAndVerification");
                 var (sourceLease, targetLease) = prepared[entry.Path];
-                var expected = manifest.Files.Single(file => file.Path == entry.Path);
+                var expected = manifestByPath[entry.Path];
                 faultInjector?.Invoke(UpdateFaultPoint.BeforeReplacement);
                 targetLease.CopyFrom(sourceLease, entry.Existed ? null :
                     () => faultInjector?.Invoke(UpdateFaultPoint.DuringNewFileContent));
@@ -419,6 +427,7 @@ public sealed partial class UpdateTransaction
 
     public TransactionResult Recover(string installRoot, Action<UpdateFaultPoint>? faultInjector = null)
     {
+        using var measurements = PerformanceProfile?.Activate();
         _journalFault = faultInjector;
         installRoot = Path.GetFullPath(installRoot);
         EnsureRoot(installRoot);
@@ -948,6 +957,7 @@ public sealed partial class UpdateTransaction
 
     private void WriteJournal(string directory, UpdateJournal journal)
     {
+        using var phase = PerformanceProfile?.Measure("JournalTotal");
         using var parent = WindowsFileBoundary.PinDirectory(directory);
         if (journal.TransactionIdentity != parent.Identity) throw new IOException("JOURNAL-DIRECTORY-IDENTITY");
         var path = Path.Combine(directory, "journal.json");
@@ -959,7 +969,8 @@ public sealed partial class UpdateTransaction
             previous.Validate();
         }
         if (journal.Failure.Length > MaxFailureCharacters) journal.Failure = journal.Failure[..MaxFailureCharacters];
-        var bytes = JsonSerializer.SerializeToUtf8Bytes(journal, JsonOptions);
+        byte[] bytes;
+        using(PerformanceProfile?.Measure("JournalSerialization")) bytes = JsonSerializer.SerializeToUtf8Bytes(journal, JsonOptions);
         if (journal.Files.Count > MaxJournalFiles || bytes.Length > MaxJournalBytes)
             throw new InvalidDataException("journal exceeds recovery limits");
         if (File.Exists(path))
@@ -976,7 +987,7 @@ public sealed partial class UpdateTransaction
             file.Stream.Write(bytes.AsSpan(0, midpoint));
             _journalFault?.Invoke(UpdateFaultPoint.JournalPartialWrite);
             file.Stream.Write(bytes.AsSpan(midpoint));
-            file.Stream.Flush(flushToDisk: true);
+            using(PerformanceProfile?.Measure("JournalFlush")) file.Stream.Flush(flushToDisk: true);
             _journalFault?.Invoke(UpdateFaultPoint.JournalFlushed);
             file.Validate();
         }
@@ -984,6 +995,7 @@ public sealed partial class UpdateTransaction
         // The protected parent ACL excludes unprivileged journal replacement.
         // Administrators remain inside the trust boundary during this rename.
         _journalFault?.Invoke(UpdateFaultPoint.JournalBeforeReplace);
+        using var renameTimer = PerformanceProfile?.Measure("JournalRename");
         if (File.Exists(path))
             File.Replace(Path.Combine(directory, relative), path, Path.Combine(directory, "journal.previous.json"));
         else File.Move(Path.Combine(directory, relative), path);
@@ -993,6 +1005,7 @@ public sealed partial class UpdateTransaction
     private void VerifyProtectedFile(WindowsFileBoundary.FileLease file, string directory)
     {
         if (!_strictAcl) return;
+        using var phase = PerformanceProfile?.Measure("AclAndBoundary");
         ValidateProtectedSecurity(file.ReadSecurity(), requireProtected: false);
         var current = Path.GetFullPath(directory);
         var root = _workRoot.TrimEnd(Path.DirectorySeparatorChar);

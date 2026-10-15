@@ -56,7 +56,9 @@ public sealed partial class UpdateTransaction
                     var entry=journal.Files.Single(f=>f.Path==expected.Path);
                     if(entry.NewSha256!=expected.Sha256)throw new InvalidDataException("DECLARATION-HASH");
                     using var file=WindowsFileBoundary.OpenRead(installRoot,Relative(expected.Path));
-                    file.Verify(expected.Length,expected.Sha256,entry.InstalledIdentity);
+                    try { file.Verify(expected.Length,expected.Sha256,entry.InstalledIdentity); }
+                    catch (Exception ex) when (ex is IOException or InvalidDataException)
+                    { return new(false,true,"INSTALLATION-CONTENT-MISMATCH"); }
                 }
                 install.Validate();return new(true,false,"SIGNED-INSTALLATION-VERIFIED");
             }

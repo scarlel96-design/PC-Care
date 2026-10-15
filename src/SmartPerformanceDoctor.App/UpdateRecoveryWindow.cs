@@ -53,8 +53,8 @@ public sealed class UpdateRecoveryWindow : Window
                 {
                     var path=package.Text;var version=previous.Text;
                     plan=await Task.Run(()=>UpdateRecoveryCoordinator.ReviewLegacy(path,version));
-                    _status.Text=$"복원 계획: {plan.Status} · {plan.Targets.Count}개. 실행 직전에 서명·신원·해시를 다시 검사합니다.";
-                    execute.IsEnabled=plan.Targets.Count>0&&plan.Targets.All(t=>t.Status=="BackupVerified")&&UpdateRecoveryCoordinator.CanRequestLegacyRecovery();
+                    _status.Text=$"복원 계획: {plan.Status} · {plan.Targets.Count}개. 관리자 도구에서 대상 목록을 다시 확인하고 승인합니다.";
+                    execute.IsEnabled=plan.Targets.Count>0&&plan.Targets.All(t=>t.Status=="BackupVerified"&&t.CurrentContentState is "OriginalVerified" or "UpdatedVerified")&&UpdateRecoveryCoordinator.CanRequestLegacyRecovery();
                     if(!execute.IsEnabled)_status.Text+=" 신뢰된 전환 도구 또는 복원 증거의 추가 확인이 필요합니다.";
                 }
                 catch(Exception){_status.Text="인증된 복원 계획을 확인하지 못했습니다. 원본 설치와 기록을 보존했습니다.";}

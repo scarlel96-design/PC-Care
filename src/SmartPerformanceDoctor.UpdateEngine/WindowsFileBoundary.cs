@@ -113,6 +113,9 @@ public static class WindowsFileBoundary
 
         public void Validate(string? expectedIdentity = null)
         {
+#if !PCCARE_VAULT_BOUNDARY
+            using var measurement = UpdatePerformanceProfile.Active?.Measure("FileIdentityValidation");
+#endif
             _parent.Validate();
             _publicationParent?.Validate();
             if (Check(Stream.SafeFileHandle, _path, directory: false) != Identity ||
@@ -122,6 +125,9 @@ public static class WindowsFileBoundary
 
         public FileSecurity ReadSecurity()
         {
+#if !PCCARE_VAULT_BOUNDARY
+            using var measurement = UpdatePerformanceProfile.Active?.Measure("AclRead");
+#endif
             Validate();
             var security = Stream.GetAccessControl();
             Validate();
@@ -130,6 +136,9 @@ public static class WindowsFileBoundary
 
         public string Hash()
         {
+#if !PCCARE_VAULT_BOUNDARY
+            using var measurement = UpdatePerformanceProfile.Active?.Measure("HashAndIdentity");
+#endif
             Validate();
             Stream.Position = 0;
             var hash = Convert.ToHexString(SHA256.HashData(Stream));
@@ -147,6 +156,9 @@ public static class WindowsFileBoundary
 
         public void CopyFrom(FileLease source, Action? afterFirstWrite = null)
         {
+#if !PCCARE_VAULT_BOUNDARY
+            using var measurement = UpdatePerformanceProfile.Active?.Measure("CopyAndFlush");
+#endif
             source.Validate();
             Validate();
             source.Stream.Position = 0;

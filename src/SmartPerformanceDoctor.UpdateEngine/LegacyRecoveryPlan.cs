@@ -9,6 +9,7 @@ public sealed record LegacyRecoveryTarget(string Path, string CurrentIdentity, s
 {
     public long CurrentLength { get; init; } = -1;
     public string CurrentSecurity { get; init; } = "";
+    public string CurrentContentState { get; init; } = "UnknownContent";
 }
 public sealed record LegacyRecoveryPlan(string TransactionId, string JournalHash, string InstallIdentity,
     string TransactionIdentity, string OriginalPackageHash, string OriginalVersion, string Status,
@@ -58,7 +59,8 @@ public sealed partial class UpdateTransaction
                         using var current = WindowsFileBoundary.OpenRead(installRoot, Relative(observed.Path));
                         targets.Add(new(observed.Path, observed.InstalledIdentity, observed.InstalledHash,
                             observed.BackupIdentity, expected?.Sha256 ?? "", expected?.Length ?? -1, status)
-                        { CurrentLength = current.Stream.Length, CurrentSecurity = current.ReadSecurity().GetSecurityDescriptorSddlForm(System.Security.AccessControl.AccessControlSections.All) });
+                        { CurrentLength = current.Stream.Length, CurrentSecurity = current.ReadSecurity().GetSecurityDescriptorSddlForm(System.Security.AccessControl.AccessControlSections.All),
+                            CurrentContentState = ClassifyLegacyContent(txDir, journal, observed, current.Stream.Length, expected) });
                     }
                 }
                 record.Validate(); package.Validate();
@@ -83,6 +85,8 @@ public sealed partial class UpdateTransaction
         string originalPackage, string packagePreviousVersion, string approvedBinding, bool consent,
         Action<LegacyRestoreFaultPoint>? fault = null)
     {
+        if (_strictAcl && _approvedLegacyBinding.Value != approvedBinding)
+            return new(UpdateStage.RecoveryRequired, "LEGACY-ELEVATED-APPROVAL-REQUIRED", approved.TransactionId, 0);
         var bound = Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new
         { approved.TransactionId, approved.JournalHash, approved.InstallIdentity, approved.TransactionIdentity,
             PackageHash=approved.OriginalPackageHash, approved.PackageIdentity, approved.OriginalVersion, approved.Targets })));
@@ -100,7 +104,8 @@ public sealed partial class UpdateTransaction
         VerifyProtectedFile(gate, _workRoot);
         var fresh = PlanLegacyRecovery(installRoot, approved.TransactionId, originalPackage, packagePreviousVersion);
         if (fresh.ConsentBinding != approvedBinding || fresh.Status != "ManualReviewRequired" || fresh.Targets.Count == 0 ||
-            fresh.Targets.Any(t => t.Status != "BackupVerified" || t.CurrentIdentity.Length == 0 || t.CurrentLength < 0))
+            fresh.Targets.Any(t => t.Status != "BackupVerified" || t.CurrentIdentity.Length == 0 || t.CurrentLength < 0 ||
+                t.CurrentContentState is not ("OriginalVerified" or "UpdatedVerified")))
             return new(UpdateStage.RecoveryRequired, "LEGACY-PLAN-CHANGED-OR-UNTRUSTED", approved.TransactionId, 0);
         var tx = Path.Combine(_workRoot,"tx-"+approved.TransactionId);
         foreach (var directory in Directory.EnumerateDirectories(_workRoot,"tx-*"))
@@ -163,4 +168,5 @@ public sealed partial class UpdateTransaction
     }
 }
 
-public sealed record LegacyRestoreRequest(LegacyRecoveryPlan Plan,string OriginalPackage,string PackagePreviousVersion);
+public sealed record LegacyRestoreRequest(LegacyRecoveryPlan Plan,string OriginalPackage,string PackagePreviousVersion)
+{ public LegacyApprovalIntent? Approval { get; init; } }

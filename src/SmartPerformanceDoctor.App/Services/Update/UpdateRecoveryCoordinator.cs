@@ -18,7 +18,7 @@ public static class UpdateRecoveryCoordinator
         var status=transaction.InspectRecovery(UpdatePaths.AppInstallDirectory);
         if(status.State is UpdateRecoveryState.NoPendingTransaction or UpdateRecoveryState.RecoveryCompleted)
         {
-            var attestation=transaction.InspectInstallation(UpdatePaths.AppInstallDirectory);
+            var attestation=transaction.InspectInstallationTrust(UpdatePaths.AppInstallDirectory);
             if(attestation.RequiresReview)return new(UpdateRecoveryState.RecoveryRequired,attestation.Code,"");
             if(attestation.Verified)return new(UpdateRecoveryState.NoPendingTransaction,attestation.Code,"");
         }
@@ -71,10 +71,12 @@ public static class UpdateRecoveryCoordinator
                 UpdatePaths.EnsureLayout();
                 var path=Path.Combine(UpdatePaths.Inbox,"legacy-request-"+Guid.NewGuid().ToString("N")+".json");
                 using(var file=new FileStream(path,FileMode.CreateNew,FileAccess.Write,FileShare.None))
-                {System.Text.Json.JsonSerializer.Serialize(file,new LegacyRestoreRequest(plan,Path.GetFullPath(package),previousVersion));file.Flush(true);}
+                {System.Text.Json.JsonSerializer.Serialize(file,new LegacyRestoreRequest(plan,Path.GetFullPath(package),previousVersion) { Approval = new(Guid.NewGuid().ToString("N"),DateTimeOffset.UtcNow,true) });file.Flush(true);}
+                using var requestPin=WindowsFileBoundary.OpenRead(Path.GetDirectoryName(path)!,Path.GetFileName(path));
+                var requestHash=requestPin.Hash();
                 var start=new ProcessStartInfo(Path.Combine(BootstrapDispatch.BridgeRoot,"SmartPerformanceDoctor.UpdateBridge.exe"))
                     {UseShellExecute=true,Verb="runas",WorkingDirectory=BootstrapDispatch.BridgeRoot};
-                foreach(var arg in new[]{"--legacy-restore",UpdatePaths.AppInstallDirectory,path,plan.ConsentBinding,Environment.ProcessId.ToString()})start.ArgumentList.Add(arg);
+                foreach(var arg in new[]{"--legacy-restore",UpdatePaths.AppInstallDirectory,path,requestHash,Environment.ProcessId.ToString()})start.ArgumentList.Add(arg);
                 using var child=Process.Start(start);
                 return BootstrapDispatch.Result(child is null?BootstrapTransitionState.RecoveryRequired:BootstrapTransitionState.TransitionLaunched);
             }
