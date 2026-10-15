@@ -25,6 +25,26 @@ public sealed partial class UpdateTransaction
         if(File.Exists(target))File.Replace(Path.Combine(_workRoot,name),target,Path.Combine(_workRoot,"installation-previous.json"));
         else File.Move(Path.Combine(_workRoot,name),target);
     }
+    // A later authenticated declaration supersedes historical restored bytes only for its declared paths.
+    private HashSet<string> VerifiedCurrentDeclarationPaths(string installRoot)
+    {
+        var paths=new HashSet<string>(StringComparer.Ordinal);
+        try
+        {
+            using var file=WindowsFileBoundary.OpenRead(_workRoot,"installation-current.json");
+            VerifyProtectedFile(file,_workRoot);
+            if(file.Stream.Length>4096)return paths;
+            var pointer=JsonSerializer.Deserialize<InstallationPointer>(file.Stream);
+            if(pointer is null||!Guid.TryParseExact(pointer.TransactionId,"N",out _)||!InspectInstallation(installRoot).Verified)return paths;
+            var tx=Path.Combine(_workRoot,"tx-"+pointer.TransactionId);
+            using var record=WindowsFileBoundary.OpenRead(tx,"committed-attestation.json");VerifyProtectedFile(record,tx);
+            if(record.Hash()!=pointer.AttestationHash)return paths;
+            var saved=JsonSerializer.Deserialize<CommittedInstallation>(record.Stream);
+            if(saved is not null)foreach(var entry in saved.Manifest.Files)paths.Add(entry.Path);
+        }
+        catch(Exception ex) when(ex is IOException or InvalidDataException or UnauthorizedAccessException or JsonException or InvalidOperationException){ }
+        return paths;
+    }
     /// <summary>Inspect retained signed declarations. Do not repair or update any file.</summary>
     public InstallationAttestationResult InspectInstallation(string installRoot)
     {

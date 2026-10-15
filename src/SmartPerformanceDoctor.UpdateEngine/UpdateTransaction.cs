@@ -468,7 +468,7 @@ public sealed partial class UpdateTransaction
             {WasCancellationRequested=true,CancellationDisposition="BeforeRecovery"};
         var result=RecoverCore(installRoot,faultInjector);
         return result with {WasCancellationRequested=cancellationToken.IsCancellationRequested,
-            AnyMutationStarted=result.Code!="NO-PENDING",CancellationDisposition=cancellationToken.IsCancellationRequested?"DeferredUntilSafeCompletion":"NotRequested"};
+            CancellationDisposition=cancellationToken.IsCancellationRequested?"DeferredUntilSafeCompletion":"NotRequested"};
     }
     private TransactionResult RecoverCore(string installRoot,Action<UpdateFaultPoint>? faultInjector)
     {
@@ -541,6 +541,7 @@ public sealed partial class UpdateTransaction
                 }
             }
             var completed = false;
+            var declaredCurrent=VerifiedCurrentDeclarationPaths(installRoot);
             foreach (var dir in Directory.EnumerateDirectories(_workRoot, "tx-*")
                          .OrderBy(x => x, StringComparer.Ordinal))
             {
@@ -556,6 +557,7 @@ public sealed partial class UpdateTransaction
                     {
                         foreach(var entry in journal.Files)
                         {
+                            if(declaredCurrent.Contains(entry.Path))continue;
                             if(!entry.Existed)
                             {if(File.Exists(Resolve(installRoot,Relative(entry.Path))))throw new InvalidDataException("RESTORED-NEW-FILE-PRESENT");continue;}
                             using var target=WindowsFileBoundary.OpenRead(installRoot,Relative(entry.Path));
@@ -742,6 +744,7 @@ public sealed partial class UpdateTransaction
     private TransactionResult RollbackCore(string txDir, string installRoot, UpdateJournal journal,
         Action<UpdateFaultPoint>? faultInjector = null)
     {
+        var mutationStarted=false;
         var leases = new List<(UpdateFileJournal Entry, WindowsFileBoundary.FileLease? Backup, WindowsFileBoundary.FileLease? Target)>();
         try
         {
@@ -799,12 +802,14 @@ public sealed partial class UpdateTransaction
             {
                 if (item.Entry.Existed)
                 {
+                    mutationStarted=true;
                     item.Target!.CopyFrom(item.Backup!);
                     faultInjector?.Invoke(UpdateFaultPoint.DuringRollbackCopy);
                     item.Target.Verify(item.Entry.OriginalLength, item.Entry.OriginalSha256, item.Entry.OriginalIdentity);
                 }
                 else if (item.Target is not null)
                 {
+                    mutationStarted=true;
                     item.Target.DeleteOpenedFile();
                 }
                 item.Entry.Restored = true;
@@ -814,16 +819,16 @@ public sealed partial class UpdateTransaction
             journal.Stage = UpdateStage.Restored;
             WriteJournal(txDir, journal);
             return new(UpdateStage.Restored, "ROLLED-BACK", journal.TransactionId, journal.Files.Count(f => f.Applied))
-                { Failure = journal.Failure };
+                { Failure = journal.Failure,AnyMutationStarted=mutationStarted };
         }
         catch (Exception ex)
         {
             journal.Stage = UpdateStage.RecoveryRequired;
             journal.Failure += "; rollback: " + ex.GetType().Name + ": " + ex.Message;
             try { faultInjector?.Invoke(UpdateFaultPoint.BeforeFailureJournal); WriteJournal(txDir, journal); }
-            catch (Exception journalError) { return FailureResult(journal, ex, journalError); }
+            catch (Exception journalError) { return FailureResult(journal, ex, journalError) with {AnyMutationStarted=mutationStarted}; }
             return new(UpdateStage.RecoveryRequired, "ROLLBACK-FAIL", journal.TransactionId, journal.Files.Count(f => f.Applied))
-                { Failure = journal.Failure };
+                { Failure = journal.Failure,AnyMutationStarted=mutationStarted };
         }
         finally
         {

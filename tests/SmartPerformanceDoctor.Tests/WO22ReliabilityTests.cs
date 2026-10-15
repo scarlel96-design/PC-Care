@@ -222,3 +222,23 @@ public sealed class WO22ConflictingRecoveryTests
         }
     }
 }
+
+public sealed class WO22RecoveryHistoryTests
+{
+    [Fact] public void LaterVerifiedUpdateSupersedesRestoredHistory()
+    {
+        using var f=new SignedUpdateTests.Fixture();File.WriteAllText(Path.Combine(f.Install,"app.txt"),"old");
+        var failed=f.Transaction.Apply(f.Package(),f.Install,"51.0.4",afterFileApplied:_=>throw new IOException("injected"));
+        Assert.Equal(UpdateStage.Restored,failed.Stage);
+        Assert.Equal(UpdateStage.Committed,f.Transaction.Apply(f.Package(),f.Install,"51.0.4").Stage);
+        Assert.True(f.Transaction.InspectInstallationTrust(f.Install).Verified);
+        Assert.Equal(UpdateRecoveryState.RecoveryCompleted,f.Transaction.InspectRecovery(f.Install).State);
+    }
+    [Fact] public void RejectedRecoveryDoesNotClaimMutation()
+    {
+        using var f=new SignedUpdateTests.Fixture();var tx=Path.Combine(f.Work,"tx-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(tx);
+        File.WriteAllText(Path.Combine(tx,"journal.json"),"{}");
+        var result=f.Transaction.Recover(f.Install);
+        Assert.Equal(UpdateStage.RecoveryRequired,result.Stage);Assert.False(result.AnyMutationStarted);
+    }
+}
