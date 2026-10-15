@@ -231,6 +231,7 @@ jobs:
           ./scripts/wo21-qualification-selftest.ps1 -FixtureRoot (Join-Path $env:RUNNER_TEMP 'wo21-ci-fixtures') -ReceiptDirectory artifacts/wo21-qualification
           dotnet build tools/SmartPerformanceDoctor.UpdatePerformanceProbe -c Release -p:Platform=x64 -m:1 -v:minimal
           if ($LASTEXITCODE -ne 0) { throw 'performance probe build failed' }
+          ./scripts/wo20-process-validation.ps1 -OutputDirectory artifacts/wo22-ci/recorder -ValidateRecorderOnly
           ./scripts/wo22-process-validation.ps1 -OutputDirectory artifacts/wo22-ci
           ./scripts/wo22-ui-contract.ps1
           ./scripts/wo21-test-signing.ps1 -BinaryDirectory 'C:\WO21\binaries' -GuestTestRoot 'C:\wo21-signing' -ExpectedGuestUuid PREPARED -ExpectedTestSid PREPARED | Set-Content artifacts/wo21-ci/signing-preparation.json

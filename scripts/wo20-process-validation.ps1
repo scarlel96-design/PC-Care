@@ -1,4 +1,4 @@
-param([string]$OutputDirectory="artifacts/wo20-process")
+param([string]$OutputDirectory="artifacts/wo20-process",[switch]$ValidateRecorderOnly)
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 $output=[IO.Path]::GetFullPath((Join-Path $repo $OutputDirectory))
@@ -8,6 +8,16 @@ if([string]::IsNullOrWhiteSpace($env:RUNNER_TEMP)){throw 'WO20_TEST_ROOT_REQUIRE
 $parent=[IO.Path]::GetFullPath($env:RUNNER_TEMP)
 if($parent.StartsWith((Join-Path $repo 'tests'),[StringComparison]::OrdinalIgnoreCase)){throw 'WO20_TEST_ROOT_PROTECTED'}
 New-Item -ItemType Directory -Force $parent | Out-Null
+if($ValidateRecorderOnly){
+ $empty=Join-Path $parent ('wo22-empty-worker-'+[guid]::NewGuid().ToString('N')+'.txt')
+ [IO.File]::WriteAllText($empty,'')
+ try{
+  $record=@{Output=[IO.File]::ReadAllText($empty);ExitCode=-1;Checkpoint='SyntheticRecorderOnly'}
+  if($null -eq $record.Output -or $record.Output.Length -ne 0){throw 'EMPTY_WORKER_OUTPUT_NOT_PRESERVED'}
+  @{Command='wo20-process-validation.ps1 -ValidateRecorderOnly';Input='Existing empty synthetic output file';Output=$record;ExitCode=0;Scope='Recorder only, no worker termination'}|ConvertTo-Json -Depth 4|Set-Content (Join-Path $output 'recorder-result.json')
+ }finally{Remove-Item -LiteralPath $empty}
+ 'WO22_EMPTY_WORKER_OUTPUT=PASS';return
+}
 $probe=Join-Path $repo 'tools/SmartPerformanceDoctor.WO20Probe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.WO20Probe.exe'
 $script:wo20Records=[Collections.Generic.List[object]]::new()
 function Invoke-Probe([string]$Verb,[string]$Root){
@@ -26,7 +36,7 @@ function Kill-Probe([string]$Verb,[string]$Root){
   if(!(Test-Path -LiteralPath $signal)){throw "Checkpoint not reached: $Verb $(Get-Content $err -Raw)"}
   $checkpoint=Get-Content -LiteralPath $signal -Raw
   $process.Kill();$process.WaitForExit();$code=$process.ExitCode
-  $script:wo20Records.Add(@{Command="WO20Probe $Verb <SYNTHETIC_ROOT>";Checkpoint=$checkpoint;ExitCode=$code;Output=([string](Get-Content -LiteralPath $workerOut -Raw)).Trim();Termination='Parent killed separate process';Environment='Synthetic filesystem'})
+  $script:wo20Records.Add(@{Command="WO20Probe $Verb <SYNTHETIC_ROOT>";Checkpoint=$checkpoint;ExitCode=$code;Output=[IO.File]::ReadAllText($workerOut);Termination='Parent killed separate process';Environment='Synthetic filesystem'})
   if($code -ne -1){throw "Unexpected termination exit $code"}
  }finally{if(!$process.HasExited){$process.Kill();$process.WaitForExit()};$process.Dispose()}
 }
