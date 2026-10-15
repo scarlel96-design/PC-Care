@@ -1,0 +1,9 @@
+{
+  "Command": "dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger trx;LogFileName=wo22-qualified-securitylab.trx -v:minimal",
+  "Environment": "Windows26200;24logicalCPU;external synthetic RUNNER_TEMP",
+  "End": "2026-10-15T16:39:01.5890667+00:00",
+  "Input": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+  "ExitCode": 0,
+  "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+  "Start": "2026-10-15T16:37:13.7742838+00:00"
+}

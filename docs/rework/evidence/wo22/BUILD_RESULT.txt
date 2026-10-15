@@ -1,0 +1,41 @@
+{
+  "Status": "PASS",
+  "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+  "Environment": "Local Windows26200;CI Windows26100",
+  "Records": [
+    {
+      "Command": "dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64",
+      "Environment": "Windows26200;24logicalCPU;external synthetic RUNNER_TEMP",
+      "End": "2026-10-15T16:23:00.0242715+00:00",
+      "Input": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+      "ExitCode": 0,
+      "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+      "Start": "2026-10-15T16:22:54.1442644+00:00"
+    },
+    {
+      "Command": "dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal",
+      "Environment": "Windows26200;24logicalCPU;external synthetic RUNNER_TEMP",
+      "End": "2026-10-15T16:23:53.1770623+00:00",
+      "Input": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+      "ExitCode": 0,
+      "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+      "Start": "2026-10-15T16:23:00.2848309+00:00"
+    },
+    {
+      "Command": "dotnet build tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal",
+      "InputDigest": "011417BB1CB5D097982819FBB8AD02F56D0E7FEC88DCD8B60540C7644EC192AF",
+      "End": "2026-10-15T16:24:39.2347677+00:00",
+      "Input": "",
+      "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+      "ExitCode": 0,
+      "Start": "2026-10-15T16:23:55.1894886+00:00"
+    }
+  ],
+  "Output": "Restore and Release:0warnings/0errors",
+  "CiSteps": "Restore,Release build completed successfully",
+  "LiteralLogs": [
+    "LOCAL_RESTORE_LOG.txt",
+    "LOCAL_RELEASE_LOG.txt",
+    "LOCAL_BUILD_LOG.txt"
+  ]
+}

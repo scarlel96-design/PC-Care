@@ -1,0 +1,19 @@
+{
+  "Status": "PASS",
+  "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+  "Environment": "Local Windows26200;PowerShell7",
+  "Command": "pwsh -File scripts/wo20-process-validation.ps1 -OutputDirectory artifacts/wo22-recorder-final -ValidateRecorderOnly",
+  "Input": "Owned empty synthetic output file; no worker termination",
+  "Output": {
+    "Input": "Existing empty synthetic output file",
+    "Command": "wo20-process-validation.ps1 -ValidateRecorderOnly",
+    "Output": {
+      "Output": "",
+      "Checkpoint": "SyntheticRecorderOnly",
+      "ExitCode": -1
+    },
+    "ExitCode": 0,
+    "Scope": "Recorder only, no worker termination"
+  },
+  "ExitCode": 0
+}

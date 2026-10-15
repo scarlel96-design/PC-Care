@@ -1,0 +1,1783 @@
+{
+  "Status": "PASS",
+  "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+  "Environment": "Windows CI26100;4logicalCPU",
+  "Command": "pwsh -File scripts/wo06-process-validation.ps1 -OutputDirectory artifacts/wo06-ci-process",
+  "Input": "Existing updater process interruption regression",
+  "Output": [
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\AfterPackageVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterPackageVerification",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterPackageVerification <CI_REPO>\\artifacts\\wo06-ci-process\\AfterPackageVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterPackageVerification",
+      "Output": [
+        "WO06 fixture process termination: AfterPackageVerification"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\AfterPackageVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterPackageVerification",
+      "Output": [
+        "BEFORE=NoPendingTransaction:NO-PENDING RESULT=Restored:NO-PENDING"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\AfterPackageVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterPackageVerification",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=NoPendingTransaction"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\AfterPackageVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterPackageVerification",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\AfterPackageVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterPackageVerification",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\AfterBackupVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterBackupVerification",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterBackupVerification <CI_REPO>\\artifacts\\wo06-ci-process\\AfterBackupVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterBackupVerification",
+      "Output": [
+        "WO06 fixture process termination: AfterBackupVerification"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\AfterBackupVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterBackupVerification",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:NO-PENDING"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\AfterBackupVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterBackupVerification",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\AfterBackupVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterBackupVerification",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\AfterBackupVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterBackupVerification",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\AfterApplyingJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterApplyingJournal",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterApplyingJournal <CI_REPO>\\artifacts\\wo06-ci-process\\AfterApplyingJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterApplyingJournal",
+      "Output": [
+        "WO06 fixture process termination: AfterApplyingJournal"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\AfterApplyingJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterApplyingJournal",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\AfterApplyingJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterApplyingJournal",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\AfterApplyingJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterApplyingJournal",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\AfterApplyingJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterApplyingJournal",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileIntent <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+      "Output": [
+        "WO06 fixture process termination: AfterNewFileIntent"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIntent",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileCreated <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+      "Output": [
+        "WO06 fixture process termination: AfterNewFileCreated"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-orphan <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted ORPHANS=1"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileCreated",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileIdentity <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+      "Output": [
+        "WO06 fixture process termination: AfterNewFileIdentity"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileIdentity",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\DuringNewFileContent",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\DuringNewFileContent",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:DuringNewFileContent <CI_REPO>\\artifacts\\wo06-ci-process\\DuringNewFileContent",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\DuringNewFileContent",
+      "Output": [
+        "WO06 fixture process termination: DuringNewFileContent"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\DuringNewFileContent",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\DuringNewFileContent",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\DuringNewFileContent",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\DuringNewFileContent",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\DuringNewFileContent",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\DuringNewFileContent",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\DuringNewFileContent",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\DuringNewFileContent",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileVerification",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:BeforeNewFileVerification <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileVerification",
+      "Output": [
+        "WO06 fixture process termination: BeforeNewFileVerification"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileVerification",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileVerification",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileVerification",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileVerification",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileVerification",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileVerification <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileVerification",
+      "Output": [
+        "WO06 fixture process termination: AfterNewFileVerification"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileVerification",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileVerification",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileVerification",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileVerification",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:BeforeNewFileRename <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+      "Output": [
+        "WO06 fixture process termination: BeforeNewFileRename"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeNewFileRename",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterNewFileRename <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+      "Output": [
+        "WO06 fixture process termination: AfterNewFileRename"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterNewFileRename",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\AfterFirstReplacement",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterFirstReplacement",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterFirstReplacement <CI_REPO>\\artifacts\\wo06-ci-process\\AfterFirstReplacement",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterFirstReplacement",
+      "Output": [
+        "WO06 fixture process termination: AfterFirstReplacement"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\AfterFirstReplacement",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterFirstReplacement",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\AfterFirstReplacement",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterFirstReplacement",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\AfterFirstReplacement",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterFirstReplacement",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\AfterFirstReplacement",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterFirstReplacement",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\AfterLastReplacement",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterLastReplacement",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:AfterLastReplacement <CI_REPO>\\artifacts\\wo06-ci-process\\AfterLastReplacement",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterLastReplacement",
+      "Output": [
+        "WO06 fixture process termination: AfterLastReplacement"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\AfterLastReplacement",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterLastReplacement",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\AfterLastReplacement",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterLastReplacement",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\AfterLastReplacement",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterLastReplacement",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\AfterLastReplacement",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\AfterLastReplacement",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\DuringPostApplyVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\DuringPostApplyVerification",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:DuringPostApplyVerification <CI_REPO>\\artifacts\\wo06-ci-process\\DuringPostApplyVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\DuringPostApplyVerification",
+      "Output": [
+        "WO06 fixture process termination: DuringPostApplyVerification"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\DuringPostApplyVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\DuringPostApplyVerification",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\DuringPostApplyVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\DuringPostApplyVerification",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\DuringPostApplyVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\DuringPostApplyVerification",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\DuringPostApplyVerification",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\DuringPostApplyVerification",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\JournalTempCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalTempCreated",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalTempCreated <CI_REPO>\\artifacts\\wo06-ci-process\\JournalTempCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalTempCreated",
+      "Output": [
+        "WO06 fixture process termination: JournalTempCreated"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\JournalTempCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalTempCreated",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\JournalTempCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalTempCreated",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\JournalTempCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalTempCreated",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\JournalTempCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalTempCreated",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalPartialWrite <CI_REPO>\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+      "Output": [
+        "WO06 fixture process termination: JournalPartialWrite"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalPartialWrite",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\JournalFlushed",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalFlushed",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalFlushed <CI_REPO>\\artifacts\\wo06-ci-process\\JournalFlushed",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalFlushed",
+      "Output": [
+        "WO06 fixture process termination: JournalFlushed"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\JournalFlushed",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalFlushed",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\JournalFlushed",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalFlushed",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\JournalFlushed",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalFlushed",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\JournalFlushed",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalFlushed",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalBeforeReplace <CI_REPO>\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+      "Output": [
+        "WO06 fixture process termination: JournalBeforeReplace"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalBeforeReplace",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:JournalAfterReplace <CI_REPO>\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+      "Output": [
+        "WO06 fixture process termination: JournalAfterReplace"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\JournalAfterReplace",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe kill:BeforeCommittedJournal <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+      "Output": [
+        "WO06 fixture process termination: BeforeCommittedJournal"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\BeforeCommittedJournal",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare <CI_REPO>\\artifacts\\wo06-ci-process\\rollback-reentry",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\rollback-reentry",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill <CI_REPO>\\artifacts\\wo06-ci-process\\rollback-reentry",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\rollback-reentry",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill <CI_REPO>\\artifacts\\wo06-ci-process\\rollback-reentry",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\rollback-reentry",
+      "Output": [
+        "WO05 synthetic termination during rollback copy"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\rollback-reentry",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\rollback-reentry",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\rollback-reentry",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\rollback-reentry",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:AfterRollbackStarted <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+      "Output": [
+        "WO06 synthetic recovery termination: AfterRollbackStarted"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-AfterRollbackStarted",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:BeforeRestoredJournal <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+      "Output": [
+        "WO06 synthetic recovery termination: BeforeRestoredJournal"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-BeforeRestoredJournal",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalTempCreated <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalTempCreated"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalTempCreated",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalPartialWrite <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalPartialWrite"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalPartialWrite",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalFlushed <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalFlushed"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalFlushed",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalBeforeReplace <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalBeforeReplace"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalBeforeReplace",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-kill:JournalAfterReplace <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalAfterReplace"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\recovery-JournalAfterReplace",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalTempCreated <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalTempCreated"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalTempCreated",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalPartialWrite <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalPartialWrite"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalPartialWrite",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalFlushed <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalFlushed"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalFlushed",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalBeforeReplace <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalBeforeReplace"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+      "Output": [
+        "BEFORE=RecoveryAvailable:PENDING RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalBeforeReplace",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply-kill <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+      "Output": [
+        "WO04 isolated synthetic process termination"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover-final-kill:JournalAfterReplace <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+      "Output": [
+        "WO06 synthetic recovery termination: JournalAfterReplace"
+      ],
+      "ExitCode": -1,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+      "Output": [
+        "BEFORE=RecoveryCompleted:RESTORED RESULT=Restored:NO-PENDING"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\restored-journal-JournalAfterReplace",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\detached-image",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\detached-image",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\detached-image",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\detached-image",
+      "Output": [
+        "RESULT=RecoveryRequired:ROLLBACK-FAIL FAILURE=IOException: FILE-OPEN: The process cannot access the file because it is being used by another process.; rollback: IOException: FILE-OPEN: The process cannot access the file because it is being used by another process."
+      ],
+      "ExitCode": 5,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\detached-image",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\detached-image",
+      "Output": [
+        "BEFORE=RecoveryFailed:ROLLBACK-FAIL RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\detached-image",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\detached-image",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\detached-image",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\detached-image",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\detached-image",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\detached-image",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe prepare-self <CI_REPO>\\artifacts\\wo06-ci-process\\dll-handle-lock",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\dll-handle-lock",
+      "Output": [
+        "PREPARED old vault-marker"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\dll-handle-lock",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\dll-handle-lock",
+      "Output": [
+        "RESULT=RecoveryRequired:ROLLBACK-FAIL FAILURE=IOException: FILE-OPEN: The process cannot access the file because it is being used by another process.; rollback: IOException: FILE-OPEN: The process cannot access the file because it is being used by another process."
+      ],
+      "ExitCode": 5,
+      "Expected": "NONZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe recover <CI_REPO>\\artifacts\\wo06-ci-process\\dll-handle-lock",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\dll-handle-lock",
+      "Output": [
+        "BEFORE=RecoveryFailed:ROLLBACK-FAIL RESULT=Restored:ROLLED-BACK"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify <CI_REPO>\\artifacts\\wo06-ci-process\\dll-handle-lock",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\dll-handle-lock",
+      "Output": [
+        "APP=old VAULT=vault-marker STATUS=RecoveryCompleted"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe apply <CI_REPO>\\artifacts\\wo06-ci-process\\dll-handle-lock",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\dll-handle-lock",
+      "Output": [
+        "RESULT=Committed:COMMITTED FAILURE="
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    },
+    {
+      "Command": "<CI_REPO>\\tests\\SmartPerformanceDoctor.UpdateRecoveryProbe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.UpdateRecoveryProbe.exe verify-updated <CI_REPO>\\artifacts\\wo06-ci-process\\dll-handle-lock",
+      "Input": "<CI_REPO>\\artifacts\\wo06-ci-process\\dll-handle-lock",
+      "Output": [
+        "DETACHED_IMAGE_UPDATE=HASH-MATCH; DATA=PRESERVED"
+      ],
+      "ExitCode": 0,
+      "Expected": "ZERO"
+    }
+  ],
+  "ExitCode": 0
+}

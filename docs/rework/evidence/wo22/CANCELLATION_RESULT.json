@@ -1,0 +1,124 @@
+{
+  "Status": "PASS",
+  "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+  "Environment": "Windows CI26100;4logicalCPU",
+  "Command": "Qualified application tests and WO20Probe cancel:<checkpoint> <SYNTHETIC_ROOT>",
+  "Input": "Cancellation in preparation; cancellation after mutation; rejected recovery",
+  "Output": {
+    "Tests": [
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22RecoveryHistoryTests.RejectedRecoveryDoesNotClaimMutation",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.0213955",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.MutationCancellationDefersUntilVerifiedCommit(point: AfterFirstReplacement)",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.5731662",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.MutationCancellationDefersUntilVerifiedCommit(point: BeforeCommittedJournal)",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.8482134",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.PreparationCancellationPreservesExistingFiles(point: DuringBackupCreation)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.8447825",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.PreparationCancellationPreservesExistingFiles(point: DuringStageExtraction)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.5010861",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.PreparationCancellationPreservesExistingFiles(point: BeforeReplacement)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.8684255",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.PreparationCancellationPreservesExistingFiles(point: AfterStagingCreated)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.2412433",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.PreparationCancellationPreservesExistingFiles(point: AfterBackupVerification)",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.0184194",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.PreparationCancellationPreservesExistingFiles(point: AfterPackageVerification)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.0260452",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.RecoveryCancellationAfterStartCompletesVerifiedRestoration",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.5565233",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.PreparationCancellationPreservesExistingFiles(point: AfterApplyingJournal)",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.0787556",
+        "Reason": null
+      }
+    ],
+    "Process": [
+      {
+        "Input": "cancel:AfterPackageVerification",
+        "Command": "WO20Probe cancel:AfterPackageVerification <SYNTHETIC_ROOT>",
+        "Output": "{\"Stage\":0,\"Code\":\"CANCELLED-PREPARATION\",\"TransactionId\":\"\",\"FilesApplied\":0,\"Failure\":\"\",\"WasCancellationRequested\":true,\"AnyMutationStarted\":false,\"CancellationDisposition\":\"BeforeMutation\"}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "cancel:DuringStageExtraction",
+        "Command": "WO20Probe cancel:DuringStageExtraction <SYNTHETIC_ROOT>",
+        "Output": "{\"Stage\":9,\"Code\":\"CANCELLED-PREPARATION\",\"TransactionId\":\"e84cbcc3772541028ef14917523ac4e2\",\"FilesApplied\":0,\"Failure\":\"\",\"WasCancellationRequested\":true,\"AnyMutationStarted\":false,\"CancellationDisposition\":\"BeforeMutation\"}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "cancel:DuringBackupCreation",
+        "Command": "WO20Probe cancel:DuringBackupCreation <SYNTHETIC_ROOT>",
+        "Output": "{\"Stage\":9,\"Code\":\"CANCELLED-PREPARATION\",\"TransactionId\":\"dcb06a4d959246b4b17202221c88ac72\",\"FilesApplied\":0,\"Failure\":\"\",\"WasCancellationRequested\":true,\"AnyMutationStarted\":false,\"CancellationDisposition\":\"BeforeMutation\"}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "cancel:BeforeReplacement",
+        "Command": "WO20Probe cancel:BeforeReplacement <SYNTHETIC_ROOT>",
+        "Output": "{\"Stage\":9,\"Code\":\"CANCELLED-PREPARATION\",\"TransactionId\":\"9b7c8bc89e5e47a8805822d56adec2e7\",\"FilesApplied\":0,\"Failure\":\"\",\"WasCancellationRequested\":true,\"AnyMutationStarted\":false,\"CancellationDisposition\":\"BeforeMutation\"}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "cancel:AfterFirstReplacement",
+        "Command": "WO20Probe cancel:AfterFirstReplacement <SYNTHETIC_ROOT>",
+        "Output": "{\"Stage\":6,\"Code\":\"COMMITTED\",\"TransactionId\":\"28029544f60340c5b5331b590ac403e8\",\"FilesApplied\":2,\"Failure\":\"\",\"WasCancellationRequested\":true,\"AnyMutationStarted\":true,\"CancellationDisposition\":\"DeferredUntilSafeCompletion\"}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "cancel:BeforeCommittedJournal",
+        "Command": "WO20Probe cancel:BeforeCommittedJournal <SYNTHETIC_ROOT>",
+        "Output": "{\"Stage\":6,\"Code\":\"COMMITTED\",\"TransactionId\":\"c23546dd730445b799a9a9b0b1310eb0\",\"FilesApplied\":2,\"Failure\":\"\",\"WasCancellationRequested\":true,\"AnyMutationStarted\":true,\"CancellationDisposition\":\"DeferredUntilSafeCompletion\"}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      }
+    ],
+    "Fields": "WasCancellationRequested,AnyMutationStarted,CancellationDisposition",
+    "Policy": "Before mutation: preserve installation. After mutation: finish commit or rollback."
+  },
+  "ExitCode": 0
+}

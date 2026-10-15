@@ -1,0 +1,14 @@
+{
+  "Status": "PASS",
+  "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+  "Command": "DiagnosticsProbe 30 artifacts/wo07-ci/measurement.json",
+  "Input": "Read-only Windows CI collection",
+  "Output": {
+    "os": "Microsoft Windows NT 10.0.26100.0",
+    "logicalProcessors": 4,
+    "traceEvent": "3.2.8.0",
+    "elevated": true
+  },
+  "ExitCode": 0,
+  "Environment": "GitHub Windows runner"
+}

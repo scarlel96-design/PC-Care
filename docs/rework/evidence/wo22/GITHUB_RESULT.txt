@@ -1,0 +1,12 @@
+STATUS: PASS for code publication and Windows CI
+BRANCH: codex/pccare-wo22-recovery-state-product-reliability
+CI SOURCE: 14ebea0b79d8df25f17a223cb6730bf5c95a21ee
+CI SOURCE TREE: e8993f20533ff4255e25f6a48474ca6e56606a08
+CI: 38768349299 SUCCESS
+CI URL: https://github.com/scarlel96-design/PC-Care/actions/runs/38768349299
+COMMAND: gh run view 38768349299 --json status,conclusion,headSha,url
+OUTPUT: completed;success;14ebea0b79d8df25f17a223cb6730bf5c95a21ee
+EXIT CODE:0
+Final documentation/evidence publication follows the tested source.
+External WO22_FINAL_REPORT.md records final local/remote HEAD and tree.
+Earlier runs38694163708 and38695398470 were superseded and cancelled. Run38695788701 failed on empty worker-output recording. Run38699054040 failed on an old signing preparation output directory. Both failures were preserved and fixed without product-code changes.

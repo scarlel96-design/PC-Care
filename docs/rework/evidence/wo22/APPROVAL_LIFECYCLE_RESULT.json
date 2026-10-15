@@ -1,0 +1,397 @@
+{
+  "Status": "PASS",
+  "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+  "Environment": "Windows CI26100;4logicalCPU",
+  "Command": "WO20Probe approval-query / approval-replay <SYNTHETIC_ROOT>",
+  "Input": "Bound RequestId after each actual worker termination",
+  "Output": {
+    "States": {
+      "0": "ApprovalRequested",
+      "1": "ApprovalReserved",
+      "2": "RestorationInterrupted",
+      "3": "RestorationInProgress",
+      "4": "RestorationCommitted",
+      "5": "RecoveryReviewRequired"
+    },
+    "Records": [
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"e8a67c7e717a413aa1f72b1f0f366af1\",\"TransactionId\":\"8a7516e89eba4f368377ff91894930ec\",\"State\":0,\"Code\":\"APPROVAL-NOT-RESERVED\",\"LastCheckpoint\":\"RequestOnly\",\"ApprovalConsumed\":false,\"CanResumeRecovery\":false,\"RequiresNewApproval\":true,\"FilesVerified\":false,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"e8a67c7e717a413aa1f72b1f0f366af1\",\"TransactionId\":\"8a7516e89eba4f368377ff91894930ec\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-replay",
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"e8a67c7e717a413aa1f72b1f0f366af1\",\"TransactionId\":\"8a7516e89eba4f368377ff91894930ec\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"cd859f6bb751420fae59fed55edac511\",\"TransactionId\":\"866749612f594878af4cb91329e9b6bf\",\"State\":0,\"Code\":\"APPROVAL-NOT-RESERVED\",\"LastCheckpoint\":\"RequestOnly\",\"ApprovalConsumed\":false,\"CanResumeRecovery\":false,\"RequiresNewApproval\":true,\"FilesVerified\":false,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"cd859f6bb751420fae59fed55edac511\",\"TransactionId\":\"866749612f594878af4cb91329e9b6bf\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-replay",
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"cd859f6bb751420fae59fed55edac511\",\"TransactionId\":\"866749612f594878af4cb91329e9b6bf\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"dedf3ac7c50345b990a60086240826ff\",\"TransactionId\":\"5f8279f80f9f46fd946e28a62bf53e13\",\"State\":0,\"Code\":\"APPROVAL-NOT-RESERVED\",\"LastCheckpoint\":\"RequestOnly\",\"ApprovalConsumed\":false,\"CanResumeRecovery\":false,\"RequiresNewApproval\":true,\"FilesVerified\":false,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"dedf3ac7c50345b990a60086240826ff\",\"TransactionId\":\"5f8279f80f9f46fd946e28a62bf53e13\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-replay",
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"dedf3ac7c50345b990a60086240826ff\",\"TransactionId\":\"5f8279f80f9f46fd946e28a62bf53e13\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"286d8b25042040998f02e80e8cd47123\",\"TransactionId\":\"00ee4b28766442c09f6f42859be0329f\",\"State\":5,\"Code\":\"LEGACY-QUERY-REVIEW-REQUIRED\",\"LastCheckpoint\":\"Unverified\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":true,\"FilesVerified\":false,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"acc108cc1e974ec9ab19df88031d7206\",\"TransactionId\":\"00ee4b28766442c09f6f42859be0329f\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-replay",
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"acc108cc1e974ec9ab19df88031d7206\",\"TransactionId\":\"00ee4b28766442c09f6f42859be0329f\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"ced79de170294819b7a72fe837c3f11a\",\"TransactionId\":\"aeb13b6e28064023b38dbeffd12bec9a\",\"State\":1,\"Code\":\"APPROVAL-CONSUMED-NEW-REQUEST-REQUIRED\",\"LastCheckpoint\":\"Applying\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":true,\"FilesVerified\":false,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-replay",
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"ced79de170294819b7a72fe837c3f11a\",\"TransactionId\":\"aeb13b6e28064023b38dbeffd12bec9a\",\"State\":1,\"Code\":\"APPROVAL-CONSUMED-NEW-REQUEST-REQUIRED\",\"LastCheckpoint\":\"Applying\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":true,\"FilesVerified\":false,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"2420372328fd431b873c6013409d46bc\",\"TransactionId\":\"aeb13b6e28064023b38dbeffd12bec9a\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-replay",
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"2420372328fd431b873c6013409d46bc\",\"TransactionId\":\"aeb13b6e28064023b38dbeffd12bec9a\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"4bc91590393b4a2cad45ab72e4a17446\",\"TransactionId\":\"695aece107444b2c847e99cd301db632\",\"State\":1,\"Code\":\"APPROVAL-CONSUMED-NEW-REQUEST-REQUIRED\",\"LastCheckpoint\":\"Applying\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":true,\"FilesVerified\":false,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-replay",
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"4bc91590393b4a2cad45ab72e4a17446\",\"TransactionId\":\"695aece107444b2c847e99cd301db632\",\"State\":1,\"Code\":\"APPROVAL-CONSUMED-NEW-REQUEST-REQUIRED\",\"LastCheckpoint\":\"Applying\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":true,\"FilesVerified\":false,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"9477ebcd2a8f4ef98f93322cec331d93\",\"TransactionId\":\"695aece107444b2c847e99cd301db632\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-replay",
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"9477ebcd2a8f4ef98f93322cec331d93\",\"TransactionId\":\"695aece107444b2c847e99cd301db632\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"b602d2bdd5a3446e8feb4f09d0bf7407\",\"TransactionId\":\"7ae8db39944a4d3fb937eddb7298ea78\",\"State\":2,\"Code\":\"RESTORATION-REQUERY-RESUME-REQUIRED\",\"LastCheckpoint\":\"RollbackPending\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":true,\"RequiresNewApproval\":false,\"FilesVerified\":false,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"b602d2bdd5a3446e8feb4f09d0bf7407\",\"TransactionId\":\"7ae8db39944a4d3fb937eddb7298ea78\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-replay",
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"b602d2bdd5a3446e8feb4f09d0bf7407\",\"TransactionId\":\"7ae8db39944a4d3fb937eddb7298ea78\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"e6bc85ab0c8547d8bfcbcdd060dcae7a\",\"TransactionId\":\"fbf9e21a20fa43e1809e463189f627f3\",\"State\":2,\"Code\":\"RESTORATION-REQUERY-RESUME-REQUIRED\",\"LastCheckpoint\":\"RollingBack\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":true,\"RequiresNewApproval\":false,\"FilesVerified\":false,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"e6bc85ab0c8547d8bfcbcdd060dcae7a\",\"TransactionId\":\"fbf9e21a20fa43e1809e463189f627f3\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-replay",
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"e6bc85ab0c8547d8bfcbcdd060dcae7a\",\"TransactionId\":\"fbf9e21a20fa43e1809e463189f627f3\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"0dbf61ae9e9145cc99f7ba049f4132e5\",\"TransactionId\":\"3fe58c6ab5214437bbad511220d833f9\",\"State\":2,\"Code\":\"RESTORATION-REQUERY-RESUME-REQUIRED\",\"LastCheckpoint\":\"RollingBack\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":true,\"RequiresNewApproval\":false,\"FilesVerified\":false,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"0dbf61ae9e9145cc99f7ba049f4132e5\",\"TransactionId\":\"3fe58c6ab5214437bbad511220d833f9\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-replay",
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"0dbf61ae9e9145cc99f7ba049f4132e5\",\"TransactionId\":\"3fe58c6ab5214437bbad511220d833f9\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"d610bfb01f77446cb6e3c15e431ba867\",\"TransactionId\":\"54117c70fe11480f821496b3f915e7cf\",\"State\":2,\"Code\":\"RESTORATION-REQUERY-RESUME-REQUIRED\",\"LastCheckpoint\":\"RollingBack\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":true,\"RequiresNewApproval\":false,\"FilesVerified\":false,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"d610bfb01f77446cb6e3c15e431ba867\",\"TransactionId\":\"54117c70fe11480f821496b3f915e7cf\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-replay",
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"d610bfb01f77446cb6e3c15e431ba867\",\"TransactionId\":\"54117c70fe11480f821496b3f915e7cf\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"7019f413f8e241af85ab645fea94c962\",\"TransactionId\":\"19736c22fa8b487db4f4a2bb20212bf6\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"7019f413f8e241af85ab645fea94c962\",\"TransactionId\":\"19736c22fa8b487db4f4a2bb20212bf6\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-replay",
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"7019f413f8e241af85ab645fea94c962\",\"TransactionId\":\"19736c22fa8b487db4f4a2bb20212bf6\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"4ad7cd9a492a4554af8b950a0e797d6b\",\"TransactionId\":\"c81ea404f5364ed0a967ac2ec95016c2\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-query",
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"4ad7cd9a492a4554af8b950a0e797d6b\",\"TransactionId\":\"c81ea404f5364ed0a967ac2ec95016c2\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "approval-replay",
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Output": "{\"RequestId\":\"4ad7cd9a492a4554af8b950a0e797d6b\",\"TransactionId\":\"c81ea404f5364ed0a967ac2ec95016c2\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      }
+    ],
+    "UnitTests": [
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ConflictingRecoveryTests.CompanionPendingTransactionBlocksReadOnlyResumeAdvice",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.3505703",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.CompletedApprovalReplayCannotStartAnotherRestore",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.8831876",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: AfterPromotion, consumed: True, committed: False)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.9282135",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: ApprovalCreated, consumed: True, committed: False)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.9549560",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: ApprovalFlushed, consumed: True, committed: False)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.6025625",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: BeforeRestoredJournal, consumed: True, committed: False)",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.6898074",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.UnreservedRequestDoesNotProveMutationOrConsent",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.5358843",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: AfterFileRestore, consumed: True, committed: False)",
+        "Outcome": "Passed",
+        "Duration": "00:00:05.2071515",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: BeforeOperatorConfirmation, consumed: False, committed: False)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.9890455",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalReplayTests.ConcurrentDuplicateApprovalCannotReserveTwice",
+        "Outcome": "Passed",
+        "Duration": "00:00:02.2439869",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: BeforeResultReturn, consumed: True, committed: True)",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.0908849",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: AfterLastFileRestore, consumed: True, committed: False)",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.7106491",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: RequestVerified, consumed: False, committed: False)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.6614314",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: AfterOperatorConfirmation, consumed: False, committed: False)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.8024007",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EmptyOrCorruptedReservationNeverProvesRestoration",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.8418109",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.CompletedJournalWithChangedBytesIsNotSuccess",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.8189419",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: BeforePromotion, consumed: True, committed: False)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.8903610",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: AfterRestoredJournal, consumed: True, committed: True)",
+        "Outcome": "Passed",
+        "Duration": "00:00:06.8654152",
+        "Reason": null
+      }
+    ],
+    "CallerAcknowledged": "null; response delivery not proven"
+  },
+  "ExitCode": 0
+}

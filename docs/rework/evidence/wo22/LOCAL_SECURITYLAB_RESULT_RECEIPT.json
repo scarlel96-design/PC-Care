@@ -1,0 +1,29 @@
+{
+  "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+  "Command": "dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger trx;LogFileName=wo22-qualified-securitylab.trx -v:minimal",
+  "Start": "2026-10-15T16:37:13.7742838+00:00",
+  "End": "2026-10-15T16:39:01.5890667+00:00",
+  "ExitCode": 0,
+  "Environment": "Windows26200;24logicalCPU;external synthetic RUNNER_TEMP",
+  "CopiedFreshResultSha256": "5efce4c7f4dc1a9bd979fab20eacccda030ae9d86ff166264fa927daf205e1fe",
+  "Counters": {
+    "total": "36",
+    "executed": "36",
+    "passed": "36",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "OutputWarning": "The existing SecurityLab TRX was overwritten by this actual fresh execution. The warning remains in the literal log.",
+  "ProductBuildWarnings": "Restore/Release zero; this test-result overwrite warning is separate."
+}

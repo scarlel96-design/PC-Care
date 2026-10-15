@@ -1,0 +1,9 @@
+{
+  "Source": "094562d1405e8d77be0389f42b29372b5be297a3",
+  "Environment": "Local PowerShell7 on Windows26200",
+  "Command": "pwsh -NoProfile -File wo22-empty-output-repro.ps1",
+  "Input": "New empty synthetic worker output; old Get-Content Raw cast and Trim",
+  "Output": "InvalidOperation: <WORKSPACE>\\wo22-empty-output-repro.ps1:4\r\nLine |\r\n   4 |  try{([string](Get-Content -LiteralPath $path -Raw)).Trim()}finally{Re …\r\n     |      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~에서\r\n     | null 값 식에서 메서드를 호출할 수 없습니다.\r\n",
+  "ExitCode": 1,
+  "ExpectedFailure": true
+}

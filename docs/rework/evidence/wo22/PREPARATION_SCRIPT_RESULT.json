@@ -1,0 +1,34 @@
+{
+  "Source": "02c140c430bcb83e47919fc4fbd1a1790d93a045",
+  "Command": "PowerShell Language.Parser.ParseFile for existing VM/signing and active qualification scripts",
+  "Input": "Read-only syntax check; no Execute flag",
+  "Output": [
+    {
+      "File": "scripts/wo21-prepare-vm.ps1",
+      "SyntaxErrors": [],
+      "Sha256": "1945CAFB724124FC5D4803F53FAA6CC553B4A59B383DAF6171D3FC11996E908E"
+    },
+    {
+      "File": "scripts/wo21-test-signing.ps1",
+      "SyntaxErrors": [],
+      "Sha256": "39A9FBD7B9953DA817048C638EA51C89D7E35FE509951C1610EEF26E4BBDB377"
+    },
+    {
+      "File": "scripts/wo21-qualification.ps1",
+      "SyntaxErrors": [],
+      "Sha256": "1267B14C80BD6EB8E822697A1219F76EB1F675CBAF6DD87580EC9A5D2D4DC7BF"
+    },
+    {
+      "File": "scripts/wo22-process-validation.ps1",
+      "SyntaxErrors": [],
+      "Sha256": "61A33C9C4DE97F0004DF48EB2A1150AE09A6CA08475ADBB635289461EB0D654D"
+    },
+    {
+      "File": "scripts/wo22-ui-contract.ps1",
+      "SyntaxErrors": [],
+      "Sha256": "62773D9FD5F408B58777D7B28DF8CAFE69B44639F9DE95F55F9C13CB8414ACD8"
+    }
+  ],
+  "ExitCode": 0,
+  "Environment": "Local PowerShell7; no VM execution"
+}

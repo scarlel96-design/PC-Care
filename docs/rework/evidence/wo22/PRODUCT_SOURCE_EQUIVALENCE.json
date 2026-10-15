@@ -1,0 +1,9 @@
+{
+  "Status": "PASS",
+  "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+  "Environment": "Local Git source comparison",
+  "Command": "git diff 02c140c430bcb83e47919fc4fbd1a1790d93a045 14ebea0b79d8df25f17a223cb6730bf5c95a21ee -- src tests tools",
+  "Input": "Measured implementation and final harness-fix qualification source",
+  "Output": "EMPTY: only scripts/wo20-process-validation.ps1 and WO22 workflow changed",
+  "ExitCode": 0
+}

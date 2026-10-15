@@ -1,0 +1,43 @@
+{
+  "Status": "FAIL reproduced; correction locally verified; final CI recorded separately",
+  "FailedRun": {
+    "id": 38695788701,
+    "head_sha": "02c140c430bcb83e47919fc4fbd1a1790d93a045",
+    "conclusion": "failure",
+    "html_url": "https://github.com/scarlel96-design/PC-Care/actions/runs/38695788701"
+  },
+  "Environment": "GitHub Windows runner and local PowerShell7",
+  "Command": "gh run view 38695788701 --log-failed; separate-process empty-output reproduction",
+  "Input": "Worker termination can precede stdout emission after checkpoint signal creation",
+  "Output": {
+    "FocusedCasesPassed": 72,
+    "FailedStep": "WO21 approval, trust, process and preparation qualification",
+    "LiteralFailure": "You cannot call a method on a null-valued expression.",
+    "Location": "scripts/wo20-process-validation.ps1:29",
+    "RootCause": "Get-Content -Raw returns a null-like string for an empty file; Trim fails despite the string cast.",
+    "Correction": "Record File.ReadAllText output, including an exact empty string.",
+    "ChangedSource": "094562d1405e8d77be0389f42b29372b5be297a3",
+    "ProductSourceDifference": "EMPTY for src/tests/tools"
+  },
+  "ExitCode": 1,
+  "LocalReproduction": {
+    "Source": "094562d1405e8d77be0389f42b29372b5be297a3",
+    "Environment": "Local PowerShell7 on Windows26200",
+    "Command": "pwsh -NoProfile -File wo22-empty-output-repro.ps1",
+    "Input": "New empty synthetic worker output; old Get-Content Raw cast and Trim",
+    "Output": "InvalidOperation: <WORKSPACE>\\wo22-empty-output-repro.ps1:4\r\nLine |\r\n   4 |  try{([string](Get-Content -LiteralPath $path -Raw)).Trim()}finally{Re \u2026\r\n     |      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\uc5d0\uc11c\r\n     | null \uac12 \uc2dd\uc5d0\uc11c \uba54\uc11c\ub4dc\ub97c \ud638\ucd9c\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4.\r\n",
+    "ExitCode": 1,
+    "ExpectedFailure": true
+  },
+  "CorrectionCheck": {
+    "Command": "wo20-process-validation.ps1 -ValidateRecorderOnly",
+    "Output": {
+      "Output": "",
+      "Checkpoint": "SyntheticRecorderOnly",
+      "ExitCode": -1
+    },
+    "Input": "Existing empty synthetic output file",
+    "ExitCode": 0,
+    "Scope": "Recorder only, no worker termination"
+  }
+}

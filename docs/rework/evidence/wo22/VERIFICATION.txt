@@ -1,0 +1,211 @@
+WORK ITEM: WO22 Recovery State Closure & Product Reliability Advancement
+STATUS: PARTIAL
+PHASE 1: NO-GO
+BRANCH: codex/pccare-wo22-recovery-state-product-reliability
+BASELINE SHA: cc0fa735a4b1faaa7d72595e131372257e87f225
+FINAL IMPLEMENTATION/CI SOURCE: 14ebea0b79d8df25f17a223cb6730bf5c95a21ee
+SOURCE TREE: e8993f20533ff4255e25f6a48474ca6e56606a08
+WINDOWS CI: 38768349299 SUCCESS
+ENVIRONMENTS: local Windows26200/24CPU;CI Windows26100/4CPU.
+ROOT CAUSE: approval reservation did not prove restoration; restored bytes lacked consistent original-enrollment classification.
+CHANGED BRANCH/FIELD: InstallationTrustPolicy.InspectInstallationTrust accepts authenticated original enrollment only after verified restored-current declaration.
+CHANGED FILES: CHANGED_FILES.txt
+IMPLEMENTATION: readonly approval query, unknown-content preservation, enrollment activation, restoration history, cancellation, UI state and safe profiling.
+FOUR ARTIFACT PATHS:
+MODIFIED_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo22\MODIFIED_FILE
+DIFF_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo22\DIFF_FILE
+VERIFICATION.txt: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo22\VERIFICATION.txt
+ROLLBACK.sh: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo22\ROLLBACK.sh
+
+ORIGINAL SHA256: 119112b2efa631f5c20262a6d049627405dbbe178540aaea51b1e2140279a1fe
+MODIFIED SHA256: b124f2d2c9e6982323bc6a44ae298438b1f9865e30881f37a16cc45b717c7a34
+BASELINE/MODIFIED/ROLLBACK EXACT COMMANDS, INPUTS, LITERAL OUTPUTS AND EXIT CODES:
+{
+  "Source": "02c140c430bcb83e47919fc4fbd1a1790d93a045",
+  "BaselineSource": "cc0fa735a4b1faaa7d72595e131372257e87f225",
+  "OriginalSha256": "119112b2efa631f5c20262a6d049627405dbbe178540aaea51b1e2140279a1fe",
+  "ModifiedSha256": "b124f2d2c9e6982323bc6a44ae298438b1f9865e30881f37a16cc45b717c7a34",
+  "Scope": "Independent source-copy rollback only",
+  "Records": [
+    {
+      "Name": "BASELINE-build",
+      "Command": [
+        "dotnet",
+        "build",
+        "<WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\probe\\Probe.csproj",
+        "-c",
+        "Release",
+        "-p:Platform=x64",
+        "-o",
+        "<WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\binary",
+        "-v:minimal"
+      ],
+      "Input": "Synthetic signed enrollment, update, schema1 restore; independent source-copy engine",
+      "Output": "  복원할 프로젝트를 확인하는 중...\n  <WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\probe\\Probe.csproj을(를) 235밀리초 동안 복원했습니다.\n  <WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\engine\\SmartPerformanceDoctor.UpdateEngine.csproj을(를) 224밀리초 동안 복원했습니다.\n  SmartPerformanceDoctor.UpdateEngine -> <WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\binary\\SmartPerformanceDoctor.UpdateEngine.dll\n  Probe -> <WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\binary\\Probe.dll\n\n빌드했습니다.\n    경고 0개\n    오류 0개\n\n경과 시간: 00:00:02.21\n",
+      "ExitCode": 0
+    },
+    {
+      "Name": "BASELINE-prepare",
+      "Command": [
+        "<WORKSPACE>\\work\\PC-Care\\tools\\SmartPerformanceDoctor.WO20Probe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.WO20Probe.exe",
+        "prepare",
+        "<WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\wo20-baseline"
+      ],
+      "Input": "Synthetic signed enrollment, update, schema1 restore; independent source-copy engine",
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1094,\"ExistingBytes\":13}\n",
+      "ExitCode": 0
+    },
+    {
+      "Name": "BASELINE-behavior",
+      "Command": [
+        "<WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\binary\\Probe.exe",
+        "<WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\wo20-baseline"
+      ],
+      "Input": "Synthetic signed enrollment, update, schema1 restore; independent source-copy engine",
+      "Output": "{\"State\":8,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"RESTORED-INSTALLATION-NOT-ATTESTED\"}\n",
+      "ExitCode": 0
+    },
+    {
+      "Name": "BASELINE-assert",
+      "Command": "Assert exact installation trust result",
+      "Input": "Authenticated original enrollment after reviewed legacy restoration",
+      "Output": "RESTORED-INSTALLATION-NOT-ATTESTED",
+      "ExitCode": 0
+    },
+    {
+      "Name": "MODIFIED-build",
+      "Command": [
+        "dotnet",
+        "build",
+        "<WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\probe\\Probe.csproj",
+        "-c",
+        "Release",
+        "-p:Platform=x64",
+        "-o",
+        "<WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\binary",
+        "-v:minimal"
+      ],
+      "Input": "Synthetic signed enrollment, update, schema1 restore; independent source-copy engine",
+      "Output": "  복원할 프로젝트를 확인하는 중...\n  복원할 모든 프로젝트가 최신 상태입니다.\n  SmartPerformanceDoctor.UpdateEngine -> <WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\binary\\SmartPerformanceDoctor.UpdateEngine.dll\n  Probe -> <WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\binary\\Probe.dll\n\n빌드했습니다.\n    경고 0개\n    오류 0개\n\n경과 시간: 00:00:01.73\n",
+      "ExitCode": 0
+    },
+    {
+      "Name": "MODIFIED-prepare",
+      "Command": [
+        "<WORKSPACE>\\work\\PC-Care\\tools\\SmartPerformanceDoctor.WO20Probe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.WO20Probe.exe",
+        "prepare",
+        "<WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\wo20-modified"
+      ],
+      "Input": "Synthetic signed enrollment, update, schema1 restore; independent source-copy engine",
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1099,\"ExistingBytes\":13}\n",
+      "ExitCode": 0
+    },
+    {
+      "Name": "MODIFIED-behavior",
+      "Command": [
+        "<WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\binary\\Probe.exe",
+        "<WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\wo20-modified"
+      ],
+      "Input": "Synthetic signed enrollment, update, schema1 restore; independent source-copy engine",
+      "Output": "{\"State\":2,\"Verified\":true,\"RequiresReview\":false,\"Code\":\"SIGNED-ENROLLMENT-VERIFIED\"}\n",
+      "ExitCode": 0
+    },
+    {
+      "Name": "MODIFIED-assert",
+      "Command": "Assert exact installation trust result",
+      "Input": "Authenticated original enrollment after reviewed legacy restoration",
+      "Output": "SIGNED-ENROLLMENT-VERIFIED",
+      "ExitCode": 0
+    },
+    {
+      "Name": "ROLLBACK-script",
+      "Command": [
+        "C:\\Program Files\\Git\\bin\\bash.exe",
+        "<WORKSPACE>\\work\\PC-Care\\docs\\rework\\evidence\\wo22\\ROLLBACK.sh",
+        "<WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\RESTORE_COPY"
+      ],
+      "Input": "Synthetic signed enrollment, update, schema1 restore; independent source-copy engine",
+      "Output": "SOURCE_COPY_RESTORED; INSTALLATION_UNCHANGED\n",
+      "ExitCode": 0
+    },
+    {
+      "Name": "ROLLBACK-build",
+      "Command": [
+        "dotnet",
+        "build",
+        "<WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\probe\\Probe.csproj",
+        "-c",
+        "Release",
+        "-p:Platform=x64",
+        "-o",
+        "<WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\binary",
+        "-v:minimal"
+      ],
+      "Input": "Synthetic signed enrollment, update, schema1 restore; independent source-copy engine",
+      "Output": "  복원할 프로젝트를 확인하는 중...\n  복원할 모든 프로젝트가 최신 상태입니다.\n  SmartPerformanceDoctor.UpdateEngine -> <WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\binary\\SmartPerformanceDoctor.UpdateEngine.dll\n  Probe -> <WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\binary\\Probe.dll\n\n빌드했습니다.\n    경고 0개\n    오류 0개\n\n경과 시간: 00:00:01.58\n",
+      "ExitCode": 0
+    },
+    {
+      "Name": "ROLLBACK-prepare",
+      "Command": [
+        "<WORKSPACE>\\work\\PC-Care\\tools\\SmartPerformanceDoctor.WO20Probe\\bin\\x64\\Release\\net10.0-windows10.0.26100.0\\SmartPerformanceDoctor.WO20Probe.exe",
+        "prepare",
+        "<WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\wo20-rollback"
+      ],
+      "Input": "Synthetic signed enrollment, update, schema1 restore; independent source-copy engine",
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1099,\"ExistingBytes\":13}\n",
+      "ExitCode": 0
+    },
+    {
+      "Name": "ROLLBACK-behavior",
+      "Command": [
+        "<WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\binary\\Probe.exe",
+        "<WORKSPACE>\\wo22-rollback-6df6e685ba3b495aaf16344ee91f3007\\wo20-rollback"
+      ],
+      "Input": "Synthetic signed enrollment, update, schema1 restore; independent source-copy engine",
+      "Output": "{\"State\":8,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"RESTORED-INSTALLATION-NOT-ATTESTED\"}\n",
+      "ExitCode": 0
+    },
+    {
+      "Name": "ROLLBACK-assert",
+      "Command": "Assert exact installation trust result",
+      "Input": "Authenticated original enrollment after reviewed legacy restoration",
+      "Output": "RESTORED-INSTALLATION-NOT-ATTESTED",
+      "ExitCode": 0
+    }
+  ],
+  "Environment": "Local Windows26200;24logicalCPU;independent engine/source copies and synthetic installation",
+  "Command": "python test_wo22_rollback.py",
+  "FinalQualificationSource": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+  "ProductCodeEquivalent": true
+}
+RESTORED SOURCE BEHAVIOR: RESTORED-INSTALLATION-NOT-ATTESTED;Verified=false;exit0.
+MODIFIED SOURCE BEHAVIOR: SIGNED-ENROLLMENT-VERIFIED;Verified=true;exit0.
+ROLLBACK SCRIPT OUTPUT: SOURCE_COPY_RESTORED; INSTALLATION_UNCHANGED
+ROLLBACK SCRIPT EXIT CODE:0
+MODIFIED_FILE and repository source remain modified.
+ROLLBACK SCOPE: independent RESTORE_COPY only. This does not restore installation/vault data.
+
+ACTUAL SYNTHETIC INSTALLATION/V5 RECOVERY:
+COMMAND: pwsh -File scripts/wo22-process-validation.ps1 -OutputDirectory artifacts/wo22-ci
+INPUT: synthetic Windows filesystem;strictAcl=false;ephemeral signed packages;synthetic encrypted v5 vaults.
+OUTPUT: WO22_RECONCILIATION=PASS; SIGNED_ADMIN_E2E=NOT_TESTED; GUI=NOT_TESTED; REBOOT=NOT_TESTED
+EXIT CODE:0
+WO22:161commands;16parent-killed workers. NestedWO21:134commands;13parent-killed workers.
+Combined:295commands;29kills;68authenticated full vault checks;272matching SHA256 pairs;7recovery-code checks.
+WO20 nested records are included in WO21. Do not count them again.
+Actual per-command outputs and kill exit-1: CI_PROCESS_RESULT.json.
+Existing updater20apply/13recovery checkpoints remain in separate regression evidence.
+
+FULL APP: local/CI1333PASS/0FAIL/111SKIP. NewWO22=44included.
+SECURITYLAB:36PASS/0FAIL/0SKIP,separate.
+RESTORE/RELEASE:0warnings/0errors.
+111skip names match baseline. Historical productionGO text corrected;no skipped tests enabled or removed.
+REMAINING P0: signed Bridge deployment,actual privileged restore,UAC,independent SID/ACL/reboot,qualified launcher deployment.
+GUI/accessibility/low-end hardware/physical power loss:NOT TESTED.
+No Daybreak challenge observed. Future special-authorization work:DAYBREAK_DEFERRED.
+No production gate changed. No real user installation/vault modified. No main merge/release.
+FINAL PUBLICATION: external WO22_FINAL_REPORT.md and WO22_REMOTE_BLOB_VERIFICATION.json.
+
+PATH TOKEN: <WORKSPACE> = C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc
+COMMAND CWD: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care

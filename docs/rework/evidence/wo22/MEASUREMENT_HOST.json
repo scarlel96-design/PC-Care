@@ -1,0 +1,12 @@
+{
+  "Command": "Get-CimInstance Win32_ComputerSystem and Win32_OperatingSystem",
+  "Input": "Read-only measurement host characteristics",
+  "Output": {
+    "LogicalProcessors": 24,
+    "WindowsBuild": "26200",
+    "TotalPhysicalMemory": 34028429312
+  },
+  "ExitCode": 0,
+  "Source": "02c140c430bcb83e47919fc4fbd1a1790d93a045",
+  "Environment": "Local Windows measurement host; no VM discovery"
+}

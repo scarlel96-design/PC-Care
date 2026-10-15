@@ -1,0 +1,22 @@
+{
+  "Status": "PREPARED",
+  "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+  "Environment": "Windows CI26100;4logicalCPU",
+  "Command": "pwsh scripts/wo21-test-signing.ps1 without Execute",
+  "Input": "Prepared guest-only signing requirements",
+  "Output": {
+    "Status": "PREPARED",
+    "Files": [
+      "SmartPerformanceDoctor.UpdateBridge.exe",
+      "SmartPerformanceDoctor.UpdateBridge.dll",
+      "SmartPerformanceDoctor.UpdateEngine.dll",
+      "SmartPerformanceDoctor.UpdateHelper.exe",
+      "SmartPerformanceDoctor.UpdateHelper.dll"
+    ],
+    "Requirement": "Verified disposable VM checkpoint and independent test SID",
+    "TrustStore": "Guest CurrentUser only",
+    "ProductionRoot": "UNCHANGED",
+    "Timestamp": "NOT TESTED"
+  },
+  "ExitCode": 0
+}

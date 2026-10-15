@@ -1,0 +1,27 @@
+{
+  "Status": "PASS",
+  "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+  "Environment": "Windows CI26100;4logicalCPU",
+  "Command": "dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests -c Release -p:Platform=x64 --no-restore -m:1 --logger trx;LogFileName=wo06-securitylab.trx -v:minimal",
+  "Input": "Existing separate SecurityLab regression",
+  "Output": {
+    "total": "36",
+    "executed": "36",
+    "passed": "36",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "ExitCode": 0
+}
+36 PASS /0 FAIL /0 SKIP. Separate from app count.

@@ -1,0 +1,49 @@
+{
+  "Status": "PASS",
+  "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+  "Environment": "Windows CI26100;4logicalCPU",
+  "Command": "pwsh -File scripts/wo21-qualification.ps1 -FixtureRoot <EXTERNAL_ROOT>/wo21-full-fixtures -OutputDirectory artifacts/wo22-full",
+  "Input": "Qualified x64 binary/source receipts and fresh unique TRX",
+  "Output": {
+    "Local": {
+      "total": "1444",
+      "executed": "1333",
+      "passed": "1333",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "CI": {
+      "total": "1444",
+      "executed": "1333",
+      "passed": "1333",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "NewWO22": 44,
+    "UnchangedSkipNames": 111
+  },
+  "ExitCode": 0
+}
+1333 PASS /0 FAIL /111 SKIP;1444total. Updater128 and performance233 are included subsets.

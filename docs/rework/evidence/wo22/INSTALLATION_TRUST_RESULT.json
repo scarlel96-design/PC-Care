@@ -1,0 +1,122 @@
+{
+  "Status": "PASS",
+  "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+  "Environment": "Windows CI26100;4logicalCPU",
+  "Command": "Qualified application tests and WO20Probe trust-query <SYNTHETIC_ROOT>",
+  "Input": "Authenticated enrollment/update/restore; corrupt pointer; identity/hash mutation",
+  "Output": {
+    "Tests": [
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22InstallationTrustConsistencyTests.InterruptedEnrollmentPreservesPayloadAndCannotBecomeVerified(point: RecordFlushed)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.0659936",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22RecoveryHistoryTests.RejectedRecoveryDoesNotClaimMutation",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.0213955",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22InstallationTrustConsistencyTests.InterruptedEnrollmentPreservesPayloadAndCannotBecomeVerified(point: PreparedRecordCreated)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.0497695",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22InstallationTrustConsistencyTests.InstallationMismatchCodesIdentifyTheFailure(kind: \"identity\", expected: \"INSTALLATION-IDENTITY-MISMATCH\")",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.0115767",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22InstallationTrustConsistencyTests.InterruptedEnrollmentPreservesPayloadAndCannotBecomeVerified(point: BeforeActivation)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.0765395",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22InstallationTrustConsistencyTests.SignedEnrollmentIsRecheckedAfterLegacyRestoration",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.7991477",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22TrustFailureTests.SignedDeclarationCannotBeReplacedByForgedSignatureAndMatchingChecksum",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.0635731",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22RecoveryHistoryTests.LaterVerifiedUpdateSupersedesRestoredHistory",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.4807503",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22InstallationTrustConsistencyTests.InstallationMismatchCodesIdentifyTheFailure(kind: \"content\", expected: \"INSTALLATION-CONTENT-MISMATCH\")",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.1293281",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22InstallationTrustConsistencyTests.ExtraUnlistedDataIsPreservedButNotAttested",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.0039431",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22TrustFailureTests.ChangedSecurityIsReportedByReadOnlyLegacyReview",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.1188366",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22InstallationTrustConsistencyTests.RestoredMarkerCannotHideSubsequentFileChanges",
+        "Outcome": "Passed",
+        "Duration": "00:00:01.2414772",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO22TrustFailureTests.CorruptCurrentPointerDoesNotSilentlySelectPreviousRecord",
+        "Outcome": "Passed",
+        "Duration": "00:00:02.0536659",
+        "Reason": null
+      }
+    ],
+    "Process": [
+      {
+        "Input": "trust-query",
+        "Command": "WO20Probe trust-query <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":8,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ENROLLMENT-PREPARATION-INCOMPLETE\"}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "trust-query",
+        "Command": "WO20Probe trust-query <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":8,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ENROLLMENT-PREPARATION-INCOMPLETE\"}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "trust-query",
+        "Command": "WO20Probe trust-query <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":8,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ENROLLMENT-PREPARATION-INCOMPLETE\"}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      },
+      {
+        "Input": "trust-query",
+        "Command": "WO20Probe trust-query <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":2,\"Verified\":true,\"RequiresReview\":false,\"Code\":\"SIGNED-ENROLLMENT-VERIFIED\"}",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E"
+      }
+    ],
+    "IncompleteEnrollment": "Preserved and requires review",
+    "CurrentDeclaration": "Only verified declared paths supersede historical restored state"
+  },
+  "ExitCode": 0
+}

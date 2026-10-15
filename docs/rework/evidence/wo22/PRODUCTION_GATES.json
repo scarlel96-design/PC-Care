@@ -1,0 +1,32 @@
+{
+  "Status": "PASS (source invariant check)",
+  "Source": "02c140c430bcb83e47919fc4fbd1a1790d93a045",
+  "Command": "Read exact source declarations and compare preserved false gates",
+  "Input": [
+    "src/SmartPerformanceDoctor.AstraVault/Target/Av3PhaseGate.cs",
+    "src/SmartPerformanceDoctor.App/Services/SystemCare/StorageInventory.cs",
+    "src/SmartPerformanceDoctor.App/Services/Commercial/ProfessionalSecureDeleteService.cs",
+    "src/SmartPerformanceDoctor.UpdateEngine/BuildPublisherTrust.cs"
+  ],
+  "Output": {
+    "StorageCareCanExecuteFalse": true,
+    "FolderExecutionBlocked": true,
+    "ProductionTrustUnchanged": true,
+    "Av3FlagValues": {
+      "ProductionWriterEnabled": false,
+      "JournalWriterEnabled": false,
+      "MigrationEnabled": false,
+      "WriterEnableReady": false,
+      "ExternalReviewCompleted": false,
+      "ProductionEnableAuthorized": false
+    }
+  },
+  "Environment": "Local source inspection",
+  "ExitCode": 0,
+  "Files": {
+    "src/SmartPerformanceDoctor.AstraVault/Target/Av3PhaseGate.cs": "ea8cd62058de41125a1c593d76c8adafdc9aa81c2376dcb37e8aa025764cb0e3",
+    "src/SmartPerformanceDoctor.App/Services/SystemCare/StorageInventory.cs": "f7b099537157d412462433d4f7a245a83cd3d5072c628f0b1adcc1f95b6a134c",
+    "src/SmartPerformanceDoctor.App/Services/Commercial/ProfessionalSecureDeleteService.cs": "14906abbb477e9e9ee851d1ebfd7c372f2c6cfdfc3c57e9eb8803a8933e7575e",
+    "src/SmartPerformanceDoctor.UpdateEngine/BuildPublisherTrust.cs": "e4a679ecdbde5935d0ed2d1ba21c8efc45d760414e75cf13395b627d090042e2"
+  }
+}

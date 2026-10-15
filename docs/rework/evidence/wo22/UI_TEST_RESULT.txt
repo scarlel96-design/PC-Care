@@ -1,0 +1,11 @@
+STATUS: PARTIAL; actual GUI NOT TESTED
+SOURCE: 14ebea0b79d8df25f17a223cb6730bf5c95a21ee
+ENVIRONMENT: Windows source/build qualification; no isolated interactive test SID.
+COMMAND: pwsh -File scripts/wo22-ui-contract.ps1
+INPUT: Existing WinUI screen, coordinator and ViewModel.
+OUTPUT: WO22_UI_SOURCE_CONTRACT=PASS; ACTUAL_GUI=NOT_TESTED
+EXIT CODE: 0
+ACTUAL GUI COMMAND: NOT EXECUTED
+ACTUAL GUI EXIT CODE: null
+DPI,keyboard,screen-reader,narrow-window,reduced-motion interaction: NOT TESTED.
+No screen-control session was started or reconnected.

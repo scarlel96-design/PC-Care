@@ -1,0 +1,21 @@
+{
+  "Status": "PARTIAL",
+  "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+  "ActualUndeployedLauncher": {
+    "Command": "tools/SmartPerformanceDoctor.InstallationLauncher/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.InstallationLauncher.exe --inspect",
+    "Input": "Undeployed untrusted build location",
+    "Output": "PREEXECUTION-BLOCKED:InvalidDataException:LAUNCHER-LOCATION",
+    "ExitCode": 6
+  },
+  "Command": "Existing InstallationLauncher Release build and source-boundary regression",
+  "Input": "Managed launcher; no trusted deployment",
+  "Output": {
+    "Tests": [],
+    "ManagedPreClrGuarantee": false,
+    "ActualSignedDeployment": "NOT TESTED"
+  },
+  "ExitCode": 0,
+  "Environment": "Windows CI26100;4logicalCPU",
+  "PrototypeLimit": "CLR and dependencies load before managed checks; no new native wrapper",
+  "Alternatives": "WO22_LAUNCHER_BOUNDARY.md"
+}
