@@ -1,0 +1,136 @@
+{
+  "Status": "PARTIAL",
+  "Source": "930ed7907daaa95cf15040d130c580248e64bf61",
+  "Implementation": "WO20 dispatcher retained; trusted Bridge approval and enrollment paths extended.",
+  "SyntheticProcessCommands": 134,
+  "ParentKilledWorkers": 13,
+  "Checkpoints": [
+    {
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe apply-kill <SYNTHETIC_ROOT>",
+      "Checkpoint": "AfterFirstReplacement",
+      "ExitCode": -1,
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AfterFirstReplacement",
+      "Source": "930ed7907daaa95cf15040d130c580248e64bf61"
+    },
+    {
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe legacy-kill:AuthorizationVerified <SYNTHETIC_ROOT>",
+      "Checkpoint": "AuthorizationVerified",
+      "ExitCode": -1,
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AuthorizationVerified",
+      "Source": "930ed7907daaa95cf15040d130c580248e64bf61"
+    },
+    {
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe legacy-kill:BeforePromotion <SYNTHETIC_ROOT>",
+      "Checkpoint": "BeforePromotion",
+      "ExitCode": -1,
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:BeforePromotion",
+      "Source": "930ed7907daaa95cf15040d130c580248e64bf61"
+    },
+    {
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe legacy-kill:AfterPromotion <SYNTHETIC_ROOT>",
+      "Checkpoint": "AfterPromotion",
+      "ExitCode": -1,
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AfterPromotion",
+      "Source": "930ed7907daaa95cf15040d130c580248e64bf61"
+    },
+    {
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe legacy-kill:BeforeRestore <SYNTHETIC_ROOT>",
+      "Checkpoint": "BeforeRestore",
+      "ExitCode": -1,
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:BeforeRestore",
+      "Source": "930ed7907daaa95cf15040d130c580248e64bf61"
+    },
+    {
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe legacy-kill:AfterFileRestore <SYNTHETIC_ROOT>",
+      "Checkpoint": "AfterFileRestore",
+      "ExitCode": -1,
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AfterFileRestore",
+      "Source": "930ed7907daaa95cf15040d130c580248e64bf61"
+    },
+    {
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe legacy-kill:SecondFileRestore <SYNTHETIC_ROOT>",
+      "Checkpoint": "SecondFileRestore",
+      "ExitCode": -1,
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:SecondFileRestore",
+      "Source": "930ed7907daaa95cf15040d130c580248e64bf61"
+    },
+    {
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe legacy-kill:BeforeRestoredJournal <SYNTHETIC_ROOT>",
+      "Checkpoint": "BeforeRestoredJournal",
+      "ExitCode": -1,
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:BeforeRestoredJournal",
+      "Source": "930ed7907daaa95cf15040d130c580248e64bf61"
+    },
+    {
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe legacy-kill:AfterRestoredJournal <SYNTHETIC_ROOT>",
+      "Checkpoint": "AfterRestoredJournal",
+      "ExitCode": -1,
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AfterRestoredJournal",
+      "Source": "930ed7907daaa95cf15040d130c580248e64bf61"
+    },
+    {
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe approved-kill:AuthorizationVerified <SYNTHETIC_ROOT>",
+      "Checkpoint": "AuthorizationVerified",
+      "ExitCode": -1,
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AuthorizationVerified",
+      "Source": "930ed7907daaa95cf15040d130c580248e64bf61"
+    },
+    {
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe approved-kill:AfterPromotion <SYNTHETIC_ROOT>",
+      "Checkpoint": "AfterPromotion",
+      "ExitCode": -1,
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AfterPromotion",
+      "Source": "930ed7907daaa95cf15040d130c580248e64bf61"
+    },
+    {
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe approved-kill:AfterFileRestore <SYNTHETIC_ROOT>",
+      "Checkpoint": "AfterFileRestore",
+      "ExitCode": -1,
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AfterFileRestore",
+      "Source": "930ed7907daaa95cf15040d130c580248e64bf61"
+    },
+    {
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe approved-kill:AfterRestoredJournal <SYNTHETIC_ROOT>",
+      "Checkpoint": "AfterRestoredJournal",
+      "ExitCode": -1,
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AfterRestoredJournal",
+      "Source": "930ed7907daaa95cf15040d130c580248e64bf61"
+    }
+  ],
+  "ActualSignedTransition": {
+    "Status": "NOT TESTED",
+    "Source": "930ed7907daaa95cf15040d130c580248e64bf61",
+    "Environment": "Windows CI 26100; 4 logical CPUs",
+    "Command": "NOT EXECUTED",
+    "Input": "Old installation -> trusted Bridge -> elevated snapshot -> verified new installation",
+    "Output": "VM_UNAVAILABLE; TEST_CERTIFICATE_UNAVAILABLE; INTERACTIVE_UAC_UNAVAILABLE",
+    "ExitCode": null
+  },
+  "RegressionRecords": "CI_PROCESS_RESULT.json"
+}

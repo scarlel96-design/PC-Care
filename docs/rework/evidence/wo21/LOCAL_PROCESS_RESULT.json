@@ -1,0 +1,959 @@
+{
+  "Status": "Exploratory local run",
+  "BuildHead": "1d93600ea5c6214e23051641ad10c06a667f0866",
+  "WorkingTreeChanges": "WO21 uncommitted implementation at execution; no exact committed content receipt",
+  "NotCIQualificationSource": true,
+  "Records": [
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1097,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"9DA39048DAAECCC70BAEA675F1AF62CB36582F944076C7318EA5390B8FF03036\",\"sample-1048576.bin\":\"DEF1169FEB04E0863B8BA2A55BFACB32A4F4B7C0F78E38A272D45EE1A4739F3E\",\"sample-4194304.bin\":\"60B67860B30D53B09FEB95CBDA37ED8563DCB9FE199714780D1AB139CE28C327\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"9DA39048DAAECCC70BAEA675F1AF62CB36582F944076C7318EA5390B8FF03036\",\"sample-1048576.bin\":\"DEF1169FEB04E0863B8BA2A55BFACB32A4F4B7C0F78E38A272D45EE1A4739F3E\",\"sample-4194304.bin\":\"60B67860B30D53B09FEB95CBDA37ED8563DCB9FE199714780D1AB139CE28C327\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"Committed\",\"Code\":\"COMMITTED\",\"ElapsedMs\":360.5452,\"CpuMs\":328.125,\"PeakWorkingSetBytes\":53690368,\"Attestation\":{\"Verified\":true,\"RequiresReview\":false,\"Code\":\"SIGNED-INSTALLATION-VERIFIED\"},\"Phases\":[{\"Name\":\"PackageVerification\",\"Calls\":1,\"ElapsedMs\":66.5565},{\"Name\":\"JournalSerialization\",\"Calls\":11,\"ElapsedMs\":0.4266},{\"Name\":\"JournalFlush\",\"Calls\":11,\"ElapsedMs\":12.6043},{\"Name\":\"FileIdentityValidation\",\"Calls\":100,\"ElapsedMs\":47.0729},{\"Name\":\"JournalRename\",\"Calls\":11,\"ElapsedMs\":19.0123},{\"Name\":\"JournalTotal\",\"Calls\":11,\"ElapsedMs\":141.6545},{\"Name\":\"CopyAndFlush\",\"Calls\":5,\"ElapsedMs\":14.9379},{\"Name\":\"HashAndIdentity\",\"Calls\":17,\"ElapsedMs\":16.2563},{\"Name\":\"ExtractionAndVerification\",\"Calls\":2,\"ElapsedMs\":19.786},{\"Name\":\"BackupAndIdentity\",\"Calls\":2,\"ElapsedMs\":24.3893},{\"Name\":\"ReplacementAndVerification\",\"Calls\":2,\"ElapsedMs\":33.29}]}",
+      "Input": "apply",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe apply <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"9DA39048DAAECCC70BAEA675F1AF62CB36582F944076C7318EA5390B8FF03036\",\"sample-1048576.bin\":\"DEF1169FEB04E0863B8BA2A55BFACB32A4F4B7C0F78E38A272D45EE1A4739F3E\",\"sample-4194304.bin\":\"60B67860B30D53B09FEB95CBDA37ED8563DCB9FE199714780D1AB139CE28C327\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"9DA39048DAAECCC70BAEA675F1AF62CB36582F944076C7318EA5390B8FF03036\",\"sample-1048576.bin\":\"DEF1169FEB04E0863B8BA2A55BFACB32A4F4B7C0F78E38A272D45EE1A4739F3E\",\"sample-4194304.bin\":\"60B67860B30D53B09FEB95CBDA37ED8563DCB9FE199714780D1AB139CE28C327\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":33554438,\"PackageBytes\":35390211,\"ExistingBytes\":16777226}",
+      "Input": "prepare-random",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare-random <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"33A30402000BA9DBA970B9D14C812F8780549BD24C9A199463CE2A94D8205BBE\",\"sample-1048576.bin\":\"6C0F8334C246A16EFE715F9401A01D3934C95474F3FF1B1430C4E299DA5F634D\",\"sample-4194304.bin\":\"000C512D6057D16EF566E38AF8AF2B65831BFBBB0285233620F89217A313B76E\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"33A30402000BA9DBA970B9D14C812F8780549BD24C9A199463CE2A94D8205BBE\",\"sample-1048576.bin\":\"6C0F8334C246A16EFE715F9401A01D3934C95474F3FF1B1430C4E299DA5F634D\",\"sample-4194304.bin\":\"000C512D6057D16EF566E38AF8AF2B65831BFBBB0285233620F89217A313B76E\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"Committed\",\"Code\":\"COMMITTED\",\"ElapsedMs\":1758.7465,\"CpuMs\":1140.625,\"PeakWorkingSetBytes\":56094720,\"Attestation\":{\"Verified\":true,\"RequiresReview\":false,\"Code\":\"SIGNED-INSTALLATION-VERIFIED\"},\"Phases\":[{\"Name\":\"PackageVerification\",\"Calls\":1,\"ElapsedMs\":208.2046},{\"Name\":\"JournalSerialization\",\"Calls\":15,\"ElapsedMs\":0.8483},{\"Name\":\"JournalFlush\",\"Calls\":15,\"ElapsedMs\":16.7142},{\"Name\":\"FileIdentityValidation\",\"Calls\":135,\"ElapsedMs\":67.5665},{\"Name\":\"JournalRename\",\"Calls\":15,\"ElapsedMs\":25.9753},{\"Name\":\"JournalTotal\",\"Calls\":15,\"ElapsedMs\":192.7692},{\"Name\":\"CopyAndFlush\",\"Calls\":6,\"ElapsedMs\":566.373},{\"Name\":\"HashAndIdentity\",\"Calls\":22,\"ElapsedMs\":209.0345},{\"Name\":\"ExtractionAndVerification\",\"Calls\":3,\"ElapsedMs\":387.3356},{\"Name\":\"BackupAndIdentity\",\"Calls\":3,\"ElapsedMs\":164.3959},{\"Name\":\"ReplacementAndVerification\",\"Calls\":3,\"ElapsedMs\":242.8171}]}",
+      "Input": "apply",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe apply <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"33A30402000BA9DBA970B9D14C812F8780549BD24C9A199463CE2A94D8205BBE\",\"sample-1048576.bin\":\"6C0F8334C246A16EFE715F9401A01D3934C95474F3FF1B1430C4E299DA5F634D\",\"sample-4194304.bin\":\"000C512D6057D16EF566E38AF8AF2B65831BFBBB0285233620F89217A313B76E\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"33A30402000BA9DBA970B9D14C812F8780549BD24C9A199463CE2A94D8205BBE\",\"sample-1048576.bin\":\"6C0F8334C246A16EFE715F9401A01D3934C95474F3FF1B1430C4E299DA5F634D\",\"sample-4194304.bin\":\"000C512D6057D16EF566E38AF8AF2B65831BFBBB0285233620F89217A313B76E\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":1048585,\"PackageBytes\":1153580,\"ExistingBytes\":524301}",
+      "Input": "prepare-many",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare-many <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"EE7918AD0F9CFBCF705FE6B7AE655D9094C0DE3946089F574715BB094CEC378D\",\"sample-1048576.bin\":\"C5BD732630E74BC6AE573AF32DCB4274301B61378CAE0D760D24C444B61C727F\",\"sample-4194304.bin\":\"0F980195F4A195AA4A336ED38366925028C6164B8FDCDBE441CE745C53B15F83\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"EE7918AD0F9CFBCF705FE6B7AE655D9094C0DE3946089F574715BB094CEC378D\",\"sample-1048576.bin\":\"C5BD732630E74BC6AE573AF32DCB4274301B61378CAE0D760D24C444B61C727F\",\"sample-4194304.bin\":\"0F980195F4A195AA4A336ED38366925028C6164B8FDCDBE441CE745C53B15F83\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"Committed\",\"Code\":\"COMMITTED\",\"ElapsedMs\":23564.7322,\"CpuMs\":21765.625,\"PeakWorkingSetBytes\":195944448,\"Attestation\":{\"Verified\":true,\"RequiresReview\":false,\"Code\":\"SIGNED-INSTALLATION-VERIFIED\"},\"Phases\":[{\"Name\":\"PackageVerification\",\"Calls\":1,\"ElapsedMs\":97.7341},{\"Name\":\"JournalSerialization\",\"Calls\":779,\"ElapsedMs\":178.4051},{\"Name\":\"JournalFlush\",\"Calls\":779,\"ElapsedMs\":878.8977},{\"Name\":\"FileIdentityValidation\",\"Calls\":9316,\"ElapsedMs\":5574.5032},{\"Name\":\"JournalRename\",\"Calls\":779,\"ElapsedMs\":1556.3443},{\"Name\":\"JournalTotal\",\"Calls\":779,\"ElapsedMs\":12059.6204},{\"Name\":\"CopyAndFlush\",\"Calls\":389,\"ElapsedMs\":1511.0365},{\"Name\":\"HashAndIdentity\",\"Calls\":1681,\"ElapsedMs\":2178.1476},{\"Name\":\"ExtractionAndVerification\",\"Calls\":258,\"ElapsedMs\":3663.1493},{\"Name\":\"BackupAndIdentity\",\"Calls\":258,\"ElapsedMs\":2520.9727},{\"Name\":\"ReplacementAndVerification\",\"Calls\":258,\"ElapsedMs\":8154.4619}]}",
+      "Input": "apply",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe apply <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"EE7918AD0F9CFBCF705FE6B7AE655D9094C0DE3946089F574715BB094CEC378D\",\"sample-1048576.bin\":\"C5BD732630E74BC6AE573AF32DCB4274301B61378CAE0D760D24C444B61C727F\",\"sample-4194304.bin\":\"0F980195F4A195AA4A336ED38366925028C6164B8FDCDBE441CE745C53B15F83\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"EE7918AD0F9CFBCF705FE6B7AE655D9094C0DE3946089F574715BB094CEC378D\",\"sample-1048576.bin\":\"C5BD732630E74BC6AE573AF32DCB4274301B61378CAE0D760D24C444B61C727F\",\"sample-4194304.bin\":\"0F980195F4A195AA4A336ED38366925028C6164B8FDCDBE441CE745C53B15F83\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1093,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"645DE1BCED7B55C90361785982D6807997164C86D96F6C57D93FA11CD9E534A2\",\"sample-1048576.bin\":\"6B4A292DDCB03CF1657F09B37732ECE16B3321F6D29BDA15113D7D5AE6C2ACD3\",\"sample-4194304.bin\":\"0A87D2FB99AA39FAEF5157484C6BEF9668FE9C276DD97EA1F8C9129EF9FBAA55\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"645DE1BCED7B55C90361785982D6807997164C86D96F6C57D93FA11CD9E534A2\",\"sample-1048576.bin\":\"6B4A292DDCB03CF1657F09B37732ECE16B3321F6D29BDA15113D7D5AE6C2ACD3\",\"sample-4194304.bin\":\"0A87D2FB99AA39FAEF5157484C6BEF9668FE9C276DD97EA1F8C9129EF9FBAA55\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "ExitCode": -1,
+      "Checkpoint": "AfterFirstReplacement",
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe apply-kill <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AfterFirstReplacement"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"645DE1BCED7B55C90361785982D6807997164C86D96F6C57D93FA11CD9E534A2\",\"sample-1048576.bin\":\"6B4A292DDCB03CF1657F09B37732ECE16B3321F6D29BDA15113D7D5AE6C2ACD3\",\"sample-4194304.bin\":\"0A87D2FB99AA39FAEF5157484C6BEF9668FE9C276DD97EA1F8C9129EF9FBAA55\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"645DE1BCED7B55C90361785982D6807997164C86D96F6C57D93FA11CD9E534A2\",\"sample-1048576.bin\":\"6B4A292DDCB03CF1657F09B37732ECE16B3321F6D29BDA15113D7D5AE6C2ACD3\",\"sample-4194304.bin\":\"0A87D2FB99AA39FAEF5157484C6BEF9668FE9C276DD97EA1F8C9129EF9FBAA55\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"Restored\",\"Code\":\"ROLLED-BACK\",\"ElapsedMs\":199.4677,\"CpuMs\":187.5,\"PeakWorkingSetBytes\":45985792,\"Attestation\":{\"Verified\":false,\"RequiresReview\":false,\"Code\":\"INSTALLATION-NOT-ATTESTED\"},\"Phases\":[{\"Name\":\"FileIdentityValidation\",\"Calls\":38,\"ElapsedMs\":21.1333},{\"Name\":\"HashAndIdentity\",\"Calls\":6,\"ElapsedMs\":14.0339},{\"Name\":\"JournalSerialization\",\"Calls\":4,\"ElapsedMs\":6.7801},{\"Name\":\"JournalFlush\",\"Calls\":4,\"ElapsedMs\":4.4065},{\"Name\":\"JournalRename\",\"Calls\":4,\"ElapsedMs\":8.5106},{\"Name\":\"JournalTotal\",\"Calls\":4,\"ElapsedMs\":65.6817},{\"Name\":\"CopyAndFlush\",\"Calls\":2,\"ElapsedMs\":6.1556}]}",
+      "Input": "recover",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe recover <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"Files\":2}",
+      "Input": "verify-original",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe verify-original <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"645DE1BCED7B55C90361785982D6807997164C86D96F6C57D93FA11CD9E534A2\",\"sample-1048576.bin\":\"6B4A292DDCB03CF1657F09B37732ECE16B3321F6D29BDA15113D7D5AE6C2ACD3\",\"sample-4194304.bin\":\"0A87D2FB99AA39FAEF5157484C6BEF9668FE9C276DD97EA1F8C9129EF9FBAA55\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"645DE1BCED7B55C90361785982D6807997164C86D96F6C57D93FA11CD9E534A2\",\"sample-1048576.bin\":\"6B4A292DDCB03CF1657F09B37732ECE16B3321F6D29BDA15113D7D5AE6C2ACD3\",\"sample-4194304.bin\":\"0A87D2FB99AA39FAEF5157484C6BEF9668FE9C276DD97EA1F8C9129EF9FBAA55\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1098,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"DC0439515C222BDCA77B402947AFA6528B137D0035F79AC0054634B0078FCBDE\",\"sample-1048576.bin\":\"B200A0A3327BB5B5700C0C70B66A7E766BFB3378B8D14B24D8BD51B52E4C1A22\",\"sample-4194304.bin\":\"D6EE27B005383C8624EE525FE728ECFC315017440EF7A0C80112EA7A83D0831F\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"DC0439515C222BDCA77B402947AFA6528B137D0035F79AC0054634B0078FCBDE\",\"sample-1048576.bin\":\"B200A0A3327BB5B5700C0C70B66A7E766BFB3378B8D14B24D8BD51B52E4C1A22\",\"sample-4194304.bin\":\"D6EE27B005383C8624EE525FE728ECFC315017440EF7A0C80112EA7A83D0831F\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PLAN_READY\",\"Targets\":2,\"CanExecute\":false}",
+      "Input": "legacy-prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "ExitCode": -1,
+      "Checkpoint": "AuthorizationVerified",
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe legacy-kill:AuthorizationVerified <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AuthorizationVerified"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"DC0439515C222BDCA77B402947AFA6528B137D0035F79AC0054634B0078FCBDE\",\"sample-1048576.bin\":\"B200A0A3327BB5B5700C0C70B66A7E766BFB3378B8D14B24D8BD51B52E4C1A22\",\"sample-4194304.bin\":\"D6EE27B005383C8624EE525FE728ECFC315017440EF7A0C80112EA7A83D0831F\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"DC0439515C222BDCA77B402947AFA6528B137D0035F79AC0054634B0078FCBDE\",\"sample-1048576.bin\":\"B200A0A3327BB5B5700C0C70B66A7E766BFB3378B8D14B24D8BD51B52E4C1A22\",\"sample-4194304.bin\":\"D6EE27B005383C8624EE525FE728ECFC315017440EF7A0C80112EA7A83D0831F\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"Restored\",\"Code\":\"ROLLED-BACK\"}",
+      "Input": "legacy-restore",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-restore <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"Files\":2}",
+      "Input": "verify-original",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe verify-original <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"DC0439515C222BDCA77B402947AFA6528B137D0035F79AC0054634B0078FCBDE\",\"sample-1048576.bin\":\"B200A0A3327BB5B5700C0C70B66A7E766BFB3378B8D14B24D8BD51B52E4C1A22\",\"sample-4194304.bin\":\"D6EE27B005383C8624EE525FE728ECFC315017440EF7A0C80112EA7A83D0831F\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"DC0439515C222BDCA77B402947AFA6528B137D0035F79AC0054634B0078FCBDE\",\"sample-1048576.bin\":\"B200A0A3327BB5B5700C0C70B66A7E766BFB3378B8D14B24D8BD51B52E4C1A22\",\"sample-4194304.bin\":\"D6EE27B005383C8624EE525FE728ECFC315017440EF7A0C80112EA7A83D0831F\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1100,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"2CE724D4217ED960A6CF39EBAD92F6FA8E5A4FA7CDC704A1CD2C663C4538DCAD\",\"sample-1048576.bin\":\"6AE97C1AC44304AD7335D23B17D755F49D76735E3B94EE18971F4128545E4ECF\",\"sample-4194304.bin\":\"26EA2109904407EF795FEBE993618AD2BBC99873FA688622A40D231A8D2EDD56\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"2CE724D4217ED960A6CF39EBAD92F6FA8E5A4FA7CDC704A1CD2C663C4538DCAD\",\"sample-1048576.bin\":\"6AE97C1AC44304AD7335D23B17D755F49D76735E3B94EE18971F4128545E4ECF\",\"sample-4194304.bin\":\"26EA2109904407EF795FEBE993618AD2BBC99873FA688622A40D231A8D2EDD56\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PLAN_READY\",\"Targets\":2,\"CanExecute\":false}",
+      "Input": "legacy-prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "ExitCode": -1,
+      "Checkpoint": "BeforePromotion",
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe legacy-kill:BeforePromotion <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:BeforePromotion"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"2CE724D4217ED960A6CF39EBAD92F6FA8E5A4FA7CDC704A1CD2C663C4538DCAD\",\"sample-1048576.bin\":\"6AE97C1AC44304AD7335D23B17D755F49D76735E3B94EE18971F4128545E4ECF\",\"sample-4194304.bin\":\"26EA2109904407EF795FEBE993618AD2BBC99873FA688622A40D231A8D2EDD56\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"2CE724D4217ED960A6CF39EBAD92F6FA8E5A4FA7CDC704A1CD2C663C4538DCAD\",\"sample-1048576.bin\":\"6AE97C1AC44304AD7335D23B17D755F49D76735E3B94EE18971F4128545E4ECF\",\"sample-4194304.bin\":\"26EA2109904407EF795FEBE993618AD2BBC99873FA688622A40D231A8D2EDD56\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"Restored\",\"Code\":\"ROLLED-BACK\"}",
+      "Input": "legacy-restore",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-restore <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"Files\":2}",
+      "Input": "verify-original",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe verify-original <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"2CE724D4217ED960A6CF39EBAD92F6FA8E5A4FA7CDC704A1CD2C663C4538DCAD\",\"sample-1048576.bin\":\"6AE97C1AC44304AD7335D23B17D755F49D76735E3B94EE18971F4128545E4ECF\",\"sample-4194304.bin\":\"26EA2109904407EF795FEBE993618AD2BBC99873FA688622A40D231A8D2EDD56\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"2CE724D4217ED960A6CF39EBAD92F6FA8E5A4FA7CDC704A1CD2C663C4538DCAD\",\"sample-1048576.bin\":\"6AE97C1AC44304AD7335D23B17D755F49D76735E3B94EE18971F4128545E4ECF\",\"sample-4194304.bin\":\"26EA2109904407EF795FEBE993618AD2BBC99873FA688622A40D231A8D2EDD56\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1099,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"70BE8E4FF5C85FECD3ECDAC81B173656D5D46F83C90DAED105C54BCDF641C981\",\"sample-1048576.bin\":\"BCF2CEBD4F01CAA7781B536595F9E36BD8D737A3C8D43E9E5E7073A876C2B20E\",\"sample-4194304.bin\":\"E5D029F35E9AC09C69AFB3E208AA4025B7AD142CA2150876E467D36DED7714CA\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"70BE8E4FF5C85FECD3ECDAC81B173656D5D46F83C90DAED105C54BCDF641C981\",\"sample-1048576.bin\":\"BCF2CEBD4F01CAA7781B536595F9E36BD8D737A3C8D43E9E5E7073A876C2B20E\",\"sample-4194304.bin\":\"E5D029F35E9AC09C69AFB3E208AA4025B7AD142CA2150876E467D36DED7714CA\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PLAN_READY\",\"Targets\":2,\"CanExecute\":false}",
+      "Input": "legacy-prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "ExitCode": -1,
+      "Checkpoint": "AfterPromotion",
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe legacy-kill:AfterPromotion <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AfterPromotion"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"70BE8E4FF5C85FECD3ECDAC81B173656D5D46F83C90DAED105C54BCDF641C981\",\"sample-1048576.bin\":\"BCF2CEBD4F01CAA7781B536595F9E36BD8D737A3C8D43E9E5E7073A876C2B20E\",\"sample-4194304.bin\":\"E5D029F35E9AC09C69AFB3E208AA4025B7AD142CA2150876E467D36DED7714CA\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"70BE8E4FF5C85FECD3ECDAC81B173656D5D46F83C90DAED105C54BCDF641C981\",\"sample-1048576.bin\":\"BCF2CEBD4F01CAA7781B536595F9E36BD8D737A3C8D43E9E5E7073A876C2B20E\",\"sample-4194304.bin\":\"E5D029F35E9AC09C69AFB3E208AA4025B7AD142CA2150876E467D36DED7714CA\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"Restored\",\"Code\":\"ROLLED-BACK\",\"ElapsedMs\":171.3015,\"CpuMs\":171.875,\"PeakWorkingSetBytes\":45862912,\"Attestation\":{\"Verified\":false,\"RequiresReview\":false,\"Code\":\"RESTORED-INSTALLATION-NOT-ATTESTED\"},\"Phases\":[{\"Name\":\"FileIdentityValidation\",\"Calls\":38,\"ElapsedMs\":18.9468},{\"Name\":\"HashAndIdentity\",\"Calls\":6,\"ElapsedMs\":12.7396},{\"Name\":\"JournalSerialization\",\"Calls\":4,\"ElapsedMs\":5.7553},{\"Name\":\"JournalFlush\",\"Calls\":4,\"ElapsedMs\":4.0234},{\"Name\":\"JournalRename\",\"Calls\":4,\"ElapsedMs\":7.3805},{\"Name\":\"JournalTotal\",\"Calls\":4,\"ElapsedMs\":56.7917},{\"Name\":\"CopyAndFlush\",\"Calls\":2,\"ElapsedMs\":6.006}]}",
+      "Input": "recover",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe recover <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"Files\":2}",
+      "Input": "verify-original",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe verify-original <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"70BE8E4FF5C85FECD3ECDAC81B173656D5D46F83C90DAED105C54BCDF641C981\",\"sample-1048576.bin\":\"BCF2CEBD4F01CAA7781B536595F9E36BD8D737A3C8D43E9E5E7073A876C2B20E\",\"sample-4194304.bin\":\"E5D029F35E9AC09C69AFB3E208AA4025B7AD142CA2150876E467D36DED7714CA\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"70BE8E4FF5C85FECD3ECDAC81B173656D5D46F83C90DAED105C54BCDF641C981\",\"sample-1048576.bin\":\"BCF2CEBD4F01CAA7781B536595F9E36BD8D737A3C8D43E9E5E7073A876C2B20E\",\"sample-4194304.bin\":\"E5D029F35E9AC09C69AFB3E208AA4025B7AD142CA2150876E467D36DED7714CA\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1099,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"0A74B2A66338E9C0AB0C3385AA01AA5120A5F4C28AA13BC999ACD56E4689BB80\",\"sample-1048576.bin\":\"F04D0DC9B0540A52D28AAE5655BD3100EAA1185D8E259943C25A3A5C1A81737B\",\"sample-4194304.bin\":\"BED7093B8964676F7A36A2D4B1322B219152E77C55DCB8EC7D116043A4CECEDE\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"0A74B2A66338E9C0AB0C3385AA01AA5120A5F4C28AA13BC999ACD56E4689BB80\",\"sample-1048576.bin\":\"F04D0DC9B0540A52D28AAE5655BD3100EAA1185D8E259943C25A3A5C1A81737B\",\"sample-4194304.bin\":\"BED7093B8964676F7A36A2D4B1322B219152E77C55DCB8EC7D116043A4CECEDE\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PLAN_READY\",\"Targets\":2,\"CanExecute\":false}",
+      "Input": "legacy-prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "ExitCode": -1,
+      "Checkpoint": "BeforeRestore",
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe legacy-kill:BeforeRestore <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:BeforeRestore"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"0A74B2A66338E9C0AB0C3385AA01AA5120A5F4C28AA13BC999ACD56E4689BB80\",\"sample-1048576.bin\":\"F04D0DC9B0540A52D28AAE5655BD3100EAA1185D8E259943C25A3A5C1A81737B\",\"sample-4194304.bin\":\"BED7093B8964676F7A36A2D4B1322B219152E77C55DCB8EC7D116043A4CECEDE\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"0A74B2A66338E9C0AB0C3385AA01AA5120A5F4C28AA13BC999ACD56E4689BB80\",\"sample-1048576.bin\":\"F04D0DC9B0540A52D28AAE5655BD3100EAA1185D8E259943C25A3A5C1A81737B\",\"sample-4194304.bin\":\"BED7093B8964676F7A36A2D4B1322B219152E77C55DCB8EC7D116043A4CECEDE\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"Restored\",\"Code\":\"ROLLED-BACK\",\"ElapsedMs\":203.4457,\"CpuMs\":187.5,\"PeakWorkingSetBytes\":45977600,\"Attestation\":{\"Verified\":false,\"RequiresReview\":false,\"Code\":\"RESTORED-INSTALLATION-NOT-ATTESTED\"},\"Phases\":[{\"Name\":\"FileIdentityValidation\",\"Calls\":38,\"ElapsedMs\":21.6965},{\"Name\":\"HashAndIdentity\",\"Calls\":6,\"ElapsedMs\":14.176},{\"Name\":\"JournalSerialization\",\"Calls\":4,\"ElapsedMs\":6.3353},{\"Name\":\"JournalFlush\",\"Calls\":4,\"ElapsedMs\":3.2017},{\"Name\":\"JournalRename\",\"Calls\":4,\"ElapsedMs\":8.4445},{\"Name\":\"JournalTotal\",\"Calls\":4,\"ElapsedMs\":62.172},{\"Name\":\"CopyAndFlush\",\"Calls\":2,\"ElapsedMs\":7.1345}]}",
+      "Input": "recover",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe recover <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"Files\":2}",
+      "Input": "verify-original",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe verify-original <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"0A74B2A66338E9C0AB0C3385AA01AA5120A5F4C28AA13BC999ACD56E4689BB80\",\"sample-1048576.bin\":\"F04D0DC9B0540A52D28AAE5655BD3100EAA1185D8E259943C25A3A5C1A81737B\",\"sample-4194304.bin\":\"BED7093B8964676F7A36A2D4B1322B219152E77C55DCB8EC7D116043A4CECEDE\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"0A74B2A66338E9C0AB0C3385AA01AA5120A5F4C28AA13BC999ACD56E4689BB80\",\"sample-1048576.bin\":\"F04D0DC9B0540A52D28AAE5655BD3100EAA1185D8E259943C25A3A5C1A81737B\",\"sample-4194304.bin\":\"BED7093B8964676F7A36A2D4B1322B219152E77C55DCB8EC7D116043A4CECEDE\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1098,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"41D95F8AC3CB6CB99B0DFF2890EA6307F53415717056FEDDECC523535D57EBE5\",\"sample-1048576.bin\":\"3153F20E9CA7D2FAC0E430A9EDCCCCF4E1606107B7A9BC32448905804874FBFA\",\"sample-4194304.bin\":\"A18CBB19BEFE7F174C882E6313965E4B1D9DC460205B1DD59DE8864AF053A619\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"41D95F8AC3CB6CB99B0DFF2890EA6307F53415717056FEDDECC523535D57EBE5\",\"sample-1048576.bin\":\"3153F20E9CA7D2FAC0E430A9EDCCCCF4E1606107B7A9BC32448905804874FBFA\",\"sample-4194304.bin\":\"A18CBB19BEFE7F174C882E6313965E4B1D9DC460205B1DD59DE8864AF053A619\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PLAN_READY\",\"Targets\":2,\"CanExecute\":false}",
+      "Input": "legacy-prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "ExitCode": -1,
+      "Checkpoint": "AfterFileRestore",
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe legacy-kill:AfterFileRestore <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AfterFileRestore"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"41D95F8AC3CB6CB99B0DFF2890EA6307F53415717056FEDDECC523535D57EBE5\",\"sample-1048576.bin\":\"3153F20E9CA7D2FAC0E430A9EDCCCCF4E1606107B7A9BC32448905804874FBFA\",\"sample-4194304.bin\":\"A18CBB19BEFE7F174C882E6313965E4B1D9DC460205B1DD59DE8864AF053A619\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"41D95F8AC3CB6CB99B0DFF2890EA6307F53415717056FEDDECC523535D57EBE5\",\"sample-1048576.bin\":\"3153F20E9CA7D2FAC0E430A9EDCCCCF4E1606107B7A9BC32448905804874FBFA\",\"sample-4194304.bin\":\"A18CBB19BEFE7F174C882E6313965E4B1D9DC460205B1DD59DE8864AF053A619\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"Restored\",\"Code\":\"ROLLED-BACK\",\"ElapsedMs\":203.7998,\"CpuMs\":203.125,\"PeakWorkingSetBytes\":46006272,\"Attestation\":{\"Verified\":false,\"RequiresReview\":false,\"Code\":\"RESTORED-INSTALLATION-NOT-ATTESTED\"},\"Phases\":[{\"Name\":\"FileIdentityValidation\",\"Calls\":38,\"ElapsedMs\":21.5527},{\"Name\":\"HashAndIdentity\",\"Calls\":6,\"ElapsedMs\":13.7318},{\"Name\":\"JournalSerialization\",\"Calls\":4,\"ElapsedMs\":6.7012},{\"Name\":\"JournalFlush\",\"Calls\":4,\"ElapsedMs\":4.874},{\"Name\":\"JournalRename\",\"Calls\":4,\"ElapsedMs\":9.2848},{\"Name\":\"JournalTotal\",\"Calls\":4,\"ElapsedMs\":67.7397},{\"Name\":\"CopyAndFlush\",\"Calls\":2,\"ElapsedMs\":7.3755}]}",
+      "Input": "recover",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe recover <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"Files\":2}",
+      "Input": "verify-original",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe verify-original <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"41D95F8AC3CB6CB99B0DFF2890EA6307F53415717056FEDDECC523535D57EBE5\",\"sample-1048576.bin\":\"3153F20E9CA7D2FAC0E430A9EDCCCCF4E1606107B7A9BC32448905804874FBFA\",\"sample-4194304.bin\":\"A18CBB19BEFE7F174C882E6313965E4B1D9DC460205B1DD59DE8864AF053A619\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"41D95F8AC3CB6CB99B0DFF2890EA6307F53415717056FEDDECC523535D57EBE5\",\"sample-1048576.bin\":\"3153F20E9CA7D2FAC0E430A9EDCCCCF4E1606107B7A9BC32448905804874FBFA\",\"sample-4194304.bin\":\"A18CBB19BEFE7F174C882E6313965E4B1D9DC460205B1DD59DE8864AF053A619\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1093,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"13F8A0E5D5B385D672B8FBEC677BA66A490E86D6747A306C7B3D9DA26281304B\",\"sample-1048576.bin\":\"071CC10A3D5E1CC088B5259EABDF840521164FA404D9C9D079B4C66D1D584C35\",\"sample-4194304.bin\":\"AC4E3DE9AA9DF3006F7CF7B9426555D7645907D306420728F9B6B9A0EF98C405\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"13F8A0E5D5B385D672B8FBEC677BA66A490E86D6747A306C7B3D9DA26281304B\",\"sample-1048576.bin\":\"071CC10A3D5E1CC088B5259EABDF840521164FA404D9C9D079B4C66D1D584C35\",\"sample-4194304.bin\":\"AC4E3DE9AA9DF3006F7CF7B9426555D7645907D306420728F9B6B9A0EF98C405\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PLAN_READY\",\"Targets\":2,\"CanExecute\":false}",
+      "Input": "legacy-prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "ExitCode": -1,
+      "Checkpoint": "SecondFileRestore",
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe legacy-kill:SecondFileRestore <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:SecondFileRestore"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"13F8A0E5D5B385D672B8FBEC677BA66A490E86D6747A306C7B3D9DA26281304B\",\"sample-1048576.bin\":\"071CC10A3D5E1CC088B5259EABDF840521164FA404D9C9D079B4C66D1D584C35\",\"sample-4194304.bin\":\"AC4E3DE9AA9DF3006F7CF7B9426555D7645907D306420728F9B6B9A0EF98C405\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"13F8A0E5D5B385D672B8FBEC677BA66A490E86D6747A306C7B3D9DA26281304B\",\"sample-1048576.bin\":\"071CC10A3D5E1CC088B5259EABDF840521164FA404D9C9D079B4C66D1D584C35\",\"sample-4194304.bin\":\"AC4E3DE9AA9DF3006F7CF7B9426555D7645907D306420728F9B6B9A0EF98C405\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"Restored\",\"Code\":\"ROLLED-BACK\",\"ElapsedMs\":184.4652,\"CpuMs\":171.875,\"PeakWorkingSetBytes\":45854720,\"Attestation\":{\"Verified\":false,\"RequiresReview\":false,\"Code\":\"RESTORED-INSTALLATION-NOT-ATTESTED\"},\"Phases\":[{\"Name\":\"FileIdentityValidation\",\"Calls\":38,\"ElapsedMs\":20.1372},{\"Name\":\"HashAndIdentity\",\"Calls\":6,\"ElapsedMs\":12.9685},{\"Name\":\"JournalSerialization\",\"Calls\":4,\"ElapsedMs\":6.5458},{\"Name\":\"JournalFlush\",\"Calls\":4,\"ElapsedMs\":4.3052},{\"Name\":\"JournalRename\",\"Calls\":4,\"ElapsedMs\":8.5855},{\"Name\":\"JournalTotal\",\"Calls\":4,\"ElapsedMs\":62.8207},{\"Name\":\"CopyAndFlush\",\"Calls\":2,\"ElapsedMs\":6.6492}]}",
+      "Input": "recover",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe recover <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"Files\":2}",
+      "Input": "verify-original",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe verify-original <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"13F8A0E5D5B385D672B8FBEC677BA66A490E86D6747A306C7B3D9DA26281304B\",\"sample-1048576.bin\":\"071CC10A3D5E1CC088B5259EABDF840521164FA404D9C9D079B4C66D1D584C35\",\"sample-4194304.bin\":\"AC4E3DE9AA9DF3006F7CF7B9426555D7645907D306420728F9B6B9A0EF98C405\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"13F8A0E5D5B385D672B8FBEC677BA66A490E86D6747A306C7B3D9DA26281304B\",\"sample-1048576.bin\":\"071CC10A3D5E1CC088B5259EABDF840521164FA404D9C9D079B4C66D1D584C35\",\"sample-4194304.bin\":\"AC4E3DE9AA9DF3006F7CF7B9426555D7645907D306420728F9B6B9A0EF98C405\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1094,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"E810781AD2B0D536545DBA0BEB408638FA14F2DC1208B0810E878C125C04BE16\",\"sample-1048576.bin\":\"4C5EB657AA49D2D3A2F3EE77ADCA3C54FFA26D653B04D1C8CD128D71E246809E\",\"sample-4194304.bin\":\"826803C92DB00B6D13E3AE0E3920425F867EC4A8BFEA64914A018D38489F9F60\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"E810781AD2B0D536545DBA0BEB408638FA14F2DC1208B0810E878C125C04BE16\",\"sample-1048576.bin\":\"4C5EB657AA49D2D3A2F3EE77ADCA3C54FFA26D653B04D1C8CD128D71E246809E\",\"sample-4194304.bin\":\"826803C92DB00B6D13E3AE0E3920425F867EC4A8BFEA64914A018D38489F9F60\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PLAN_READY\",\"Targets\":2,\"CanExecute\":false}",
+      "Input": "legacy-prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "ExitCode": -1,
+      "Checkpoint": "BeforeRestoredJournal",
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe legacy-kill:BeforeRestoredJournal <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:BeforeRestoredJournal"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"E810781AD2B0D536545DBA0BEB408638FA14F2DC1208B0810E878C125C04BE16\",\"sample-1048576.bin\":\"4C5EB657AA49D2D3A2F3EE77ADCA3C54FFA26D653B04D1C8CD128D71E246809E\",\"sample-4194304.bin\":\"826803C92DB00B6D13E3AE0E3920425F867EC4A8BFEA64914A018D38489F9F60\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"E810781AD2B0D536545DBA0BEB408638FA14F2DC1208B0810E878C125C04BE16\",\"sample-1048576.bin\":\"4C5EB657AA49D2D3A2F3EE77ADCA3C54FFA26D653B04D1C8CD128D71E246809E\",\"sample-4194304.bin\":\"826803C92DB00B6D13E3AE0E3920425F867EC4A8BFEA64914A018D38489F9F60\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"Restored\",\"Code\":\"ROLLED-BACK\",\"ElapsedMs\":177.6403,\"CpuMs\":187.5,\"PeakWorkingSetBytes\":46018560,\"Attestation\":{\"Verified\":false,\"RequiresReview\":false,\"Code\":\"RESTORED-INSTALLATION-NOT-ATTESTED\"},\"Phases\":[{\"Name\":\"FileIdentityValidation\",\"Calls\":38,\"ElapsedMs\":19.0769},{\"Name\":\"HashAndIdentity\",\"Calls\":6,\"ElapsedMs\":12.7523},{\"Name\":\"JournalSerialization\",\"Calls\":4,\"ElapsedMs\":5.8006},{\"Name\":\"JournalFlush\",\"Calls\":4,\"ElapsedMs\":3.8448},{\"Name\":\"JournalRename\",\"Calls\":4,\"ElapsedMs\":7.3465},{\"Name\":\"JournalTotal\",\"Calls\":4,\"ElapsedMs\":55.6175},{\"Name\":\"CopyAndFlush\",\"Calls\":2,\"ElapsedMs\":5.7862}]}",
+      "Input": "recover",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe recover <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"Files\":2}",
+      "Input": "verify-original",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe verify-original <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"E810781AD2B0D536545DBA0BEB408638FA14F2DC1208B0810E878C125C04BE16\",\"sample-1048576.bin\":\"4C5EB657AA49D2D3A2F3EE77ADCA3C54FFA26D653B04D1C8CD128D71E246809E\",\"sample-4194304.bin\":\"826803C92DB00B6D13E3AE0E3920425F867EC4A8BFEA64914A018D38489F9F60\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"E810781AD2B0D536545DBA0BEB408638FA14F2DC1208B0810E878C125C04BE16\",\"sample-1048576.bin\":\"4C5EB657AA49D2D3A2F3EE77ADCA3C54FFA26D653B04D1C8CD128D71E246809E\",\"sample-4194304.bin\":\"826803C92DB00B6D13E3AE0E3920425F867EC4A8BFEA64914A018D38489F9F60\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1095,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"8021F842FA77E3D9EA7ED7892CE498E117B05DE00D3EC11C4C1A76E6161217B2\",\"sample-1048576.bin\":\"AF4380D3CE3AC1CFC46E7AFEB6D7557296D4A13BB29B33DE0C16A622FAE8B301\",\"sample-4194304.bin\":\"4372D4CA1E7E6B5B647D7F28B81154BF1ECA2CE687C29E6F8B5EDD6FDC323C32\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"8021F842FA77E3D9EA7ED7892CE498E117B05DE00D3EC11C4C1A76E6161217B2\",\"sample-1048576.bin\":\"AF4380D3CE3AC1CFC46E7AFEB6D7557296D4A13BB29B33DE0C16A622FAE8B301\",\"sample-4194304.bin\":\"4372D4CA1E7E6B5B647D7F28B81154BF1ECA2CE687C29E6F8B5EDD6FDC323C32\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PLAN_READY\",\"Targets\":2,\"CanExecute\":false}",
+      "Input": "legacy-prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "ExitCode": -1,
+      "Checkpoint": "AfterRestoredJournal",
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe legacy-kill:AfterRestoredJournal <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AfterRestoredJournal"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"8021F842FA77E3D9EA7ED7892CE498E117B05DE00D3EC11C4C1A76E6161217B2\",\"sample-1048576.bin\":\"AF4380D3CE3AC1CFC46E7AFEB6D7557296D4A13BB29B33DE0C16A622FAE8B301\",\"sample-4194304.bin\":\"4372D4CA1E7E6B5B647D7F28B81154BF1ECA2CE687C29E6F8B5EDD6FDC323C32\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"8021F842FA77E3D9EA7ED7892CE498E117B05DE00D3EC11C4C1A76E6161217B2\",\"sample-1048576.bin\":\"AF4380D3CE3AC1CFC46E7AFEB6D7557296D4A13BB29B33DE0C16A622FAE8B301\",\"sample-4194304.bin\":\"4372D4CA1E7E6B5B647D7F28B81154BF1ECA2CE687C29E6F8B5EDD6FDC323C32\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"Restored\",\"Code\":\"NO-PENDING\",\"ElapsedMs\":89.9661,\"CpuMs\":93.75,\"PeakWorkingSetBytes\":39780352,\"Attestation\":{\"Verified\":false,\"RequiresReview\":false,\"Code\":\"RESTORED-INSTALLATION-NOT-ATTESTED\"},\"Phases\":[]}",
+      "Input": "recover",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe recover <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"Files\":2}",
+      "Input": "verify-original",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe verify-original <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"8021F842FA77E3D9EA7ED7892CE498E117B05DE00D3EC11C4C1A76E6161217B2\",\"sample-1048576.bin\":\"AF4380D3CE3AC1CFC46E7AFEB6D7557296D4A13BB29B33DE0C16A622FAE8B301\",\"sample-4194304.bin\":\"4372D4CA1E7E6B5B647D7F28B81154BF1ECA2CE687C29E6F8B5EDD6FDC323C32\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"8021F842FA77E3D9EA7ED7892CE498E117B05DE00D3EC11C4C1A76E6161217B2\",\"sample-1048576.bin\":\"AF4380D3CE3AC1CFC46E7AFEB6D7557296D4A13BB29B33DE0C16A622FAE8B301\",\"sample-4194304.bin\":\"4372D4CA1E7E6B5B647D7F28B81154BF1ECA2CE687C29E6F8B5EDD6FDC323C32\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1092,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"9A02FCD0A79385369E902E6A0D117EFF6F9B6644633E5F905FA55E72B98E36C8\",\"sample-1048576.bin\":\"EE540AEBC03441D4581F0B4E7A82E411053B147D59122EA4E05368D4ECE9AABA\",\"sample-4194304.bin\":\"043DFF70E5304D5203A0DC5707A99FC04565C996EA43AF730DDCD962A1C99029\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"9A02FCD0A79385369E902E6A0D117EFF6F9B6644633E5F905FA55E72B98E36C8\",\"sample-1048576.bin\":\"EE540AEBC03441D4581F0B4E7A82E411053B147D59122EA4E05368D4ECE9AABA\",\"sample-4194304.bin\":\"043DFF70E5304D5203A0DC5707A99FC04565C996EA43AF730DDCD962A1C99029\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PLAN_READY\",\"Targets\":2,\"CanExecute\":false}",
+      "Input": "legacy-prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"REQUEST_PREPARED\"}",
+      "Input": "legacy-request",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-request <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"Restored\",\"Code\":\"ROLLED-BACK\"}",
+      "Input": "approved",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe approved <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"Files\":2}",
+      "Input": "verify-original",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe verify-original <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":9,\"RecoveryCodeUsed\":true,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"9A02FCD0A79385369E902E6A0D117EFF6F9B6644633E5F905FA55E72B98E36C8\",\"sample-1048576.bin\":\"EE540AEBC03441D4581F0B4E7A82E411053B147D59122EA4E05368D4ECE9AABA\",\"sample-4194304.bin\":\"043DFF70E5304D5203A0DC5707A99FC04565C996EA43AF730DDCD962A1C99029\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"9A02FCD0A79385369E902E6A0D117EFF6F9B6644633E5F905FA55E72B98E36C8\",\"sample-1048576.bin\":\"EE540AEBC03441D4581F0B4E7A82E411053B147D59122EA4E05368D4ECE9AABA\",\"sample-4194304.bin\":\"043DFF70E5304D5203A0DC5707A99FC04565C996EA43AF730DDCD962A1C99029\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-recovery-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-recovery-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1100,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"23A9E4228519E64FCA74F10CB1FEEC6306B88C7983B9A65D465C092F0DB370D1\",\"sample-1048576.bin\":\"BA1A69CE421590AEA4C60C9D97FF43AC81652274E2EDB22C390838BDBF73F554\",\"sample-4194304.bin\":\"79DB13D8F4116645A485462C3948580636305DC4978D6911E4C2BA82B86AC7A4\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"23A9E4228519E64FCA74F10CB1FEEC6306B88C7983B9A65D465C092F0DB370D1\",\"sample-1048576.bin\":\"BA1A69CE421590AEA4C60C9D97FF43AC81652274E2EDB22C390838BDBF73F554\",\"sample-4194304.bin\":\"79DB13D8F4116645A485462C3948580636305DC4978D6911E4C2BA82B86AC7A4\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PLAN_READY\",\"Targets\":2,\"CanExecute\":false}",
+      "Input": "legacy-prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"REQUEST_PREPARED\"}",
+      "Input": "legacy-request",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-request <SYNTHETIC_ROOT>"
+    },
+    {
+      "ExitCode": -1,
+      "Checkpoint": "AuthorizationVerified",
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe approved-kill:AuthorizationVerified <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AuthorizationVerified"
+    },
+    {
+      "Output": "{\"Status\":\"REQUEST_PREPARED\"}",
+      "Input": "legacy-request",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-request <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"Restored\",\"Code\":\"ROLLED-BACK\"}",
+      "Input": "approved",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe approved <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"Files\":2}",
+      "Input": "verify-original",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe verify-original <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":9,\"RecoveryCodeUsed\":true,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"23A9E4228519E64FCA74F10CB1FEEC6306B88C7983B9A65D465C092F0DB370D1\",\"sample-1048576.bin\":\"BA1A69CE421590AEA4C60C9D97FF43AC81652274E2EDB22C390838BDBF73F554\",\"sample-4194304.bin\":\"79DB13D8F4116645A485462C3948580636305DC4978D6911E4C2BA82B86AC7A4\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"23A9E4228519E64FCA74F10CB1FEEC6306B88C7983B9A65D465C092F0DB370D1\",\"sample-1048576.bin\":\"BA1A69CE421590AEA4C60C9D97FF43AC81652274E2EDB22C390838BDBF73F554\",\"sample-4194304.bin\":\"79DB13D8F4116645A485462C3948580636305DC4978D6911E4C2BA82B86AC7A4\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-recovery-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-recovery-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1100,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"501A8D1E38E27800F5E6179444F94BC50973E999B6CDDBFD6929A87E91DF94E6\",\"sample-1048576.bin\":\"2DDE57A8BF5B354FAA6762F75EF02B30FAADACF2F4CAAC6E21442BA34F4B1E6C\",\"sample-4194304.bin\":\"ABF6DCE3D5575CAE91ED48E931831A5F23D971A30A823CF31BAA2310C20A58BD\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"501A8D1E38E27800F5E6179444F94BC50973E999B6CDDBFD6929A87E91DF94E6\",\"sample-1048576.bin\":\"2DDE57A8BF5B354FAA6762F75EF02B30FAADACF2F4CAAC6E21442BA34F4B1E6C\",\"sample-4194304.bin\":\"ABF6DCE3D5575CAE91ED48E931831A5F23D971A30A823CF31BAA2310C20A58BD\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PLAN_READY\",\"Targets\":2,\"CanExecute\":false}",
+      "Input": "legacy-prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"REQUEST_PREPARED\"}",
+      "Input": "legacy-request",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-request <SYNTHETIC_ROOT>"
+    },
+    {
+      "ExitCode": -1,
+      "Checkpoint": "AfterPromotion",
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe approved-kill:AfterPromotion <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AfterPromotion"
+    },
+    {
+      "Output": "{\"Status\":\"Restored\",\"Code\":\"ROLLED-BACK\",\"ElapsedMs\":158.4057,\"CpuMs\":140.625,\"PeakWorkingSetBytes\":45715456,\"Attestation\":{\"Verified\":false,\"RequiresReview\":false,\"Code\":\"RESTORED-INSTALLATION-NOT-ATTESTED\"},\"Phases\":[{\"Name\":\"FileIdentityValidation\",\"Calls\":38,\"ElapsedMs\":17.1694},{\"Name\":\"HashAndIdentity\",\"Calls\":6,\"ElapsedMs\":11.0204},{\"Name\":\"JournalSerialization\",\"Calls\":4,\"ElapsedMs\":5.8847},{\"Name\":\"JournalFlush\",\"Calls\":4,\"ElapsedMs\":3.8438},{\"Name\":\"JournalRename\",\"Calls\":4,\"ElapsedMs\":7.6488},{\"Name\":\"JournalTotal\",\"Calls\":4,\"ElapsedMs\":55.6438},{\"Name\":\"CopyAndFlush\",\"Calls\":2,\"ElapsedMs\":6.0081}]}",
+      "Input": "recover",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe recover <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"Files\":2}",
+      "Input": "verify-original",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe verify-original <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":9,\"RecoveryCodeUsed\":true,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"501A8D1E38E27800F5E6179444F94BC50973E999B6CDDBFD6929A87E91DF94E6\",\"sample-1048576.bin\":\"2DDE57A8BF5B354FAA6762F75EF02B30FAADACF2F4CAAC6E21442BA34F4B1E6C\",\"sample-4194304.bin\":\"ABF6DCE3D5575CAE91ED48E931831A5F23D971A30A823CF31BAA2310C20A58BD\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"501A8D1E38E27800F5E6179444F94BC50973E999B6CDDBFD6929A87E91DF94E6\",\"sample-1048576.bin\":\"2DDE57A8BF5B354FAA6762F75EF02B30FAADACF2F4CAAC6E21442BA34F4B1E6C\",\"sample-4194304.bin\":\"ABF6DCE3D5575CAE91ED48E931831A5F23D971A30A823CF31BAA2310C20A58BD\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-recovery-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-recovery-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1100,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"07586D9575ABC6B556116F8F7E26A1D1353FACB1EAD0235F155DCEB6D13A9F8A\",\"sample-1048576.bin\":\"F2CFFA6D6C58704962F139BC47B4C46725B2584BB2657834A98F3902A2FE1B11\",\"sample-4194304.bin\":\"30A9F13464A93962EA20526A26CE5C242EE1742CECCFDE3250C9A091112CB8D8\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"07586D9575ABC6B556116F8F7E26A1D1353FACB1EAD0235F155DCEB6D13A9F8A\",\"sample-1048576.bin\":\"F2CFFA6D6C58704962F139BC47B4C46725B2584BB2657834A98F3902A2FE1B11\",\"sample-4194304.bin\":\"30A9F13464A93962EA20526A26CE5C242EE1742CECCFDE3250C9A091112CB8D8\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PLAN_READY\",\"Targets\":2,\"CanExecute\":false}",
+      "Input": "legacy-prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"REQUEST_PREPARED\"}",
+      "Input": "legacy-request",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-request <SYNTHETIC_ROOT>"
+    },
+    {
+      "ExitCode": -1,
+      "Checkpoint": "AfterFileRestore",
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe approved-kill:AfterFileRestore <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AfterFileRestore"
+    },
+    {
+      "Output": "{\"Status\":\"Restored\",\"Code\":\"ROLLED-BACK\",\"ElapsedMs\":154.5297,\"CpuMs\":171.875,\"PeakWorkingSetBytes\":45899776,\"Attestation\":{\"Verified\":false,\"RequiresReview\":false,\"Code\":\"RESTORED-INSTALLATION-NOT-ATTESTED\"},\"Phases\":[{\"Name\":\"FileIdentityValidation\",\"Calls\":38,\"ElapsedMs\":16.8072},{\"Name\":\"HashAndIdentity\",\"Calls\":6,\"ElapsedMs\":10.8543},{\"Name\":\"JournalSerialization\",\"Calls\":4,\"ElapsedMs\":5.2732},{\"Name\":\"JournalFlush\",\"Calls\":4,\"ElapsedMs\":3.2661},{\"Name\":\"JournalRename\",\"Calls\":4,\"ElapsedMs\":7.0581},{\"Name\":\"JournalTotal\",\"Calls\":4,\"ElapsedMs\":51.7197},{\"Name\":\"CopyAndFlush\",\"Calls\":2,\"ElapsedMs\":5.2162}]}",
+      "Input": "recover",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe recover <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"Files\":2}",
+      "Input": "verify-original",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe verify-original <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":9,\"RecoveryCodeUsed\":true,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"07586D9575ABC6B556116F8F7E26A1D1353FACB1EAD0235F155DCEB6D13A9F8A\",\"sample-1048576.bin\":\"F2CFFA6D6C58704962F139BC47B4C46725B2584BB2657834A98F3902A2FE1B11\",\"sample-4194304.bin\":\"30A9F13464A93962EA20526A26CE5C242EE1742CECCFDE3250C9A091112CB8D8\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"07586D9575ABC6B556116F8F7E26A1D1353FACB1EAD0235F155DCEB6D13A9F8A\",\"sample-1048576.bin\":\"F2CFFA6D6C58704962F139BC47B4C46725B2584BB2657834A98F3902A2FE1B11\",\"sample-4194304.bin\":\"30A9F13464A93962EA20526A26CE5C242EE1742CECCFDE3250C9A091112CB8D8\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-recovery-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-recovery-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1101,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"07A8203EE4E9C72A9DCFC10A1F15FBB46173882BDFDA3CB00B566474FE46C33F\",\"sample-1048576.bin\":\"57F0B41B92503E229D8AA4E3F923EECC6BD45EA7DF3579292EA8F606512FD703\",\"sample-4194304.bin\":\"F7021F37DFA79C3612696B29C486EE914AEF0A2F27B10ADCA6B3C39D159D17BF\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"07A8203EE4E9C72A9DCFC10A1F15FBB46173882BDFDA3CB00B566474FE46C33F\",\"sample-1048576.bin\":\"57F0B41B92503E229D8AA4E3F923EECC6BD45EA7DF3579292EA8F606512FD703\",\"sample-4194304.bin\":\"F7021F37DFA79C3612696B29C486EE914AEF0A2F27B10ADCA6B3C39D159D17BF\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PLAN_READY\",\"Targets\":2,\"CanExecute\":false}",
+      "Input": "legacy-prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"REQUEST_PREPARED\"}",
+      "Input": "legacy-request",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-request <SYNTHETIC_ROOT>"
+    },
+    {
+      "ExitCode": -1,
+      "Checkpoint": "AfterRestoredJournal",
+      "Environment": "Synthetic filesystem",
+      "Command": "WO20Probe approved-kill:AfterRestoredJournal <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Output": "CHECKPOINT:AfterRestoredJournal"
+    },
+    {
+      "Output": "{\"Status\":\"Restored\",\"Code\":\"NO-PENDING\",\"ElapsedMs\":79.2305,\"CpuMs\":78.125,\"PeakWorkingSetBytes\":39813120,\"Attestation\":{\"Verified\":false,\"RequiresReview\":false,\"Code\":\"RESTORED-INSTALLATION-NOT-ATTESTED\"},\"Phases\":[]}",
+      "Input": "recover",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe recover <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"Files\":2}",
+      "Input": "verify-original",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe verify-original <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":9,\"RecoveryCodeUsed\":true,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"07A8203EE4E9C72A9DCFC10A1F15FBB46173882BDFDA3CB00B566474FE46C33F\",\"sample-1048576.bin\":\"57F0B41B92503E229D8AA4E3F923EECC6BD45EA7DF3579292EA8F606512FD703\",\"sample-4194304.bin\":\"F7021F37DFA79C3612696B29C486EE914AEF0A2F27B10ADCA6B3C39D159D17BF\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"07A8203EE4E9C72A9DCFC10A1F15FBB46173882BDFDA3CB00B566474FE46C33F\",\"sample-1048576.bin\":\"57F0B41B92503E229D8AA4E3F923EECC6BD45EA7DF3579292EA8F606512FD703\",\"sample-4194304.bin\":\"F7021F37DFA79C3612696B29C486EE914AEF0A2F27B10ADCA6B3C39D159D17BF\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-recovery-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-recovery-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1096,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PLAN_READY\",\"Targets\":2,\"CanExecute\":false}",
+      "Input": "legacy-prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"RecoveryReviewRequired\",\"Before\":\"20033C90C32450C4FF7A3BD19B390EFF9C3B3169D212133DE4B48FEE158D04EA\",\"After\":\"20033C90C32450C4FF7A3BD19B390EFF9C3B3169D212133DE4B48FEE158D04EA\",\"ContentStates\":[\"UnknownContent\",\"UpdatedVerified\"]}",
+      "Input": "legacy-unknown",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe legacy-unknown <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":10,\"RecoveryCodeUsed\":false,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"89C15D21D16DD9ED01B2193A82B16B267732067CFEA728F78BDCFFDBB032BD0B\",\"sample-1048576.bin\":\"A62655AF0440A353C9545A01AE0248E83E1B702B3F532498E157989DA4F48FBA\",\"sample-4194304.bin\":\"0165E633BFDE388D1BDC4A9789DBFC4D390D0EDDD0D6F70F907EE31326860B84\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"89C15D21D16DD9ED01B2193A82B16B267732067CFEA728F78BDCFFDBB032BD0B\",\"sample-1048576.bin\":\"A62655AF0440A353C9545A01AE0248E83E1B702B3F532498E157989DA4F48FBA\",\"sample-4194304.bin\":\"0165E633BFDE388D1BDC4A9789DBFC4D390D0EDDD0D6F70F907EE31326860B84\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1098,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"Committed\",\"Code\":\"COMMITTED\",\"ElapsedMs\":370.4087,\"CpuMs\":328.125,\"PeakWorkingSetBytes\":54325248,\"Attestation\":{\"Verified\":true,\"RequiresReview\":false,\"Code\":\"SIGNED-INSTALLATION-VERIFIED\"},\"Phases\":[{\"Name\":\"PackageVerification\",\"Calls\":1,\"ElapsedMs\":64.9098},{\"Name\":\"JournalSerialization\",\"Calls\":11,\"ElapsedMs\":0.4615},{\"Name\":\"JournalFlush\",\"Calls\":11,\"ElapsedMs\":11.5937},{\"Name\":\"FileIdentityValidation\",\"Calls\":100,\"ElapsedMs\":49.7447},{\"Name\":\"JournalRename\",\"Calls\":11,\"ElapsedMs\":21.3279},{\"Name\":\"JournalTotal\",\"Calls\":11,\"ElapsedMs\":146.7841},{\"Name\":\"CopyAndFlush\",\"Calls\":5,\"ElapsedMs\":15.2487},{\"Name\":\"HashAndIdentity\",\"Calls\":17,\"ElapsedMs\":17.6757},{\"Name\":\"ExtractionAndVerification\",\"Calls\":2,\"ElapsedMs\":22.0821},{\"Name\":\"BackupAndIdentity\",\"Calls\":2,\"ElapsedMs\":25.2924},{\"Name\":\"ReplacementAndVerification\",\"Calls\":2,\"ElapsedMs\":35.6179}]}",
+      "Input": "apply",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe apply <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"State\":3,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"INSTALLATION-CONTENT-MISMATCH\"}",
+      "Input": "attestation-mismatch",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe attestation-mismatch <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":9,\"RecoveryCodeUsed\":true,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"EF58961574941377554F90739A954599FA665839EA0F95DBEA872A7ACEC4CABE\",\"sample-1048576.bin\":\"EF21546260CCF0329212179362F953A0CBC8004B6CEA3B9FE7DEE16D76BC0911\",\"sample-4194304.bin\":\"2894F902E731A06FB8622ACACD1C530C82886E44E1CAFBD428A11A8330861A71\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"EF58961574941377554F90739A954599FA665839EA0F95DBEA872A7ACEC4CABE\",\"sample-1048576.bin\":\"EF21546260CCF0329212179362F953A0CBC8004B6CEA3B9FE7DEE16D76BC0911\",\"sample-4194304.bin\":\"2894F902E731A06FB8622ACACD1C530C82886E44E1CAFBD428A11A8330861A71\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-recovery-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-recovery-check <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1094,\"ExistingBytes\":13}",
+      "Input": "prepare",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe prepare <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"State\":2,\"Verified\":true,\"RequiresReview\":false,\"Code\":\"SIGNED-ENROLLMENT-CREATED\"}",
+      "Input": "enroll",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe enroll <SYNTHETIC_ROOT>"
+    },
+    {
+      "Output": "{\"Status\":\"BYTES_VERIFIED\",\"Format\":\"spd-vault-v5-lab\",\"RecoverySlotsRemaining\":9,\"RecoveryCodeUsed\":true,\"Files\":4,\"OriginalHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"255D71C5F1FCE45247F01FF559AD690E0C065AF47FD3E02ADEC82D2E2DBF34B8\",\"sample-1048576.bin\":\"FE7437D71645B7D11C7EA784764D5FFD6A0AC3FA79A9A0EEA549B08E9B85E2B7\",\"sample-4194304.bin\":\"D7A22AD2D77516CD27CC354C82EE49EAE31E07E70455453B805A8ECB04C3F017\"},\"ExtractedHashes\":{\"sample-0.bin\":\"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855\",\"sample-4096.bin\":\"255D71C5F1FCE45247F01FF559AD690E0C065AF47FD3E02ADEC82D2E2DBF34B8\",\"sample-1048576.bin\":\"FE7437D71645B7D11C7EA784764D5FFD6A0AC3FA79A9A0EEA549B08E9B85E2B7\",\"sample-4194304.bin\":\"D7A22AD2D77516CD27CC354C82EE49EAE31E07E70455453B805A8ECB04C3F017\"},\"Reboot\":\"NOT TESTED\"}",
+      "Input": "vault-recovery-check",
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "ExitCode": 0,
+      "Command": "WO20Probe vault-recovery-check <SYNTHETIC_ROOT>"
+    }
+  ]
+}

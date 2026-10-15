@@ -1,0 +1,1003 @@
+{
+  "BinaryPath": "tests/SmartPerformanceDoctor.Tests/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.Tests.dll",
+  "InputDigest": "0A69302B91A74ACEA515F10FB8F19D6913BD134C9C43AE78411B29897027BE65",
+  "Source": "930ed7907daaa95cf15040d130c580248e64bf61",
+  "Binaries": [
+    {
+      "Name": "AegisRecoveryHelper.deps.json",
+      "Hash": "DDA86990218902834C0774E47DA86877714EC83030B82B692938BBC0D3F3A622"
+    },
+    {
+      "Name": "AegisRecoveryHelper.exe",
+      "Hash": "06C175E16A0D13B92CCCB39D4F79CF3C8D7F5D698B632907B010B8655E315E5A"
+    },
+    {
+      "Name": "AegisRecoveryHelper.runtimeconfig.json",
+      "Hash": "3E965CD7CFD553C2FF4E842D8D8019AAAE2DA0A21D92FF85A87573DD8D1B95C6"
+    },
+    {
+      "Name": "AegisRecoveryService.deps.json",
+      "Hash": "518A5BDF211793DF26D7D2E2C060C2129BB425BE8ECA4BFD5F439EFDF5E232B3"
+    },
+    {
+      "Name": "AegisRecoveryService.exe",
+      "Hash": "E5DD06358C03A246D519E109D983635999BD41830D2F3DF53FA73E9501FD1957"
+    },
+    {
+      "Name": "AegisRecoveryService.runtimeconfig.json",
+      "Hash": "3E965CD7CFD553C2FF4E842D8D8019AAAE2DA0A21D92FF85A87573DD8D1B95C6"
+    },
+    {
+      "Name": "amd64\\KernelTraceControl.dll",
+      "Hash": "98DE2F1DE4FB1711688C04E2CB0187BF8C47E627771E8F51329671F296BFC688"
+    },
+    {
+      "Name": "amd64\\msdia140.dll",
+      "Hash": "7341081FEAC7A2CEBCC796C9C2BC5041A295DF0673244F2595294E06A0BD7EE8"
+    },
+    {
+      "Name": "av3-vectors\\reference-input.json",
+      "Hash": "943415384BCB64E4FB37E0075D30125E150C611F026DB7069FE63ABE3E3F5CF2"
+    },
+    {
+      "Name": "av3-vectors\\reference-output\\expected-errors.json",
+      "Hash": "8B237113AAD25764DAC698CC46D8691A4109EFB01230501BEF00B0E812FF9D71"
+    },
+    {
+      "Name": "av3-vectors\\reference-output\\manifest.json",
+      "Hash": "3D25B3550250DFF3C16A635D28FE463196B6D19462EA926C603CB8C9A936FC1A"
+    },
+    {
+      "Name": "av3-vectors\\reference-output\\metadata-root-expected-result.json",
+      "Hash": "D6A5A1C7288C1AB65914E8A194BA1A2868D8CEC1318E5275857839CF07F13860"
+    },
+    {
+      "Name": "av3-vectors\\reference-output\\provenance.json",
+      "Hash": "4BBFF6715A66408DAD5413470F8FB2DDD4F9C5678759D83D12DC548476F5CAB5"
+    },
+    {
+      "Name": "av3-vectors\\xchacha24\\manifest.json",
+      "Hash": "5A2DBC9D2E5DF326CF036E82A0E609D09597340A86CAC036F29580F1443F0605"
+    },
+    {
+      "Name": "av3-vectors\\xchacha24\\reference-vectors.json",
+      "Hash": "ACDE1BD36CE0FE1F20369F0AACC7E68A80309DB9A41B196A0B449D21E881F506"
+    },
+    {
+      "Name": "content\\assets\\design_tokens.json",
+      "Hash": "E0BE441C60D4D9AF00BAF855E5E825F5F0588BB036E389D5B79E3E2E482A5DF8"
+    },
+    {
+      "Name": "content\\assets\\motion_tokens.json",
+      "Hash": "351C54B63F45F05142E291EF385B9EB161CF64272D92F2DC5B62EF0E16C70625"
+    },
+    {
+      "Name": "content\\data\\commercial\\protocols.pack.json",
+      "Hash": "8B6595D1AC3C3A7C39B8783F0388490AC9A47D1853CB6E44F81A032D7C2B1032"
+    },
+    {
+      "Name": "content\\data\\commercial\\rules.pack.json",
+      "Hash": "7669F6E4E9D4C79D0AE5C47D11D3317DEB526FA10922F9727CA7B558E428651F"
+    },
+    {
+      "Name": "content\\rules\\audio_rules.json",
+      "Hash": "BE287EA01EE5BEA62561C5D555B39E40EDC48E606EBDD4DBD5763B602231843A"
+    },
+    {
+      "Name": "content\\rules\\driver_problem_codes.json",
+      "Hash": "CCD7B47ABBC395D7745C98CFFA8AFBFA0C3FC13395A443F47C14A9DE1499F131"
+    },
+    {
+      "Name": "content\\rules\\inference_policies.json",
+      "Hash": "C2AE1A35F64171D9C60A8B969EA81C8F1E61F8F54D07CEDC09DC047F8FC328DC"
+    },
+    {
+      "Name": "content\\rules\\learning_policies.json",
+      "Hash": "3F4CFBE9AAC68994232A91A2216841B38748B1F45F07EF7D57704397DF0F2B01"
+    },
+    {
+      "Name": "content\\rules\\remediation_policies.json",
+      "Hash": "DDF0442804EC7D3D7F5288B5FD2D342A25C14D707D957671D9D7EC519D13CA2C"
+    },
+    {
+      "Name": "content\\rules\\system_rules.json",
+      "Hash": "3C36689F4FE89A99A3FC5BE8EC5A3FC5E2776A0943FDAE1D56B3F39FFB37468E"
+    },
+    {
+      "Name": "CoreMessagingXP.dll",
+      "Hash": "00A4F20A39A24542024BC091B939F6F3852F6AA24E30286A3FC183531E165606"
+    },
+    {
+      "Name": "cs\\Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "Hash": "622BF60B9D8428ABF13153C023E40648EDE42718448EF9EDA0AC9121D109BCE6"
+    },
+    {
+      "Name": "cs\\Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "Hash": "5FEC6852E1F3EC7AC0924A3C59A676FE1C58188D93AD599704DAD29F32CC994D"
+    },
+    {
+      "Name": "cs\\Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "Hash": "2FADD4FED21FAD374B61CE2C7974898E98E30FC5B7C1B5E9B7AA46B688FDD4AD"
+    },
+    {
+      "Name": "cs\\Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "Hash": "58D3A26EA41370793D6CBFA4692C325135F1395C37E8AFEF980B1BB2E4BA9F12"
+    },
+    {
+      "Name": "cs\\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "Hash": "443712412D43F9636599D6DB610BB161A77BEB5F81193481735AB27408A98EE7"
+    },
+    {
+      "Name": "dcompi.dll",
+      "Hash": "1BAB52ACF1BBC45F1469AF675160DA8B2CE0BDCCDD4ADCE3CA3032E674AD6EE3"
+    },
+    {
+      "Name": "de\\Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "Hash": "A6BC8EAD32C4104FFE8BF6952AE1AF73CC7FDB9C84D42B32F26D3A7BA0E38198"
+    },
+    {
+      "Name": "de\\Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "Hash": "6C07EFFAA447FF8C6A2A1872855CC4DFEC73E70A062FBED1BE3360D76FEF95D7"
+    },
+    {
+      "Name": "de\\Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "Hash": "16CAA798014FE6BC3447D24266B13FA86C80A10EE98EE2A20704E59238421D0D"
+    },
+    {
+      "Name": "de\\Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "Hash": "CFB1898ED9BFEC999AB0243198A44979CD31808836386F2E10137785D295AAA9"
+    },
+    {
+      "Name": "de\\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "Hash": "1F301AE06527014698DB8185E0A9DEAC17981CEC01F3C7A85D4A7B96F45EBA76"
+    },
+    {
+      "Name": "Dia2Lib.dll",
+      "Hash": "6C4CAC68010FE032218EFE5E9FCF46EEF9F77BFAA5F3BD33F03C5FF77D5A8FAC"
+    },
+    {
+      "Name": "dwmcorei.dll",
+      "Hash": "06799367A4FCBD21832C91560720B7D131016ABBAED4A1E64349DF1E531E5D3C"
+    },
+    {
+      "Name": "DwmSceneI.dll",
+      "Hash": "4EE2C7584D9736EB8BD25E78A8C11978F9B2C3F735EA1FE9CF47623CC1177B4B"
+    },
+    {
+      "Name": "DWriteCore.dll",
+      "Hash": "426674B9C74612BD2A29D0812212FAF0641AD93A48521AEB58EB9A50FAC8708D"
+    },
+    {
+      "Name": "es\\Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "Hash": "FE990C51D093E507D1F8DA2374C301AD814DE40166CBDA9E9E992F4C3B08EBA0"
+    },
+    {
+      "Name": "es\\Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "Hash": "D857212DA3AF9534F807EB853F1D4044EBCC37B83DAAC562DE753D0C765D9E19"
+    },
+    {
+      "Name": "es\\Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "Hash": "A56F01C5521EDFE5AD869EB3B0926FC6DB5153F45286BC8B1040AB085A321F5F"
+    },
+    {
+      "Name": "es\\Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "Hash": "B0642784CEF8900275B8B4B9DE7D9019A3740EBADEF869845421E3A2EDC2626C"
+    },
+    {
+      "Name": "es\\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "Hash": "FB9A914404745966A0A04693B0580868284CE46D745993410766382A07FA634B"
+    },
+    {
+      "Name": "fr\\Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "Hash": "4AF6E865BDF9B2AFF3A8DCAFA6BBC9FB3FE27B27A919E8D43093181A34FD9288"
+    },
+    {
+      "Name": "fr\\Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "Hash": "E602D9D3AB9952120376D3226869F8471F636B29EAD13966752AD7DE2E606F7D"
+    },
+    {
+      "Name": "fr\\Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "Hash": "496A75C4608532D3CB57C6A360A045E48458B6AB6B3A349BAFA9558C6E37E92F"
+    },
+    {
+      "Name": "fr\\Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "Hash": "FDEE31E938CC57D9F1367A0E7563391584CACA0DC83D968446C102145313D710"
+    },
+    {
+      "Name": "fr\\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "Hash": "CD3609E758CE5C6F9EFDF1ABA8AE4CA29C0C9D118C24512BF69969ECB15B263E"
+    },
+    {
+      "Name": "it\\Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "Hash": "398E10D0CAB53394C8BE88326724D61E29C99908D6628B0BB335B3666D56E428"
+    },
+    {
+      "Name": "it\\Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "Hash": "269FAA1AC75FB028650FC9B501F45734B4B92728CFDBD0C427138379BF162D11"
+    },
+    {
+      "Name": "it\\Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "Hash": "A77BC944338989804BFA5D254504FC82D8365221E9CA4C9D4C2CBC0F633E2CC2"
+    },
+    {
+      "Name": "it\\Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "Hash": "FF54FC2D4BFFFB83920F6C3AFF1D503F4A07662F5900F1266085FD97EF774302"
+    },
+    {
+      "Name": "it\\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "Hash": "BF9B0F272CD3888CD9A50FB070FEDAEA214F42274928DFADEB01D04E30D84253"
+    },
+    {
+      "Name": "ja\\Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "Hash": "39FA765F2D885A3CEE026A955A57F2DB5B50DA0CAE8A07E7B95B4CB34118EA10"
+    },
+    {
+      "Name": "ja\\Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "Hash": "E918C63A15A5A0AF0C395BEB49DD056669B73E652ECB1ED76F7B989433FDC247"
+    },
+    {
+      "Name": "ja\\Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "Hash": "E5F193481CFE8099B352522738F4199202A51384E3F86FDC5166A4693F15E8D8"
+    },
+    {
+      "Name": "ja\\Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "Hash": "2EC8A22683C9E0D581E22C6B3C83484F66DB595F3EAD3D1291A8EBC8681B1167"
+    },
+    {
+      "Name": "ja\\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "Hash": "BCE71FC4621ED77528EB2E8E7F2BA9509383EB2BE7AAE3D62A3E5B654077338D"
+    },
+    {
+      "Name": "killworker\\Konscious.Security.Cryptography.Argon2.dll",
+      "Hash": "DF8B852C90642E817C16AEE0B237B335363DA5B8BDC0F2A84919CB0D888422ED"
+    },
+    {
+      "Name": "killworker\\Konscious.Security.Cryptography.Blake2.dll",
+      "Hash": "62949EDC418E77F45D43024F06CF02F2C85716F19CAE7577B49B904C6BC7B4BA"
+    },
+    {
+      "Name": "killworker\\SmartPerformanceDoctor.AstraVault.dll",
+      "Hash": "33A5E4745546FE1724408C5B897E669B74D7627779C96BF719D4C3A86843A487"
+    },
+    {
+      "Name": "killworker\\SmartPerformanceDoctor.AstraVault.KillWorker.deps.json",
+      "Hash": "FD680A620E797EE00706B041BCD70F5D00F2A1502C258D4AB9628E83572BC7F3"
+    },
+    {
+      "Name": "killworker\\SmartPerformanceDoctor.AstraVault.KillWorker.dll",
+      "Hash": "8259CDA27F69FD53832860787DC492DE9C39FCFEB046765D953C0DECEE3EAD34"
+    },
+    {
+      "Name": "killworker\\SmartPerformanceDoctor.AstraVault.KillWorker.exe",
+      "Hash": "D09AA8CC4B46B46D71A560EE1D20EAA29D2A86F7A9393B11B16A28642DB5E8D9"
+    },
+    {
+      "Name": "killworker\\SmartPerformanceDoctor.AstraVault.KillWorker.runtimeconfig.json",
+      "Hash": "C230A317A54DD960BCBEB5F347F52E18DC665A26F7EFDA2159FCED9A5AC7E097"
+    },
+    {
+      "Name": "ko\\Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "Hash": "A6B9A1A9DE9E1E634CADC71A052CA5DE70A924DDE17113D65E52B58C717AA045"
+    },
+    {
+      "Name": "ko\\Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "Hash": "5CF9A35CCB1695976691607B60AF3AD39125FA09F3D6A3FF2F9352A35AE0A06D"
+    },
+    {
+      "Name": "ko\\Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "Hash": "C1CB9C50A76C32935DDADC7A99671C258BC486BFFDF8B7579DCFDB665B3D320B"
+    },
+    {
+      "Name": "ko\\Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "Hash": "20A43A6634C6A0C014E0852466C6CE26BAF419F40C9CE71B3FA949E9C5356EF1"
+    },
+    {
+      "Name": "ko\\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "Hash": "8801A4FDE0FD81C3686BDFCA618BD2DAF45480B008F6161132AF289B941DD5CA"
+    },
+    {
+      "Name": "Konscious.Security.Cryptography.Argon2.dll",
+      "Hash": "DF8B852C90642E817C16AEE0B237B335363DA5B8BDC0F2A84919CB0D888422ED"
+    },
+    {
+      "Name": "Konscious.Security.Cryptography.Blake2.dll",
+      "Hash": "62949EDC418E77F45D43024F06CF02F2C85716F19CAE7577B49B904C6BC7B4BA"
+    },
+    {
+      "Name": "marshal.dll",
+      "Hash": "D00C3D3493B50688E2EF6CEE5F9F05699950B7258AC6496BF48959EB2E4C9717"
+    },
+    {
+      "Name": "Microsoft.Data.Sqlite.dll",
+      "Hash": "1078D41C6C0F2CEE48A8B706E3A54CE145705993F19F703D2B3BDF2ABCC59088"
+    },
+    {
+      "Name": "Microsoft.Diagnostics.FastSerialization.dll",
+      "Hash": "F01F02FEAF1979D5D8A8C1A2A0F98818D33120A5234F7AE6BDA1744585E05C71"
+    },
+    {
+      "Name": "Microsoft.Diagnostics.NETCore.Client.dll",
+      "Hash": "BAED2D25CA5BC53A3447C237D5572C92EAC1FD842807B3E72602A711749B1B22"
+    },
+    {
+      "Name": "Microsoft.Diagnostics.Tracing.TraceEvent.dll",
+      "Hash": "BC4EF3839AEA46CEBC54A557ECC115474C6EECADFBC68C76DA087E8DD616BA7E"
+    },
+    {
+      "Name": "Microsoft.DirectManipulation.dll",
+      "Hash": "AC0C857FFD98B8CE7B0F3E93C93522F709B56B7E5CB38021E8E37472E03BC76E"
+    },
+    {
+      "Name": "Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+      "Hash": "9CCD830351AA28BC683D4F8D1CEFD9E724161F972D25BFB64EEE5BF55C48C5E3"
+    },
+    {
+      "Name": "Microsoft.Extensions.DependencyInjection.dll",
+      "Hash": "2AA8182B5356A8CC5C35FC3641A87E814857D8D9BE399AC78F260343754D09E0"
+    },
+    {
+      "Name": "Microsoft.Extensions.Logging.Abstractions.dll",
+      "Hash": "D575C9D1543CA726CE14DBDFFD103E93EA527CD46BB28316DA1F4122DBC55D56"
+    },
+    {
+      "Name": "Microsoft.Extensions.Logging.dll",
+      "Hash": "183650081B551DFAD967A7CBF79946A229CB79458B8D04A12DB7C44B03BB9AB7"
+    },
+    {
+      "Name": "Microsoft.Extensions.Options.dll",
+      "Hash": "786112CB2F6646EF1170219A8C0BB813C9F14A6781E67C6266414F55A679565D"
+    },
+    {
+      "Name": "Microsoft.Extensions.Primitives.dll",
+      "Hash": "8CE9A85927EC7507B11FFE90080E7A811D51304A9E8B1DA20C350159BA403902"
+    },
+    {
+      "Name": "Microsoft.Graphics.Display.dll",
+      "Hash": "7248902BACBC03939D220A5A3E0A9DE73F15BCFA6B6C264879115AAB4AF33A5A"
+    },
+    {
+      "Name": "Microsoft.Graphics.Imaging.dll",
+      "Hash": "43B5C14C023CC8744ABFE2888DC175559D9542CAD60F1708B24CE346694C663F"
+    },
+    {
+      "Name": "Microsoft.Graphics.Imaging.Projection.dll",
+      "Hash": "1F7E7CB79F841EFEA2E5F238B059C3896189BC4CE75811CEA5124ABE50A98560"
+    },
+    {
+      "Name": "Microsoft.InputStateManager.dll",
+      "Hash": "0445C8D2F062462924ADE3F2C5B66143F9E837E3E69E2012A07681AD555356E4"
+    },
+    {
+      "Name": "Microsoft.InteractiveExperiences.Projection.dll",
+      "Hash": "59FF8F319DB3AFC59C27C23EB5A33D53C13303540F458372885BECCF866BF504"
+    },
+    {
+      "Name": "Microsoft.Internal.FrameworkUdk.dll",
+      "Hash": "01DC25426567FA74D17869E0199E38267D739A73414409830E919CD0433CABAB"
+    },
+    {
+      "Name": "Microsoft.ML.OnnxRuntime.dll",
+      "Hash": "92FA22826036602CD2EE74FF0280FB89535119A40DF4D84EC7D8C0162A3660B6"
+    },
+    {
+      "Name": "Microsoft.Security.Authentication.OAuth.Projection.dll",
+      "Hash": "7C3B01F0DF79C502E380533B5303CF27E4B71272D9E426D135BD2983AB305B0E"
+    },
+    {
+      "Name": "Microsoft.TestPlatform.CommunicationUtilities.dll",
+      "Hash": "410F3A8B5820E85BBC0245ABCF35398F3F22EC52361C7F309B614CF7B8DF5BE2"
+    },
+    {
+      "Name": "Microsoft.TestPlatform.CoreUtilities.dll",
+      "Hash": "65A8652E3BFBC496CD479FCB7F019A0C8B5891D987120111C25DA6EBD9BB1014"
+    },
+    {
+      "Name": "Microsoft.TestPlatform.CrossPlatEngine.dll",
+      "Hash": "F4D98814767E3C998DAAC2F4B41C1534386ED776C2D1E670DF7CC4CD811C9B1A"
+    },
+    {
+      "Name": "Microsoft.TestPlatform.PlatformAbstractions.dll",
+      "Hash": "C016B663B74BE1986147EB419FFBC5BD265DEBDF1F7E65CCF142E91D439AA8BC"
+    },
+    {
+      "Name": "Microsoft.TestPlatform.Utilities.dll",
+      "Hash": "A9E53F7D7E1CA58F580CF192DB0F493335A6D09EFB2736E875D9A3E120E51DFF"
+    },
+    {
+      "Name": "Microsoft.UI.Composition.OSSupport.dll",
+      "Hash": "A80774593EC2AF30718099E318C12C5BA40476AF9D2B07154713645C043E88F9"
+    },
+    {
+      "Name": "Microsoft.UI.Designer.dll",
+      "Hash": "B448F6A386C02B036238A473908D9049025A9D1EAD48C5E7AE8A8923CCC9ADC2"
+    },
+    {
+      "Name": "Microsoft.UI.dll",
+      "Hash": "21509E8198B80BE168E3A8FF89868BDD0F459AFE8C7390B0BB004B2B71117359"
+    },
+    {
+      "Name": "Microsoft.UI.Input.dll",
+      "Hash": "7E24FB014303D387C140DE4FEDD4C65D079A2B0DD6DDDE01135972B887A8E403"
+    },
+    {
+      "Name": "Microsoft.UI.Windowing.Core.dll",
+      "Hash": "CCC64F8F6B07C8E39EBAEE6E51346D8214AE606A5E2A8FB402D955A5EEE61F41"
+    },
+    {
+      "Name": "Microsoft.UI.Windowing.dll",
+      "Hash": "DE777FC7F88256DC3158138B5E267A151FDA461A2EF71B24320CCAC7CC5A3B75"
+    },
+    {
+      "Name": "Microsoft.UI.Xaml.Controls.dll",
+      "Hash": "44479EF18EA26ABD9F01315E150DE1ADDE9900F448A4E391FA25BBDD1BFBD5AB"
+    },
+    {
+      "Name": "Microsoft.ui.xaml.dll",
+      "Hash": "2B22EB6130821F43A26239D441EF3A898BEA24B1C1078B5941249431C4B4FBF8"
+    },
+    {
+      "Name": "Microsoft.UI.Xaml.Internal.dll",
+      "Hash": "E3B9F23DB45064809BE2C9E2D1D8216A16457BDEB1062DB9ECB811052567E3CB"
+    },
+    {
+      "Name": "Microsoft.UI.Xaml.Phone.dll",
+      "Hash": "CA8D88D4CCCFA5DA6AEC0D9090DFDDD403301D9E85686327E4608D3E07716F47"
+    },
+    {
+      "Name": "Microsoft.ui.xaml.resources.19h1.dll",
+      "Hash": "4568BFB9F87FA8A032C700D5ED01744A3F956F5973EBAEE9798DABA3B8021245"
+    },
+    {
+      "Name": "Microsoft.ui.xaml.resources.common.dll",
+      "Hash": "63875AF66A9A275E1500371260FD6007668D0F9F2E9F46DE97194F354ED04E13"
+    },
+    {
+      "Name": "Microsoft.VisualStudio.CodeCoverage.Shim.dll",
+      "Hash": "A8550B59F7B15009FB6C24D85D4B70F0FABA5B03A08882BF22F852F32993D9F9"
+    },
+    {
+      "Name": "Microsoft.VisualStudio.TestPlatform.Common.dll",
+      "Hash": "7F5B9964F3D718F4DB4B6F4469F32D8FF1DBB9D1E5494654DDC7BDF5154981FA"
+    },
+    {
+      "Name": "Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
+      "Hash": "F0608AC026DBA091CE770DEB49BEE9EAD7F4F7DA05E9C732BBF637D1877A42A5"
+    },
+    {
+      "Name": "Microsoft.Web.WebView2.Core.dll",
+      "Hash": "17CCD9141C486D7A3689ED38D72D3BD8BB0E216B7990FCC76C132DC9102C6320"
+    },
+    {
+      "Name": "Microsoft.Web.WebView2.Core.Projection.dll",
+      "Hash": "C0036E5306AA9758B6CE0C1B2DA2AEA9AC58CE2C2B328C52D15B22B720AEADF7"
+    },
+    {
+      "Name": "Microsoft.Windows.AI.AICapabilities.dll",
+      "Hash": "30D47DE2108A3280C7FFF252FA6BC815C762356A1E31BC7427BA31825D83B438"
+    },
+    {
+      "Name": "Microsoft.Windows.AI.ContentSafety.dll",
+      "Hash": "4ACB72DB1126239C838816588760EA46A13E5A4CFFE958B18BB4C5ED3792E19A"
+    },
+    {
+      "Name": "Microsoft.Windows.AI.ContentSafety.Projection.dll",
+      "Hash": "502E688DF984A02C2087004B434F076C2BE66AD8413F66A4458F903951C4E9E1"
+    },
+    {
+      "Name": "Microsoft.Windows.AI.Foundation.Projection.dll",
+      "Hash": "BB9EFEF24F8AE8FAFD628319CE49603CA1F1DDC495F0B9A0B870087D46BFA4B4"
+    },
+    {
+      "Name": "Microsoft.Windows.AI.Imaging.dll",
+      "Hash": "BEEC87B1DFA548E1C3966060F039B6909E56D3B015160E4ABCF3D34843E067EE"
+    },
+    {
+      "Name": "Microsoft.Windows.AI.Imaging.Projection.dll",
+      "Hash": "9721B5898872EEF14880AAFA2C43F5D43CBB5DD3E5472D0A7346D4DC6F1CF90B"
+    },
+    {
+      "Name": "Microsoft.Windows.AI.MachineLearning.Projection.dll",
+      "Hash": "E7572E1FB53B8F1182F9FB5D17248A2A37CC98CCA8EF2E51620763C85F056666"
+    },
+    {
+      "Name": "Microsoft.Windows.AI.Projection.dll",
+      "Hash": "03A97AE434387452B8C91C03FC00DE9A83D2EF4482526341269F7FE4C0CAD418"
+    },
+    {
+      "Name": "Microsoft.Windows.AI.Text.dll",
+      "Hash": "1FFFB46E994D4087BC267DDCB8C893260263B3F895BEB9E4AA10DA7EFA4FF43E"
+    },
+    {
+      "Name": "Microsoft.Windows.AI.Text.Projection.dll",
+      "Hash": "125295EEBAC09FF376115630C2CF272971DB08CD8AE19A721ADE0C8633262022"
+    },
+    {
+      "Name": "Microsoft.Windows.AI.Video.dll",
+      "Hash": "D92B79107EEE9E3A0B230BA699C1F08E843D2DBF61D8C933968BA6EE211FADBE"
+    },
+    {
+      "Name": "Microsoft.Windows.AI.Video.Projection.dll",
+      "Hash": "5FB1A60A374A0E1BC1CA7F5C1559BC3FCE725BE4957D8097B8C40472B68DE5E4"
+    },
+    {
+      "Name": "Microsoft.Windows.ApplicationModel.Background.Projection.dll",
+      "Hash": "5723ED363A51E074E673E7EFD07D74A30CDB6F8E49703B11686DAF7E11B0E178"
+    },
+    {
+      "Name": "Microsoft.Windows.ApplicationModel.DynamicDependency.Projection.dll",
+      "Hash": "037676CEE0B3E03D63666A23067A978F1C343C990BB5A1B4755984D10D60553F"
+    },
+    {
+      "Name": "Microsoft.Windows.ApplicationModel.Resources.dll",
+      "Hash": "5512354FD740239E0811B980C41BB89A120DC33F2114D3AFEF64FC6EAAACDBF3"
+    },
+    {
+      "Name": "Microsoft.Windows.ApplicationModel.Resources.Projection.dll",
+      "Hash": "20C47A2F198A6C2175501DA4167B059B8E07A83AA0CF6377151A8C6F172EB9AB"
+    },
+    {
+      "Name": "Microsoft.Windows.ApplicationModel.WindowsAppRuntime.Projection.dll",
+      "Hash": "8D8AB22A751BCB8B5B08AF97FC3CB9D52BD20222DCF8C650E5A1EE40A7682C24"
+    },
+    {
+      "Name": "Microsoft.Windows.AppLifecycle.Projection.dll",
+      "Hash": "DABF014853F09913A92931AA4FBF7DF7BC1496DE68D5D51D5EDF601095EFC73B"
+    },
+    {
+      "Name": "Microsoft.Windows.AppNotifications.Builder.Projection.dll",
+      "Hash": "5E3C28D46475A7D112E815D3020097C177CA2A6DFA06120928C65A755D9A20CD"
+    },
+    {
+      "Name": "Microsoft.Windows.AppNotifications.Projection.dll",
+      "Hash": "FC878F051722E6F0FC35FA90FC772EDDA34985C7C37924C93913B8D46BC8A5E9"
+    },
+    {
+      "Name": "Microsoft.Windows.BadgeNotifications.Projection.dll",
+      "Hash": "4396AA96B282256FE981BB1EC5C290551AEFB6EE4743A763E52E37F5D0664260"
+    },
+    {
+      "Name": "Microsoft.Windows.Foundation.Projection.dll",
+      "Hash": "264856E7CCE109EFD5622AF2D63C966A2731CC44CE9404CCB440EE84484F53C2"
+    },
+    {
+      "Name": "Microsoft.Windows.Management.Deployment.Projection.dll",
+      "Hash": "44CEEC6D7A047F63D7CC849CD51CD85F786BD717D3F15772231C122540A8CCB2"
+    },
+    {
+      "Name": "Microsoft.Windows.Media.Capture.Projection.dll",
+      "Hash": "954E96220E8E868B25E3E8F0DC994CB882151803170CEBC92113B28B88FF9F11"
+    },
+    {
+      "Name": "Microsoft.Windows.PushNotifications.Projection.dll",
+      "Hash": "C5C62A85BAF5BB8D6978B6A7C20B91289F04E6E7F96B40595F869F3C8BC45523"
+    },
+    {
+      "Name": "Microsoft.Windows.SDK.NET.dll",
+      "Hash": "C633AB241CD09846C2AA409F0BEE2026962610404A7BF132C75CBD66B0E5A9F4"
+    },
+    {
+      "Name": "Microsoft.Windows.Security.AccessControl.Projection.dll",
+      "Hash": "F364B54B98AC2F97DFF1FCF8525A5462A458251966DE0D1DC0F7DBC335899754"
+    },
+    {
+      "Name": "Microsoft.Windows.Storage.Pickers.Projection.dll",
+      "Hash": "4C597139E521617C8287D1E9EB9FCC0240CF11D57C3187B8BD9188540AF862BA"
+    },
+    {
+      "Name": "Microsoft.Windows.Storage.Projection.dll",
+      "Hash": "99E1309D75036AAFCDB8492A0873C9F570795D91EE32E6B5710FEA4690A6B343"
+    },
+    {
+      "Name": "Microsoft.Windows.System.Power.Projection.dll",
+      "Hash": "67BF52E2E5E7D154956B4EA0E9723C1084AE9C184740E1245C8CC7EE236865E8"
+    },
+    {
+      "Name": "Microsoft.Windows.System.Projection.dll",
+      "Hash": "534EED914C788A0BDA99536D787ABA2D87643D97FD5F72D3578962B7FFF1DCF2"
+    },
+    {
+      "Name": "Microsoft.Windows.Widgets.dll",
+      "Hash": "86AA4B3FC152ADBC8BB10B58C069D5423C03542A9794BFFBED27F7605AA32B81"
+    },
+    {
+      "Name": "Microsoft.Windows.Widgets.Projection.dll",
+      "Hash": "8D6E5D3418E2F6EFF2B27DF0AC51B7DC452A40FC4C98C86F61E305D04B21F89F"
+    },
+    {
+      "Name": "Microsoft.Windows.Workloads.dll",
+      "Hash": "59113B964ECCFC5497C9A23EF15BC7EB843F0905F19728A597D0C8B3071AB3F6"
+    },
+    {
+      "Name": "Microsoft.Windows.Workloads.Resources_ec.dll",
+      "Hash": "3D0844380974C844A7E29D60093849674CCA36FF3FA818BE8A23B4FE71D38FF5"
+    },
+    {
+      "Name": "Microsoft.Windows.Workloads.Resources.dll",
+      "Hash": "E888E7E91119C19B6BE0897D9FE9476DD008C75CD39CF7335D50569B02FC00A7"
+    },
+    {
+      "Name": "Microsoft.WindowsAppRuntime.Bootstrap.Net.dll",
+      "Hash": "9181BE6EDC712D61B8961E7ED2591DF3D6227D1175D50B831B8F1BFEDF1714FF"
+    },
+    {
+      "Name": "Microsoft.WindowsAppRuntime.dll",
+      "Hash": "9E69BAEF0CCA50C4C51BCE45FD662EE7A77CBF9C3531B9C4E45E246FF2F62605"
+    },
+    {
+      "Name": "Microsoft.WinUI.dll",
+      "Hash": "8D2B7EF71FCE2D6D716735868B0A47ADC61B02BFA5B8B4BD5008325A79DF54EE"
+    },
+    {
+      "Name": "MRM.dll",
+      "Hash": "1E542A07FD1351B40465D5A06A2B3DB7323089B01ACF40F17F6129115772BADA"
+    },
+    {
+      "Name": "NPUDetect.dll",
+      "Hash": "262729072AC5FAFAFD7ED22BB5A43A949AF09177F4BEF00AAD91D535EE07A27C"
+    },
+    {
+      "Name": "PerceptiveStreaming.dll",
+      "Hash": "ACC6CEAC030B6464F5C25BF8C4FEE79BFBDDC60855541C0CCF0929DE7D95B4E9"
+    },
+    {
+      "Name": "pl\\Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "Hash": "C44F631719015FD107871E587C6EF8731DCC2D47579B7C2585F50B66C07A9EB2"
+    },
+    {
+      "Name": "pl\\Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "Hash": "3362AAEBFE37DD4EC2A6DFD7C9C590CA9129AE1B4D6A701C92011D737EB9FFBB"
+    },
+    {
+      "Name": "pl\\Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "Hash": "32FCB91A9E76BA52200C1402B57B9A86C562D71C9BF00848D7AF8003EDFFD5C1"
+    },
+    {
+      "Name": "pl\\Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "Hash": "72C8B16E89F6CC3D0CDBBF4A3E1EA144E12967B94254492E86D294DBE47DC633"
+    },
+    {
+      "Name": "pl\\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "Hash": "93D3244A9AC300551522ADB672477FB91B0C8F3820C9CAAFA999CE2D4D7779C4"
+    },
+    {
+      "Name": "pt-BR\\Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "Hash": "35D25CB44742C7A63CED80434E805AB028013A07328BB2B3EA7D45DEC3E94F25"
+    },
+    {
+      "Name": "pt-BR\\Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "Hash": "567E2525B663401254A3BA1AAAA779875CAC85B05B4B3C3E4683ED19EB84CF32"
+    },
+    {
+      "Name": "pt-BR\\Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "Hash": "58CD6034A1F9728ACE6835F384CED8AF641585D844FAFF6998D54E0B897BBBEA"
+    },
+    {
+      "Name": "pt-BR\\Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "Hash": "B89E6E9D63BCA83393BB853A103963DD7E972BC2FA2F44D1FAC03F372F01506D"
+    },
+    {
+      "Name": "pt-BR\\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "Hash": "1C95ED3D50131285D071C50524A973EB6F5EEF60FA32AC98B11EBAC511D2A98C"
+    },
+    {
+      "Name": "PushNotificationsLongRunningTask.ProxyStub.dll",
+      "Hash": "7B22A66781C19AA2EF1D95295012A50621088D5F545FE09FBAD12A32BEFA4119"
+    },
+    {
+      "Name": "RestartAgent.exe",
+      "Hash": "AAEC35E5217FF04C55731717C6AA1B41850E7F43BA3A70C10CC90AE41C4FB987"
+    },
+    {
+      "Name": "ru\\Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "Hash": "49F85D393FB84B0741449F0AD1386F32230672040B332036C07CC6BA934CD08C"
+    },
+    {
+      "Name": "ru\\Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "Hash": "B6FCCCD9FA5CE63A44AEB0396E6B24EF44E183B31C6F56DE115AB2F02743F4C0"
+    },
+    {
+      "Name": "ru\\Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "Hash": "39534D5A1FFAB7F8E47694FC24728D77BEA3442E22C6EF164E6D02575FC14DB9"
+    },
+    {
+      "Name": "ru\\Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "Hash": "025201D1EE1B8A4B2D4F86B5AEF60DC548B56D0AC5FF05710DE147B7502A2C22"
+    },
+    {
+      "Name": "ru\\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "Hash": "B19B08A1500B38C8A7CA61E827374D4731AE1D5C7C63E0BEC0389ADC0203D1F8"
+    },
+    {
+      "Name": "runtimes\\win-arm64\\native\\e_sqlite3.dll",
+      "Hash": "4177542756BD94F75B55FB74367E0CF34E66A88FFAF95755489AF14C6CA2F792"
+    },
+    {
+      "Name": "runtimes\\win-arm64\\native\\Microsoft.Windows.ApplicationModel.Background.UniversalBGTask.dll",
+      "Hash": "2A3CAB292FA3FCA928924F1664858B1C4FDABDF0046AE78CD90A7D8824D57E7D"
+    },
+    {
+      "Name": "runtimes\\win-arm64\\native\\Microsoft.WindowsAppRuntime.Bootstrap.dll",
+      "Hash": "A8B314D0CD126A4F0A3C533FFED5626A458B71C99E924F9F44CAC3E6AD78DC9E"
+    },
+    {
+      "Name": "runtimes\\win-arm64\\native\\WebView2Loader.dll",
+      "Hash": "2BBAC5865ECD9E1AB245F997DE13E22C8F9A7F4CF803EFC0E304180926C3B313"
+    },
+    {
+      "Name": "runtimes\\win-arm64ec\\native\\Microsoft.Windows.ApplicationModel.Background.UniversalBGTask.dll",
+      "Hash": "50D24D9618C9971E89BF66C1DFBBE0D563E9DD49F8C65E988EE2AE28D5633BEA"
+    },
+    {
+      "Name": "runtimes\\win-arm64ec\\native\\Microsoft.WindowsAppRuntime.Bootstrap.dll",
+      "Hash": "A63D0D7F5E3E863E0781D0A9467011598189F7149A169B91296FEA90A31E9906"
+    },
+    {
+      "Name": "runtimes\\win-x64\\native\\e_sqlite3.dll",
+      "Hash": "B7385D722C83FB52142A00477A726723745916D22A555711EE89834C1111FB2E"
+    },
+    {
+      "Name": "runtimes\\win-x64\\native\\Microsoft.Windows.ApplicationModel.Background.UniversalBGTask.dll",
+      "Hash": "50D24D9618C9971E89BF66C1DFBBE0D563E9DD49F8C65E988EE2AE28D5633BEA"
+    },
+    {
+      "Name": "runtimes\\win-x64\\native\\Microsoft.WindowsAppRuntime.Bootstrap.dll",
+      "Hash": "A63D0D7F5E3E863E0781D0A9467011598189F7149A169B91296FEA90A31E9906"
+    },
+    {
+      "Name": "runtimes\\win-x64\\native\\WebView2Loader.dll",
+      "Hash": "AE69309C5E356350EA28D6B71A900BC43EE7E3F7A457D80A1F82EFE6C419CC08"
+    },
+    {
+      "Name": "runtimes\\win-x86\\native\\e_sqlite3.dll",
+      "Hash": "D13EB819D1353D98C684C88672868BBFCC6A52EB5987BDF2557EC02FABCE4EA7"
+    },
+    {
+      "Name": "runtimes\\win-x86\\native\\Microsoft.Windows.ApplicationModel.Background.UniversalBGTask.dll",
+      "Hash": "FBEB0F62EB2E895B65589202717DE71B1B751DE044FC3822724F61EE8CCDFA3B"
+    },
+    {
+      "Name": "runtimes\\win-x86\\native\\Microsoft.WindowsAppRuntime.Bootstrap.dll",
+      "Hash": "5B0ED82D5183C78F5B641F5FFD7AA4CE4F8E004C0C78A6690DA022E4E24EA613"
+    },
+    {
+      "Name": "runtimes\\win-x86\\native\\WebView2Loader.dll",
+      "Hash": "B6613343DB03631E6CD044E7EDAAD6A9A94110F9C37FDB81F37BE41B5E327538"
+    },
+    {
+      "Name": "runtimes\\win\\lib\\net10.0\\System.ServiceProcess.ServiceController.dll",
+      "Hash": "DDEE6630222A879C6381B7A0317B39801EA99A928F45520B4F9A6921A01C84CC"
+    },
+    {
+      "Name": "SessionHandleIPCProxyStub.dll",
+      "Hash": "6E10A946454517255022F0C3756B310EDA532300DD28EC289994569EDADCB2E6"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Aegis.dll",
+      "Hash": "C0B47653EB3AC5058D422B379395097C7BCFDD6D42FC23F171D7054ED1BEE87D"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.AstraVault.dll",
+      "Hash": "33A5E4745546FE1724408C5B897E669B74D7627779C96BF719D4C3A86843A487"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Contracts.dll",
+      "Hash": "6CFBF95DC160A2D89A64D7E210FC4F55E4DDB83A0739AFB0D224B32E13CA5677"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Data.dll",
+      "Hash": "6834BD62E48A7E69856ADA903C45037E68D1156BED3C6C5BCEF4D1A33230F847"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.deps.json",
+      "Hash": "FC8D842FFC0DA45BE652415279174913E1FCE4657A44342096CF3773F1E298A3"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Diagnostics.dll",
+      "Hash": "6228D91900A1AE9D271A1A75CA8595D74E67C398EC70CFC21516B966D66593D0"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.dll",
+      "Hash": "879BA7EF10C46466802DBADBCFA17A463CB5A3FA363F14F48F829E3E03F39FA1"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.exe",
+      "Hash": "3C62FD4B0572CC5870FB96C6BFDE8850AC11198020134E8179B30EE6E3B8BE34"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.runtimeconfig.json",
+      "Hash": "B25DFC3FD99A291D850E02CEA3876F5E60D59A6B820BFD72E8E3C59428CE3AF4"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.SecurityLab.dll",
+      "Hash": "0B88C50E78228503275FC2EF0590BC492684BA155A78B4E4868E9389F276EC9D"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.deps.json",
+      "Hash": "86F82D82D0E4478A246F008DFAE135F74103E2835D0B36F3ED49874B43FE4B3A"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.dll",
+      "Hash": "31B501B997870CF74EE1C3F6CB6D2E8C08C6032EB50AE537A32FF375BFD2A883"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.runtimeconfig.json",
+      "Hash": "55F621B1EED10465EC0897529DB6FA76418B1422FF9EEE79D16C66F01574FFDC"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests\\testhost.dll",
+      "Hash": "E0145246EF258CA7E8C582F83F1C3B8BB9C655808E118FBAC912C76A6C099A3B"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests\\testhost.exe",
+      "Hash": "289A45B8FDCB0353F056432870494C56D8537E69A4312261625554E413228819"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.UpdateEngine.dll",
+      "Hash": "C0D53D8ADD6465DAF3375F5D245EE05250CB67DC5AC141F76222C0DD682250EA"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.UpdateHelper.deps.json",
+      "Hash": "720248F67AC90A1B2EA17D462C7CB67553CA397864302CA03D1336CB3BB4C35E"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.UpdateHelper.exe",
+      "Hash": "13F707609DCB250D4B86E984713751AA7A13C824F803E6D720D3913E07A8AFEF"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.UpdateHelper.runtimeconfig.json",
+      "Hash": "3E965CD7CFD553C2FF4E842D8D8019AAAE2DA0A21D92FF85A87573DD8D1B95C6"
+    },
+    {
+      "Name": "SQLitePCLRaw.batteries_v2.dll",
+      "Hash": "5CB5B6C2FFA9DD142972F5C264B252BA2E8524B4B2565AC2431D027181DD8939"
+    },
+    {
+      "Name": "SQLitePCLRaw.core.dll",
+      "Hash": "B9A88E305A7C7EC40AE3BAAEB781B6C7BCAAB8A86C89542FBABA9EDC06517E10"
+    },
+    {
+      "Name": "SQLitePCLRaw.provider.e_sqlite3.dll",
+      "Hash": "F9D2D33D93BE3CBE57435E822205FD66349B448A8021CE5A447ECC8A680652F8"
+    },
+    {
+      "Name": "System.Numerics.Tensors.dll",
+      "Hash": "9D96DC759FDB54CBC3C26EE65CFD78FF32E3745F418119CC0811E63D3F29ECB9"
+    },
+    {
+      "Name": "System.ServiceProcess.ServiceController.dll",
+      "Hash": "486A4FBB24AB089926FB05AB6B95AF7BB04D2FF35EEF55B6858437EBC4D040DC"
+    },
+    {
+      "Name": "TestAssets\\av3_external_review_test_evidence.json",
+      "Hash": "F25233D3AC193E9B59563DF9288D1B9B20858B45A40023C45BD3D6442DAF1330"
+    },
+    {
+      "Name": "testhost.dll",
+      "Hash": "E0145246EF258CA7E8C582F83F1C3B8BB9C655808E118FBAC912C76A6C099A3B"
+    },
+    {
+      "Name": "testhost.exe",
+      "Hash": "289A45B8FDCB0353F056432870494C56D8537E69A4312261625554E413228819"
+    },
+    {
+      "Name": "tr\\Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "Hash": "F35F635E22A6F76F431750DEDEF6F8C2D67B683F2845E3F9F6ABC3002A3581B0"
+    },
+    {
+      "Name": "tr\\Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "Hash": "DD554B762720DB5EA3D75FC00DB8A88F9247905D77E0A6B16D96045FD4DC711B"
+    },
+    {
+      "Name": "tr\\Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "Hash": "2023AC8759B7B336E77ED1019A98CB0763A6A893C662E8C587A6C1C2033A923D"
+    },
+    {
+      "Name": "tr\\Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "Hash": "4EB4C79748110FF3E3FDC6165B8E745CB2931D2E650C4B361C121CDFB0249A48"
+    },
+    {
+      "Name": "tr\\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "Hash": "3F6AB22E180A9AAC745EF971D41B435E38C9E3C72795B879607C7659C0748D62"
+    },
+    {
+      "Name": "TraceReloggerLib.dll",
+      "Hash": "6830C0F1D3F3C17719181E73DD5CFA8CCBB3F3C575329D2120576545103467B5"
+    },
+    {
+      "Name": "WinRT.Runtime.dll",
+      "Hash": "BCF3A14E8712A90837FC5C0D8C8A24696AF2BD7F74E9767597EC81EDEDFB23DB"
+    },
+    {
+      "Name": "WinUIEdit.dll",
+      "Hash": "5BA6E51732348B377CBE3A5D0F33FE13753170DC75D514D687B8689C8125C588"
+    },
+    {
+      "Name": "workloads.365.json",
+      "Hash": "0C8D58B1FBE553942CA56BE06FD0C9F867FBBC013816E74DB29335EC4A16E778"
+    },
+    {
+      "Name": "workloads.j32.json",
+      "Hash": "850E01C9806F1E4A7ED6F5940FE2AA68980B4C85413303E6E0094650BCF870EC"
+    },
+    {
+      "Name": "workloads.json",
+      "Hash": "520AC5806E5ECD9C1E7D0705D39A1D13308A90D3D69A6477887903A015C0C440"
+    },
+    {
+      "Name": "workloads.lnl.json",
+      "Hash": "258DFDE1099DFBC56904DC913EFB87C1AB13556A743D0CE37B704590717D1654"
+    },
+    {
+      "Name": "workloads.qnn.json",
+      "Hash": "F9E41F66344D93CEC67D49170B299B79404E554FEB51406FF67ACB1B31C91D41"
+    },
+    {
+      "Name": "workloads.stx.json",
+      "Hash": "CA7DCAEA3BD653170A13FCA37B9257CDBBF67F5446A4CBCC00A16D9932BEDE04"
+    },
+    {
+      "Name": "wuceffectsi.dll",
+      "Hash": "DBEA457AC1C6D5C4CDE5B9CFB09E65CD54B11596406CE50565DDD946468B1454"
+    },
+    {
+      "Name": "xunit.abstractions.dll",
+      "Hash": "3166DC70323FB30CCF1CEDB0FE86F2AD122C46D254542342D90386EFC4C9285C"
+    },
+    {
+      "Name": "xunit.assert.dll",
+      "Hash": "BCD9711B22D227AC8CD4C1568E72433A0F576D2EC8AAE64AC508081892015B1D"
+    },
+    {
+      "Name": "xunit.core.dll",
+      "Hash": "2F7FEEEC8C6DEC7DF684C25FB80AADB292B963D09723460F03D53C5AD2088ACC"
+    },
+    {
+      "Name": "xunit.execution.dotnet.dll",
+      "Hash": "E70FEBE547C15F8155DB3E2D95C3BA4445A59CBC21A3E7541AB22ED49D3DCF7B"
+    },
+    {
+      "Name": "xunit.runner.visualstudio.testadapter.dll",
+      "Hash": "384ABA4BAD96399A7FD2205A5A3517B643A16F4D7E843BD0B92E1E42F81FCE2A"
+    },
+    {
+      "Name": "zh-Hans\\Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "Hash": "5D7C0B37BA239F910EC327B2B976986BD93E5790F7E8D7B5171B6B6AF21D15CB"
+    },
+    {
+      "Name": "zh-Hans\\Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "Hash": "9A32AF41CAF5E7E8465DDAADE0017E397C1EC6500B88F2160C17F1A02162C7D9"
+    },
+    {
+      "Name": "zh-Hans\\Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "Hash": "CF40A4779A1BC50C2A524433E04C25839F6E5085A31A1C6E009C2C915A2BB94A"
+    },
+    {
+      "Name": "zh-Hans\\Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "Hash": "607BD9BEAF56384B5432789E48A1D69AE10DA99B38582B3697119C71ABAACE85"
+    },
+    {
+      "Name": "zh-Hans\\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "Hash": "FD5298AFFBD2691BCE51720D3BF102B677D068019A391063E25EC6A19012973D"
+    },
+    {
+      "Name": "zh-Hant\\Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "Hash": "72BCCC09FFF3DFC4D8CD1050725EA02CE688790CE232E5DEB407BBD1D03DFEAF"
+    },
+    {
+      "Name": "zh-Hant\\Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "Hash": "5A2A5E4282E5BE4E076FE4E77F320982C478B2985F6A7F1AE2F69A7CFDCB6D2F"
+    },
+    {
+      "Name": "zh-Hant\\Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "Hash": "37DB17695BDA964671E3159A2434FF6B29A737D84A424B055CAC45F872130321"
+    },
+    {
+      "Name": "zh-Hant\\Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "Hash": "062FAB6B91017F28DD7FDB4CA13DCF5AD9BDBC1942C8945A9DEF684D077C5E75"
+    },
+    {
+      "Name": "zh-Hant\\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "Hash": "ED3A6EB821B2F216F1E8C3B4DE78EB587C98A3702459232B49A69DB81207E45B"
+    }
+  ]
+}

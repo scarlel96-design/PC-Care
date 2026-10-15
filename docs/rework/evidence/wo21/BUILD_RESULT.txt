@@ -1,0 +1,15 @@
+STATUS: PASS
+SOURCE: 930ed7907daaa95cf15040d130c580248e64bf61
+LOCAL ENVIRONMENT: Windows26200;24 logical CPUs
+CI ENVIRONMENT: Windows26100;4 logical CPUs
+COMMAND: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
+INPUT: solution source 930ed7907daaa95cf15040d130c580248e64bf61
+OUTPUT: Restore completed. 0 warnings / 0 errors.
+EXIT CODE: 0
+COMMAND: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+OUTPUT: 빌드했습니다.
+    경고 0개
+    오류 0개
+EXIT CODE: 0
+Literal local logs: LOCAL_RESTORE_LOG.txt, LOCAL_RELEASE_LOG.txt, LOCAL_BUILD_LOG.txt.
+CI workflow Restore and Release build steps succeeded.

@@ -1,0 +1,9 @@
+{
+  "Start": "2026-10-15T02:13:10.6303477+00:00",
+  "Source": "930ed7907daaa95cf15040d130c580248e64bf61",
+  "End": "2026-10-15T02:13:26.5158324+00:00",
+  "Input": "",
+  "ExitCode": 0,
+  "Command": "dotnet build tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal",
+  "InputDigest": "98C05FA39DFCC57073FF797EA6DF272B653F72A8B62494F387FE124015BFDC09"
+}

@@ -1,0 +1,22 @@
+{
+  "Status": "PREPARED",
+  "Source": "930ed7907daaa95cf15040d130c580248e64bf61",
+  "Environment": "Windows CI 26100; 4 logical CPUs",
+  "Command": "pwsh -File scripts/wo21-test-signing.ps1 -BinaryDirectory C:\\WO21\\binaries -GuestTestRoot C:\\wo21-signing -ExpectedGuestUuid PREPARED -ExpectedTestSid PREPARED",
+  "Input": "Default preparation mode; no Execute flag",
+  "Output": {
+    "Status": "PREPARED",
+    "Files": [
+      "SmartPerformanceDoctor.UpdateBridge.exe",
+      "SmartPerformanceDoctor.UpdateBridge.dll",
+      "SmartPerformanceDoctor.UpdateEngine.dll",
+      "SmartPerformanceDoctor.UpdateHelper.exe",
+      "SmartPerformanceDoctor.UpdateHelper.dll"
+    ],
+    "Requirement": "Verified disposable VM checkpoint and independent test SID",
+    "TrustStore": "Guest CurrentUser only",
+    "ProductionRoot": "UNCHANGED",
+    "Timestamp": "NOT TESTED"
+  },
+  "ExitCode": 0
+}

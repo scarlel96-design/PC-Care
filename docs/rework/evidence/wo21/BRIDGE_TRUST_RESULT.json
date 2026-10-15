@@ -1,0 +1,185 @@
+{
+  "Status": "PARTIAL",
+  "Source": "930ed7907daaa95cf15040d130c580248e64bf61",
+  "Build": "Bridge Release build PASS, zero warnings/errors in CI",
+  "TrustCode": "Existing publisher pins, Authenticode, retained IDs, SHA-256 and ACL checks reused.",
+  "RealExecution": {
+    "Status": "NOT TESTED",
+    "Source": "930ed7907daaa95cf15040d130c580248e64bf61",
+    "Environment": "Windows CI 26100; 4 logical CPUs",
+    "Command": "NOT EXECUTED",
+    "Input": "Signed Bridge PE deployment and trust-chain matrix",
+    "Output": "VM_UNAVAILABLE; TEST_CERTIFICATE_UNAVAILABLE",
+    "ExitCode": null
+  },
+  "SyntheticTests": [
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.RejectedRequestPreservesTargets(reason: \"cancel\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.8690622",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.TruncatedEnrollmentNeverBecomesVerified",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.2530501",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.RejectedRequestPreservesTargets(reason: \"changed-target\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.8455234",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.DuplicateJsonPropertiesAreRejected",
+      "Outcome": "Passed",
+      "Duration": "00:00:01.1384186",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.ElevatedEntryRequiresItsOwnApproval",
+      "Outcome": "Passed",
+      "Duration": "00:00:02.3602824",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.InterruptedApprovalCannotBeReused",
+      "Outcome": "Passed",
+      "Duration": "00:00:02.6872889",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.ApprovedRequestRestoresAndRetainsScope",
+      "Outcome": "Passed",
+      "Duration": "00:00:02.4739345",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.EnrollmentMismatchIsVisible(reason: \"identity\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.1645055",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.EnrollmentMismatchIsVisible(reason: \"content\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0696750",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.ApprovalTimeAndConsentAreRequired(seconds: 0, consent: False, accepted: False)",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0036496",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.RejectedRequestPreservesTargets(reason: \"hash\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.9088916",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.TargetChangeInsideConfirmationIsRejected",
+      "Outcome": "Passed",
+      "Duration": "00:00:02.0089144",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.EnrollmentMismatchIsVisible(reason: \"record\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0675404",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.PendingTransactionIsNotAttested",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.8063126",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.RejectedRequestPreservesTargets(reason: \"expired\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.7529327",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.DeletedAttestationWithHistoryIsNotLegacyEnrollment",
+      "Outcome": "Passed",
+      "Duration": "00:00:08.2746952",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.InstallationAclRejectsNonAdministratorMutation(writable: False)",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0003175",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.ApprovalTimeAndConsentAreRequired(seconds: 1, consent: True, accepted: False)",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0000044",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.UnknownCurrentBytesNeedFreshReviewedScope",
+      "Outcome": "Passed",
+      "Duration": "00:00:01.5502502",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.SignedEnrollmentVerifiesBytesWithoutRewritingInstallation",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.1008222",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.MissingSignedCurrentDeclarationCannotAuthenticateUpdatedBytes",
+      "Outcome": "Passed",
+      "Duration": "00:00:02.5614738",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.InstallationAclRejectsNonAdministratorMutation(writable: True)",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0037241",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.ApprovalTimeAndConsentAreRequired(seconds: -601, consent: True, accepted: False)",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0000040",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.ApprovalTimeAndConsentAreRequired(seconds: -599, consent: True, accepted: True)",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0000100",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.ApprovalTimeAndConsentAreRequired(seconds: 0, consent: True, accepted: True)",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0004713",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.UnattestedLegacyIsUnverifiedWithoutMalwareClassification",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0723486",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.MissingIntentCannotGrantAuthority",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0002004",
+      "Reason": null
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.EnrollmentNeedsConsentAndProductionTrust",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0290359",
+      "Reason": null
+    }
+  ]
+}

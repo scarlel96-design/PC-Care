@@ -1,0 +1,44 @@
+{
+  "Status": "PASS",
+  "Source": "930ed7907daaa95cf15040d130c580248e64bf61",
+  "Environment": "Windows CI 26100; 4 logical CPUs",
+  "Command": "WO20Probe enroll / attestation-mismatch <SYNTHETIC_ROOT>",
+  "Input": "Ephemeral signed package; exact file identities; deliberate content mutation",
+  "Output": {
+    "Results": [
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Command": "WO20Probe attestation-mismatch <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":3,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"INSTALLATION-CONTENT-MISMATCH\"}",
+        "ExitCode": 0,
+        "Input": "attestation-mismatch",
+        "Source": "930ed7907daaa95cf15040d130c580248e64bf61"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Command": "WO20Probe enroll <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":2,\"Verified\":true,\"RequiresReview\":false,\"Code\":\"SIGNED-ENROLLMENT-CREATED\"}",
+        "ExitCode": 0,
+        "Input": "enroll",
+        "Source": "930ed7907daaa95cf15040d130c580248e64bf61"
+      }
+    ],
+    "ACLTests": [
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.InstallationAclRejectsNonAdministratorMutation(writable: False)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.0003175",
+        "Reason": null
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO21QualificationTests.InstallationAclRejectsNonAdministratorMutation(writable: True)",
+        "Outcome": "Passed",
+        "Duration": "00:00:00.0037241",
+        "Reason": null
+      }
+    ],
+    "States": "Fresh, legacy unverified, verified signed, mismatch, pending, recovery, missing, corrupt and migration review",
+    "Limit": "Strict production deployment NOT TESTED; synthetic enrollment is not host enrollment."
+  },
+  "ExitCode": 0
+}

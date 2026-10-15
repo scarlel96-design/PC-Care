@@ -1,0 +1,29 @@
+{
+  "Status": "PASS",
+  "Source": "1d93600ea5c6214e23051641ad10c06a667f0866",
+  "Environment": "Windows 26200; 24 logical CPUs",
+  "Command": "dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --logger \"trx;LogFileName=wo21-baseline.trx\" -v:minimal",
+  "Input": "Clean WO20 direct x64 build; external RUNNER_TEMP; no source changes during baseline",
+  "Output": {
+    "total": "1372",
+    "executed": "1261",
+    "passed": "1261",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "ExitCode": 0
+}
+Baseline build and test exit: 0.
+Baseline 1261 PASS / 111 SKIP / 0 FAIL.
+WO20 CI 38641969661 SUCCESS is preserved in prior evidence.

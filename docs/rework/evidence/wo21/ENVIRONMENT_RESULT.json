@@ -1,0 +1,100 @@
+{
+  "Status": "PARTIAL",
+  "LocalInventory": {
+    "Command": "pwsh -NoProfile -File scripts/wo21-environment.ps1",
+    "Input": "Read-only host inventory",
+    "Source": "1d93600ea5c6214e23051641ad10c06a667f0866",
+    "OS": "Microsoft Windows NT 10.0.26200.0",
+    "Processors": 24,
+    "HyperVCommand": false,
+    "VMwareCommand": false,
+    "VirtualBoxCommand": false,
+    "SandboxExecutable": true,
+    "Features": [
+      {
+        "Error": "COMException",
+        "Name": "Containers-DisposableClientVM",
+        "State": "UNVERIFIED"
+      },
+      {
+        "Error": "COMException",
+        "Name": "Microsoft-Hyper-V-All",
+        "State": "UNVERIFIED"
+      }
+    ],
+    "VMs": [],
+    "Snapshots": [],
+    "RemoteHost": "NOT_CONFIGURED_IN_QUALIFICATION",
+    "IsolationStatus": "VM_UNAVAILABLE",
+    "InteractiveUac": "INTERACTIVE_UAC_UNAVAILABLE",
+    "TestCertificate": "TEST_CERTIFICATE_UNAVAILABLE",
+    "Gui": "NOT TESTED",
+    "Reboot": "NOT TESTED",
+    "PhysicalPowerLoss": "NOT TESTED",
+    "Daybreak": "NO_PLATFORM_CHALLENGE_OBSERVED",
+    "ExitCode": 0
+  },
+  "CIInventory": {
+    "Command": "pwsh -NoProfile -File scripts/wo21-environment.ps1",
+    "Input": "Read-only host inventory",
+    "Source": "930ed7907daaa95cf15040d130c580248e64bf61",
+    "OS": "Microsoft Windows NT 10.0.26100.0",
+    "Processors": 4,
+    "HyperVCommand": true,
+    "VMwareCommand": false,
+    "VirtualBoxCommand": false,
+    "SandboxExecutable": false,
+    "Features": [
+      {
+        "Name": "Containers-DisposableClientVM",
+        "State": ""
+      },
+      {
+        "Name": "Microsoft-Hyper-V-All",
+        "State": ""
+      }
+    ],
+    "VMs": [],
+    "Snapshots": [],
+    "RemoteHost": "NOT_CONFIGURED_IN_QUALIFICATION",
+    "IsolationStatus": "VM_UNAVAILABLE",
+    "InteractiveUac": "INTERACTIVE_UAC_UNAVAILABLE",
+    "TestCertificate": "TEST_CERTIFICATE_UNAVAILABLE",
+    "Gui": "NOT TESTED",
+    "Reboot": "NOT TESTED",
+    "PhysicalPowerLoss": "NOT TESTED",
+    "Daybreak": "NO_PLATFORM_CHALLENGE_OBSERVED",
+    "ExitCode": 0
+  },
+  "FeatureInterpretation": "Empty CI feature-state strings and local query exceptions are UNVERIFIED.",
+  "QualificationGuards": [
+    {
+      "ExitCode": 1,
+      "Output": "WO21_ROOT_ABSOLUTE_REQUIRED",
+      "Result": "Rejected",
+      "Input": "WO21_ROOT_ABSOLUTE_REQUIRED"
+    },
+    {
+      "ExitCode": 1,
+      "Output": "WO21_ROOT_PROTECTED",
+      "Result": "Rejected",
+      "Input": "WO21_ROOT_PROTECTED"
+    },
+    {
+      "ExitCode": 1,
+      "Output": "WO21_ROOT_PROTECTED",
+      "Result": "Rejected",
+      "Input": "WO21_ROOT_PROTECTED"
+    },
+    {
+      "ExitCode": 1,
+      "Output": "WO21_STALE_BUILD_SOURCE",
+      "Result": "Rejected before testhost",
+      "Input": "stale input digest"
+    }
+  ],
+  "GuardCommand": "pwsh -File scripts/wo21-qualification-selftest.ps1 -FixtureRoot <RUNNER_TEMP>/wo21-ci-fixtures -ReceiptDirectory artifacts/wo21-qualification",
+  "GuardHarnessExitCode": 0,
+  "QualifiedGuest": "VM_UNAVAILABLE",
+  "IndependentSids": "NOT TESTED"
+}

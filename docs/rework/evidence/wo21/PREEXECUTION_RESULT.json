@@ -1,0 +1,16 @@
+{
+  "Status": "PASS",
+  "Source": "930ed7907daaa95cf15040d130c580248e64bf61",
+  "Environment": "Windows CI 26100; 4 logical CPUs",
+  "Command": "SmartPerformanceDoctor.InstallationLauncher.exe --inspect",
+  "Input": "Undeployed build outside fixed trusted launcher location",
+  "Output": "PREEXECUTION-BLOCKED:InvalidDataException:LAUNCHER-LOCATION",
+  "ExitCode": 6,
+  "ExpectedExitCode": 6,
+  "Acceptance": "Undeployed launcher rejected",
+  "Limitations": [
+    "Managed prototype. CLR and dependencies load before managed checks.",
+    "Fixed trusted deployment and signed native pre-CLR launcher NOT TESTED.",
+    "Checks cover signed declared files, not every dynamically loaded module."
+  ]
+}

@@ -1,0 +1,545 @@
+{
+  "Status": "PASS (measurement only)",
+  "Environment": "Windows 26200; 24 logical CPUs; approximately 32GiB; synthetic strictAcl=false; same preserved random package; interleaved order",
+  "SourceCommit": "930ed7907daaa95cf15040d130c580248e64bf61",
+  "Variants": {
+    "Indented": {
+      "SourceCommit": "930ed7907daaa95cf15040d130c580248e64bf61",
+      "Patch": "UpdateTransaction.cs: JsonOptions.WriteIndented false -> true",
+      "InputHashes": {
+        "AuthenticodeBoundary.cs": "41f49266957c58fe9eb158b71deaa17b40de1c25006d5ede624228ae3ae3269f",
+        "BootstrapDispatch.cs": "3cc3ca3c4106b80efa0970fe9809bc308d06089a2bc4bb425f61fb81e6fb9500",
+        "BuildPublisherTrust.cs": "e4a679ecdbde5935d0ed2d1ba21c8efc45d760414e75cf13395b627d090042e2",
+        "InstallationAttestation.cs": "8995c38b9a7c94cc1d5302075dea2d530401b45d2a49e0322af5c318398cc0c3",
+        "InstallationTrustPolicy.cs": "b553bffebb232ea9ccc3a84b8ce248aa0f8e2ad979aa9834adb4846598f825c7",
+        "LegacyContentClassification.cs": "ff33d7fc6bfa0cd075b4d88f4b8e5a0d8a1d458059a7163b7048bd3884cf0268",
+        "LegacyRecoveryPlan.cs": "c4b8a0ebbf7c5b293843c7f5274c65fdc63c64a27e1a78b65abaefccf0697c51",
+        "LegacyRestoreApproval.cs": "f2d1c29b3d9dfccbd8259c04c861775b0dd7ea70cbf6dbf2be41c82b795373a2",
+        "SignedPackage.cs": "c210e1e4584dac01775c057ffcde78de9b219d0943e1693c7053e3de182adb24",
+        "SmartPerformanceDoctor.UpdateEngine.csproj": "7f9eae4ef4dffe01de0e3a2f3cd93222a432f8f0178fefe22c1c08f4ffd5fb62",
+        "UpdateBootstrap.cs": "f02e49000830f4947043e5016737789110bed434367bacfd2b4f80bb2e16a2dd",
+        "UpdatePerformanceProfile.cs": "79cd341c42329c44392636d89f91cca8d8fe46c2751809823462cc89f74ee1ff",
+        "UpdateTransaction.cs": "f05a65712587658aab9982ff6161f944f530beb6dc85d679d0d5f9f11c78aac3",
+        "WindowsFileBoundary.cs": "f4c31b4ad1c3a801b17832b3c9fbebec2f8106cae311c46f5bbd63259101391b"
+      },
+      "EngineSha256": "791c87a3acf33bfad7f8d711748c19c59bcf9e122af2141a6c8d2d13acad15a1",
+      "ProbeSha256": "1ed6fe7711092061e4cc1ecaf42fe337997e19bfc429f9cb56037f12444a7518",
+      "BuildOutput": "  복원할 프로젝트를 확인하는 중...\n  <WORKSPACE>\\wo21-profile-matched-06e279e54fc847ecb9e35cd628699a58\\Indented-source\\SmartPerformanceDoctor.UpdateEngine.csproj을(를) 269밀리초 동안 복원했습니다.\n  SmartPerformanceDoctor.UpdateEngine -> <WORKSPACE>\\wo21-profile-matched-06e279e54fc847ecb9e35cd628699a58\\Indented-output\\SmartPerformanceDoctor.UpdateEngine.dll\n\n빌드했습니다.\n    경고 0개\n    오류 0개\n\n경과 시간: 00:00:01.95\n",
+      "BuildExitCode": 0
+    },
+    "Compact": {
+      "SourceCommit": "930ed7907daaa95cf15040d130c580248e64bf61",
+      "Patch": "None",
+      "InputHashes": {
+        "AuthenticodeBoundary.cs": "41f49266957c58fe9eb158b71deaa17b40de1c25006d5ede624228ae3ae3269f",
+        "BootstrapDispatch.cs": "3cc3ca3c4106b80efa0970fe9809bc308d06089a2bc4bb425f61fb81e6fb9500",
+        "BuildPublisherTrust.cs": "e4a679ecdbde5935d0ed2d1ba21c8efc45d760414e75cf13395b627d090042e2",
+        "InstallationAttestation.cs": "8995c38b9a7c94cc1d5302075dea2d530401b45d2a49e0322af5c318398cc0c3",
+        "InstallationTrustPolicy.cs": "b553bffebb232ea9ccc3a84b8ce248aa0f8e2ad979aa9834adb4846598f825c7",
+        "LegacyContentClassification.cs": "ff33d7fc6bfa0cd075b4d88f4b8e5a0d8a1d458059a7163b7048bd3884cf0268",
+        "LegacyRecoveryPlan.cs": "c4b8a0ebbf7c5b293843c7f5274c65fdc63c64a27e1a78b65abaefccf0697c51",
+        "LegacyRestoreApproval.cs": "f2d1c29b3d9dfccbd8259c04c861775b0dd7ea70cbf6dbf2be41c82b795373a2",
+        "SignedPackage.cs": "c210e1e4584dac01775c057ffcde78de9b219d0943e1693c7053e3de182adb24",
+        "SmartPerformanceDoctor.UpdateEngine.csproj": "7f9eae4ef4dffe01de0e3a2f3cd93222a432f8f0178fefe22c1c08f4ffd5fb62",
+        "UpdateBootstrap.cs": "f02e49000830f4947043e5016737789110bed434367bacfd2b4f80bb2e16a2dd",
+        "UpdatePerformanceProfile.cs": "79cd341c42329c44392636d89f91cca8d8fe46c2751809823462cc89f74ee1ff",
+        "UpdateTransaction.cs": "505bd5c5710af5c310fc5ac8ee39081cb628674c2b9c2b6b8cd70da6cf57d1e0",
+        "WindowsFileBoundary.cs": "f4c31b4ad1c3a801b17832b3c9fbebec2f8106cae311c46f5bbd63259101391b"
+      },
+      "EngineSha256": "8f9a0fdf09d96b29884efd9224bc9a96a3a2db9992d1217914a07974fcf13519",
+      "ProbeSha256": "1ed6fe7711092061e4cc1ecaf42fe337997e19bfc429f9cb56037f12444a7518",
+      "BuildOutput": "  복원할 프로젝트를 확인하는 중...\n  <WORKSPACE>\\wo21-profile-matched-06e279e54fc847ecb9e35cd628699a58\\Compact-source\\SmartPerformanceDoctor.UpdateEngine.csproj을(를) 239밀리초 동안 복원했습니다.\n  SmartPerformanceDoctor.UpdateEngine -> <WORKSPACE>\\wo21-profile-matched-06e279e54fc847ecb9e35cd628699a58\\Compact-output\\SmartPerformanceDoctor.UpdateEngine.dll\n\n빌드했습니다.\n    경고 0개\n    오류 0개\n\n경과 시간: 00:00:01.84\n",
+      "BuildExitCode": 0
+    }
+  },
+  "Trials": [
+    {
+      "Variant": "Indented",
+      "Trial": 1,
+      "Command": "WO20Probe apply <SYNTHETIC_ROOT>",
+      "InputPackageSha256": "8d5bdc63a11bf58e49ff6ac7c3d3a65235e1e083ae019e2da621a544f211bd8d",
+      "SourceCommit": "930ed7907daaa95cf15040d130c580248e64bf61",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "Committed",
+        "Code": "COMMITTED",
+        "ElapsedMs": 22792.6755,
+        "CpuMs": 20812.5,
+        "PeakWorkingSetBytes": 186966016,
+        "Attestation": {
+          "Verified": true,
+          "RequiresReview": false,
+          "Code": "SIGNED-INSTALLATION-VERIFIED"
+        },
+        "Phases": [
+          {
+            "Name": "PackageVerification",
+            "Calls": 1,
+            "ElapsedMs": 87.2434
+          },
+          {
+            "Name": "JournalSerialization",
+            "Calls": 779,
+            "ElapsedMs": 216.2446
+          },
+          {
+            "Name": "JournalFlush",
+            "Calls": 779,
+            "ElapsedMs": 921.7873
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 9316,
+            "ElapsedMs": 5204.8271
+          },
+          {
+            "Name": "JournalRename",
+            "Calls": 779,
+            "ElapsedMs": 1619.5191
+          },
+          {
+            "Name": "JournalTotal",
+            "Calls": 779,
+            "ElapsedMs": 12490.4399
+          },
+          {
+            "Name": "CopyAndFlush",
+            "Calls": 389,
+            "ElapsedMs": 1438.1559
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 1681,
+            "ElapsedMs": 2004.9695
+          },
+          {
+            "Name": "ExtractionAndVerification",
+            "Calls": 258,
+            "ElapsedMs": 3040.0302
+          },
+          {
+            "Name": "BackupAndIdentity",
+            "Calls": 258,
+            "ElapsedMs": 1901.0152
+          },
+          {
+            "Name": "ReplacementAndVerification",
+            "Calls": 258,
+            "ElapsedMs": 8853.4738
+          }
+        ]
+      },
+      "JournalBytes": 173010
+    },
+    {
+      "Variant": "Compact",
+      "Trial": 1,
+      "Command": "WO20Probe apply <SYNTHETIC_ROOT>",
+      "InputPackageSha256": "8d5bdc63a11bf58e49ff6ac7c3d3a65235e1e083ae019e2da621a544f211bd8d",
+      "SourceCommit": "930ed7907daaa95cf15040d130c580248e64bf61",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "Committed",
+        "Code": "COMMITTED",
+        "ElapsedMs": 20926.176,
+        "CpuMs": 19640.625,
+        "PeakWorkingSetBytes": 202207232,
+        "Attestation": {
+          "Verified": true,
+          "RequiresReview": false,
+          "Code": "SIGNED-INSTALLATION-VERIFIED"
+        },
+        "Phases": [
+          {
+            "Name": "PackageVerification",
+            "Calls": 1,
+            "ElapsedMs": 81.2866
+          },
+          {
+            "Name": "JournalSerialization",
+            "Calls": 779,
+            "ElapsedMs": 171.2649
+          },
+          {
+            "Name": "JournalFlush",
+            "Calls": 779,
+            "ElapsedMs": 692.8418
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 9316,
+            "ElapsedMs": 4888.7122
+          },
+          {
+            "Name": "JournalRename",
+            "Calls": 779,
+            "ElapsedMs": 1528.7045
+          },
+          {
+            "Name": "JournalTotal",
+            "Calls": 779,
+            "ElapsedMs": 11284.485
+          },
+          {
+            "Name": "CopyAndFlush",
+            "Calls": 389,
+            "ElapsedMs": 1344.9025
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 1681,
+            "ElapsedMs": 1825.852
+          },
+          {
+            "Name": "ExtractionAndVerification",
+            "Calls": 258,
+            "ElapsedMs": 2679.0881
+          },
+          {
+            "Name": "BackupAndIdentity",
+            "Calls": 258,
+            "ElapsedMs": 1705.9248
+          },
+          {
+            "Name": "ReplacementAndVerification",
+            "Calls": 258,
+            "ElapsedMs": 8015.672
+          }
+        ]
+      },
+      "JournalBytes": 137344
+    },
+    {
+      "Variant": "Compact",
+      "Trial": 2,
+      "Command": "WO20Probe apply <SYNTHETIC_ROOT>",
+      "InputPackageSha256": "8d5bdc63a11bf58e49ff6ac7c3d3a65235e1e083ae019e2da621a544f211bd8d",
+      "SourceCommit": "930ed7907daaa95cf15040d130c580248e64bf61",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "Committed",
+        "Code": "COMMITTED",
+        "ElapsedMs": 21003.4782,
+        "CpuMs": 19593.75,
+        "PeakWorkingSetBytes": 201973760,
+        "Attestation": {
+          "Verified": true,
+          "RequiresReview": false,
+          "Code": "SIGNED-INSTALLATION-VERIFIED"
+        },
+        "Phases": [
+          {
+            "Name": "PackageVerification",
+            "Calls": 1,
+            "ElapsedMs": 82.6672
+          },
+          {
+            "Name": "JournalSerialization",
+            "Calls": 779,
+            "ElapsedMs": 178.1007
+          },
+          {
+            "Name": "JournalFlush",
+            "Calls": 779,
+            "ElapsedMs": 613.6683
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 9316,
+            "ElapsedMs": 4962.6804
+          },
+          {
+            "Name": "JournalRename",
+            "Calls": 779,
+            "ElapsedMs": 1582.8521
+          },
+          {
+            "Name": "JournalTotal",
+            "Calls": 779,
+            "ElapsedMs": 11596.4492
+          },
+          {
+            "Name": "CopyAndFlush",
+            "Calls": 389,
+            "ElapsedMs": 1455.8829
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 1681,
+            "ElapsedMs": 1804.6603
+          },
+          {
+            "Name": "ExtractionAndVerification",
+            "Calls": 258,
+            "ElapsedMs": 2340.0732
+          },
+          {
+            "Name": "BackupAndIdentity",
+            "Calls": 258,
+            "ElapsedMs": 1550.5451
+          },
+          {
+            "Name": "ReplacementAndVerification",
+            "Calls": 258,
+            "ElapsedMs": 8576.2281
+          }
+        ]
+      },
+      "JournalBytes": 137344
+    },
+    {
+      "Variant": "Indented",
+      "Trial": 2,
+      "Command": "WO20Probe apply <SYNTHETIC_ROOT>",
+      "InputPackageSha256": "8d5bdc63a11bf58e49ff6ac7c3d3a65235e1e083ae019e2da621a544f211bd8d",
+      "SourceCommit": "930ed7907daaa95cf15040d130c580248e64bf61",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "Committed",
+        "Code": "COMMITTED",
+        "ElapsedMs": 21015.7196,
+        "CpuMs": 19328.125,
+        "PeakWorkingSetBytes": 187342848,
+        "Attestation": {
+          "Verified": true,
+          "RequiresReview": false,
+          "Code": "SIGNED-INSTALLATION-VERIFIED"
+        },
+        "Phases": [
+          {
+            "Name": "PackageVerification",
+            "Calls": 1,
+            "ElapsedMs": 80.6421
+          },
+          {
+            "Name": "JournalSerialization",
+            "Calls": 779,
+            "ElapsedMs": 215.7452
+          },
+          {
+            "Name": "JournalFlush",
+            "Calls": 779,
+            "ElapsedMs": 736.2346
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 9316,
+            "ElapsedMs": 4846.4749
+          },
+          {
+            "Name": "JournalRename",
+            "Calls": 779,
+            "ElapsedMs": 1528.9228
+          },
+          {
+            "Name": "JournalTotal",
+            "Calls": 779,
+            "ElapsedMs": 11751.1966
+          },
+          {
+            "Name": "CopyAndFlush",
+            "Calls": 389,
+            "ElapsedMs": 1325.9428
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 1681,
+            "ElapsedMs": 1763.7909
+          },
+          {
+            "Name": "ExtractionAndVerification",
+            "Calls": 258,
+            "ElapsedMs": 2333.1508
+          },
+          {
+            "Name": "BackupAndIdentity",
+            "Calls": 258,
+            "ElapsedMs": 1617.5176
+          },
+          {
+            "Name": "ReplacementAndVerification",
+            "Calls": 258,
+            "ElapsedMs": 8376.5698
+          }
+        ]
+      },
+      "JournalBytes": 173010
+    },
+    {
+      "Variant": "Indented",
+      "Trial": 3,
+      "Command": "WO20Probe apply <SYNTHETIC_ROOT>",
+      "InputPackageSha256": "8d5bdc63a11bf58e49ff6ac7c3d3a65235e1e083ae019e2da621a544f211bd8d",
+      "SourceCommit": "930ed7907daaa95cf15040d130c580248e64bf61",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "Committed",
+        "Code": "COMMITTED",
+        "ElapsedMs": 19797.432,
+        "CpuMs": 18328.125,
+        "PeakWorkingSetBytes": 187199488,
+        "Attestation": {
+          "Verified": true,
+          "RequiresReview": false,
+          "Code": "SIGNED-INSTALLATION-VERIFIED"
+        },
+        "Phases": [
+          {
+            "Name": "PackageVerification",
+            "Calls": 1,
+            "ElapsedMs": 81.7738
+          },
+          {
+            "Name": "JournalSerialization",
+            "Calls": 779,
+            "ElapsedMs": 211.85
+          },
+          {
+            "Name": "JournalFlush",
+            "Calls": 779,
+            "ElapsedMs": 567.4209
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 9316,
+            "ElapsedMs": 4649.1767
+          },
+          {
+            "Name": "JournalRename",
+            "Calls": 779,
+            "ElapsedMs": 1434.3141
+          },
+          {
+            "Name": "JournalTotal",
+            "Calls": 779,
+            "ElapsedMs": 10851.6666
+          },
+          {
+            "Name": "CopyAndFlush",
+            "Calls": 389,
+            "ElapsedMs": 1224.6489
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 1681,
+            "ElapsedMs": 1752.8418
+          },
+          {
+            "Name": "ExtractionAndVerification",
+            "Calls": 258,
+            "ElapsedMs": 2466.8153
+          },
+          {
+            "Name": "BackupAndIdentity",
+            "Calls": 258,
+            "ElapsedMs": 1490.1354
+          },
+          {
+            "Name": "ReplacementAndVerification",
+            "Calls": 258,
+            "ElapsedMs": 7564.3215
+          }
+        ]
+      },
+      "JournalBytes": 173010
+    },
+    {
+      "Variant": "Compact",
+      "Trial": 3,
+      "Command": "WO20Probe apply <SYNTHETIC_ROOT>",
+      "InputPackageSha256": "8d5bdc63a11bf58e49ff6ac7c3d3a65235e1e083ae019e2da621a544f211bd8d",
+      "SourceCommit": "930ed7907daaa95cf15040d130c580248e64bf61",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "Committed",
+        "Code": "COMMITTED",
+        "ElapsedMs": 19935.4242,
+        "CpuMs": 18468.75,
+        "PeakWorkingSetBytes": 201547776,
+        "Attestation": {
+          "Verified": true,
+          "RequiresReview": false,
+          "Code": "SIGNED-INSTALLATION-VERIFIED"
+        },
+        "Phases": [
+          {
+            "Name": "PackageVerification",
+            "Calls": 1,
+            "ElapsedMs": 80.3032
+          },
+          {
+            "Name": "JournalSerialization",
+            "Calls": 779,
+            "ElapsedMs": 165.0111
+          },
+          {
+            "Name": "JournalFlush",
+            "Calls": 779,
+            "ElapsedMs": 613.2949
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 9316,
+            "ElapsedMs": 4749.3171
+          },
+          {
+            "Name": "JournalRename",
+            "Calls": 779,
+            "ElapsedMs": 1462.4559
+          },
+          {
+            "Name": "JournalTotal",
+            "Calls": 779,
+            "ElapsedMs": 10901.2008
+          },
+          {
+            "Name": "CopyAndFlush",
+            "Calls": 389,
+            "ElapsedMs": 1250.7834
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 1681,
+            "ElapsedMs": 1793.4124
+          },
+          {
+            "Name": "ExtractionAndVerification",
+            "Calls": 258,
+            "ElapsedMs": 2343.1102
+          },
+          {
+            "Name": "BackupAndIdentity",
+            "Calls": 258,
+            "ElapsedMs": 1541.5898
+          },
+          {
+            "Name": "ReplacementAndVerification",
+            "Calls": 258,
+            "ElapsedMs": 7822.9057
+          }
+        ]
+      },
+      "JournalBytes": 137344
+    }
+  ],
+  "Medians": {
+    "Indented": {
+      "ElapsedMs": 21015.7196,
+      "CpuMs": 19328.125
+    },
+    "Compact": {
+      "ElapsedMs": 20926.176,
+      "CpuMs": 19593.75
+    }
+  },
+  "Limitations": [
+    "Single physical host; not low-end hardware qualification.",
+    "The experiment isolates journal formatting. Manifest indexing is shared.",
+    "Nested phase timings overlap.",
+    "Protected ACL costs and cancellation latency are not measured.",
+    "No general PC performance improvement claim."
+  ],
+  "PerformanceImprovement": "NOT ESTABLISHED",
+  "Input": "128 existing random 4KiB files,128 new random 4KiB files,two small files; same package for every trial",
+  "MaximumPeakWorkingSetBytes": 202207232
+}

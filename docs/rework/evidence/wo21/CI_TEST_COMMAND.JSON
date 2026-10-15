@@ -1,0 +1,9 @@
+{
+  "Input": "",
+  "Start": "2026-10-15T02:44:09.9673926+00:00",
+  "Command": "dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger trx;LogFileName=wo21-qualified.trx -v:minimal",
+  "InputDigest": "0A69302B91A74ACEA515F10FB8F19D6913BD134C9C43AE78411B29897027BE65",
+  "End": "2026-10-15T02:53:28.4050273+00:00",
+  "Source": "930ed7907daaa95cf15040d130c580248e64bf61",
+  "ExitCode": 0
+}

@@ -1,0 +1,225 @@
+WORK ITEM: WO21 Signed Deployment, Privileged Recovery & Real-Environment Qualification
+STATUS: PARTIAL
+PHASE 1: NO-GO
+BRANCH: codex/pccare-wo21-signed-install-recovery-qualification
+BASELINE SHA: 1d93600ea5c6214e23051641ad10c06a667f0866
+IMPLEMENTATION/CI SOURCE: 930ed7907daaa95cf15040d130c580248e64bf61
+SOURCE TREE: 162a9a11fbc4236cf80bf3898d897091a2f6f678
+CI: 38669715643 SUCCESS
+ENVIRONMENTS: local Windows26200/24CPU; GitHub Windows26100/4CPU.
+ROOT CAUSE: legacy restore accepted a boolean without durable request scope. Installation inspection omitted ACL rechecks.
+CHANGED BRANCH/FIELD: InstallationAttestation.InspectInstallation returns INSTALLATION-CONTENT-MISMATCH for authenticated content mismatch.
+ADDITIONAL CHANGES: signed current-content classification; single-use elevated approval; installation enrollment; managed launcher; qualified build receipts; profiling.
+CHANGED FILES: CHANGED_FILES.txt
+IMPLEMENTATION: See thirteen WO21 reports and DIFF_FILE.
+FOUR ARTIFACT PATHS (local workspace paths; not user data):
+MODIFIED_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo21\MODIFIED_FILE
+DIFF_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo21\DIFF_FILE
+VERIFICATION.txt: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo21\VERIFICATION.txt
+ROLLBACK.sh: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo21\ROLLBACK.sh
+
+ORIGINAL SHA256: d38efc85a7c93975e916a3350fa64c85da191739492d73b2d74b57a864f73881
+MODIFIED SHA256: 8995c38b9a7c94cc1d5302075dea2d530401b45d2a49e0322af5c318398cc0c3
+ORIGINAL GIT BLOB: 46eb0912c7991355a4575255d0fb3f50d89ad587
+Raw source-copy hashes preserve local line endings. Normalized original equals the baseline Git source.
+
+BASELINE/MODIFIED/ROLLBACK EXACT COMMANDS, INPUTS, LITERAL OUTPUTS AND EXIT STATUS:
+[
+  {
+    "Name": "BASELINE-build",
+    "Command": [
+      "dotnet",
+      "build",
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\engine\\SmartPerformanceDoctor.UpdateEngine.csproj",
+      "-c",
+      "Release",
+      "-p:Platform=x64",
+      "-o",
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\engine-output",
+      "-v:minimal"
+    ],
+    "ExitCode": 0,
+    "Output": "  복원할 프로젝트를 확인하는 중...\n  <WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\engine\\SmartPerformanceDoctor.UpdateEngine.csproj을(를) 1.61초 동안 복원했습니다.\n  SmartPerformanceDoctor.UpdateEngine -> <WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\engine-output\\SmartPerformanceDoctor.UpdateEngine.dll\n\n빌드했습니다.\n    경고 0개\n    오류 0개\n\n경과 시간: 00:00:06.00\n"
+  },
+  {
+    "Name": "BASELINE-prepare",
+    "Command": [
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\probe\\SmartPerformanceDoctor.WO20Probe.exe",
+      "prepare",
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\fixtures\\wo20-baseline"
+    ],
+    "ExitCode": 0,
+    "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1095,\"ExistingBytes\":13}\n"
+  },
+  {
+    "Name": "BASELINE-apply",
+    "Command": [
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\probe\\SmartPerformanceDoctor.WO20Probe.exe",
+      "apply",
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\fixtures\\wo20-baseline"
+    ],
+    "ExitCode": 0,
+    "Output": "{\"Status\":\"Committed\",\"Code\":\"COMMITTED\",\"ElapsedMs\":333.9855,\"CpuMs\":312.5,\"PeakWorkingSetBytes\":54390784,\"Attestation\":{\"Verified\":true,\"RequiresReview\":false,\"Code\":\"SIGNED-INSTALLATION-VERIFIED\"},\"Phases\":[{\"Name\":\"PackageVerification\",\"Calls\":1,\"ElapsedMs\":62.9208},{\"Name\":\"JournalSerialization\",\"Calls\":11,\"ElapsedMs\":0.3692},{\"Name\":\"JournalFlush\",\"Calls\":11,\"ElapsedMs\":10.1409},{\"Name\":\"FileIdentityValidation\",\"Calls\":100,\"ElapsedMs\":42.8364},{\"Name\":\"JournalRename\",\"Calls\":11,\"ElapsedMs\":17.4346},{\"Name\":\"JournalTotal\",\"Calls\":11,\"ElapsedMs\":127.4499},{\"Name\":\"CopyAndFlush\",\"Calls\":5,\"ElapsedMs\":14.7702},{\"Name\":\"HashAndIdentity\",\"Calls\":17,\"ElapsedMs\":15.3398},{\"Name\":\"ExtractionAndVerification\",\"Calls\":2,\"ElapsedMs\":19.5507},{\"Name\":\"BackupAndIdentity\",\"Calls\":2,\"ElapsedMs\":22.6415},{\"Name\":\"ReplacementAndVerification\",\"Calls\":2,\"ElapsedMs\":30.2039}]}\n"
+  },
+  {
+    "Name": "BASELINE-behavior",
+    "Command": [
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\probe\\SmartPerformanceDoctor.WO20Probe.exe",
+      "attestation-mismatch",
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\fixtures\\wo20-baseline"
+    ],
+    "ExitCode": 0,
+    "Output": "{\"State\":7,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"INSTALLATION-REVIEW-REQUIRED\"}\n"
+  },
+  {
+    "Name": "BASELINE-assert",
+    "Command": "Assert exact attestation code",
+    "Input": "Signed synthetic installation; changed app.txt",
+    "Output": "INSTALLATION-REVIEW-REQUIRED",
+    "ExitCode": 0
+  },
+  {
+    "Name": "MODIFIED-build",
+    "Command": [
+      "dotnet",
+      "build",
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\engine\\SmartPerformanceDoctor.UpdateEngine.csproj",
+      "-c",
+      "Release",
+      "-p:Platform=x64",
+      "-o",
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\engine-output",
+      "-v:minimal"
+    ],
+    "ExitCode": 0,
+    "Output": "  복원할 프로젝트를 확인하는 중...\n  복원할 모든 프로젝트가 최신 상태입니다.\n  SmartPerformanceDoctor.UpdateEngine -> <WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\engine-output\\SmartPerformanceDoctor.UpdateEngine.dll\n\n빌드했습니다.\n    경고 0개\n    오류 0개\n\n경과 시간: 00:00:01.81\n"
+  },
+  {
+    "Name": "MODIFIED-prepare",
+    "Command": [
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\probe\\SmartPerformanceDoctor.WO20Probe.exe",
+      "prepare",
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\fixtures\\wo20-modified"
+    ],
+    "ExitCode": 0,
+    "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1099,\"ExistingBytes\":13}\n"
+  },
+  {
+    "Name": "MODIFIED-apply",
+    "Command": [
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\probe\\SmartPerformanceDoctor.WO20Probe.exe",
+      "apply",
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\fixtures\\wo20-modified"
+    ],
+    "ExitCode": 0,
+    "Output": "{\"Status\":\"Committed\",\"Code\":\"COMMITTED\",\"ElapsedMs\":399.7521,\"CpuMs\":375,\"PeakWorkingSetBytes\":54222848,\"Attestation\":{\"Verified\":true,\"RequiresReview\":false,\"Code\":\"SIGNED-INSTALLATION-VERIFIED\"},\"Phases\":[{\"Name\":\"PackageVerification\",\"Calls\":1,\"ElapsedMs\":71.9558},{\"Name\":\"JournalSerialization\",\"Calls\":11,\"ElapsedMs\":0.4687},{\"Name\":\"JournalFlush\",\"Calls\":11,\"ElapsedMs\":14.0151},{\"Name\":\"FileIdentityValidation\",\"Calls\":100,\"ElapsedMs\":52.3986},{\"Name\":\"JournalRename\",\"Calls\":11,\"ElapsedMs\":21.7955},{\"Name\":\"JournalTotal\",\"Calls\":11,\"ElapsedMs\":157.0684},{\"Name\":\"CopyAndFlush\",\"Calls\":5,\"ElapsedMs\":17.0529},{\"Name\":\"HashAndIdentity\",\"Calls\":17,\"ElapsedMs\":18.7729},{\"Name\":\"ExtractionAndVerification\",\"Calls\":2,\"ElapsedMs\":23.2713},{\"Name\":\"BackupAndIdentity\",\"Calls\":2,\"ElapsedMs\":26.9437},{\"Name\":\"ReplacementAndVerification\",\"Calls\":2,\"ElapsedMs\":37.7207}]}\n"
+  },
+  {
+    "Name": "MODIFIED-behavior",
+    "Command": [
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\probe\\SmartPerformanceDoctor.WO20Probe.exe",
+      "attestation-mismatch",
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\fixtures\\wo20-modified"
+    ],
+    "ExitCode": 0,
+    "Output": "{\"State\":3,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"INSTALLATION-CONTENT-MISMATCH\"}\n"
+  },
+  {
+    "Name": "MODIFIED-assert",
+    "Command": "Assert exact attestation code",
+    "Input": "Signed synthetic installation; changed app.txt",
+    "Output": "INSTALLATION-CONTENT-MISMATCH",
+    "ExitCode": 0
+  },
+  {
+    "Name": "rollback-script",
+    "Command": [
+      "C:\\Program Files\\Git\\bin\\bash.exe",
+      "<WORKSPACE>\\work\\PC-Care\\docs\\rework\\evidence\\wo21\\ROLLBACK.sh",
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\RESTORE_COPY"
+    ],
+    "ExitCode": 0,
+    "Output": "SOURCE_COPY_RESTORED; INSTALLATION_UNCHANGED\n"
+  },
+  {
+    "Name": "ROLLBACK-build",
+    "Command": [
+      "dotnet",
+      "build",
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\engine\\SmartPerformanceDoctor.UpdateEngine.csproj",
+      "-c",
+      "Release",
+      "-p:Platform=x64",
+      "-o",
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\engine-output",
+      "-v:minimal"
+    ],
+    "ExitCode": 0,
+    "Output": "  복원할 프로젝트를 확인하는 중...\n  복원할 모든 프로젝트가 최신 상태입니다.\n  SmartPerformanceDoctor.UpdateEngine -> <WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\engine-output\\SmartPerformanceDoctor.UpdateEngine.dll\n\n빌드했습니다.\n    경고 0개\n    오류 0개\n\n경과 시간: 00:00:02.11\n"
+  },
+  {
+    "Name": "ROLLBACK-prepare",
+    "Command": [
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\probe\\SmartPerformanceDoctor.WO20Probe.exe",
+      "prepare",
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\fixtures\\wo20-rollback"
+    ],
+    "ExitCode": 0,
+    "Output": "{\"Status\":\"PREPARED\",\"LogicalBytes\":9,\"PackageBytes\":1093,\"ExistingBytes\":13}\n"
+  },
+  {
+    "Name": "ROLLBACK-apply",
+    "Command": [
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\probe\\SmartPerformanceDoctor.WO20Probe.exe",
+      "apply",
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\fixtures\\wo20-rollback"
+    ],
+    "ExitCode": 0,
+    "Output": "{\"Status\":\"Committed\",\"Code\":\"COMMITTED\",\"ElapsedMs\":437.6508,\"CpuMs\":375,\"PeakWorkingSetBytes\":53862400,\"Attestation\":{\"Verified\":true,\"RequiresReview\":false,\"Code\":\"SIGNED-INSTALLATION-VERIFIED\"},\"Phases\":[{\"Name\":\"PackageVerification\",\"Calls\":1,\"ElapsedMs\":83.3695},{\"Name\":\"JournalSerialization\",\"Calls\":11,\"ElapsedMs\":0.5088},{\"Name\":\"JournalFlush\",\"Calls\":11,\"ElapsedMs\":11.5322},{\"Name\":\"FileIdentityValidation\",\"Calls\":100,\"ElapsedMs\":57.2011},{\"Name\":\"JournalRename\",\"Calls\":11,\"ElapsedMs\":23.0064},{\"Name\":\"JournalTotal\",\"Calls\":11,\"ElapsedMs\":167.4515},{\"Name\":\"CopyAndFlush\",\"Calls\":5,\"ElapsedMs\":18.4191},{\"Name\":\"HashAndIdentity\",\"Calls\":17,\"ElapsedMs\":20.6054},{\"Name\":\"ExtractionAndVerification\",\"Calls\":2,\"ElapsedMs\":26.4957},{\"Name\":\"BackupAndIdentity\",\"Calls\":2,\"ElapsedMs\":28.3947},{\"Name\":\"ReplacementAndVerification\",\"Calls\":2,\"ElapsedMs\":39.155}]}\n"
+  },
+  {
+    "Name": "ROLLBACK-behavior",
+    "Command": [
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\probe\\SmartPerformanceDoctor.WO20Probe.exe",
+      "attestation-mismatch",
+      "<WORKSPACE>\\wo21-rollback-73ffd97eb80a493f8e3e6c8542cd7338\\fixtures\\wo20-rollback"
+    ],
+    "ExitCode": 0,
+    "Output": "{\"State\":7,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"INSTALLATION-REVIEW-REQUIRED\"}\n"
+  },
+  {
+    "Name": "ROLLBACK-assert",
+    "Command": "Assert exact attestation code",
+    "Input": "Signed synthetic installation; changed app.txt",
+    "Output": "INSTALLATION-REVIEW-REQUIRED",
+    "ExitCode": 0
+  }
+]
+
+RESTORED BEHAVIOR: INSTALLATION-REVIEW-REQUIRED; verification false; review true; exit0.
+MODIFIED BEHAVIOR: INSTALLATION-CONTENT-MISMATCH; verification false; review true; exit0.
+ROLLBACK SCRIPT LITERAL OUTPUT: SOURCE_COPY_RESTORED; INSTALLATION_UNCHANGED
+ROLLBACK SCRIPT EXIT: 0
+ROLLBACK SCOPE: RESTORE_COPY under independent wo21-rollback-* directory only.
+MODIFIED_FILE and repository source remain modified.
+These are source-copy tests. They do not restore installation transactions or decrypt vault data.
+
+ACTUAL INSTALLATION/V5 DATA RECOVERY:
+COMMAND: pwsh -File scripts/wo21-process-validation.ps1 -OutputDirectory artifacts/wo21-ci
+INPUT: synthetic Windows filesystem; strictAcl=false; ephemeral signed packages; encrypted synthetic v5 vaults.
+OUTPUT: WO21_SYNTHETIC_RECOVERY=PASS; PRIVILEGED_E2E=NOT_TESTED; GUI=NOT_TESTED; REBOOT=NOT_TESTED
+EXIT CODE: 0
+134 commands;13 parent-killed workers;46 authenticated full vault checks;7 recovery-code checks;184 matching SHA256 pairs.
+Literal per-command outputs and termination codes: CI_PROCESS_RESULT.json.
+Existing updater matrix:197 commands;20 apply interruption cases;13 recovery interruption cases;46 terminations including setup kills.
+
+FULL APP: local and CI1289 PASS/0 FAIL/111 SKIP. NewWO21=28, included.
+SECURITYLAB:36 PASS/0 FAIL/0 SKIP, separate.
+RESTORE/RELEASE:0 warnings/0 errors.
+111 skip names match baseline. Historical production-GO skip strings are not current production approval.
+
+REMAINING P0: real signed Bridge transition; actual privileged restoration; trusted launcher deployment; independent SID/ACL/UAC/reboot qualification.
+GUI/accessibility/low-end hardware/physical power loss: NOT TESTED.
+Daybreak: no challenge observed; future specially authorized work DAYBREAK_DEFERRED.
+No production gate changed. No user installation or vault touched. No main merge/release.
+FINAL PUBLICATION: external WO21_FINAL_REPORT.md and WO21_REMOTE_BLOB_VERIFICATION.json record final HEAD/tree.

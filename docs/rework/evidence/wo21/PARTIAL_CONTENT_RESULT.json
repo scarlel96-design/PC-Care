@@ -1,0 +1,18 @@
+{
+  "Status": "PASS",
+  "Source": "930ed7907daaa95cf15040d130c580248e64bf61",
+  "Environment": "Windows CI 26100; 4 logical CPUs",
+  "Command": "WO20Probe legacy-unknown <SYNTHETIC_ROOT>",
+  "Input": "Signed old backup; deliberately unknown current target",
+  "Output": [
+    {
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+      "Command": "WO20Probe legacy-unknown <SYNTHETIC_ROOT>",
+      "Output": "{\"Status\":\"RecoveryReviewRequired\",\"Before\":\"20033C90C32450C4FF7A3BD19B390EFF9C3B3169D212133DE4B48FEE158D04EA\",\"After\":\"20033C90C32450C4FF7A3BD19B390EFF9C3B3169D212133DE4B48FEE158D04EA\",\"ContentStates\":[\"UnknownContent\",\"UpdatedVerified\"]}",
+      "ExitCode": 0,
+      "Input": "legacy-unknown",
+      "Source": "930ed7907daaa95cf15040d130c580248e64bf61"
+    }
+  ],
+  "ExitCode": 0
+}
