@@ -234,7 +234,7 @@ jobs:
           ./scripts/wo20-process-validation.ps1 -OutputDirectory artifacts/wo22-ci/recorder -ValidateRecorderOnly
           ./scripts/wo22-process-validation.ps1 -OutputDirectory artifacts/wo22-ci
           ./scripts/wo22-ui-contract.ps1
-          ./scripts/wo21-test-signing.ps1 -BinaryDirectory 'C:\WO21\binaries' -GuestTestRoot 'C:\wo21-signing' -ExpectedGuestUuid PREPARED -ExpectedTestSid PREPARED | Set-Content artifacts/wo21-ci/signing-preparation.json
+          ./scripts/wo21-test-signing.ps1 -BinaryDirectory 'C:\WO21\binaries' -GuestTestRoot 'C:\wo21-signing' -ExpectedGuestUuid PREPARED -ExpectedTestSid PREPARED | Set-Content artifacts/wo22-ci/signing-preparation.json
           ./scripts/wo20-source-contract.ps1
       - name: Full application regression
         env:
