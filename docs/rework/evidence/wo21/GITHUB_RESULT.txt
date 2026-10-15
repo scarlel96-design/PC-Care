@@ -11,3 +11,14 @@ Documentation/evidence publication follows this tested commit.
 The final external handoff receipt records final local/remote HEAD,tree and per-file remote blobs.
 No source/test/tool/script/workflow changes are allowed after this CI source.
 Earlier CI38668909543 was cancelled before the final ACL recheck fix. It is not the final authority.
+
+VERIFIED PUBLICATION SNAPSHOT:
+LOCAL HEAD: 9b606e085fc56c88ac09414208f44fe7aa5442c1
+REMOTE HEAD: 9b606e085fc56c88ac09414208f44fe7aa5442c1
+GIT TREE: f0e49c7d64624ad97b2761b3017517ca5be1980a
+REMOTE BLOB CHECK: 82 changed files matched, including executable ROLLBACK.sh mode100755.
+CI SOURCE DIFF: EMPTY under src/tests/tools/scripts/.github.
+COMMAND: git ls-remote; gh api git/commits and git/trees; git hash-object.
+EXIT CODE: 0
+REMOTE_PUBLICATION_SNAPSHOT.json records this immutable publication snapshot.
+A following receipt-only commit preserves the snapshot. The final handoff identifies that commit separately.

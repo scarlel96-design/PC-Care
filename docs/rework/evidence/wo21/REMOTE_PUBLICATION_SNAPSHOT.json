@@ -1,0 +1,595 @@
+{
+  "Status": "PASS",
+  "Command": "git ls-remote + gh api git/commits, git/trees?recursive=1, actions/runs + git hash-object",
+  "Input": {
+    "Branch": "codex/pccare-wo21-signed-install-recovery-qualification",
+    "Baseline": "1d93600ea5c6214e23051641ad10c06a667f0866",
+    "CiSource": "930ed7907daaa95cf15040d130c580248e64bf61"
+  },
+  "ExitCode": 0,
+  "Branch": "codex/pccare-wo21-signed-install-recovery-qualification",
+  "LocalHead": "9b606e085fc56c88ac09414208f44fe7aa5442c1",
+  "RemoteHead": "9b606e085fc56c88ac09414208f44fe7aa5442c1",
+  "Tree": "f0e49c7d64624ad97b2761b3017517ca5be1980a",
+  "CiSource": "930ed7907daaa95cf15040d130c580248e64bf61",
+  "CiRun": 38669715643,
+  "CodeDifference": "EMPTY",
+  "WorkingTree": "CLEAN",
+  "VerifiedFiles": 82,
+  "Files": [
+    {
+      "Path": ".gitattributes",
+      "LocalBlob": "c486bd86790ffe47bb882bcf868f5fe284733714",
+      "RemoteBlob": "c486bd86790ffe47bb882bcf868f5fe284733714",
+      "Mode": "100644",
+      "Sha256": "1ecb9aa0b6722131c6cdb9aff960ccab6a666a1ef0e9e4873cec9a41c17426d9"
+    },
+    {
+      "Path": ".github/workflows/wo21-windows-validation.yml",
+      "LocalBlob": "82092c72d52304c099e61c0947d37883e833b3e8",
+      "RemoteBlob": "82092c72d52304c099e61c0947d37883e833b3e8",
+      "Mode": "100644",
+      "Sha256": "b0e7edac19d7d8058ac1ca5671b3d1d9af9ac63a0e283a47873e14c5877e6992"
+    },
+    {
+      "Path": "docs/rework/WO21_BOOTSTRAP_E2E.md",
+      "LocalBlob": "26d9bdc758418391245ec7edefca91fa30d0795f",
+      "RemoteBlob": "26d9bdc758418391245ec7edefca91fa30d0795f",
+      "Mode": "100644",
+      "Sha256": "8d16afb508e3a116d59ce2f5d8713febd85836ae153c7b58de39164647c7ff73"
+    },
+    {
+      "Path": "docs/rework/WO21_DAYBREAK_DEFERRED.md",
+      "LocalBlob": "e5ade7fc50654804c204c64a6245a10880d5849f",
+      "RemoteBlob": "e5ade7fc50654804c204c64a6245a10880d5849f",
+      "Mode": "100644",
+      "Sha256": "acc9c2670d13b9b4470df658f201a222e668ebf09e8daff773708cb4e18a70a2"
+    },
+    {
+      "Path": "docs/rework/WO21_ENVIRONMENT_READINESS.md",
+      "LocalBlob": "8aac3e5cfcf8a96c6be2a0213e142f53ce9cf6b6",
+      "RemoteBlob": "8aac3e5cfcf8a96c6be2a0213e142f53ce9cf6b6",
+      "Mode": "100644",
+      "Sha256": "2da29856ba7ed904ee7fc066cb001534d57e16663a518a5665acac8ade460231"
+    },
+    {
+      "Path": "docs/rework/WO21_EXECUTION_REPORT.md",
+      "LocalBlob": "340702fec7ac6c6d614d575a11d81f3ba7092b27",
+      "RemoteBlob": "340702fec7ac6c6d614d575a11d81f3ba7092b27",
+      "Mode": "100644",
+      "Sha256": "15e097168696d7f94c25f211e3d1b4eb8e225d28499fa0f26ab4a3c87aa7eba1"
+    },
+    {
+      "Path": "docs/rework/WO21_GUI_VALIDATION.md",
+      "LocalBlob": "15fe5233582f3f06aa6c0de9de052d8b7e6e05f7",
+      "RemoteBlob": "15fe5233582f3f06aa6c0de9de052d8b7e6e05f7",
+      "Mode": "100644",
+      "Sha256": "565cd1757dca5e5a298c67836845bcd9de8910e2e692ffecabd9aba34fe8c492"
+    },
+    {
+      "Path": "docs/rework/WO21_INSTALLATION_TRUST_POLICY.md",
+      "LocalBlob": "60913caec223f8891ecd1ea50835436a8d183bb9",
+      "RemoteBlob": "60913caec223f8891ecd1ea50835436a8d183bb9",
+      "Mode": "100644",
+      "Sha256": "7151f3ddca9a3b691ed1d6fd69a4e56303c422d029c0e4526b0b5eb8a4bab8f1"
+    },
+    {
+      "Path": "docs/rework/WO21_PARTIAL_CONTENT_RECOVERY.md",
+      "LocalBlob": "7617280d6fbd8531e9f21f248d3175c364745394",
+      "RemoteBlob": "7617280d6fbd8531e9f21f248d3175c364745394",
+      "Mode": "100644",
+      "Sha256": "17cd9cee49dfb7286e666e37247e7c1ba8b52dd7d5e2266c5bea93971f57eeaf"
+    },
+    {
+      "Path": "docs/rework/WO21_PERFORMANCE_PROFILE.md",
+      "LocalBlob": "2bf92053627960c52ac508ea5ea968f65a4b6688",
+      "RemoteBlob": "2bf92053627960c52ac508ea5ea968f65a4b6688",
+      "Mode": "100644",
+      "Sha256": "a5a30a753541dfdf0ad91d2c6cc9652e41b0485c896a72e81d5355996daf76ea"
+    },
+    {
+      "Path": "docs/rework/WO21_PREEXECUTION_VALIDATION.md",
+      "LocalBlob": "cfb13a7473aa4b4c2f61bf98c55a76525c21e7e0",
+      "RemoteBlob": "cfb13a7473aa4b4c2f61bf98c55a76525c21e7e0",
+      "Mode": "100644",
+      "Sha256": "df32edc409a3ff72c7ab075525070c2ffca2d437dcb2d7f124f15757cb8b0e07"
+    },
+    {
+      "Path": "docs/rework/WO21_PRIVILEGED_LEGACY_RESTORE.md",
+      "LocalBlob": "c7903777bcfcf81d332205d97a1ae2ff36e417e9",
+      "RemoteBlob": "c7903777bcfcf81d332205d97a1ae2ff36e417e9",
+      "Mode": "100644",
+      "Sha256": "a1697b210f1e6cb9e7b6652b24de1266013ff190b8862523412e22e4ab648bb9"
+    },
+    {
+      "Path": "docs/rework/WO21_PRODUCT_READINESS.md",
+      "LocalBlob": "68bc3bf90fce4a50283a0f1fd06575653e92f22e",
+      "RemoteBlob": "68bc3bf90fce4a50283a0f1fd06575653e92f22e",
+      "Mode": "100644",
+      "Sha256": "8eed7a2109dff3e6926e18b018716997314e49739414908997c351b0f6a96eb3"
+    },
+    {
+      "Path": "docs/rework/WO21_TEST_SIGNING.md",
+      "LocalBlob": "58d7ab81813389e11326a64dee60838f8eb22bfc",
+      "RemoteBlob": "58d7ab81813389e11326a64dee60838f8eb22bfc",
+      "Mode": "100644",
+      "Sha256": "94f6d718bdf8ca0e72f83f0beef7f4ee3a786dc8b579afc4c71f515382d44ff5"
+    },
+    {
+      "Path": "docs/rework/WO21_VAULT_COMPATIBILITY.md",
+      "LocalBlob": "76bb4a5ebf147c9709678b7eded17b70bdbef380",
+      "RemoteBlob": "76bb4a5ebf147c9709678b7eded17b70bdbef380",
+      "Mode": "100644",
+      "Sha256": "a05eb95f119a5502b338443135a7364a846fd676e93dca3eb7524ea4d2dce887"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/BASELINE_RESULT.txt",
+      "LocalBlob": "c91fae39a73b625fd6f61f555780d05523dfac35",
+      "RemoteBlob": "c91fae39a73b625fd6f61f555780d05523dfac35",
+      "Mode": "100644",
+      "Sha256": "01432220842baffc19a0e97a3829a066c66613336ebb8363a59d0dad3a71e6c7"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/BOOTSTRAP_E2E_RESULT.json",
+      "LocalBlob": "e968ea185183b9608fcd226419270f5741639881",
+      "RemoteBlob": "e968ea185183b9608fcd226419270f5741639881",
+      "Mode": "100644",
+      "Sha256": "a4ac1fb7984175de88485bab730818d51d176ede0ccaf1e27d2739572dec03c6"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/BRIDGE_TRUST_RESULT.json",
+      "LocalBlob": "8d16007fdabdb4061dcd7d373cbf849a3984ceee",
+      "RemoteBlob": "8d16007fdabdb4061dcd7d373cbf849a3984ceee",
+      "Mode": "100644",
+      "Sha256": "3cf129156e1d25338ed85fb933721907f5d0e1c27a2cc4d73756ff0758796101"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/BUILD_RESULT.txt",
+      "LocalBlob": "23228594ce4a023b8d64f573368c46e74cec64c0",
+      "RemoteBlob": "23228594ce4a023b8d64f573368c46e74cec64c0",
+      "Mode": "100644",
+      "Sha256": "c26e5be15e65064b09a9d654ef75f9d2bab3a7aaae29450a7d48fc6173d314ca"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/CERTIFICATE_RESULT.json",
+      "LocalBlob": "46b59b5df45859ea98decf83efaad451401d145b",
+      "RemoteBlob": "46b59b5df45859ea98decf83efaad451401d145b",
+      "Mode": "100644",
+      "Sha256": "61dc11ee90279bb61dbc1a73a0508c4a926e392d653865a5a51607260f4b177c"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/CHANGED_FILES.txt",
+      "LocalBlob": "0b368ec0e4f56feb09297911bda6bb9ddbffcbea",
+      "RemoteBlob": "0b368ec0e4f56feb09297911bda6bb9ddbffcbea",
+      "Mode": "100644",
+      "Sha256": "f8b307ea777cf91f2478d0c3e9c72c6a84f8c4fcc64720e372f8e15c01bf56a4"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/CI_BUILD_COMMAND.JSON",
+      "LocalBlob": "f783c3d2241d07f9d79e9a672fa7896080fd77bf",
+      "RemoteBlob": "f783c3d2241d07f9d79e9a672fa7896080fd77bf",
+      "Mode": "100644",
+      "Sha256": "6c33f5fb125665d2978bd5d56261129b157f8f904e7aefeacef4dc41d11f4978"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/CI_BUILD_RECEIPT.JSON",
+      "LocalBlob": "ab32c334cf01862674f5a537caecac156868b460",
+      "RemoteBlob": "ab32c334cf01862674f5a537caecac156868b460",
+      "Mode": "100644",
+      "Sha256": "49efa4404ff0c7e94461678739957a1760b2da22915080b374cde8465a0086a0"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/CI_PROCESS_RESULT.json",
+      "LocalBlob": "cd80aa8da0b7d84290fc729e03079325aa95ceb0",
+      "RemoteBlob": "cd80aa8da0b7d84290fc729e03079325aa95ceb0",
+      "Mode": "100644",
+      "Sha256": "597c1c42e43c35fb2aeef66144edea54214cb3f399e2b9e98c8966431f26a87a"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/CI_RESULT.json",
+      "LocalBlob": "e2efa9a4b70dc089d9dc93b8c82918c212381f08",
+      "RemoteBlob": "e2efa9a4b70dc089d9dc93b8c82918c212381f08",
+      "Mode": "100644",
+      "Sha256": "260b59eea015d8a365e8ed635632ca55b6b07b9afd9e0dad153b7c3b3023c93f"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/CI_TEST_COMMAND.JSON",
+      "LocalBlob": "1a82a7d465228aaf24b742785f436eb23ebc8239",
+      "RemoteBlob": "1a82a7d465228aaf24b742785f436eb23ebc8239",
+      "Mode": "100644",
+      "Sha256": "ab578e1d00abd4492a2cf8d9bdfbe4b859079bad872ca58a2861af79dcef996d"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/CI_TEST_LOG.txt",
+      "LocalBlob": "ec28de2dcd525dbe79afd1518ac7432148ac8bc1",
+      "RemoteBlob": "ec28de2dcd525dbe79afd1518ac7432148ac8bc1",
+      "Mode": "100644",
+      "Sha256": "17e6b7a324ca05b83b5f45590c68214a680eed90674c8b21e341c32a1111abb2"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/DAYBREAK_DEFERRED.txt",
+      "LocalBlob": "cb105e658b1ea51a94a4beb0748dfc73f8516ad7",
+      "RemoteBlob": "cb105e658b1ea51a94a4beb0748dfc73f8516ad7",
+      "Mode": "100644",
+      "Sha256": "2c4bea861b27085bffbdd31aa5f95713a3c90b3cb6e28659dc93273982d39378"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/DIFF_FILE",
+      "LocalBlob": "a90d1b6b5e51ff4f9b5d7b14225d33bfc1e5004f",
+      "RemoteBlob": "a90d1b6b5e51ff4f9b5d7b14225d33bfc1e5004f",
+      "Mode": "100644",
+      "Sha256": "762c3984b57171e26fae596d463cdd07419594bdc52df8431f63dc2359819fbc"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/ENVIRONMENT_RESULT.json",
+      "LocalBlob": "495b15d912ac96f20a3319e865483d965b514179",
+      "RemoteBlob": "495b15d912ac96f20a3319e865483d965b514179",
+      "Mode": "100644",
+      "Sha256": "9f491662c29cdf2d21ccee33eff317005778591a5493ce459ff63b4c8db7b1ff"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/EXISTING_UPDATER_PROCESS_RESULT.json",
+      "LocalBlob": "e825c1d8a7f1e30a41dc0676ffdc49214921df4b",
+      "RemoteBlob": "e825c1d8a7f1e30a41dc0676ffdc49214921df4b",
+      "Mode": "100644",
+      "Sha256": "dd5eeda39052348b105524f6d0e93f0a86b05dc49bbd6b3ec2e0f247a15d3238"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/FULL_TEST_RESULT.txt",
+      "LocalBlob": "dd0cb5e8aba8ada3e9e77d093a1d5d7329a9c334",
+      "RemoteBlob": "dd0cb5e8aba8ada3e9e77d093a1d5d7329a9c334",
+      "Mode": "100644",
+      "Sha256": "30bb9dc186d3c6c726350adf8b42368a36f226974c1460e0086c3bc644de5e2b"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/GITHUB_RESULT.txt",
+      "LocalBlob": "f0d5e56af538944c7cfabd96183302f6c018a696",
+      "RemoteBlob": "f0d5e56af538944c7cfabd96183302f6c018a696",
+      "Mode": "100644",
+      "Sha256": "62a5774fbe92165c5d5c6d95ce8c2602ce47efada9936dbd00c642e0f88fc3c7"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/GUI_TEST_RESULT.txt",
+      "LocalBlob": "d4c6f123f98a2cd4b8c975ee4ffbcbf8e57a1661",
+      "RemoteBlob": "d4c6f123f98a2cd4b8c975ee4ffbcbf8e57a1661",
+      "Mode": "100644",
+      "Sha256": "292e1b0601705d96941d2e7c08a460a3c8f896380a96549009003c3cee25e510"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/INSTALLATION_ATTESTATION_RESULT.json",
+      "LocalBlob": "1bbf1544f7222757fcd4ece75841f30b20c1d877",
+      "RemoteBlob": "1bbf1544f7222757fcd4ece75841f30b20c1d877",
+      "Mode": "100644",
+      "Sha256": "a7621475e4d552f37f756d1692395b5af6975a4842119bddfdcce181c9b22e86"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/LEGACY_RESTORE_RESULT.json",
+      "LocalBlob": "c91b4a500d60abf57bb06218653faca64e832534",
+      "RemoteBlob": "c91b4a500d60abf57bb06218653faca64e832534",
+      "Mode": "100644",
+      "Sha256": "4eb02d5db896268e8ffc6023ae9a939993c27f27cc1d5202a2ce91c98e24d22b"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/LOCAL_BUILD_COMMAND.JSON",
+      "LocalBlob": "51741930c476f356f42f01053ace7483c5e6a29f",
+      "RemoteBlob": "51741930c476f356f42f01053ace7483c5e6a29f",
+      "Mode": "100644",
+      "Sha256": "41728225fccc21f131ad09c68ed332d726a1f4cfeb5ccedf3da8951d92e852d8"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/LOCAL_BUILD_LOG.txt",
+      "LocalBlob": "7f6518876ff6a0aaeeda344f6eed299d446c9556",
+      "RemoteBlob": "7f6518876ff6a0aaeeda344f6eed299d446c9556",
+      "Mode": "100644",
+      "Sha256": "0cc630d41ecffaea36a3c9d7cdd2c14ec72e130de247b6c5bdf35c4901e0f264"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/LOCAL_BUILD_RECEIPT.JSON",
+      "LocalBlob": "e19c6fc113a757ac01219289d997e9b7d5644a10",
+      "RemoteBlob": "e19c6fc113a757ac01219289d997e9b7d5644a10",
+      "Mode": "100644",
+      "Sha256": "8eaeab4dcdfa98875e7b01ac2c1e54396514420a5e7b494ce705aedd763e20d5"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/LOCAL_PROCESS_RESULT.json",
+      "LocalBlob": "d87f1b76eca759bb118c121f82fe08fd9e2a648b",
+      "RemoteBlob": "d87f1b76eca759bb118c121f82fe08fd9e2a648b",
+      "Mode": "100644",
+      "Sha256": "6d5364a79e4894888a3de9f828c758d15f4ae819322eb8f74952a0cd1d7db84f"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/LOCAL_RELEASE_LOG.txt",
+      "LocalBlob": "4abb2071984d17163a103ec8531f9ea37cf1924b",
+      "RemoteBlob": "4abb2071984d17163a103ec8531f9ea37cf1924b",
+      "Mode": "100644",
+      "Sha256": "96e7edf5041b2c87deb434deed13d0ed5c8bbeea47b4a68f63dad3a12c3de7e0"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/LOCAL_RESTORE_LOG.txt",
+      "LocalBlob": "dbdba12712e980067935c4010dc5f3730e9610af",
+      "RemoteBlob": "dbdba12712e980067935c4010dc5f3730e9610af",
+      "Mode": "100644",
+      "Sha256": "40cd155feec2dc9d43c3c4e6326b61b878dd2e893fffa3ab5aa60962d7029cf8"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/LOCAL_TEST_COMMAND.JSON",
+      "LocalBlob": "ae4b56dc5f0d56a2308ec3e0281257bf38b922c3",
+      "RemoteBlob": "ae4b56dc5f0d56a2308ec3e0281257bf38b922c3",
+      "Mode": "100644",
+      "Sha256": "b36dfea344648b8d7d75e68741e4ed8dee5fc775727c9cc2632ffd9721380b3f"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/LOCAL_TEST_LOG.txt",
+      "LocalBlob": "e1fe0710e6b702fa75f600f95c75421a09ce8952",
+      "RemoteBlob": "e1fe0710e6b702fa75f600f95c75421a09ce8952",
+      "Mode": "100644",
+      "Sha256": "5c3a552de8032a2dc00be70e16a677735b6a184a74a2701dc6b5648969c39bb2"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/MODIFIED_FILE",
+      "LocalBlob": "05db4623eff05f47b6cd4137dbf889aa96aec240",
+      "RemoteBlob": "05db4623eff05f47b6cd4137dbf889aa96aec240",
+      "Mode": "100644",
+      "Sha256": "8995c38b9a7c94cc1d5302075dea2d530401b45d2a49e0322af5c318398cc0c3"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/ORIGINAL_FILE",
+      "LocalBlob": "6b7b0b328bdcb93c4b655dc68e72af1e16412b38",
+      "RemoteBlob": "6b7b0b328bdcb93c4b655dc68e72af1e16412b38",
+      "Mode": "100644",
+      "Sha256": "d38efc85a7c93975e916a3350fa64c85da191739492d73b2d74b57a864f73881"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/PARTIAL_CONTENT_RESULT.json",
+      "LocalBlob": "687a8236f6f1b12ac160ca78f3708d1496a5d102",
+      "RemoteBlob": "687a8236f6f1b12ac160ca78f3708d1496a5d102",
+      "Mode": "100644",
+      "Sha256": "7a43839a53e17f5f134a2144f4b323b27bda22eef2955c7d0f8148c793786c2f"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/PERFORMANCE_RESULT.json",
+      "LocalBlob": "28e38eab36162feb0360b8b711a299275c8b4878",
+      "RemoteBlob": "28e38eab36162feb0360b8b711a299275c8b4878",
+      "Mode": "100644",
+      "Sha256": "313c0fefe3f52773bb74bf119b47b8d18ab73702cdc4f82a37b26b62f2eb5a5f"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/PREEXECUTION_RESULT.json",
+      "LocalBlob": "eef9d2c2c10ecd8ad488fdc3554df1b56101b9da",
+      "RemoteBlob": "eef9d2c2c10ecd8ad488fdc3554df1b56101b9da",
+      "Mode": "100644",
+      "Sha256": "05cb6debd47435a588b95e7060be730a673b5301e2a98fe69bd4d0011516bce6"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/ROLLBACK.sh",
+      "LocalBlob": "4218d98055edd8f0f80361720894b98cf535363d",
+      "RemoteBlob": "4218d98055edd8f0f80361720894b98cf535363d",
+      "Mode": "100755",
+      "Sha256": "28914a04a18aa665ddac5c8edf46d568bf363766cfb31d1cce0f748a8ad156d4"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/SECURITYLAB_LOG.txt",
+      "LocalBlob": "d150e10bc3e199eafdcd1d5f09584f453e0c78a8",
+      "RemoteBlob": "d150e10bc3e199eafdcd1d5f09584f453e0c78a8",
+      "Mode": "100644",
+      "Sha256": "01917b78c838e788fc48827df8cea8aeeea7c193bc22c3b2b5a8931935fa0232"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/SECURITYLAB_RESULT.txt",
+      "LocalBlob": "9878b2d4bf1c8c5744f86caa90f39af34785d6c0",
+      "RemoteBlob": "9878b2d4bf1c8c5744f86caa90f39af34785d6c0",
+      "Mode": "100644",
+      "Sha256": "29c98e566498ab704851cb80b91859f508c4121962aa86929ab873075b1b8733"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/SHA256SUMS.json",
+      "LocalBlob": "6c7b2706a2842171aadc815ce1dd7be7fa0aa8a9",
+      "RemoteBlob": "6c7b2706a2842171aadc815ce1dd7be7fa0aa8a9",
+      "Mode": "100644",
+      "Sha256": "d87016752586684c5e8003ca03de42addbabf59b7dc1084463671f884bf4eb65"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/SKIP_REASONS.json",
+      "LocalBlob": "dbbf2b873e3d077a58428bd9b033516387710a19",
+      "RemoteBlob": "dbbf2b873e3d077a58428bd9b033516387710a19",
+      "Mode": "100644",
+      "Sha256": "6c45b22b9f139ac1f95ea0de67fba16953eaf0da61f813a604724b398bc19fd3"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/SOURCE_ROLLBACK_RESULT.json",
+      "LocalBlob": "344c15c500ad400d7887b8c281c204b7faa8a0b6",
+      "RemoteBlob": "344c15c500ad400d7887b8c281c204b7faa8a0b6",
+      "Mode": "100644",
+      "Sha256": "73d483ed14ed9a21e7af309abd5704dac1c94299154b2be9d51376cb6855b807"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/TEST_RESULTS.json",
+      "LocalBlob": "2a3cb57f2cc43f4c6d9d6ba2c74b3ab6efe27a13",
+      "RemoteBlob": "2a3cb57f2cc43f4c6d9d6ba2c74b3ab6efe27a13",
+      "Mode": "100644",
+      "Sha256": "9167ca3104836cdae656b30bdceb24ef7d87dc1b43dae8c4d60684ce33347693"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/UAC_RESULT.json",
+      "LocalBlob": "f835e21e655f885bdbc394050b89993fb978c2d6",
+      "RemoteBlob": "f835e21e655f885bdbc394050b89993fb978c2d6",
+      "Mode": "100644",
+      "Sha256": "0e309558d75dff3821439b135e2705d80373fd48c463bfb1926c15fa3188a4dc"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/VAULT_COMPATIBILITY_RESULT.json",
+      "LocalBlob": "efd22a6daff39f83beaacdf3528027216201e5ff",
+      "RemoteBlob": "efd22a6daff39f83beaacdf3528027216201e5ff",
+      "Mode": "100644",
+      "Sha256": "fe9c6982529becc0717727948b9c2dbeabd24ff58d19af61bf4f6e8e0320658d"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/VERIFICATION.txt",
+      "LocalBlob": "552a45f0e19ed7835964b260fc7252ae592d19d5",
+      "RemoteBlob": "552a45f0e19ed7835964b260fc7252ae592d19d5",
+      "Mode": "100644",
+      "Sha256": "adb7320ee29061a5bd6bc1df56ccb9f41448817488f882f7044cc923edf0c014"
+    },
+    {
+      "Path": "docs/rework/evidence/wo21/rollback_source.py",
+      "LocalBlob": "55f339971621aaab237bdae48e0e7d6ba3ceb964",
+      "RemoteBlob": "55f339971621aaab237bdae48e0e7d6ba3ceb964",
+      "Mode": "100644",
+      "Sha256": "7c7ec4850510b07679266032691e3a2605f69bbe11a80172a6b6ee681adb0e50"
+    },
+    {
+      "Path": "scripts/wo20-source-contract.ps1",
+      "LocalBlob": "0133ec6527bd0fb782d6f9fc7852c06f3f6d464b",
+      "RemoteBlob": "0133ec6527bd0fb782d6f9fc7852c06f3f6d464b",
+      "Mode": "100644",
+      "Sha256": "5240211b0c1a65667986abcfe803e9318c9fbf589c71559bc3d5aed55d1c61cd"
+    },
+    {
+      "Path": "scripts/wo21-environment.ps1",
+      "LocalBlob": "a8f33c925f90c456b168387525bc874f8e6d7592",
+      "RemoteBlob": "a8f33c925f90c456b168387525bc874f8e6d7592",
+      "Mode": "100644",
+      "Sha256": "01bc52d13e4635f74e955b4a70bbbd3132ab33b26820fbd80321a475320fd9ca"
+    },
+    {
+      "Path": "scripts/wo21-prepare-vm.ps1",
+      "LocalBlob": "a856f79b912fd983a33f70ede0e5229643e6ce1a",
+      "RemoteBlob": "a856f79b912fd983a33f70ede0e5229643e6ce1a",
+      "Mode": "100644",
+      "Sha256": "1945cafb724124fc5d4803f53faa6cc553b4a59b383daf6171d3fc11996e908e"
+    },
+    {
+      "Path": "scripts/wo21-process-validation.ps1",
+      "LocalBlob": "1ae3665592e55b9fa7d0fde3040486433dc43cf8",
+      "RemoteBlob": "1ae3665592e55b9fa7d0fde3040486433dc43cf8",
+      "Mode": "100644",
+      "Sha256": "015885ef3bec69d0fabba59e78b2e16e487c7c2bc24b4b4bdb91cb95ce7f2417"
+    },
+    {
+      "Path": "scripts/wo21-qualification-selftest.ps1",
+      "LocalBlob": "2d4157d22abd5ab6e53885276a95417ddbbdbee9",
+      "RemoteBlob": "2d4157d22abd5ab6e53885276a95417ddbbdbee9",
+      "Mode": "100644",
+      "Sha256": "899d5ba5d35449847f6fcff276b9795d2a2f21d0ffe0f5eb7d2cee428d467a64"
+    },
+    {
+      "Path": "scripts/wo21-qualification.ps1",
+      "LocalBlob": "12ae93479c1ddf0ef5ff841e2e888f6bbc882f4e",
+      "RemoteBlob": "12ae93479c1ddf0ef5ff841e2e888f6bbc882f4e",
+      "Mode": "100644",
+      "Sha256": "2f4569dddf74f90ae9c81d306c23932b5bfb69c0d7788f765d65cd09b8a97a0e"
+    },
+    {
+      "Path": "scripts/wo21-test-signing.ps1",
+      "LocalBlob": "7f765773a7f371779e7ccd52f494d50f028c7e0b",
+      "RemoteBlob": "7f765773a7f371779e7ccd52f494d50f028c7e0b",
+      "Mode": "100644",
+      "Sha256": "39a9fbd7b9953da817048c638ea51c89d7e35fe509951c1610eef26e4bbdb377"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.App/Services/Update/UpdateRecoveryCoordinator.cs",
+      "LocalBlob": "9e74ef0aafd8668c1f979c4157f22039838e29cc",
+      "RemoteBlob": "9e74ef0aafd8668c1f979c4157f22039838e29cc",
+      "Mode": "100644",
+      "Sha256": "6e305a7df8b57ffa6649762614c8623373a7578420483a25c37abf9a4af590a6"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.App/UpdateRecoveryWindow.cs",
+      "LocalBlob": "3f4bd2435260f8871ab31b949b773a26b4dc2523",
+      "RemoteBlob": "3f4bd2435260f8871ab31b949b773a26b4dc2523",
+      "Mode": "100644",
+      "Sha256": "5187534a7438ab1f9b6b38d2c372383863f1dee33d38bf04774c6ce2d7721024"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/InstallationAttestation.cs",
+      "LocalBlob": "f53c3bdc00061837769330c55db29bc40a8e1215",
+      "RemoteBlob": "f53c3bdc00061837769330c55db29bc40a8e1215",
+      "Mode": "100644",
+      "Sha256": "8995c38b9a7c94cc1d5302075dea2d530401b45d2a49e0322af5c318398cc0c3"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/InstallationTrustPolicy.cs",
+      "LocalBlob": "a771e8db922fd9fb7e58212ff5ecfc474363d718",
+      "RemoteBlob": "a771e8db922fd9fb7e58212ff5ecfc474363d718",
+      "Mode": "100644",
+      "Sha256": "b553bffebb232ea9ccc3a84b8ce248aa0f8e2ad979aa9834adb4846598f825c7"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/LegacyContentClassification.cs",
+      "LocalBlob": "cdb9de996e7301fcecc213a5fa48953ed78895f8",
+      "RemoteBlob": "cdb9de996e7301fcecc213a5fa48953ed78895f8",
+      "Mode": "100644",
+      "Sha256": "ff33d7fc6bfa0cd075b4d88f4b8e5a0d8a1d458059a7163b7048bd3884cf0268"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/LegacyRecoveryPlan.cs",
+      "LocalBlob": "59a178a4486323547588c81fca41ae5533adbe19",
+      "RemoteBlob": "59a178a4486323547588c81fca41ae5533adbe19",
+      "Mode": "100644",
+      "Sha256": "c4b8a0ebbf7c5b293843c7f5274c65fdc63c64a27e1a78b65abaefccf0697c51"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/LegacyRestoreApproval.cs",
+      "LocalBlob": "c0905b042947a23ed899eaaface5a53375ba721a",
+      "RemoteBlob": "c0905b042947a23ed899eaaface5a53375ba721a",
+      "Mode": "100644",
+      "Sha256": "f2d1c29b3d9dfccbd8259c04c861775b0dd7ea70cbf6dbf2be41c82b795373a2"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/UpdatePerformanceProfile.cs",
+      "LocalBlob": "4ee75f1d7c038c1a99e806597275ce25c86debd2",
+      "RemoteBlob": "4ee75f1d7c038c1a99e806597275ce25c86debd2",
+      "Mode": "100644",
+      "Sha256": "79cd341c42329c44392636d89f91cca8d8fe46c2751809823462cc89f74ee1ff"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs",
+      "LocalBlob": "1610ba03f4b7891b5d2e0e27adbe015497d75a68",
+      "RemoteBlob": "1610ba03f4b7891b5d2e0e27adbe015497d75a68",
+      "Mode": "100644",
+      "Sha256": "505bd5c5710af5c310fc5ac8ee39081cb628674c2b9c2b6b8cd70da6cf57d1e0"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/WindowsFileBoundary.cs",
+      "LocalBlob": "9e1da4f0829fc2d242076d3dfb65c69c5de0d3bc",
+      "RemoteBlob": "9e1da4f0829fc2d242076d3dfb65c69c5de0d3bc",
+      "Mode": "100644",
+      "Sha256": "f4c31b4ad1c3a801b17832b3c9fbebec2f8106cae311c46f5bbd63259101391b"
+    },
+    {
+      "Path": "tests/SmartPerformanceDoctor.Tests/WO21QualificationTests.cs",
+      "LocalBlob": "b89eccbefa76cbfe824701108a853112dd0e5dfa",
+      "RemoteBlob": "b89eccbefa76cbfe824701108a853112dd0e5dfa",
+      "Mode": "100644",
+      "Sha256": "43c2dba32017db8f2a0df2c2b9d5b09c9b2da0ca13f4c34b9d2397a1599273b6"
+    },
+    {
+      "Path": "tools/SmartPerformanceDoctor.InstallationLauncher/Program.cs",
+      "LocalBlob": "195730ab118d67a0b81406e2145bce73b68f06b1",
+      "RemoteBlob": "195730ab118d67a0b81406e2145bce73b68f06b1",
+      "Mode": "100644",
+      "Sha256": "b961647bc15d302b85303bc63a49d9bb1e94c9a2138d58effa9d4ab2c160aaf6"
+    },
+    {
+      "Path": "tools/SmartPerformanceDoctor.InstallationLauncher/SmartPerformanceDoctor.InstallationLauncher.csproj",
+      "LocalBlob": "58da4d00f37536def28f92bf6e2b119543dca904",
+      "RemoteBlob": "58da4d00f37536def28f92bf6e2b119543dca904",
+      "Mode": "100644",
+      "Sha256": "ac97b50c71092bc5f81b184f4c39967f21b0caf56486f4a4fd2aeb0519d73671"
+    },
+    {
+      "Path": "tools/SmartPerformanceDoctor.UpdateBridge/Program.cs",
+      "LocalBlob": "bfb2b8e9ef728cdbfea8a783a05abb8b75efbb43",
+      "RemoteBlob": "bfb2b8e9ef728cdbfea8a783a05abb8b75efbb43",
+      "Mode": "100644",
+      "Sha256": "46d835ae04a3d7b01dea278560e1376d985b655f43c1f86146b39e7d07d4f238"
+    },
+    {
+      "Path": "tools/SmartPerformanceDoctor.WO20Probe/Program.cs",
+      "LocalBlob": "f339ab3ee4a2a89c77dd4e86414335a4a7bdaaf5",
+      "RemoteBlob": "f339ab3ee4a2a89c77dd4e86414335a4a7bdaaf5",
+      "Mode": "100644",
+      "Sha256": "88c82774d493c6e885caa2cc4a97435a7cb1549cb8b94305c2a57fd28612e765"
+    }
+  ]
+}
