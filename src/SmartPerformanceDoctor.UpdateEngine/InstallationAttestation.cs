@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using System.Security.AccessControl;
 using System.Text.Json;
 
 namespace SmartPerformanceDoctor.UpdateEngine;
@@ -32,6 +33,7 @@ public sealed partial class UpdateTransaction
         {
             EnsureRoot(_workRoot);if(_strictAcl)VerifyProtectedAcl(_workRoot);
             using var install=WindowsFileBoundary.PinDirectory(installRoot);
+            if(_strictAcl)ValidateProtectedSecurity(new DirectoryInfo(installRoot).GetAccessControl(),false);
             foreach(var name in new[]{"installation-current.json","installation-previous.json"})
             {
                 if(!File.Exists(Path.Combine(_workRoot,name)))continue;
@@ -56,6 +58,7 @@ public sealed partial class UpdateTransaction
                     var entry=journal.Files.Single(f=>f.Path==expected.Path);
                     if(entry.NewSha256!=expected.Sha256)throw new InvalidDataException("DECLARATION-HASH");
                     using var file=WindowsFileBoundary.OpenRead(installRoot,Relative(expected.Path));
+                    if(_strictAcl)ValidateProtectedSecurity(file.ReadSecurity(),false);
                     try { file.Verify(expected.Length,expected.Sha256,entry.InstalledIdentity); }
                     catch (Exception ex) when (ex is IOException or InvalidDataException)
                     { return new(false,true,"INSTALLATION-CONTENT-MISMATCH"); }

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Security.AccessControl;
 using System.Text.Json;
 using SmartPerformanceDoctor.UpdateEngine;
 
@@ -10,6 +11,7 @@ try
     var install=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),"PC-Care");
     if (!string.Equals(Path.GetFullPath(AppContext.BaseDirectory).TrimEnd('\\'),root,StringComparison.OrdinalIgnoreCase))
         throw new InvalidDataException("LAUNCHER-LOCATION");
+    UpdateTransaction.ValidateProtectedSecurity(new DirectoryInfo(root).GetAccessControl(), false);
     var leases=new List<WindowsFileBoundary.FileLease>();
     try
     {
@@ -18,6 +20,7 @@ try
             var signature=AuthenticodeBoundary.Verify(Path.Combine(root,name));
             if(!AuthenticodeBoundary.IsBuildPublisher(signature))throw new InvalidDataException("LAUNCHER-PUBLISHER");
             var file=WindowsFileBoundary.OpenRead(root,name);leases.Add(file);
+            UpdateTransaction.ValidateProtectedSecurity(file.ReadSecurity(), false);
             file.Verify(file.Stream.Length,signature.Hash,signature.Identity);
         }
         UpdateBootstrap.ValidateInstallRoot(install);

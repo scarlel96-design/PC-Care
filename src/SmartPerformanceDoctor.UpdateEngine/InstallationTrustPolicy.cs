@@ -36,6 +36,7 @@ public sealed partial class UpdateTransaction
             try
             {
                 using var install = WindowsFileBoundary.PinDirectory(installRoot);
+                if (_strictAcl) ValidateProtectedSecurity(new DirectoryInfo(installRoot).GetAccessControl(), false);
                 using var record = WindowsFileBoundary.OpenRead(_workRoot, "installation-enrollment.json");
                 VerifyProtectedFile(record, _workRoot);
                 if (record.Stream.Length > 2 * 1024 * 1024) throw new InvalidDataException("ENROLLMENT-LIMIT");
@@ -48,6 +49,7 @@ public sealed partial class UpdateTransaction
                     var bound = saved.Files.Single(f => f.Path == expected.Path);
                     if (bound.Hash != expected.Sha256 || bound.Length != expected.Length) throw new InvalidDataException("ENROLLMENT-SCOPE");
                     using var target = WindowsFileBoundary.OpenRead(installRoot, Relative(expected.Path));
+                    if (_strictAcl) ValidateProtectedSecurity(target.ReadSecurity(), false);
                     target.Verify(expected.Length, expected.Sha256, bound.Identity);
                 }
                 install.Validate(); record.Validate();

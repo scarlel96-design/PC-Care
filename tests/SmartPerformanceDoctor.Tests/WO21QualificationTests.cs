@@ -1,4 +1,6 @@
 using System.Security.Cryptography;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Text.Json;
 using SmartPerformanceDoctor.UpdateEngine;
 using Xunit;
@@ -7,6 +9,19 @@ namespace SmartPerformanceDoctor.Tests;
 
 public sealed class WO21QualificationTests
 {
+    [Theory][InlineData(false)][InlineData(true)]
+    public void InstallationAclRejectsNonAdministratorMutation(bool writable)
+    {
+        var acl=new FileSecurity();
+        var admins=new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid,null);
+        var system=new SecurityIdentifier(WellKnownSidType.LocalSystemSid,null);
+        var users=new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid,null);
+        acl.SetOwner(admins);acl.SetAccessRuleProtection(true,false);
+        foreach(var sid in new[]{admins,system})acl.AddAccessRule(new FileSystemAccessRule(sid,FileSystemRights.FullControl,AccessControlType.Allow));
+        acl.AddAccessRule(new FileSystemAccessRule(users,writable?FileSystemRights.Modify:FileSystemRights.ReadAndExecute,AccessControlType.Allow));
+        if(writable)Assert.Throws<UnauthorizedAccessException>(()=>UpdateTransaction.ValidateProtectedSecurity(acl,false));
+        else UpdateTransaction.ValidateProtectedSecurity(acl,false);
+    }
     private static (SignedUpdateTests.Fixture Fixture, LegacyRecoveryPlan Plan, string Package) Legacy()
     {
         var f = new SignedUpdateTests.Fixture();
