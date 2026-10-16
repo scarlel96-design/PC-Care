@@ -1,0 +1,41 @@
+{
+  "BaselineSHA": "db8defce0764dd2421ceb78b9e3ce6b851fa9e6b",
+  "OriginalSha256": "b8b683bf5311b674fec05a9bb16810e8ee365292275f421d83831d9c8539d9da",
+  "ModifiedSha256": "5bb562bea1d785371552e62f461a579cc32e7f7974d071cc34567e74bc4a0fef",
+  "Results": [
+    {
+      "Stage": "BASELINE",
+      "Command": "dotnet run --project <Baseline_COPY>/Probe.csproj -c Release -p:Platform=x64 --verbosity quiet",
+      "Input": "100 retained-handle validations; 8MiB allocation budget; synthetic bytes",
+      "Output": "{\"OverBudget\":true,\"IdentityVerified\":true,\"Hash\":\"B3CC0475BB78A5026098858E9889ACF666D31062D513D303314ECA31D36E72F2\"}",
+      "ExitCode": 0,
+      "SourceSha256": "b8b683bf5311b674fec05a9bb16810e8ee365292275f421d83831d9c8539d9da"
+    },
+    {
+      "Stage": "MODIFIED",
+      "Command": "dotnet run --project <Modified_COPY>/Probe.csproj -c Release -p:Platform=x64 --verbosity quiet",
+      "Input": "100 retained-handle validations; 8MiB allocation budget; synthetic bytes",
+      "Output": "{\"OverBudget\":false,\"IdentityVerified\":true,\"Hash\":\"B3CC0475BB78A5026098858E9889ACF666D31062D513D303314ECA31D36E72F2\"}",
+      "ExitCode": 0,
+      "SourceSha256": "5bb562bea1d785371552e62f461a579cc32e7f7974d071cc34567e74bc4a0fef"
+    },
+    {
+      "Stage": "RollbackScript",
+      "Command": "RESTORE_COPY=<INDEPENDENT_COPY> bash docs/rework/evidence/wo23/ROLLBACK.sh",
+      "Input": "Independent modified source copy",
+      "Output": "SOURCE_COPY_RESTORED\n",
+      "Error": "",
+      "ExitCode": 0
+    },
+    {
+      "Stage": "ROLLBACK",
+      "Command": "dotnet run --project <Rollback_COPY>/Probe.csproj -c Release -p:Platform=x64 --verbosity quiet",
+      "Input": "100 retained-handle validations; 8MiB allocation budget; synthetic bytes",
+      "Output": "{\"OverBudget\":true,\"IdentityVerified\":true,\"Hash\":\"B3CC0475BB78A5026098858E9889ACF666D31062D513D303314ECA31D36E72F2\"}",
+      "ExitCode": 0,
+      "SourceSha256": "b8b683bf5311b674fec05a9bb16810e8ee365292275f421d83831d9c8539d9da"
+    }
+  ],
+  "RestoredStatus": "Original allocation behavior restored on independent source copy; repository and MODIFIED_FILE remain modified.",
+  "DataRecovery": "NOT performed by this source rollback"
+}

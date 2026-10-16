@@ -26,6 +26,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
     private string _selectedPackagePath = "";
     private double _progress;
     private bool _isBusy;
+    private readonly UpdateProgressGate _progressGate = new();
     private bool _canApply;
     private CancellationTokenSource? _preparationCancellation;
     private bool _canCancelPreparation;
@@ -53,7 +54,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
     public string VerifyLine { get => _verifyLine; private set => Set(ref _verifyLine, value); }
     public string SelectedPackagePath { get => _selectedPackagePath; private set => Set(ref _selectedPackagePath, value); }
     public double Progress { get => _progress; private set => Set(ref _progress, value); }
-    public bool IsBusy { get => _isBusy; private set { Set(ref _isBusy,value);OnPropertyChanged(nameof(IsProgressIndeterminate)); } }
+    public bool IsBusy { get => _isBusy; private set { if(!value)_progressGate.Invalidate();Set(ref _isBusy,value);OnPropertyChanged(nameof(IsProgressIndeterminate)); } }
     public bool CanApply { get => _canApply; private set => Set(ref _canApply, value); }
     public bool CanDownloadGitHub { get => _canDownloadGitHub; private set => Set(ref _canDownloadGitHub, value); }
     public RemoteUpdateCheckResult? AvailableGitHubUpdate => _lastGitHubCheck;
@@ -436,11 +437,19 @@ public sealed class UpdateStatusViewModel : ObservableObject
         }
     }
 
-    private IProgress<UpdateProgressReport> CreateProgressHandler() =>
-        new Progress<UpdateProgressReport>(report => RunOnUi(() => ApplyProgress(report), blocking: false));
+    private IProgress<UpdateProgressReport> CreateProgressHandler()
+    {
+        var epoch=_progressGate.Capture();
+        return new Progress<UpdateProgressReport>(report => RunOnUi(() =>
+        {if(_progressGate.IsCurrent(epoch))ApplyProgress(report);}, blocking: false));
+    }
 
-    private IProgress<RemoteUpdateDownloadProgress> CreateDownloadProgressHandler() =>
-        new Progress<RemoteUpdateDownloadProgress>(report => RunOnUi(() => ApplyDownloadProgress(report), blocking: false));
+    private IProgress<RemoteUpdateDownloadProgress> CreateDownloadProgressHandler()
+    {
+        var epoch=_progressGate.Capture();
+        return new Progress<RemoteUpdateDownloadProgress>(report => RunOnUi(() =>
+        {if(_progressGate.IsCurrent(epoch))ApplyDownloadProgress(report);}, blocking: false));
+    }
 
     private void ApplyDownloadProgress(RemoteUpdateDownloadProgress report)
     {
@@ -469,6 +478,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
 
     private void BeginWork(string phase, string detail)
     {
+        _progressGate.Invalidate();
         IsBusy = true;
         CanApply = false;
         Progress = 0;

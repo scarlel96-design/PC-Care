@@ -9,21 +9,33 @@ public sealed record InstallationPointer(string TransactionId,string Transaction
 
 public sealed partial class UpdateTransaction
 {
-    private void RecordInstallation(string txDir,UpdateJournal journal,SignedManifest manifest,Stream package)
+    private void RecordInstallation(string txDir,UpdateJournal journal,SignedManifest manifest,Stream package,Action<UpdateFaultPoint>? fault)
     {
         package.Position=0;using var zip=new ZipArchive(package,ZipArchiveMode.Read,true);
         using var signature=zip.GetEntry(SignedPackage.SignatureName)!.Open();
         var envelope=JsonSerializer.Deserialize<SignatureEnvelope>(signature)!;
         using(var record=WindowsFileBoundary.OpenWrite(txDir,"committed-attestation.json",true))
-        {VerifyProtectedFile(record,txDir);record.Stream.Write(JsonSerializer.SerializeToUtf8Bytes(new CommittedInstallation(journal.TransactionId,journal.InstallIdentity,manifest,envelope.Signature)));record.Stream.Flush(true);}
+        {
+            VerifyProtectedFile(record,txDir);fault?.Invoke(UpdateFaultPoint.AttestationCreated);
+            var bytes=JsonSerializer.SerializeToUtf8Bytes(new CommittedInstallation(journal.TransactionId,journal.InstallIdentity,manifest,envelope.Signature));
+            record.Stream.Write(bytes.AsSpan(0,bytes.Length/2));fault?.Invoke(UpdateFaultPoint.AttestationPartialWrite);
+            record.Stream.Write(bytes.AsSpan(bytes.Length/2));record.Stream.Flush(true);
+            fault?.Invoke(UpdateFaultPoint.AttestationFlushed);
+        }
         using var saved=WindowsFileBoundary.OpenRead(txDir,"committed-attestation.json");
         using var work=WindowsFileBoundary.PinDirectory(_workRoot);
         var name="installation-"+Guid.NewGuid().ToString("N")+".new";
         using(var pointer=WindowsFileBoundary.OpenWrite(_workRoot,name,true))
-        {VerifyProtectedFile(pointer,_workRoot);pointer.Stream.Write(JsonSerializer.SerializeToUtf8Bytes(new InstallationPointer(journal.TransactionId,journal.TransactionIdentity,journal.InstallIdentity,saved.Hash())));pointer.Stream.Flush(true);}
+        {
+            VerifyProtectedFile(pointer,_workRoot);fault?.Invoke(UpdateFaultPoint.InstallationPointerCreated);
+            pointer.Stream.Write(JsonSerializer.SerializeToUtf8Bytes(new InstallationPointer(journal.TransactionId,journal.TransactionIdentity,journal.InstallIdentity,saved.Hash())));
+            pointer.Stream.Flush(true);fault?.Invoke(UpdateFaultPoint.InstallationPointerFlushed);
+        }
         work.Validate();var target=Path.Combine(_workRoot,"installation-current.json");
+        fault?.Invoke(UpdateFaultPoint.BeforeInstallationPointerReplace);
         if(File.Exists(target))File.Replace(Path.Combine(_workRoot,name),target,Path.Combine(_workRoot,"installation-previous.json"));
         else File.Move(Path.Combine(_workRoot,name),target);
+        fault?.Invoke(UpdateFaultPoint.AfterInstallationPointerReplace);
     }
     // A later authenticated declaration supersedes historical restored bytes only for its declared paths.
     private HashSet<string> VerifiedCurrentDeclarationPaths(string installRoot)

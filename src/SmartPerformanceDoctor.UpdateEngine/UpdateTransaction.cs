@@ -68,7 +68,10 @@ public enum UpdateFaultPoint
     DuringRollbackCopy, BeforeRestoredJournal, BeforeFailureJournal,
     AfterNewFileIntent, AfterNewFileCreated, AfterNewFileIdentity, BeforeNewFileRename, AfterNewFileRename,
     DuringNewFileContent, BeforeNewFileVerification, AfterNewFileVerification,
-    JournalTempCreated, JournalPartialWrite, JournalFlushed, JournalBeforeReplace, JournalAfterReplace
+    JournalTempCreated, JournalPartialWrite, JournalFlushed, JournalBeforeReplace, JournalAfterReplace,
+    AfterFinalHashVerification, AttestationCreated, AttestationPartialWrite, AttestationFlushed,
+    InstallationPointerCreated, InstallationPointerFlushed, BeforeInstallationPointerReplace,
+    AfterInstallationPointerReplace, AfterCommittedJournal, BeforeSuccessReturn
 }
 
 public sealed record UpdateRecoveryStatus(UpdateRecoveryState State, string Code, string TransactionId);
@@ -409,10 +412,17 @@ public sealed partial class UpdateTransaction
             }
             if (postApplyVersionCheck is not null && !postApplyVersionCheck(manifest.ToVersion))
                 throw new InvalidDataException("installed version postcondition");
+            faultInjector?.Invoke(UpdateFaultPoint.AfterFinalHashVerification);
+            RecordInstallation(txDir, journal, manifest, packageLease.Stream, faultInjector);
             faultInjector?.Invoke(UpdateFaultPoint.BeforeCommittedJournal);
             journal.Stage = UpdateStage.Committed;
             WriteJournal(txDir, journal);
-            RecordInstallation(txDir, journal, manifest, packageLease.Stream);
+            faultInjector?.Invoke(UpdateFaultPoint.AfterCommittedJournal);
+            foreach (var file in retained) file.Dispose();
+            retained.Clear();
+            var installation = InspectInstallation(installRoot);
+            if (!installation.Verified) throw new InvalidDataException(installation.Code);
+            faultInjector?.Invoke(UpdateFaultPoint.BeforeSuccessReturn);
             // Keep the package handle pinned through commit. Cleanup occurs after it closes.
             return new(UpdateStage.Committed, "COMMITTED", id, count)
             {AnyMutationStarted=mutationStarted,WasCancellationRequested=cancellationToken.IsCancellationRequested,

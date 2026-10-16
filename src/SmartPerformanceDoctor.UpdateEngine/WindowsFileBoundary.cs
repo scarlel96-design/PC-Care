@@ -266,14 +266,22 @@ public static class WindowsFileBoundary
 
     private static string Check(SafeFileHandle handle, string expected, bool directory)
     {
+#if !PCCARE_VAULT_BOUNDARY
+        using var measurement = UpdatePerformanceProfile.Active?.Measure("NativeIdentityCheck");
+#endif
         if (!GetFileInformationByHandle(handle, out var basic)) throw Error("FILE-INFORMATION");
         if ((basic.Attributes & 0x400) != 0 || ((basic.Attributes & 0x10) != 0) != directory ||
             (!directory && basic.Links != 1)) throw new IOException("BOUNDARY-LINK-OR-TYPE");
         if (!GetFileInformationByHandleEx(handle, 18, out var id, (uint)Marshal.SizeOf<FileIdInfo>()))
             throw Error("FILE-ID-UNSUPPORTED");
-        var buffer = new StringBuilder(32768);
+        var buffer = new StringBuilder(512);
         var size = GetFinalPathNameByHandleW(handle, buffer, (uint)buffer.Capacity, 0);
-        if (size == 0 || size >= buffer.Capacity) throw Error("FINAL-PATH");
+        if (size >= buffer.Capacity && size <= 32768)
+        {
+            buffer = new StringBuilder(checked((int)size + 1));
+            size = GetFinalPathNameByHandleW(handle, buffer, (uint)buffer.Capacity, 0);
+        }
+        if (size == 0 || size >= buffer.Capacity || size > 32768) throw Error("FINAL-PATH");
         var actual = buffer.ToString();
         if (actual.StartsWith("\\\\?\\", StringComparison.Ordinal)) actual = actual[4..];
         if (!string.Equals(actual.TrimEnd('\\'), Path.GetFullPath(expected).TrimEnd('\\'), StringComparison.OrdinalIgnoreCase))

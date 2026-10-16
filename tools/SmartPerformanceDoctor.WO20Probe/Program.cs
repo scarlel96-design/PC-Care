@@ -114,6 +114,7 @@ try
  if(args[0]=="legacy-review")
  {var plan=JsonSerializer.Deserialize<LegacyRecoveryPlan>(File.ReadAllText(Path.Combine(root,"plan.json")))!;
   Print(tx.ReviewLegacyContent(install,plan.TransactionId,Path.Combine(root,"original.spdup"),"51.0.3",plan));return 0;}
+ if(args[0]=="publication-query"){Print(new{Recovery=tx.InspectRecovery(install),Installation=tx.InspectInstallation(install),Trust=tx.InspectInstallationTrust(install)});return 0;}
  if(args[0]=="trust-query"){Print(tx.InspectInstallationTrust(install));return 0;}
  if(args[0].StartsWith("enroll-kill:",StringComparison.Ordinal))
  {var point=args[0][12..];tx.EnrollInstallation(install,Path.Combine(root,"original.spdup"),"51.0.3",true,p=>{if(p.ToString()==point)Barrier(point);});return 13;}
@@ -142,7 +143,7 @@ try
  }
  var process=Process.GetCurrentProcess();var cpu=process.TotalProcessorTime;var sw=Stopwatch.StartNew();TransactionResult result2;
  if(args[0]=="recover")result2=tx.Recover(install);
- else if(args[0]=="apply"||args[0]=="apply-kill")result2=tx.Apply(package,install,"51.0.4",faultInjector:p=>{if(args[0]=="apply-kill"&&p==UpdateFaultPoint.AfterFirstReplacement)Barrier("AfterFirstReplacement");});
+ else if(args[0]=="apply"||args[0]=="apply-kill"||args[0].StartsWith("commit-kill:"))result2=tx.Apply(package,install,"51.0.4",faultInjector:p=>{if((args[0]=="apply-kill"&&p==UpdateFaultPoint.AfterFirstReplacement)||(args[0].StartsWith("commit-kill:")&&p.ToString()==args[0][12..]))Barrier(p.ToString());});
  else return 2;
  sw.Stop();process.Refresh();Print(new{Status=result2.Stage.ToString(),result2.Code,ElapsedMs=sw.Elapsed.TotalMilliseconds,CpuMs=(process.TotalProcessorTime-cpu).TotalMilliseconds,PeakWorkingSetBytes=process.PeakWorkingSet64,Attestation=tx.InspectInstallation(install),Phases=tx.PerformanceProfile.Snapshot()});
  return result2.Stage is UpdateStage.Committed or UpdateStage.Restored?0:10;
