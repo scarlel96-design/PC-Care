@@ -14,5 +14,17 @@ try{
   if(!$complete){Invoke-Probe recover $root;Invoke-Probe verify-original $root}
   Invoke-Probe vault-check $root
  }
+ foreach($point in @('BeforeInstallationPointerReplace','AfterInstallationPointerReplace','BeforeCommittedJournal','AfterCommittedJournal')){
+  $root=Join-Path $parent ('wo20-wo23-pointer-'+[guid]::NewGuid().ToString('N'))
+  Invoke-Probe prepare $root;Kill-Probe ('commit-repeat-kill:'+$point) $root
+  Invoke-Probe publication-query $root;$state=$script:wo20Records[-1].Output|ConvertFrom-Json
+  if($state.Trust.Verified -ne ($point -eq 'AfterCommittedJournal')){throw "POINTER_PUBLICATION_STATE:$point"}
+  if($point -ne 'AfterCommittedJournal'){
+   Invoke-Probe recover $root;Invoke-Probe verify-previous $root
+   Invoke-Probe publication-query $root
+   if(!(($script:wo20Records[-1].Output|ConvertFrom-Json).Trust.Verified)){throw 'PREVIOUS_GENERATION_NOT_AUTHENTICATED'}
+  }
+  Invoke-Probe vault-check $root
+ }
  'WO23_COMMIT_PROCESS_TERMINATION=PASS; POWER_LOSS=NOT_TESTED'
 }finally{$script:wo20Records|ConvertTo-Json -Depth 14|Set-Content (Join-Path $wo23Output 'process-results.json')}

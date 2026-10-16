@@ -20,10 +20,11 @@ if($ValidateRecorderOnly){
 }
 $probe=Join-Path $repo 'tools/SmartPerformanceDoctor.WO20Probe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.WO20Probe.exe'
 $script:wo20Records=[Collections.Generic.List[object]]::new()
+$script:wo20Source=(& git -C $repo rev-parse HEAD).Trim()
 function Invoke-Probe([string]$Verb,[string]$Root){
  $text=& $probe $Verb $Root 2>&1
  $code=$LASTEXITCODE
- $script:wo20Records.Add(@{Command="WO20Probe $Verb <SYNTHETIC_ROOT>";Input=$Verb;Output=($text|Out-String).Trim();ExitCode=$code;Environment='Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E'})
+ $script:wo20Records.Add(@{Source=$script:wo20Source;Command="WO20Probe $Verb <SYNTHETIC_ROOT>";Input=$Verb;Output=($text|Out-String).Trim();ExitCode=$code;Environment='Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E'})
  if($code -ne 0){throw "Probe failed $Verb : $text"}
 }
 function Kill-Probe([string]$Verb,[string]$Root){
@@ -36,7 +37,7 @@ function Kill-Probe([string]$Verb,[string]$Root){
   if(!(Test-Path -LiteralPath $signal)){throw "Checkpoint not reached: $Verb $(Get-Content $err -Raw)"}
   $checkpoint=Get-Content -LiteralPath $signal -Raw
   $process.Kill();$process.WaitForExit();$code=$process.ExitCode
-  $script:wo20Records.Add(@{Command="WO20Probe $Verb <SYNTHETIC_ROOT>";Checkpoint=$checkpoint;ExitCode=$code;Output=[IO.File]::ReadAllText($workerOut);Termination='Parent killed separate process';Environment='Synthetic filesystem'})
+  $script:wo20Records.Add(@{Source=$script:wo20Source;Command="WO20Probe $Verb <SYNTHETIC_ROOT>";Checkpoint=$checkpoint;ExitCode=$code;Output=[IO.File]::ReadAllText($workerOut);Termination='Parent killed separate process';Environment='Synthetic filesystem'})
   if($code -ne -1){throw "Unexpected termination exit $code"}
  }finally{if(!$process.HasExited){$process.Kill();$process.WaitForExit()};$process.Dispose()}
 }

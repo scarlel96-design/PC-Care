@@ -246,6 +246,7 @@ jobs:
         shell: pwsh
         run: |
           ./scripts/wo23-process-validation.ps1 -OutputDirectory artifacts/wo23-process
+          ./scripts/wo23-ui-contract.ps1
           dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO23' --logger 'trx;LogFileName=wo23-focused.trx' -v:minimal
           if ($LASTEXITCODE -ne 0) { throw 'WO23 focused tests failed' }
       - name: Full application regression
@@ -321,3 +322,4 @@ jobs:
             artifacts/wo23-security/*.json
             artifacts/wo23-process/**/*.json
             artifacts/wo23-full/*
+            artifacts/wo23-ui/*.json

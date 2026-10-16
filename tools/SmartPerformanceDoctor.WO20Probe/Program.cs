@@ -38,6 +38,9 @@ try
   foreach(var p in old){var path=Path.Combine(install,p.Key);Directory.CreateDirectory(Path.GetDirectoryName(path)!);File.WriteAllBytes(path,p.Value);}
   File.WriteAllText(Path.Combine(root,"original-hashes.json"),JsonSerializer.Serialize(old.ToDictionary(p=>p.Key,p=>Hash(p.Value))));
   using var key=ECDsa.Create(ECCurve.NamedCurves.nistP256);File.WriteAllBytes(Path.Combine(root,"public-key.bin"),key.ExportSubjectPublicKeyInfo());Package(package,key,"51.0.4","51.0.5",next);Package(Path.Combine(root,"original.spdup"),key,"51.0.3","51.0.4",old);
+  var nextGeneration=next.ToDictionary(p=>p.Key,p=>p.Value.Select((b,i)=>(byte)(i==0?b^1:b)).ToArray());
+  Package(Path.Combine(root,"next.spdup"),key,"51.0.5","51.0.6",nextGeneration);
+  File.WriteAllText(Path.Combine(root,"previous-hashes.json"),JsonSerializer.Serialize(next.ToDictionary(p=>p.Key,p=>Hash(p.Value))));
   var password="";
   for(var attempt=0;attempt<32;attempt++)
   {
@@ -114,6 +117,11 @@ try
  if(args[0]=="legacy-review")
  {var plan=JsonSerializer.Deserialize<LegacyRecoveryPlan>(File.ReadAllText(Path.Combine(root,"plan.json")))!;
   Print(tx.ReviewLegacyContent(install,plan.TransactionId,Path.Combine(root,"original.spdup"),"51.0.3",plan));return 0;}
+ if(args[0].StartsWith("commit-repeat-kill:"))
+ {
+  Check(tx.Apply(package,install,"51.0.4").Stage==UpdateStage.Committed,"FIRST-COMMIT");
+  tx.Apply(Path.Combine(root,"next.spdup"),install,"51.0.5",faultInjector:p=>{if(p.ToString()==args[0][19..])Barrier(p.ToString());});return 13;
+ }
  if(args[0]=="publication-query"){Print(new{Recovery=tx.InspectRecovery(install),Installation=tx.InspectInstallation(install),Trust=tx.InspectInstallationTrust(install)});return 0;}
  if(args[0]=="trust-query"){Print(tx.InspectInstallationTrust(install));return 0;}
  if(args[0].StartsWith("enroll-kill:",StringComparison.Ordinal))
@@ -136,9 +144,9 @@ try
   var plan=JsonSerializer.Deserialize<LegacyRecoveryPlan>(File.ReadAllText(Path.Combine(root,"plan.json")))!;var point=args[0].StartsWith("legacy-kill:",StringComparison.Ordinal)?args[0][12..]:"";var count=0;
   var result=tx.ExecuteLegacyRecovery(install,plan,Path.Combine(root,"original.spdup"),"51.0.3",plan.ConsentBinding,true,p=>{if(p.ToString()==point||(point=="SecondFileRestore"&&p==LegacyRestoreFaultPoint.AfterFileRestore&&++count==2))Barrier(point);});Print(new{Status=result.Stage.ToString(),result.Code});return result.Stage==UpdateStage.Restored?0:10;
  }
- if(args[0]=="verify-original")
+ if(args[0] is "verify-original" or "verify-previous")
  {
-  var expected=JsonSerializer.Deserialize<Dictionary<string,string>>(File.ReadAllText(Path.Combine(root,"original-hashes.json")))!;
+  var expected=JsonSerializer.Deserialize<Dictionary<string,string>>(File.ReadAllText(Path.Combine(root,args[0]=="verify-previous"?"previous-hashes.json":"original-hashes.json")))!;
   Check(expected.All(p=>Hash(File.ReadAllBytes(Path.Combine(install,p.Key)))==p.Value),"INSTALLATION-BYTES");Print(new{Status="ORIGINAL_BYTES_VERIFIED",Files=expected.Count});return 0;
  }
  var process=Process.GetCurrentProcess();var cpu=process.TotalProcessorTime;var sw=Stopwatch.StartNew();TransactionResult result2;
