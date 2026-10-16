@@ -96,6 +96,18 @@ public sealed partial class UpdateTransaction
                     catch (Exception ex) when (ex is IOException or InvalidDataException)
                     { return new(false,true,"INSTALLATION-CONTENT-MISMATCH"); }
                 }
+                if(!Version.TryParse(binding.Manifest.ToVersion,out var declaredVersion))
+                    return new(false,true,"INSTALLATION-RECOVERY-REQUIRED");
+                foreach(var otherDirectory in Directory.EnumerateDirectories(_workRoot,"tx-*"))
+                {
+                    if(string.Equals(Path.GetFullPath(otherDirectory),Path.GetFullPath(tx),StringComparison.OrdinalIgnoreCase))continue;
+                    if(!TryReadTrustedJournal(otherDirectory,installRoot,out var other,out _)||other is null)
+                        return new(false,true,"INSTALLATION-RECOVERY-REQUIRED");
+                    // A committed successor cannot be authenticated by the predecessor's pointer.
+                    if(other.Stage==UpdateStage.Committed &&
+                        (!Version.TryParse(other.FromVersion,out var successorFrom) || successorFrom>=declaredVersion))
+                        return new(false,true,"INSTALLATION-RECOVERY-REQUIRED");
+                }
                 install.Validate();return new(true,false,"SIGNED-INSTALLATION-VERIFIED");
             }
             return new(false,false,"RESTORED-INSTALLATION-NOT-ATTESTED");

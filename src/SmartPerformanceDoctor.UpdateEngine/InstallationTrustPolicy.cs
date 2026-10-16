@@ -29,7 +29,7 @@ public sealed partial class UpdateTransaction
             if (result.Verified) return new(InstallationTrustState.SignedInstallationVerified, true, false, result.Code);
             if(result.Code!="RESTORED-INSTALLATION-NOT-ATTESTED" || !File.Exists(Path.Combine(_workRoot,"installation-enrollment.json")))
             {
-            var state = result.Code is "INSTALLATION-CONTENT-MISMATCH" or "INSTALLATION-IDENTITY-MISMATCH" or "INSTALLATION-ACL-MISMATCH" or "INSTALLATION-SIGNATURE-REJECTED" ? InstallationTrustState.SignedInstallationMismatch :
+            var state = result.Code=="INSTALLATION-RECOVERY-REQUIRED" ? InstallationTrustState.RecoveryRequired : result.Code is "INSTALLATION-CONTENT-MISMATCH" or "INSTALLATION-IDENTITY-MISMATCH" or "INSTALLATION-ACL-MISMATCH" or "INSTALLATION-SIGNATURE-REJECTED" ? InstallationTrustState.SignedInstallationMismatch :
                 result.RequiresReview ? InstallationTrustState.AttestationCorrupted : InstallationTrustState.MigrationReviewRequired;
             return new(state, false, true, result.Code);
             }

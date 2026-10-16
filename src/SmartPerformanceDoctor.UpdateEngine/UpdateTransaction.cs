@@ -585,6 +585,9 @@ public sealed partial class UpdateTransaction
                 else if (journal.Stage != UpdateStage.Committed)
                     return new(UpdateRecoveryState.RecoveryAvailable, "PENDING", journal.TransactionId);
             }
+            if(declaredCurrent.Count==0 && File.Exists(Path.Combine(_workRoot,"installation-current.json")) &&
+                InspectInstallation(installRoot).Code=="INSTALLATION-RECOVERY-REQUIRED")
+                return new(UpdateRecoveryState.RecoveryRequired,"INSTALLATION-RECOVERY-REQUIRED","");
             return completed
                 ? new(UpdateRecoveryState.RecoveryCompleted, "RESTORED", "")
                 : new(UpdateRecoveryState.NoPendingTransaction, "NO-PENDING", "");
