@@ -179,7 +179,9 @@ public sealed class UpdateStatusViewModel : ObservableObject
 
             RunOnUi(() =>
             {
+                _progressGate.Invalidate();
                 GitHubLine = result.Message;
+                _progressGate.Invalidate();
                 StatusLine = result.Message;
                 PhaseLine = result.Success ? "다운로드 완료" : "다운로드 실패";
                 ActionLine = result.Success ? "패키지 준비됨" : "실패";
@@ -201,6 +203,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
         {
             RunOnUi(() =>
             {
+                _progressGate.Invalidate();
                 GitHubLine = $"다운로드 오류: {ex.Message}";
                 PhaseLine = "실패";
             });
@@ -280,7 +283,8 @@ public sealed class UpdateStatusViewModel : ObservableObject
             {
                 RunOnUi(() =>
                 {
-                    StatusLine = inspection.Message;
+                    _progressGate.Invalidate();
+                StatusLine = inspection.Message;
                     ActionLine = "적용 불가";
                     DetailLine = inspection.Status;
                     PhaseLine = "중단";
@@ -298,6 +302,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
             var verify = result.RestartScheduled ? null : AppVersionService.VerifyInstalledVersion(result.ToVersion);
             RunOnUi(() =>
             {
+                _progressGate.Invalidate();
                 StatusLine = result.Message;
                 TargetVersion = result.ToVersion;
                 CurrentVersion = AppInfo.Version;
@@ -344,13 +349,14 @@ public sealed class UpdateStatusViewModel : ObservableObject
         catch(OperationCanceledException) when(cancellationToken.IsCancellationRequested)
         {
             _installer.InvalidateInspectionCache();
-            RunOnUi(()=>{StatusLine="설치 파일 변경 전 준비를 취소했습니다.";PhaseLine="취소됨";ActionLine="변경 전 취소";DetailLine="관리자 적용을 시작하지 않았습니다.";Progress=0;});
+            RunOnUi(()=>{_progressGate.Invalidate();StatusLine="설치 파일 변경 전 준비를 취소했습니다.";PhaseLine="취소됨";ActionLine="변경 전 취소";DetailLine="관리자 적용을 시작하지 않았습니다.";Progress=0;});
             AppendLog("사용자 요청으로 적용 준비 취소");return null;
         }
         catch (Exception ex)
         {
             RunOnUi(() =>
             {
+                _progressGate.Invalidate();
                 StatusLine = $"업데이트 오류: {ex.Message}";
                 ActionLine = "오류";
                 PhaseLine = "실패";
@@ -415,6 +421,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
         {
             RunOnUi(() =>
             {
+                _progressGate.Invalidate();
                 StatusLine = $"검사 오류: {ex.Message}";
                 ActionLine = "오류";
                 PhaseLine = "실패";
@@ -439,6 +446,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
 
     private IProgress<UpdateProgressReport> CreateProgressHandler()
     {
+        _progressGate.Invalidate();
         var epoch=_progressGate.Capture();
         return new Progress<UpdateProgressReport>(report => RunOnUi(() =>
         {if(_progressGate.IsCurrent(epoch))ApplyProgress(report);}, blocking: false));
@@ -446,6 +454,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
 
     private IProgress<RemoteUpdateDownloadProgress> CreateDownloadProgressHandler()
     {
+        _progressGate.Invalidate();
         var epoch=_progressGate.Capture();
         return new Progress<RemoteUpdateDownloadProgress>(report => RunOnUi(() =>
         {if(_progressGate.IsCurrent(epoch))ApplyDownloadProgress(report);}, blocking: false));
@@ -529,7 +538,8 @@ public sealed class UpdateStatusViewModel : ObservableObject
     private void ApplyInspection(UpdatePackageInspection inspection)
     {
         TargetVersion = inspection.Manifest?.ToVersion ?? "-";
-        StatusLine = inspection.Message;
+        _progressGate.Invalidate();
+                StatusLine = inspection.Message;
         CanApply = inspection.CanApply;
         Changes = inspection.Manifest?.Changes.Count > 0
             ? inspection.Manifest.Changes
