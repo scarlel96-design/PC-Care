@@ -32,9 +32,12 @@ public sealed class WO23LegacyPublicationGapTests
         var current=JsonSerializer.Deserialize<InstallationPointer>(File.ReadAllText(Path.Combine(f.Work,"installation-current.json")))!;
         File.WriteAllBytes(Path.Combine(f.Work,"installation-current.json"),oldPointer);
         if(removeSuccessorDeclaration)File.Delete(Path.Combine(f.Work,"tx-"+current.TransactionId,"committed-attestation.json"));
+        var next=f.Package("51.0.6","51.0.7","third.bin");
         var before=Directory.GetFiles(f.Root,"*",SearchOption.AllDirectories).ToDictionary(x=>x,x=>SHA256.HashData(File.ReadAllBytes(x)));
         Assert.False(engine.InspectInstallation(f.Install).Verified);Assert.Equal(InstallationTrustState.RecoveryRequired,engine.InspectInstallationTrust(f.Install).State);
         Assert.Equal(UpdateRecoveryState.RecoveryRequired,engine.InspectRecovery(f.Install).State);
+        Assert.Equal("INSTALLATION-RECOVERY-REQUIRED",engine.Apply(next,f.Install,"51.0.6").Code);
+        Assert.Equal(before.Count,Directory.GetFiles(f.Root,"*",SearchOption.AllDirectories).Length);
         Assert.All(before,x=>Assert.Equal(x.Value,SHA256.HashData(File.ReadAllBytes(x.Key))));
     }
     [Fact] public void LatestPointerStillVerifiesNormalDisjointUpdates()

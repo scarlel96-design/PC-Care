@@ -228,6 +228,10 @@ public sealed partial class UpdateTransaction
             priorJournals.Add(prior);
         }
 
+        if (File.Exists(Path.Combine(_workRoot, "installation-current.json")) &&
+            InspectInstallation(installRoot).Code == "INSTALLATION-RECOVERY-REQUIRED")
+            return new(UpdateStage.RecoveryRequired, "INSTALLATION-RECOVERY-REQUIRED", "", 0);
+
         var fullPackage = Path.GetFullPath(packagePath);
         using var inputPackage = WindowsFileBoundary.OpenRead(Path.GetDirectoryName(fullPackage)!, Path.GetFileName(fullPackage));
         var packageTimer = PerformanceProfile?.Measure("PackageVerification");
