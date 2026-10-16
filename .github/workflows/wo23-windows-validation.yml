@@ -28,6 +28,8 @@ jobs:
         timeout-minutes: 8
         shell: pwsh
         run: |
+          dotnet build tools/SmartPerformanceDoctor.UpdateBridge -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO23 signed PE inputs build failed' }
           dotnet build tools/SmartPerformanceDoctor.WO23WindowsProbe -c Release -p:Platform=x64 -m:1 -v:minimal
           if ($LASTEXITCODE -ne 0) { throw 'WO23 Windows probe build failed' }
           ./scripts/wo23-windows-security.ps1
