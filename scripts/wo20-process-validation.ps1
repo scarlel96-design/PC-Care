@@ -1,4 +1,4 @@
-param([string]$OutputDirectory="artifacts/wo20-process",[switch]$ValidateRecorderOnly)
+param([string]$OutputDirectory="artifacts/wo20-process",[switch]$ValidateRecorderOnly,[switch]$FunctionsOnly)
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 $output=[IO.Path]::GetFullPath((Join-Path $repo $OutputDirectory))
@@ -40,6 +40,7 @@ function Kill-Probe([string]$Verb,[string]$Root){
   if($code -ne -1){throw "Unexpected termination exit $code"}
  }finally{if(!$process.HasExited){$process.Kill();$process.WaitForExit()};$process.Dispose()}
 }
+if($FunctionsOnly){return}
 try{
  foreach($kind in @('basic','random','many')){
   $root=Join-Path $parent ('wo20-'+$kind+'-'+[guid]::NewGuid().ToString('N'))

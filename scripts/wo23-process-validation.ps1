@@ -2,7 +2,7 @@ param([string]$OutputDirectory='artifacts/wo23-process')
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 $wo23Output=Join-Path $repo $OutputDirectory;New-Item -ItemType Directory -Force $wo23Output|Out-Null
-. (Join-Path $PSScriptRoot 'wo22-process-validation.ps1') -OutputDirectory ($OutputDirectory+'/wo22')
+. (Join-Path $PSScriptRoot 'wo20-process-validation.ps1') -OutputDirectory ($OutputDirectory+'/harness') -FunctionsOnly
 $script:wo20Records.Clear()
 try{
  foreach($point in @('AfterFinalHashVerification','AttestationCreated','AttestationPartialWrite','AttestationFlushed','InstallationPointerCreated','InstallationPointerFlushed','BeforeInstallationPointerReplace','AfterInstallationPointerReplace','BeforeCommittedJournal','AfterCommittedJournal','BeforeSuccessReturn')){

@@ -24,6 +24,12 @@ jobs:
         run: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
       - name: Release build
         run: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+      - name: WO23 actual Windows ACL and PE Authenticode
+        shell: pwsh
+        run: |
+          dotnet build tools/SmartPerformanceDoctor.WO23WindowsProbe -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO23 Windows probe build failed' }
+          ./scripts/wo23-windows-security.ps1
       - name: WO19 updater regression and transition tool build
         shell: pwsh
         run: |
@@ -236,12 +242,6 @@ jobs:
           ./scripts/wo22-ui-contract.ps1
           ./scripts/wo21-test-signing.ps1 -BinaryDirectory 'C:\WO21\binaries' -GuestTestRoot 'C:\wo21-signing' -ExpectedGuestUuid PREPARED -ExpectedTestSid PREPARED | Set-Content artifacts/wo22-ci/signing-preparation.json
           ./scripts/wo20-source-contract.ps1
-      - name: WO23 actual Windows ACL and PE Authenticode
-        shell: pwsh
-        run: |
-          dotnet build tools/SmartPerformanceDoctor.WO23WindowsProbe -c Release -p:Platform=x64 -m:1 -v:minimal
-          if ($LASTEXITCODE -ne 0) { throw 'WO23 Windows probe build failed' }
-          ./scripts/wo23-windows-security.ps1
       - name: WO23 publication crash matrix
         shell: pwsh
         run: |
