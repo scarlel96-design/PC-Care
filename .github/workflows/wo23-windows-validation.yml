@@ -25,6 +25,7 @@ jobs:
       - name: Release build
         run: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
       - name: WO23 actual Windows ACL and PE Authenticode
+        timeout-minutes: 8
         shell: pwsh
         run: |
           dotnet build tools/SmartPerformanceDoctor.WO23WindowsProbe -c Release -p:Platform=x64 -m:1 -v:minimal
