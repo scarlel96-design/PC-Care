@@ -33,9 +33,19 @@ try{
  }
  $results|ConvertTo-Json|Set-Content (Join-Path $GuestTestRoot 'signed-pe-results.json')
  'GUEST_PE_SIGNING_ONLY: production publisher validation and transition E2E require the isolated build profile and separate tests'
-}finally{
+ }finally{
  if($cert){
-  Remove-Item -LiteralPath ('Cert:\CurrentUser\Root\'+$cert.Thumbprint) -ErrorAction SilentlyContinue
-  Remove-Item -LiteralPath ('Cert:\CurrentUser\My\'+$cert.Thumbprint) -ErrorAction SilentlyContinue
+  $failures=[Collections.Generic.List[string]]::new()
+  foreach($store in @('Root','My')){
+   $entry='Cert:\CurrentUser\'+$store+'\'+$cert.Thumbprint
+   try{
+    if(Test-Path -LiteralPath $entry){
+     if($store -eq 'My'){Remove-Item -LiteralPath $entry -DeleteKey -ErrorAction Stop}
+     else{Remove-Item -LiteralPath $entry -ErrorAction Stop}
+    }
+    if(Test-Path -LiteralPath $entry){throw 'TEST_CERTIFICATE_REMAINS'}
+   }catch{$failures.Add($store+':'+$_.Exception.GetType().Name)}
+  }
+  if($failures.Count){throw ('TEST_CERTIFICATE_CLEANUP_FAILED:'+($failures -join ','))}
  }
 }

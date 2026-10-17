@@ -6,7 +6,7 @@ using Xunit;
 namespace SmartPerformanceDoctor.Tests;
 public sealed class WO23LegacyPublicationGapTests
 {
-    private sealed class Fixture:IDisposable
+    internal sealed class Fixture:IDisposable
     {
         private readonly ECDsa _key=ECDsa.Create(ECCurve.NamedCurves.nistP256);
         public string Root{get;}=Path.Combine(Path.GetTempPath(),"wo23-gap-"+Guid.NewGuid().ToString("N"));
