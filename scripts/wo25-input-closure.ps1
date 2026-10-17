@@ -44,6 +44,24 @@ function Open-Wo25InputClosure {
    }
   }
   if(!$actual.SetEquals($names)){throw 'DEPLOYMENT_CLOSURE_REJECTED'}
+  foreach($item in $document.Files){
+   if(!$item.Path.EndsWith('.json',[StringComparison]::OrdinalIgnoreCase)){continue}
+   $configPath=Join-Path $rootPath $item.Path
+   if((Get-Item -LiteralPath $configPath).Length -gt 8388608){throw 'DEPLOYMENT_JSON_LIMIT'}
+   $configJson=[Text.Json.JsonDocument]::Parse([IO.File]::ReadAllText($configPath))
+   try {Assert-JsonUnique $configJson.RootElement} finally {$configJson.Dispose()}
+   if(!$item.Path.EndsWith('.deps.json',[StringComparison]::OrdinalIgnoreCase)){continue}
+   $config=Get-Content -LiteralPath $configPath -Raw|ConvertFrom-Json -AsHashtable
+   if(!$config.ContainsKey('targets')){continue}
+   foreach($target in $config.targets.Values){foreach($library in $target.Values){foreach($kind in @('runtime','native','runtimeTargets')){
+    if(!$library.ContainsKey($kind)){continue}
+    foreach($asset in $library[$kind].Keys){
+     if($asset.EndsWith('/_._',[StringComparison]::Ordinal)){continue}
+     $leaf=[IO.Path]::GetFileName($asset)
+     if(!($document.Files.Path|Where-Object {[IO.Path]::GetFileName($_).Equals($leaf,[StringComparison]::OrdinalIgnoreCase)})){throw 'DEPLOYMENT_DEPENDENCY_MISSING'}
+    }
+   }}}
+  }
   [PSCustomObject]@{Status='AUTHENTICATED_CONTENT_BOUND';Root=$rootPath;Manifest=$document;Leases=$streams;KeyHash=$ExpectedKeyHash;ActualPeSignatureChecked=$false}
  } catch {foreach($stream in $streams){$stream.Dispose()};throw}
 }

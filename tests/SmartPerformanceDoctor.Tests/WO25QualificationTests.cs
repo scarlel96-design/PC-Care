@@ -147,6 +147,12 @@ public sealed class WO25SignedDeploymentManifestTests
 
 public sealed class WO25ReplacementErrorDiagnosticsTests
 {
+    [Theory][InlineData("PRIMARY-ERROR","PRIMARY-ERROR")][InlineData("Access denied: C:/synthetic/private/file.bin","EXCEPTION-DETAIL-REDACTED")]
+    public void DiagnosticsPreserveMachineCodesWithoutRecordingRawPaths(string message,string expected)
+    {
+        var result=UpdateFailureDiagnostic.Capture(new IOException(message),"ExistingFileCopy",UpdateStage.Applying,"synthetic-id","volume-a","volume-a",false,true);
+        Assert.Equal(expected,result.ErrorCode); Assert.DoesNotContain("private",JsonSerializer.Serialize(result));
+    }
     [Fact] public void SharingConflictPreservesBytesAndReportsNativeError()
     {
         using var f = new WO23LegacyPublicationGapTests.Fixture(); var path=Path.Combine(f.Install,"target.bin");File.WriteAllText(path,"old bytes");

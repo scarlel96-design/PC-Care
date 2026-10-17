@@ -5,6 +5,7 @@ public sealed record UpdateFailureDiagnostic(string ExceptionType, string HResul
     string Phase, UpdateStage JournalStage, string TargetIdentity, string InstallVolume, string StagingVolume,
     bool StrictAclChecksRequired, bool AnyMutationStarted, string AccessContract, string ShareMode, string DeletePending)
 {
+    public string ErrorCode { get; init; } = "EXCEPTION-DETAIL-REDACTED";
     public static UpdateFailureDiagnostic Capture(Exception error, string phase, UpdateStage stage, string identity,
         string installVolume, string stagingVolume, bool strictAcl, bool mutationStarted)
     {
@@ -15,6 +16,11 @@ public sealed record UpdateFailureDiagnostic(string ExceptionType, string HResul
             if ((cursor.HResult & unchecked((int)0xFFFF0000)) == unchecked((int)0x80070000)) native ??= cursor.HResult & 0xFFFF;
         }
         return new(error.GetType().Name, $"0x{error.HResult:X8}", native, phase, stage, identity, installVolume, stagingVolume,
-            strictAcl, mutationStarted, "Boundary: Read + ReadControl; Write for writable handles; Delete only for publication", "FILE_SHARE_READ", "NOT OBSERVED");
+            strictAcl, mutationStarted, "Boundary: Read + ReadControl; Write for writable handles; Delete only for publication", "FILE_SHARE_READ", "NOT OBSERVED")
+        {
+            ErrorCode = error.Message.Length is > 0 and <= 96 &&
+                error.Message.All(c => c is >= 'A' and <= 'Z' or >= '0' and <= '9' or '-' or '_')
+                ? error.Message : "EXCEPTION-DETAIL-REDACTED"
+        };
     }
 }

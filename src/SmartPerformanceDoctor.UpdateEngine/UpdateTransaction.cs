@@ -480,7 +480,7 @@ public sealed partial class UpdateTransaction
             retained.Clear();
             var diagnostic = UpdateFailureDiagnostic.Capture(ex, failurePhase, journal.Stage, boundTarget,
                 installPin.Identity.Split(':')[0], workPin.Identity.Split(':')[0], _strictAcl, mutationStarted);
-            journal.Failure = $"{diagnostic.ExceptionType}; phase={diagnostic.Phase}; HRESULT={diagnostic.HResult}; Win32={diagnostic.NativeErrorCode}";
+            journal.Failure = $"{diagnostic.ErrorCode}; {diagnostic.ExceptionType}; phase={diagnostic.Phase}; HRESULT={diagnostic.HResult}; Win32={diagnostic.NativeErrorCode}";
             journal.Stage = UpdateStage.RollbackPending;
             try { faultInjector?.Invoke(UpdateFaultPoint.BeforeFailureJournal); WriteJournal(txDir, journal); }
             catch (Exception journalError)
