@@ -1,0 +1,520 @@
+{
+  "Status": "PASS",
+  "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+  "Command": "dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger trx;LogFileName=wo21-qualified-031fd92d5b6847758cc1936649fcda48.trx -v:minimal",
+  "Input": "Selected cases executed inside the complete application suite",
+  "Environment": "Local Windows26200; synthetic fixtures; unit-level injected exceptions are not forced process termination",
+  "Output": "17 selected cases passed",
+  "ExitCode": 0,
+  "Tests": [
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: AfterLastFileRestore, consumed: True, committed: False)",
+      "Outcome": "Passed",
+      "Duration": "00:00:05.1028772"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: AfterRestoredJournal, consumed: True, committed: True)",
+      "Outcome": "Passed",
+      "Duration": "00:00:09.1077923"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: ApprovalCreated, consumed: True, committed: False)",
+      "Outcome": "Passed",
+      "Duration": "00:00:03.8783715"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: AfterPromotion, consumed: True, committed: False)",
+      "Outcome": "Passed",
+      "Duration": "00:00:03.7428865"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: BeforeOperatorConfirmation, consumed: False, committed: False)",
+      "Outcome": "Passed",
+      "Duration": "00:00:04.7921505"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.UnreservedRequestDoesNotProveMutationOrConsent",
+      "Outcome": "Passed",
+      "Duration": "00:00:01.7725782"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: AfterFileRestore, consumed: True, committed: False)",
+      "Outcome": "Passed",
+      "Duration": "00:00:06.4325192"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EmptyOrCorruptedReservationNeverProvesRestoration",
+      "Outcome": "Passed",
+      "Duration": "00:00:02.4781977"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: BeforeResultReturn, consumed: True, committed: True)",
+      "Outcome": "Passed",
+      "Duration": "00:00:06.2376193"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: ApprovalFlushed, consumed: True, committed: False)",
+      "Outcome": "Passed",
+      "Duration": "00:00:02.6457205"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.CompletedApprovalReplayCannotStartAnotherRestore",
+      "Outcome": "Passed",
+      "Duration": "00:00:02.4093715"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: BeforeRestoredJournal, consumed: True, committed: False)",
+      "Outcome": "Passed",
+      "Duration": "00:00:07.3118273"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: AfterOperatorConfirmation, consumed: False, committed: False)",
+      "Outcome": "Passed",
+      "Duration": "00:00:03.1819449"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO23ApprovalReconciliationTests.PartialReservationIsPreservedAndAcknowledgementRemainsUnknown",
+      "Outcome": "Passed",
+      "Duration": "00:00:03.4631169"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.CompletedJournalWithChangedBytesIsNotSuccess",
+      "Outcome": "Passed",
+      "Duration": "00:00:03.1357523"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: BeforePromotion, consumed: True, committed: False)",
+      "Outcome": "Passed",
+      "Duration": "00:00:04.6462631"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22ApprovalLifecycleTests.EveryCheckpointIsReadOnlyAndRequiresJournalAndBytes(point: RequestVerified, consumed: False, committed: False)",
+      "Outcome": "Passed",
+      "Duration": "00:00:03.1353634"
+    }
+  ],
+  "ActualAdministratorUAC": "NOT TESTED",
+  "CallerAcknowledged": null,
+  "ProcessValidation": "Final CI completed twelve actual approval worker terminations with fresh read-only queries and restored byte checks.",
+  "WindowsCI": {
+    "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+    "Run": 38934790392,
+    "ApprovalTerminationCases": 12,
+    "ExitCode": 0,
+    "Records": [
+      {
+        "Termination": "Parent killed separate process",
+        "Environment": "Synthetic filesystem",
+        "ExitCode": -1,
+        "Command": "WO20Probe approved-kill:RequestVerified <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "CHECKPOINT:RequestVerified\r\n",
+        "Checkpoint": "RequestVerified"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"726ea6eb3894404aa1aac82a6a9296cf\",\"TransactionId\":\"2f946739c4ae42b7be15e5d0f6adc972\",\"State\":0,\"Code\":\"APPROVAL-NOT-RESERVED\",\"LastCheckpoint\":\"RequestOnly\",\"ApprovalConsumed\":false,\"CanResumeRecovery\":false,\"RequiresNewApproval\":true,\"FilesVerified\":false,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"726ea6eb3894404aa1aac82a6a9296cf\",\"TransactionId\":\"2f946739c4ae42b7be15e5d0f6adc972\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-replay",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"726ea6eb3894404aa1aac82a6a9296cf\",\"TransactionId\":\"2f946739c4ae42b7be15e5d0f6adc972\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Termination": "Parent killed separate process",
+        "Environment": "Synthetic filesystem",
+        "ExitCode": -1,
+        "Command": "WO20Probe approved-kill:BeforeOperatorConfirmation <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "CHECKPOINT:BeforeOperatorConfirmation\r\n",
+        "Checkpoint": "BeforeOperatorConfirmation"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"6c5304ea2ffb4b98b36813d8d6364f2e\",\"TransactionId\":\"0964547e06634c12b85bfe9f341d72cd\",\"State\":0,\"Code\":\"APPROVAL-NOT-RESERVED\",\"LastCheckpoint\":\"RequestOnly\",\"ApprovalConsumed\":false,\"CanResumeRecovery\":false,\"RequiresNewApproval\":true,\"FilesVerified\":false,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"6c5304ea2ffb4b98b36813d8d6364f2e\",\"TransactionId\":\"0964547e06634c12b85bfe9f341d72cd\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-replay",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"6c5304ea2ffb4b98b36813d8d6364f2e\",\"TransactionId\":\"0964547e06634c12b85bfe9f341d72cd\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Termination": "Parent killed separate process",
+        "Environment": "Synthetic filesystem",
+        "ExitCode": -1,
+        "Command": "WO20Probe approved-kill:AfterOperatorConfirmation <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "CHECKPOINT:AfterOperatorConfirmation\r\n",
+        "Checkpoint": "AfterOperatorConfirmation"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"35eee4b0c8804a059599c129c7ada11f\",\"TransactionId\":\"d24917ec1f9a44fea82682f329d777f4\",\"State\":0,\"Code\":\"APPROVAL-NOT-RESERVED\",\"LastCheckpoint\":\"RequestOnly\",\"ApprovalConsumed\":false,\"CanResumeRecovery\":false,\"RequiresNewApproval\":true,\"FilesVerified\":false,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"35eee4b0c8804a059599c129c7ada11f\",\"TransactionId\":\"d24917ec1f9a44fea82682f329d777f4\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-replay",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"35eee4b0c8804a059599c129c7ada11f\",\"TransactionId\":\"d24917ec1f9a44fea82682f329d777f4\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Termination": "Parent killed separate process",
+        "Environment": "Synthetic filesystem",
+        "ExitCode": -1,
+        "Command": "WO20Probe approved-kill:ApprovalCreated <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "CHECKPOINT:ApprovalCreated\r\n",
+        "Checkpoint": "ApprovalCreated"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"d7fa898a2d9a464396e2de04c31b139c\",\"TransactionId\":\"d410414f4cb04ee1b4bedfd625922049\",\"State\":5,\"Code\":\"LEGACY-QUERY-REVIEW-REQUIRED\",\"LastCheckpoint\":\"Unverified\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":true,\"FilesVerified\":false,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"1069c348c96643a980f97cd3e586527b\",\"TransactionId\":\"d410414f4cb04ee1b4bedfd625922049\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-replay",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"1069c348c96643a980f97cd3e586527b\",\"TransactionId\":\"d410414f4cb04ee1b4bedfd625922049\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Termination": "Parent killed separate process",
+        "Environment": "Synthetic filesystem",
+        "ExitCode": -1,
+        "Command": "WO20Probe approved-kill:ApprovalFlushed <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "CHECKPOINT:ApprovalFlushed\r\n",
+        "Checkpoint": "ApprovalFlushed"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"e02e621f284a49b58ff72e3e87a3b77d\",\"TransactionId\":\"76805b0bfce348a4aef5d40a6c21d300\",\"State\":1,\"Code\":\"APPROVAL-CONSUMED-NEW-REQUEST-REQUIRED\",\"LastCheckpoint\":\"Applying\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":true,\"FilesVerified\":false,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-replay",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"e02e621f284a49b58ff72e3e87a3b77d\",\"TransactionId\":\"76805b0bfce348a4aef5d40a6c21d300\",\"State\":1,\"Code\":\"APPROVAL-CONSUMED-NEW-REQUEST-REQUIRED\",\"LastCheckpoint\":\"Applying\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":true,\"FilesVerified\":false,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"91ff01fa445f499d95e271f66d87771d\",\"TransactionId\":\"76805b0bfce348a4aef5d40a6c21d300\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-replay",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"91ff01fa445f499d95e271f66d87771d\",\"TransactionId\":\"76805b0bfce348a4aef5d40a6c21d300\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Termination": "Parent killed separate process",
+        "Environment": "Synthetic filesystem",
+        "ExitCode": -1,
+        "Command": "WO20Probe approved-kill:BeforePromotion <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "CHECKPOINT:BeforePromotion\r\n",
+        "Checkpoint": "BeforePromotion"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"3c82471d541745889588afdf6a477fa4\",\"TransactionId\":\"0d8ca30362f54917a9325d27687e624f\",\"State\":1,\"Code\":\"APPROVAL-CONSUMED-NEW-REQUEST-REQUIRED\",\"LastCheckpoint\":\"Applying\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":true,\"FilesVerified\":false,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-replay",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"3c82471d541745889588afdf6a477fa4\",\"TransactionId\":\"0d8ca30362f54917a9325d27687e624f\",\"State\":1,\"Code\":\"APPROVAL-CONSUMED-NEW-REQUEST-REQUIRED\",\"LastCheckpoint\":\"Applying\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":true,\"FilesVerified\":false,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"c227a6fad42341bf893d7b2c859a6d18\",\"TransactionId\":\"0d8ca30362f54917a9325d27687e624f\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-replay",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"c227a6fad42341bf893d7b2c859a6d18\",\"TransactionId\":\"0d8ca30362f54917a9325d27687e624f\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Termination": "Parent killed separate process",
+        "Environment": "Synthetic filesystem",
+        "ExitCode": -1,
+        "Command": "WO20Probe approved-kill:AfterPromotion <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "CHECKPOINT:AfterPromotion\r\n",
+        "Checkpoint": "AfterPromotion"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"1152098b42344501b202a43ae502b723\",\"TransactionId\":\"4d5139e14ace42dd825e02057e453c52\",\"State\":2,\"Code\":\"RESTORATION-REQUERY-RESUME-REQUIRED\",\"LastCheckpoint\":\"RollbackPending\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":true,\"RequiresNewApproval\":false,\"FilesVerified\":false,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"1152098b42344501b202a43ae502b723\",\"TransactionId\":\"4d5139e14ace42dd825e02057e453c52\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-replay",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"1152098b42344501b202a43ae502b723\",\"TransactionId\":\"4d5139e14ace42dd825e02057e453c52\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Termination": "Parent killed separate process",
+        "Environment": "Synthetic filesystem",
+        "ExitCode": -1,
+        "Command": "WO20Probe approved-kill:AfterFileRestore <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "CHECKPOINT:AfterFileRestore\r\n",
+        "Checkpoint": "AfterFileRestore"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"997a1b0d78b54f2aadce129232470cca\",\"TransactionId\":\"31542c0dc83940a794fd5d800a17b24e\",\"State\":2,\"Code\":\"RESTORATION-REQUERY-RESUME-REQUIRED\",\"LastCheckpoint\":\"RollingBack\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":true,\"RequiresNewApproval\":false,\"FilesVerified\":false,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"997a1b0d78b54f2aadce129232470cca\",\"TransactionId\":\"31542c0dc83940a794fd5d800a17b24e\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-replay",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"997a1b0d78b54f2aadce129232470cca\",\"TransactionId\":\"31542c0dc83940a794fd5d800a17b24e\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Termination": "Parent killed separate process",
+        "Environment": "Synthetic filesystem",
+        "ExitCode": -1,
+        "Command": "WO20Probe approved-kill:AfterLastFileRestore <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "CHECKPOINT:AfterLastFileRestore\r\n",
+        "Checkpoint": "AfterLastFileRestore"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"d8ce9d9fbf244272b1fba84af678fa29\",\"TransactionId\":\"8cd471137ec0461898a26d05ded29b89\",\"State\":2,\"Code\":\"RESTORATION-REQUERY-RESUME-REQUIRED\",\"LastCheckpoint\":\"RollingBack\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":true,\"RequiresNewApproval\":false,\"FilesVerified\":false,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"d8ce9d9fbf244272b1fba84af678fa29\",\"TransactionId\":\"8cd471137ec0461898a26d05ded29b89\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-replay",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"d8ce9d9fbf244272b1fba84af678fa29\",\"TransactionId\":\"8cd471137ec0461898a26d05ded29b89\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Termination": "Parent killed separate process",
+        "Environment": "Synthetic filesystem",
+        "ExitCode": -1,
+        "Command": "WO20Probe approved-kill:BeforeRestoredJournal <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "CHECKPOINT:BeforeRestoredJournal\r\n",
+        "Checkpoint": "BeforeRestoredJournal"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"87880c6636094f7a8a77a4fdde029a08\",\"TransactionId\":\"8b40e672c840489d8498e4347950af2e\",\"State\":2,\"Code\":\"RESTORATION-REQUERY-RESUME-REQUIRED\",\"LastCheckpoint\":\"RollingBack\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":true,\"RequiresNewApproval\":false,\"FilesVerified\":false,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"87880c6636094f7a8a77a4fdde029a08\",\"TransactionId\":\"8b40e672c840489d8498e4347950af2e\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-replay",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"87880c6636094f7a8a77a4fdde029a08\",\"TransactionId\":\"8b40e672c840489d8498e4347950af2e\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Termination": "Parent killed separate process",
+        "Environment": "Synthetic filesystem",
+        "ExitCode": -1,
+        "Command": "WO20Probe approved-kill:AfterRestoredJournal <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "CHECKPOINT:AfterRestoredJournal\r\n",
+        "Checkpoint": "AfterRestoredJournal"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"472813391fa34b9993e31a6d2a3cf033\",\"TransactionId\":\"885d9f9bb80d485ba890d00bea2e0b04\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"472813391fa34b9993e31a6d2a3cf033\",\"TransactionId\":\"885d9f9bb80d485ba890d00bea2e0b04\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-replay",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"472813391fa34b9993e31a6d2a3cf033\",\"TransactionId\":\"885d9f9bb80d485ba890d00bea2e0b04\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Termination": "Parent killed separate process",
+        "Environment": "Synthetic filesystem",
+        "ExitCode": -1,
+        "Command": "WO20Probe approved-kill:BeforeResultReturn <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "CHECKPOINT:BeforeResultReturn\r\n",
+        "Checkpoint": "BeforeResultReturn"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"f573b604621145dc9bbb3cd8f13ab3ef\",\"TransactionId\":\"c1fecbaedca94ec8a8549955e40fcf3f\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-query",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-query <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"f573b604621145dc9bbb3cd8f13ab3ef\",\"TransactionId\":\"c1fecbaedca94ec8a8549955e40fcf3f\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      },
+      {
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+        "Input": "approval-replay",
+        "ExitCode": 0,
+        "Command": "WO20Probe approval-replay <SYNTHETIC_ROOT>",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Output": "{\"RequestId\":\"f573b604621145dc9bbb3cd8f13ab3ef\",\"TransactionId\":\"c1fecbaedca94ec8a8549955e40fcf3f\",\"State\":4,\"Code\":\"RESTORATION-BYTES-VERIFIED\",\"LastCheckpoint\":\"Restored\",\"ApprovalConsumed\":true,\"CanResumeRecovery\":false,\"RequiresNewApproval\":false,\"FilesVerified\":true,\"CallerAcknowledged\":null}"
+      }
+    ],
+    "CallerAcknowledged": null
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "InputDigest": "6997206DF14B13D879F3EA25009B3C4BB200B2922D9C4CE8C44DBB2C21775FDE",
+  "ExitCode": 0,
+  "Start": "2026-10-16T16:48:18.9180831+00:00",
+  "Command": "dotnet build tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal",
+  "End": "2026-10-16T16:48:33.1424214+00:00",
+  "Input": "",
+  "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+  "Output": "x64 Release project graph build: warnings 0, errors 0",
+  "Environment": "Local Windows .NET10",
+  "Scope": "Local x64 test project graph and final CI complete solution",
+  "WindowsCI": {
+    "Run": 38934790392,
+    "Conclusion": "success",
+    "Steps": [
+      {
+        "Step": "Restore",
+        "Command": "dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Environment": "GitHub-hosted Windows NT26100; .NET10 x64",
+        "Input": "Complete solution",
+        "Start": "2026-10-16T16:48:59Z",
+        "End": "2026-10-16T16:49:47Z",
+        "ExitCode": 0,
+        "WarningsObserved": 0,
+        "ErrorsObserved": 0,
+        "SummaryLines": [
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:04.4624833Z   Restored D:\\a\\PC-Care\\PC-Care\\src\\SmartPerformanceDoctor.SecurityLab\\SmartPerformanceDoctor.SecurityLab.csproj (in 1.37 sec).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:04.4626666Z   Restored D:\\a\\PC-Care\\PC-Care\\src\\SmartPerformanceDoctor.AstraVault\\SmartPerformanceDoctor.AstraVault.csproj (in 1.37 sec).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:04.4785795Z   Restored D:\\a\\PC-Care\\PC-Care\\src\\SmartPerformanceDoctor.Setup\\SmartPerformanceDoctor.Setup.csproj (in 7 ms).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:04.4810169Z   Restored D:\\a\\PC-Care\\PC-Care\\tools\\SmartPerformanceDoctor.SecurityLab.Cli\\SmartPerformanceDoctor.SecurityLab.Cli.csproj (in 7 ms).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:08.7036818Z   Restored D:\\a\\PC-Care\\PC-Care\\src\\SmartPerformanceDoctor.UpdateEngine\\SmartPerformanceDoctor.UpdateEngine.csproj (in 5.63 sec).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:08.7038211Z   Restored D:\\a\\PC-Care\\PC-Care\\src\\SmartPerformanceDoctor.UpdateHelper\\SmartPerformanceDoctor.UpdateHelper.csproj (in 5.63 sec).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:08.7959405Z   Restored D:\\a\\PC-Care\\PC-Care\\tools\\SmartPerformanceDoctor.DiagnosticsProbe\\SmartPerformanceDoctor.DiagnosticsProbe.csproj (in 4.31 sec).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:11.2366415Z   Restored D:\\a\\PC-Care\\PC-Care\\tools\\SmartPerformanceDoctor.ReferenceProbe\\SmartPerformanceDoctor.ReferenceProbe.csproj (in 6.75 sec).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:24.7040991Z   Restored D:\\a\\PC-Care\\PC-Care\\src\\SmartPerformanceDoctor.Diagnostics\\SmartPerformanceDoctor.Diagnostics.csproj (in 11.49 sec).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:26.4957095Z   Restored D:\\a\\PC-Care\\PC-Care\\src\\SmartPerformanceDoctor.Data\\SmartPerformanceDoctor.Data.csproj (in 738 ms).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:26.4991640Z   Restored D:\\a\\PC-Care\\PC-Care\\src\\SmartPerformanceDoctor.Contracts\\SmartPerformanceDoctor.Contracts.csproj (in 0.9 ms).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:34.0729612Z   Restored D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.AstraVault.KillWorker\\SmartPerformanceDoctor.AstraVault.KillWorker.csproj (in 25.27 sec).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:34.0779754Z   Restored D:\\a\\PC-Care\\PC-Care\\src\\SmartPerformanceDoctor.Aegis\\SmartPerformanceDoctor.Aegis.csproj (in 2 ms).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:42.4712511Z   Restored D:\\a\\PC-Care\\PC-Care\\src\\SmartPerformanceDoctor.AegisRecoveryService\\SmartPerformanceDoctor.AegisRecoveryService.csproj (in 8.39 sec).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:42.4755898Z   Restored D:\\a\\PC-Care\\PC-Care\\src\\SmartPerformanceDoctor.AegisRecoveryHelper\\SmartPerformanceDoctor.AegisRecoveryHelper.csproj (in 1 ms).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:43.4159827Z   Restored D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.SecurityLab.Tests\\SmartPerformanceDoctor.SecurityLab.Tests.csproj (in 34.71 sec).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:47.1605955Z   Restored D:\\a\\PC-Care\\PC-Care\\src\\SmartPerformanceDoctor.App\\SmartPerformanceDoctor.App.csproj (in 20.66 sec).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:47.1610655Z   Restored D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.Tests\\SmartPerformanceDoctor.Tests.csproj (in 38.45 sec)."
+        ]
+      },
+      {
+        "Step": "Release build",
+        "Command": "dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal",
+        "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+        "Environment": "GitHub-hosted Windows NT26100; .NET10 x64",
+        "Input": "Complete solution",
+        "Start": "2026-10-16T16:49:47Z",
+        "End": "2026-10-16T16:50:31Z",
+        "ExitCode": 0,
+        "WarningsObserved": 0,
+        "ErrorsObserved": 0,
+        "SummaryLines": [
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:47.1605955Z   Restored D:\\a\\PC-Care\\PC-Care\\src\\SmartPerformanceDoctor.App\\SmartPerformanceDoctor.App.csproj (in 20.66 sec).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:49:47.1610655Z   Restored D:\\a\\PC-Care\\PC-Care\\tests\\SmartPerformanceDoctor.Tests\\SmartPerformanceDoctor.Tests.csproj (in 38.45 sec).",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:50:30.9732855Z Build succeeded.",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:50:30.9733850Z     0 Warning(s)",
+          "windows-validation\tUNKNOWN STEP\t2026-10-16T16:50:30.9734094Z     0 Error(s)"
+        ]
+      }
+    ]
+  }
+}

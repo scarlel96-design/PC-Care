@@ -1,0 +1,243 @@
+{
+  "Status": "PASS (measurement only)",
+  "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+  "BaselineSource": "db8defce0764dd2421ceb78b9e3ce6b851fa9e6b",
+  "Command": "python ../profile_wo23_final.py",
+  "Input": "Same 258-file signed synthetic package; three interleaved non-profiled trials and one profiled trial per variant",
+  "ExitCode": 0,
+  "MediansProfilingDisabled": {
+    "Baseline": {
+      "ElapsedMs": 21945.1052,
+      "CpuMs": 17578.125,
+      "AllocatedBytes": 20283329528,
+      "PeakWorkingSetBytes": 208551936
+    },
+    "Modified": {
+      "ElapsedMs": 21191.6097,
+      "CpuMs": 17609.375,
+      "AllocatedBytes": 985376208,
+      "PeakWorkingSetBytes": 212447232
+    }
+  },
+  "ProfiledChecks": [
+    {
+      "Variant": "Modified",
+      "JournalFlushCalls": 779,
+      "JournalBytes": 137343,
+      "Phases": [
+        {
+          "Name": "NativeIdentityCheck",
+          "Calls": 321618,
+          "ElapsedMs": 9901.4899,
+          "AllocatedBytes": 518436040
+        },
+        {
+          "Name": "FileCreateAndBind",
+          "Calls": 1299,
+          "ElapsedMs": 5002.4896,
+          "AllocatedBytes": 91655408
+        },
+        {
+          "Name": "FileOpenAndBind",
+          "Calls": 2726,
+          "ElapsedMs": 4295.3561,
+          "AllocatedBytes": 184148840
+        },
+        {
+          "Name": "PackageVerification",
+          "Calls": 1,
+          "ElapsedMs": 84.6968,
+          "AllocatedBytes": 1631224
+        },
+        {
+          "Name": "JournalSerialization",
+          "Calls": 779,
+          "ElapsedMs": 166.3297,
+          "AllocatedBytes": 102238360
+        },
+        {
+          "Name": "JournalFlush",
+          "Calls": 779,
+          "ElapsedMs": 3534.4621,
+          "AllocatedBytes": 16304
+        },
+        {
+          "Name": "FileIdentityValidation",
+          "Calls": 10350,
+          "ElapsedMs": 4319.9058,
+          "AllocatedBytes": 237615208
+        },
+        {
+          "Name": "JournalRename",
+          "Calls": 779,
+          "ElapsedMs": 1275.745,
+          "AllocatedBytes": 710016
+        },
+        {
+          "Name": "JournalTotal",
+          "Calls": 779,
+          "ElapsedMs": 15845.506,
+          "AllocatedBytes": 449764952
+        },
+        {
+          "Name": "PayloadFlush",
+          "Calls": 647,
+          "ElapsedMs": 678.139,
+          "AllocatedBytes": 67944
+        },
+        {
+          "Name": "CopyAndFlush",
+          "Calls": 389,
+          "ElapsedMs": 1359.4106,
+          "AllocatedBytes": 69185504
+        },
+        {
+          "Name": "HashAndIdentity",
+          "Calls": 1940,
+          "ElapsedMs": 1749.7372,
+          "AllocatedBytes": 227605160
+        },
+        {
+          "Name": "ExtractionAndVerification",
+          "Calls": 258,
+          "ElapsedMs": 3361.1264,
+          "AllocatedBytes": 146553912
+        },
+        {
+          "Name": "BackupAndIdentity",
+          "Calls": 258,
+          "ElapsedMs": 1734.335,
+          "AllocatedBytes": 89651416
+        },
+        {
+          "Name": "ReplacementAndVerification",
+          "Calls": 258,
+          "ElapsedMs": 9856.6321,
+          "AllocatedBytes": 319027928
+        },
+        {
+          "Name": "PostApplyFileVerification",
+          "Calls": 258,
+          "ElapsedMs": 416.8997,
+          "AllocatedBytes": 23696384
+        }
+      ]
+    },
+    {
+      "Variant": "Baseline",
+      "JournalFlushCalls": 779,
+      "JournalBytes": 137343,
+      "Phases": [
+        {
+          "Name": "NativeIdentityCheck",
+          "Calls": 300259,
+          "ElapsedMs": 9843.6089,
+          "AllocatedBytes": 19854578824
+        },
+        {
+          "Name": "FileCreateAndBind",
+          "Calls": 1299,
+          "ElapsedMs": 5165.7254,
+          "AllocatedBytes": 3139350344
+        },
+        {
+          "Name": "FileOpenAndBind",
+          "Calls": 2465,
+          "ElapsedMs": 4103.7606,
+          "AllocatedBytes": 5822022224
+        },
+        {
+          "Name": "PackageVerification",
+          "Calls": 1,
+          "ElapsedMs": 80.0079,
+          "AllocatedBytes": 1630328
+        },
+        {
+          "Name": "JournalSerialization",
+          "Calls": 779,
+          "ElapsedMs": 155.556,
+          "AllocatedBytes": 102238360
+        },
+        {
+          "Name": "JournalFlush",
+          "Calls": 779,
+          "ElapsedMs": 2824.2778,
+          "AllocatedBytes": 40760
+        },
+        {
+          "Name": "FileIdentityValidation",
+          "Calls": 9316,
+          "ElapsedMs": 4228.7011,
+          "AllocatedBytes": 8527119448
+        },
+        {
+          "Name": "JournalRename",
+          "Calls": 779,
+          "ElapsedMs": 1267.3631,
+          "AllocatedBytes": 710016
+        },
+        {
+          "Name": "JournalTotal",
+          "Calls": 779,
+          "ElapsedMs": 15873.0747,
+          "AllocatedBytes": 9034470112
+        },
+        {
+          "Name": "PayloadFlush",
+          "Calls": 647,
+          "ElapsedMs": 579.6131,
+          "AllocatedBytes": 32608
+        },
+        {
+          "Name": "CopyAndFlush",
+          "Calls": 389,
+          "ElapsedMs": 1509.2784,
+          "AllocatedBytes": 1405623304
+        },
+        {
+          "Name": "HashAndIdentity",
+          "Calls": 1681,
+          "ElapsedMs": 1604.5334,
+          "AllocatedBytes": 3264999424
+        },
+        {
+          "Name": "ExtractionAndVerification",
+          "Calls": 258,
+          "ElapsedMs": 3068.5586,
+          "AllocatedBytes": 2874057688
+        },
+        {
+          "Name": "BackupAndIdentity",
+          "Calls": 258,
+          "ElapsedMs": 1798.9569,
+          "AllocatedBytes": 2033040232
+        },
+        {
+          "Name": "ReplacementAndVerification",
+          "Calls": 258,
+          "ElapsedMs": 10257.7155,
+          "AllocatedBytes": 7461332328
+        },
+        {
+          "Name": "PostApplyFileVerification",
+          "Calls": 258,
+          "ElapsedMs": 476.1331,
+          "AllocatedBytes": 944554112
+        }
+      ]
+    }
+  ],
+  "VerifiedFilesPerTrial": 258,
+  "Trials": 8,
+  "SuccessfulTrials": 8,
+  "InitialAttributionEvidence": "MEMORY_PROFILE_INITIAL_RESULT.json",
+  "EarlierFailedAttempt": "PERFORMANCE_TRIAL_FAILURE.json",
+  "Limits": [
+    "Only successful trials enter medians; all failed attempts remain recorded.",
+    "Three profiling-disabled matched trials per variant; one profiled trial per variant.",
+    "Nested phase allocations overlap.",
+    "Peak Working Set includes process startup and post-Apply inspection.",
+    "LOH value is the last completed GC size, not a peak.",
+    "No physical power-loss, standard-user deployment, or low-end hardware qualification."
+  ]
+}

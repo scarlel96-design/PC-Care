@@ -1,0 +1,69 @@
+{
+  "Output": {
+    "Status": "PASS",
+    "Scope": "Actual Windows APIs in disposable runner; no independent standard-user token",
+    "RestrictedToken": "NOT TESTED",
+    "Tests": [
+      {
+        "Name": "ProtectedOwnerAndExplicitAces",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      },
+      {
+        "Name": "InheritedFileAces",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      },
+      {
+        "Name": "WritableNonAdminAceRejected",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      },
+      {
+        "Name": "PinnedPathReplacementAndMutationDenied",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      },
+      {
+        "Name": "ReplacementFileIdRejected",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      },
+      {
+        "Name": "HardlinkRejected",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      },
+      {
+        "Name": "SymbolicLinkRejected",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      },
+      {
+        "Name": "JunctionRejected",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      },
+      {
+        "Name": "DeleteDispositionUsesRetainedHandle",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      }
+    ]
+  },
+  "ExitCode": 0,
+  "Source": "b4f18022c8256bbd59b300f790edfd4a9aa75b1c",
+  "Command": "WO23WindowsProbe acl <CI_TEMP>/wo23-acl",
+  "Input": "Actual NTFS ACL and file handle operations",
+  "WorkflowRun": 38930300464,
+  "WorkflowOverallConclusion": "cancelled after component passed; latest UI source requires final workflow"
+}

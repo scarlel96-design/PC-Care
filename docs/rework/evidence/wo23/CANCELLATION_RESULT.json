@@ -1,0 +1,78 @@
+{
+  "Status": "PASS",
+  "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+  "Command": "dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger trx;LogFileName=wo21-qualified-031fd92d5b6847758cc1936649fcda48.trx -v:minimal",
+  "Input": "Selected cases executed inside the complete application suite",
+  "Environment": "Local Windows26200; synthetic fixtures; unit-level injected exceptions are not forced process termination",
+  "Output": "13 selected cases passed",
+  "ExitCode": 0,
+  "Tests": [
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.RecoveryCancellationAfterStartCompletesVerifiedRestoration",
+      "Outcome": "Passed",
+      "Duration": "00:00:02.2435513"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.PreparationCancellationPreservesExistingFiles(point: BeforeReplacement)",
+      "Outcome": "Passed",
+      "Duration": "00:00:01.4390505"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO23CancellationCleanupTests.CancelledPreparationAllowsASeparateNormalUpdate(point: DuringBackupCreation)",
+      "Outcome": "Passed",
+      "Duration": "00:00:04.4103996"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO23CancellationCleanupTests.CancelledPreparationAllowsASeparateNormalUpdate(point: DuringStageExtraction)",
+      "Outcome": "Passed",
+      "Duration": "00:00:03.9647425"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.PreparationCancellationPreservesExistingFiles(point: AfterStagingCreated)",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.2882829"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.PreparationCancellationPreservesExistingFiles(point: DuringStageExtraction)",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.5441468"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.PreparationCancellationPreservesExistingFiles(point: DuringBackupCreation)",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.8176232"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO23PreparationCopyCancellationTests.PartialPreparationCopyPreservesSourceAndExposesIncompleteDestination",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.1323351"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.PreparationCancellationPreservesExistingFiles(point: AfterApplyingJournal)",
+      "Outcome": "Passed",
+      "Duration": "00:00:01.6439926"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.PreparationCancellationPreservesExistingFiles(point: AfterPackageVerification)",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0666902"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.PreparationCancellationPreservesExistingFiles(point: AfterBackupVerification)",
+      "Outcome": "Passed",
+      "Duration": "00:00:01.2695083"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.MutationCancellationDefersUntilVerifiedCommit(point: BeforeCommittedJournal)",
+      "Outcome": "Passed",
+      "Duration": "00:00:02.5389992"
+    },
+    {
+      "Test": "SmartPerformanceDoctor.Tests.WO22CancellationSafetyTests.MutationCancellationDefersUntilVerifiedCommit(point: AfterFirstReplacement)",
+      "Outcome": "Passed",
+      "Duration": "00:00:02.5481227"
+    }
+  ],
+  "ActualAdministratorUAC": "NOT TESTED",
+  "CallerAcknowledged": null
+}

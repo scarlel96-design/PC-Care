@@ -1,0 +1,17 @@
+{
+  "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+  "Status": "PASS",
+  "Flags": {
+    "JournalWriterEnabled": false,
+    "ProductionEnableAuthorized": false,
+    "ExternalReviewCompleted": false,
+    "ProductionWriterEnabled": false,
+    "WriterEnableReady": false,
+    "MigrationEnabled": false
+  },
+  "StorageCareCanExecute": false,
+  "ExitCode": 0,
+  "PublisherPolicyChanged": false,
+  "Command": "wo23-ui-contract.ps1 production source audit",
+  "Input": "Actual production declarations"
+}

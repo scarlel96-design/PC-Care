@@ -5,7 +5,7 @@
   "Results": [
     {
       "Stage": "BASELINE",
-      "Command": "dotnet run --project <Baseline_COPY>/Probe.csproj -c Release -p:Platform=x64 --verbosity quiet",
+      "Command": "dotnet run --project ..\\..\\wo23-rollback-6ccafcca731c4f3da4954b807a80da3a\\Baseline-probe\\Probe.csproj -c Release -p:Platform=x64 --verbosity quiet",
       "Input": "100 retained-handle validations; 8MiB allocation budget; synthetic bytes",
       "Output": "{\"OverBudget\":true,\"IdentityVerified\":true,\"Hash\":\"B3CC0475BB78A5026098858E9889ACF666D31062D513D303314ECA31D36E72F2\"}",
       "ExitCode": 0,
@@ -13,7 +13,7 @@
     },
     {
       "Stage": "MODIFIED",
-      "Command": "dotnet run --project <Modified_COPY>/Probe.csproj -c Release -p:Platform=x64 --verbosity quiet",
+      "Command": "dotnet run --project ..\\..\\wo23-rollback-6ccafcca731c4f3da4954b807a80da3a\\Modified-probe\\Probe.csproj -c Release -p:Platform=x64 --verbosity quiet",
       "Input": "100 retained-handle validations; 8MiB allocation budget; synthetic bytes",
       "Output": "{\"OverBudget\":false,\"IdentityVerified\":true,\"Hash\":\"B3CC0475BB78A5026098858E9889ACF666D31062D513D303314ECA31D36E72F2\"}",
       "ExitCode": 0,
@@ -21,7 +21,10 @@
     },
     {
       "Stage": "RollbackScript",
-      "Command": "RESTORE_COPY=<INDEPENDENT_COPY> bash docs/rework/evidence/wo23/ROLLBACK.sh",
+      "Command": "bash docs/rework/evidence/wo23/ROLLBACK.sh",
+      "EnvironmentOverride": {
+        "RESTORE_COPY": "../../wo23-rollback-6ccafcca731c4f3da4954b807a80da3a/Rollback-engine/WindowsFileBoundary.cs"
+      },
       "Input": "Independent modified source copy",
       "Output": "SOURCE_COPY_RESTORED\n",
       "Error": "",
@@ -29,7 +32,7 @@
     },
     {
       "Stage": "ROLLBACK",
-      "Command": "dotnet run --project <Rollback_COPY>/Probe.csproj -c Release -p:Platform=x64 --verbosity quiet",
+      "Command": "dotnet run --project ..\\..\\wo23-rollback-6ccafcca731c4f3da4954b807a80da3a\\Rollback-probe\\Probe.csproj -c Release -p:Platform=x64 --verbosity quiet",
       "Input": "100 retained-handle validations; 8MiB allocation budget; synthetic bytes",
       "Output": "{\"OverBudget\":true,\"IdentityVerified\":true,\"Hash\":\"B3CC0475BB78A5026098858E9889ACF666D31062D513D303314ECA31D36E72F2\"}",
       "ExitCode": 0,
@@ -37,5 +40,7 @@
     }
   ],
   "RestoredStatus": "Original allocation behavior restored on independent source copy; repository and MODIFIED_FILE remain modified.",
-  "DataRecovery": "NOT performed by this source rollback"
+  "DataRecovery": "NOT performed by this source rollback",
+  "HostEngineSource": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+  "Scope": "Only WindowsFileBoundary source variants change in the independent-copy comparison. Full baseline regression is separate."
 }

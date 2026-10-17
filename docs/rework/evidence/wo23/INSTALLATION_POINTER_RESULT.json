@@ -1,0 +1,66 @@
+{
+  "Status": "PASS",
+  "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+  "Command": "pwsh -NoProfile -File scripts/wo23-process-validation.ps1 -OutputDirectory artifacts/wo23-process-final-v3",
+  "Input": "Two successive signed synthetic update generations",
+  "ExitCode": 0,
+  "Checks": [
+    {
+      "Checkpoint": "AfterInstallationPointerReplace",
+      "SecondGeneration": true,
+      "FinalStatus": "RestoredPreviousInstallation",
+      "ExpectedHashes": {
+        "app.txt": "11507A0E2F5E69D5DFA40A62A1BD7B6EE57E6BCD85C67C9B8431B36FFF21C437",
+        "second.txt": "16367AACB67A4A017C8DA8AB95682CCB390863780F7114DDA0A0E0C55644C7C4"
+      },
+      "ActualHashes": {
+        "app.txt": "11507A0E2F5E69D5DFA40A62A1BD7B6EE57E6BCD85C67C9B8431B36FFF21C437",
+        "second.txt": "16367AACB67A4A017C8DA8AB95682CCB390863780F7114DDA0A0E0C55644C7C4"
+      },
+      "BytesVerified": true
+    },
+    {
+      "Checkpoint": "AfterCommittedJournal",
+      "SecondGeneration": true,
+      "FinalStatus": "CommittedInstallationVerified",
+      "ExpectedHashes": {
+        "app.txt": "D887E554D8F2C56ED753A0F4B271615B451A2A305E1CB7C657A8144EDD9FAD86",
+        "second.txt": "8DFCF4179C966C15164BFABBEDB86A58A9389F86DFE062135295E096EB974766"
+      },
+      "ActualHashes": {
+        "app.txt": "D887E554D8F2C56ED753A0F4B271615B451A2A305E1CB7C657A8144EDD9FAD86",
+        "second.txt": "8DFCF4179C966C15164BFABBEDB86A58A9389F86DFE062135295E096EB974766"
+      },
+      "BytesVerified": true
+    },
+    {
+      "Checkpoint": "BeforeCommittedJournal",
+      "SecondGeneration": true,
+      "FinalStatus": "RestoredPreviousInstallation",
+      "ExpectedHashes": {
+        "app.txt": "11507A0E2F5E69D5DFA40A62A1BD7B6EE57E6BCD85C67C9B8431B36FFF21C437",
+        "second.txt": "16367AACB67A4A017C8DA8AB95682CCB390863780F7114DDA0A0E0C55644C7C4"
+      },
+      "ActualHashes": {
+        "app.txt": "11507A0E2F5E69D5DFA40A62A1BD7B6EE57E6BCD85C67C9B8431B36FFF21C437",
+        "second.txt": "16367AACB67A4A017C8DA8AB95682CCB390863780F7114DDA0A0E0C55644C7C4"
+      },
+      "BytesVerified": true
+    },
+    {
+      "Checkpoint": "BeforeInstallationPointerReplace",
+      "SecondGeneration": true,
+      "FinalStatus": "RestoredPreviousInstallation",
+      "ExpectedHashes": {
+        "app.txt": "11507A0E2F5E69D5DFA40A62A1BD7B6EE57E6BCD85C67C9B8431B36FFF21C437",
+        "second.txt": "16367AACB67A4A017C8DA8AB95682CCB390863780F7114DDA0A0E0C55644C7C4"
+      },
+      "ActualHashes": {
+        "app.txt": "11507A0E2F5E69D5DFA40A62A1BD7B6EE57E6BCD85C67C9B8431B36FFF21C437",
+        "second.txt": "16367AACB67A4A017C8DA8AB95682CCB390863780F7114DDA0A0E0C55644C7C4"
+      },
+      "BytesVerified": true
+    }
+  ],
+  "Limitation": "Current pointer corruption remains blocked; previous pointer is used only after authenticated restoration checks."
+}

@@ -1,0 +1,1201 @@
+diff --git a/.github/workflows/wo23-windows-validation.yml b/.github/workflows/wo23-windows-validation.yml
+new file mode 100644
+index 0000000..42b96c2
+--- /dev/null
++++ b/.github/workflows/wo23-windows-validation.yml
+@@ -0,0 +1,328 @@
++name: WO23 Windows security and update hardening
++
++on:
++  push:
++    branches:
++      - codex/pccare-wo23-windows-security-update-hardening
++    paths-ignore:
++      - 'docs/**'
++      - '.gitattributes'
++  pull_request:
++
++jobs:
++  windows-validation:
++    runs-on: windows-latest
++    timeout-minutes: 90
++    permissions:
++      contents: read
++    steps:
++      - uses: actions/checkout@v4
++      - uses: actions/setup-dotnet@v4
++        with:
++          dotnet-version: '10.0.x'
++      - name: Restore
++        run: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
++      - name: Release build
++        run: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
++      - name: WO23 actual Windows ACL and PE Authenticode
++        timeout-minutes: 8
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.UpdateBridge -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO23 signed PE inputs build failed' }
++          dotnet build tools/SmartPerformanceDoctor.WO23WindowsProbe -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO23 Windows probe build failed' }
++          ./scripts/wo23-windows-security.ps1
++      - name: WO19 updater regression and transition tool build
++        shell: pwsh
++        run: |
++          New-Item -ItemType Directory -Force artifacts/wo19-ci | Out-Null
++          git rev-parse HEAD | Set-Content artifacts/wo19-ci/SOURCE_SHA.txt
++          git rev-parse 'HEAD^{tree}' | Set-Content artifacts/wo19-ci/SOURCE_TREE.txt
++          dotnet build tools/SmartPerformanceDoctor.UpdateBridge -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'Transition bridge build failed' }
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO19' --logger 'trx;LogFileName=wo19-tests.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO19 updater regression failed' }
++          ./scripts/wo19-source-contract.ps1
++      - name: WO20 environment, authorization, vault and interruption tests
++        shell: pwsh
++        run: |
++          . ./scripts/wo20-test-environment.ps1 -OutputDirectory artifacts/wo20-ci-environment -FixtureRoot (Join-Path $env:RUNNER_TEMP 'wo20-isolated-fixtures')
++          "RUNNER_TEMP=$env:RUNNER_TEMP" | Add-Content $env:GITHUB_ENV
++          ./scripts/wo20-source-contract.ps1
++          New-Item -ItemType Directory -Force artifacts/wo20-ci | Out-Null
++          git rev-parse HEAD | Set-Content artifacts/wo20-ci/SOURCE_SHA.txt
++          git rev-parse 'HEAD^{tree}' | Set-Content artifacts/wo20-ci/SOURCE_TREE.txt
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO20|FullyQualifiedName~CareFolderScanner_TempPath' --logger 'trx;LogFileName=wo20-tests.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO20 tests failed' }
++          dotnet build tools/SmartPerformanceDoctor.WO20Probe -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO20 probe build failed' }
++          ./scripts/wo20-process-validation.ps1 -OutputDirectory artifacts/wo20-ci
++      - name: WO18 durable deletion and product safety
++        shell: pwsh
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: |
++          New-Item -ItemType Directory -Force artifacts/wo18-ci | Out-Null
++          $ownerProbe = Join-Path $env:RUNNER_TEMP ('wo18-owner-' + [guid]::NewGuid().ToString('N') + '.tmp')
++          [IO.File]::WriteAllBytes($ownerProbe, [byte[]]@(0))
++          $sid = [Security.Principal.WindowsIdentity]::GetCurrent().User
++          $owner = (Get-Acl -LiteralPath $ownerProbe).GetOwner([Security.Principal.SecurityIdentifier])
++          $ownerKind = if ($owner -eq $sid) { 'CurrentSid' } elseif ($owner.Value -eq 'S-1-5-32-544') { 'Administrators' } else { 'Other' }
++          @{DefaultFixtureOwner=$ownerKind;ExplicitFixtureOwner='CurrentSid';ProductionOwnershipGateChanged=$false} | ConvertTo-Json | Set-Content artifacts/wo18-ci/OWNER_ENVIRONMENT.json
++          dotnet build tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO18 x64 test build failed' }
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO18' --logger 'trx;LogFileName=wo18-tests.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO18 regression failed' }
++          dotnet build tools/SmartPerformanceDoctor.DeleteProbe -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'DeleteProbe build failed' }
++          $fixtureParent = Join-Path $env:RUNNER_TEMP 'wo18-isolated-fixtures'
++          New-Item -ItemType Directory -Force $fixtureParent | Out-Null
++          ./scripts/wo18-delete-crash-validation.ps1 -FixtureParent $fixtureParent -OutputDirectory artifacts/wo18-ci
++          ./scripts/wo18-synthetic-validation.ps1 -FixtureParent $fixtureParent -OutputDirectory artifacts/wo18-ci/synthetic
++          ./scripts/wo17-ui-source-validation.ps1
++      - name: Signed package, publisher, transaction, recovery and staging tests
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests|FullyQualifiedName~WO06' --logger 'trx;LogFileName=wo06-signed-updater.trx' -v:minimal
++      - name: Performance diagnostics scenarios
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO07|FullyQualifiedName~WO08|FullyQualifiedName~WO09|FullyQualifiedName~WO10|FullyQualifiedName~WO11' --logger 'trx;LogFileName=wo09-performance.trx' -v:minimal
++      - name: Read-only Windows collector smoke
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-restore -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'probe build failed' }
++          New-Item -ItemType Directory -Force artifacts/wo07-ci | Out-Null
++          dotnet run --project tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-build --no-restore -- 30 artifacts/wo07-ci/measurement.json
++          if ($LASTEXITCODE -ne 0) { throw 'CPU or memory collector unavailable' }
++          $measurement = Get-Content artifacts/wo07-ci/measurement.json -Raw | ConvertFrom-Json
++          if ($measurement.environment.elevated) {
++            if ($measurement.snapshot.Errors.Where({ $_.Provider.StartsWith('ETW') }).Count -gt 0) { throw 'Elevated ETW collection failed' }
++            if ($measurement.snapshot.EventsReceived -le 0) { throw 'Elevated ETW delivered no events' }
++            if ($null -eq $measurement.remainingOwnedSessions -or $measurement.remainingOwnedSessions -ne 0) { throw 'ETW session cleanup not verified' }
++          }
++      - name: Diagnostic profiles and controlled workloads
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-restore -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'Reference analyzer build failed' }
++          dotnet run --project tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-build --no-restore -- --verify-time-contract
++          if ($LASTEXITCODE -ne 0) { throw 'SDK converted timestamp contract failed' }
++          ./scripts/wo08-measurement.ps1 -OutputDirectory artifacts/wo08-ci -RunControlledWorkloads
++          ./scripts/wo09-disk-identity.ps1 -OutputDirectory artifacts/wo09-ci
++          # CPU reference qualification remains a separate unresolved task.
++      - name: Synthetic recovery and UI Automation harness
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.RecoverySandbox -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw "sandbox build failed" }
++          ./scripts/wo10-sandbox-validation.ps1 -OutputDirectory artifacts/wo10-sandbox
++          ./scripts/wo11-sandbox-validation.ps1 -OutputDirectory artifacts/wo11-sandbox
++          dotnet build tools/SmartPerformanceDoctor.CleanupProbe -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw "cleanup probe build failed" }
++          $fixtureParent = Join-Path $env:RUNNER_TEMP 'wo17-isolated-fixtures'
++          New-Item -ItemType Directory -Force $fixtureParent | Out-Null
++          & tools/SmartPerformanceDoctor.CleanupProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.CleanupProbe.exe --synthetic artifacts/wo11-ci $fixtureParent
++          if ($LASTEXITCODE -ne 0) { throw "cleanup roundtrip failed" }
++          dotnet build tools/SmartPerformanceDoctor.GuiProbe -c Release -p:Platform=x64 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw "UIA harness build failed" }
++          & tools/SmartPerformanceDoctor.GuiProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.GuiProbe.exe | Set-Content artifacts/wo10-sandbox/gui-status.json
++      - name: Separate-process termination and recovery
++        shell: pwsh
++        run: |
++          dotnet build tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          ./scripts/wo06-process-validation.ps1 -OutputDirectory artifacts/wo06-ci-process
++      - name: Production profile and isolated test profile
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'test kit build failed' }
++          dotnet build tools/SmartPerformanceDoctor.VaultRecovery/SmartPerformanceDoctor.VaultRecovery.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'data recovery build failed' }
++          $kit = 'tools/SmartPerformanceDoctor.VMTestKit/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.VMTestKit.exe'
++          $engine = 'src/SmartPerformanceDoctor.UpdateEngine/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateEngine.dll'
++          & $kit audit-production $engine
++          if ($LASTEXITCODE -ne 0) { throw 'test trust leaked into production' }
++          & $kit audit-production 'src/SmartPerformanceDoctor.App/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.dll'
++          if ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production app' }
++          & $kit audit-production 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.dll'
++          if ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production helper' }
++          $profile = Join-Path $env:RUNNER_TEMP 'wo06-test-profile'
++          & $kit fixture-profile $profile ('0' * 40)
++          if ($LASTEXITCODE -ne 0) { throw 'profile generation failed' }
++          $source = Join-Path $profile 'TestVmTrust.g.cs'
++          dotnet build src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -o (Join-Path $profile 'output') -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'test profile build failed' }
++          & $kit audit-production (Join-Path $profile 'output/SmartPerformanceDoctor.UpdateEngine.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test artifact' }
++          dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -m:1 -o (Join-Path $profile 'app-output') -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'VM Release application profile build failed' }
++          & $kit audit-production (Join-Path $profile 'app-output/SmartPerformanceDoctor.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test application' }
++          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateHelper.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'VM application copied a production update helper' }
++          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateEngine.dll')
++          if ($LASTEXITCODE -ne 6) { throw 'VM helper copied a production update engine' }
++          exit 0
++      - name: Vault reliability and separate-process crash recovery
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO12VaultReliabilityTests' --logger 'trx;LogFileName=wo12-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'vault reliability failed' }
++          dotnet build tools/SmartPerformanceDoctor.VaultProbe -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'vault probe build failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --synthetic artifacts/wo12-ci
++          if ($LASTEXITCODE -ne 0) { throw 'vault crash preservation failed' }
++      - name: Authenticated generations and password crash recovery
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO13' --logger 'trx;LogFileName=wo13-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO13 regression failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --crash-safe artifacts/wo13-ci
++          if ($LASTEXITCODE -ne 0) { throw 'authenticated vault recovery failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --recovery-crash artifacts/wo13-ci
++          if ($LASTEXITCODE -ne 0) { throw 'authenticated recovery code persistence failed' }
++      - name: Legacy v5 transition and authenticated recovery
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO14' --logger 'trx;LogFileName=wo14-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO14 regression failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo14 artifacts/wo14-ci
++          if ($LASTEXITCODE -ne 0) { throw 'legacy transition or recovery failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo14-memory artifacts/wo14-memory
++          if ($LASTEXITCODE -ne 0) { throw 'streaming integrity or memory probe failed' }
++      - name: Trusted recovery receipts and replay boundaries
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO15' --logger 'trx;LogFileName=wo15-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO15 regression failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo15 artifacts/wo15-ci
++          if ($LASTEXITCODE -ne 0) { throw 'WO15 receipt or replay probe failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo15-memory artifacts/wo15-memory
++          if ($LASTEXITCODE -ne 0) { throw 'WO15 export-only memory or integrity probe failed' }
++      - name: WO16 receipt reconciliation and authenticated v5 read-only recovery
++        shell: pwsh
++        run: |
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO16' --logger 'trx;LogFileName=wo16-vault.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO16 regression failed' }
++          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo16 artifacts/wo16-ci
++          if ($LASTEXITCODE -ne 0) { throw 'WO16 reconciliation or recovery failed' }
++          pwsh -NoProfile -File scripts/wo16-ui-source-validation.ps1
++          if ($LASTEXITCODE -ne 0) { throw 'WO16 UI source contract failed' }
++      - name: WO17 storage and file Clear qualification
++        shell: pwsh
++        run: |
++          dotnet build tools/SmartPerformanceDoctor.StorageCareProbe -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO17 probe build failed' }
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO17' --logger 'trx;LogFileName=wo17-focused.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO17 tests failed' }
++          $fixtureParent = Join-Path $env:RUNNER_TEMP 'wo17-isolated-fixtures'
++          New-Item -ItemType Directory -Force $fixtureParent | Out-Null
++          dotnet tools/SmartPerformanceDoctor.StorageCareProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.StorageCareProbe.dll --synthetic artifacts/wo17-ci $fixtureParent
++          if ($LASTEXITCODE -ne 0) { throw 'WO17 synthetic qualification failed' }
++          pwsh -NoProfile -File scripts/wo17-ui-source-validation.ps1
++          if ($LASTEXITCODE -ne 0) { throw 'WO17 UI source validation failed' }
++      - name: WO21 approval, trust, process and preparation qualification
++        shell: pwsh
++        run: |
++          New-Item -ItemType Directory -Force artifacts/wo22-ci | Out-Null
++          Copy-Item docs/rework/evidence/wo21/ENVIRONMENT_RESULT.json artifacts/wo22-ci/prior-environment.json
++          dotnet build tools/SmartPerformanceDoctor.InstallationLauncher -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'launcher build failed' }
++          $launcher = 'tools/SmartPerformanceDoctor.InstallationLauncher/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.InstallationLauncher.exe'
++          & $launcher --inspect
++          if ($LASTEXITCODE -ne 6) { throw 'untrusted undeployed launcher was accepted' }
++          dotnet build tools/SmartPerformanceDoctor.UpdateBridge -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'Bridge build failed' }
++          ./scripts/wo21-qualification.ps1 -FixtureRoot (Join-Path $env:RUNNER_TEMP 'wo21-ci-fixtures') -OutputDirectory artifacts/wo21-qualification -Filter 'FullyQualifiedName~WO21|FullyQualifiedName~WO22'
++          ./scripts/wo21-qualification-selftest.ps1 -FixtureRoot (Join-Path $env:RUNNER_TEMP 'wo21-ci-fixtures') -ReceiptDirectory artifacts/wo21-qualification
++          dotnet build tools/SmartPerformanceDoctor.UpdatePerformanceProbe -c Release -p:Platform=x64 -m:1 -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'performance probe build failed' }
++          ./scripts/wo20-process-validation.ps1 -OutputDirectory artifacts/wo22-ci/recorder -ValidateRecorderOnly
++          ./scripts/wo22-process-validation.ps1 -OutputDirectory artifacts/wo22-ci
++          ./scripts/wo22-ui-contract.ps1
++          ./scripts/wo21-test-signing.ps1 -BinaryDirectory 'C:\WO21\binaries' -GuestTestRoot 'C:\wo21-signing' -ExpectedGuestUuid PREPARED -ExpectedTestSid PREPARED | Set-Content artifacts/wo22-ci/signing-preparation.json
++          ./scripts/wo20-source-contract.ps1
++      - name: WO23 publication crash matrix
++        shell: pwsh
++        run: |
++          ./scripts/wo23-process-validation.ps1 -OutputDirectory artifacts/wo23-process
++          ./scripts/wo23-ui-contract.ps1
++          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO23' --logger 'trx;LogFileName=wo23-focused.trx' -v:minimal
++          if ($LASTEXITCODE -ne 0) { throw 'WO23 focused tests failed' }
++      - name: Full application regression
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        shell: pwsh
++        run: ./scripts/wo21-qualification.ps1 -FixtureRoot (Join-Path $env:RUNNER_TEMP 'wo21-full-fixtures') -OutputDirectory artifacts/wo23-full
++      - name: SecurityLab regression
++        env:
++          VSTEST_CONNECTION_TIMEOUT: '300'
++        run: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo06-securitylab.trx' -v:minimal
++      - name: Reject unsupported helper verb
++        shell: pwsh
++        run: |
++          $helper = 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe'
++          $process = Start-Process -FilePath $helper -ArgumentList @('--exec', 'arbitrary') -Wait -PassThru -NoNewWindow
++          if ($process.ExitCode -ne 2) { throw "Unexpected helper exit code: $($process.ExitCode)" }
++      - name: Upload test evidence
++        if: always()
++        uses: actions/upload-artifact@v4
++        with:
++          name: wo23-windows-evidence
++          path: |
++            tests/SmartPerformanceDoctor.Tests/TestResults/*.trx
++            tests/SmartPerformanceDoctor.SecurityLab.Tests/TestResults/*.trx
++            artifacts/wo06-ci-process/process-results.json
++            artifacts/wo07-ci/measurement.json
++            artifacts/wo08-ci/**/*.json
++            artifacts/wo09-ci/**/*.json
++            artifacts/wo10-ci/**/*.json
++            artifacts/wo10-sandbox/sandbox-results.json
++            artifacts/wo10-sandbox/gui-status.json
++            artifacts/wo11-ci/*.json
++            artifacts/wo11-sandbox/sandbox-results.json
++            artifacts/wo12-ci/crash-results.json
++            artifacts/wo12-ci/performance.json
++            artifacts/wo13-ci/commit-recovery.json
++            artifacts/wo13-ci/password-crash.json
++            artifacts/wo13-ci/streaming-export.json
++            artifacts/wo13-ci/recovery-code-crash.json
++            artifacts/wo14-ci/transition.json
++            artifacts/wo14-ci/transition-crash.json
++            artifacts/wo14-ci/metadata-ready.json
++            artifacts/wo14-ci/password-crash.json
++            artifacts/wo14-ci/replay.json
++            artifacts/wo14-memory/streaming-memory.json
++            artifacts/wo15-ci/REPLAY_ATTACK_RESULT.json
++            artifacts/wo15-ci/RECOVERY_RECEIPT_RESULT.json
++            artifacts/wo15-ci/V5_PASSWORD_CRASH_RESULT.json
++            artifacts/wo15-memory/PERFORMANCE_RESULT.json
++
++            artifacts/wo16-ci/*.json
++
++            artifacts/wo17-ci/*.json
++            artifacts/wo18-ci/**/*.json
++            artifacts/wo18-ci/*.json
++            artifacts/wo19-ci/**
++
++            artifacts/wo20-ci/*.json
++            artifacts/wo20-ci/*.txt
++
++            artifacts/wo21-ci/**/*.json
++            artifacts/wo21-ci/*.json
++            artifacts/wo21-qualification/*.json
++            artifacts/wo21-environment/*.json
++            artifacts/wo21-full/*.json
++            artifacts/wo21-full/*.txt
++
++            artifacts/wo22-ci/**/*.json
++            artifacts/wo22-ci/*.json
++            artifacts/wo22-full/*
++
++            artifacts/wo23-security/*.json
++            artifacts/wo23-process/**/*.json
++            artifacts/wo23-full/*
++            artifacts/wo23-ui/*.json
+diff --git a/scripts/wo20-process-validation.ps1 b/scripts/wo20-process-validation.ps1
+index 724c7f4..1feae6d 100644
+--- a/scripts/wo20-process-validation.ps1
++++ b/scripts/wo20-process-validation.ps1
+@@ -1,4 +1,4 @@
+-param([string]$OutputDirectory="artifacts/wo20-process",[switch]$ValidateRecorderOnly)
++param([string]$OutputDirectory="artifacts/wo20-process",[switch]$ValidateRecorderOnly,[switch]$FunctionsOnly)
+ $ErrorActionPreference='Stop'
+ $repo=Split-Path $PSScriptRoot -Parent
+ $output=[IO.Path]::GetFullPath((Join-Path $repo $OutputDirectory))
+@@ -20,10 +20,11 @@ if($ValidateRecorderOnly){
+ }
+ $probe=Join-Path $repo 'tools/SmartPerformanceDoctor.WO20Probe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.WO20Probe.exe'
+ $script:wo20Records=[Collections.Generic.List[object]]::new()
++$script:wo20Source=(& git -C $repo rev-parse HEAD).Trim()
+ function Invoke-Probe([string]$Verb,[string]$Root){
+  $text=& $probe $Verb $Root 2>&1
+  $code=$LASTEXITCODE
+- $script:wo20Records.Add(@{Command="WO20Probe $Verb <SYNTHETIC_ROOT>";Input=$Verb;Output=($text|Out-String).Trim();ExitCode=$code;Environment='Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E'})
++ $script:wo20Records.Add(@{Source=$script:wo20Source;Command="WO20Probe $Verb <SYNTHETIC_ROOT>";Input=$Verb;Output=($text|Out-String).Trim();ExitCode=$code;Environment='Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E'})
+  if($code -ne 0){throw "Probe failed $Verb : $text"}
+ }
+ function Kill-Probe([string]$Verb,[string]$Root){
+@@ -36,10 +37,11 @@ function Kill-Probe([string]$Verb,[string]$Root){
+   if(!(Test-Path -LiteralPath $signal)){throw "Checkpoint not reached: $Verb $(Get-Content $err -Raw)"}
+   $checkpoint=Get-Content -LiteralPath $signal -Raw
+   $process.Kill();$process.WaitForExit();$code=$process.ExitCode
+-  $script:wo20Records.Add(@{Command="WO20Probe $Verb <SYNTHETIC_ROOT>";Checkpoint=$checkpoint;ExitCode=$code;Output=[IO.File]::ReadAllText($workerOut);Termination='Parent killed separate process';Environment='Synthetic filesystem'})
++  $script:wo20Records.Add(@{Source=$script:wo20Source;Command="WO20Probe $Verb <SYNTHETIC_ROOT>";Checkpoint=$checkpoint;ExitCode=$code;Output=[IO.File]::ReadAllText($workerOut);Termination='Parent killed separate process';Environment='Synthetic filesystem'})
+   if($code -ne -1){throw "Unexpected termination exit $code"}
+  }finally{if(!$process.HasExited){$process.Kill();$process.WaitForExit()};$process.Dispose()}
+ }
++if($FunctionsOnly){return}
+ try{
+  foreach($kind in @('basic','random','many')){
+   $root=Join-Path $parent ('wo20-'+$kind+'-'+[guid]::NewGuid().ToString('N'))
+diff --git a/scripts/wo23-process-validation.ps1 b/scripts/wo23-process-validation.ps1
+new file mode 100644
+index 0000000..fc31048
+--- /dev/null
++++ b/scripts/wo23-process-validation.ps1
+@@ -0,0 +1,30 @@
++param([string]$OutputDirectory='artifacts/wo23-process')
++$ErrorActionPreference='Stop'
++$repo=Split-Path $PSScriptRoot -Parent
++$wo23Output=Join-Path $repo $OutputDirectory;New-Item -ItemType Directory -Force $wo23Output|Out-Null
++. (Join-Path $PSScriptRoot 'wo20-process-validation.ps1') -OutputDirectory ($OutputDirectory+'/harness') -FunctionsOnly
++$script:wo20Records.Clear()
++try{
++ foreach($point in @('AfterFinalHashVerification','AttestationCreated','AttestationPartialWrite','AttestationFlushed','InstallationPointerCreated','InstallationPointerFlushed','BeforeInstallationPointerReplace','AfterInstallationPointerReplace','BeforeCommittedJournal','AfterCommittedJournal','BeforeSuccessReturn')){
++  $root=Join-Path $parent ('wo20-wo23-commit-'+[guid]::NewGuid().ToString('N'))
++  Invoke-Probe prepare $root;Invoke-Probe vault-check $root;Kill-Probe ('commit-kill:'+$point) $root
++  Invoke-Probe publication-query $root;$state=$script:wo20Records[-1].Output|ConvertFrom-Json
++  $complete=$point -in @('AfterCommittedJournal','BeforeSuccessReturn')
++  if($state.Trust.Verified -ne $complete){throw "INCORRECT_PUBLICATION_STATE:$point"}
++  if(!$complete){Invoke-Probe recover $root;Invoke-Probe verify-original $root}
++  Invoke-Probe vault-check $root
++ }
++ foreach($point in @('BeforeInstallationPointerReplace','AfterInstallationPointerReplace','BeforeCommittedJournal','AfterCommittedJournal')){
++  $root=Join-Path $parent ('wo20-wo23-pointer-'+[guid]::NewGuid().ToString('N'))
++  Invoke-Probe prepare $root;Kill-Probe ('commit-repeat-kill:'+$point) $root
++  Invoke-Probe publication-query $root;$state=$script:wo20Records[-1].Output|ConvertFrom-Json
++  if($state.Trust.Verified -ne ($point -eq 'AfterCommittedJournal')){throw "POINTER_PUBLICATION_STATE:$point"}
++  if($point -ne 'AfterCommittedJournal'){
++   Invoke-Probe recover $root;Invoke-Probe verify-previous $root
++   Invoke-Probe publication-query $root
++   if(!(($script:wo20Records[-1].Output|ConvertFrom-Json).Trust.Verified)){throw 'PREVIOUS_GENERATION_NOT_AUTHENTICATED'}
++  }
++  Invoke-Probe vault-check $root
++ }
++ 'WO23_COMMIT_PROCESS_TERMINATION=PASS; POWER_LOSS=NOT_TESTED'
++}finally{$script:wo20Records|ConvertTo-Json -Depth 14|Set-Content (Join-Path $wo23Output 'process-results.json')}
+diff --git a/scripts/wo23-ui-contract.ps1 b/scripts/wo23-ui-contract.ps1
+new file mode 100644
+index 0000000..270c51d
+--- /dev/null
++++ b/scripts/wo23-ui-contract.ps1
+@@ -0,0 +1,17 @@
++param([string]$OutputDirectory='artifacts/wo23-ui')
++$ErrorActionPreference='Stop'
++$repo=Split-Path $PSScriptRoot -Parent
++$out=Join-Path $repo $OutputDirectory;New-Item -ItemType Directory -Force $out|Out-Null
++& (Join-Path $PSScriptRoot 'wo22-ui-contract.ps1')
++$view=Get-Content (Join-Path $repo 'src/SmartPerformanceDoctor.App/ViewModels/UpdateStatusViewModel.cs') -Raw
++foreach($required in @('_progressGate.IsCurrent(epoch)','_progressGate.Invalidate()','CancelPreparation()','Progress=0')){if(!$view.Contains($required)){throw "MISSING_UI_GUARD:$required"}}
++@{Status='PASS';Scope='UI source and service connection contract only';ActualGUI='NOT TESTED';Source=(& git -C $repo rev-parse HEAD).Trim();Command='pwsh -NoProfile -File scripts/wo23-ui-contract.ps1';Input='Existing update recovery UI and generation-aware progress callbacks';Output='WO23_UI_SOURCE_CONTRACT=PASS; ACTUAL_GUI=NOT_TESTED';ExitCode=0}|ConvertTo-Json|Set-Content (Join-Path $out 'ui.json')
++$gate=Get-Content (Join-Path $repo 'src/SmartPerformanceDoctor.AstraVault/Target/Av3PhaseGate.cs') -Raw
++$flags=@{}
++foreach($name in @('ProductionWriterEnabled','JournalWriterEnabled','MigrationEnabled','WriterEnableReady','ExternalReviewCompleted','ProductionEnableAuthorized')){
++ if($gate -notmatch ('bool\s+'+$name+'\s*=\s*false;')){throw "PRODUCTION_GATE_CHANGED:$name"};$flags[$name]=$false
++}
++$storage=Get-Content (Join-Path $repo 'src/SmartPerformanceDoctor.App/Services/SystemCare/StorageInventory.cs') -Raw
++if(!$storage.Contains('public bool CanExecute => false;')){throw 'STORAGECARE_EXECUTION_CHANGED'}
++@{Status='PASS';Source=(& git -C $repo rev-parse HEAD).Trim();Command='wo23-ui-contract.ps1 production source audit';Input='Actual production declarations';Flags=$flags;StorageCareCanExecute=$false;PublisherPolicyChanged=$false;ExitCode=0}|ConvertTo-Json -Depth 5|Set-Content (Join-Path $out 'production-gates.json')
++'WO23_UI_SOURCE_CONTRACT=PASS; ACTUAL_GUI=NOT_TESTED'
+diff --git a/scripts/wo23-windows-security.ps1 b/scripts/wo23-windows-security.ps1
+new file mode 100644
+index 0000000..5be61d4
+--- /dev/null
++++ b/scripts/wo23-windows-security.ps1
+@@ -0,0 +1,81 @@
++param([string]$OutputDirectory='artifacts/wo23-security')
++$ErrorActionPreference='Stop'
++if($env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted' -or $env:RUNNER_OS -ne 'Windows'){throw 'DISPOSABLE_GITHUB_HOSTED_WINDOWS_REQUIRED'}
++$repo=Split-Path $PSScriptRoot -Parent
++$out=Join-Path $repo $OutputDirectory;New-Item -ItemType Directory -Force $out | Out-Null
++$source=(& git -C $repo rev-parse HEAD).Trim()
++function Mark([string]$Stage){
++ Write-Host ("WO23_SECURITY:"+$Stage)
++ @{Stage=$Stage;Time=[DateTimeOffset]::UtcNow;Source=$source}|ConvertTo-Json|Set-Content (Join-Path $out 'security-progress.json')
++}
++$identity=[Security.Principal.WindowsIdentity]::GetCurrent()
++$admin=([Security.Principal.WindowsPrincipal]::new($identity)).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
++$envRecord=@{Source=$source;OS=[Environment]::OSVersion.VersionString;Runner=$env:RUNNER_ENVIRONMENT;Administrator=$admin;SID='REDACTED';FileSystem=(Get-Volume -DriveLetter ([IO.Path]::GetPathRoot($env:RUNNER_TEMP).Substring(0,1))).FileSystem;WinVerifyTrust='wintrust.dll';CertificateProvider=[bool](Get-Command New-SelfSignedCertificate -ErrorAction SilentlyContinue);SigningTool='Set-AuthenticodeSignature';InteractiveUAC='NOT TESTED';IndependentSID='NOT TESTED';Reboot='NOT TESTED';RestrictedToken='NOT TESTED'}
++$envRecord|ConvertTo-Json|Set-Content (Join-Path $out 'environment.json')
++$probe=Join-Path $repo 'tools/SmartPerformanceDoctor.WO23WindowsProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.WO23WindowsProbe.exe'
++$aclRoot=Join-Path $env:RUNNER_TEMP ('wo23-acl-'+[guid]::NewGuid().ToString('N'))
++Mark 'AclStart'
++$acl=& $probe acl $aclRoot
++$aclExit=$LASTEXITCODE
++@{Command='WO23WindowsProbe acl <CI_TEMP>/wo23-acl';Input='Actual NTFS ACL and file handle operations';Source=$source;ExitCode=$aclExit;Output=($acl|Out-String)|ConvertFrom-Json}|ConvertTo-Json -Depth 10|Set-Content (Join-Path $out 'acl.json')
++if($aclExit -ne 0){throw 'ACTUAL_ACL_QUALIFICATION_FAILED'}
++Mark 'AclCompleted'
++$signRoot=Join-Path $env:RUNNER_TEMP ('wo23-sign-'+[guid]::NewGuid().ToString('N'));New-Item -ItemType Directory $signRoot|Out-Null
++$names=@('SmartPerformanceDoctor.UpdateBridge.exe','SmartPerformanceDoctor.UpdateBridge.dll','SmartPerformanceDoctor.UpdateEngine.dll','SmartPerformanceDoctor.UpdateHelper.exe','SmartPerformanceDoctor.UpdateHelper.dll')
++$records=[Collections.Generic.List[object]]::new();$certs=[Collections.Generic.List[object]]::new()
++function Verify([string]$Name,[string]$Path,[bool]$Accepted,[string]$Thumbprint){
++ Mark ('VerifyStart:'+ $Name)
++ $raw=& $probe verify $Path;$code=$LASTEXITCODE;$result=($raw|Out-String)|ConvertFrom-Json
++ $observed=$result.Code -eq 0 -and $result.Thumbprint -eq $Thumbprint
++ Mark ('VerifyCompleted:'+ $Name)
++ $records.Add(@{Name=$Name;Command='WO23WindowsProbe verify <CI_SYNTHETIC_PE>';Input=(Split-Path $Path -Leaf);ExitCode=$code;Output=$result;ExpectedAccepted=$Accepted;Accepted=$observed;Status=$(if($observed -eq $Accepted -and $code -eq 0){'PASS'}else{'FAIL'})})
++ if($code -ne 0 -or $observed -ne $Accepted -or $result.ProductionAccepted){throw "AUTHENTICODE_ASSERTION:$Name"}
++}
++try{
++ foreach($subject in @('PC-Care WO23 Disposable CI','PC-Care WO23 Other Publisher','PC-Care WO23 Untrusted Publisher')){
++  Mark ('CertificateCreate:'+ $subject)
++  $cert=New-SelfSignedCertificate -Type CodeSigningCert -Subject ('CN='+$subject) -CertStoreLocation Cert:\CurrentUser\My -KeyExportPolicy NonExportable -Provider 'Microsoft Software Key Storage Provider' -KeyAlgorithm RSA -KeyLength 2048 -NotAfter (Get-Date).AddDays(2)
++  $certs.Add($cert)
++  Mark ('CertificateCreated:'+ $subject)
++  $public=Join-Path $signRoot ($cert.Thumbprint+'.cer');Export-Certificate -Cert $cert -FilePath $public|Out-Null
++  if($certs.Count -lt 3){Mark 'TemporaryCiMachineRootImport';Import-Certificate -FilePath $public -CertStoreLocation Cert:\LocalMachine\Root|Out-Null;Mark 'TemporaryCiMachineRootImported'}
++ }
++ foreach($name in $names){
++  $project=if($name -like '*UpdateHelper*'){'src/SmartPerformanceDoctor.UpdateHelper'}else{'tools/SmartPerformanceDoctor.UpdateBridge'}
++  $from=Join-Path $repo ($project+'/bin/x64/Release/net10.0-windows10.0.26100.0/'+$name)
++  $path=Join-Path $signRoot $name;Copy-Item -LiteralPath $from -Destination $path
++  Verify ('UnsignedRejected:'+ $name) $path $false $certs[0].Thumbprint
++  Mark ('SignStart:'+ $name)
++  $signed=Set-AuthenticodeSignature -FilePath $path -Certificate $certs[0] -HashAlgorithm SHA256
++  Mark ('SignCompleted:'+ $name)
++  if($signed.Status -ne 'Valid'){throw ('SIGNING_FAILED:'+ $signed.Status)}
++  Verify ('SignedAccepted:'+ $name) $path $true $certs[0].Thumbprint
++ }
++ $engine=Join-Path $signRoot 'SmartPerformanceDoctor.UpdateEngine.dll'
++ $pinned=((& $probe verify-pinned $engine)|Out-String)|ConvertFrom-Json
++ if($pinned.Code -ne 0 -or $pinned.BlockedMutations -ne 2){throw 'SIGNED_HANDLE_REPLACEMENT_NOT_BLOCKED'}
++ $records.Add(@{Name='SignedFinalHandleRejectsDeletionAndMutation';Status='PASS';Command='WO23WindowsProbe verify-pinned <CI_SYNTHETIC_PE>';ExitCode=$LASTEXITCODE;Output=$pinned})
++ $before=((& $probe verify $engine)|Out-String)|ConvertFrom-Json
++ Copy-Item -LiteralPath $engine -Destination (Join-Path $signRoot 'replacement.dll')
++ $after=((& $probe verify (Join-Path $signRoot 'replacement.dll'))|Out-String)|ConvertFrom-Json
++ if($before.Identity -eq $after.Identity -or $before.Hash -ne $after.Hash){throw 'FILE_ID_COPY_BINDING_FAILED'}
++ $records.Add(@{Name='SignedDllCopyHasDifferentFileIdentity';Status='PASS';ExitCode=0;Output=@{SameHash=$true;DifferentIdentity=$true}})
++ $other=Join-Path $signRoot 'other.dll';Copy-Item -LiteralPath $engine -Destination $other
++ Set-AuthenticodeSignature -FilePath $other -Certificate $certs[1] -HashAlgorithm SHA256|Out-Null
++ Verify 'ValidOtherPublisherRejectedByExpectedPin' $other $false $certs[0].Thumbprint
++ $edited=Join-Path $signRoot 'edited.dll';Copy-Item -LiteralPath $engine -Destination $edited
++ $stream=[IO.File]::Open($edited,[IO.FileMode]::Open,[IO.FileAccess]::ReadWrite)
++ try{$stream.Position=512;$value=$stream.ReadByte();$stream.Position=512;$stream.WriteByte($value -bxor 1);$stream.Flush($true)}finally{$stream.Dispose()}
++ Verify 'PostSigningModificationRejected' $edited $false $certs[0].Thumbprint
++ $untrusted=Join-Path $signRoot 'untrusted.dll';Copy-Item -LiteralPath $engine -Destination $untrusted
++ Set-AuthenticodeSignature -FilePath $untrusted -Certificate $certs[2] -HashAlgorithm SHA256|Out-Null
++ Verify 'UntrustedChainRejected' $untrusted $false $certs[2].Thumbprint
++}finally{
++ foreach($cert in $certs){
++  if(Test-Path -LiteralPath ('Cert:\LocalMachine\Root\'+$cert.Thumbprint)){Remove-Item -LiteralPath ('Cert:\LocalMachine\Root\'+$cert.Thumbprint) -ErrorAction Stop}
++  if(Test-Path -LiteralPath ('Cert:\CurrentUser\My\'+$cert.Thumbprint)){Remove-Item -LiteralPath ('Cert:\CurrentUser\My\'+$cert.Thumbprint) -DeleteKey -ErrorAction Stop}
++ }
++ $remaining=@($certs|Where-Object{(Test-Path -LiteralPath ('Cert:\CurrentUser\My\'+$_.Thumbprint)) -or (Test-Path -LiteralPath ('Cert:\LocalMachine\Root\'+$_.Thumbprint))})
++ @{Source=$source;Status=$(if($records.Count -ge 14 -and !($records|Where-Object Status -eq 'FAIL') -and $remaining.Count -eq 0){'PASS'}else{'PARTIAL'});Scope='Actual PE Authenticode in disposable GitHub-hosted Windows; test pin only; production pins unchanged';Tests=$records;CertificateCleanupVerified=$remaining.Count -eq 0;TrustStore='Disposable CI LocalMachine Root; own entries removed in finally';Timestamp='NOT TESTED';ExpiredCertificate='NOT TESTED';UAC='NOT TESTED'}|ConvertTo-Json -Depth 12|Set-Content (Join-Path $out 'authenticode.json')
++}
++'WO23_ACTUAL_WINDOWS_ACL_AND_AUTHENTICODE=PASS'
+diff --git a/src/SmartPerformanceDoctor.App/Services/Update/UpdateProgressGate.cs b/src/SmartPerformanceDoctor.App/Services/Update/UpdateProgressGate.cs
+new file mode 100644
+index 0000000..8158209
+--- /dev/null
++++ b/src/SmartPerformanceDoctor.App/Services/Update/UpdateProgressGate.cs
+@@ -0,0 +1,10 @@
++namespace SmartPerformanceDoctor.App.Services.Update;
++
++/// <summary>Invalidate queued reports when an operation ends or a new operation starts.</summary>
++public sealed class UpdateProgressGate
++{
++    private long _epoch;
++    public long Capture() => Interlocked.Read(ref _epoch);
++    public void Invalidate() => Interlocked.Increment(ref _epoch);
++    public bool IsCurrent(long epoch) => Capture() == epoch;
++}
+diff --git a/src/SmartPerformanceDoctor.App/ViewModels/UpdateStatusViewModel.cs b/src/SmartPerformanceDoctor.App/ViewModels/UpdateStatusViewModel.cs
+index e660c61..0dd6997 100644
+--- a/src/SmartPerformanceDoctor.App/ViewModels/UpdateStatusViewModel.cs
++++ b/src/SmartPerformanceDoctor.App/ViewModels/UpdateStatusViewModel.cs
+@@ -26,6 +26,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
+     private string _selectedPackagePath = "";
+     private double _progress;
+     private bool _isBusy;
++    private readonly UpdateProgressGate _progressGate = new();
+     private bool _canApply;
+     private CancellationTokenSource? _preparationCancellation;
+     private bool _canCancelPreparation;
+@@ -53,7 +54,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
+     public string VerifyLine { get => _verifyLine; private set => Set(ref _verifyLine, value); }
+     public string SelectedPackagePath { get => _selectedPackagePath; private set => Set(ref _selectedPackagePath, value); }
+     public double Progress { get => _progress; private set => Set(ref _progress, value); }
+-    public bool IsBusy { get => _isBusy; private set { Set(ref _isBusy,value);OnPropertyChanged(nameof(IsProgressIndeterminate)); } }
++    public bool IsBusy { get => _isBusy; private set { if(!value)_progressGate.Invalidate();Set(ref _isBusy,value);OnPropertyChanged(nameof(IsProgressIndeterminate)); } }
+     public bool CanApply { get => _canApply; private set => Set(ref _canApply, value); }
+     public bool CanDownloadGitHub { get => _canDownloadGitHub; private set => Set(ref _canDownloadGitHub, value); }
+     public RemoteUpdateCheckResult? AvailableGitHubUpdate => _lastGitHubCheck;
+@@ -178,7 +179,9 @@ public sealed class UpdateStatusViewModel : ObservableObject
+ 
+             RunOnUi(() =>
+             {
++                _progressGate.Invalidate();
+                 GitHubLine = result.Message;
++                _progressGate.Invalidate();
+                 StatusLine = result.Message;
+                 PhaseLine = result.Success ? "다운로드 완료" : "다운로드 실패";
+                 ActionLine = result.Success ? "패키지 준비됨" : "실패";
+@@ -200,6 +203,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
+         {
+             RunOnUi(() =>
+             {
++                _progressGate.Invalidate();
+                 GitHubLine = $"다운로드 오류: {ex.Message}";
+                 PhaseLine = "실패";
+             });
+@@ -279,7 +283,8 @@ public sealed class UpdateStatusViewModel : ObservableObject
+             {
+                 RunOnUi(() =>
+                 {
+-                    StatusLine = inspection.Message;
++                    _progressGate.Invalidate();
++                StatusLine = inspection.Message;
+                     ActionLine = "적용 불가";
+                     DetailLine = inspection.Status;
+                     PhaseLine = "중단";
+@@ -297,6 +302,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
+             var verify = result.RestartScheduled ? null : AppVersionService.VerifyInstalledVersion(result.ToVersion);
+             RunOnUi(() =>
+             {
++                _progressGate.Invalidate();
+                 StatusLine = result.Message;
+                 TargetVersion = result.ToVersion;
+                 CurrentVersion = AppInfo.Version;
+@@ -343,13 +349,14 @@ public sealed class UpdateStatusViewModel : ObservableObject
+         catch(OperationCanceledException) when(cancellationToken.IsCancellationRequested)
+         {
+             _installer.InvalidateInspectionCache();
+-            RunOnUi(()=>{StatusLine="설치 파일 변경 전 준비를 취소했습니다.";PhaseLine="취소됨";ActionLine="변경 전 취소";DetailLine="관리자 적용을 시작하지 않았습니다.";Progress=0;});
++            RunOnUi(()=>{_progressGate.Invalidate();StatusLine="설치 파일 변경 전 준비를 취소했습니다.";PhaseLine="취소됨";ActionLine="변경 전 취소";DetailLine="관리자 적용을 시작하지 않았습니다.";Progress=0;});
+             AppendLog("사용자 요청으로 적용 준비 취소");return null;
+         }
+         catch (Exception ex)
+         {
+             RunOnUi(() =>
+             {
++                _progressGate.Invalidate();
+                 StatusLine = $"업데이트 오류: {ex.Message}";
+                 ActionLine = "오류";
+                 PhaseLine = "실패";
+@@ -414,6 +421,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
+         {
+             RunOnUi(() =>
+             {
++                _progressGate.Invalidate();
+                 StatusLine = $"검사 오류: {ex.Message}";
+                 ActionLine = "오류";
+                 PhaseLine = "실패";
+@@ -436,11 +444,21 @@ public sealed class UpdateStatusViewModel : ObservableObject
+         }
+     }
+ 
+-    private IProgress<UpdateProgressReport> CreateProgressHandler() =>
+-        new Progress<UpdateProgressReport>(report => RunOnUi(() => ApplyProgress(report), blocking: false));
++    private IProgress<UpdateProgressReport> CreateProgressHandler()
++    {
++        _progressGate.Invalidate();
++        var epoch=_progressGate.Capture();
++        return new Progress<UpdateProgressReport>(report => RunOnUi(() =>
++        {if(_progressGate.IsCurrent(epoch))ApplyProgress(report);}, blocking: false));
++    }
+ 
+-    private IProgress<RemoteUpdateDownloadProgress> CreateDownloadProgressHandler() =>
+-        new Progress<RemoteUpdateDownloadProgress>(report => RunOnUi(() => ApplyDownloadProgress(report), blocking: false));
++    private IProgress<RemoteUpdateDownloadProgress> CreateDownloadProgressHandler()
++    {
++        _progressGate.Invalidate();
++        var epoch=_progressGate.Capture();
++        return new Progress<RemoteUpdateDownloadProgress>(report => RunOnUi(() =>
++        {if(_progressGate.IsCurrent(epoch))ApplyDownloadProgress(report);}, blocking: false));
++    }
+ 
+     private void ApplyDownloadProgress(RemoteUpdateDownloadProgress report)
+     {
+@@ -469,6 +487,7 @@ public sealed class UpdateStatusViewModel : ObservableObject
+ 
+     private void BeginWork(string phase, string detail)
+     {
++        _progressGate.Invalidate();
+         IsBusy = true;
+         CanApply = false;
+         Progress = 0;
+@@ -519,7 +538,8 @@ public sealed class UpdateStatusViewModel : ObservableObject
+     private void ApplyInspection(UpdatePackageInspection inspection)
+     {
+         TargetVersion = inspection.Manifest?.ToVersion ?? "-";
+-        StatusLine = inspection.Message;
++        _progressGate.Invalidate();
++                StatusLine = inspection.Message;
+         CanApply = inspection.CanApply;
+         Changes = inspection.Manifest?.Changes.Count > 0
+             ? inspection.Manifest.Changes
+diff --git a/src/SmartPerformanceDoctor.UpdateEngine/InstallationAttestation.cs b/src/SmartPerformanceDoctor.UpdateEngine/InstallationAttestation.cs
+index f99677a..6d788f7 100644
+--- a/src/SmartPerformanceDoctor.UpdateEngine/InstallationAttestation.cs
++++ b/src/SmartPerformanceDoctor.UpdateEngine/InstallationAttestation.cs
+@@ -9,21 +9,33 @@ public sealed record InstallationPointer(string TransactionId,string Transaction
+ 
+ public sealed partial class UpdateTransaction
+ {
+-    private void RecordInstallation(string txDir,UpdateJournal journal,SignedManifest manifest,Stream package)
++    private void RecordInstallation(string txDir,UpdateJournal journal,SignedManifest manifest,Stream package,Action<UpdateFaultPoint>? fault)
+     {
+         package.Position=0;using var zip=new ZipArchive(package,ZipArchiveMode.Read,true);
+         using var signature=zip.GetEntry(SignedPackage.SignatureName)!.Open();
+         var envelope=JsonSerializer.Deserialize<SignatureEnvelope>(signature)!;
+         using(var record=WindowsFileBoundary.OpenWrite(txDir,"committed-attestation.json",true))
+-        {VerifyProtectedFile(record,txDir);record.Stream.Write(JsonSerializer.SerializeToUtf8Bytes(new CommittedInstallation(journal.TransactionId,journal.InstallIdentity,manifest,envelope.Signature)));record.Stream.Flush(true);}
++        {
++            VerifyProtectedFile(record,txDir);fault?.Invoke(UpdateFaultPoint.AttestationCreated);
++            var bytes=JsonSerializer.SerializeToUtf8Bytes(new CommittedInstallation(journal.TransactionId,journal.InstallIdentity,manifest,envelope.Signature));
++            record.Stream.Write(bytes.AsSpan(0,bytes.Length/2));fault?.Invoke(UpdateFaultPoint.AttestationPartialWrite);
++            record.Stream.Write(bytes.AsSpan(bytes.Length/2));record.Stream.Flush(true);
++            fault?.Invoke(UpdateFaultPoint.AttestationFlushed);
++        }
+         using var saved=WindowsFileBoundary.OpenRead(txDir,"committed-attestation.json");
+         using var work=WindowsFileBoundary.PinDirectory(_workRoot);
+         var name="installation-"+Guid.NewGuid().ToString("N")+".new";
+         using(var pointer=WindowsFileBoundary.OpenWrite(_workRoot,name,true))
+-        {VerifyProtectedFile(pointer,_workRoot);pointer.Stream.Write(JsonSerializer.SerializeToUtf8Bytes(new InstallationPointer(journal.TransactionId,journal.TransactionIdentity,journal.InstallIdentity,saved.Hash())));pointer.Stream.Flush(true);}
++        {
++            VerifyProtectedFile(pointer,_workRoot);fault?.Invoke(UpdateFaultPoint.InstallationPointerCreated);
++            pointer.Stream.Write(JsonSerializer.SerializeToUtf8Bytes(new InstallationPointer(journal.TransactionId,journal.TransactionIdentity,journal.InstallIdentity,saved.Hash())));
++            pointer.Stream.Flush(true);fault?.Invoke(UpdateFaultPoint.InstallationPointerFlushed);
++        }
+         work.Validate();var target=Path.Combine(_workRoot,"installation-current.json");
++        fault?.Invoke(UpdateFaultPoint.BeforeInstallationPointerReplace);
+         if(File.Exists(target))File.Replace(Path.Combine(_workRoot,name),target,Path.Combine(_workRoot,"installation-previous.json"));
+         else File.Move(Path.Combine(_workRoot,name),target);
++        fault?.Invoke(UpdateFaultPoint.AfterInstallationPointerReplace);
+     }
+     // A later authenticated declaration supersedes historical restored bytes only for its declared paths.
+     private HashSet<string> VerifiedCurrentDeclarationPaths(string installRoot)
+@@ -84,6 +96,18 @@ public sealed partial class UpdateTransaction
+                     catch (Exception ex) when (ex is IOException or InvalidDataException)
+                     { return new(false,true,"INSTALLATION-CONTENT-MISMATCH"); }
+                 }
++                if(!Version.TryParse(binding.Manifest.ToVersion,out var declaredVersion))
++                    return new(false,true,"INSTALLATION-RECOVERY-REQUIRED");
++                foreach(var otherDirectory in Directory.EnumerateDirectories(_workRoot,"tx-*"))
++                {
++                    if(string.Equals(Path.GetFullPath(otherDirectory),Path.GetFullPath(tx),StringComparison.OrdinalIgnoreCase))continue;
++                    if(!TryReadTrustedJournal(otherDirectory,installRoot,out var other,out _)||other is null)
++                        return new(false,true,"INSTALLATION-RECOVERY-REQUIRED");
++                    // A committed successor cannot be authenticated by the predecessor's pointer.
++                    if(other.Stage==UpdateStage.Committed &&
++                        (!Version.TryParse(other.FromVersion,out var successorFrom) || successorFrom>=declaredVersion))
++                        return new(false,true,"INSTALLATION-RECOVERY-REQUIRED");
++                }
+                 install.Validate();return new(true,false,"SIGNED-INSTALLATION-VERIFIED");
+             }
+             return new(false,false,"RESTORED-INSTALLATION-NOT-ATTESTED");
+diff --git a/src/SmartPerformanceDoctor.UpdateEngine/InstallationTrustPolicy.cs b/src/SmartPerformanceDoctor.UpdateEngine/InstallationTrustPolicy.cs
+index 810149b..96647b8 100644
+--- a/src/SmartPerformanceDoctor.UpdateEngine/InstallationTrustPolicy.cs
++++ b/src/SmartPerformanceDoctor.UpdateEngine/InstallationTrustPolicy.cs
+@@ -29,7 +29,7 @@ public sealed partial class UpdateTransaction
+             if (result.Verified) return new(InstallationTrustState.SignedInstallationVerified, true, false, result.Code);
+             if(result.Code!="RESTORED-INSTALLATION-NOT-ATTESTED" || !File.Exists(Path.Combine(_workRoot,"installation-enrollment.json")))
+             {
+-            var state = result.Code is "INSTALLATION-CONTENT-MISMATCH" or "INSTALLATION-IDENTITY-MISMATCH" or "INSTALLATION-ACL-MISMATCH" or "INSTALLATION-SIGNATURE-REJECTED" ? InstallationTrustState.SignedInstallationMismatch :
++            var state = result.Code=="INSTALLATION-RECOVERY-REQUIRED" ? InstallationTrustState.RecoveryRequired : result.Code is "INSTALLATION-CONTENT-MISMATCH" or "INSTALLATION-IDENTITY-MISMATCH" or "INSTALLATION-ACL-MISMATCH" or "INSTALLATION-SIGNATURE-REJECTED" ? InstallationTrustState.SignedInstallationMismatch :
+                 result.RequiresReview ? InstallationTrustState.AttestationCorrupted : InstallationTrustState.MigrationReviewRequired;
+             return new(state, false, true, result.Code);
+             }
+diff --git a/src/SmartPerformanceDoctor.UpdateEngine/UpdatePerformanceProfile.cs b/src/SmartPerformanceDoctor.UpdateEngine/UpdatePerformanceProfile.cs
+index 4ee75f1..0596b9d 100644
+--- a/src/SmartPerformanceDoctor.UpdateEngine/UpdatePerformanceProfile.cs
++++ b/src/SmartPerformanceDoctor.UpdateEngine/UpdatePerformanceProfile.cs
+@@ -2,7 +2,7 @@ using System.Diagnostics;
+ 
+ namespace SmartPerformanceDoctor.UpdateEngine;
+ 
+-public sealed record UpdatePhaseMeasurement(string Name, long Calls, double ElapsedMs);
++public sealed record UpdatePhaseMeasurement(string Name, long Calls, double ElapsedMs, long AllocatedBytes);
+ 
+ /// <summary>Record opt-in elapsed times. Nested measurements overlap and must not be added.</summary>
+ public sealed class UpdatePerformanceProfile
+@@ -10,9 +10,9 @@ public sealed class UpdatePerformanceProfile
+     private static readonly AsyncLocal<UpdatePerformanceProfile?> Current = new();
+     internal static UpdatePerformanceProfile? Active => Current.Value;
+     internal IDisposable Activate() => new Activation(this);
+-    private readonly Dictionary<string,(long Calls,long Ticks)> _values = [];
++    private readonly Dictionary<string,(long Calls,long Ticks,long Allocated)> _values = [];
+     public IReadOnlyList<UpdatePhaseMeasurement> Snapshot() => _values.Select(p =>
+-        new UpdatePhaseMeasurement(p.Key,p.Value.Calls,p.Value.Ticks*1000.0/Stopwatch.Frequency)).ToArray();
++        new UpdatePhaseMeasurement(p.Key,p.Value.Calls,p.Value.Ticks*1000.0/Stopwatch.Frequency,p.Value.Allocated)).ToArray();
+     internal IDisposable Measure(string name) => new Scope(this,name);
+     private sealed class Activation : IDisposable
+     {
+@@ -23,10 +23,11 @@ public sealed class UpdatePerformanceProfile
+     private sealed class Scope(UpdatePerformanceProfile owner,string name) : IDisposable
+     {
+         private readonly long _start=Stopwatch.GetTimestamp();
++        private readonly long _allocated=GC.GetAllocatedBytesForCurrentThread();
+         public void Dispose()
+         {
+             var previous=owner._values.GetValueOrDefault(name);
+-            owner._values[name]=(previous.Calls+1,previous.Ticks+Stopwatch.GetTimestamp()-_start);
++            owner._values[name]=(previous.Calls+1,previous.Ticks+Stopwatch.GetTimestamp()-_start,previous.Allocated+GC.GetAllocatedBytesForCurrentThread()-_allocated);
+         }
+     }
+ }
+diff --git a/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs b/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
+index f02815b..21a0031 100644
+--- a/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
++++ b/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
+@@ -68,7 +68,10 @@ public enum UpdateFaultPoint
+     DuringRollbackCopy, BeforeRestoredJournal, BeforeFailureJournal,
+     AfterNewFileIntent, AfterNewFileCreated, AfterNewFileIdentity, BeforeNewFileRename, AfterNewFileRename,
+     DuringNewFileContent, BeforeNewFileVerification, AfterNewFileVerification,
+-    JournalTempCreated, JournalPartialWrite, JournalFlushed, JournalBeforeReplace, JournalAfterReplace
++    JournalTempCreated, JournalPartialWrite, JournalFlushed, JournalBeforeReplace, JournalAfterReplace,
++    AfterFinalHashVerification, AttestationCreated, AttestationPartialWrite, AttestationFlushed,
++    InstallationPointerCreated, InstallationPointerFlushed, BeforeInstallationPointerReplace,
++    AfterInstallationPointerReplace, AfterCommittedJournal, BeforeSuccessReturn
+ }
+ 
+ public sealed record UpdateRecoveryStatus(UpdateRecoveryState State, string Code, string TransactionId);
+@@ -225,6 +228,10 @@ public sealed partial class UpdateTransaction
+             priorJournals.Add(prior);
+         }
+ 
++        if (File.Exists(Path.Combine(_workRoot, "installation-current.json")) &&
++            InspectInstallation(installRoot).Code == "INSTALLATION-RECOVERY-REQUIRED")
++            return new(UpdateStage.RecoveryRequired, "INSTALLATION-RECOVERY-REQUIRED", "", 0);
++
+         var fullPackage = Path.GetFullPath(packagePath);
+         using var inputPackage = WindowsFileBoundary.OpenRead(Path.GetDirectoryName(fullPackage)!, Path.GetFileName(fullPackage));
+         var packageTimer = PerformanceProfile?.Measure("PackageVerification");
+@@ -409,10 +416,17 @@ public sealed partial class UpdateTransaction
+             }
+             if (postApplyVersionCheck is not null && !postApplyVersionCheck(manifest.ToVersion))
+                 throw new InvalidDataException("installed version postcondition");
++            faultInjector?.Invoke(UpdateFaultPoint.AfterFinalHashVerification);
++            RecordInstallation(txDir, journal, manifest, packageLease.Stream, faultInjector);
+             faultInjector?.Invoke(UpdateFaultPoint.BeforeCommittedJournal);
+             journal.Stage = UpdateStage.Committed;
+             WriteJournal(txDir, journal);
+-            RecordInstallation(txDir, journal, manifest, packageLease.Stream);
++            faultInjector?.Invoke(UpdateFaultPoint.AfterCommittedJournal);
++            foreach (var file in retained) file.Dispose();
++            retained.Clear();
++            var installation = InspectInstallation(installRoot);
++            if (!installation.Verified) throw new InvalidDataException(installation.Code);
++            faultInjector?.Invoke(UpdateFaultPoint.BeforeSuccessReturn);
+             // Keep the package handle pinned through commit. Cleanup occurs after it closes.
+             return new(UpdateStage.Committed, "COMMITTED", id, count)
+             {AnyMutationStarted=mutationStarted,WasCancellationRequested=cancellationToken.IsCancellationRequested,
+@@ -575,6 +589,9 @@ public sealed partial class UpdateTransaction
+                 else if (journal.Stage != UpdateStage.Committed)
+                     return new(UpdateRecoveryState.RecoveryAvailable, "PENDING", journal.TransactionId);
+             }
++            if(declaredCurrent.Count==0 && File.Exists(Path.Combine(_workRoot,"installation-current.json")) &&
++                InspectInstallation(installRoot).Code=="INSTALLATION-RECOVERY-REQUIRED")
++                return new(UpdateRecoveryState.RecoveryRequired,"INSTALLATION-RECOVERY-REQUIRED","");
+             return completed
+                 ? new(UpdateRecoveryState.RecoveryCompleted, "RESTORED", "")
+                 : new(UpdateRecoveryState.NoPendingTransaction, "NO-PENDING", "");
+diff --git a/src/SmartPerformanceDoctor.UpdateEngine/WindowsFileBoundary.cs b/src/SmartPerformanceDoctor.UpdateEngine/WindowsFileBoundary.cs
+index 2e99f80..2634782 100644
+--- a/src/SmartPerformanceDoctor.UpdateEngine/WindowsFileBoundary.cs
++++ b/src/SmartPerformanceDoctor.UpdateEngine/WindowsFileBoundary.cs
+@@ -266,14 +266,22 @@ public static class WindowsFileBoundary
+ 
+     private static string Check(SafeFileHandle handle, string expected, bool directory)
+     {
++#if !PCCARE_VAULT_BOUNDARY
++        using var measurement = UpdatePerformanceProfile.Active?.Measure("NativeIdentityCheck");
++#endif
+         if (!GetFileInformationByHandle(handle, out var basic)) throw Error("FILE-INFORMATION");
+         if ((basic.Attributes & 0x400) != 0 || ((basic.Attributes & 0x10) != 0) != directory ||
+             (!directory && basic.Links != 1)) throw new IOException("BOUNDARY-LINK-OR-TYPE");
+         if (!GetFileInformationByHandleEx(handle, 18, out var id, (uint)Marshal.SizeOf<FileIdInfo>()))
+             throw Error("FILE-ID-UNSUPPORTED");
+-        var buffer = new StringBuilder(32768);
++        var buffer = new StringBuilder(512);
+         var size = GetFinalPathNameByHandleW(handle, buffer, (uint)buffer.Capacity, 0);
+-        if (size == 0 || size >= buffer.Capacity) throw Error("FINAL-PATH");
++        if (size >= buffer.Capacity && size <= 32768)
++        {
++            buffer = new StringBuilder(checked((int)size + 1));
++            size = GetFinalPathNameByHandleW(handle, buffer, (uint)buffer.Capacity, 0);
++        }
++        if (size == 0 || size >= buffer.Capacity || size > 32768) throw Error("FINAL-PATH");
+         var actual = buffer.ToString();
+         if (actual.StartsWith("\\\\?\\", StringComparison.Ordinal)) actual = actual[4..];
+         if (!string.Equals(actual.TrimEnd('\\'), Path.GetFullPath(expected).TrimEnd('\\'), StringComparison.OrdinalIgnoreCase))
+diff --git a/tests/SmartPerformanceDoctor.Tests/WO23HardeningTests.cs b/tests/SmartPerformanceDoctor.Tests/WO23HardeningTests.cs
+new file mode 100644
+index 0000000..0930126
+--- /dev/null
++++ b/tests/SmartPerformanceDoctor.Tests/WO23HardeningTests.cs
+@@ -0,0 +1,113 @@
++using System.Security.Cryptography;
++using System.Text.Json;
++using SmartPerformanceDoctor.UpdateEngine;
++using SmartPerformanceDoctor.App.Services.Update;
++using Xunit;
++namespace SmartPerformanceDoctor.Tests;
++
++public sealed class WO23CommitAttestationCrashTests
++{
++    [Theory]
++    [InlineData(UpdateFaultPoint.AfterFinalHashVerification)]
++    [InlineData(UpdateFaultPoint.AttestationCreated)]
++    [InlineData(UpdateFaultPoint.AttestationPartialWrite)]
++    [InlineData(UpdateFaultPoint.AttestationFlushed)]
++    [InlineData(UpdateFaultPoint.InstallationPointerCreated)]
++    [InlineData(UpdateFaultPoint.InstallationPointerFlushed)]
++    [InlineData(UpdateFaultPoint.BeforeInstallationPointerReplace)]
++    [InlineData(UpdateFaultPoint.AfterInstallationPointerReplace)]
++    [InlineData(UpdateFaultPoint.BeforeCommittedJournal)]
++    public void PublicationNeverPrecedesCommittedJournalTrust(UpdateFaultPoint point)
++    {
++        using var f=new SignedUpdateTests.Fixture();
++        File.WriteAllText(Path.Combine(f.Install,"app.txt"),"old");
++        File.WriteAllText(Path.Combine(f.Install,"second.txt"),"old-second");
++        bool observed=false;
++        var result=f.Transaction.Apply(f.Package(),f.Install,"51.0.4",faultInjector:p=>
++        {
++            if(p!=point)return; observed=true;
++            var journal=JsonSerializer.Deserialize<UpdateJournal>(File.ReadAllText(Directory.GetFiles(f.Work,"journal.json",SearchOption.AllDirectories).Single()))!;
++            Assert.NotEqual(UpdateStage.Committed,journal.Stage);
++            Assert.False(f.Transaction.InspectInstallation(f.Install).Verified);
++            throw new IOException("WO23 injected publication failure");
++        });
++        Assert.True(observed);Assert.Equal(UpdateStage.Restored,result.Stage);
++        Assert.Equal("old",File.ReadAllText(Path.Combine(f.Install,"app.txt")));
++        Assert.Equal("old-second",File.ReadAllText(Path.Combine(f.Install,"second.txt")));
++    }
++    [Theory][InlineData(UpdateFaultPoint.AfterCommittedJournal)][InlineData(UpdateFaultPoint.BeforeSuccessReturn)]
++    public void CommittedCheckpointHasAuthenticatedDeclarationAndActualBytes(UpdateFaultPoint point)
++    {
++        using var f=new SignedUpdateTests.Fixture();bool seen=false;
++        var result=f.Transaction.Apply(f.Package(),f.Install,"51.0.4",faultInjector:p=>
++        {if(p==point){seen=true;Assert.True(File.Exists(Path.Combine(f.Work,"installation-current.json")));Assert.Single(Directory.GetFiles(f.Work,"committed-attestation.json",SearchOption.AllDirectories));}});
++        Assert.True(seen);Assert.Equal(UpdateStage.Committed,result.Stage);Assert.True(f.Transaction.InspectInstallation(f.Install).Verified);
++    }
++    [Fact] public void CurrentPointerCorruptionDoesNotSelectPreviousAsAuthority()
++    {
++        using var f=new SignedUpdateTests.Fixture();Assert.Equal(UpdateStage.Committed,f.Transaction.Apply(f.Package(),f.Install,"51.0.4").Stage);
++        File.Copy(Path.Combine(f.Work,"installation-current.json"),Path.Combine(f.Work,"installation-previous.json"));
++        File.WriteAllText(Path.Combine(f.Work,"installation-current.json"),"{");
++        Assert.False(f.Transaction.InspectInstallation(f.Install).Verified);
++        Assert.True(f.Transaction.InspectInstallationTrust(f.Install).RequiresReview);
++    }
++}
++public sealed class WO23MemoryAllocationTests
++{
++    [Fact] public void RepeatedIdentityValidationHasBoundedAllocationAndRetainsReplacementDefense()
++    {
++        var root=Path.Combine(Path.GetTempPath(),"wo23-id-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(root);
++        try
++        {
++            File.WriteAllText(Path.Combine(root,"sample.bin"),"synthetic");
++            using var lease=WindowsFileBoundary.OpenRead(root,"sample.bin");lease.Validate();
++            var start=GC.GetAllocatedBytesForCurrentThread();
++            for(var i=0;i<100;i++)lease.Validate(lease.Identity);
++            var bytes=GC.GetAllocatedBytesForCurrentThread()-start;
++            Assert.True(bytes<8*1024*1024,$"Identity validation allocated {bytes} bytes");
++            Assert.Throws<IOException>(()=>File.Delete(Path.Combine(root,"sample.bin")));
++            Assert.Equal(Convert.ToHexString(SHA256.HashData("synthetic"u8)),lease.Hash());
++        }
++        finally{Directory.Delete(root,true);}
++    }
++    [Fact] public void LongFinalPathRetriesWithoutTruncation()
++    {
++        var root=Path.Combine(Path.GetTempPath(),"wo23-long-"+Guid.NewGuid().ToString("N"));
++        var deep=Path.Combine(root,string.Join(Path.DirectorySeparatorChar,Enumerable.Repeat(new string('x',90),6)));
++        Directory.CreateDirectory(deep);
++        try{File.WriteAllText(Path.Combine(deep,"sample.bin"),"synthetic");using var lease=WindowsFileBoundary.OpenRead(root,Path.GetRelativePath(root,Path.Combine(deep,"sample.bin")));lease.Validate();Assert.Equal(64,lease.Hash().Length);}
++        finally{Directory.Delete(root,true);}
++    }
++}
++public sealed class WO23UiStateRegressionTests
++{
++    [Fact] public void CompletionRejectsPreviouslyQueuedReports()
++    {var gate=new UpdateProgressGate();var report=gate.Capture();gate.Invalidate();Assert.False(gate.IsCurrent(report));}
++    [Fact] public void RestartRejectsOldReportAndAcceptsOnlyNewEpoch()
++    {var gate=new UpdateProgressGate();var old=gate.Capture();gate.Invalidate();var next=gate.Capture();Assert.False(gate.IsCurrent(old));Assert.True(gate.IsCurrent(next));}
++}
++public sealed class WO23CancellationCleanupTests
++{
++    [Theory][InlineData(UpdateFaultPoint.DuringStageExtraction)][InlineData(UpdateFaultPoint.DuringBackupCreation)]
++    public void CancelledPreparationAllowsASeparateNormalUpdate(UpdateFaultPoint point)
++    {
++        using var f=new SignedUpdateTests.Fixture();File.WriteAllText(Path.Combine(f.Install,"app.txt"),"old");using var c=new CancellationTokenSource();
++        var result=f.Transaction.Apply(f.Package(),f.Install,"51.0.4",faultInjector:p=>{if(p==point)c.Cancel();},cancellationToken:c.Token);
++        Assert.Equal("CANCELLED-PREPARATION",result.Code);Assert.Equal("old",File.ReadAllText(Path.Combine(f.Install,"app.txt")));
++        Assert.Equal(UpdateStage.Committed,f.Transaction.Apply(f.Package(),f.Install,"51.0.4").Stage);Assert.True(f.Transaction.InspectInstallationTrust(f.Install).Verified);
++    }
++}
++public sealed class WO23ApprovalReconciliationTests
++{
++    [Fact] public void PartialReservationIsPreservedAndAcknowledgementRemainsUnknown()
++    {
++        var(f,_,r,h)=WO22ApprovalLifecycleTests.Create();using(f)
++        {
++            var request=JsonSerializer.Deserialize<LegacyRestoreRequest>(File.ReadAllText(r))!;
++            var receipt=Path.Combine(f.Work,"legacy-approval-"+request.Approval!.RequestId+".json");File.WriteAllText(receipt,"{\"RequestId\":");
++            var before=File.ReadAllBytes(receipt);var result=f.Transaction.InspectLegacyApproval(f.Install,r,h);
++            Assert.Equal(LegacyApprovalState.RecoveryReviewRequired,result.State);Assert.Null(result.CallerAcknowledged);Assert.Equal(before,File.ReadAllBytes(receipt));
++            Assert.Throws<IOException>(()=>f.Transaction.ExecuteLegacyRecoveryRequest(f.Install,r,h,_=>true));
++        }
++    }
++}
+diff --git a/tests/SmartPerformanceDoctor.Tests/WO23LegacyPublicationGapTests.cs b/tests/SmartPerformanceDoctor.Tests/WO23LegacyPublicationGapTests.cs
+new file mode 100644
+index 0000000..a253cfe
+--- /dev/null
++++ b/tests/SmartPerformanceDoctor.Tests/WO23LegacyPublicationGapTests.cs
+@@ -0,0 +1,49 @@
++using System.IO.Compression;
++using System.Security.Cryptography;
++using System.Text.Json;
++using SmartPerformanceDoctor.UpdateEngine;
++using Xunit;
++namespace SmartPerformanceDoctor.Tests;
++public sealed class WO23LegacyPublicationGapTests
++{
++    private sealed class Fixture:IDisposable
++    {
++        private readonly ECDsa _key=ECDsa.Create(ECCurve.NamedCurves.nistP256);
++        public string Root{get;}=Path.Combine(Path.GetTempPath(),"wo23-gap-"+Guid.NewGuid().ToString("N"));
++        public string Install=>Path.Combine(Root,"install");public string Work=>Path.Combine(Root,"work");
++        public UpdateTransaction Engine=>new(new PublisherTrustPolicy([new TrustedPublisherKey("WO23-Fixture","ephemeral","stable",_key.ExportSubjectPublicKeyInfo())]),Work,false);
++        public Fixture(){Directory.CreateDirectory(Install);Directory.CreateDirectory(Work);}
++        public string Package(string from,string to,string name)
++        {
++            var data=System.Text.Encoding.UTF8.GetBytes(name);var m=new SignedManifest{Publisher="WO23-Fixture",KeyId="ephemeral",PackageId=Guid.NewGuid().ToString("N"),FromVersion=from,ToVersion=to,MinimumSupportedVersion="51.0.0",CreatedAt=DateTimeOffset.UtcNow.AddMinutes(-1),ExpiresAt=DateTimeOffset.UtcNow.AddHours(1),Files=[new SignedFile{Path="payload/"+name,Length=data.Length,Sha256=Convert.ToHexString(SHA256.HashData(data))}]};
++            var path=Path.Combine(Root,Guid.NewGuid().ToString("N")+".spdup");using var z=new ZipArchive(File.Create(path),ZipArchiveMode.Create);
++            void Add(string p,byte[] b){using var s=z.CreateEntry(p).Open();s.Write(b);}
++            Add(SignedPackage.ManifestName,JsonSerializer.SerializeToUtf8Bytes(m));Add(SignedPackage.SignatureName,JsonSerializer.SerializeToUtf8Bytes(new SignatureEnvelope{Signature=Convert.ToBase64String(_key.SignData(SignedPackage.CanonicalBytes(m),HashAlgorithmName.SHA256,DSASignatureFormat.IeeeP1363FixedFieldConcatenation))}));Add("payload/"+name,data);return path;
++        }
++        public void Dispose(){_key.Dispose();Directory.Delete(Root,true);}
++    }
++    [Theory][InlineData(false)][InlineData(true)]
++    public void OldPointerCannotVerifyDisjointCommittedSuccessor(bool removeSuccessorDeclaration)
++    {
++        using var f=new Fixture();var engine=f.Engine;
++        Assert.Equal(UpdateStage.Committed,engine.Apply(f.Package("51.0.4","51.0.5","first.bin"),f.Install,"51.0.4").Stage);
++        var oldPointer=File.ReadAllBytes(Path.Combine(f.Work,"installation-current.json"));
++        Assert.Equal(UpdateStage.Committed,engine.Apply(f.Package("51.0.5","51.0.6","second.bin"),f.Install,removeSuccessorDeclaration?"51.0.05":"51.0.5").Stage);
++        var current=JsonSerializer.Deserialize<InstallationPointer>(File.ReadAllText(Path.Combine(f.Work,"installation-current.json")))!;
++        File.WriteAllBytes(Path.Combine(f.Work,"installation-current.json"),oldPointer);
++        if(removeSuccessorDeclaration)File.Delete(Path.Combine(f.Work,"tx-"+current.TransactionId,"committed-attestation.json"));
++        var next=f.Package("51.0.6","51.0.7","third.bin");
++        var before=Directory.GetFiles(f.Root,"*",SearchOption.AllDirectories).ToDictionary(x=>x,x=>SHA256.HashData(File.ReadAllBytes(x)));
++        Assert.False(engine.InspectInstallation(f.Install).Verified);Assert.Equal(InstallationTrustState.RecoveryRequired,engine.InspectInstallationTrust(f.Install).State);
++        Assert.Equal(UpdateRecoveryState.RecoveryRequired,engine.InspectRecovery(f.Install).State);
++        Assert.Equal("INSTALLATION-RECOVERY-REQUIRED",engine.Apply(next,f.Install,"51.0.6").Code);
++        Assert.Equal(before.Count,Directory.GetFiles(f.Root,"*",SearchOption.AllDirectories).Length);
++        Assert.All(before,x=>Assert.Equal(x.Value,SHA256.HashData(File.ReadAllBytes(x.Key))));
++    }
++    [Fact] public void LatestPointerStillVerifiesNormalDisjointUpdates()
++    {
++        using var f=new Fixture();var e=f.Engine;
++        for(var i=4;i<7;i++)Assert.Equal(UpdateStage.Committed,e.Apply(f.Package("51.0."+i,"51.0."+(i+1),"file"+i+".bin"),f.Install,"51.0."+i).Stage);
++        Assert.True(e.InspectInstallationTrust(f.Install).Verified);
++    }
++}
+diff --git a/tests/SmartPerformanceDoctor.Tests/WO23PreparationCopyCancellationTests.cs b/tests/SmartPerformanceDoctor.Tests/WO23PreparationCopyCancellationTests.cs
+new file mode 100644
+index 0000000..1a357aa
+--- /dev/null
++++ b/tests/SmartPerformanceDoctor.Tests/WO23PreparationCopyCancellationTests.cs
+@@ -0,0 +1,26 @@
++using System.Security.Cryptography;
++using SmartPerformanceDoctor.UpdateEngine;
++using Xunit;
++namespace SmartPerformanceDoctor.Tests;
++public sealed class WO23PreparationCopyCancellationTests
++{
++    [Fact] public void PartialPreparationCopyPreservesSourceAndExposesIncompleteDestination()
++    {
++        var root=Path.Combine(Path.GetTempPath(),"wo23-copy-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(root);
++        try
++        {
++            var bytes=RandomNumberGenerator.GetBytes(3*1024*1024);File.WriteAllBytes(Path.Combine(root,"source.bin"),bytes);
++            var hash=Convert.ToHexString(SHA256.HashData(bytes));using var cancellation=new CancellationTokenSource();
++            using(var source=WindowsFileBoundary.OpenRead(root,"source.bin"))
++            using(var destination=WindowsFileBoundary.OpenWrite(root,"preparation.bin",create:true))
++            {
++                Assert.Throws<OperationCanceledException>(()=>destination.CopyFrom(source,()=>cancellation.Cancel(),cancellation.Token));
++                Assert.InRange(destination.Stream.Position,1,bytes.Length-1);
++                Assert.Equal(hash,source.Hash());source.Validate();destination.Validate();
++            }
++            Assert.Equal(bytes,File.ReadAllBytes(Path.Combine(root,"source.bin")));
++            Assert.True(new FileInfo(Path.Combine(root,"preparation.bin")).Length<bytes.Length);
++        }
++        finally{Directory.Delete(root,true);}
++    }
++}
+diff --git a/tools/SmartPerformanceDoctor.UpdatePerformanceProbe/Program.cs b/tools/SmartPerformanceDoctor.UpdatePerformanceProbe/Program.cs
+index 8c8aead..e840f13 100644
+--- a/tools/SmartPerformanceDoctor.UpdatePerformanceProbe/Program.cs
++++ b/tools/SmartPerformanceDoctor.UpdatePerformanceProbe/Program.cs
+@@ -2,16 +2,17 @@ using System.Diagnostics;
+ using System.Security.Cryptography;
+ using System.Text.Json;
+ using SmartPerformanceDoctor.UpdateEngine;
+-if(args.Length!=1)return 2;
++if(args.Length is <1 or >2)return 2;
+ var root=Path.GetFullPath(args[0]);var parent=Environment.GetEnvironmentVariable("RUNNER_TEMP");
+ if(string.IsNullOrEmpty(parent)||!root.StartsWith(Path.GetFullPath(parent).TrimEnd('\\')+"\\",StringComparison.OrdinalIgnoreCase)||!Path.GetFileName(root).StartsWith("wo20-"))return 3;
+ using var pin=WindowsFileBoundary.PinDirectory(root);
+ if(File.ReadAllText(Path.Combine(root,"fixture.marker"))!="WO20_SYNTHETIC_ONLY")return 4;
+ var policy=new PublisherTrustPolicy([new TrustedPublisherKey("WO20-Fixture","ephemeral","stable",File.ReadAllBytes(Path.Combine(root,"public-key.bin")))]);
+-var engine=new UpdateTransaction(policy,Path.Combine(root,"work"),false){PerformanceProfile=new()};
++var engine=new UpdateTransaction(policy,Path.Combine(root,"work"),false){PerformanceProfile=args.Length==2&&args[1]=="off"?null:new()};
++var collections=Enumerable.Range(0,3).Select(GC.CollectionCount).ToArray();
+ var process=Process.GetCurrentProcess();var cpu=process.TotalProcessorTime;var allocated=GC.GetTotalAllocatedBytes(true);var clock=Stopwatch.StartNew();
+ var result=engine.Apply(Path.Combine(root,"update.spdup"),Path.Combine(root,"install"),"51.0.4");
+ clock.Stop();var cpuElapsed=(process.TotalProcessorTime-cpu).TotalMilliseconds;var allocations=GC.GetTotalAllocatedBytes(true)-allocated;process.Refresh();
+ var verified=engine.InspectInstallation(Path.Combine(root,"install"));
+-Console.WriteLine(JsonSerializer.Serialize(new{result.Stage,result.Code,ElapsedMs=clock.Elapsed.TotalMilliseconds,CpuMs=cpuElapsed,AllocatedBytes=allocations,PeakWorkingSetBytes=process.PeakWorkingSet64,Verified=verified.Verified,Phases=engine.PerformanceProfile.Snapshot()}));
++Console.WriteLine(JsonSerializer.Serialize(new{result.Stage,result.Code,ElapsedMs=clock.Elapsed.TotalMilliseconds,CpuMs=cpuElapsed,AllocatedBytes=allocations,PeakWorkingSetBytes=process.PeakWorkingSet64,GenCollections=Enumerable.Range(0,3).Select(i=>GC.CollectionCount(i)-collections[i]).ToArray(),LohBytes=GC.GetGCMemoryInfo().GenerationInfo.Length>3?GC.GetGCMemoryInfo().GenerationInfo[3].SizeAfterBytes:0,Verified=verified.Verified,ProfileEnabled=engine.PerformanceProfile is not null,Phases=engine.PerformanceProfile?.Snapshot()}));
+ return result.Stage==UpdateStage.Committed&&verified.Verified?0:10;
+diff --git a/tools/SmartPerformanceDoctor.WO20Probe/Program.cs b/tools/SmartPerformanceDoctor.WO20Probe/Program.cs
+index 2bf0540..b0dbfa0 100644
+--- a/tools/SmartPerformanceDoctor.WO20Probe/Program.cs
++++ b/tools/SmartPerformanceDoctor.WO20Probe/Program.cs
+@@ -38,6 +38,9 @@ try
+   foreach(var p in old){var path=Path.Combine(install,p.Key);Directory.CreateDirectory(Path.GetDirectoryName(path)!);File.WriteAllBytes(path,p.Value);}
+   File.WriteAllText(Path.Combine(root,"original-hashes.json"),JsonSerializer.Serialize(old.ToDictionary(p=>p.Key,p=>Hash(p.Value))));
+   using var key=ECDsa.Create(ECCurve.NamedCurves.nistP256);File.WriteAllBytes(Path.Combine(root,"public-key.bin"),key.ExportSubjectPublicKeyInfo());Package(package,key,"51.0.4","51.0.5",next);Package(Path.Combine(root,"original.spdup"),key,"51.0.3","51.0.4",old);
++  var nextGeneration=next.ToDictionary(p=>p.Key,p=>p.Value.Select((b,i)=>(byte)(i==0?b^1:b)).ToArray());
++  Package(Path.Combine(root,"next.spdup"),key,"51.0.5","51.0.6",nextGeneration);
++  File.WriteAllText(Path.Combine(root,"previous-hashes.json"),JsonSerializer.Serialize(next.ToDictionary(p=>p.Key,p=>Hash(p.Value))));
+   var password="";
+   for(var attempt=0;attempt<32;attempt++)
+   {
+@@ -114,6 +117,12 @@ try
+  if(args[0]=="legacy-review")
+  {var plan=JsonSerializer.Deserialize<LegacyRecoveryPlan>(File.ReadAllText(Path.Combine(root,"plan.json")))!;
+   Print(tx.ReviewLegacyContent(install,plan.TransactionId,Path.Combine(root,"original.spdup"),"51.0.3",plan));return 0;}
++ if(args[0].StartsWith("commit-repeat-kill:"))
++ {
++  Check(tx.Apply(package,install,"51.0.4").Stage==UpdateStage.Committed,"FIRST-COMMIT");
++  tx.Apply(Path.Combine(root,"next.spdup"),install,"51.0.5",faultInjector:p=>{if(p.ToString()==args[0][19..])Barrier(p.ToString());});return 13;
++ }
++ if(args[0]=="publication-query"){Print(new{Recovery=tx.InspectRecovery(install),Installation=tx.InspectInstallation(install),Trust=tx.InspectInstallationTrust(install)});return 0;}
+  if(args[0]=="trust-query"){Print(tx.InspectInstallationTrust(install));return 0;}
+  if(args[0].StartsWith("enroll-kill:",StringComparison.Ordinal))
+  {var point=args[0][12..];tx.EnrollInstallation(install,Path.Combine(root,"original.spdup"),"51.0.3",true,p=>{if(p.ToString()==point)Barrier(point);});return 13;}
+@@ -135,14 +144,14 @@ try
+   var plan=JsonSerializer.Deserialize<LegacyRecoveryPlan>(File.ReadAllText(Path.Combine(root,"plan.json")))!;var point=args[0].StartsWith("legacy-kill:",StringComparison.Ordinal)?args[0][12..]:"";var count=0;
+   var result=tx.ExecuteLegacyRecovery(install,plan,Path.Combine(root,"original.spdup"),"51.0.3",plan.ConsentBinding,true,p=>{if(p.ToString()==point||(point=="SecondFileRestore"&&p==LegacyRestoreFaultPoint.AfterFileRestore&&++count==2))Barrier(point);});Print(new{Status=result.Stage.ToString(),result.Code});return result.Stage==UpdateStage.Restored?0:10;
+  }
+- if(args[0]=="verify-original")
++ if(args[0] is "verify-original" or "verify-previous")
+  {
+-  var expected=JsonSerializer.Deserialize<Dictionary<string,string>>(File.ReadAllText(Path.Combine(root,"original-hashes.json")))!;
++  var expected=JsonSerializer.Deserialize<Dictionary<string,string>>(File.ReadAllText(Path.Combine(root,args[0]=="verify-previous"?"previous-hashes.json":"original-hashes.json")))!;
+   Check(expected.All(p=>Hash(File.ReadAllBytes(Path.Combine(install,p.Key)))==p.Value),"INSTALLATION-BYTES");Print(new{Status="ORIGINAL_BYTES_VERIFIED",Files=expected.Count});return 0;
+  }
+  var process=Process.GetCurrentProcess();var cpu=process.TotalProcessorTime;var sw=Stopwatch.StartNew();TransactionResult result2;
+  if(args[0]=="recover")result2=tx.Recover(install);
+- else if(args[0]=="apply"||args[0]=="apply-kill")result2=tx.Apply(package,install,"51.0.4",faultInjector:p=>{if(args[0]=="apply-kill"&&p==UpdateFaultPoint.AfterFirstReplacement)Barrier("AfterFirstReplacement");});
++ else if(args[0]=="apply"||args[0]=="apply-kill"||args[0].StartsWith("commit-kill:"))result2=tx.Apply(package,install,"51.0.4",faultInjector:p=>{if((args[0]=="apply-kill"&&p==UpdateFaultPoint.AfterFirstReplacement)||(args[0].StartsWith("commit-kill:")&&p.ToString()==args[0][12..]))Barrier(p.ToString());});
+  else return 2;
+  sw.Stop();process.Refresh();Print(new{Status=result2.Stage.ToString(),result2.Code,ElapsedMs=sw.Elapsed.TotalMilliseconds,CpuMs=(process.TotalProcessorTime-cpu).TotalMilliseconds,PeakWorkingSetBytes=process.PeakWorkingSet64,Attestation=tx.InspectInstallation(install),Phases=tx.PerformanceProfile.Snapshot()});
+  return result2.Stage is UpdateStage.Committed or UpdateStage.Restored?0:10;
+diff --git a/tools/SmartPerformanceDoctor.WO23WindowsProbe/Program.cs b/tools/SmartPerformanceDoctor.WO23WindowsProbe/Program.cs
+new file mode 100644
+index 0000000..c084501
+--- /dev/null
++++ b/tools/SmartPerformanceDoctor.WO23WindowsProbe/Program.cs
+@@ -0,0 +1,59 @@
++using System.Runtime.InteropServices;
++using System.Security.AccessControl;
++using System.Security.Principal;
++using System.Text.Json;
++using SmartPerformanceDoctor.UpdateEngine;
++
++if(args.Length<2)return 2;
++if(args[0] is "verify" or "verify-pinned")
++{
++    var blocked=0;
++    var result=AuthenticodeBoundary.Verify(args[1],args[0]=="verify-pinned"?()=>
++    {
++        try{File.Delete(args[1]);}catch(IOException){blocked++;}
++        try{File.WriteAllText(args[1],"replacement");}catch(IOException){blocked++;}
++    }:null);
++    Console.WriteLine(JsonSerializer.Serialize(new{result.Code,result.Thumbprint,result.Identity,result.Hash,BlockedMutations=blocked,ProductionAccepted=AuthenticodeBoundary.IsBuildPublisher(result)}));return 0;
++}
++if(args[0]!="acl")return 2;
++var root=Path.GetFullPath(args[1]);var parent=Environment.GetEnvironmentVariable("RUNNER_TEMP");
++if(parent is null||!root.StartsWith(Path.GetFullPath(parent).TrimEnd('\\')+"\\",StringComparison.OrdinalIgnoreCase)||!Path.GetFileName(root).StartsWith("wo23-")||Directory.Exists(root))return 3;
++Directory.CreateDirectory(root);
++var records=new List<object>();
++void Pass(string name,Action action){action();records.Add(new{Name=name,Status="PASS",Input="Disposable runner synthetic filesystem",ExitCode=0});}
++void Reject(Action action){try{action();}catch(Exception ex)when(ex is IOException or UnauthorizedAccessException){return;}throw new InvalidDataException("Expected boundary rejection");}
++try
++{
++    var admins=new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid,null);var system=new SecurityIdentifier(WellKnownSidType.LocalSystemSid,null);var users=new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid,null);
++    var security=new DirectorySecurity();security.SetAccessRuleProtection(true,false);security.SetOwner(admins);
++    foreach(var sid in new[]{admins,system})security.AddAccessRule(new FileSystemAccessRule(sid,FileSystemRights.FullControl,InheritanceFlags.ContainerInherit|InheritanceFlags.ObjectInherit,PropagationFlags.None,AccessControlType.Allow));
++    security.AddAccessRule(new FileSystemAccessRule(users,FileSystemRights.ReadAndExecute,InheritanceFlags.ContainerInherit|InheritanceFlags.ObjectInherit,PropagationFlags.None,AccessControlType.Allow));
++    new DirectoryInfo(root).SetAccessControl(security);
++    Pass("ProtectedOwnerAndExplicitAces",()=>UpdateTransaction.ValidateProtectedDirectory(root));
++    var file=Path.Combine(root,"sample.bin");File.WriteAllText(file,"synthetic");
++    Pass("InheritedFileAces",()=>UpdateTransaction.ValidateProtectedSecurity(new FileInfo(file).GetAccessControl(),false));
++    var weak=new DirectoryInfo(root).GetAccessControl();weak.AddAccessRule(new FileSystemAccessRule(users,FileSystemRights.WriteData,AccessControlType.Allow));new DirectoryInfo(root).SetAccessControl(weak);
++    Pass("WritableNonAdminAceRejected",()=>Reject(()=>UpdateTransaction.ValidateProtectedDirectory(root)));new DirectoryInfo(root).SetAccessControl(security);
++    Pass("PinnedPathReplacementAndMutationDenied",()=>{using var lease=WindowsFileBoundary.OpenRead(root,"sample.bin");Reject(()=>File.Delete(file));Reject(()=>File.WriteAllText(file,"changed"));lease.Validate();});
++    var identity="";using(var lease=WindowsFileBoundary.OpenRead(root,"sample.bin")){identity=lease.Identity;}
++    var replacement=Path.Combine(root,"replacement.bin");File.WriteAllText(replacement,"synthetic");File.Move(file,Path.Combine(root,"old.bin"));File.Move(replacement,file);
++    Pass("ReplacementFileIdRejected",()=>{using var lease=WindowsFileBoundary.OpenRead(root,"sample.bin");Reject(()=>lease.Validate(identity));});
++    var hard=Path.Combine(root,"hard.bin");if(!Native.CreateHardLink(hard,file,IntPtr.Zero))throw new IOException("CreateHardLink:"+Marshal.GetLastWin32Error());
++    Pass("HardlinkRejected",()=>Reject(()=>{using var lease=WindowsFileBoundary.OpenRead(root,"sample.bin");}));File.Delete(hard);
++    var link=Path.Combine(root,"symbolic.bin");
++    try{File.CreateSymbolicLink(link,file);Pass("SymbolicLinkRejected",()=>Reject(()=>{using var lease=WindowsFileBoundary.OpenRead(root,"symbolic.bin");}));}
++    catch(UnauthorizedAccessException){records.Add(new{Name="SymbolicLinkRejected",Status="NOT TESTED",Reason="Runner symbolic-link privilege unavailable"});}
++    var child=Path.Combine(root,"child");Directory.CreateDirectory(child);
++    var junction=Path.Combine(root,"junction");
++    var psi=new System.Diagnostics.ProcessStartInfo("cmd.exe"){UseShellExecute=false,CreateNoWindow=true,RedirectStandardOutput=true,RedirectStandardError=true};
++    foreach(var argument in new[]{"/c","mklink","/J",junction,child})psi.ArgumentList.Add(argument);
++    using(var process=System.Diagnostics.Process.Start(psi)!){process.StandardOutput.ReadToEnd();process.StandardError.ReadToEnd();process.WaitForExit();if(process.ExitCode!=0)throw new IOException("Junction creation failed");}
++    Pass("JunctionRejected",()=>Reject(()=>{using var pin=WindowsFileBoundary.PinDirectory(junction);}));Directory.Delete(junction);
++    Pass("DeleteDispositionUsesRetainedHandle",()=>{using(var lease=WindowsFileBoundary.OpenWrite(root,"sample.bin",deletable:true)){lease.Validate();lease.DeleteOpenedFile();}if(File.Exists(file))throw new IOException("Disposition not observed");});
++    Console.WriteLine(JsonSerializer.Serialize(new{Status="PASS",Scope="Actual Windows APIs in disposable runner; no independent standard-user token",RestrictedToken="NOT TESTED",Tests=records}));return 0;
++}
++catch(Exception ex){Console.WriteLine(JsonSerializer.Serialize(new{Status="FAIL",Error=ex.GetType().Name+":"+ex.Message,Tests=records}));return 10;}
++static class Native
++{
++    [DllImport("kernel32.dll",EntryPoint="CreateHardLinkW",CharSet=CharSet.Unicode,SetLastError=true)][return:MarshalAs(UnmanagedType.Bool)]public static extern bool CreateHardLink(string link,string target,IntPtr security);
++}
+diff --git a/tools/SmartPerformanceDoctor.WO23WindowsProbe/SmartPerformanceDoctor.WO23WindowsProbe.csproj b/tools/SmartPerformanceDoctor.WO23WindowsProbe/SmartPerformanceDoctor.WO23WindowsProbe.csproj
+new file mode 100644
+index 0000000..1632048
+--- /dev/null
++++ b/tools/SmartPerformanceDoctor.WO23WindowsProbe/SmartPerformanceDoctor.WO23WindowsProbe.csproj
+@@ -0,0 +1 @@
++<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0-windows10.0.26100.0</TargetFramework><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings><Platforms>x64</Platforms></PropertyGroup><ItemGroup><ProjectReference Include="../../src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj" /></ItemGroup></Project>

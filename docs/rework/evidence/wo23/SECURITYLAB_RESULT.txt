@@ -1,0 +1,17 @@
+{
+  "Status": "PASS",
+  "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+  "Command": "dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests -c Release -p:Platform=x64 --no-restore -m:1 --logger trx;LogFileName=wo23-securitylab-final-v3.trx -v:minimal",
+  "Input": "All existing SecurityLab tests",
+  "Environment": "Local Windows .NET10 x64",
+  "Output": "PASS 36 / FAIL 0 / SKIP 0",
+  "ExitCode": 0,
+  "TrxSha256": "6b4f0700969b7286f0935269bc6b38728eeaefdabd14951265f05f6aa886e5f3",
+  "WindowsCI": {
+    "Run": 38934790392,
+    "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+    "Command": "dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger trx;LogFileName=wo06-securitylab.trx -v:minimal",
+    "Output": "PASS 36 / FAIL 0 / SKIP 0",
+    "ExitCode": 0
+  }
+}

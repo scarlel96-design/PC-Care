@@ -1,0 +1,10 @@
+{
+  "InputDigest": "6997206DF14B13D879F3EA25009B3C4BB200B2922D9C4CE8C44DBB2C21775FDE",
+  "ExitCode": 0,
+  "Start": "2026-10-17T01:48:37.990924+09:00",
+  "Command": "dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger trx;LogFileName=wo21-qualified-031fd92d5b6847758cc1936649fcda48.trx -v:minimal",
+  "End": "2026-10-17T01:55:48.5129088+09:00",
+  "Input": "",
+  "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+  "TrxFile": "wo21-qualified-031fd92d5b6847758cc1936649fcda48.trx"
+}

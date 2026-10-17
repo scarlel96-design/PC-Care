@@ -1,0 +1,168 @@
+{
+  "Status": "PARTIAL",
+  "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+  "Command": "Reuse committed WO22 environment inventory; wo23-windows-security.ps1 in disposable GitHub-hosted runner",
+  "Input": "No new guest or independent SID supplied",
+  "PriorInventory": {
+    "Status": "PARTIAL",
+    "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+    "Environment": "Windows CI26100;4logicalCPU",
+    "Command": "Reuse committed WO21 ENVIRONMENT_RESULT.json and preparation scripts; no repeated host inventory",
+    "Input": "No new isolated guest or SID pair supplied",
+    "Output": {
+      "ReusedSource": "930ed7907daaa95cf15040d130c580248e64bf61",
+      "ReusedEvidence": {
+        "Status": "PARTIAL",
+        "LocalInventory": {
+          "Command": "pwsh -NoProfile -File scripts/wo21-environment.ps1",
+          "Input": "Read-only host inventory",
+          "Source": "1d93600ea5c6214e23051641ad10c06a667f0866",
+          "OS": "Microsoft Windows NT 10.0.26200.0",
+          "Processors": 24,
+          "HyperVCommand": false,
+          "VMwareCommand": false,
+          "VirtualBoxCommand": false,
+          "SandboxExecutable": true,
+          "Features": [
+            {
+              "Error": "COMException",
+              "Name": "Containers-DisposableClientVM",
+              "State": "UNVERIFIED"
+            },
+            {
+              "Error": "COMException",
+              "Name": "Microsoft-Hyper-V-All",
+              "State": "UNVERIFIED"
+            }
+          ],
+          "VMs": [],
+          "Snapshots": [],
+          "RemoteHost": "NOT_CONFIGURED_IN_QUALIFICATION",
+          "IsolationStatus": "VM_UNAVAILABLE",
+          "InteractiveUac": "INTERACTIVE_UAC_UNAVAILABLE",
+          "TestCertificate": "TEST_CERTIFICATE_UNAVAILABLE",
+          "Gui": "NOT TESTED",
+          "Reboot": "NOT TESTED",
+          "PhysicalPowerLoss": "NOT TESTED",
+          "Daybreak": "NO_PLATFORM_CHALLENGE_OBSERVED",
+          "ExitCode": 0
+        },
+        "CIInventory": {
+          "Command": "pwsh -NoProfile -File scripts/wo21-environment.ps1",
+          "Input": "Read-only host inventory",
+          "Source": "930ed7907daaa95cf15040d130c580248e64bf61",
+          "OS": "Microsoft Windows NT 10.0.26100.0",
+          "Processors": 4,
+          "HyperVCommand": true,
+          "VMwareCommand": false,
+          "VirtualBoxCommand": false,
+          "SandboxExecutable": false,
+          "Features": [
+            {
+              "Name": "Containers-DisposableClientVM",
+              "State": ""
+            },
+            {
+              "Name": "Microsoft-Hyper-V-All",
+              "State": ""
+            }
+          ],
+          "VMs": [],
+          "Snapshots": [],
+          "RemoteHost": "NOT_CONFIGURED_IN_QUALIFICATION",
+          "IsolationStatus": "VM_UNAVAILABLE",
+          "InteractiveUac": "INTERACTIVE_UAC_UNAVAILABLE",
+          "TestCertificate": "TEST_CERTIFICATE_UNAVAILABLE",
+          "Gui": "NOT TESTED",
+          "Reboot": "NOT TESTED",
+          "PhysicalPowerLoss": "NOT TESTED",
+          "Daybreak": "NO_PLATFORM_CHALLENGE_OBSERVED",
+          "ExitCode": 0
+        },
+        "FeatureInterpretation": "Empty CI feature-state strings and local query exceptions are UNVERIFIED.",
+        "QualificationGuards": [
+          {
+            "ExitCode": 1,
+            "Output": "WO21_ROOT_ABSOLUTE_REQUIRED",
+            "Result": "Rejected",
+            "Input": "WO21_ROOT_ABSOLUTE_REQUIRED"
+          },
+          {
+            "ExitCode": 1,
+            "Output": "WO21_ROOT_PROTECTED",
+            "Result": "Rejected",
+            "Input": "WO21_ROOT_PROTECTED"
+          },
+          {
+            "ExitCode": 1,
+            "Output": "WO21_ROOT_PROTECTED",
+            "Result": "Rejected",
+            "Input": "WO21_ROOT_PROTECTED"
+          },
+          {
+            "ExitCode": 1,
+            "Output": "WO21_STALE_BUILD_SOURCE",
+            "Result": "Rejected before testhost",
+            "Input": "stale input digest"
+          }
+        ],
+        "GuardCommand": "pwsh -File scripts/wo21-qualification-selftest.ps1 -FixtureRoot <RUNNER_TEMP>/wo21-ci-fixtures -ReceiptDirectory artifacts/wo21-qualification",
+        "GuardHarnessExitCode": 0,
+        "QualifiedGuest": "VM_UNAVAILABLE",
+        "IndependentSids": "NOT TESTED"
+      },
+      "ActualGui": "NOT TESTED",
+      "ActualUac": "NOT TESTED",
+      "ActualAuthenticode": "NOT TESTED",
+      "ActualReboot": "NOT TESTED",
+      "Reason": [
+        "VM_UNAVAILABLE",
+        "TEST_CERTIFICATE_UNAVAILABLE",
+        "INTERACTIVE_UAC_UNAVAILABLE",
+        "PHYSICAL_HARDWARE_UNAVAILABLE"
+      ],
+      "NoNewEnvironmentClaim": true
+    },
+    "ExitCode": 0
+  },
+  "ObservedCiEnvironment": {
+    "InteractiveUAC": "NOT TESTED",
+    "Runner": "github-hosted",
+    "Source": "b4f18022c8256bbd59b300f790edfd4a9aa75b1c",
+    "RestrictedToken": "NOT TESTED",
+    "SigningTool": "Set-AuthenticodeSignature",
+    "OS": "Microsoft Windows NT 10.0.26100.0",
+    "Administrator": true,
+    "IndependentSID": "NOT TESTED",
+    "SID": "REDACTED",
+    "WinVerifyTrust": "wintrust.dll",
+    "Reboot": "NOT TESTED",
+    "CertificateProvider": true,
+    "FileSystem": "NTFS"
+  },
+  "CiComponentRun": 38930300464,
+  "Output": "Actual NTFS and PE-signing capability observed; interactive installation qualification unavailable",
+  "ExitCode": 0,
+  "IndependentSID": "NOT TESTED",
+  "Gui": "NOT TESTED",
+  "UAC": "NOT TESTED",
+  "Reboot": "NOT TESTED",
+  "PhysicalPowerLoss": "NOT TESTED",
+  "ActualWindowsCI": {
+    "OS": "Microsoft Windows NT 10.0.26100.0",
+    "Administrator": true,
+    "SigningTool": "Set-AuthenticodeSignature",
+    "CertificateProvider": true,
+    "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+    "Reboot": "NOT TESTED",
+    "SID": "REDACTED",
+    "RestrictedToken": "NOT TESTED",
+    "IndependentSID": "NOT TESTED",
+    "WinVerifyTrust": "wintrust.dll",
+    "InteractiveUAC": "NOT TESTED",
+    "Runner": "github-hosted",
+    "FileSystem": "NTFS",
+    "WorkflowRun": 38934790392
+  },
+  "TestCertificateStatus": "Actual ephemeral certificate signing and cleanup PASS in disposable CI; installed guest certificate profile NOT TESTED"
+}

@@ -1,0 +1,132 @@
+{
+  "Status": "PASS (legacy defect reproduced; modified reader blocks it)",
+  "BaselineSecurityVerdict": "FAIL: obsolete pointer incorrectly Verified disjoint committed successor",
+  "BaselineSource": "db8defce0764dd2421ceb78b9e3ce6b851fa9e6b",
+  "ModifiedInputs": {
+    "AuthenticodeBoundary.cs": "41f49266957c58fe9eb158b71deaa17b40de1c25006d5ede624228ae3ae3269f",
+    "BootstrapDispatch.cs": "3cc3ca3c4106b80efa0970fe9809bc308d06089a2bc4bb425f61fb81e6fb9500",
+    "BuildPublisherTrust.cs": "e4a679ecdbde5935d0ed2d1ba21c8efc45d760414e75cf13395b627d090042e2",
+    "InstallationAttestation.cs": "689760daba5ef1e9caa048a3919f07c83f281f631da3cae7e6d0d310149e0317",
+    "InstallationFailureCodes.cs": "1f64c2539834e7cf244cad9ad55d65319233c763d8f7f1c6bf5d8204eca21c65",
+    "InstallationTrustPolicy.cs": "8b0c6299a4c929103a8d5f351273c7a422ed77b6eeb8ed144830e7905ef0dde7",
+    "LegacyApprovalLifecycle.cs": "7dfcee910ef305a887ea15b0d5e7310a6053f17f6c5a8e689c7f615452adca68",
+    "LegacyContentClassification.cs": "ff33d7fc6bfa0cd075b4d88f4b8e5a0d8a1d458059a7163b7048bd3884cf0268",
+    "LegacyContentReview.cs": "29372f82caefacefa0c1f44225850be148c2f013d0486fa747a3b18cf211792e",
+    "LegacyRecoveryPlan.cs": "97614f3065e6e2083c360dfd64b73ae571ba5936ddec7d1fac53e42b49a9e64b",
+    "LegacyRestoreApproval.cs": "5126567227a62bad2e9c8628102a36b0beee4d98a5354a533ab835b0761d0b3a",
+    "SignedPackage.cs": "5f7aff9e925f802a2738c9721abe2e1b44727609103317e8e47b5c7e8f6b703f",
+    "SmartPerformanceDoctor.UpdateEngine.csproj": "7f9eae4ef4dffe01de0e3a2f3cd93222a432f8f0178fefe22c1c08f4ffd5fb62",
+    "UpdateBootstrap.cs": "f02e49000830f4947043e5016737789110bed434367bacfd2b4f80bb2e16a2dd",
+    "UpdatePerformanceProfile.cs": "8d797516e9ed1a3acc4b8010353d940972a6cb610edb712431dd88fde06c6617",
+    "UpdateStateText.cs": "afdaf84d0ee3174db1c5395e0a562cffd9780c8af52ba80af703f5a51baac084",
+    "UpdateTransaction.cs": "fff4e95d8d8a0472f2b430fe8aaf35654e02f2eee8ce7b096c8a71e61af77e3d",
+    "WindowsFileBoundary.cs": "5bb562bea1d785371552e62f461a579cc32e7f7974d071cc34567e74bc4a0fef"
+  },
+  "Environment": "Separate Windows processes; synthetic signed packages; strictAcl=false; no administrator/UAC/PE deployment",
+  "Checkpoint": "JournalCommittedBeforeAttestation",
+  "WorkerExitCode": 1,
+  "WorkerCommand": "Baseline-Probe.exe go <NEW_SYNTHETIC_FIXTURE> then parent Process.kill",
+  "Queries": [
+    {
+      "Variant": "Baseline",
+      "Command": "Probe.exe query <SYNTHETIC_LEGACY_FIXTURE>",
+      "ExitCode": 0,
+      "Output": {
+        "Trust": {
+          "State": 2,
+          "Verified": true,
+          "RequiresReview": false,
+          "Code": "SIGNED-INSTALLATION-VERIFIED"
+        },
+        "Recovery": {
+          "State": 0,
+          "Code": "NO-PENDING",
+          "TransactionId": ""
+        },
+        "Hashes": {
+          "first.bin": "04DABA0C8C255EDFDD9ABA43BBDF1CBFC14A7A23DB17CEACE136D10B16EB4568",
+          "second.bin": "9B0CA657E1766DB40EDDBD27B32BA3F7089C3072FAD99614F0283B614A3928F9"
+        }
+      }
+    },
+    {
+      "Variant": "Modified",
+      "Command": "Probe.exe query <SYNTHETIC_LEGACY_FIXTURE>",
+      "ExitCode": 0,
+      "Output": {
+        "Trust": {
+          "State": 5,
+          "Verified": false,
+          "RequiresReview": true,
+          "Code": "INSTALLATION-RECOVERY-REQUIRED"
+        },
+        "Recovery": {
+          "State": 4,
+          "Code": "INSTALLATION-RECOVERY-REQUIRED",
+          "TransactionId": ""
+        },
+        "Hashes": {
+          "first.bin": "04DABA0C8C255EDFDD9ABA43BBDF1CBFC14A7A23DB17CEACE136D10B16EB4568",
+          "second.bin": "9B0CA657E1766DB40EDDBD27B32BA3F7089C3072FAD99614F0283B614A3928F9"
+        }
+      }
+    }
+  ],
+  "ReadOnlySnapshotUnchanged": true,
+  "DataRecovery": "Not performed; both files preserved and review required",
+  "Builds": [
+    {
+      "Variant": "Baseline",
+      "Command": "dotnet build <INDEPENDENT_SOURCE>/Probe.csproj -c Release -p:Platform=x64 -o <BINARY> -v:minimal",
+      "ExitCode": 0,
+      "Inputs": {
+        "AuthenticodeBoundary.cs": "41f49266957c58fe9eb158b71deaa17b40de1c25006d5ede624228ae3ae3269f",
+        "BootstrapDispatch.cs": "9d429d8d992bd3120fc4b2e9d8ce2e163cf09580213db3cb7ed3ae814d7d8b61",
+        "BuildPublisherTrust.cs": "e4a679ecdbde5935d0ed2d1ba21c8efc45d760414e75cf13395b627d090042e2",
+        "InstallationAttestation.cs": "ee9cfa1e9e1a5393cf628af92ea320cf3765e8f19b6f12501cea82494249341f",
+        "InstallationFailureCodes.cs": "ee069d019ffb9c4264976569fff00d21864a26f91b5e0b0c6e0f55b61e2b27cd",
+        "InstallationTrustPolicy.cs": "1c33d6b5cb5b0e1dcc9b6b993d2a871bb2973732dbf9342080ce563be39cdb39",
+        "LegacyApprovalLifecycle.cs": "bca67cd8f886d05ff972bd04850350bbe7773970107ffa8cb33defbcded16ac5",
+        "LegacyContentClassification.cs": "ff33d7fc6bfa0cd075b4d88f4b8e5a0d8a1d458059a7163b7048bd3884cf0268",
+        "LegacyContentReview.cs": "12be57a30a21f107bf75903acfff9b7b06e691809673a4fe29a3bd6497e8e5cd",
+        "LegacyRecoveryPlan.cs": "f749591c63e9e52361e75f42c4d252b2e59e9c9069a8620e8a562f9cfa029359",
+        "LegacyRestoreApproval.cs": "2fc87117622b716cea220b95878730c22a4b86f98df17860414dd05a8782d052",
+        "SignedPackage.cs": "b7366b8551ee614070f96989cf48007b90e7bc05fd683339fd689d235111c3c2",
+        "SmartPerformanceDoctor.UpdateEngine.csproj": "7f9eae4ef4dffe01de0e3a2f3cd93222a432f8f0178fefe22c1c08f4ffd5fb62",
+        "UpdateBootstrap.cs": "1c6264f86ce3ad7ad0b7622b5c6d6ad46abc2d5024e1a22a6253e11b3b03321a",
+        "UpdatePerformanceProfile.cs": "79cd341c42329c44392636d89f91cca8d8fe46c2751809823462cc89f74ee1ff",
+        "UpdateStateText.cs": "591d3f973011bbc7b2d9b864bb3260fc0d997d22305282b6262e0e013d91d2a0",
+        "UpdateTransaction.cs": "75c6724025fef838e427eb2acf30043db550dc2c0f1d540931b65b6cb0aade64",
+        "WindowsFileBoundary.cs": "b8b683bf5311b674fec05a9bb16810e8ee365292275f421d83831d9c8539d9da"
+      }
+    },
+    {
+      "Variant": "Modified",
+      "Command": "dotnet build <INDEPENDENT_SOURCE>/Probe.csproj -c Release -p:Platform=x64 -o <BINARY> -v:minimal",
+      "ExitCode": 0,
+      "Inputs": {
+        "AuthenticodeBoundary.cs": "41f49266957c58fe9eb158b71deaa17b40de1c25006d5ede624228ae3ae3269f",
+        "BootstrapDispatch.cs": "3cc3ca3c4106b80efa0970fe9809bc308d06089a2bc4bb425f61fb81e6fb9500",
+        "BuildPublisherTrust.cs": "e4a679ecdbde5935d0ed2d1ba21c8efc45d760414e75cf13395b627d090042e2",
+        "InstallationAttestation.cs": "689760daba5ef1e9caa048a3919f07c83f281f631da3cae7e6d0d310149e0317",
+        "InstallationFailureCodes.cs": "1f64c2539834e7cf244cad9ad55d65319233c763d8f7f1c6bf5d8204eca21c65",
+        "InstallationTrustPolicy.cs": "8b0c6299a4c929103a8d5f351273c7a422ed77b6eeb8ed144830e7905ef0dde7",
+        "LegacyApprovalLifecycle.cs": "7dfcee910ef305a887ea15b0d5e7310a6053f17f6c5a8e689c7f615452adca68",
+        "LegacyContentClassification.cs": "ff33d7fc6bfa0cd075b4d88f4b8e5a0d8a1d458059a7163b7048bd3884cf0268",
+        "LegacyContentReview.cs": "29372f82caefacefa0c1f44225850be148c2f013d0486fa747a3b18cf211792e",
+        "LegacyRecoveryPlan.cs": "97614f3065e6e2083c360dfd64b73ae571ba5936ddec7d1fac53e42b49a9e64b",
+        "LegacyRestoreApproval.cs": "5126567227a62bad2e9c8628102a36b0beee4d98a5354a533ab835b0761d0b3a",
+        "SignedPackage.cs": "5f7aff9e925f802a2738c9721abe2e1b44727609103317e8e47b5c7e8f6b703f",
+        "SmartPerformanceDoctor.UpdateEngine.csproj": "7f9eae4ef4dffe01de0e3a2f3cd93222a432f8f0178fefe22c1c08f4ffd5fb62",
+        "UpdateBootstrap.cs": "f02e49000830f4947043e5016737789110bed434367bacfd2b4f80bb2e16a2dd",
+        "UpdatePerformanceProfile.cs": "8d797516e9ed1a3acc4b8010353d940972a6cb610edb712431dd88fde06c6617",
+        "UpdateStateText.cs": "afdaf84d0ee3174db1c5395e0a562cffd9780c8af52ba80af703f5a51baac084",
+        "UpdateTransaction.cs": "fff4e95d8d8a0472f2b430fe8aaf35654e02f2eee8ce7b096c8a71e61af77e3d",
+        "WindowsFileBoundary.cs": "5bb562bea1d785371552e62f461a579cc32e7f7974d071cc34567e74bc4a0fef"
+      }
+    }
+  ],
+  "ModifiedSource": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+  "FullCommand": "python ../test_wo23_legacy_gap.py",
+  "HarnessExitCode": 0
+}

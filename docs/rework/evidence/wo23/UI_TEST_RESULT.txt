@@ -1,0 +1,13 @@
+{
+  "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+  "ActualGUI": "NOT TESTED",
+  "ExitCode": 0,
+  "Status": "PASS",
+  "Output": "WO23_UI_SOURCE_CONTRACT=PASS; ACTUAL_GUI=NOT_TESTED",
+  "Scope": "UI source and service connection contract only",
+  "Command": "pwsh -NoProfile -File scripts/wo23-ui-contract.ps1",
+  "Input": "Existing update recovery UI and generation-aware progress callbacks"
+}
+
+Actual product GUI, high DPI, screen reader and dispatcher interaction: NOT TESTED.
+Screen control session: NOT STARTED.

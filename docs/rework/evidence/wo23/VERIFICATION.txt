@@ -1,0 +1,60 @@
+WORK ITEM: WO-23
+STATUS: PARTIAL
+PHASE 1: NO-GO
+BRANCH: codex/pccare-wo23-windows-security-update-hardening
+BASELINE SHA: db8defce0764dd2421ceb78b9e3ce6b851fa9e6b
+VERIFIED EXECUTABLE SOURCE: 2c1c56b5995f303d57d98098e6eafeefc8e1df11
+WINDOWS CI: https://github.com/scarlel96-design/PC-Care/actions/runs/38934790392
+CI RESULT: SUCCESS
+APP: PASS 1356 / FAIL 0 / SKIP 111 / TOTAL 1467
+NEW WO23: 23, included in app count
+SECURITYLAB: PASS 36 / FAIL 0 / SKIP 0
+RESTORE / RELEASE: warnings 0, errors 0
+ACTUAL WINDOWS ACL: 9 PASS; independent security token NOT TESTED
+ACTUAL PE AUTHENTICODE: 15 PASS; certificate cleanup verified
+LOCAL NEW PUBLICATION WORKER TERMINATIONS: 15 PASS; parent kill exit -1
+LEGACY BASELINE DEFECT: reproduced with parent kill exit 1; obsolete pointer Verified in baseline; modified reader requires review
+V5 AUTHENTICATED EXPORT: 26 reopens / 104 full file hash pairs
+SOURCE COPY CHANGE: WindowsFileBoundary.Check initial final-path buffer 32768 -> 512; bounded retry retained
+SOURCE COPY RESTORED BEHAVIOR: OverBudget true; file ID and content hash verified
+SOURCE COPY RESTORATION IS SEPARATE FROM INSTALLATION AND VAULT DATA RECOVERY
+ORIGINAL SHA256: b8b683bf5311b674fec05a9bb16810e8ee365292275f421d83831d9c8539d9da
+MODIFIED SHA256: 5bb562bea1d785371552e62f461a579cc32e7f7974d071cc34567e74bc4a0fef
+MODIFIED_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo23\MODIFIED_FILE
+DIFF_FILE: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo23\DIFF_FILE
+VERIFICATION.txt: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo23\VERIFICATION.txt
+ROLLBACK.sh: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo23\ROLLBACK.sh
+
+STAGE: BASELINE
+COMMAND: dotnet run --project ..\..\wo23-rollback-6ccafcca731c4f3da4954b807a80da3a\Baseline-probe\Probe.csproj -c Release -p:Platform=x64 --verbosity quiet
+INPUT: 100 retained-handle validations; 8MiB allocation budget; synthetic bytes
+LITERAL OUTPUT: {"OverBudget":true,"IdentityVerified":true,"Hash":"B3CC0475BB78A5026098858E9889ACF666D31062D513D303314ECA31D36E72F2"}
+EXIT CODE: 0
+
+STAGE: MODIFIED
+COMMAND: dotnet run --project ..\..\wo23-rollback-6ccafcca731c4f3da4954b807a80da3a\Modified-probe\Probe.csproj -c Release -p:Platform=x64 --verbosity quiet
+INPUT: 100 retained-handle validations; 8MiB allocation budget; synthetic bytes
+LITERAL OUTPUT: {"OverBudget":false,"IdentityVerified":true,"Hash":"B3CC0475BB78A5026098858E9889ACF666D31062D513D303314ECA31D36E72F2"}
+EXIT CODE: 0
+
+STAGE: RollbackScript
+COMMAND: bash docs/rework/evidence/wo23/ROLLBACK.sh
+INPUT: Independent modified source copy
+LITERAL OUTPUT: SOURCE_COPY_RESTORED
+
+EXIT CODE: 0
+ENVIRONMENT OVERRIDE: {"RESTORE_COPY": "../../wo23-rollback-6ccafcca731c4f3da4954b807a80da3a/Rollback-engine/WindowsFileBoundary.cs"}
+
+STAGE: ROLLBACK
+COMMAND: dotnet run --project ..\..\wo23-rollback-6ccafcca731c4f3da4954b807a80da3a\Rollback-probe\Probe.csproj -c Release -p:Platform=x64 --verbosity quiet
+INPUT: 100 retained-handle validations; 8MiB allocation budget; synthetic bytes
+LITERAL OUTPUT: {"OverBudget":true,"IdentityVerified":true,"Hash":"B3CC0475BB78A5026098858E9889ACF666D31062D513D303314ECA31D36E72F2"}
+EXIT CODE: 0
+
+OTHER COMMANDS, INPUTS AND OUTPUTS: each named JSON or text result in this directory.
+SOURCE DIFF: FULL_SOURCE_DIFF.patch
+PRODUCTION GATES: all six AV3 flags false; production publisher unchanged; StorageCare and folder deletion blocked.
+REMAINING P0: installed signed bootstrap; actual privileged restore and UAC; independent SID ACL; reboot resume; product GUI.
+NOT TESTED: expired certificate / timestamp service, physical power loss, low-end hardware.
+DAYBREAK_DEFERRED: Stage 8 special approval work only; no Daybreak challenge observed.
+NO MAIN MERGE. NO OFFICIAL RELEASE.

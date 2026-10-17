@@ -1,0 +1,70 @@
+{
+  "Command": "WO23WindowsProbe acl <CI_TEMP>/wo23-acl",
+  "ExitCode": 0,
+  "Output": {
+    "Status": "PASS",
+    "Scope": "Actual Windows APIs in disposable runner; no independent standard-user token",
+    "RestrictedToken": "NOT TESTED",
+    "Tests": [
+      {
+        "Name": "ProtectedOwnerAndExplicitAces",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      },
+      {
+        "Name": "InheritedFileAces",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      },
+      {
+        "Name": "WritableNonAdminAceRejected",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      },
+      {
+        "Name": "PinnedPathReplacementAndMutationDenied",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      },
+      {
+        "Name": "ReplacementFileIdRejected",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      },
+      {
+        "Name": "HardlinkRejected",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      },
+      {
+        "Name": "SymbolicLinkRejected",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      },
+      {
+        "Name": "JunctionRejected",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      },
+      {
+        "Name": "DeleteDispositionUsesRetainedHandle",
+        "Status": "PASS",
+        "Input": "Disposable runner synthetic filesystem",
+        "ExitCode": 0
+      }
+    ]
+  },
+  "Input": "Actual NTFS ACL and file handle operations",
+  "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+  "WorkflowRun": 38934790392,
+  "WorkflowConclusion": "success",
+  "WorkflowUrl": "https://github.com/scarlel96-design/PC-Care/actions/runs/38934790392"
+}

@@ -1,0 +1,40 @@
+{
+  "Status": "PASS",
+  "Source": "db8defce0764dd2421ceb78b9e3ce6b851fa9e6b",
+  "CI": {
+    "Run": 38768349299,
+    "Source": "14ebea0b79d8df25f17a223cb6730bf5c95a21ee",
+    "Conclusion": "success"
+  },
+  "Environment": "Independent Windows source copy; isolated RUNNER_TEMP; x64; .NET10",
+  "Command": "pwsh -NoProfile -File scripts/wo21-qualification.ps1 -Mode All -FixtureRoot <EXTERNAL_ROOT>/wo21-wo23-baseline-fixtures -OutputDirectory artifacts/wo23-baseline",
+  "Input": "Unmodified WO22 source copy",
+  "Build": {
+    "Start": "2026-10-16T15:39:04.827413+00:00",
+    "Input": "",
+    "ExitCode": 0,
+    "Command": "dotnet build tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal",
+    "InputDigest": "82E98CB1D9078D0ACFB8A88D9E512BCD06B89F1EB07CD74B5D4D6AD725351E2C",
+    "End": "2026-10-16T15:40:54.1468771+00:00",
+    "Source": "db8defce0764dd2421ceb78b9e3ce6b851fa9e6b"
+  },
+  "Test": {
+    "Start": "2026-10-17T00:40:59.4671124+09:00",
+    "Input": "",
+    "ExitCode": 0,
+    "Command": "dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger trx;LogFileName=wo21-qualified-33463d49bf564465b2aa86f6053fd6e2.trx -v:minimal",
+    "InputDigest": "82E98CB1D9078D0ACFB8A88D9E512BCD06B89F1EB07CD74B5D4D6AD725351E2C",
+    "End": "2026-10-17T00:51:53.0934391+09:00",
+    "Source": "db8defce0764dd2421ceb78b9e3ce6b851fa9e6b",
+    "TrxFile": "wo21-qualified-33463d49bf564465b2aa86f6053fd6e2.trx"
+  },
+  "Output": [
+    "\uacb0\uacfc \ud30c\uc77c: <WORKSPACE>\\work\\wo23-baseline\\tests\\SmartPerformanceDoctor.Tests\\TestResults\\wo21-qualified-33463d49bf564465b2aa86f6053fd6e2.trx",
+    "",
+    "\ud1b5\uacfc!  - \uc2e4\ud328:     0, \ud1b5\uacfc:  1333, \uac74\ub108\ub700:   111, \uc804\uccb4:  1444, \uae30\uac04: 10 m 48 s - SmartPerformanceDoctor.Tests.dll (net10.0)"
+  ],
+  "Pass": 1333,
+  "Fail": 0,
+  "Skip": 111,
+  "ExitCode": 0
+}

@@ -1,0 +1,29 @@
+{
+  "Status": "PASS for tested source; final publication checked in delivery report",
+  "Repository": "scarlel96-design/PC-Care",
+  "Branch": "codex/pccare-wo23-windows-security-update-hardening",
+  "Baseline": "db8defce0764dd2421ceb78b9e3ce6b851fa9e6b",
+  "CI": {
+    "Run": 38934790392,
+    "Source": "2c1c56b5995f303d57d98098e6eafeefc8e1df11",
+    "Conclusion": "success",
+    "Url": "https://github.com/scarlel96-design/PC-Care/actions/runs/38934790392"
+  },
+  "Commands": [
+    "git push origin HEAD",
+    "gh run view 38934790392 --json headSha,status,conclusion,jobs",
+    "gh run download 38934790392 --name wo23-windows-evidence --dir artifacts/wo23-ci-final",
+    "git diff --exit-code 2c1c56b5995f303d57d98098e6eafeefc8e1df11 -- src tests tools scripts .github"
+  ],
+  "Input": "Named branch; complete workflow and original test artifacts",
+  "Output": "CI SUCCESS; tested source matches executable workspace; final documentation commit verified separately",
+  "ExitCode": 0,
+  "PublicationProtocol": "Publish documentation and evidence after CI. Verify final remote HEAD, tree and all changed blobs. Record final commit in the external delivery report.",
+  "MainMerged": false,
+  "OfficialReleaseCreated": false,
+  "BeforeEvidencePublication": {
+    "Command": "git ls-remote origin refs/heads/codex/pccare-wo23-windows-security-update-hardening",
+    "Output": "2c1c56b5995f303d57d98098e6eafeefc8e1df11\trefs/heads/codex/pccare-wo23-windows-security-update-hardening",
+    "ExitCode": 0
+  }
+}
