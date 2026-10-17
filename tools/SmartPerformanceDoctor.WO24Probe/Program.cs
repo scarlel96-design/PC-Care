@@ -28,7 +28,29 @@ if(args[0]=="strict-apply")
     var protectedWork=Path.Combine(productRoot,"UpdateTransactions");
     var strictEngine=new UpdateTransaction(strictPolicy,protectedWork,true){PerformanceProfile=new()};var process=System.Diagnostics.Process.GetCurrentProcess();var cpu=process.TotalProcessorTime;var allocated=GC.GetTotalAllocatedBytes(true);var timer=System.Diagnostics.Stopwatch.StartNew();
     var result=strictEngine.Apply(Path.Combine(root,"update.spdup"),installPath,"51.0.4");timer.Stop();var cpuMs=(process.TotalProcessorTime-cpu).TotalMilliseconds;var bytes=GC.GetTotalAllocatedBytes(true)-allocated;var strictHistory=strictEngine.InspectInstallationHistory(installPath);
-    Console.WriteLine(JsonSerializer.Serialize(new{result.Code,ElapsedMs=timer.Elapsed.TotalMilliseconds,CpuMs=cpuMs,AllocatedBytes=bytes,PeakWorkingSetBytes=process.PeakWorkingSet64,StrictAcl=true,History=strictHistory,Phases=strictEngine.PerformanceProfile.Snapshot(),Scope="CI protected synthetic files and fresh fixed ProgramData staging; no PE deployment or UAC"}));return result.Stage==UpdateStage.Committed&&strictHistory.Verified?0:10;
+    int? restoredOriginals=null;int? newFilesAbsent=null;
+    if(result.Stage==UpdateStage.Restored)
+    {
+        using var oldPackage=File.OpenRead(Path.Combine(root,"original.spdup"));
+        using var newPackage=File.OpenRead(Path.Combine(root,"update.spdup"));
+        var oldDeclaration=SignedPackage.Verify(oldPackage,"51.0.3",strictPolicy);
+        var newDeclaration=SignedPackage.Verify(newPackage,"51.0.4",strictPolicy);
+        if(!oldDeclaration.CanApply||oldDeclaration.Manifest is null||!newDeclaration.CanApply||newDeclaration.Manifest is null)
+            throw new InvalidDataException("ROLLBACK_REFERENCE_REJECTED");
+        var previousPaths=oldDeclaration.Manifest.Files.Select(x=>x.Path).ToHashSet(StringComparer.Ordinal);
+        restoredOriginals=0;newFilesAbsent=0;
+        foreach(var expected in oldDeclaration.Manifest.Files)
+        {
+            using var file=WindowsFileBoundary.OpenRead(installPath,expected.Path[8..]);file.Verify(expected.Length,expected.Sha256);restoredOriginals++;
+        }
+        foreach(var expected in newDeclaration.Manifest.Files.Where(x=>!previousPaths.Contains(x.Path)))
+        {
+            var target=Path.Combine(installPath,expected.Path[8..]);
+            if(File.Exists(target)||Directory.Exists(target))throw new InvalidDataException("ROLLBACK_NEW_FILE_REMAINS");newFilesAbsent++;
+        }
+    }
+    Console.WriteLine(JsonSerializer.Serialize(new{result.Code,Stage=result.Stage.ToString(),result.Failure,RestoredOriginals=restoredOriginals,NewFilesAbsent=newFilesAbsent,
+        InstallVolume=Path.GetPathRoot(installPath),StagingVolume=Path.GetPathRoot(protectedWork),ElapsedMs=timer.Elapsed.TotalMilliseconds,CpuMs=cpuMs,AllocatedBytes=bytes,PeakWorkingSetBytes=process.PeakWorkingSet64,StrictAcl=true,History=strictHistory,Phases=strictEngine.PerformanceProfile.Snapshot(),Scope="CI protected synthetic files and fresh fixed ProgramData staging; no PE deployment or UAC"}));return result.Stage==UpdateStage.Committed&&strictHistory.Verified?0:10;
 }
 if(args[0]=="access")
 {

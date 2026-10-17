@@ -23,9 +23,18 @@ $records|ConvertTo-Json -Depth 12|Set-Content (Join-Path $out 'vault-and-apply.j
 @{Source=$source;Status='PASS';Scope='Windows synthetic capture and comparator; not real installation, UAC, independent SID, GUI or reboot';ExitCode=0}|ConvertTo-Json|Set-Content (Join-Path $out 'summary.json')
 
 if($env:GITHUB_ACTIONS -eq 'true' -and $env:RUNNER_ENVIRONMENT -eq 'github-hosted'){
- $root=Join-Path $env:RUNNER_TEMP ('wo20-wo24-strict-'+[guid]::NewGuid().ToString('N'))
- & $probe prepare-many $root|Out-Null
- if($LASTEXITCODE -ne 0){throw 'STRICT_FIXTURE_FAILED'}
- & (Join-Path $repo 'tools/SmartPerformanceDoctor.WO24Probe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.WO24Probe.exe') strict-apply $root | Set-Content (Join-Path $out 'strict-performance.json')
- if($LASTEXITCODE -ne 0){throw 'STRICT_APPLY_FAILED'}
+ # The existing handle publication contract requires installation and staging on one volume.
+ $previousTemp=$env:RUNNER_TEMP
+ $volume=[IO.Path]::GetPathRoot([Environment]::GetFolderPath('CommonApplicationData'))
+ $fixtureParent=Join-Path $volume ('wo24-ci-fixtures-'+[guid]::NewGuid().ToString('N'))
+ if(Test-Path -LiteralPath $fixtureParent){throw 'NEW_STRICT_FIXTURE_PARENT_REQUIRED'}
+ New-Item -ItemType Directory -Path $fixtureParent|Out-Null
+ try{
+  $env:RUNNER_TEMP=$fixtureParent
+  $root=Join-Path $fixtureParent ('wo20-wo24-strict-'+[guid]::NewGuid().ToString('N'))
+  & $probe prepare-many $root|Out-Null
+  if($LASTEXITCODE -ne 0){throw 'STRICT_FIXTURE_FAILED'}
+  & (Join-Path $repo 'tools/SmartPerformanceDoctor.WO24Probe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.WO24Probe.exe') strict-apply $root | Set-Content (Join-Path $out 'strict-performance.json')
+  if($LASTEXITCODE -ne 0){throw 'STRICT_APPLY_FAILED'}
+ }finally{$env:RUNNER_TEMP=$previousTemp}
 }

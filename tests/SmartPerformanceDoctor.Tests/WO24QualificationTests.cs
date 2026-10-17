@@ -41,6 +41,21 @@ public sealed class WO24InstallationHistoryTests
         Assert.Equal(UpdateStage.Committed,e.Apply(f.Package("51.0.4","51.0.5","first.bin"),f.Install,"51.0.4").Stage);
         Assert.True(e.InspectInstallationHistory(f.Install).Verified);
     }
+    [Fact]public void CrossVolumePublicationPreservesSourceWithoutCreatingDestination()
+    {
+        using var f=new WO23LegacyPublicationGapTests.Fixture();
+        var source=Path.Combine(f.Install,"volume.bin");var bytes=RandomNumberGenerator.GetBytes(4096);
+        var other=Path.GetPathRoot(f.Install)!.Equals("C:\\",StringComparison.OrdinalIgnoreCase)?"D:\\":"C:\\";
+        var destination=Path.Combine(other,"wo24-uncreated-"+Guid.NewGuid().ToString("N"));
+        Assert.False(Directory.Exists(destination));
+        using(var file=WindowsFileBoundary.OpenWrite(f.Install,"volume.bin",create:true,deletable:true))
+        {
+            file.Stream.Write(bytes);file.Stream.Flush(true);
+            var error=Assert.Throws<IOException>(()=>file.PublishOpenedFile(destination,"same.bin"));
+            Assert.Contains("PUBLISH-SAME-VOLUME-REQUIRED",error.Message);file.Validate();
+        }
+        Assert.False(Directory.Exists(destination));Assert.Equal(bytes,File.ReadAllBytes(source));
+    }
     [Fact]public void SignedButDiscontinuousHistoryRequiresReview()
     {
         using var f=new WO23LegacyPublicationGapTests.Fixture();var e=f.Engine;
