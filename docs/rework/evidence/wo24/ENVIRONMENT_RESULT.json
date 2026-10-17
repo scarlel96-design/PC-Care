@@ -1,0 +1,25 @@
+{
+  "Status": "PARTIAL",
+  "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+  "Command": "Reuse committed WO23 ENVIRONMENT_RESULT.json; no repeated host discovery",
+  "Input": "No new VM, checkpoint or independent SID supplied",
+  "Output": {
+    "Guest": "VM_UNAVAILABLE",
+    "Checkpoint": "NOT TESTED",
+    "InteractiveUAC": "INTERACTIVE_UAC_UNAVAILABLE",
+    "IndependentSid": "NOT TESTED",
+    "Reboot": "NOT TESTED",
+    "CI": "Noninteractive GitHub-hosted runner only"
+  },
+  "ExitCode": null,
+  "PriorEvidence": "../wo23/ENVIRONMENT_RESULT.json",
+  "Environment": "Local Windows host; no new disposable guest, independent test SID or interactive UAC session supplied. Actual guest execution not performed.",
+  "ReadOnlyEvidenceAction": "Read retained WO23 environment evidence; completed without error. No new VM inventory executed.",
+  "ExecutedCI": {
+    "Run": 39015974010,
+    "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+    "Conclusion": "success",
+    "Url": "https://github.com/scarlel96-design/PC-Care/actions/runs/39015974010",
+    "Scope": "Disposable noninteractive GitHub-hosted Windows runner; actual synthetic NTFS files, ACL and native signatures. No independent SID pair, UAC, guest deployment or reboot."
+  }
+}

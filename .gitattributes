@@ -80,3 +80,10 @@ docs/rework/evidence/wo08/CI_LOG.txt -text whitespace=-blank-at-eol
 
 /docs/rework/evidence/wo23/** -text -whitespace
 /docs/rework/evidence/wo23/ROLLBACK.sh text eol=lf
+
+# Preserve exact WO24 evidence bytes.
+docs/rework/evidence/wo24/** -text -whitespace
+docs/rework/evidence/wo24/ORIGINAL_FILE -text
+docs/rework/evidence/wo24/MODIFIED_FILE -text
+docs/rework/evidence/wo24/DIFF_FILE -text
+docs/rework/evidence/wo24/ROLLBACK.sh text eol=lf

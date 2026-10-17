@@ -1,0 +1,40 @@
+{
+  "Status": "PASS",
+  "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+  "Environment": "Local Windows; x64 .NET10; external isolated RUNNER_TEMP",
+  "Command": "dotnet build tools/SmartPerformanceDoctor.WO24Probe -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal",
+  "Input": "Frozen source after qualified full build; build succeeded before capture",
+  "Output": "0 warnings / 0 errors; source-bound probe and dependency hashes recorded",
+  "ExitCode": 0,
+  "Binaries": [
+    {
+      "Path": "tools/SmartPerformanceDoctor.WO24Probe/bin/x64/Release/net10.0-windows10.0.26100.0/Microsoft.Windows.SDK.NET.dll",
+      "Sha256": "c633ab241cd09846c2aa409f0bee2026962610404a7bf132c75cbd66b0e5a9f4"
+    },
+    {
+      "Path": "tools/SmartPerformanceDoctor.WO24Probe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateEngine.dll",
+      "Sha256": "135b36a3fac1f5965b1aa353939b4945532da2c2f02952b3a93fda201d818360"
+    },
+    {
+      "Path": "tools/SmartPerformanceDoctor.WO24Probe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.WO24Probe.deps.json",
+      "Sha256": "3bd9fc064c80ddb672e144d0cf2c7feb22af086bd0f3e578512f30c90eb3d7cd"
+    },
+    {
+      "Path": "tools/SmartPerformanceDoctor.WO24Probe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.WO24Probe.dll",
+      "Sha256": "dcfd4ea6f2b1f0a207e7a03967119496dc73a5e3eae448aa9efc3912c8ca2e7e"
+    },
+    {
+      "Path": "tools/SmartPerformanceDoctor.WO24Probe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.WO24Probe.exe",
+      "Sha256": "526af4529b086ec0723b145bd81d5fc4cd30b14398ef468f29553496b8685bce"
+    },
+    {
+      "Path": "tools/SmartPerformanceDoctor.WO24Probe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.WO24Probe.runtimeconfig.json",
+      "Sha256": "3e965cd7cfd553c2ff4e842d8d8019aaae2da0a21d92ff85a87573dd8d1b95c6"
+    },
+    {
+      "Path": "tools/SmartPerformanceDoctor.WO24Probe/bin/x64/Release/net10.0-windows10.0.26100.0/WinRT.Runtime.dll",
+      "Sha256": "bcf3a14e8712a90837fc5c0d8c8a24696af2bd7f74e9767597ec81ededfb23db"
+    }
+  ],
+  "Scope": "Build provenance; not Authenticode or execution authority"
+}

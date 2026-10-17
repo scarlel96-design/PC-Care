@@ -1,0 +1,24 @@
+{
+  "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+  "StorageCareCanExecute": false,
+  "Command": "wo23-ui-contract.ps1 production source audit",
+  "PublisherPolicyChanged": false,
+  "ExitCode": 0,
+  "Status": "PASS",
+  "Flags": {
+    "WriterEnableReady": false,
+    "ExternalReviewCompleted": false,
+    "ProductionWriterEnabled": false,
+    "MigrationEnabled": false,
+    "JournalWriterEnabled": false,
+    "ProductionEnableAuthorized": false
+  },
+  "Input": "Actual production declarations",
+  "Environment": "Read-only source audit under local Windows PowerShell7; same executable source as final CI",
+  "Output": {
+    "AllSixAv3FlagsFalse": true,
+    "StorageCareCanExecute": false,
+    "ProductionPublisherPolicyChanged": false,
+    "OtherProtectionPaths": "Retained regression tests passed; folder secure deletion and risky v4/v5 password change remain blocked."
+  }
+}

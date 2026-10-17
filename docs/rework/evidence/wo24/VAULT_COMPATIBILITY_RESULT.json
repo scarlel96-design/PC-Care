@@ -1,0 +1,772 @@
+{
+  "Status": "PASS in synthetic scope",
+  "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+  "Environment": "Separate Windows synthetic workers; no user vaults, deployed PE, UAC or reboot",
+  "Command": "scripts/wo23-process-validation.ps1; scripts/wo24-ci-validation.ps1",
+  "Input": "Retained crash matrix and new normal-apply capture flow",
+  "Output": {
+    "RetainedCIReopens": 26,
+    "RetainedCIHashPairs": 104,
+    "RetainedCIResults": [
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "A202F11C9FEF0E2A489D6AD11FE9822A2B7A4725EB714A0D5F0A62A550B63DE2",
+          "sample-1048576.bin": "1DBE7D8FF1035E9AEAB9ACDC9D56645219A913005C5FA12316C32031FC2C783E",
+          "sample-4194304.bin": "3A3DAD1A87F1DB9C08A806C9A54F56B253A30B536AF09DD3336515A890BA03E2"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "A202F11C9FEF0E2A489D6AD11FE9822A2B7A4725EB714A0D5F0A62A550B63DE2",
+          "sample-1048576.bin": "1DBE7D8FF1035E9AEAB9ACDC9D56645219A913005C5FA12316C32031FC2C783E",
+          "sample-4194304.bin": "3A3DAD1A87F1DB9C08A806C9A54F56B253A30B536AF09DD3336515A890BA03E2"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "A202F11C9FEF0E2A489D6AD11FE9822A2B7A4725EB714A0D5F0A62A550B63DE2",
+          "sample-1048576.bin": "1DBE7D8FF1035E9AEAB9ACDC9D56645219A913005C5FA12316C32031FC2C783E",
+          "sample-4194304.bin": "3A3DAD1A87F1DB9C08A806C9A54F56B253A30B536AF09DD3336515A890BA03E2"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "A202F11C9FEF0E2A489D6AD11FE9822A2B7A4725EB714A0D5F0A62A550B63DE2",
+          "sample-1048576.bin": "1DBE7D8FF1035E9AEAB9ACDC9D56645219A913005C5FA12316C32031FC2C783E",
+          "sample-4194304.bin": "3A3DAD1A87F1DB9C08A806C9A54F56B253A30B536AF09DD3336515A890BA03E2"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "3DB6EE1BAEB68000CF920ACBDC3BEEF6512A0BEBCA5DC466BFD8497097BB6AD2",
+          "sample-1048576.bin": "D3AC920FAC28DB03E98D4CB817ABDD5BA0550F046286C9BC9DBCD892B9F15416",
+          "sample-4194304.bin": "85BC0731FC71C4A3B7581C9A776519D8CC354C3D0ADDB72D4D69A6439E8D761B"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "3DB6EE1BAEB68000CF920ACBDC3BEEF6512A0BEBCA5DC466BFD8497097BB6AD2",
+          "sample-1048576.bin": "D3AC920FAC28DB03E98D4CB817ABDD5BA0550F046286C9BC9DBCD892B9F15416",
+          "sample-4194304.bin": "85BC0731FC71C4A3B7581C9A776519D8CC354C3D0ADDB72D4D69A6439E8D761B"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "3DB6EE1BAEB68000CF920ACBDC3BEEF6512A0BEBCA5DC466BFD8497097BB6AD2",
+          "sample-1048576.bin": "D3AC920FAC28DB03E98D4CB817ABDD5BA0550F046286C9BC9DBCD892B9F15416",
+          "sample-4194304.bin": "85BC0731FC71C4A3B7581C9A776519D8CC354C3D0ADDB72D4D69A6439E8D761B"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "3DB6EE1BAEB68000CF920ACBDC3BEEF6512A0BEBCA5DC466BFD8497097BB6AD2",
+          "sample-1048576.bin": "D3AC920FAC28DB03E98D4CB817ABDD5BA0550F046286C9BC9DBCD892B9F15416",
+          "sample-4194304.bin": "85BC0731FC71C4A3B7581C9A776519D8CC354C3D0ADDB72D4D69A6439E8D761B"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "39748DF19336DA75DA17EDB4AEB1D4979A4A3A7E6FDF5C72DB7B2684A4868386",
+          "sample-1048576.bin": "F0CCD854A962C11B4A5F39FFEA6FC015AF2C8CCD6FB522CC39564B858797500C",
+          "sample-4194304.bin": "9DD672ECD7807943F809DFAFB77B79EBEDE7DA74A6ABF4B6C6C85BCBED7053D9"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "39748DF19336DA75DA17EDB4AEB1D4979A4A3A7E6FDF5C72DB7B2684A4868386",
+          "sample-1048576.bin": "F0CCD854A962C11B4A5F39FFEA6FC015AF2C8CCD6FB522CC39564B858797500C",
+          "sample-4194304.bin": "9DD672ECD7807943F809DFAFB77B79EBEDE7DA74A6ABF4B6C6C85BCBED7053D9"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "39748DF19336DA75DA17EDB4AEB1D4979A4A3A7E6FDF5C72DB7B2684A4868386",
+          "sample-1048576.bin": "F0CCD854A962C11B4A5F39FFEA6FC015AF2C8CCD6FB522CC39564B858797500C",
+          "sample-4194304.bin": "9DD672ECD7807943F809DFAFB77B79EBEDE7DA74A6ABF4B6C6C85BCBED7053D9"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "39748DF19336DA75DA17EDB4AEB1D4979A4A3A7E6FDF5C72DB7B2684A4868386",
+          "sample-1048576.bin": "F0CCD854A962C11B4A5F39FFEA6FC015AF2C8CCD6FB522CC39564B858797500C",
+          "sample-4194304.bin": "9DD672ECD7807943F809DFAFB77B79EBEDE7DA74A6ABF4B6C6C85BCBED7053D9"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "D00D197387FCAE1F8C3C3DA70708988BC389713F2BE81297B2851519DEAE30F1",
+          "sample-1048576.bin": "96F2D2E6031C1B066D65649C1CC367B497EE91905BBFF29BCA85EE70D90E6D47",
+          "sample-4194304.bin": "5EB1A13D3BEDEF30B43C0BE07ACD110138F554CA5B55824B2AD9D2E2E6C0FE9C"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "D00D197387FCAE1F8C3C3DA70708988BC389713F2BE81297B2851519DEAE30F1",
+          "sample-1048576.bin": "96F2D2E6031C1B066D65649C1CC367B497EE91905BBFF29BCA85EE70D90E6D47",
+          "sample-4194304.bin": "5EB1A13D3BEDEF30B43C0BE07ACD110138F554CA5B55824B2AD9D2E2E6C0FE9C"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "D00D197387FCAE1F8C3C3DA70708988BC389713F2BE81297B2851519DEAE30F1",
+          "sample-1048576.bin": "96F2D2E6031C1B066D65649C1CC367B497EE91905BBFF29BCA85EE70D90E6D47",
+          "sample-4194304.bin": "5EB1A13D3BEDEF30B43C0BE07ACD110138F554CA5B55824B2AD9D2E2E6C0FE9C"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "D00D197387FCAE1F8C3C3DA70708988BC389713F2BE81297B2851519DEAE30F1",
+          "sample-1048576.bin": "96F2D2E6031C1B066D65649C1CC367B497EE91905BBFF29BCA85EE70D90E6D47",
+          "sample-4194304.bin": "5EB1A13D3BEDEF30B43C0BE07ACD110138F554CA5B55824B2AD9D2E2E6C0FE9C"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "125075A1F9A9B68CB64B661EDAC4E1AC88182B43978024DF3C45D74D6A501A18",
+          "sample-1048576.bin": "C2DF2BF05C7329AA3C122A9D307FADB6D89946C6D5C2BDA04A1ED383733C7074",
+          "sample-4194304.bin": "592A94FC90E18BB1A1804BE0178A67EDE0326971C23AFFEC8F89652B3A17963F"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "125075A1F9A9B68CB64B661EDAC4E1AC88182B43978024DF3C45D74D6A501A18",
+          "sample-1048576.bin": "C2DF2BF05C7329AA3C122A9D307FADB6D89946C6D5C2BDA04A1ED383733C7074",
+          "sample-4194304.bin": "592A94FC90E18BB1A1804BE0178A67EDE0326971C23AFFEC8F89652B3A17963F"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "125075A1F9A9B68CB64B661EDAC4E1AC88182B43978024DF3C45D74D6A501A18",
+          "sample-1048576.bin": "C2DF2BF05C7329AA3C122A9D307FADB6D89946C6D5C2BDA04A1ED383733C7074",
+          "sample-4194304.bin": "592A94FC90E18BB1A1804BE0178A67EDE0326971C23AFFEC8F89652B3A17963F"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "125075A1F9A9B68CB64B661EDAC4E1AC88182B43978024DF3C45D74D6A501A18",
+          "sample-1048576.bin": "C2DF2BF05C7329AA3C122A9D307FADB6D89946C6D5C2BDA04A1ED383733C7074",
+          "sample-4194304.bin": "592A94FC90E18BB1A1804BE0178A67EDE0326971C23AFFEC8F89652B3A17963F"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "8D9DAF0C15B1017F8E45181321C076C1FD3A19197DA0903BCAEDC343A83B95F5",
+          "sample-1048576.bin": "CEE3583A3141DC4F9A0755BD0CE63FB7FD50A1D8E55FD3E69EE35EA39D0997A9",
+          "sample-4194304.bin": "E903172E4293E6E5E0572608E1572D7C9E2900A66B95ABA756380A1A3BA96F10"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "8D9DAF0C15B1017F8E45181321C076C1FD3A19197DA0903BCAEDC343A83B95F5",
+          "sample-1048576.bin": "CEE3583A3141DC4F9A0755BD0CE63FB7FD50A1D8E55FD3E69EE35EA39D0997A9",
+          "sample-4194304.bin": "E903172E4293E6E5E0572608E1572D7C9E2900A66B95ABA756380A1A3BA96F10"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "8D9DAF0C15B1017F8E45181321C076C1FD3A19197DA0903BCAEDC343A83B95F5",
+          "sample-1048576.bin": "CEE3583A3141DC4F9A0755BD0CE63FB7FD50A1D8E55FD3E69EE35EA39D0997A9",
+          "sample-4194304.bin": "E903172E4293E6E5E0572608E1572D7C9E2900A66B95ABA756380A1A3BA96F10"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "8D9DAF0C15B1017F8E45181321C076C1FD3A19197DA0903BCAEDC343A83B95F5",
+          "sample-1048576.bin": "CEE3583A3141DC4F9A0755BD0CE63FB7FD50A1D8E55FD3E69EE35EA39D0997A9",
+          "sample-4194304.bin": "E903172E4293E6E5E0572608E1572D7C9E2900A66B95ABA756380A1A3BA96F10"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "68E1AE92E195A22E7E40FD9452C886A82113F927E451B7F5957881644D83488E",
+          "sample-1048576.bin": "14C988A00E8255D116B2368E3EFF1F227EDFC0181937C08AACB917C4A61F5980",
+          "sample-4194304.bin": "4143CBF86C880DC7D484979CD953A2B28123D5EB7DA5002BAF85FFF3FE0117C5"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "68E1AE92E195A22E7E40FD9452C886A82113F927E451B7F5957881644D83488E",
+          "sample-1048576.bin": "14C988A00E8255D116B2368E3EFF1F227EDFC0181937C08AACB917C4A61F5980",
+          "sample-4194304.bin": "4143CBF86C880DC7D484979CD953A2B28123D5EB7DA5002BAF85FFF3FE0117C5"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "68E1AE92E195A22E7E40FD9452C886A82113F927E451B7F5957881644D83488E",
+          "sample-1048576.bin": "14C988A00E8255D116B2368E3EFF1F227EDFC0181937C08AACB917C4A61F5980",
+          "sample-4194304.bin": "4143CBF86C880DC7D484979CD953A2B28123D5EB7DA5002BAF85FFF3FE0117C5"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "68E1AE92E195A22E7E40FD9452C886A82113F927E451B7F5957881644D83488E",
+          "sample-1048576.bin": "14C988A00E8255D116B2368E3EFF1F227EDFC0181937C08AACB917C4A61F5980",
+          "sample-4194304.bin": "4143CBF86C880DC7D484979CD953A2B28123D5EB7DA5002BAF85FFF3FE0117C5"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "070C90EC9D4C88740E9B84A6852DA17C027A5B09705E9D7678B2DC3B8F8257E7",
+          "sample-1048576.bin": "E17A0C65F3724981DB0CC9F6CD8E328A4CAA79B462105997834C97E1843E5B5C",
+          "sample-4194304.bin": "6FB08FAA4CE03D223587EDA3568B09EAE84E10FDE400871BA8CA613FAA3F0400"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "070C90EC9D4C88740E9B84A6852DA17C027A5B09705E9D7678B2DC3B8F8257E7",
+          "sample-1048576.bin": "E17A0C65F3724981DB0CC9F6CD8E328A4CAA79B462105997834C97E1843E5B5C",
+          "sample-4194304.bin": "6FB08FAA4CE03D223587EDA3568B09EAE84E10FDE400871BA8CA613FAA3F0400"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "070C90EC9D4C88740E9B84A6852DA17C027A5B09705E9D7678B2DC3B8F8257E7",
+          "sample-1048576.bin": "E17A0C65F3724981DB0CC9F6CD8E328A4CAA79B462105997834C97E1843E5B5C",
+          "sample-4194304.bin": "6FB08FAA4CE03D223587EDA3568B09EAE84E10FDE400871BA8CA613FAA3F0400"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "070C90EC9D4C88740E9B84A6852DA17C027A5B09705E9D7678B2DC3B8F8257E7",
+          "sample-1048576.bin": "E17A0C65F3724981DB0CC9F6CD8E328A4CAA79B462105997834C97E1843E5B5C",
+          "sample-4194304.bin": "6FB08FAA4CE03D223587EDA3568B09EAE84E10FDE400871BA8CA613FAA3F0400"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "0A37C382EDF527A7E39BE612D7AE870C635B8D1E7C1B3CBA1345AE0F73708CB3",
+          "sample-1048576.bin": "2FD074B454E2032A48B6EFCF3D5F2336CEB86B115C6BB495FE7F86EDD1620E9A",
+          "sample-4194304.bin": "33001895B1A601435474A1DC5E3B415D0DAE67266C97F7334D17D242972C2D31"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "0A37C382EDF527A7E39BE612D7AE870C635B8D1E7C1B3CBA1345AE0F73708CB3",
+          "sample-1048576.bin": "2FD074B454E2032A48B6EFCF3D5F2336CEB86B115C6BB495FE7F86EDD1620E9A",
+          "sample-4194304.bin": "33001895B1A601435474A1DC5E3B415D0DAE67266C97F7334D17D242972C2D31"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "0A37C382EDF527A7E39BE612D7AE870C635B8D1E7C1B3CBA1345AE0F73708CB3",
+          "sample-1048576.bin": "2FD074B454E2032A48B6EFCF3D5F2336CEB86B115C6BB495FE7F86EDD1620E9A",
+          "sample-4194304.bin": "33001895B1A601435474A1DC5E3B415D0DAE67266C97F7334D17D242972C2D31"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "0A37C382EDF527A7E39BE612D7AE870C635B8D1E7C1B3CBA1345AE0F73708CB3",
+          "sample-1048576.bin": "2FD074B454E2032A48B6EFCF3D5F2336CEB86B115C6BB495FE7F86EDD1620E9A",
+          "sample-4194304.bin": "33001895B1A601435474A1DC5E3B415D0DAE67266C97F7334D17D242972C2D31"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "8F69F1F320CFCFE152F5AF05D7F9A4AD35F22C2A8F28354AA9C61634595828C1",
+          "sample-1048576.bin": "5E1F20C96CBA7F0D2C8814A589E2438E16B539ABCCAA769CF090A15F0DBF5AE6",
+          "sample-4194304.bin": "ED12F520801C219DD43B4B922ED6A1DF5E84B773D1A21DE8ED48B60540B5C28D"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "8F69F1F320CFCFE152F5AF05D7F9A4AD35F22C2A8F28354AA9C61634595828C1",
+          "sample-1048576.bin": "5E1F20C96CBA7F0D2C8814A589E2438E16B539ABCCAA769CF090A15F0DBF5AE6",
+          "sample-4194304.bin": "ED12F520801C219DD43B4B922ED6A1DF5E84B773D1A21DE8ED48B60540B5C28D"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "8F69F1F320CFCFE152F5AF05D7F9A4AD35F22C2A8F28354AA9C61634595828C1",
+          "sample-1048576.bin": "5E1F20C96CBA7F0D2C8814A589E2438E16B539ABCCAA769CF090A15F0DBF5AE6",
+          "sample-4194304.bin": "ED12F520801C219DD43B4B922ED6A1DF5E84B773D1A21DE8ED48B60540B5C28D"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "8F69F1F320CFCFE152F5AF05D7F9A4AD35F22C2A8F28354AA9C61634595828C1",
+          "sample-1048576.bin": "5E1F20C96CBA7F0D2C8814A589E2438E16B539ABCCAA769CF090A15F0DBF5AE6",
+          "sample-4194304.bin": "ED12F520801C219DD43B4B922ED6A1DF5E84B773D1A21DE8ED48B60540B5C28D"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "24BA647F6A57BFF4F7E3D3903B92634D3129FD54CDA75161FE733099A5A3C4CC",
+          "sample-1048576.bin": "0C411BFC725D7FDF195E848BC5D03EA41E863CE83F615B472FDCACABBF6B22B8",
+          "sample-4194304.bin": "ACECFE6873805159ADF154318369DAA3EFA937C6981D8B264A42CBD8112A5BF5"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "24BA647F6A57BFF4F7E3D3903B92634D3129FD54CDA75161FE733099A5A3C4CC",
+          "sample-1048576.bin": "0C411BFC725D7FDF195E848BC5D03EA41E863CE83F615B472FDCACABBF6B22B8",
+          "sample-4194304.bin": "ACECFE6873805159ADF154318369DAA3EFA937C6981D8B264A42CBD8112A5BF5"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "24BA647F6A57BFF4F7E3D3903B92634D3129FD54CDA75161FE733099A5A3C4CC",
+          "sample-1048576.bin": "0C411BFC725D7FDF195E848BC5D03EA41E863CE83F615B472FDCACABBF6B22B8",
+          "sample-4194304.bin": "ACECFE6873805159ADF154318369DAA3EFA937C6981D8B264A42CBD8112A5BF5"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "24BA647F6A57BFF4F7E3D3903B92634D3129FD54CDA75161FE733099A5A3C4CC",
+          "sample-1048576.bin": "0C411BFC725D7FDF195E848BC5D03EA41E863CE83F615B472FDCACABBF6B22B8",
+          "sample-4194304.bin": "ACECFE6873805159ADF154318369DAA3EFA937C6981D8B264A42CBD8112A5BF5"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "928CCF82208E92B9A775A287D10859373A7EBDE498713001A8623F95FE91F74D",
+          "sample-1048576.bin": "41366AA7567F5231E129A487AC831287989481A4F232361E3D771F7FCB07E6C1",
+          "sample-4194304.bin": "1652254B30E8CCB80D10E255F2DD746F1F58815DB8CC08F2320FB29761316ABB"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "928CCF82208E92B9A775A287D10859373A7EBDE498713001A8623F95FE91F74D",
+          "sample-1048576.bin": "41366AA7567F5231E129A487AC831287989481A4F232361E3D771F7FCB07E6C1",
+          "sample-4194304.bin": "1652254B30E8CCB80D10E255F2DD746F1F58815DB8CC08F2320FB29761316ABB"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "78C42812FA5DAA14E5066EC8D70D45071A32C2AF8795886474B83A255B428C7C",
+          "sample-1048576.bin": "E90EF2675E56A62D145EDBB4790F1EC533773F36BD6880251434B5D796812BA7",
+          "sample-4194304.bin": "1A0B7D4ADC4677FF127EE84F544C6655F68E7E62A3D0D4900AF0928750D14D8C"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "78C42812FA5DAA14E5066EC8D70D45071A32C2AF8795886474B83A255B428C7C",
+          "sample-1048576.bin": "E90EF2675E56A62D145EDBB4790F1EC533773F36BD6880251434B5D796812BA7",
+          "sample-4194304.bin": "1A0B7D4ADC4677FF127EE84F544C6655F68E7E62A3D0D4900AF0928750D14D8C"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "D60F9F278367FFCA97412D6784FE1305E1A76572864BE4653FF0964BCD3514BD",
+          "sample-1048576.bin": "FC1F3C4E5C98790C49C5203BD3913B3BB1F5949916DDF588A88CBD1896DD35AC",
+          "sample-4194304.bin": "11A353F22D13CA8D24811E123AB1D1CE144E89DF4F6F66FBA29D5ABD2DF5443A"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "D60F9F278367FFCA97412D6784FE1305E1A76572864BE4653FF0964BCD3514BD",
+          "sample-1048576.bin": "FC1F3C4E5C98790C49C5203BD3913B3BB1F5949916DDF588A88CBD1896DD35AC",
+          "sample-4194304.bin": "11A353F22D13CA8D24811E123AB1D1CE144E89DF4F6F66FBA29D5ABD2DF5443A"
+        },
+        "Reboot": "NOT TESTED"
+      },
+      {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "3B48BBCCD37E142B64B8A5288D6822E18DF23010604E713DF72997EAA308ADE9",
+          "sample-1048576.bin": "2BC4F8CE427DDBBC074199A93BDEACF282BBCF4347ACDAA1C6AF40C15B2903B1",
+          "sample-4194304.bin": "AE0A6122CDABF7F02F49E2244283578E6CA84C48DAC524012589E8B9A19E0188"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "3B48BBCCD37E142B64B8A5288D6822E18DF23010604E713DF72997EAA308ADE9",
+          "sample-1048576.bin": "2BC4F8CE427DDBBC074199A93BDEACF282BBCF4347ACDAA1C6AF40C15B2903B1",
+          "sample-4194304.bin": "AE0A6122CDABF7F02F49E2244283578E6CA84C48DAC524012589E8B9A19E0188"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    ],
+    "NewNormalApplyFlows": {
+      "Local": {
+        "Command": "pwsh -NoProfile -File scripts/wo24-ci-validation.ps1 -OutputDirectory <NEW_OUTPUT>",
+        "Input": "WO20 synthetic v5 vault: 0B,4KiB,1MiB,4MiB; prepare/check/apply/check",
+        "Output": [
+          {
+            "Status": "BYTES_VERIFIED",
+            "Format": "spd-vault-v5-lab",
+            "RecoverySlotsRemaining": 10,
+            "RecoveryCodeUsed": false,
+            "Files": 4,
+            "OriginalHashes": {
+              "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+              "sample-4096.bin": "934000FC362363E67D2C46470E196C8CA042877E04869D77CC30B983F5637370",
+              "sample-1048576.bin": "233EE18205AE3D54AD1C9ACE8390C75BEC7AAF8F78928D7F805825022BFE2EC9",
+              "sample-4194304.bin": "44CE4131F0D36DA6EEDFAF1BA3B681F9EB9014E0F6242AE9463BE79926F612E2"
+            },
+            "ExtractedHashes": {
+              "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+              "sample-4096.bin": "934000FC362363E67D2C46470E196C8CA042877E04869D77CC30B983F5637370",
+              "sample-1048576.bin": "233EE18205AE3D54AD1C9ACE8390C75BEC7AAF8F78928D7F805825022BFE2EC9",
+              "sample-4194304.bin": "44CE4131F0D36DA6EEDFAF1BA3B681F9EB9014E0F6242AE9463BE79926F612E2"
+            },
+            "Reboot": "NOT TESTED"
+          },
+          {
+            "Status": "BYTES_VERIFIED",
+            "Format": "spd-vault-v5-lab",
+            "RecoverySlotsRemaining": 10,
+            "RecoveryCodeUsed": false,
+            "Files": 4,
+            "OriginalHashes": {
+              "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+              "sample-4096.bin": "934000FC362363E67D2C46470E196C8CA042877E04869D77CC30B983F5637370",
+              "sample-1048576.bin": "233EE18205AE3D54AD1C9ACE8390C75BEC7AAF8F78928D7F805825022BFE2EC9",
+              "sample-4194304.bin": "44CE4131F0D36DA6EEDFAF1BA3B681F9EB9014E0F6242AE9463BE79926F612E2"
+            },
+            "ExtractedHashes": {
+              "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+              "sample-4096.bin": "934000FC362363E67D2C46470E196C8CA042877E04869D77CC30B983F5637370",
+              "sample-1048576.bin": "233EE18205AE3D54AD1C9ACE8390C75BEC7AAF8F78928D7F805825022BFE2EC9",
+              "sample-4194304.bin": "44CE4131F0D36DA6EEDFAF1BA3B681F9EB9014E0F6242AE9463BE79926F612E2"
+            },
+            "Reboot": "NOT TESTED"
+          }
+        ],
+        "ExitCode": 0,
+        "Reopens": 2,
+        "HashPairs": 8
+      },
+      "CI": {
+        "Command": "pwsh -NoProfile -File scripts/wo24-ci-validation.ps1 -OutputDirectory <NEW_OUTPUT>",
+        "Input": "WO20 synthetic v5 vault: 0B,4KiB,1MiB,4MiB; prepare/check/apply/check",
+        "Output": [
+          {
+            "Status": "BYTES_VERIFIED",
+            "Format": "spd-vault-v5-lab",
+            "RecoverySlotsRemaining": 10,
+            "RecoveryCodeUsed": false,
+            "Files": 4,
+            "OriginalHashes": {
+              "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+              "sample-4096.bin": "0F6F854B0F00499A73FE7705E3165FFB979D8E047343FB54E85339160DF81163",
+              "sample-1048576.bin": "FE40828315E34E82D25AE15A71EECF11C4EE21884BB54A406432557A0AED893F",
+              "sample-4194304.bin": "B29AF7B804FFFF79C0B0D5E5677559559CDCF6DC051C1C1932F97610E77A7B95"
+            },
+            "ExtractedHashes": {
+              "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+              "sample-4096.bin": "0F6F854B0F00499A73FE7705E3165FFB979D8E047343FB54E85339160DF81163",
+              "sample-1048576.bin": "FE40828315E34E82D25AE15A71EECF11C4EE21884BB54A406432557A0AED893F",
+              "sample-4194304.bin": "B29AF7B804FFFF79C0B0D5E5677559559CDCF6DC051C1C1932F97610E77A7B95"
+            },
+            "Reboot": "NOT TESTED"
+          },
+          {
+            "Status": "BYTES_VERIFIED",
+            "Format": "spd-vault-v5-lab",
+            "RecoverySlotsRemaining": 10,
+            "RecoveryCodeUsed": false,
+            "Files": 4,
+            "OriginalHashes": {
+              "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+              "sample-4096.bin": "0F6F854B0F00499A73FE7705E3165FFB979D8E047343FB54E85339160DF81163",
+              "sample-1048576.bin": "FE40828315E34E82D25AE15A71EECF11C4EE21884BB54A406432557A0AED893F",
+              "sample-4194304.bin": "B29AF7B804FFFF79C0B0D5E5677559559CDCF6DC051C1C1932F97610E77A7B95"
+            },
+            "ExtractedHashes": {
+              "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+              "sample-4096.bin": "0F6F854B0F00499A73FE7705E3165FFB979D8E047343FB54E85339160DF81163",
+              "sample-1048576.bin": "FE40828315E34E82D25AE15A71EECF11C4EE21884BB54A406432557A0AED893F",
+              "sample-4194304.bin": "B29AF7B804FFFF79C0B0D5E5677559559CDCF6DC051C1C1932F97610E77A7B95"
+            },
+            "Reboot": "NOT TESTED"
+          }
+        ],
+        "ExitCode": 0,
+        "Reopens": 2,
+        "HashPairs": 8
+      }
+    }
+  },
+  "ExitCode": 0,
+  "ActualGuestRebootCompatibility": "NOT TESTED",
+  "RetainedCrashWorkers": [
+    {
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+      "Command": "WO20Probe commit-kill:AfterFinalHashVerification <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Environment": "Synthetic filesystem",
+      "Output": "CHECKPOINT:AfterFinalHashVerification\r\n",
+      "ExitCode": -1,
+      "Checkpoint": "AfterFinalHashVerification"
+    },
+    {
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+      "Command": "WO20Probe commit-kill:AttestationCreated <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Environment": "Synthetic filesystem",
+      "Output": "CHECKPOINT:AttestationCreated\r\n",
+      "ExitCode": -1,
+      "Checkpoint": "AttestationCreated"
+    },
+    {
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+      "Command": "WO20Probe commit-kill:AttestationPartialWrite <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Environment": "Synthetic filesystem",
+      "Output": "CHECKPOINT:AttestationPartialWrite\r\n",
+      "ExitCode": -1,
+      "Checkpoint": "AttestationPartialWrite"
+    },
+    {
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+      "Command": "WO20Probe commit-kill:AttestationFlushed <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Environment": "Synthetic filesystem",
+      "Output": "CHECKPOINT:AttestationFlushed\r\n",
+      "ExitCode": -1,
+      "Checkpoint": "AttestationFlushed"
+    },
+    {
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+      "Command": "WO20Probe commit-kill:InstallationPointerCreated <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Environment": "Synthetic filesystem",
+      "Output": "CHECKPOINT:InstallationPointerCreated\r\n",
+      "ExitCode": -1,
+      "Checkpoint": "InstallationPointerCreated"
+    },
+    {
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+      "Command": "WO20Probe commit-kill:InstallationPointerFlushed <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Environment": "Synthetic filesystem",
+      "Output": "CHECKPOINT:InstallationPointerFlushed\r\n",
+      "ExitCode": -1,
+      "Checkpoint": "InstallationPointerFlushed"
+    },
+    {
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+      "Command": "WO20Probe commit-kill:BeforeInstallationPointerReplace <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Environment": "Synthetic filesystem",
+      "Output": "CHECKPOINT:BeforeInstallationPointerReplace\r\n",
+      "ExitCode": -1,
+      "Checkpoint": "BeforeInstallationPointerReplace"
+    },
+    {
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+      "Command": "WO20Probe commit-kill:AfterInstallationPointerReplace <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Environment": "Synthetic filesystem",
+      "Output": "CHECKPOINT:AfterInstallationPointerReplace\r\n",
+      "ExitCode": -1,
+      "Checkpoint": "AfterInstallationPointerReplace"
+    },
+    {
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+      "Command": "WO20Probe commit-kill:BeforeCommittedJournal <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Environment": "Synthetic filesystem",
+      "Output": "CHECKPOINT:BeforeCommittedJournal\r\n",
+      "ExitCode": -1,
+      "Checkpoint": "BeforeCommittedJournal"
+    },
+    {
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+      "Command": "WO20Probe commit-kill:AfterCommittedJournal <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Environment": "Synthetic filesystem",
+      "Output": "CHECKPOINT:AfterCommittedJournal\r\n",
+      "ExitCode": -1,
+      "Checkpoint": "AfterCommittedJournal"
+    },
+    {
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+      "Command": "WO20Probe commit-kill:BeforeSuccessReturn <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Environment": "Synthetic filesystem",
+      "Output": "CHECKPOINT:BeforeSuccessReturn\r\n",
+      "ExitCode": -1,
+      "Checkpoint": "BeforeSuccessReturn"
+    },
+    {
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+      "Command": "WO20Probe commit-repeat-kill:BeforeInstallationPointerReplace <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Environment": "Synthetic filesystem",
+      "Output": "CHECKPOINT:BeforeInstallationPointerReplace\r\n",
+      "ExitCode": -1,
+      "Checkpoint": "BeforeInstallationPointerReplace"
+    },
+    {
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+      "Command": "WO20Probe commit-repeat-kill:AfterInstallationPointerReplace <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Environment": "Synthetic filesystem",
+      "Output": "CHECKPOINT:AfterInstallationPointerReplace\r\n",
+      "ExitCode": -1,
+      "Checkpoint": "AfterInstallationPointerReplace"
+    },
+    {
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+      "Command": "WO20Probe commit-repeat-kill:BeforeCommittedJournal <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Environment": "Synthetic filesystem",
+      "Output": "CHECKPOINT:BeforeCommittedJournal\r\n",
+      "ExitCode": -1,
+      "Checkpoint": "BeforeCommittedJournal"
+    },
+    {
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+      "Command": "WO20Probe commit-repeat-kill:AfterCommittedJournal <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "Environment": "Synthetic filesystem",
+      "Output": "CHECKPOINT:AfterCommittedJournal\r\n",
+      "ExitCode": -1,
+      "Checkpoint": "AfterCommittedJournal"
+    }
+  ]
+}

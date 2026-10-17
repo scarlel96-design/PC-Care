@@ -1,0 +1,150 @@
+{
+  "Status": "PARTIAL",
+  "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+  "Environment": "One GitHub-hosted Windows runner; protected synthetic NTFS installation; strictAcl=true",
+  "Command": "WO20Probe prepare-many <NEW_ROOT>; WO24Probe strict-apply <NEW_ROOT>",
+  "Input": "258-file existing synthetic package",
+  "Output": {
+    "Code": "COMMITTED",
+    "Stage": "Committed",
+    "Failure": "",
+    "RestoredOriginals": null,
+    "NewFilesAbsent": null,
+    "InstallVolume": "C:\\",
+    "StagingVolume": "C:\\",
+    "ElapsedMs": 39356.5157,
+    "CpuMs": 14156.25,
+    "AllocatedBytes": 843030760,
+    "PeakWorkingSetBytes": 218406912,
+    "StrictAcl": true,
+    "History": {
+      "Verified": true,
+      "State": "InstallationVerified",
+      "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+      "Transactions": 1,
+      "Files": 258
+    },
+    "Phases": [
+      {
+        "Name": "NativeIdentityCheck",
+        "Calls": 237638,
+        "ElapsedMs": 7926.3334,
+        "AllocatedBytes": 352402640
+      },
+      {
+        "Name": "FileCreateAndBind",
+        "Calls": 1299,
+        "ElapsedMs": 4744.1516,
+        "AllocatedBytes": 41953312
+      },
+      {
+        "Name": "FileIdentityValidation",
+        "Calls": 16324,
+        "ElapsedMs": 3820.237,
+        "AllocatedBytes": 175831568
+      },
+      {
+        "Name": "AclRead",
+        "Calls": 2987,
+        "ElapsedMs": 1239.4592,
+        "AllocatedBytes": 61905584
+      },
+      {
+        "Name": "AclAndBoundary",
+        "Calls": 2734,
+        "ElapsedMs": 2886.7811,
+        "AllocatedBytes": 143904040
+      },
+      {
+        "Name": "FileOpenAndBind",
+        "Calls": 2726,
+        "ElapsedMs": 1881.9995,
+        "AllocatedBytes": 84049208
+      },
+      {
+        "Name": "PackageVerification",
+        "Calls": 1,
+        "ElapsedMs": 74.3776,
+        "AllocatedBytes": 1621664
+      },
+      {
+        "Name": "JournalSerialization",
+        "Calls": 779,
+        "ElapsedMs": 266.5422,
+        "AllocatedBytes": 102203328
+      },
+      {
+        "Name": "JournalFlush",
+        "Calls": 779,
+        "ElapsedMs": 7771.8716,
+        "AllocatedBytes": 16304
+      },
+      {
+        "Name": "JournalRename",
+        "Calls": 779,
+        "ElapsedMs": 679.3022,
+        "AllocatedBytes": 386160
+      },
+      {
+        "Name": "JournalTotal",
+        "Calls": 779,
+        "ElapsedMs": 22917.8007,
+        "AllocatedBytes": 413632784
+      },
+      {
+        "Name": "PayloadFlush",
+        "Calls": 647,
+        "ElapsedMs": 2903.2663,
+        "AllocatedBytes": 56848
+      },
+      {
+        "Name": "CopyAndFlush",
+        "Calls": 389,
+        "ElapsedMs": 5421.6219,
+        "AllocatedBytes": 52088384
+      },
+      {
+        "Name": "HashAndIdentity",
+        "Calls": 1940,
+        "ElapsedMs": 1064.0284,
+        "AllocatedBytes": 183009552
+      },
+      {
+        "Name": "ExtractionAndVerification",
+        "Calls": 258,
+        "ElapsedMs": 5203.3856,
+        "AllocatedBytes": 107088616
+      },
+      {
+        "Name": "BackupAndIdentity",
+        "Calls": 258,
+        "ElapsedMs": 3365.8105,
+        "AllocatedBytes": 75588008
+      },
+      {
+        "Name": "ReplacementAndVerification",
+        "Calls": 258,
+        "ElapsedMs": 16728.8786,
+        "AllocatedBytes": 262635776
+      },
+      {
+        "Name": "PostApplyFileVerification",
+        "Calls": 258,
+        "ElapsedMs": 224.5094,
+        "AllocatedBytes": 11955824
+      }
+    ],
+    "Scope": "CI protected synthetic files and fresh fixed ProgramData staging; no PE deployment or UAC"
+  },
+  "ExitCode": 0,
+  "RepeatedMatchedComparison": false,
+  "PerformanceImprovementClaim": false,
+  "TimingBoundary": "Elapsed/CPU/allocation: Apply only; history check afterward. Peak Working Set: process lifetime peak after history inspection. Phases overlap.",
+  "NotMeasuredSeparately": [
+    "WinVerifyTrust cost",
+    "Strict ACL isolated overhead",
+    "Low-end physical hardware"
+  ],
+  "PriorAllocationRegression": "WO23_MEMORY_ALLOCATION_PROFILE.md and evidence/wo23/MEMORY_PROFILE_RESULT.json",
+  "PriorReplacementFailure": "evidence/wo23/PERFORMANCE_TRIAL_FAILURE.json; exact native cause and checkpoint unknown; 130 originals restored, 128 new files absent"
+}

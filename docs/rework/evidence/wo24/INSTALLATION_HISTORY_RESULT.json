@@ -1,0 +1,125 @@
+{
+  "Status": "PASS",
+  "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+  "Environment": "Windows synthetic filesystem: 8 cases; pure comparator: 12 cases",
+  "Command": "dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter FullyQualifiedName~WO24 --logger trx;LogFileName=wo24-focused.trx -v:minimal",
+  "Input": "Three signed updates, same/disjoint paths, tampered old path, missing declaration, equal version, restored/reapplied and discontinuous history; 4KiB source-preservation guard for a foreign drive-root destination. No foreign destination is created.",
+  "Output": [
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24RebootEvidenceTests.PendingOrFailedRecoveryIsNotComplete(state: \"RecoveryRequired\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0002109"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24RebootEvidenceTests.PendingOrFailedRecoveryIsNotComplete(state: \"RecoveryFailed\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0000064"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24InstallationHistoryTests.EqualVersionPackageDoesNotCreateHistory",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.4572320"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24RebootEvidenceTests.ChangedBootAndVerifiedBytesAreExplicitObservations",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0004695"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24RebootEvidenceTests.PendingOrFailedRecoveryIsNotComplete(state: \"RecoveryAvailable\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0003161"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24InstallationHistoryTests.OlderDisjointPathTamperingRequiresReviewWithoutChangingBytes",
+      "Outcome": "Passed",
+      "Duration": "00:00:01.0447115"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24RebootEvidenceTests.ChangedContentIsNotRestoration",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0049376"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24RebootEvidenceTests.UnrelatedEvidenceCannotMatch(field: \"run\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0002908"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24InstallationHistoryTests.SignedButDiscontinuousHistoryRequiresReview",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.8492503"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24RebootEvidenceTests.UnrelatedEvidenceCannotMatch(field: \"source\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0000612"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24InstallationHistoryTests.MissingHistoricalDeclarationIsNotInvented",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.9318328"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24RebootEvidenceTests.PendingOrFailedRecoveryIsNotComplete(state: \"RecoveryInProgress\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0000019"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24RebootEvidenceTests.SameBootCannotClaimReboot",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0010871"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24RebootEvidenceTests.UnrelatedEvidenceCannotMatch(field: \"machine\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0003178"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24InstallationHistoryTests.RestoredAttemptDoesNotOverrideReappliedSignedHistory",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.9338341"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24InstallationHistoryTests.ThreeSignedUpdatesVerifyEveryRetainedPath(samePath: True)",
+      "Outcome": "Passed",
+      "Duration": "00:00:01.2039042"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24InstallationHistoryTests.ThreeSignedUpdatesVerifyEveryRetainedPath(samePath: False)",
+      "Outcome": "Passed",
+      "Duration": "00:00:01.2716975"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24RebootEvidenceTests.UnrelatedEvidenceCannotMatch(field: \"root\")",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0000597"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24RebootEvidenceTests.MissingAuthenticationCannotPass",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0001711"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO24InstallationHistoryTests.CrossVolumePublicationPreservesSourceWithoutCreatingDestination",
+      "Outcome": "Passed",
+      "Duration": "00:00:00.0234599"
+    }
+  ],
+  "ExitCode": 0,
+  "Counts": {
+    "Pass": 20,
+    "Fail": 0,
+    "Skip": 0,
+    "Total": 20,
+    "SkipNames": [],
+    "SkipDetails": [],
+    "TrxSha256": "2984e7a1356868ab11a3235cdd238ac2e12b1be31e3acf023804f2ee9fdb4b1d"
+  },
+  "Limits": [
+    "Read-only qualifier grants no execution authority",
+    "Production startup integration remains OPEN",
+    "No whole-machine freshness guarantee",
+    "Exception injection is not process termination"
+  ]
+}

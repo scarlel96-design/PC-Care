@@ -1,0 +1,32 @@
+{
+  "Status": "PASS",
+  "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+  "Environment": "Local Windows x64; source fingerprint and binary receipt checked",
+  "Command": "pwsh -NoProfile -File scripts/wo21-qualification.ps1 -Mode All -FixtureRoot <EXTERNAL_wo21_ROOT> -OutputDirectory artifacts/wo24-final-v5",
+  "Input": "Full application regression; fresh TRX",
+  "Output": "PASS 1376 / FAIL 0 / SKIP 111 / TOTAL 1487; WO21_QUALIFICATION=PASS",
+  "ExitCode": 0,
+  "TrxSha256": "5139880791c9098cb4f32b7ebdcc20fd83da068513c3fc92c942eae29111a20c",
+  "BuildReceiptSha256": "6543e085358774d511b399bcee82e2d4f0987cf8b17bb4e74b2a36b941453d2b",
+  "TestCommandReceipt": {
+    "Command": "dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore -m:1 --logger trx;LogFileName=wo21-qualified-9d36139f0a3248a2a73ad746b17f799e.trx -v:minimal",
+    "Input": "",
+    "ExitCode": 0,
+    "End": "2026-10-17T17:16:16.1286286+09:00",
+    "InputDigest": "9B4F47563A1BD9A3A90D473D08964DE0D9A39291A2C8DFC29EF433AFC766D3FC",
+    "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+    "Start": "2026-10-17T17:05:38.8340828+09:00",
+    "TrxFile": "wo21-qualified-9d36139f0a3248a2a73ad746b17f799e.trx"
+  },
+  "SyntheticHarness": {
+    "ExitCode": 0,
+    "Scope": "Windows synthetic capture and comparator; not real installation, UAC, independent SID, GUI or reboot",
+    "Status": "PASS",
+    "Source": "e996082e9656d26564d88d371f6ea992095d2b75"
+  },
+  "CI": {
+    "Run": 39015974010,
+    "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+    "Conclusion": "success"
+  }
+}

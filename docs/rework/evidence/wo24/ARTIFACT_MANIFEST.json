@@ -1,0 +1,240 @@
+{
+  "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+  "Scope": "WO24 evidence and thirteen reports; manifest excludes itself",
+  "Command": "python ../wo24_manifest.py",
+  "Input": "Completed final evidence files",
+  "Output": "All required files present, JSON parsed, SHA-256 calculated and files reopened",
+  "ExitCode": 0,
+  "Files": [
+    {
+      "Path": "docs/rework/evidence/wo24/ACCESSIBILITY_RESULT.json",
+      "Bytes": 498,
+      "Sha256": "1fe2e4d11dab74203d9583088d628ccd5bde3b9a755fb78ef5363fbbfa7ddb78"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/ACL_SID_RESULT.json",
+      "Bytes": 3595,
+      "Sha256": "92012285bf901e0d644451b8f2cce89b0f4c4b4555c8450edeaf09f1e67ccb93"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/BASELINE_RESULT.txt",
+      "Bytes": 13499,
+      "Sha256": "452114d28a2ac945cb57eafb1750d74234e9bc708ce21f2a119740f2f00ace9b"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/BOOTSTRAP_E2E_RESULT.json",
+      "Bytes": 503,
+      "Sha256": "cc1041a134e6d2f09807a4346d666c4819117413e5a4da8e1443b8ab1b926412"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/BUILD_RESULT.txt",
+      "Bytes": 9457,
+      "Sha256": "d024e94b5b932759a55980345cc218b2a002c0c0e7ceb04921cc3ed363a67c5a"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/CI_CROSS_VOLUME_TRIAL.json",
+      "Bytes": 4293,
+      "Sha256": "3d067a3a559e4ca83f2746ee1718c4437b6bdee50de5520bbdf10de57c8710ac"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/CI_DEPENDENCY_FAILURE.json",
+      "Bytes": 682,
+      "Sha256": "c5fb7344bf2a46f8e63e936364185130e363912406b419c0b3636d4c341db60a"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/CI_FIXTURE_FAILURE.json",
+      "Bytes": 1048,
+      "Sha256": "c8d8e359cea3d077762f96d1e3a9ba613463a4f3ec9e752596e11f14e8f40139"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/CI_RUN_RESULT.json",
+      "Bytes": 9405,
+      "Sha256": "b669de614af213b76acf2706fa2a1f9fb1c8d6a9538e85ee3d2eb3b8563e6836"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/DAYBREAK_DEFERRED.txt",
+      "Bytes": 375,
+      "Sha256": "7e218dd294e1abc2d51360d3c257ea725ea8d4c24ddd9b938a86983eb7aba5b2"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/DIFF_FILE",
+      "Bytes": 1266,
+      "Sha256": "f2e8ff583d9cf92900653e752bf5afc7bbeb610279862079a77d55121588eb46"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/ENVIRONMENT_RESULT.json",
+      "Bytes": 1276,
+      "Sha256": "edff4244aaa74cea664c1c81aa6f32c94af3260103973fe7a87a48a7f16019ac"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/FULL_TEST_RESULT.txt",
+      "Bytes": 86598,
+      "Sha256": "abcbe04c59320587a8f516298cc354f05a6788b4617ba5d067fe272eb759816e"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/GITHUB_RESULT.txt",
+      "Bytes": 1577,
+      "Sha256": "ae33600a95e589ce17a161b791dd0a4f3782869e8dea4cf64fb33a891f82bd0d"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/GUI_TEST_RESULT.json",
+      "Bytes": 496,
+      "Sha256": "834fbb680b5b95c4e8ddb9aa5343dfdccfec991e55a3dd20d4f7d55b429d10f5"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/INSTALLATION_HISTORY_RESULT.json",
+      "Bytes": 5201,
+      "Sha256": "129d99fc64c15321a6866462a83d976aff21c95d9ac6ca9d7217be68912cf0cc"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/INTERMEDIATE_PROVENANCE_FAILURE.json",
+      "Bytes": 752,
+      "Sha256": "91473caaeb8bc984d81c0f1fab845d418e5db8176c1e2875b7c15f1aebaa64a1"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/LEGACY_RESTORE_RESULT.json",
+      "Bytes": 107209,
+      "Sha256": "52495055ac6fc08b2f1e391db2170e9eab0f5a6789c51a21df43313e1e0e1cf0"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/LOCAL_QUALIFICATION_RESULT.json",
+      "Bytes": 1635,
+      "Sha256": "f642e2e84078f1bb04a0ded13f190cc05ccfbbe5f8f017acb34139d8a32f265f"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/LOCAL_TOOL_BUILD_RESULT.json",
+      "Bytes": 2233,
+      "Sha256": "cff0ceb43677113b749a4611323f4e03f76c2433bb7c5a3e942f3de98ebf3fd6"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/MODIFIED_FILE",
+      "Bytes": 3403,
+      "Sha256": "3ddca253b03dd047f25a5ccbf0175c1a85347997c3135687a6b17772a7aab5a7"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/ORIGINAL_FILE",
+      "Bytes": 2973,
+      "Sha256": "39a9fbd7b9953da817048c638ea51c89d7e35fe509951c1610eef26e4bbdb377"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/PERFORMANCE_RESULT.json",
+      "Bytes": 4377,
+      "Sha256": "f51f5c240a8cb6fc0ae06fdae5dc75cc2c2b4172b736c6447b9efb130b548973"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/PRODUCTION_GATES.json",
+      "Bytes": 908,
+      "Sha256": "265bce26e1531b19aad4806e0a4af24c087c24071e0ae05d494446fe76b3e0ff"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/REBOOT_RECOVERY_RESULT.json",
+      "Bytes": 1393,
+      "Sha256": "22f14043726d56c1828892a80e9809100db1d35b3bddc5233736071ba8f6cd64"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/ROLLBACK.sh",
+      "Bytes": 614,
+      "Sha256": "ed7714c70fa313fafe5eccecad95ee4d0613f7a4cb97d687de67d389891ba1a0"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/SECURITYLAB_RESULT.txt",
+      "Bytes": 928,
+      "Sha256": "f359db6a52738809be04579b3deac0f39dceab948970cbad0074f782df25d750"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/SIGNED_BRIDGE_DEPLOYMENT.json",
+      "Bytes": 875,
+      "Sha256": "6c4de9458ebf22051b547270dcb6015b9badf5e11fc8c1155a5a88a9834ea553"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/SOURCE_ROLLBACK_RESULT.json",
+      "Bytes": 3419,
+      "Sha256": "fd966f1a97456a1122c1aa841dbb5d0cb7a5940f458a0e566057e708c1394323"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/TEST_CERTIFICATE_RESULT.json",
+      "Bytes": 11011,
+      "Sha256": "9d3b14da4b269e765ec7bbf59ad4d35424f16d60c2a9c304abaf9178cd816c4e"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/UAC_RESULT.json",
+      "Bytes": 473,
+      "Sha256": "017eedd2ef2c6ec96bb36adce461e1169d6f31c2280286ca1ecf5d6e46dc8383"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/VAULT_COMPATIBILITY_RESULT.json",
+      "Bytes": 40371,
+      "Sha256": "74050e26a9feaa2c17e623c00f3f32aeec186ff6cfd9ae3f6a3dba9e202018b6"
+    },
+    {
+      "Path": "docs/rework/evidence/wo24/VERIFICATION.txt",
+      "Bytes": 4072,
+      "Sha256": "0a42cd18e334e4fc9e4e5cf4165da552cd9a509a29015fa92e257d8f41c280a7"
+    },
+    {
+      "Path": "docs/rework/WO24_BOOTSTRAP_E2E.md",
+      "Bytes": 638,
+      "Sha256": "014265ad4c4e8eea7afc47e11aec041239f0a116bf43706dd479cf904cca002e"
+    },
+    {
+      "Path": "docs/rework/WO24_DAYBREAK_DEFERRED.md",
+      "Bytes": 560,
+      "Sha256": "36aa390d5c0f51c3459654701553b0e1e31bbcddf8ada41b899b9e56bc5b3132"
+    },
+    {
+      "Path": "docs/rework/WO24_ENVIRONMENT_QUALIFICATION.md",
+      "Bytes": 3038,
+      "Sha256": "1187647590af39a3556ead28c24f6b245ae454c034fc0aa4d81b5b2941f99fcd"
+    },
+    {
+      "Path": "docs/rework/WO24_EXECUTION_REPORT.md",
+      "Bytes": 2063,
+      "Sha256": "3929b566a14aa2e38f2487cbccd8e2cbb3abb16378479a0f937a67115f705e15"
+    },
+    {
+      "Path": "docs/rework/WO24_GUI_ACCESSIBILITY.md",
+      "Bytes": 1551,
+      "Sha256": "96ae177adb522545e5fe6c3a9022f3915d7c2d196ed7cf7e803b96ec367c5f5a"
+    },
+    {
+      "Path": "docs/rework/WO24_INSTALLATION_HISTORY.md",
+      "Bytes": 1751,
+      "Sha256": "e41aa1a616aea66835907d835eff0432f9f239bfc10bb394430bd3aaecf2a588"
+    },
+    {
+      "Path": "docs/rework/WO24_PERFORMANCE_REGRESSION.md",
+      "Bytes": 6562,
+      "Sha256": "9f9cc70a293dc9c4a572c681c61af3536451eaa5ee4bb473b613ab31077b1586"
+    },
+    {
+      "Path": "docs/rework/WO24_PRIVILEGED_LEGACY_RESTORE.md",
+      "Bytes": 656,
+      "Sha256": "a14d98f47a05689c22124875f525876b2dd45345b16ae1896659995bcead9c33"
+    },
+    {
+      "Path": "docs/rework/WO24_PRODUCT_READINESS.md",
+      "Bytes": 3978,
+      "Sha256": "6c84780916e3f0c8ccb05259c0f1286de2afaea36bc089979e15006519438560"
+    },
+    {
+      "Path": "docs/rework/WO24_REBOOT_RECOVERY.md",
+      "Bytes": 2177,
+      "Sha256": "0a3212a951d813898d19885868192567722c4df338b91e1621b4abda65359eb5"
+    },
+    {
+      "Path": "docs/rework/WO24_SIGNED_BRIDGE_DEPLOYMENT.md",
+      "Bytes": 2915,
+      "Sha256": "edb67f69c93bd8baf7b864b05d09b8e61abbaa9878662a3b648872ea27e3981d"
+    },
+    {
+      "Path": "docs/rework/WO24_UAC_AND_SID_VALIDATION.md",
+      "Bytes": 807,
+      "Sha256": "67bd5258920036d32a96b70d1911a23ed2dedf0ce3f1880909dd73f786c1af1c"
+    },
+    {
+      "Path": "docs/rework/WO24_VAULT_COMPATIBILITY.md",
+      "Bytes": 630,
+      "Sha256": "38743b43b683c4315496495d75c1322662b01c16221a41ac7b34b95b808b241b"
+    }
+  ]
+}

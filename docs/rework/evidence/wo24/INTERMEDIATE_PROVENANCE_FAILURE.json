@@ -1,0 +1,12 @@
+{
+  "Status": "FAIL",
+  "SourceAtStart": "05e0c89cabbb361ab3b0b2603859a53b50f660fe",
+  "SourceAtEnd": "1bfe6a13f6072a06b2fc48162be82d1b065bfe1c",
+  "Environment": "Local Windows; isolated external RUNNER_TEMP; x64 .NET10",
+  "Command": "pwsh -NoProfile -File scripts/wo21-qualification.ps1 -Mode All -FixtureRoot <EXTERNAL_wo21_ROOT> -OutputDirectory artifacts/wo24-final",
+  "Input": "Full application suite while guest scripts changed during execution",
+  "Output": "Raw suite PASS 1375 / FAIL 0 / SKIP 111; wrapper rejected WO21_SOURCE_CHANGED_DURING_TEST",
+  "ExitCode": 1,
+  "AcceptedAsFinalValidation": false,
+  "Resolution": "Repeat frozen-source build and full suite in artifacts/wo24-final-v2; no source edits during validation"
+}

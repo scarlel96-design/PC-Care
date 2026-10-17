@@ -1,0 +1,29 @@
+{
+  "Status": "CI PASS; final publication verified in external immutable delivery report",
+  "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+  "Baseline": "07acfd724aae16e165afc259ba09dbac537c5eee",
+  "Branch": "codex/pccare-wo24-isolated-install-recovery-qualification",
+  "Command": [
+    "git push origin HEAD",
+    "gh run view 39015974010 --json headSha,status,conclusion,jobs",
+    "gh run download 39015974010 --name wo24-windows-evidence --dir artifacts/wo24-ci-final",
+    "git diff --exit-code e996082e9656d26564d88d371f6ea992095d2b75 -- src tests tools scripts .github"
+  ],
+  "Input": "Final source; complete Windows workflow; documentation-only evidence publication follows",
+  "Output": {
+    "Run": 39015974010,
+    "Conclusion": "success",
+    "Url": "https://github.com/scarlel96-design/PC-Care/actions/runs/39015974010",
+    "ExecutableSource": "e996082e9656d26564d88d371f6ea992095d2b75"
+  },
+  "ExitCode": 0,
+  "MainMerged": false,
+  "OfficialReleaseCreated": false,
+  "PublicationProtocol": "Verify final local/remote HEAD, Git tree, every changed blob and mode, five critical raw files and empty executable diff after evidence commit.",
+  "Environment": "Local Git checkout and authenticated GitHub CLI; GitHub-hosted Windows validation",
+  "VerificationTools": {
+    "RemoteInventory": "Git trees API and raw content API; immutable final head checked after publication",
+    "Manifest": "ARTIFACT_MANIFEST.json",
+    "FinalHeadReport": "WO24_FINAL_REPORT.md in task workspace; avoids self-referential commit hash"
+  }
+}

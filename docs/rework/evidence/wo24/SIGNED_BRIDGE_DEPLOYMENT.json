@@ -1,0 +1,17 @@
+{
+  "Status": "PREPARED",
+  "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+  "Environment": "Local PowerShell7; no guest execution or certificate store access",
+  "Command": "pwsh -NoProfile -File scripts/wo24-signed-deployment.ps1 -BinaryDirectory NOT_SUPPLIED -GuestRoot NOT_SUPPLIED -ExpectedGuestUuid NOT_SUPPLIED -ExpectedSid NOT_SUPPLIED -WindowsProbe NOT_SUPPLIED -ExpectedProbeHash NOT_SUPPLIED",
+  "Input": "No Execute switch; NOT_SUPPLIED placeholders",
+  "Output": {
+    "CertificateScope": "Guest CurrentUser only",
+    "Requirement": "Verified disposable VM and checkpoint; administrator test SID; five PE inputs and runtime JSON; source-bound Windows probe",
+    "ActualTransition": false,
+    "Status": "PREPARED",
+    "ActualDeployment": false,
+    "ProductionTrust": "UNCHANGED"
+  },
+  "ExitCode": 0,
+  "ActualGuestExecuted": false
+}

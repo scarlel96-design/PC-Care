@@ -1,0 +1,48 @@
+{
+  "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+  "Baseline": "07acfd724aae16e165afc259ba09dbac537c5eee",
+  "ChangedField": "Guest signing finally: private-key deletion and fail-visible cleanup",
+  "OriginalSha256": "39a9fbd7b9953da817048c638ea51c89d7e35fe509951c1610eef26e4bbdb377",
+  "ModifiedSha256": "3ddca253b03dd047f25a5ccbf0175c1a85347997c3135687a6b17772a7aab5a7",
+  "Records": [
+    {
+      "Stage": "BASELINE",
+      "Command": "\"C:/Program Files/PowerShell/7/pwsh.exe\" -NoProfile -File scripts/wo24-cleanup-contract.ps1 -SourceFile ..\\..\\wo24-rollback-6d1d3581b1a24155844b56dbc2c41be6\\baseline.ps1",
+      "InvocationKind": "Windows native process command line; no shell",
+      "Input": "Mock certificate provider removal failure",
+      "Output": "{\n  \"DeleteKeyRequested\": false,\n  \"Command\": \"wo24-cleanup-contract.ps1 -SourceFile <SOURCE_COPY>\",\n  \"Input\": \"Mock certificate provider rejects both removals\",\n  \"CleanupFailureSurfaced\": false,\n  \"ActualCertificateStoreTouched\": false,\n  \"ExitCode\": 0\n}",
+      "ExitCode": 0,
+      "Sha256": "39a9fbd7b9953da817048c638ea51c89d7e35fe509951c1610eef26e4bbdb377"
+    },
+    {
+      "Stage": "MODIFIED",
+      "Command": "\"C:/Program Files/PowerShell/7/pwsh.exe\" -NoProfile -File scripts/wo24-cleanup-contract.ps1 -SourceFile ..\\..\\wo24-rollback-6d1d3581b1a24155844b56dbc2c41be6\\modified.ps1",
+      "InvocationKind": "Windows native process command line; no shell",
+      "Input": "Mock certificate provider removal failure",
+      "Output": "{\n  \"CleanupFailureSurfaced\": true,\n  \"Command\": \"wo24-cleanup-contract.ps1 -SourceFile <SOURCE_COPY>\",\n  \"Input\": \"Mock certificate provider rejects both removals\",\n  \"ActualCertificateStoreTouched\": false,\n  \"ExitCode\": 0,\n  \"DeleteKeyRequested\": true\n}",
+      "ExitCode": 0,
+      "Sha256": "3ddca253b03dd047f25a5ccbf0175c1a85347997c3135687a6b17772a7aab5a7"
+    },
+    {
+      "Stage": "RollbackScript",
+      "Command": "bash docs/rework/evidence/wo24/ROLLBACK.sh",
+      "EnvironmentOverride": {
+        "RESTORE_COPY": "../../wo24-rollback-6d1d3581b1a24155844b56dbc2c41be6/restored.ps1"
+      },
+      "Input": "Independent modified test-signing script copy",
+      "Output": "SOURCE_COPY_RESTORED\n",
+      "ExitCode": 0
+    },
+    {
+      "Stage": "ROLLBACK",
+      "Command": "\"C:/Program Files/PowerShell/7/pwsh.exe\" -NoProfile -File scripts/wo24-cleanup-contract.ps1 -SourceFile ..\\..\\wo24-rollback-6d1d3581b1a24155844b56dbc2c41be6\\restored.ps1",
+      "InvocationKind": "Windows native process command line; no shell",
+      "Input": "Mock certificate provider removal failure",
+      "Output": "{\n  \"ActualCertificateStoreTouched\": false,\n  \"DeleteKeyRequested\": false,\n  \"CleanupFailureSurfaced\": false,\n  \"Input\": \"Mock certificate provider rejects both removals\",\n  \"Command\": \"wo24-cleanup-contract.ps1 -SourceFile <SOURCE_COPY>\",\n  \"ExitCode\": 0\n}",
+      "ExitCode": 0,
+      "Sha256": "39a9fbd7b9953da817048c638ea51c89d7e35fe509951c1610eef26e4bbdb377"
+    }
+  ],
+  "RestoredBehavior": "Cleanup failure hidden and DeleteKey absent, matching baseline. Repository and MODIFIED_FILE remain modified.",
+  "Scope": "Source-copy behavior with a mock certificate provider; no real certificate store access or VM signing; not installation or vault restoration"
+}

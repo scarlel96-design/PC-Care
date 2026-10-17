@@ -1,0 +1,136 @@
+{
+  "Status": "FAIL",
+  "Source": "5f66e99b4de2859de3a248a7b408c3981a9b2de8",
+  "WorkflowRun": 39015026981,
+  "Environment": "Disposable Windows runner; installation under observed D: RUNNER_TEMP; staging resolved from CommonApplicationData. The staging root was not serialized in this failed trial.",
+  "Command": "WO24Probe strict-apply <D_VOLUME_SYNTHETIC_ROOT>",
+  "Input": "258-file package including new files",
+  "Output": {
+    "Code": "ROLLED-BACK",
+    "ElapsedMs": 47881.0229,
+    "CpuMs": 8609.375,
+    "AllocatedBytes": 733120488,
+    "PeakWorkingSetBytes": 167940096,
+    "StrictAcl": true,
+    "History": {
+      "Verified": false,
+      "State": "RecoveryRequired",
+      "Code": "INSTALLATION-NOT-ATTESTED",
+      "Transactions": 0,
+      "Files": 0
+    },
+    "Phases": [
+      {
+        "Name": "NativeIdentityCheck",
+        "Calls": 206715,
+        "ElapsedMs": 5207.0319,
+        "AllocatedBytes": 301366128
+      },
+      {
+        "Name": "FileCreateAndBind",
+        "Calls": 1174,
+        "ElapsedMs": 6210.0886,
+        "AllocatedBytes": 38474064
+      },
+      {
+        "Name": "FileIdentityValidation",
+        "Calls": 12798,
+        "ElapsedMs": 2262.7754,
+        "AllocatedBytes": 134932440
+      },
+      {
+        "Name": "AclRead",
+        "Calls": 2485,
+        "ElapsedMs": 818.8111,
+        "AllocatedBytes": 52382584
+      },
+      {
+        "Name": "AclAndBoundary",
+        "Calls": 2485,
+        "ElapsedMs": 2149.3252,
+        "AllocatedBytes": 140480576
+      },
+      {
+        "Name": "FileOpenAndBind",
+        "Calls": 2605,
+        "ElapsedMs": 1393.6874,
+        "AllocatedBytes": 83533800
+      },
+      {
+        "Name": "PackageVerification",
+        "Calls": 1,
+        "ElapsedMs": 64.4878,
+        "AllocatedBytes": 1620912
+      },
+      {
+        "Name": "JournalSerialization",
+        "Calls": 656,
+        "ElapsedMs": 170.5994,
+        "AllocatedBytes": 85252584
+      },
+      {
+        "Name": "JournalFlush",
+        "Calls": 656,
+        "ElapsedMs": 14220.3813,
+        "AllocatedBytes": 16304
+      },
+      {
+        "Name": "JournalRename",
+        "Calls": 656,
+        "ElapsedMs": 458.3421,
+        "AllocatedBytes": 325152
+      },
+      {
+        "Name": "JournalTotal",
+        "Calls": 656,
+        "ElapsedMs": 31964.6463,
+        "AllocatedBytes": 347468632
+      },
+      {
+        "Name": "PayloadFlush",
+        "Calls": 523,
+        "ElapsedMs": 4158.9011,
+        "AllocatedBytes": 67632
+      },
+      {
+        "Name": "CopyAndFlush",
+        "Calls": 265,
+        "ElapsedMs": 4636.1163,
+        "AllocatedBytes": 29445112
+      },
+      {
+        "Name": "HashAndIdentity",
+        "Calls": 1559,
+        "ElapsedMs": 659.6117,
+        "AllocatedBytes": 173042528
+      },
+      {
+        "Name": "ExtractionAndVerification",
+        "Calls": 258,
+        "ElapsedMs": 6293.1829,
+        "AllocatedBytes": 107086032
+      },
+      {
+        "Name": "BackupAndIdentity",
+        "Calls": 258,
+        "ElapsedMs": 5939.7312,
+        "AllocatedBytes": 75859304
+      },
+      {
+        "Name": "ReplacementAndVerification",
+        "Calls": 4,
+        "ElapsedMs": 176.1634,
+        "AllocatedBytes": 2597256
+      }
+    ],
+    "Scope": "CI protected synthetic files and fresh fixed ProgramData staging; no PE deployment or UAC"
+  },
+  "ExitCode": 10,
+  "WorkflowExitCode": 1,
+  "RollbackReportedByEngine": true,
+  "IndependentRollbackByteCheck": "NOT TESTED in this run; result.Failure was not serialized",
+  "SourceAnalysis": "The existing PublishOpenedFile guard rejects different path roots. The CI image layout and four replacement calls support a cross-volume hypothesis. The original exception and resolved staging root were not retained.",
+  "Correction": "Use a fresh CI-only fixture on the staging volume. Retain the same-volume production boundary. Serialize Failure and verify rollback bytes for future failed trials.",
+  "CrossVolumeUpdateSupport": "NOT IMPLEMENTED by this work; safe failure remains a product limitation",
+  "RootCauseConfidence": "Hypothesis supported by source and fixture layout; exact cause of this failed run remains unconfirmed."
+}

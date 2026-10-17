@@ -1,0 +1,15 @@
+{
+  "Status": "FAIL",
+  "Source": "1bfe6a13f6072a06b2fc48162be82d1b065bfe1c",
+  "WorkflowRun": 39002912393,
+  "Command": "WO24Probe strict-apply <CI_SYNTHETIC_ROOT>",
+  "Environment": "GitHub-hosted Windows runner; strictAcl=true",
+  "Input": "258-file package; temporary work root outside fixed protected staging contract",
+  "Output": "UnauthorizedAccessException: unexpected protected staging location; SecureWorkRoot UpdateTransaction.cs:862; STRICT_APPLY_FAILED",
+  "ExitCode": 1,
+  "FullRegressionInThisRun": "NOT EXECUTED after the failing step",
+  "RootCause": "The new test harness supplied a temporary work root. Strict mode requires CommonApplicationData/PC-Care/UpdateTransactions.",
+  "CorrectionSource": "b609616c49dfe64346fae9542ed11a41a355af44",
+  "Correction": "Use the unchanged exact staging location only in disposable CI. Reject an existing product staging root. Do not change SecureWorkRoot or weaken ACL checks.",
+  "Verification": "A fresh full Windows workflow and final local qualification are required."
+}

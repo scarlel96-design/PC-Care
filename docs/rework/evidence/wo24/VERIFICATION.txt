@@ -1,0 +1,75 @@
+WORK ITEM: WO24
+STATUS: PARTIAL / Phase 1 NO-GO
+BASELINE SHA: 07acfd724aae16e165afc259ba09dbac537c5eee
+VERIFIED SOURCE SHA: e996082e9656d26564d88d371f6ea992095d2b75
+BRANCH: codex/pccare-wo24-isolated-install-recovery-qualification
+CHANGED FIELD: Guest signing finally: private-key deletion and fail-visible cleanup
+ORIGINAL SHA256: 39a9fbd7b9953da817048c638ea51c89d7e35fe509951c1610eef26e4bbdb377
+MODIFIED SHA256: 3ddca253b03dd047f25a5ccbf0175c1a85347997c3135687a6b17772a7aab5a7
+ENVIRONMENT: Windows; mock certificate provider for source-copy test; actual Windows synthetic files and CI recorded separately.
+WORKING DIRECTORY: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care
+PATH: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo24\ORIGINAL_FILE
+PATH: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo24\MODIFIED_FILE
+PATH: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo24\DIFF_FILE
+PATH: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo24\ROLLBACK.sh
+
+STAGE: BASELINE
+COMMAND: "C:/Program Files/PowerShell/7/pwsh.exe" -NoProfile -File scripts/wo24-cleanup-contract.ps1 -SourceFile ..\..\wo24-rollback-6d1d3581b1a24155844b56dbc2c41be6\baseline.ps1
+INPUT: Mock certificate provider removal failure
+OUTPUT (literal):
+{
+  "DeleteKeyRequested": false,
+  "Command": "wo24-cleanup-contract.ps1 -SourceFile <SOURCE_COPY>",
+  "Input": "Mock certificate provider rejects both removals",
+  "CleanupFailureSurfaced": false,
+  "ActualCertificateStoreTouched": false,
+  "ExitCode": 0
+}
+EXIT CODE: 0
+
+STAGE: MODIFIED
+COMMAND: "C:/Program Files/PowerShell/7/pwsh.exe" -NoProfile -File scripts/wo24-cleanup-contract.ps1 -SourceFile ..\..\wo24-rollback-6d1d3581b1a24155844b56dbc2c41be6\modified.ps1
+INPUT: Mock certificate provider removal failure
+OUTPUT (literal):
+{
+  "CleanupFailureSurfaced": true,
+  "Command": "wo24-cleanup-contract.ps1 -SourceFile <SOURCE_COPY>",
+  "Input": "Mock certificate provider rejects both removals",
+  "ActualCertificateStoreTouched": false,
+  "ExitCode": 0,
+  "DeleteKeyRequested": true
+}
+EXIT CODE: 0
+
+STAGE: RollbackScript
+COMMAND: bash docs/rework/evidence/wo24/ROLLBACK.sh
+INPUT: Independent modified test-signing script copy
+OUTPUT (literal):
+SOURCE_COPY_RESTORED
+
+EXIT CODE: 0
+ENVIRONMENT: {"RESTORE_COPY": "../../wo24-rollback-6d1d3581b1a24155844b56dbc2c41be6/restored.ps1"}
+
+STAGE: ROLLBACK
+COMMAND: "C:/Program Files/PowerShell/7/pwsh.exe" -NoProfile -File scripts/wo24-cleanup-contract.ps1 -SourceFile ..\..\wo24-rollback-6d1d3581b1a24155844b56dbc2c41be6\restored.ps1
+INPUT: Mock certificate provider removal failure
+OUTPUT (literal):
+{
+  "ActualCertificateStoreTouched": false,
+  "DeleteKeyRequested": false,
+  "CleanupFailureSurfaced": false,
+  "Input": "Mock certificate provider rejects both removals",
+  "Command": "wo24-cleanup-contract.ps1 -SourceFile <SOURCE_COPY>",
+  "ExitCode": 0
+}
+EXIT CODE: 0
+
+RESTORED BEHAVIOR: Cleanup failure hidden and DeleteKey absent, matching baseline. Repository and MODIFIED_FILE remain modified.
+SOURCE COPY SCOPE: Source-copy behavior with a mock certificate provider; no real certificate store access or VM signing; not installation or vault restoration
+APP: 1376 PASS / 0 FAIL / 111 SKIP; local and CI; skip names unchanged.
+SECURITYLAB: 36 PASS / 0 FAIL / 0 SKIP; separate suite.
+CI: https://github.com/scarlel96-design/PC-Care/actions/runs/39015974010
+VM / CHECKPOINT / DEPLOYED TRANSITION / INDEPENDENT SID / UAC / PRIVILEGED RESTORE / REBOOT / GUI: NOT TESTED.
+INSTALLATION DATA: Separate synthetic process termination and authenticated vault byte results are recorded in VAULT_COMPATIBILITY_RESULT.json.
+REAL USER DATA: Not used.
+FINAL HEAD AND TREE: Recorded after commit in the external delivery report and remote blob verification.

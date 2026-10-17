@@ -1,0 +1,28 @@
+{
+  "Status": "PASS",
+  "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+  "Environment": "Local Windows and GitHub-hosted Windows; independent suite",
+  "Command": "dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests -c Release -p:Platform=x64 --no-restore -m:1 --logger trx;LogFileName=wo24-securitylab-final-v5.trx -v:minimal",
+  "Input": "Existing 36 SecurityLab tests",
+  "Output": "PASS 36 / FAIL 0 / SKIP 0",
+  "ExitCode": 0,
+  "Local": {
+    "Pass": 36,
+    "Fail": 0,
+    "Skip": 0,
+    "Total": 36,
+    "SkipNames": [],
+    "SkipDetails": [],
+    "TrxSha256": "dc11dfc687f381d71bee4acf85f32d9351df3be82cb19782d679a668cfe9b0a9"
+  },
+  "WindowsCI": {
+    "Pass": 36,
+    "Fail": 0,
+    "Skip": 0,
+    "Total": 36,
+    "SkipNames": [],
+    "SkipDetails": [],
+    "TrxSha256": "49aa96fa21287bac40a0ade9977a5c3af878ed958503b8ad338862e4e7f047ff"
+  },
+  "SeparateFromAppCount": true
+}

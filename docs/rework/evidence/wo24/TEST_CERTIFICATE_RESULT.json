@@ -1,0 +1,274 @@
+{
+  "Status": "PREPARED",
+  "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+  "Command": "NOT EXECUTED in a guest; see named preparation script",
+  "Input": "No approved disposable guest supplied",
+  "Output": "Guest certificate script and mock cleanup failure proof; actual guest key lifecycle not executed",
+  "ExitCode": null,
+  "ActualGuestExecuted": false,
+  "MockSourceComparison": {
+    "Evidence": "SOURCE_ROLLBACK_RESULT.json",
+    "Sha256": "fd966f1a97456a1122c1aa841dbb5d0cb7a5940f458a0e566057e708c1394323",
+    "Status": "PASS for mock error contract only",
+    "ActualCertificateStoreTouched": false
+  },
+  "Scope": "Prepared guest signer and mock-provider failure contract; actual guest signing and cleanup NOT TESTED",
+  "Environment": "Local Windows host; no new disposable guest, independent test SID or interactive UAC session supplied. Actual guest execution not performed.",
+  "RetainedActualCIPeSignatureMatrix": {
+    "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+    "UAC": "NOT TESTED",
+    "ExpiredCertificate": "NOT TESTED",
+    "TrustStore": "Disposable CI LocalMachine Root; own entries removed in finally",
+    "CertificateCleanupVerified": true,
+    "Status": "PASS",
+    "Tests": [
+      {
+        "Accepted": false,
+        "Status": "PASS",
+        "ExpectedAccepted": false,
+        "Output": {
+          "Code": -2146762496,
+          "Thumbprint": null,
+          "Identity": "5AA49C15A49BF22D:00010000000019530000000000000000",
+          "Hash": "E5E67707B3F42BD9DE9FE1F1EAA6A830F2E3C009353C5E8214AE7D5F3DA905CC",
+          "BlockedMutations": 0,
+          "ProductionAccepted": false
+        },
+        "Name": "UnsignedRejected:SmartPerformanceDoctor.UpdateBridge.exe",
+        "ExitCode": 0,
+        "Input": "SmartPerformanceDoctor.UpdateBridge.exe",
+        "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>"
+      },
+      {
+        "Accepted": true,
+        "Status": "PASS",
+        "ExpectedAccepted": true,
+        "Output": {
+          "Code": 0,
+          "Thumbprint": "E648CCFB856E1092E5C767AC92D06BEE648E4608",
+          "Identity": "5AA49C15A49BF22D:00010000000019530000000000000000",
+          "Hash": "7D0E7D007098222A6B24E03A239A9A564430FA0B0EFA7B3055C7F5201F36E18A",
+          "BlockedMutations": 0,
+          "ProductionAccepted": false
+        },
+        "Name": "SignedAccepted:SmartPerformanceDoctor.UpdateBridge.exe",
+        "ExitCode": 0,
+        "Input": "SmartPerformanceDoctor.UpdateBridge.exe",
+        "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>"
+      },
+      {
+        "Accepted": false,
+        "Status": "PASS",
+        "ExpectedAccepted": false,
+        "Output": {
+          "Code": -2146762496,
+          "Thumbprint": null,
+          "Identity": "5AA49C15A49BF22D:00010000000019540000000000000000",
+          "Hash": "FED5BFD4DE1EA5CC23F1B90A96094345F67C731ECCE17965894A8A3FC3D65E04",
+          "BlockedMutations": 0,
+          "ProductionAccepted": false
+        },
+        "Name": "UnsignedRejected:SmartPerformanceDoctor.UpdateBridge.dll",
+        "ExitCode": 0,
+        "Input": "SmartPerformanceDoctor.UpdateBridge.dll",
+        "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>"
+      },
+      {
+        "Accepted": true,
+        "Status": "PASS",
+        "ExpectedAccepted": true,
+        "Output": {
+          "Code": 0,
+          "Thumbprint": "E648CCFB856E1092E5C767AC92D06BEE648E4608",
+          "Identity": "5AA49C15A49BF22D:00010000000019540000000000000000",
+          "Hash": "45575242716036E6675B5C9BD7C09DF12A8386758CA435413BAC99ECA94141F3",
+          "BlockedMutations": 0,
+          "ProductionAccepted": false
+        },
+        "Name": "SignedAccepted:SmartPerformanceDoctor.UpdateBridge.dll",
+        "ExitCode": 0,
+        "Input": "SmartPerformanceDoctor.UpdateBridge.dll",
+        "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>"
+      },
+      {
+        "Accepted": false,
+        "Status": "PASS",
+        "ExpectedAccepted": false,
+        "Output": {
+          "Code": -2146762496,
+          "Thumbprint": null,
+          "Identity": "5AA49C15A49BF22D:00010000000019550000000000000000",
+          "Hash": "3ABFB70B736619EA9E76707CF20F4C181CE9A64431054EDF703CF4B2952BC1AF",
+          "BlockedMutations": 0,
+          "ProductionAccepted": false
+        },
+        "Name": "UnsignedRejected:SmartPerformanceDoctor.UpdateEngine.dll",
+        "ExitCode": 0,
+        "Input": "SmartPerformanceDoctor.UpdateEngine.dll",
+        "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>"
+      },
+      {
+        "Accepted": true,
+        "Status": "PASS",
+        "ExpectedAccepted": true,
+        "Output": {
+          "Code": 0,
+          "Thumbprint": "E648CCFB856E1092E5C767AC92D06BEE648E4608",
+          "Identity": "5AA49C15A49BF22D:00010000000019550000000000000000",
+          "Hash": "BAF5725B8AE56A18102BB41C22608C48143C98CEEBC6D233B7F8D6B8E1E4B949",
+          "BlockedMutations": 0,
+          "ProductionAccepted": false
+        },
+        "Name": "SignedAccepted:SmartPerformanceDoctor.UpdateEngine.dll",
+        "ExitCode": 0,
+        "Input": "SmartPerformanceDoctor.UpdateEngine.dll",
+        "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>"
+      },
+      {
+        "Accepted": false,
+        "Status": "PASS",
+        "ExpectedAccepted": false,
+        "Output": {
+          "Code": -2146762496,
+          "Thumbprint": null,
+          "Identity": "5AA49C15A49BF22D:00010000000019560000000000000000",
+          "Hash": "632A4FDB293DD6C94841F73B05A81E02803E1D5422666528F45F5E77E2616B5B",
+          "BlockedMutations": 0,
+          "ProductionAccepted": false
+        },
+        "Name": "UnsignedRejected:SmartPerformanceDoctor.UpdateHelper.exe",
+        "ExitCode": 0,
+        "Input": "SmartPerformanceDoctor.UpdateHelper.exe",
+        "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>"
+      },
+      {
+        "Accepted": true,
+        "Status": "PASS",
+        "ExpectedAccepted": true,
+        "Output": {
+          "Code": 0,
+          "Thumbprint": "E648CCFB856E1092E5C767AC92D06BEE648E4608",
+          "Identity": "5AA49C15A49BF22D:00010000000019560000000000000000",
+          "Hash": "667C976DCA7B5CE00526A91ECADC39D37EE88DC78831F8152D5F906E4946E94F",
+          "BlockedMutations": 0,
+          "ProductionAccepted": false
+        },
+        "Name": "SignedAccepted:SmartPerformanceDoctor.UpdateHelper.exe",
+        "ExitCode": 0,
+        "Input": "SmartPerformanceDoctor.UpdateHelper.exe",
+        "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>"
+      },
+      {
+        "Accepted": false,
+        "Status": "PASS",
+        "ExpectedAccepted": false,
+        "Output": {
+          "Code": -2146762496,
+          "Thumbprint": null,
+          "Identity": "5AA49C15A49BF22D:00010000000019570000000000000000",
+          "Hash": "9FD95ECEB1749C7106B07EAFCE9DD8693CA0C3C055AB34D6405E49CFB9A37C54",
+          "BlockedMutations": 0,
+          "ProductionAccepted": false
+        },
+        "Name": "UnsignedRejected:SmartPerformanceDoctor.UpdateHelper.dll",
+        "ExitCode": 0,
+        "Input": "SmartPerformanceDoctor.UpdateHelper.dll",
+        "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>"
+      },
+      {
+        "Accepted": true,
+        "Status": "PASS",
+        "ExpectedAccepted": true,
+        "Output": {
+          "Code": 0,
+          "Thumbprint": "E648CCFB856E1092E5C767AC92D06BEE648E4608",
+          "Identity": "5AA49C15A49BF22D:00010000000019570000000000000000",
+          "Hash": "A8082A48BCEA457FC58BFB9258BEACABAFAFE2DC07E1AD49E72D8B6247562FC9",
+          "BlockedMutations": 0,
+          "ProductionAccepted": false
+        },
+        "Name": "SignedAccepted:SmartPerformanceDoctor.UpdateHelper.dll",
+        "ExitCode": 0,
+        "Input": "SmartPerformanceDoctor.UpdateHelper.dll",
+        "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>"
+      },
+      {
+        "ExitCode": 0,
+        "Output": {
+          "Code": 0,
+          "Thumbprint": "E648CCFB856E1092E5C767AC92D06BEE648E4608",
+          "Identity": "5AA49C15A49BF22D:00010000000019550000000000000000",
+          "Hash": "BAF5725B8AE56A18102BB41C22608C48143C98CEEBC6D233B7F8D6B8E1E4B949",
+          "BlockedMutations": 2,
+          "ProductionAccepted": false
+        },
+        "Status": "PASS",
+        "Name": "SignedFinalHandleRejectsDeletionAndMutation",
+        "Command": "WO23WindowsProbe verify-pinned <CI_SYNTHETIC_PE>"
+      },
+      {
+        "Output": {
+          "DifferentIdentity": true,
+          "SameHash": true
+        },
+        "Status": "PASS",
+        "Name": "SignedDllCopyHasDifferentFileIdentity",
+        "ExitCode": 0
+      },
+      {
+        "Accepted": false,
+        "Status": "PASS",
+        "ExpectedAccepted": false,
+        "Output": {
+          "Code": 0,
+          "Thumbprint": "74D39881DD3ED950F6C88A312AFB496A64432C11",
+          "Identity": "5AA49C15A49BF22D:00010000000019590000000000000000",
+          "Hash": "31CD0A5B0B23418139B64B75733B3955D384DDFAAD2C71A9FD63E7349C437A57",
+          "BlockedMutations": 0,
+          "ProductionAccepted": false
+        },
+        "Name": "ValidOtherPublisherRejectedByExpectedPin",
+        "ExitCode": 0,
+        "Input": "other.dll",
+        "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>"
+      },
+      {
+        "Accepted": false,
+        "Status": "PASS",
+        "ExpectedAccepted": false,
+        "Output": {
+          "Code": -2146869232,
+          "Thumbprint": null,
+          "Identity": "5AA49C15A49BF22D:000100000000195A0000000000000000",
+          "Hash": "986A04304933B85708B2C30FE2549E0E53B735EC40D8727CAB6C55E7C8124DB3",
+          "BlockedMutations": 0,
+          "ProductionAccepted": false
+        },
+        "Name": "PostSigningModificationRejected",
+        "ExitCode": 0,
+        "Input": "edited.dll",
+        "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>"
+      },
+      {
+        "Accepted": false,
+        "Status": "PASS",
+        "ExpectedAccepted": false,
+        "Output": {
+          "Code": -2146762487,
+          "Thumbprint": null,
+          "Identity": "5AA49C15A49BF22D:000100000000195B0000000000000000",
+          "Hash": "AD30E74A94781F6AD7537043189F2776AC6F0B53B071A7FAB184ED6316EE3ACB",
+          "BlockedMutations": 0,
+          "ProductionAccepted": false
+        },
+        "Name": "UntrustedChainRejected",
+        "ExitCode": 0,
+        "Input": "untrusted.dll",
+        "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>"
+      }
+    ],
+    "Timestamp": "NOT TESTED",
+    "Scope": "Actual PE Authenticode in disposable GitHub-hosted Windows; test pin only; production pins unchanged"
+  },
+  "ScopeClarification": "CI native PE tests and own certificate cleanup PASS; guest deployment signer actual lifecycle NOT TESTED"
+}

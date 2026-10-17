@@ -1,0 +1,35 @@
+{
+  "Status": "NOT TESTED",
+  "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+  "Command": "NOT EXECUTED in a guest; see named preparation script",
+  "Input": "No approved disposable guest supplied",
+  "Output": "No approved guest reboot or hypervisor restore executed",
+  "ExitCode": null,
+  "ActualGuestExecuted": false,
+  "Environment": "Local Windows host; no new disposable guest, independent test SID or interactive UAC session supplied. Actual guest execution not performed.",
+  "ExecutedComparatorChecks": {
+    "SameBootContent": {
+      "Command": "WO24Probe compare <BEFORE> <AFTER> <REQUIRE_REBOOT>",
+      "Output": {
+        "Verified": true,
+        "State": "ObservedBytesMatch",
+        "RebootObserved": false
+      },
+      "Scope": "Evidence comparison only; not independent attestation",
+      "ExitCode": 0,
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75"
+    },
+    "RebootClaimRejected": {
+      "Command": "WO24Probe compare <BEFORE> <AFTER> <REQUIRE_REBOOT>",
+      "Output": {
+        "Verified": false,
+        "State": "RebootNotObserved",
+        "RebootObserved": false
+      },
+      "Scope": "Evidence comparison only; not independent attestation",
+      "ExitCode": 10,
+      "Source": "e996082e9656d26564d88d371f6ea992095d2b75"
+    },
+    "Scope": "Actual WMI boot capture; no guest reboot occurred"
+  }
+}

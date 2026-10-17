@@ -1,0 +1,14 @@
+{
+  "Status": "FAIL",
+  "Source": "b609616c49dfe64346fae9542ed11a41a355af44",
+  "WorkflowRun": 39014082807,
+  "Command": "scripts/wo24-ci-validation.ps1",
+  "Input": "Early WO24 validation stage on a fresh runner",
+  "Environment": "GitHub-hosted Windows runner",
+  "Output": "WO20Probe.exe was absent. The moved stage ran before the old WO20 tool build.",
+  "ExitCode": 1,
+  "RootCause": "The new early validation stage retained an implicit dependency on a later build.",
+  "Correction": "Build the reused WO20Probe explicitly before the WO24 validation script.",
+  "ProductChecksRemoved": false,
+  "FullRegressionInThisRun": "NOT EXECUTED after the failing stage"
+}
