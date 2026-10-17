@@ -257,6 +257,11 @@ jobs:
         run: |
           dotnet build tools/SmartPerformanceDoctor.WO24Probe -c Release -p:Platform=x64 -m:1 -v:minimal
           if ($LASTEXITCODE -ne 0) { throw 'WO24 probe build failed' }
+          foreach ($file in @('wo24-signed-deployment.ps1','wo24-checkpoint.ps1','wo24-qualification.ps1','wo24-cleanup-contract.ps1')) {
+            $tokens=$null; $errors=$null
+            [Management.Automation.Language.Parser]::ParseFile((Join-Path $PWD ('scripts/'+$file)),[ref]$tokens,[ref]$errors) | Out-Null
+            if ($errors.Count) { throw 'WO24 guest script syntax failure' }
+          }
           ./scripts/wo24-ci-validation.ps1
           dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO24' --logger 'trx;LogFileName=wo24-focused.trx' -v:minimal
           if ($LASTEXITCODE -ne 0) { throw 'WO24 focused tests failed' }
