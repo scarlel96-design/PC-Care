@@ -48,6 +48,7 @@ public sealed class UpdateFileJournal
 public sealed record TransactionResult(UpdateStage Stage, string Code, string TransactionId, int FilesApplied)
 {
     public string Failure { get; init; } = "";
+    public UpdateFailureDiagnostic? Diagnostic { get; init; }
     public bool WasCancellationRequested { get; init; }
     public bool AnyMutationStarted { get; init; }
     public string CancellationDisposition { get; init; } = "NotRequested";
@@ -71,7 +72,7 @@ public enum UpdateFaultPoint
     JournalTempCreated, JournalPartialWrite, JournalFlushed, JournalBeforeReplace, JournalAfterReplace,
     AfterFinalHashVerification, AttestationCreated, AttestationPartialWrite, AttestationFlushed,
     InstallationPointerCreated, InstallationPointerFlushed, BeforeInstallationPointerReplace,
-    AfterInstallationPointerReplace, AfterCommittedJournal, BeforeSuccessReturn
+    AfterInstallationPointerReplace, AfterCommittedJournal, BeforeSuccessReturn, BeforeVolumePreflight, CrossVolumeRejected
 }
 
 public sealed record UpdateRecoveryStatus(UpdateRecoveryState State, string Code, string TransactionId);
@@ -214,6 +215,12 @@ public sealed partial class UpdateTransaction
         EnsureRoot(_workRoot);
         using var installPin = WindowsFileBoundary.PinDirectory(installRoot);
         using var workPin = WindowsFileBoundary.PinDirectory(_workRoot);
+        if (File.Exists(Path.Combine(_workRoot, "installation-current.json")) || File.Exists(Path.Combine(_workRoot, "installation-enrollment.json")))
+        {
+            var trust = InspectStartupTrust(installRoot);
+            if (trust.RequiresReview && trust.Code != "RESTORED-INSTALLATION-NOT-ATTESTED")
+                return new(UpdateStage.RecoveryRequired, trust.Code, "", 0);
+        }
         using var gate = WindowsFileBoundary.OpenExclusive(_workRoot, "update.lock", !File.Exists(Path.Combine(_workRoot, "update.lock")));
         VerifyProtectedFile(gate, _workRoot);
         var priorJournals = new List<UpdateJournal>();
@@ -231,6 +238,11 @@ public sealed partial class UpdateTransaction
         if (File.Exists(Path.Combine(_workRoot, "installation-current.json")) &&
             InspectInstallation(installRoot).Code == "INSTALLATION-RECOVERY-REQUIRED")
             return new(UpdateStage.RecoveryRequired, "INSTALLATION-RECOVERY-REQUIRED", "", 0);
+        if (File.Exists(Path.Combine(_workRoot, "installation-current.json")) && InspectInstallation(installRoot).Verified)
+        {
+            var history = InspectInstallationHistory(installRoot);
+            if (!history.Verified) return new(UpdateStage.RecoveryRequired, "INSTALLATION-HISTORY-REVIEW-REQUIRED", "", 0);
+        }
 
         var fullPackage = Path.GetFullPath(packagePath);
         using var inputPackage = WindowsFileBoundary.OpenRead(Path.GetDirectoryName(fullPackage)!, Path.GetFileName(fullPackage));
@@ -246,6 +258,16 @@ public sealed partial class UpdateTransaction
         if (priorJournals.Any(prior => prior.Stage == UpdateStage.Committed &&
             string.Equals(prior.PackageId, source.Manifest.PackageId, StringComparison.OrdinalIgnoreCase)))
             return new(UpdateStage.Prepared, "REPLAY", "", 0);
+
+        faultInjector?.Invoke(UpdateFaultPoint.BeforeVolumePreflight);
+        // Keep new-file publication on one volume. Reject before creating a transaction or changing installed bytes.
+        if (source.Manifest.Files.Any(file => !File.Exists(Resolve(installRoot, Relative(file.Path)))) &&
+            (installPin.Identity.Split(':')[0] != workPin.Identity.Split(':')[0] ||
+             !string.Equals(Path.GetPathRoot(installRoot), Path.GetPathRoot(_workRoot), StringComparison.OrdinalIgnoreCase)))
+        {
+            faultInjector?.Invoke(UpdateFaultPoint.CrossVolumeRejected);
+            return new(UpdateStage.Prepared, "PUBLISH-SAME-VOLUME-REQUIRED", "", 0);
+        }
 
         var id = Guid.NewGuid().ToString("N");
         var txDir = Path.Combine(_workRoot, "tx-" + id);
@@ -265,6 +287,8 @@ public sealed partial class UpdateTransaction
         var retained = new List<WindowsFileBoundary.FileLease>();
         var packageIdentity = "";
         var mutationStarted = false;
+        var failurePhase = "StagePreparation";
+        var boundTarget = "";
         try
         {
             faultInjector?.Invoke(UpdateFaultPoint.AfterStagingCreated);
@@ -312,6 +336,7 @@ public sealed partial class UpdateTransaction
                     cancellationToken.ThrowIfCancellationRequested();
                 }
             }
+            failurePhase = "BackupPreparation";
             journal.Stage = UpdateStage.Staged;
             WriteJournal(txDir, journal);
             foreach (var item in manifest.Files)
@@ -348,6 +373,7 @@ public sealed partial class UpdateTransaction
             journal.Stage = UpdateStage.Applying;
             WriteJournal(txDir, journal); // durable before the first file mutation
             faultInjector?.Invoke(UpdateFaultPoint.AfterApplyingJournal);
+            failurePhase = "DestinationHandleAcquisition";
             var prepared = new Dictionary<string, (WindowsFileBoundary.FileLease Source, WindowsFileBoundary.FileLease Target)>();
             foreach (var entry in journal.Files)
             {
@@ -366,11 +392,13 @@ public sealed partial class UpdateTransaction
                     WriteJournal(txDir, journal);
                     faultInjector?.Invoke(UpdateFaultPoint.AfterNewFileIntent);
                 }
+                boundTarget = entry.OriginalIdentity;
                 var targetLease = WindowsFileBoundary.OpenWrite(entry.Existed ? installRoot : txDir,
                     entry.Existed ? relative : entry.TemporaryPath, create: !entry.Existed, deletable: !entry.Existed);
                 retained.Add(targetLease);
                 if (!entry.Existed) faultInjector?.Invoke(UpdateFaultPoint.AfterNewFileCreated);
                 if (entry.Existed) targetLease.Verify(entry.OriginalLength, entry.OriginalSha256, entry.OriginalIdentity);
+                boundTarget = targetLease.Identity;
                 entry.InstalledIdentity = targetLease.Identity;
                 WriteJournal(txDir, journal); // Record new-file identity before writing its content.
                 if (!entry.Existed) faultInjector?.Invoke(UpdateFaultPoint.AfterNewFileIdentity);
@@ -386,6 +414,8 @@ public sealed partial class UpdateTransaction
                 faultInjector?.Invoke(UpdateFaultPoint.BeforeReplacement);
                 if(!mutationStarted)cancellationToken.ThrowIfCancellationRequested();
                 mutationStarted=true;
+                failurePhase = entry.Existed ? "ExistingFileCopy" : "NewFileCopy";
+                boundTarget = targetLease.Identity;
                 targetLease.CopyFrom(sourceLease, entry.Existed ? null :
                     () => faultInjector?.Invoke(UpdateFaultPoint.DuringNewFileContent));
                 if (!entry.Existed) faultInjector?.Invoke(UpdateFaultPoint.BeforeNewFileVerification);
@@ -396,6 +426,7 @@ public sealed partial class UpdateTransaction
                     entry.TemporaryReady = true;
                     WriteJournal(txDir, journal);
                     faultInjector?.Invoke(UpdateFaultPoint.BeforeNewFileRename);
+                    failurePhase = "NewFilePublication";
                     targetLease.PublishOpenedFile(installRoot, Relative(entry.Path));
                     faultInjector?.Invoke(UpdateFaultPoint.AfterNewFileRename);
                 }
@@ -417,6 +448,7 @@ public sealed partial class UpdateTransaction
             if (postApplyVersionCheck is not null && !postApplyVersionCheck(manifest.ToVersion))
                 throw new InvalidDataException("installed version postcondition");
             faultInjector?.Invoke(UpdateFaultPoint.AfterFinalHashVerification);
+            failurePhase = "InstallationPublication";
             RecordInstallation(txDir, journal, manifest, packageLease.Stream, faultInjector);
             faultInjector?.Invoke(UpdateFaultPoint.BeforeCommittedJournal);
             journal.Stage = UpdateStage.Committed;
@@ -446,15 +478,17 @@ public sealed partial class UpdateTransaction
         {
             foreach (var file in retained) file.Dispose();
             retained.Clear();
-            journal.Failure = ex.GetType().Name + ": " + ex.Message;
+            var diagnostic = UpdateFailureDiagnostic.Capture(ex, failurePhase, journal.Stage, boundTarget,
+                installPin.Identity.Split(':')[0], workPin.Identity.Split(':')[0], _strictAcl, mutationStarted);
+            journal.Failure = $"{diagnostic.ExceptionType}; phase={diagnostic.Phase}; HRESULT={diagnostic.HResult}; Win32={diagnostic.NativeErrorCode}";
             journal.Stage = UpdateStage.RollbackPending;
             try { faultInjector?.Invoke(UpdateFaultPoint.BeforeFailureJournal); WriteJournal(txDir, journal); }
             catch (Exception journalError)
             {
-                return FailureResult(journal, ex, journalError);
+                return FailureResult(journal, ex, journalError) with { Diagnostic = diagnostic };
             }
             return RollbackCore(txDir, installRoot, journal, faultInjector) with
-            {AnyMutationStarted=mutationStarted,WasCancellationRequested=cancellationToken.IsCancellationRequested,
+            {Diagnostic=diagnostic,AnyMutationStarted=mutationStarted,WasCancellationRequested=cancellationToken.IsCancellationRequested,
                 CancellationDisposition=cancellationToken.IsCancellationRequested?"DeferredUntilSafeCompletion":"NotRequested"};
         }
         finally
@@ -576,7 +610,8 @@ public sealed partial class UpdateTransaction
                             {if(File.Exists(Resolve(installRoot,Relative(entry.Path))))throw new InvalidDataException("RESTORED-NEW-FILE-PRESENT");continue;}
                             using var target=WindowsFileBoundary.OpenRead(installRoot,Relative(entry.Path));
                             if(_strictAcl)ValidateProtectedSecurity(target.ReadSecurity(),false);
-                            target.Verify(entry.OriginalLength,entry.OriginalSha256,entry.OriginalIdentity);
+                            target.Verify(entry.OriginalLength,entry.OriginalSha256,
+                                journal.SchemaVersion == 1 ? null : entry.OriginalIdentity);
                         }
                     }
                     catch(Exception ex) when(ex is IOException or InvalidDataException or UnauthorizedAccessException)

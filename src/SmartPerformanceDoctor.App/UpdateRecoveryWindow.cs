@@ -23,7 +23,14 @@ public sealed class UpdateRecoveryWindow : Window
             TextWrapping = TextWrapping.Wrap });
         var refresh = new Button { Content = "상태 다시 확인" };
         AutomationProperties.SetAutomationId(refresh, "UpdateRecoveryRefresh");
-        refresh.Click += (_, _) => Show(UpdateRecoveryCoordinator.Inspect());
+        refresh.Click += async (_, _) =>
+        {
+            refresh.IsEnabled = false;
+            _status.Text = "설치 이력과 복구 상태를 확인하고 있습니다.";
+            try { Show(await Task.Run(UpdateRecoveryCoordinator.Inspect)); }
+            catch (Exception) { _status.Text = "설치 상태를 확인하지 못했습니다. 기존 파일과 기록을 보존하며 추가 확인이 필요합니다."; }
+            finally { refresh.IsEnabled = true; }
+        };
         panel.Children.Add(refresh);
         if (!readOnly)
         {
@@ -86,7 +93,7 @@ public sealed class UpdateRecoveryWindow : Window
         Show(status);
     }
 
-    private void Show(UpdateRecoveryStatus status) => _status.Text = status.Code.StartsWith("INSTALLATION-",StringComparison.Ordinal)
+    private void Show(UpdateRecoveryStatus status) => _status.Text = (status.Code.StartsWith("INSTALLATION-",StringComparison.Ordinal) || status.Code == "SIGNED-HISTORY-VERIFIED")
         ? UpdateStateText.Installation(status.Code) : status.Code == "SIGNED-INSTALLATION-VERIFIED"
         ? "서명된 설치 목록과 실제 파일 해시를 확인했습니다." : status.State switch
     {

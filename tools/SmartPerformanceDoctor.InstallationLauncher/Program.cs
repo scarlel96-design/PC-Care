@@ -25,7 +25,7 @@ try
         }
         UpdateBootstrap.ValidateInstallRoot(install);
         var transaction=new UpdateTransaction(BuildPublisherTrust.Current,UpdateBootstrap.WorkRoot,true);
-        var state=transaction.InspectInstallationTrust(install);
+        var state=transaction.InspectStartupTrust(install);
         Console.WriteLine(JsonSerializer.Serialize(state));
         if(!state.Verified||state.RequiresReview)return 10;
         if(args[0]=="--inspect")return 0;
@@ -34,7 +34,7 @@ try
         if(!AuthenticodeBoundary.IsBuildPublisher(signatureMain))return 11;
         executable.Verify(executable.Stream.Length,signatureMain.Hash,signatureMain.Identity);
         // Verify again after binding the executable. Protected installation ACLs remain mandatory.
-        if(!transaction.InspectInstallationTrust(install).Verified)return 12;
+        if(!transaction.InspectStartupTrust(install).Verified)return 12;
         using var child=Process.Start(new ProcessStartInfo(Path.Combine(install,"PCCare.exe")){UseShellExecute=false,WorkingDirectory=install});
         if(child is null)return 13;
         child.WaitForExit();return child.ExitCode;

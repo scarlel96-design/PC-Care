@@ -7,7 +7,8 @@ namespace SmartPerformanceDoctor.UpdateEngine;
 public enum InstallationTrustState
 {
     FreshInstallation, LegacyUnattestedInstallation, SignedInstallationVerified, SignedInstallationMismatch,
-    PendingTransaction, RecoveryRequired, AttestationMissing, AttestationCorrupted, MigrationReviewRequired
+    PendingTransaction, RecoveryRequired, AttestationMissing, AttestationCorrupted, MigrationReviewRequired,
+    SignedHistoryVerified, InstallationHistoryIncomplete, InstallationHistoryMismatch, ManualReviewRequired
 }
 public sealed record InstallationTrustDecision(InstallationTrustState State, bool Verified, bool RequiresReview, string Code);
 public sealed record EnrolledFile(string Path, long Length, string Hash, string Identity);

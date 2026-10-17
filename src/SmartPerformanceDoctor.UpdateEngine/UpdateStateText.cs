@@ -4,6 +4,12 @@ public static class UpdateStateText
 {
     public static string Installation(string code) => code switch
     {
+        "SIGNED-HISTORY-VERIFIED" => "서명된 설치 이력과 해당 파일의 내용·신원을 확인했습니다.",
+        "INSTALLATION-HISTORY-INCOMPLETE" or "INSTALLATION-HISTORY-JOURNAL" => "설치 이력이 일부 누락됐습니다. 기존 파일을 보존하며 복구 자료를 확인하세요.",
+        "INSTALLATION-HISTORY-CONTENT-MISMATCH" => "이전 업데이트 파일의 내용이 설치 이력과 다릅니다. 수동 확인이 필요합니다.",
+        "INSTALLATION-UNATTESTED-EXECUTABLE" => "검증 목록에 없는 실행 파일이 있습니다. 파일을 보존하며 설치 출처를 확인하세요.",
+        "INSTALLATION-HISTORY-SIGNATURE" => "이전 설치 선언의 서명을 확인하지 못했습니다. 일반 실행을 보류합니다.",
+        "PUBLISH-SAME-VOLUME-REQUIRED" => "설치 위치와 업데이트 준비 위치의 볼륨이 다릅니다. 설치 파일 변경 전에 중단했습니다.",
         "INSTALLATION-CONTENT-MISMATCH" => "설치 파일 내용이 검증된 목록과 다릅니다. 파일과 복구 기록을 보존합니다.",
         "INSTALLATION-IDENTITY-MISMATCH" => "설치 파일 또는 폴더가 바뀌었습니다. 원래 대상을 다시 확인해야 합니다.",
         "INSTALLATION-ACL-MISMATCH" => "설치 위치의 접근 권한이 보호 정책과 다릅니다. 관리자 검토가 필요합니다.",

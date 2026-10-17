@@ -18,7 +18,7 @@ public static class UpdateRecoveryCoordinator
         var status=transaction.InspectRecovery(UpdatePaths.AppInstallDirectory);
         if(status.State is UpdateRecoveryState.NoPendingTransaction or UpdateRecoveryState.RecoveryCompleted)
         {
-            var attestation=transaction.InspectInstallationTrust(UpdatePaths.AppInstallDirectory);
+            var attestation=transaction.InspectStartupTrust(UpdatePaths.AppInstallDirectory);
             if(attestation.RequiresReview)return new(UpdateRecoveryState.RecoveryRequired,attestation.Code,"");
             if(attestation.Verified)return new(UpdateRecoveryState.NoPendingTransaction,attestation.Code,"");
         }
