@@ -22,9 +22,13 @@ if(args[0]=="strict-apply")
     security.AddAccessRule(new System.Security.AccessControl.FileSystemAccessRule(new System.Security.Principal.SecurityIdentifier(System.Security.Principal.WellKnownSidType.BuiltinUsersSid,null),System.Security.AccessControl.FileSystemRights.ReadAndExecute,System.Security.AccessControl.InheritanceFlags.ContainerInherit|System.Security.AccessControl.InheritanceFlags.ObjectInherit,System.Security.AccessControl.PropagationFlags.None,System.Security.AccessControl.AccessControlType.Allow));
     System.IO.FileSystemAclExtensions.SetAccessControl(new DirectoryInfo(installPath),security);
     var strictPolicy=new PublisherTrustPolicy([new TrustedPublisherKey("WO20-Fixture","ephemeral","stable",File.ReadAllBytes(Path.Combine(root,"public-key.bin")))]);
-    var strictEngine=new UpdateTransaction(strictPolicy,Path.Combine(root,"work"),true){PerformanceProfile=new()};var process=System.Diagnostics.Process.GetCurrentProcess();var cpu=process.TotalProcessorTime;var allocated=GC.GetTotalAllocatedBytes(true);var timer=System.Diagnostics.Stopwatch.StartNew();
+    // Use the production staging contract only in the disposable hosted runner.
+    var productRoot=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),"PC-Care");
+    if(Directory.Exists(productRoot))throw new InvalidOperationException("CI_STAGING_ALREADY_EXISTS");
+    var protectedWork=Path.Combine(productRoot,"UpdateTransactions");
+    var strictEngine=new UpdateTransaction(strictPolicy,protectedWork,true){PerformanceProfile=new()};var process=System.Diagnostics.Process.GetCurrentProcess();var cpu=process.TotalProcessorTime;var allocated=GC.GetTotalAllocatedBytes(true);var timer=System.Diagnostics.Stopwatch.StartNew();
     var result=strictEngine.Apply(Path.Combine(root,"update.spdup"),installPath,"51.0.4");timer.Stop();var cpuMs=(process.TotalProcessorTime-cpu).TotalMilliseconds;var bytes=GC.GetTotalAllocatedBytes(true)-allocated;var strictHistory=strictEngine.InspectInstallationHistory(installPath);
-    Console.WriteLine(JsonSerializer.Serialize(new{result.Code,ElapsedMs=timer.Elapsed.TotalMilliseconds,CpuMs=cpuMs,AllocatedBytes=bytes,PeakWorkingSetBytes=process.PeakWorkingSet64,StrictAcl=true,History=strictHistory,Phases=strictEngine.PerformanceProfile.Snapshot(),Scope="CI protected synthetic files; no PE deployment or UAC"}));return result.Stage==UpdateStage.Committed&&strictHistory.Verified?0:10;
+    Console.WriteLine(JsonSerializer.Serialize(new{result.Code,ElapsedMs=timer.Elapsed.TotalMilliseconds,CpuMs=cpuMs,AllocatedBytes=bytes,PeakWorkingSetBytes=process.PeakWorkingSet64,StrictAcl=true,History=strictHistory,Phases=strictEngine.PerformanceProfile.Snapshot(),Scope="CI protected synthetic files and fresh fixed ProgramData staging; no PE deployment or UAC"}));return result.Stage==UpdateStage.Committed&&strictHistory.Verified?0:10;
 }
 if(args[0]=="access")
 {
