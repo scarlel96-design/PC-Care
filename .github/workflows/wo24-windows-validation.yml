@@ -47,6 +47,8 @@ jobs:
       - name: WO24 history and capture qualification
         shell: pwsh
         run: |
+          dotnet build tools/SmartPerformanceDoctor.WO20Probe -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO24 reused probe build failed' }
           dotnet build tools/SmartPerformanceDoctor.WO24Probe -c Release -p:Platform=x64 -m:1 -v:minimal
           if ($LASTEXITCODE -ne 0) { throw 'WO24 probe build failed' }
           foreach ($file in @('wo24-signed-deployment.ps1','wo24-checkpoint.ps1','wo24-qualification.ps1','wo24-cleanup-contract.ps1')) {
