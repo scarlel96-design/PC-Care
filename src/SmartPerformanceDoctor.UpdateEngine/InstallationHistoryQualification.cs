@@ -4,9 +4,23 @@ namespace SmartPerformanceDoctor.UpdateEngine;
 public sealed record InstallationHistoryResult(bool Verified, string State, string Code, int Transactions, int Files);
 public sealed partial class UpdateTransaction
 {
+    private CommittedInstallation ParseHistoryDeclaration(Stream stream)
+    {
+        using var timing = PerformanceProfile?.Measure("HistoryJsonParse");
+        using var document = JsonDocument.Parse(stream);
+        ValidateJsonProperties(document.RootElement);
+        return document.RootElement.Deserialize<CommittedInstallation>()!;
+    }
+    private bool VerifyHistorySignature(SignedManifest manifest, string signature)
+    {
+        using var timing = PerformanceProfile?.Measure("HistorySignatureVerification");
+        return SignedPackage.VerifyDeclaration(manifest, signature, _policy);
+    }
     /// <summary>Verify retained signed history without changing installation data.</summary>
     public InstallationHistoryResult InspectInstallationHistory(string installRoot)
     {
+        using var measurements = PerformanceProfile?.Activate();
+        using var historyTimer = PerformanceProfile?.Measure("HistoryTotal");
         var current = InspectInstallation(installRoot);
         if (!current.Verified)
             return new(false, current.RequiresReview ? "ManualReviewRequired" : "InstallationUnattested", current.Code, 0, 0);
@@ -19,26 +33,27 @@ public sealed partial class UpdateTransaction
             var scanned = 0;
             foreach (var directory in Directory.EnumerateDirectories(_workRoot, "tx-*"))
             {
+                using var transactionTimer = PerformanceProfile?.Measure("HistoryTransactionRead");
                 if (++scanned > 4096) throw new InvalidDataException("HISTORY-LIMIT");
                 if (!TryReadTrustedJournal(directory, installRoot, out var journal, out _) || journal is null)
                     throw new InvalidDataException("HISTORY-JOURNAL");
                 if (journal.Stage == UpdateStage.Restored || journal.SchemaVersion == 1) continue;
                 if (journal.Stage != UpdateStage.Committed) throw new InvalidDataException("HISTORY-INCOMPLETE");
-                var record = WindowsFileBoundary.OpenRead(directory, "committed-attestation.json"); held.Add(record);
+                var record = WindowsFileBoundary.OpenMetadata(directory, "committed-attestation.json"); held.Add(record);
                 VerifyProtectedFile(record, directory);
                 if (record.Stream.Length > 2 * 1024 * 1024) throw new InvalidDataException("HISTORY-LIMIT");
-                using var document = JsonDocument.Parse(record.Stream); ValidateJsonProperties(document.RootElement);
-                var declaration = document.RootElement.Deserialize<CommittedInstallation>()!;
+                var declaration = ParseHistoryDeclaration(record.Stream);
                 if (declaration.TransactionId != journal.TransactionId || declaration.InstallIdentity != install.Identity ||
-                    declaration.Manifest.PackageId != journal.PackageId || !SignedPackage.VerifyDeclaration(declaration.Manifest, declaration.Signature, _policy))
+                    declaration.Manifest.PackageId != journal.PackageId || !VerifyHistorySignature(declaration.Manifest, declaration.Signature))
                     throw new InvalidDataException("HISTORY-SIGNATURE");
                 if (!Version.TryParse(declaration.Manifest.FromVersion, out var from) || !Version.TryParse(declaration.Manifest.ToVersion, out var to) || from >= to ||
                     !Version.TryParse(journal.FromVersion, out var journalFrom) || !Version.TryParse(journal.ToVersion, out var journalTo) || from != journalFrom || to != journalTo)
                     throw new InvalidDataException("HISTORY-VERSION");
                 if (declaration.Manifest.Files.Count != journal.Files.Count) throw new InvalidDataException("HISTORY-SCOPE");
+                var journalByPath = journal.Files.ToDictionary(x => x.Path, StringComparer.Ordinal);
                 foreach (var file in declaration.Manifest.Files)
                 {
-                    var entry = journal.Files.Single(x => x.Path == file.Path);
+                    if (!journalByPath.TryGetValue(file.Path, out var entry)) throw new InvalidDataException("HISTORY-SCOPE");
                     if (!string.Equals(entry.NewSha256, file.Sha256, StringComparison.OrdinalIgnoreCase) || entry.NewLength != file.Length)
                         throw new InvalidDataException("HISTORY-SCOPE");
                 }
@@ -52,7 +67,7 @@ public sealed partial class UpdateTransaction
             foreach (var name in new[] { "installation-current.json", "installation-previous.json" })
             {
                 if (!File.Exists(Path.Combine(_workRoot, name))) continue;
-                var pointer = WindowsFileBoundary.OpenRead(_workRoot, name); held.Add(pointer); VerifyProtectedFile(pointer, _workRoot);
+                var pointer = WindowsFileBoundary.OpenMetadata(_workRoot, name); held.Add(pointer); VerifyProtectedFile(pointer, _workRoot);
                 if (pointer.Stream.Length > 4096) throw new InvalidDataException("HISTORY-LIMIT");
                 using var doc = JsonDocument.Parse(pointer.Stream); ValidateJsonProperties(doc.RootElement);
                 var candidate = doc.RootElement.Deserialize<InstallationPointer>()!;
@@ -62,11 +77,11 @@ public sealed partial class UpdateTransaction
             var expected = new Dictionary<string, (SignedFile File, string Identity)>(StringComparer.OrdinalIgnoreCase);
             if (File.Exists(Path.Combine(_workRoot, "installation-enrollment.json")))
             {
-                var enrollment = WindowsFileBoundary.OpenRead(_workRoot, "installation-enrollment.json"); held.Add(enrollment); VerifyProtectedFile(enrollment, _workRoot);
+                var enrollment = WindowsFileBoundary.OpenMetadata(_workRoot, "installation-enrollment.json"); held.Add(enrollment); VerifyProtectedFile(enrollment, _workRoot);
                 if (enrollment.Stream.Length > 2 * 1024 * 1024) throw new InvalidDataException("HISTORY-LIMIT");
                 using var doc = JsonDocument.Parse(enrollment.Stream); ValidateJsonProperties(doc.RootElement);
                 var saved = doc.RootElement.Deserialize<InstallationEnrollment>()!;
-                if (saved.InstallIdentity != install.Identity || !SignedPackage.VerifyDeclaration(saved.Manifest, saved.Signature, _policy) ||
+                if (saved.InstallIdentity != install.Identity || !VerifyHistorySignature(saved.Manifest, saved.Signature) ||
                     !Version.TryParse(saved.Manifest.ToVersion, out var version) || version != ordered[0].From || saved.Files.Count != saved.Manifest.Files.Count)
                     throw new InvalidDataException("HISTORY-ENROLLMENT");
                 foreach (var item in saved.Manifest.Files)
@@ -77,8 +92,11 @@ public sealed partial class UpdateTransaction
                 }
             }
             foreach (var record in ordered)
+            {
+                var journalByPath = record.Journal.Files.ToDictionary(x => x.Path, StringComparer.Ordinal);
                 foreach (var file in record.Declaration.Manifest.Files)
-                    expected[file.Path] = (file, record.Journal.Files.Single(x => x.Path == file.Path).InstalledIdentity);
+                    expected[file.Path] = (file, journalByPath[file.Path].InstalledIdentity);
+            }
             foreach (var entry in expected)
             {
                 var file = WindowsFileBoundary.OpenRead(installRoot, Relative(entry.Key)); held.Add(file);

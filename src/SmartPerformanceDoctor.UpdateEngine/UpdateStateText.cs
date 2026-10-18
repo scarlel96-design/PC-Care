@@ -2,6 +2,14 @@ namespace SmartPerformanceDoctor.UpdateEngine;
 
 public static class UpdateStateText
 {
+    public static string Recovery(RecoveryReconciliation value) => value.State switch
+    {
+        "RecoveryDeferred" => "다른 프로그램이 파일을 사용 중입니다. 파일을 보존하며 잠금 해제 후 다시 검사하세요.",
+        "RecoveryRequired" when value.OriginalBytesVerified => "원본 바이트를 확인했습니다. 미완료 거래의 종료 확인이 필요하며 복원 완료 상태는 아닙니다.",
+        "RecoveryRequired" => "복구 입력을 확인했습니다. 관리자 승인 후 실행 직전에 다시 검증합니다.",
+        "NoPendingTransaction" or "NotStarted" => "미완료 거래가 없습니다. 전체 설치 신뢰는 별도로 확인합니다.",
+        _ => "복구 근거를 확인하지 못했습니다. 기존 파일과 기록을 보존하며 수동 확인이 필요합니다."
+    };
     public static string Installation(string code) => code switch
     {
         "SIGNED-HISTORY-VERIFIED" => "서명된 설치 이력과 해당 파일의 내용·신원을 확인했습니다.",

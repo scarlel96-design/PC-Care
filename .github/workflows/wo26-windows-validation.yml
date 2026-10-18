@@ -1,0 +1,365 @@
+name: WO26 transaction recovery and volume staging
+
+on:
+  push:
+    branches:
+      - codex/pccare-wo26-transaction-recovery-volume-staging
+    paths-ignore:
+      - 'docs/**'
+      - '.gitattributes'
+  pull_request:
+
+jobs:
+  windows-validation:
+    runs-on: windows-latest
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Restore
+        run: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
+      - name: Release build
+        run: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+      - name: WO23 actual Windows ACL and PE Authenticode
+        timeout-minutes: 8
+        shell: pwsh
+        run: |
+          dotnet build tools/SmartPerformanceDoctor.UpdateBridge -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO23 signed PE inputs build failed' }
+          dotnet build tools/SmartPerformanceDoctor.WO23WindowsProbe -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO23 Windows probe build failed' }
+          ./scripts/wo23-windows-security.ps1
+      - name: WO19 updater regression and transition tool build
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force artifacts/wo19-ci | Out-Null
+          git rev-parse HEAD | Set-Content artifacts/wo19-ci/SOURCE_SHA.txt
+          git rev-parse 'HEAD^{tree}' | Set-Content artifacts/wo19-ci/SOURCE_TREE.txt
+          dotnet build tools/SmartPerformanceDoctor.UpdateBridge -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'Transition bridge build failed' }
+          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO19' --logger 'trx;LogFileName=wo19-tests.trx' -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO19 updater regression failed' }
+          ./scripts/wo19-source-contract.ps1
+      - name: WO24 history and capture qualification
+        shell: pwsh
+        run: |
+          dotnet build tools/SmartPerformanceDoctor.WO20Probe -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO24 reused probe build failed' }
+          dotnet build tools/SmartPerformanceDoctor.WO24Probe -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO24 probe build failed' }
+          foreach ($file in @('wo24-signed-deployment.ps1','wo24-checkpoint.ps1','wo24-qualification.ps1','wo24-cleanup-contract.ps1')) {
+            $tokens=$null; $errors=$null
+            [Management.Automation.Language.Parser]::ParseFile((Join-Path $PWD ('scripts/'+$file)),[ref]$tokens,[ref]$errors) | Out-Null
+            if ($errors.Count) { throw 'WO24 guest script syntax failure' }
+          }
+          ./scripts/wo24-ci-validation.ps1
+          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO24' --logger 'trx;LogFileName=wo24-focused.trx' -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO24 focused tests failed' }
+      - name: WO25 startup, error diagnostics and volume refusal
+        shell: pwsh
+        run: |
+          dotnet build tools/SmartPerformanceDoctor.WO25Probe -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO25 probe build failed' }
+          ./scripts/wo25-process-validation.ps1
+          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO25' --logger 'trx;LogFileName=wo25-focused.trx' -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO25 focused tests failed' }
+      - name: WO26 recovery reconciliation and bounded history profiling
+        shell: pwsh
+        run: |
+          ./scripts/wo26-process-validation.ps1
+          ./scripts/wo26-history-profile.ps1
+          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO26' --logger 'trx;LogFileName=wo26-focused.trx' -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO26 focused tests failed' }
+      - name: WO20 environment, authorization, vault and interruption tests
+        shell: pwsh
+        run: |
+          . ./scripts/wo20-test-environment.ps1 -OutputDirectory artifacts/wo20-ci-environment -FixtureRoot (Join-Path $env:RUNNER_TEMP 'wo20-isolated-fixtures')
+          "RUNNER_TEMP=$env:RUNNER_TEMP" | Add-Content $env:GITHUB_ENV
+          ./scripts/wo20-source-contract.ps1
+          New-Item -ItemType Directory -Force artifacts/wo20-ci | Out-Null
+          git rev-parse HEAD | Set-Content artifacts/wo20-ci/SOURCE_SHA.txt
+          git rev-parse 'HEAD^{tree}' | Set-Content artifacts/wo20-ci/SOURCE_TREE.txt
+          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO20|FullyQualifiedName~CareFolderScanner_TempPath' --logger 'trx;LogFileName=wo20-tests.trx' -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO20 tests failed' }
+          dotnet build tools/SmartPerformanceDoctor.WO20Probe -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO20 probe build failed' }
+          ./scripts/wo20-process-validation.ps1 -OutputDirectory artifacts/wo20-ci
+      - name: WO18 durable deletion and product safety
+        shell: pwsh
+        env:
+          VSTEST_CONNECTION_TIMEOUT: '300'
+        run: |
+          New-Item -ItemType Directory -Force artifacts/wo18-ci | Out-Null
+          $ownerProbe = Join-Path $env:RUNNER_TEMP ('wo18-owner-' + [guid]::NewGuid().ToString('N') + '.tmp')
+          [IO.File]::WriteAllBytes($ownerProbe, [byte[]]@(0))
+          $sid = [Security.Principal.WindowsIdentity]::GetCurrent().User
+          $owner = (Get-Acl -LiteralPath $ownerProbe).GetOwner([Security.Principal.SecurityIdentifier])
+          $ownerKind = if ($owner -eq $sid) { 'CurrentSid' } elseif ($owner.Value -eq 'S-1-5-32-544') { 'Administrators' } else { 'Other' }
+          @{DefaultFixtureOwner=$ownerKind;ExplicitFixtureOwner='CurrentSid';ProductionOwnershipGateChanged=$false} | ConvertTo-Json | Set-Content artifacts/wo18-ci/OWNER_ENVIRONMENT.json
+          dotnet build tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO18 x64 test build failed' }
+          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO18' --logger 'trx;LogFileName=wo18-tests.trx' -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO18 regression failed' }
+          dotnet build tools/SmartPerformanceDoctor.DeleteProbe -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'DeleteProbe build failed' }
+          $fixtureParent = Join-Path $env:RUNNER_TEMP 'wo18-isolated-fixtures'
+          New-Item -ItemType Directory -Force $fixtureParent | Out-Null
+          ./scripts/wo18-delete-crash-validation.ps1 -FixtureParent $fixtureParent -OutputDirectory artifacts/wo18-ci
+          ./scripts/wo18-synthetic-validation.ps1 -FixtureParent $fixtureParent -OutputDirectory artifacts/wo18-ci/synthetic
+          ./scripts/wo17-ui-source-validation.ps1
+      - name: Signed package, publisher, transaction, recovery and staging tests
+        env:
+          VSTEST_CONNECTION_TIMEOUT: '300'
+        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~SignedUpdateTests|FullyQualifiedName~WindowsFileBoundaryTests|FullyQualifiedName~WO05CompatibilityTests|FullyQualifiedName~WO06' --logger 'trx;LogFileName=wo06-signed-updater.trx' -v:minimal
+      - name: Performance diagnostics scenarios
+        env:
+          VSTEST_CONNECTION_TIMEOUT: '300'
+        run: dotnet test tests/SmartPerformanceDoctor.Tests/SmartPerformanceDoctor.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --filter 'FullyQualifiedName~WO07|FullyQualifiedName~WO08|FullyQualifiedName~WO09|FullyQualifiedName~WO10|FullyQualifiedName~WO11' --logger 'trx;LogFileName=wo09-performance.trx' -v:minimal
+      - name: Read-only Windows collector smoke
+        shell: pwsh
+        run: |
+          dotnet build tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-restore -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'probe build failed' }
+          New-Item -ItemType Directory -Force artifacts/wo07-ci | Out-Null
+          dotnet run --project tools/SmartPerformanceDoctor.DiagnosticsProbe -c Release -p:Platform=x64 --no-build --no-restore -- 30 artifacts/wo07-ci/measurement.json
+          if ($LASTEXITCODE -ne 0) { throw 'CPU or memory collector unavailable' }
+          $measurement = Get-Content artifacts/wo07-ci/measurement.json -Raw | ConvertFrom-Json
+          if ($measurement.environment.elevated) {
+            if ($measurement.snapshot.Errors.Where({ $_.Provider.StartsWith('ETW') }).Count -gt 0) { throw 'Elevated ETW collection failed' }
+            if ($measurement.snapshot.EventsReceived -le 0) { throw 'Elevated ETW delivered no events' }
+            if ($null -eq $measurement.remainingOwnedSessions -or $measurement.remainingOwnedSessions -ne 0) { throw 'ETW session cleanup not verified' }
+          }
+      - name: Diagnostic profiles and controlled workloads
+        shell: pwsh
+        run: |
+          dotnet build tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-restore -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'Reference analyzer build failed' }
+          dotnet run --project tools/SmartPerformanceDoctor.ReferenceProbe -c Release -p:Platform=x64 --no-build --no-restore -- --verify-time-contract
+          if ($LASTEXITCODE -ne 0) { throw 'SDK converted timestamp contract failed' }
+          ./scripts/wo08-measurement.ps1 -OutputDirectory artifacts/wo08-ci -RunControlledWorkloads
+          ./scripts/wo09-disk-identity.ps1 -OutputDirectory artifacts/wo09-ci
+          # CPU reference qualification remains a separate unresolved task.
+      - name: Synthetic recovery and UI Automation harness
+        shell: pwsh
+        run: |
+          dotnet build tools/SmartPerformanceDoctor.RecoverySandbox -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw "sandbox build failed" }
+          ./scripts/wo10-sandbox-validation.ps1 -OutputDirectory artifacts/wo10-sandbox
+          ./scripts/wo11-sandbox-validation.ps1 -OutputDirectory artifacts/wo11-sandbox
+          dotnet build tools/SmartPerformanceDoctor.CleanupProbe -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw "cleanup probe build failed" }
+          $fixtureParent = Join-Path $env:RUNNER_TEMP 'wo17-isolated-fixtures'
+          New-Item -ItemType Directory -Force $fixtureParent | Out-Null
+          & tools/SmartPerformanceDoctor.CleanupProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.CleanupProbe.exe --synthetic artifacts/wo11-ci $fixtureParent
+          if ($LASTEXITCODE -ne 0) { throw "cleanup roundtrip failed" }
+          dotnet build tools/SmartPerformanceDoctor.GuiProbe -c Release -p:Platform=x64 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw "UIA harness build failed" }
+          & tools/SmartPerformanceDoctor.GuiProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.GuiProbe.exe | Set-Content artifacts/wo10-sandbox/gui-status.json
+      - name: Separate-process termination and recovery
+        shell: pwsh
+        run: |
+          dotnet build tests/SmartPerformanceDoctor.UpdateRecoveryProbe/SmartPerformanceDoctor.UpdateRecoveryProbe.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
+          ./scripts/wo06-process-validation.ps1 -OutputDirectory artifacts/wo06-ci-process
+      - name: Production profile and isolated test profile
+        shell: pwsh
+        run: |
+          dotnet build tools/SmartPerformanceDoctor.VMTestKit/SmartPerformanceDoctor.VMTestKit.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'test kit build failed' }
+          dotnet build tools/SmartPerformanceDoctor.VaultRecovery/SmartPerformanceDoctor.VaultRecovery.csproj -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'data recovery build failed' }
+          $kit = 'tools/SmartPerformanceDoctor.VMTestKit/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.VMTestKit.exe'
+          $engine = 'src/SmartPerformanceDoctor.UpdateEngine/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateEngine.dll'
+          & $kit audit-production $engine
+          if ($LASTEXITCODE -ne 0) { throw 'test trust leaked into production' }
+          & $kit audit-production 'src/SmartPerformanceDoctor.App/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.dll'
+          if ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production app' }
+          & $kit audit-production 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.dll'
+          if ($LASTEXITCODE -ne 0) { throw 'test profile leaked into production helper' }
+          $profile = Join-Path $env:RUNNER_TEMP 'wo06-test-profile'
+          & $kit fixture-profile $profile ('0' * 40)
+          if ($LASTEXITCODE -ne 0) { throw 'profile generation failed' }
+          $source = Join-Path $profile 'TestVmTrust.g.cs'
+          dotnet build src/SmartPerformanceDoctor.UpdateEngine/SmartPerformanceDoctor.UpdateEngine.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -o (Join-Path $profile 'output') -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'test profile build failed' }
+          & $kit audit-production (Join-Path $profile 'output/SmartPerformanceDoctor.UpdateEngine.dll')
+          if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test artifact' }
+          dotnet build src/SmartPerformanceDoctor.App/SmartPerformanceDoctor.App.csproj -c Release -p:Platform=x64 -p:WO05VMTest=true "-p:WO05TestTrustSource=$source" --no-restore -m:1 -o (Join-Path $profile 'app-output') -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'VM Release application profile build failed' }
+          & $kit audit-production (Join-Path $profile 'app-output/SmartPerformanceDoctor.dll')
+          if ($LASTEXITCODE -ne 6) { throw 'production audit accepted a VM test application' }
+          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateHelper.dll')
+          if ($LASTEXITCODE -ne 6) { throw 'VM application copied a production update helper' }
+          & $kit audit-production (Join-Path $profile 'app-output/engine/SmartPerformanceDoctor.UpdateEngine.dll')
+          if ($LASTEXITCODE -ne 6) { throw 'VM helper copied a production update engine' }
+          exit 0
+      - name: Vault reliability and separate-process crash recovery
+        shell: pwsh
+        run: |
+          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO12VaultReliabilityTests' --logger 'trx;LogFileName=wo12-vault.trx' -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'vault reliability failed' }
+          dotnet build tools/SmartPerformanceDoctor.VaultProbe -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'vault probe build failed' }
+          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --synthetic artifacts/wo12-ci
+          if ($LASTEXITCODE -ne 0) { throw 'vault crash preservation failed' }
+      - name: Authenticated generations and password crash recovery
+        shell: pwsh
+        run: |
+          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO13' --logger 'trx;LogFileName=wo13-vault.trx' -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO13 regression failed' }
+          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --crash-safe artifacts/wo13-ci
+          if ($LASTEXITCODE -ne 0) { throw 'authenticated vault recovery failed' }
+          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --recovery-crash artifacts/wo13-ci
+          if ($LASTEXITCODE -ne 0) { throw 'authenticated recovery code persistence failed' }
+      - name: Legacy v5 transition and authenticated recovery
+        shell: pwsh
+        run: |
+          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO14' --logger 'trx;LogFileName=wo14-vault.trx' -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO14 regression failed' }
+          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo14 artifacts/wo14-ci
+          if ($LASTEXITCODE -ne 0) { throw 'legacy transition or recovery failed' }
+          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo14-memory artifacts/wo14-memory
+          if ($LASTEXITCODE -ne 0) { throw 'streaming integrity or memory probe failed' }
+      - name: Trusted recovery receipts and replay boundaries
+        shell: pwsh
+        run: |
+          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO15' --logger 'trx;LogFileName=wo15-vault.trx' -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO15 regression failed' }
+          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo15 artifacts/wo15-ci
+          if ($LASTEXITCODE -ne 0) { throw 'WO15 receipt or replay probe failed' }
+          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo15-memory artifacts/wo15-memory
+          if ($LASTEXITCODE -ne 0) { throw 'WO15 export-only memory or integrity probe failed' }
+      - name: WO16 receipt reconciliation and authenticated v5 read-only recovery
+        shell: pwsh
+        run: |
+          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --no-restore --filter 'FullyQualifiedName~WO16' --logger 'trx;LogFileName=wo16-vault.trx' -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO16 regression failed' }
+          dotnet tools/SmartPerformanceDoctor.VaultProbe/bin/x64/Release/net10.0-windows/SmartPerformanceDoctor.VaultProbe.dll --wo16 artifacts/wo16-ci
+          if ($LASTEXITCODE -ne 0) { throw 'WO16 reconciliation or recovery failed' }
+          pwsh -NoProfile -File scripts/wo16-ui-source-validation.ps1
+          if ($LASTEXITCODE -ne 0) { throw 'WO16 UI source contract failed' }
+      - name: WO17 storage and file Clear qualification
+        shell: pwsh
+        run: |
+          dotnet build tools/SmartPerformanceDoctor.StorageCareProbe -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO17 probe build failed' }
+          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO17' --logger 'trx;LogFileName=wo17-focused.trx' -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO17 tests failed' }
+          $fixtureParent = Join-Path $env:RUNNER_TEMP 'wo17-isolated-fixtures'
+          New-Item -ItemType Directory -Force $fixtureParent | Out-Null
+          dotnet tools/SmartPerformanceDoctor.StorageCareProbe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.StorageCareProbe.dll --synthetic artifacts/wo17-ci $fixtureParent
+          if ($LASTEXITCODE -ne 0) { throw 'WO17 synthetic qualification failed' }
+          pwsh -NoProfile -File scripts/wo17-ui-source-validation.ps1
+          if ($LASTEXITCODE -ne 0) { throw 'WO17 UI source validation failed' }
+      - name: WO21 approval, trust, process and preparation qualification
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force artifacts/wo22-ci | Out-Null
+          Copy-Item docs/rework/evidence/wo21/ENVIRONMENT_RESULT.json artifacts/wo22-ci/prior-environment.json
+          dotnet build tools/SmartPerformanceDoctor.InstallationLauncher -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'launcher build failed' }
+          $launcher = 'tools/SmartPerformanceDoctor.InstallationLauncher/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.InstallationLauncher.exe'
+          & $launcher --inspect
+          if ($LASTEXITCODE -ne 6) { throw 'untrusted undeployed launcher was accepted' }
+          dotnet build tools/SmartPerformanceDoctor.UpdateBridge -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'Bridge build failed' }
+          ./scripts/wo21-qualification.ps1 -FixtureRoot (Join-Path $env:RUNNER_TEMP 'wo21-ci-fixtures') -OutputDirectory artifacts/wo21-qualification -Filter 'FullyQualifiedName~WO21|FullyQualifiedName~WO22'
+          ./scripts/wo21-qualification-selftest.ps1 -FixtureRoot (Join-Path $env:RUNNER_TEMP 'wo21-ci-fixtures') -ReceiptDirectory artifacts/wo21-qualification
+          dotnet build tools/SmartPerformanceDoctor.UpdatePerformanceProbe -c Release -p:Platform=x64 -m:1 -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'performance probe build failed' }
+          ./scripts/wo20-process-validation.ps1 -OutputDirectory artifacts/wo22-ci/recorder -ValidateRecorderOnly
+          ./scripts/wo22-process-validation.ps1 -OutputDirectory artifacts/wo22-ci
+          ./scripts/wo22-ui-contract.ps1
+          ./scripts/wo21-test-signing.ps1 -BinaryDirectory 'C:\WO21\binaries' -GuestTestRoot 'C:\wo21-signing' -ExpectedGuestUuid PREPARED -ExpectedTestSid PREPARED | Set-Content artifacts/wo22-ci/signing-preparation.json
+          ./scripts/wo20-source-contract.ps1
+      - name: WO23 publication crash matrix
+        shell: pwsh
+        run: |
+          ./scripts/wo23-process-validation.ps1 -OutputDirectory artifacts/wo23-process
+          ./scripts/wo23-ui-contract.ps1
+          dotnet test tests/SmartPerformanceDoctor.Tests -c Release -p:Platform=x64 --no-build --filter 'FullyQualifiedName~WO23' --logger 'trx;LogFileName=wo23-focused.trx' -v:minimal
+          if ($LASTEXITCODE -ne 0) { throw 'WO23 focused tests failed' }
+      - name: Full application regression
+        env:
+          VSTEST_CONNECTION_TIMEOUT: '300'
+        shell: pwsh
+        run: ./scripts/wo21-qualification.ps1 -FixtureRoot (Join-Path $env:RUNNER_TEMP 'wo21-full-fixtures') -OutputDirectory artifacts/wo26-full
+      - name: SecurityLab regression
+        env:
+          VSTEST_CONNECTION_TIMEOUT: '300'
+        run: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests/SmartPerformanceDoctor.SecurityLab.Tests.csproj -c Release -p:Platform=x64 --no-restore -m:1 --logger 'trx;LogFileName=wo06-securitylab.trx' -v:minimal
+      - name: Reject unsupported helper verb
+        shell: pwsh
+        run: |
+          $helper = 'src/SmartPerformanceDoctor.UpdateHelper/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.UpdateHelper.exe'
+          $process = Start-Process -FilePath $helper -ArgumentList @('--exec', 'arbitrary') -Wait -PassThru -NoNewWindow
+          if ($process.ExitCode -ne 2) { throw "Unexpected helper exit code: $($process.ExitCode)" }
+      - name: Upload test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wo26-windows-evidence
+          path: |
+            tests/SmartPerformanceDoctor.Tests/TestResults/*.trx
+            tests/SmartPerformanceDoctor.SecurityLab.Tests/TestResults/*.trx
+            artifacts/wo06-ci-process/process-results.json
+            artifacts/wo07-ci/measurement.json
+            artifacts/wo08-ci/**/*.json
+            artifacts/wo09-ci/**/*.json
+            artifacts/wo10-ci/**/*.json
+            artifacts/wo10-sandbox/sandbox-results.json
+            artifacts/wo10-sandbox/gui-status.json
+            artifacts/wo11-ci/*.json
+            artifacts/wo11-sandbox/sandbox-results.json
+            artifacts/wo12-ci/crash-results.json
+            artifacts/wo12-ci/performance.json
+            artifacts/wo13-ci/commit-recovery.json
+            artifacts/wo13-ci/password-crash.json
+            artifacts/wo13-ci/streaming-export.json
+            artifacts/wo13-ci/recovery-code-crash.json
+            artifacts/wo14-ci/transition.json
+            artifacts/wo14-ci/transition-crash.json
+            artifacts/wo14-ci/metadata-ready.json
+            artifacts/wo14-ci/password-crash.json
+            artifacts/wo14-ci/replay.json
+            artifacts/wo14-memory/streaming-memory.json
+            artifacts/wo15-ci/REPLAY_ATTACK_RESULT.json
+            artifacts/wo15-ci/RECOVERY_RECEIPT_RESULT.json
+            artifacts/wo15-ci/V5_PASSWORD_CRASH_RESULT.json
+            artifacts/wo15-memory/PERFORMANCE_RESULT.json
+
+            artifacts/wo16-ci/*.json
+
+            artifacts/wo17-ci/*.json
+            artifacts/wo18-ci/**/*.json
+            artifacts/wo18-ci/*.json
+            artifacts/wo19-ci/**
+
+            artifacts/wo20-ci/*.json
+            artifacts/wo20-ci/*.txt
+
+            artifacts/wo21-ci/**/*.json
+            artifacts/wo21-ci/*.json
+            artifacts/wo21-qualification/*.json
+            artifacts/wo21-environment/*.json
+            artifacts/wo21-full/*.json
+            artifacts/wo21-full/*.txt
+
+            artifacts/wo22-ci/**/*.json
+            artifacts/wo22-ci/*.json
+            artifacts/wo22-full/*
+
+            artifacts/wo23-security/*.json
+            artifacts/wo23-process/**/*.json
+            artifacts/wo26-full/*
+            artifacts/wo23-ui/*.json
+
+            artifacts/wo24-ci/**
+
+            artifacts/wo25-ci/**
+
+            artifacts/wo26-ci/**
+            artifacts/wo26-history/**

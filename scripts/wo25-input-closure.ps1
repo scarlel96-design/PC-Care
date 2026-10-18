@@ -50,6 +50,8 @@ function Open-Wo25InputClosure {
    if((Get-Item -LiteralPath $configPath).Length -gt 8388608){throw 'DEPLOYMENT_JSON_LIMIT'}
    $configJson=[Text.Json.JsonDocument]::Parse([IO.File]::ReadAllText($configPath))
    try {Assert-JsonUnique $configJson.RootElement} finally {$configJson.Dispose()}
+   $runtimeConfig=Get-Content -LiteralPath $configPath -Raw|ConvertFrom-Json -AsHashtable
+   if($item.Path.EndsWith('.runtimeconfig.json',[StringComparison]::OrdinalIgnoreCase) -and $runtimeConfig.ContainsKey('runtimeOptions') -and $runtimeConfig.runtimeOptions.ContainsKey('additionalProbingPaths') -and @($runtimeConfig.runtimeOptions.additionalProbingPaths).Count -gt 0){throw 'DEPLOYMENT_EXTERNAL_PROBING'}
    if(!$item.Path.EndsWith('.deps.json',[StringComparison]::OrdinalIgnoreCase)){continue}
    $config=Get-Content -LiteralPath $configPath -Raw|ConvertFrom-Json -AsHashtable
    if(!$config.ContainsKey('targets')){continue}
@@ -57,11 +59,21 @@ function Open-Wo25InputClosure {
     if(!$library.ContainsKey($kind)){continue}
     foreach($asset in $library[$kind].Keys){
      if($asset.EndsWith('/_._',[StringComparison]::Ordinal)){continue}
-     $leaf=[IO.Path]::GetFileName($asset)
-     if(!($document.Files.Path|Where-Object {[IO.Path]::GetFileName($_).Equals($leaf,[StringComparison]::OrdinalIgnoreCase)})){throw 'DEPLOYMENT_DEPENDENCY_MISSING'}
+     $assetPath=$asset.Replace('\','/')
+     if([IO.Path]::IsPathRooted($assetPath) -or ($assetPath.Split('/')|Where-Object {$_ -in '.','..','' -or $_.Contains(':')})){throw 'DEPLOYMENT_DEPENDENCY_PATH'}
+     $resolved=if($kind -eq 'runtime'){[IO.Path]::GetFileName($assetPath)}else{$assetPath}
+     $parent=[IO.Path]::GetDirectoryName($item.Path).Replace('\','/')
+     if($parent){$resolved=$parent+'/'+$resolved}
+     if(!($document.Files.Path|Where-Object {$_.Equals($resolved,[StringComparison]::OrdinalIgnoreCase)})){throw 'DEPLOYMENT_DEPENDENCY_MISSING'}
     }
    }}}
   }
   [PSCustomObject]@{Status='AUTHENTICATED_CONTENT_BOUND';Root=$rootPath;Manifest=$document;Leases=$streams;KeyHash=$ExpectedKeyHash;ActualPeSignatureChecked=$false}
  } catch {foreach($stream in $streams){$stream.Dispose()};throw}
+}
+
+function Assert-Wo26RuntimeEnvironment {
+ foreach($item in Get-ChildItem Env:){
+  if($item.Value -and $item.Name -match '^(DOTNET_STARTUP_HOOKS|DOTNET_ADDITIONAL_DEPS|DOTNET_SHARED_STORE|CORECLR_.*PROFIL.*|COR_.*PROFIL.*|COMPlus_.*)$'){throw 'DEPLOYMENT_RUNTIME_ENVIRONMENT_REVIEW'}
+ }
 }

@@ -83,7 +83,7 @@ public static class WindowsFileBoundary
         private DirectoryPin? _publicationParent;
         public string Identity { get; }
 
-        internal FileLease(string root, string relative, bool write, bool create, bool deletable, bool exclusive = false)
+        internal FileLease(string root, string relative, bool write, bool create, bool deletable, bool exclusive = false, int bufferSize = 128 * 1024)
         {
 #if !PCCARE_VAULT_BOUNDARY
             using var openingMeasurement=UpdatePerformanceProfile.Active?.Measure(create?"FileCreateAndBind":"FileOpenAndBind");
@@ -107,7 +107,7 @@ public static class WindowsFileBoundary
                     exclusive ? 0u : 1u, IntPtr.Zero, create ? 1u : 3u, OpenReparse | (write ? 0x80000000u : 0), IntPtr.Zero);
                 if (handle.IsInvalid) throw Error("FILE-OPEN");
                 Identity = Check(handle, target, directory: false);
-                Stream = new FileStream(handle, write ? FileAccess.ReadWrite : FileAccess.Read, 128 * 1024);
+                Stream = new FileStream(handle, write ? FileAccess.ReadWrite : FileAccess.Read, bufferSize);
                 handle = null;
                 _parent.Validate();
             }
@@ -260,6 +260,7 @@ public static class WindowsFileBoundary
 
     public static DirectoryPin PinDirectory(string root, bool create = false) => new(root, create);
     public static FileLease OpenRead(string root, string relative) => new(root, relative, false, false, false);
+    internal static FileLease OpenMetadata(string root, string relative) => new(root, relative, false, false, false, bufferSize: 4096);
     public static FileLease OpenWrite(string root, string relative, bool create = false, bool deletable = false) =>
         new(root, relative, true, create, deletable);
     public static FileLease OpenExclusive(string root, string relative, bool create) => new(root, relative, true, create, false, true);

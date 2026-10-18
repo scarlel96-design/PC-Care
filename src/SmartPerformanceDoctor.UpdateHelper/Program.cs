@@ -68,7 +68,7 @@ try
             }
             catch (ArgumentException) { /* caller already exited */ }
         }
-        result = coordinator.Recover(installRoot);
+        result = coordinator.ResumeVerifiedRecovery(installRoot);
     }
     else if (args[0] == "--apply" && args.Length == 4 && args[2] == "--wait-pid" &&
              int.TryParse(args[3], out var pid) && pid > 0)
@@ -78,7 +78,7 @@ try
             if (!Process.GetProcessById(pid).WaitForExit(TimeSpan.FromSeconds(90))) return 12;
         }
         catch (ArgumentException) { /* caller already exited */ }
-        var recovery = coordinator.Recover(installRoot);
+        var recovery = coordinator.ResumeVerifiedRecovery(installRoot);
         if (recovery.Stage == UpdateStage.RecoveryRequired) return 10;
         if (recovery.Code == "ROLLED-BACK")
         {

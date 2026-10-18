@@ -36,7 +36,10 @@ public sealed class WindowsFileBoundaryTests
         using (var locked = new FileStream(later, FileMode.Open, FileAccess.Read, FileShare.Read))
         {
             var result = f.Transaction.Apply(f.Package(), f.Install, "51.0.4");
-            Assert.Equal(UpdateStage.RecoveryRequired, result.Stage);
+            Assert.Equal(UpdateStage.Restored, result.Stage);
+            Assert.Equal("PreMutationRejected", result.RecoveryDisposition);
+            Assert.True(result.OriginalBytesVerified);
+            Assert.False(result.AnyMutationStarted);
             Assert.Equal("old", File.ReadAllText(Path.Combine(f.Install, "app.txt")));
             Assert.Equal("old-second", File.ReadAllText(later));
         }

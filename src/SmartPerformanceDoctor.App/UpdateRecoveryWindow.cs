@@ -32,6 +32,35 @@ public sealed class UpdateRecoveryWindow : Window
             finally { refresh.IsEnabled = true; }
         };
         panel.Children.Add(refresh);
+        var inspect = new Button { Content = "파일 보존 상태 재검사 (읽기 전용)" };
+        AutomationProperties.SetAutomationId(inspect, "UpdateRecoveryReconcile");
+        inspect.Click += async (_, _) =>
+        {
+            inspect.IsEnabled = false;
+            try { _status.Text = UpdateStateText.Recovery(await Task.Run(UpdateRecoveryCoordinator.Reconcile)); }
+            catch (Exception) { _status.Text = "파일 상태를 확인하지 못했습니다. 기록을 보존하며 추가 확인이 필요합니다."; }
+            finally { inspect.IsEnabled = true; }
+        };
+        panel.Children.Add(inspect);
+        var copy = new Button { Content = "개인정보를 제외한 진단 복사" };
+        AutomationProperties.SetAutomationId(copy, "UpdateRecoveryCopyDiagnostic");
+        copy.Click += async (_, _) =>
+        {
+            copy.IsEnabled = false;
+            try
+            {
+                var observation = await Task.Run(UpdateRecoveryCoordinator.Reconcile);
+                var data = new Windows.ApplicationModel.DataTransfer.DataPackage();
+                data.SetText(UpdateDiagnosticExport.Serialize(observation));
+                Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(data);
+                _status.Text = "경로와 파일 신원을 제외한 복구 상태를 복사했습니다.";
+            }
+            catch (Exception) { _status.Text = "진단 복사에 실패했습니다. 파일과 복구 기록은 보존됩니다."; }
+            finally { copy.IsEnabled = true; }
+        };
+        panel.Children.Add(copy);
+
+
         if (!readOnly)
         {
             var recover = new Button { Content = "관리자 복구 요청" };

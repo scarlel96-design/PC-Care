@@ -25,6 +25,9 @@ public static class UpdateRecoveryCoordinator
         return status;
     }
 
+    public static RecoveryReconciliation Reconcile() => new UpdateTransaction(BuildPublisherTrust.Current, WorkRoot, true)
+        .ReconcileRecovery(UpdatePaths.AppInstallDirectory);
+
     public static RecoveryLaunchResult LaunchElevatedRecovery()
     {
         var helper = Path.Combine(UpdatePaths.AppInstallDirectory, "engine",

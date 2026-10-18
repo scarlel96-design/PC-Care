@@ -71,14 +71,23 @@ public sealed class SignedDeploymentClosure : IDisposable
                 var bound = result._files[observations.IndexOf(file)];
                 if (bound.Stream.Length > 8 * 1024 * 1024) throw new InvalidDataException("DEPLOYMENT-JSON-LIMIT");
                 bound.Stream.Position = 0; using var config = JsonDocument.Parse(bound.Stream); RejectDuplicateProperties(config.RootElement);
+                if (file.Path.EndsWith(".runtimeconfig.json", StringComparison.OrdinalIgnoreCase) &&
+                    config.RootElement.TryGetProperty("runtimeOptions", out var options) &&
+                    options.TryGetProperty("additionalProbingPaths", out var probing) && probing.GetArrayLength() > 0)
+                    throw new InvalidDataException("DEPLOYMENT-EXTERNAL-PROBING");
                 if (file.Path.EndsWith(".deps.json", StringComparison.OrdinalIgnoreCase) && config.RootElement.TryGetProperty("targets", out var targets))
                     foreach (var target in targets.EnumerateObject()) foreach (var library in target.Value.EnumerateObject())
                         foreach (var kind in new[] { "runtime", "native", "runtimeTargets" })
                             if (library.Value.TryGetProperty(kind, out var assets)) foreach (var asset in assets.EnumerateObject())
                             {
                                 if (asset.Name.EndsWith("/_._", StringComparison.Ordinal)) continue;
-                                var name = Path.GetFileName(asset.Name);
-                                if (!observations.Any(x => Path.GetFileName(x.Path).Equals(name, StringComparison.OrdinalIgnoreCase)))
+                                var assetPath = asset.Name.Replace('\\', '/');
+                                if (!SignedPackage.SafeRelativePath("payload/" + assetPath)) throw new InvalidDataException("DEPLOYMENT-DEPENDENCY-PATH");
+                                // Managed runtime assets use the app-local leaf. Native and RID assets retain their declared path.
+                                var resolved = kind == "runtime" ? Path.GetFileName(assetPath) : assetPath;
+                                var parent = Path.GetDirectoryName(file.Path)?.Replace('\\', '/') ?? "";
+                                resolved = parent.Length == 0 ? resolved : parent + "/" + resolved;
+                                if (!observations.Any(x => x.Path.Equals(resolved, StringComparison.OrdinalIgnoreCase)))
                                     throw new InvalidDataException("DEPLOYMENT-DEPENDENCY-MISSING");
                             }
             }

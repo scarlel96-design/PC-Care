@@ -5,6 +5,8 @@ $ErrorActionPreference='Stop'
 if(!$Execute){@{Status='PREPARED';ActualDeployment=$false;Requirement='Disposable guest; observed checkpoint; protected source-bound inputs; independently pinned public keys for both complete input closures'}|ConvertTo-Json;return}
 # Authenticate all input bytes before starting the verifier or guest signer.
 . (Join-Path $PSScriptRoot 'wo25-input-closure.ps1')
+Assert-Wo26RuntimeEnvironment
+Assert-Wo26RuntimeEnvironment
 $binary=$null;$probe=$null
 try {
  $binary=Open-Wo25InputClosure $BinaryDirectory $BinaryManifest $BinarySignature $BinaryPublicKey $BinaryKeyHash
