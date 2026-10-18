@@ -1,0 +1,16 @@
+{
+  "Status": "PASS",
+  "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+  "Environment": "Windows .NET10 x64; isolated synthetic files; local host and noninteractive GitHub-hosted runner; no product guest",
+  "Command": "git push; gh run view; compare source with final document commit",
+  "Input": "Source branch and CI source",
+  "Output": {
+    "Branch": "codex/pccare-wo25-installation-trust-volume-hardening",
+    "CISource": "80b00305e96c55064f15734ae932a433a8178f4d",
+    "CIConclusion": "success",
+    "Url": "https://github.com/scarlel96-design/PC-Care/actions/runs/39055483722",
+    "FinalDocumentReceipt": "Outside-repository WO25_REMOTE_VERIFICATION.json and final response"
+  },
+  "ExitCode": 0,
+  "FinalCommitSelfReference": "A document cannot embed its own commit hash. Remote final HEAD and all changed blobs are verified after the document commit."
+}

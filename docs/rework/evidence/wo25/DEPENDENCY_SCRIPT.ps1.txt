@@ -1,0 +1,27 @@
+$ErrorActionPreference='Stop'
+$repo=Join-Path $PSScriptRoot 'work/PC-Care'
+. (Join-Path $repo 'scripts/wo25-input-closure.ps1')
+$records=foreach($missing in @($false,$true)){
+ $root=Join-Path $PSScriptRoot ('wo25-dependency-'+[guid]::NewGuid().ToString('N'));$inputRoot=Join-Path $root 'inputs'
+ New-Item -ItemType Directory -Force $inputRoot|Out-Null
+ [IO.File]::WriteAllText((Join-Path $inputRoot 'payload.dat'),'synthetic')
+ $asset=if($missing){'missing.dat'}else{'payload.dat'}
+ [IO.File]::WriteAllText((Join-Path $inputRoot 'app.deps.json'),('{"targets":{"net10.0":{"app/1.0":{"runtime":{"'+$asset+'":{}}}}}}'))
+ $files=@(Get-ChildItem $inputRoot -File|ForEach-Object {[ordered]@{Path=$_.Name;Length=$_.Length;Sha256=(Get-FileHash -LiteralPath $_.FullName).Hash;IsPe=$false}})
+ $raw=[Text.Encoding]::UTF8.GetBytes((@{Format='pccare-test-deployment-v1';Version='1.0.0';Publisher=('A'*40);Files=$files}|ConvertTo-Json -Depth 6 -Compress))
+ $key=[Security.Cryptography.ECDsa]::Create([Security.Cryptography.ECCurve+NamedCurves]::nistP256)
+ try{
+  $pub=$key.ExportSubjectPublicKeyInfo();$pin=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($pub))
+  [IO.File]::WriteAllBytes((Join-Path $root 'manifest.json'),$raw);[IO.File]::WriteAllBytes((Join-Path $root 'public.bin'),$pub)
+  [IO.File]::WriteAllBytes((Join-Path $root 'signature.bin'),$key.SignData($raw,[Security.Cryptography.HashAlgorithmName]::SHA256,[Security.Cryptography.DSASignatureFormat]::IeeeP1363FixedFieldConcatenation))
+ }finally{$key.Dispose()}
+ $binding=$null;$output=''
+ try{$binding=Open-Wo25InputClosure $inputRoot (Join-Path $root 'manifest.json') (Join-Path $root 'signature.bin') (Join-Path $root 'public.bin') $pin;$output=$binding.Status}
+ catch{$output=$_.Exception.Message}
+ finally{if($binding){foreach($stream in $binding.Leases){$stream.Dispose()}}}
+ $expected=if($missing){'DEPLOYMENT_DEPENDENCY_MISSING'}else{'AUTHENTICATED_CONTENT_BOUND'}
+ if($output -ne $expected){throw ('WO25_DEPENDENCY_EXPECTATION:'+ $output)}
+ @{Input=if($missing){'Valid signed inventory; deps names absent asset'}else{'Valid signed inventory; deps names included asset'};Output=$output;ExitCode=0;ActualGuestDeployment=$false}
+}
+@{Status='PASS';Source=(& git -C $repo rev-parse HEAD).Trim();Command='pwsh -NoProfile -File wo25-dependency-script-test.ps1';Environment='Local Windows synthetic files; ephemeral private key remains in memory only';Records=$records;ExitCode=0}|ConvertTo-Json -Depth 7|Set-Content (Join-Path $repo 'docs/rework/evidence/wo25/DEPENDENCY_SCRIPT_RESULT.json')
+'WO25_DEPENDENCY_SCRIPT=PASS'

@@ -1,0 +1,156 @@
+{
+  "Status": "PASS",
+  "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+  "Environment": "Windows .NET10 x64; isolated synthetic files; local host and noninteractive GitHub-hosted runner; no product guest",
+  "Command": "scripts/wo25-process-validation.ps1",
+  "Input": "Actual distinct pinned volume IDs; selected design C",
+  "Output": [
+    {
+      "Input": "cross-init",
+      "ExitCode": 0,
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+      "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"F42C40802C403FBA\",\"StagingVolume\":\"0EEC8318EC82F96B\",\"ActualDifferentVolumes\":true}",
+      "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+      "Command": "WO25Probe cross-init <SYNTHETIC_ROOT>",
+      "ParsedOutput": {
+        "Status": "PREPARED",
+        "InstallVolume": "F42C40802C403FBA",
+        "StagingVolume": "0EEC8318EC82F96B",
+        "ActualDifferentVolumes": true
+      }
+    },
+    {
+      "Input": "apply",
+      "ExitCode": 0,
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+      "Output": "{\"Code\":\"PUBLISH-SAME-VOLUME-REQUIRED\",\"Stage\":\"Prepared\",\"Diagnostic\":null,\"AnyMutationStarted\":false,\"ElapsedMs\":161.3353,\"Startup\":{\"State\":1,\"Verified\":false,\"RequiresReview\":false,\"Code\":\"LEGACY-UNATTESTED\"}}",
+      "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+      "Command": "WO25Probe apply <SYNTHETIC_ROOT>",
+      "ParsedOutput": {
+        "Code": "PUBLISH-SAME-VOLUME-REQUIRED",
+        "Stage": "Prepared",
+        "Diagnostic": null,
+        "AnyMutationStarted": false,
+        "ElapsedMs": 161.3353,
+        "Startup": {
+          "State": 1,
+          "Verified": false,
+          "RequiresReview": false,
+          "Code": "LEGACY-UNATTESTED"
+        }
+      }
+    },
+    {
+      "Input": "check",
+      "ExitCode": 0,
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":0,\"Recovery\":{\"State\":0,\"Code\":\"NO-PENDING\",\"TransactionId\":\"\"}}",
+      "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+      "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+      "ParsedOutput": {
+        "Status": "ORIGINAL_BYTES_VERIFIED",
+        "OriginalHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+        "ActualHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+        "NewFileAbsent": true,
+        "Transactions": 0,
+        "Recovery": {
+          "State": 0,
+          "Code": "NO-PENDING",
+          "TransactionId": ""
+        }
+      }
+    },
+    {
+      "Input": "cross-init",
+      "ExitCode": 0,
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+      "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"F42C40802C403FBA\",\"StagingVolume\":\"0EEC8318EC82F96B\",\"ActualDifferentVolumes\":true}",
+      "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+      "Command": "WO25Probe cross-init <SYNTHETIC_ROOT>",
+      "ParsedOutput": {
+        "Status": "PREPARED",
+        "InstallVolume": "F42C40802C403FBA",
+        "StagingVolume": "0EEC8318EC82F96B",
+        "ActualDifferentVolumes": true
+      }
+    },
+    {
+      "Input": "kill:BeforeVolumePreflight",
+      "ExitCode": -1,
+      "Environment": "Windows synthetic separate process; not reboot or physical power loss",
+      "Output": "CHECKPOINT:BeforeVolumePreflight\r\n",
+      "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+      "Command": "WO25Probe kill:BeforeVolumePreflight <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "ParsedOutput": "CHECKPOINT:BeforeVolumePreflight\r\n"
+    },
+    {
+      "Input": "check",
+      "ExitCode": 0,
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":0,\"Recovery\":{\"State\":0,\"Code\":\"NO-PENDING\",\"TransactionId\":\"\"}}",
+      "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+      "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+      "ParsedOutput": {
+        "Status": "ORIGINAL_BYTES_VERIFIED",
+        "OriginalHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+        "ActualHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+        "NewFileAbsent": true,
+        "Transactions": 0,
+        "Recovery": {
+          "State": 0,
+          "Code": "NO-PENDING",
+          "TransactionId": ""
+        }
+      }
+    },
+    {
+      "Input": "cross-init",
+      "ExitCode": 0,
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+      "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"F42C40802C403FBA\",\"StagingVolume\":\"0EEC8318EC82F96B\",\"ActualDifferentVolumes\":true}",
+      "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+      "Command": "WO25Probe cross-init <SYNTHETIC_ROOT>",
+      "ParsedOutput": {
+        "Status": "PREPARED",
+        "InstallVolume": "F42C40802C403FBA",
+        "StagingVolume": "0EEC8318EC82F96B",
+        "ActualDifferentVolumes": true
+      }
+    },
+    {
+      "Input": "kill:CrossVolumeRejected",
+      "ExitCode": -1,
+      "Environment": "Windows synthetic separate process; not reboot or physical power loss",
+      "Output": "CHECKPOINT:CrossVolumeRejected\r\n",
+      "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+      "Command": "WO25Probe kill:CrossVolumeRejected <SYNTHETIC_ROOT>",
+      "Termination": "Parent killed separate process",
+      "ParsedOutput": "CHECKPOINT:CrossVolumeRejected\r\n"
+    },
+    {
+      "Input": "check",
+      "ExitCode": 0,
+      "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+      "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":0,\"Recovery\":{\"State\":0,\"Code\":\"NO-PENDING\",\"TransactionId\":\"\"}}",
+      "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+      "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+      "ParsedOutput": {
+        "Status": "ORIGINAL_BYTES_VERIFIED",
+        "OriginalHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+        "ActualHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+        "NewFileAbsent": true,
+        "Transactions": 0,
+        "Recovery": {
+          "State": 0,
+          "Code": "NO-PENDING",
+          "TransactionId": ""
+        }
+      }
+    }
+  ],
+  "ExitCode": 0,
+  "ImplementedCopyPublication": false,
+  "ExistingGuardRetained": true,
+  "LocalStatus": "NOT TESTED; no hosted disposable second-volume trial"
+}

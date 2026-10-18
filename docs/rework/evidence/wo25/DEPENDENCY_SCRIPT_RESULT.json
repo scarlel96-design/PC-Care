@@ -1,0 +1,21 @@
+{
+  "Environment": "Local Windows synthetic files; ephemeral private key remains in memory only",
+  "Status": "PASS",
+  "Records": [
+    {
+      "ActualGuestDeployment": false,
+      "Output": "AUTHENTICATED_CONTENT_BOUND",
+      "ExitCode": 0,
+      "Input": "Valid signed inventory; deps names included asset"
+    },
+    {
+      "ActualGuestDeployment": false,
+      "Output": "DEPLOYMENT_DEPENDENCY_MISSING",
+      "ExitCode": 0,
+      "Input": "Valid signed inventory; deps names absent asset"
+    }
+  ],
+  "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+  "ExitCode": 0,
+  "Command": "pwsh -NoProfile -File wo25-dependency-script-test.ps1"
+}

@@ -1,0 +1,49 @@
+{
+  "Status": "PARTIAL",
+  "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+  "Environment": "Windows .NET10 x64; isolated synthetic files; local host and noninteractive GitHub-hosted runner; no product guest",
+  "Command": "scripts/wo23-ui-contract.ps1; WO25 focused status tests; dotnet build tools/SmartPerformanceDoctor.GuiProbe -c Release -p:Platform=x64 --no-restore -m:1",
+  "Input": "Actual source call sites, UI guards and Korean explanations",
+  "Output": {
+    "SourceContract": {
+      "Scope": "UI source and service connection contract only",
+      "Output": "WO23_UI_SOURCE_CONTRACT=PASS; ACTUAL_GUI=NOT_TESTED",
+      "ActualGUI": "NOT TESTED",
+      "ExitCode": 0,
+      "Status": "PASS",
+      "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+      "Input": "Existing update recovery UI and generation-aware progress callbacks",
+      "Command": "pwsh -NoProfile -File scripts/wo23-ui-contract.ps1"
+    },
+    "Tests": [
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO25InstallationHistoryIntegrationTests.ActualProductAndLauncherUseStartupPolicy",
+        "Outcome": "Passed"
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO25ReplacementErrorDiagnosticsTests.ProductStatusHasKoreanExplanation(code: \"INSTALLATION-HISTORY-INCOMPLETE\")",
+        "Outcome": "Passed"
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO25ReplacementErrorDiagnosticsTests.ProductStatusHasKoreanExplanation(code: \"SIGNED-HISTORY-VERIFIED\")",
+        "Outcome": "Passed"
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO25ReplacementErrorDiagnosticsTests.ProductStatusHasKoreanExplanation(code: \"INSTALLATION-HISTORY-SIGNATURE\")",
+        "Outcome": "Passed"
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO25ReplacementErrorDiagnosticsTests.ProductStatusHasKoreanExplanation(code: \"INSTALLATION-UNATTESTED-EXECUTABLE\")",
+        "Outcome": "Passed"
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO25ReplacementErrorDiagnosticsTests.ProductStatusHasKoreanExplanation(code: \"PUBLISH-SAME-VOLUME-REQUIRED\")",
+        "Outcome": "Passed"
+      }
+    ]
+  },
+  "ExitCode": 0,
+  "ActualGUI": "NOT TESTED",
+  "ScreenControlStarted": false,
+  "Accessibility": "NOT TESTED"
+}

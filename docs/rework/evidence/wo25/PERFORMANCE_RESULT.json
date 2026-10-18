@@ -1,0 +1,145 @@
+{
+  "Status": "PARTIAL",
+  "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+  "Environment": "Windows .NET10 x64; isolated synthetic files; local host and noninteractive GitHub-hosted runner; no product guest",
+  "Command": "WO20Probe prepare-many <FRESH_C_ROOT>; WO24Probe strict-apply <FRESH_C_ROOT>",
+  "Input": "258 synthetic files; strictAcl=true; one CI sample",
+  "Output": {
+    "Code": "COMMITTED",
+    "Stage": "Committed",
+    "Failure": "",
+    "RestoredOriginals": null,
+    "NewFilesAbsent": null,
+    "InstallVolume": "C:\\",
+    "StagingVolume": "C:\\",
+    "ElapsedMs": 43891.1198,
+    "CpuMs": 13765.625,
+    "AllocatedBytes": 843023728,
+    "PeakWorkingSetBytes": 212713472,
+    "StrictAcl": true,
+    "History": {
+      "Verified": true,
+      "State": "InstallationVerified",
+      "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+      "Transactions": 1,
+      "Files": 258
+    },
+    "Phases": [
+      {
+        "Name": "NativeIdentityCheck",
+        "Calls": 237638,
+        "ElapsedMs": 8684.7651,
+        "AllocatedBytes": 352347352
+      },
+      {
+        "Name": "FileCreateAndBind",
+        "Calls": 1299,
+        "ElapsedMs": 5273.8336,
+        "AllocatedBytes": 41935752
+      },
+      {
+        "Name": "FileIdentityValidation",
+        "Calls": 16324,
+        "ElapsedMs": 4085.2768,
+        "AllocatedBytes": 175811664
+      },
+      {
+        "Name": "AclRead",
+        "Calls": 2987,
+        "ElapsedMs": 1350.8367,
+        "AllocatedBytes": 61909080
+      },
+      {
+        "Name": "AclAndBoundary",
+        "Calls": 2735,
+        "ElapsedMs": 3211.9975,
+        "AllocatedBytes": 143927680
+      },
+      {
+        "Name": "FileOpenAndBind",
+        "Calls": 2726,
+        "ElapsedMs": 2051.7396,
+        "AllocatedBytes": 84025752
+      },
+      {
+        "Name": "PackageVerification",
+        "Calls": 1,
+        "ElapsedMs": 81.5991,
+        "AllocatedBytes": 1615224
+      },
+      {
+        "Name": "JournalSerialization",
+        "Calls": 779,
+        "ElapsedMs": 196.5806,
+        "AllocatedBytes": 102203328
+      },
+      {
+        "Name": "JournalFlush",
+        "Calls": 779,
+        "ElapsedMs": 9329.4682,
+        "AllocatedBytes": 24456
+      },
+      {
+        "Name": "JournalRename",
+        "Calls": 779,
+        "ElapsedMs": 678.8664,
+        "AllocatedBytes": 386160
+      },
+      {
+        "Name": "JournalTotal",
+        "Calls": 779,
+        "ElapsedMs": 25764.1238,
+        "AllocatedBytes": 413650792
+      },
+      {
+        "Name": "PayloadFlush",
+        "Calls": 647,
+        "ElapsedMs": 3231.3968,
+        "AllocatedBytes": 55152
+      },
+      {
+        "Name": "CopyAndFlush",
+        "Calls": 389,
+        "ElapsedMs": 6060.2448,
+        "AllocatedBytes": 52088384
+      },
+      {
+        "Name": "HashAndIdentity",
+        "Calls": 1940,
+        "ElapsedMs": 1130.556,
+        "AllocatedBytes": 182997864
+      },
+      {
+        "Name": "ExtractionAndVerification",
+        "Calls": 258,
+        "ElapsedMs": 5738.8149,
+        "AllocatedBytes": 107022456
+      },
+      {
+        "Name": "BackupAndIdentity",
+        "Calls": 258,
+        "ElapsedMs": 3619.2406,
+        "AllocatedBytes": 75583384
+      },
+      {
+        "Name": "ReplacementAndVerification",
+        "Calls": 258,
+        "ElapsedMs": 18561.3132,
+        "AllocatedBytes": 262639944
+      },
+      {
+        "Name": "PostApplyFileVerification",
+        "Calls": 258,
+        "ElapsedMs": 248.5947,
+        "AllocatedBytes": 11955824
+      }
+    ],
+    "Scope": "CI protected synthetic files and fresh fixed ProgramData staging; no PE deployment or UAC"
+  },
+  "ExitCode": 0,
+  "ComparableImprovement": "NOT ESTABLISHED",
+  "Baseline": "../wo24/PERFORMANCE_RESULT.json",
+  "CrossVolumeCopyPerformance": "NOT IMPLEMENTED; design C refusal selected",
+  "LowEndPhysical": "NOT TESTED",
+  "PhaseTiming": "Nested phase durations overlap; do not sum as exclusive wall time"
+}

@@ -1,0 +1,64 @@
+$ErrorActionPreference='Stop'
+$repo=Join-Path $PSScriptRoot 'work/PC-Care'
+$e=Join-Path $repo 'docs/rework/evidence/wo25'
+$shadow=Join-Path $PSScriptRoot ('wo25-rollback-'+[guid]::NewGuid().ToString('N'))
+$selected='InstallationHistoryQualification.cs'
+Copy-Item -LiteralPath (Join-Path $repo ('src/SmartPerformanceDoctor.UpdateEngine/'+$selected)) -Destination (Join-Path $e 'MODIFIED_FILE')
+& git -C $repo diff 71d8f3ba85804a61157c0acf553bb37ccf6c07ad HEAD -- ('src/SmartPerformanceDoctor.UpdateEngine/'+$selected) | Set-Content -LiteralPath (Join-Path $e 'DIFF_FILE') -Encoding utf8
+$program=@'
+using System.Text.Json;
+using SmartPerformanceDoctor.UpdateEngine;
+var root=Path.GetFullPath(args[0]);
+if(!Path.GetFileName(root).StartsWith("fixture-"))return 3;
+Directory.CreateDirectory(root);var install=Path.Combine(root,"install");var work=Path.Combine(root,"work");
+Directory.CreateDirectory(install);Directory.CreateDirectory(work);
+Console.WriteLine(JsonSerializer.Serialize(new UpdateTransaction(new PublisherTrustPolicy([]),work,false).InspectInstallationHistory(install)));
+return 0;
+'@
+$project='<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0-windows10.0.26100.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup></Project>'
+foreach($kind in @('baseline','modified','restored')){
+ $dir=Join-Path $shadow $kind;New-Item -ItemType Directory -Force (Join-Path $dir 'Engine')|Out-Null
+ Copy-Item -Path (Join-Path $repo 'src/SmartPerformanceDoctor.UpdateEngine/*.cs') -Destination (Join-Path $dir 'Engine')
+ Copy-Item -LiteralPath (Join-Path $e $(if($kind -eq 'baseline'){'ORIGINAL_FILE'}else{'MODIFIED_FILE'})) -Destination (Join-Path $dir ('Engine/'+$selected))
+ [IO.File]::WriteAllText((Join-Path $dir 'Proof.csproj'),$project)
+ [IO.File]::WriteAllText((Join-Path $dir 'Program.cs'),$program)
+}
+$rollback=@'
+#!/usr/bin/env bash
+set -euo pipefail
+base="$(cd -- "$(dirname -- "$0")" && pwd)"
+target="${1:?Pass the independent restored source copy}"
+case "$target" in
+  */wo25-rollback-*/restored/Engine/InstallationHistoryQualification.cs) ;;
+  *) echo ROLLBACK_TARGET_REJECTED >&2; exit 3 ;;
+esac
+[[ -f "$target" && ! -L "$target" ]]
+[[ "$(sha256sum "$base/ORIGINAL_FILE" | cut -d' ' -f1)" == "56dda72a5f3f0573e9a92f26787e34d41131f3c54b9463162c68431ea90e9a4d" ]]
+cp -- "$base/ORIGINAL_FILE" "$target"
+cmp -- "$base/ORIGINAL_FILE" "$target"
+echo SOURCE_COPY_RESTORED
+'@
+[IO.File]::WriteAllText((Join-Path $e 'ROLLBACK.sh'),$rollback.Replace("`r`n","`n")+"`n")
+$records=[Collections.Generic.List[object]]::new()
+$target=(Join-Path $shadow 'restored/Engine/InstallationHistoryQualification.cs').Replace('\','/')
+$bash='C:/Program Files/Git/bin/bash.exe'
+foreach($kind in @('baseline','modified','restored')){
+ if($kind -eq 'restored'){
+  $raw=& $bash (Join-Path $e 'ROLLBACK.sh').Replace('\','/') $target
+  $code=$LASTEXITCODE;if($code -ne 0){throw 'Rollback failed'}
+  $records.Add(@{Stage='RollbackScript';Command='"'+$bash+'" "'+(Join-Path $e 'ROLLBACK.sh')+'" "'+$target+'"';Input='Independent modified source copy';Output=($raw -join "`n");ExitCode=$code})
+ }
+ $dir=Join-Path $shadow $kind
+ $cmd='dotnet build "'+(Join-Path $dir 'Proof.csproj')+'" -c Release -v:minimal'
+ & dotnet build (Join-Path $dir 'Proof.csproj') -c Release -v:minimal *> (Join-Path $e ('source-copy-'+$kind+'-build.txt'))
+ $code=$LASTEXITCODE;if($code -ne 0){throw ('Build failed:'+ $kind)}
+ $dll=Join-Path $dir 'bin/Release/net10.0-windows10.0.26100.0/Proof.dll'
+ $fixture=Join-Path $dir 'fixture-empty'
+ $raw=& dotnet $dll $fixture;$code=$LASTEXITCODE
+ if($code -ne 0){throw ('Run failed:'+ $kind)}
+ $records.Add(@{Stage=$kind.ToUpperInvariant();BuildCommand=$cmd;BuildExitCode=0;Command='dotnet "'+$dll+'" "'+$fixture+'"';Input='Empty synthetic installation; no declaration; strictAcl=false';Output=($raw -join "`n");ExitCode=$code;SourceHash=(Get-FileHash -LiteralPath (Join-Path $dir ('Engine/'+$selected))).Hash})
+}
+if((Get-FileHash (Join-Path $e 'ORIGINAL_FILE')).Hash -ne (Get-FileHash $target).Hash){throw 'Restored bytes mismatch'}
+if((Get-FileHash (Join-Path $e 'MODIFIED_FILE')).Hash -ne (Get-FileHash (Join-Path $repo ('src/SmartPerformanceDoctor.UpdateEngine/'+$selected))).Hash){throw 'Modified bytes changed'}
+@{Status='PASS';Source=(& git -C $repo rev-parse HEAD).Trim();Environment='Windows; isolated source copies; no product installation or vault rollback';Records=@($records);RestoredByteEquality=$true;ModifiedPreserved=$true}|ConvertTo-Json -Depth 8|Set-Content (Join-Path $e 'SOURCE_COPY_RESULT.json')
+Get-Content (Join-Path $e 'SOURCE_COPY_RESULT.json')

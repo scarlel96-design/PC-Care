@@ -1,0 +1,63 @@
+WORK ITEM: WO25
+STATUS: PARTIAL / Phase 1 NO-GO
+BRANCH: codex/pccare-wo25-installation-trust-volume-hardening
+BASELINE SHA: 71d8f3ba85804a61157c0acf553bb37ccf6c07ad
+VERIFIED SOURCE SHA: 80b00305e96c55064f15734ae932a433a8178f4d
+CI: https://github.com/scarlel96-design/PC-Care/actions/runs/39055483722
+CHANGED FIELD: InspectInstallationHistory unverified-state mapping: RecoveryRequired -> InstallationUnattested
+SOURCE: src/SmartPerformanceDoctor.UpdateEngine/InstallationHistoryQualification.cs
+ENVIRONMENT: Independent Windows source copies; strictAcl=false; no installation or vault rollback
+PATH: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo25\MODIFIED_FILE
+PATH: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo25\DIFF_FILE
+PATH: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo25\VERIFICATION.txt
+PATH: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo25\ROLLBACK.sh
+ORIGINAL_FILE SHA256: 56dda72a5f3f0573e9a92f26787e34d41131f3c54b9463162c68431ea90e9a4d
+MODIFIED_FILE SHA256: 0745e4a9d24cbf3de477cd390a2e5ceb27f649fd57d2bfdf66309f93bd9b9343
+
+STAGE: BASELINE
+COMMAND: dotnet "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\wo25-rollback-db6be92727c649debc624faf59594be6\baseline\bin\Release\net10.0-windows10.0.26100.0\Proof.dll" "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\wo25-rollback-db6be92727c649debc624faf59594be6\baseline\fixture-empty"
+INPUT: Empty synthetic installation; no declaration; strictAcl=false
+OUTPUT (literal):
+{"Verified":false,"State":"RecoveryRequired","Code":"INSTALLATION-NOT-ATTESTED","Transactions":0,"Files":0}
+EXIT CODE: 0
+BUILD COMMAND: dotnet build "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\wo25-rollback-db6be92727c649debc624faf59594be6\baseline\Proof.csproj" -c Release -v:minimal
+BUILD EXIT: 0
+
+STAGE: MODIFIED
+COMMAND: dotnet "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\wo25-rollback-db6be92727c649debc624faf59594be6\modified\bin\Release\net10.0-windows10.0.26100.0\Proof.dll" "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\wo25-rollback-db6be92727c649debc624faf59594be6\modified\fixture-empty"
+INPUT: Empty synthetic installation; no declaration; strictAcl=false
+OUTPUT (literal):
+{"Verified":false,"State":"InstallationUnattested","Code":"INSTALLATION-NOT-ATTESTED","Transactions":0,"Files":0}
+EXIT CODE: 0
+BUILD COMMAND: dotnet build "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\wo25-rollback-db6be92727c649debc624faf59594be6\modified\Proof.csproj" -c Release -v:minimal
+BUILD EXIT: 0
+
+STAGE: RollbackScript
+COMMAND: "C:/Program Files/Git/bin/bash.exe" "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo25\ROLLBACK.sh" "C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/wo25-rollback-db6be92727c649debc624faf59594be6/restored/Engine/InstallationHistoryQualification.cs"
+INPUT: Independent modified source copy
+OUTPUT (literal):
+SOURCE_COPY_RESTORED
+EXIT CODE: 0
+
+STAGE: ROLLBACK
+COMMAND: dotnet "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\wo25-rollback-db6be92727c649debc624faf59594be6\restored\bin\Release\net10.0-windows10.0.26100.0\Proof.dll" "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\wo25-rollback-db6be92727c649debc624faf59594be6\restored\fixture-empty"
+INPUT: Empty synthetic installation; no declaration; strictAcl=false
+OUTPUT (literal):
+{"Verified":false,"State":"RecoveryRequired","Code":"INSTALLATION-NOT-ATTESTED","Transactions":0,"Files":0}
+EXIT CODE: 0
+BUILD COMMAND: dotnet build "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\wo25-rollback-db6be92727c649debc624faf59594be6\restored\Proof.csproj" -c Release -v:minimal
+BUILD EXIT: 0
+
+RESTORED STATUS: Original bytes equal. Baseline behavior restored.
+MODIFIED STATUS: Repository selected source and MODIFIED_FILE remain changed.
+SOURCE-COPY ROLLBACK: PASS. This does not restore a product installation or a vault.
+APP LOCAL/CI: 1408 PASS / 0 FAIL / 111 SKIP
+NEW WO25: 32 PASS; included in app total
+SECURITYLAB LOCAL/CI: 36 PASS / 0 FAIL / 0 SKIP; separate
+INSTALLATION RECOVERY: See process and encrypted vault evidence.
+ACTUAL GUI/UAC/INDEPENDENT SID/PRIVILEGED RESTORE/REBOOT: NOT TESTED
+CROSS-VOLUME POLICY: C; refusal before mutation; actual hosted evidence recorded separately.
+RESTORE/RELEASE: 0 warnings / 0 errors in final CI.
+DAYBREAK_DEFERRED: Separate witness/special-approval security qualification.
+REMOTE FINAL DOCUMENT HEAD: Verified after publication in the outside-repository final report.
+SAFETY: AV3 six flags false; production publisher unchanged; no main merge or official release.

@@ -1,0 +1,19 @@
+{
+  "Status": "PASS",
+  "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+  "Environment": "Windows .NET10 x64; isolated synthetic files; local host and noninteractive GitHub-hosted runner; no product guest",
+  "Command": "gh run view 39015974010 --json headSha,status,conclusion; git rev-parse baseline and tree",
+  "Input": "WO24 retained source and baseline CI",
+  "Output": {
+    "Head": "71d8f3ba85804a61157c0acf553bb37ccf6c07ad",
+    "Tree": "9f8ab2fe9786e362aa950b0afd2ce907debce8b9",
+    "CISource": "e996082e9656d26564d88d371f6ea992095d2b75",
+    "CI": "39015974010 SUCCESS",
+    "App": "1376 PASS / 0 FAIL / 111 SKIP",
+    "SecurityLab": "36 PASS",
+    "Acl": 9,
+    "Authenticode": 15
+  },
+  "ExitCode": 0,
+  "BaselineEvidence": "../wo24/CI_RUN_RESULT.json"
+}

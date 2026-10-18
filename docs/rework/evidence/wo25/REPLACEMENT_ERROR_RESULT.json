@@ -1,0 +1,356 @@
+{
+  "Status": "PARTIAL",
+  "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+  "Environment": "Windows .NET10 x64; isolated synthetic files; local host and noninteractive GitHub-hosted runner; no product guest",
+  "Command": "scripts/wo25-process-validation.ps1; WO25 diagnostics regression",
+  "Input": "Separate read/write/exclusive holder processes and read-only synthetic file",
+  "Output": {
+    "Failures": [
+      {
+        "Input": "apply",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+        "Output": "{\"Code\":\"ROLLBACK-FAIL\",\"Stage\":\"RecoveryRequired\",\"Diagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":32,\"Phase\":\"DestinationHandleAcquisition\",\"JournalStage\":4,\"TargetIdentity\":\"0EEC8318EC82F96B:0001000000001E760000000000000000\",\"InstallVolume\":\"0EEC8318EC82F96B\",\"StagingVolume\":\"0EEC8318EC82F96B\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read \\u002B ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"EXCEPTION-DETAIL-REDACTED\"},\"AnyMutationStarted\":false,\"ElapsedMs\":238.6629,\"Startup\":{\"State\":5,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ROLLBACK-FAIL\"}}",
+        "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+        "Command": "WO25Probe apply <SYNTHETIC_ROOT>",
+        "ParsedOutput": {
+          "Code": "ROLLBACK-FAIL",
+          "Stage": "RecoveryRequired",
+          "Diagnostic": {
+            "ExceptionType": "IOException",
+            "HResult": "0x80131620",
+            "NativeErrorCode": 32,
+            "Phase": "DestinationHandleAcquisition",
+            "JournalStage": 4,
+            "TargetIdentity": "0EEC8318EC82F96B:0001000000001E760000000000000000",
+            "InstallVolume": "0EEC8318EC82F96B",
+            "StagingVolume": "0EEC8318EC82F96B",
+            "StrictAclChecksRequired": false,
+            "AnyMutationStarted": false,
+            "AccessContract": "Boundary: Read + ReadControl; Write for writable handles; Delete only for publication",
+            "ShareMode": "FILE_SHARE_READ",
+            "DeletePending": "NOT OBSERVED",
+            "ErrorCode": "EXCEPTION-DETAIL-REDACTED"
+          },
+          "AnyMutationStarted": false,
+          "ElapsedMs": 238.6629,
+          "Startup": {
+            "State": 5,
+            "Verified": false,
+            "RequiresReview": true,
+            "Code": "ROLLBACK-FAIL"
+          }
+        }
+      },
+      {
+        "Input": "apply",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+        "Output": "{\"Code\":\"ROLLED-BACK\",\"Stage\":\"Restored\",\"Diagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":32,\"Phase\":\"BackupPreparation\",\"JournalStage\":2,\"TargetIdentity\":\"\",\"InstallVolume\":\"0EEC8318EC82F96B\",\"StagingVolume\":\"0EEC8318EC82F96B\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read \\u002B ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"EXCEPTION-DETAIL-REDACTED\"},\"AnyMutationStarted\":false,\"ElapsedMs\":210.8632,\"Startup\":{\"State\":6,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ATTESTATION-MISSING-WITH-HISTORY\"}}",
+        "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+        "Command": "WO25Probe apply <SYNTHETIC_ROOT>",
+        "ParsedOutput": {
+          "Code": "ROLLED-BACK",
+          "Stage": "Restored",
+          "Diagnostic": {
+            "ExceptionType": "IOException",
+            "HResult": "0x80131620",
+            "NativeErrorCode": 32,
+            "Phase": "BackupPreparation",
+            "JournalStage": 2,
+            "TargetIdentity": "",
+            "InstallVolume": "0EEC8318EC82F96B",
+            "StagingVolume": "0EEC8318EC82F96B",
+            "StrictAclChecksRequired": false,
+            "AnyMutationStarted": false,
+            "AccessContract": "Boundary: Read + ReadControl; Write for writable handles; Delete only for publication",
+            "ShareMode": "FILE_SHARE_READ",
+            "DeletePending": "NOT OBSERVED",
+            "ErrorCode": "EXCEPTION-DETAIL-REDACTED"
+          },
+          "AnyMutationStarted": false,
+          "ElapsedMs": 210.8632,
+          "Startup": {
+            "State": 6,
+            "Verified": false,
+            "RequiresReview": true,
+            "Code": "ATTESTATION-MISSING-WITH-HISTORY"
+          }
+        }
+      },
+      {
+        "Input": "apply",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+        "Output": "{\"Code\":\"ROLLED-BACK\",\"Stage\":\"Restored\",\"Diagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":32,\"Phase\":\"BackupPreparation\",\"JournalStage\":2,\"TargetIdentity\":\"\",\"InstallVolume\":\"0EEC8318EC82F96B\",\"StagingVolume\":\"0EEC8318EC82F96B\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read \\u002B ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"EXCEPTION-DETAIL-REDACTED\"},\"AnyMutationStarted\":false,\"ElapsedMs\":212.0996,\"Startup\":{\"State\":6,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ATTESTATION-MISSING-WITH-HISTORY\"}}",
+        "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+        "Command": "WO25Probe apply <SYNTHETIC_ROOT>",
+        "ParsedOutput": {
+          "Code": "ROLLED-BACK",
+          "Stage": "Restored",
+          "Diagnostic": {
+            "ExceptionType": "IOException",
+            "HResult": "0x80131620",
+            "NativeErrorCode": 32,
+            "Phase": "BackupPreparation",
+            "JournalStage": 2,
+            "TargetIdentity": "",
+            "InstallVolume": "0EEC8318EC82F96B",
+            "StagingVolume": "0EEC8318EC82F96B",
+            "StrictAclChecksRequired": false,
+            "AnyMutationStarted": false,
+            "AccessContract": "Boundary: Read + ReadControl; Write for writable handles; Delete only for publication",
+            "ShareMode": "FILE_SHARE_READ",
+            "DeletePending": "NOT OBSERVED",
+            "ErrorCode": "EXCEPTION-DETAIL-REDACTED"
+          },
+          "AnyMutationStarted": false,
+          "ElapsedMs": 212.0996,
+          "Startup": {
+            "State": 6,
+            "Verified": false,
+            "RequiresReview": true,
+            "Code": "ATTESTATION-MISSING-WITH-HISTORY"
+          }
+        }
+      },
+      {
+        "Input": "readonly",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+        "Output": "{\"Code\":\"ROLLBACK-FAIL\",\"Stage\":\"RecoveryRequired\",\"Diagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":5,\"Phase\":\"DestinationHandleAcquisition\",\"JournalStage\":4,\"TargetIdentity\":\"0EEC8318EC82F96B:0001000000001EB00000000000000000\",\"InstallVolume\":\"0EEC8318EC82F96B\",\"StagingVolume\":\"0EEC8318EC82F96B\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read \\u002B ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"EXCEPTION-DETAIL-REDACTED\"},\"AnyMutationStarted\":false,\"ElapsedMs\":229.207,\"Startup\":{\"State\":5,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ROLLBACK-FAIL\"}}",
+        "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+        "Command": "WO25Probe readonly <SYNTHETIC_ROOT>",
+        "ParsedOutput": {
+          "Code": "ROLLBACK-FAIL",
+          "Stage": "RecoveryRequired",
+          "Diagnostic": {
+            "ExceptionType": "IOException",
+            "HResult": "0x80131620",
+            "NativeErrorCode": 5,
+            "Phase": "DestinationHandleAcquisition",
+            "JournalStage": 4,
+            "TargetIdentity": "0EEC8318EC82F96B:0001000000001EB00000000000000000",
+            "InstallVolume": "0EEC8318EC82F96B",
+            "StagingVolume": "0EEC8318EC82F96B",
+            "StrictAclChecksRequired": false,
+            "AnyMutationStarted": false,
+            "AccessContract": "Boundary: Read + ReadControl; Write for writable handles; Delete only for publication",
+            "ShareMode": "FILE_SHARE_READ",
+            "DeletePending": "NOT OBSERVED",
+            "ErrorCode": "EXCEPTION-DETAIL-REDACTED"
+          },
+          "AnyMutationStarted": false,
+          "ElapsedMs": 229.207,
+          "Startup": {
+            "State": 5,
+            "Verified": false,
+            "RequiresReview": true,
+            "Code": "ROLLBACK-FAIL"
+          }
+        }
+      }
+    ],
+    "ByteChecks": [
+      {
+        "Input": "check",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":1,\"Recovery\":{\"State\":5,\"Code\":\"ROLLBACK-FAIL\",\"TransactionId\":\"bd316733c0884974a4b68096ace95e26\"}}",
+        "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "ParsedOutput": {
+          "Status": "ORIGINAL_BYTES_VERIFIED",
+          "OriginalHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "ActualHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "NewFileAbsent": true,
+          "Transactions": 1,
+          "Recovery": {
+            "State": 5,
+            "Code": "ROLLBACK-FAIL",
+            "TransactionId": "bd316733c0884974a4b68096ace95e26"
+          }
+        }
+      },
+      {
+        "Input": "check",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":1,\"Recovery\":{\"State\":3,\"Code\":\"RESTORED\",\"TransactionId\":\"\"}}",
+        "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "ParsedOutput": {
+          "Status": "ORIGINAL_BYTES_VERIFIED",
+          "OriginalHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "ActualHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "NewFileAbsent": true,
+          "Transactions": 1,
+          "Recovery": {
+            "State": 3,
+            "Code": "RESTORED",
+            "TransactionId": ""
+          }
+        }
+      },
+      {
+        "Input": "check",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":1,\"Recovery\":{\"State\":3,\"Code\":\"RESTORED\",\"TransactionId\":\"\"}}",
+        "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "ParsedOutput": {
+          "Status": "ORIGINAL_BYTES_VERIFIED",
+          "OriginalHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "ActualHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "NewFileAbsent": true,
+          "Transactions": 1,
+          "Recovery": {
+            "State": 3,
+            "Code": "RESTORED",
+            "TransactionId": ""
+          }
+        }
+      },
+      {
+        "Input": "check",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":1,\"Recovery\":{\"State\":5,\"Code\":\"ROLLBACK-FAIL\",\"TransactionId\":\"736b7fe615ed4a24ae8b8b2cf8fa107b\"}}",
+        "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "ParsedOutput": {
+          "Status": "ORIGINAL_BYTES_VERIFIED",
+          "OriginalHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "ActualHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "NewFileAbsent": true,
+          "Transactions": 1,
+          "Recovery": {
+            "State": 5,
+            "Code": "ROLLBACK-FAIL",
+            "TransactionId": "736b7fe615ed4a24ae8b8b2cf8fa107b"
+          }
+        }
+      },
+      {
+        "Input": "check",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":1,\"Recovery\":{\"State\":3,\"Code\":\"RESTORED\",\"TransactionId\":\"\"}}",
+        "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "ParsedOutput": {
+          "Status": "ORIGINAL_BYTES_VERIFIED",
+          "OriginalHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "ActualHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "NewFileAbsent": true,
+          "Transactions": 1,
+          "Recovery": {
+            "State": 3,
+            "Code": "RESTORED",
+            "TransactionId": ""
+          }
+        }
+      },
+      {
+        "Input": "check",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":1,\"Recovery\":{\"State\":3,\"Code\":\"RESTORED\",\"TransactionId\":\"\"}}",
+        "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "ParsedOutput": {
+          "Status": "ORIGINAL_BYTES_VERIFIED",
+          "OriginalHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "ActualHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "NewFileAbsent": true,
+          "Transactions": 1,
+          "Recovery": {
+            "State": 3,
+            "Code": "RESTORED",
+            "TransactionId": ""
+          }
+        }
+      },
+      {
+        "Input": "check",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":0,\"Recovery\":{\"State\":0,\"Code\":\"NO-PENDING\",\"TransactionId\":\"\"}}",
+        "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "ParsedOutput": {
+          "Status": "ORIGINAL_BYTES_VERIFIED",
+          "OriginalHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "ActualHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "NewFileAbsent": true,
+          "Transactions": 0,
+          "Recovery": {
+            "State": 0,
+            "Code": "NO-PENDING",
+            "TransactionId": ""
+          }
+        }
+      },
+      {
+        "Input": "check",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":0,\"Recovery\":{\"State\":0,\"Code\":\"NO-PENDING\",\"TransactionId\":\"\"}}",
+        "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "ParsedOutput": {
+          "Status": "ORIGINAL_BYTES_VERIFIED",
+          "OriginalHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "ActualHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "NewFileAbsent": true,
+          "Transactions": 0,
+          "Recovery": {
+            "State": 0,
+            "Code": "NO-PENDING",
+            "TransactionId": ""
+          }
+        }
+      },
+      {
+        "Input": "check",
+        "ExitCode": 0,
+        "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral fixture key",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":0,\"Recovery\":{\"State\":0,\"Code\":\"NO-PENDING\",\"TransactionId\":\"\"}}",
+        "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "ParsedOutput": {
+          "Status": "ORIGINAL_BYTES_VERIFIED",
+          "OriginalHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "ActualHash": "52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698",
+          "NewFileAbsent": true,
+          "Transactions": 0,
+          "Recovery": {
+            "State": 0,
+            "Code": "NO-PENDING",
+            "TransactionId": ""
+          }
+        }
+      }
+    ],
+    "MachineCodeTests": [
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO25ReplacementErrorDiagnosticsTests.DiagnosticsPreserveMachineCodesWithoutRecordingRawPaths(message: \"PRIMARY-ERROR\", expected: \"PRIMARY-ERROR\")",
+        "Outcome": "Passed"
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO25ReplacementErrorDiagnosticsTests.DiagnosticsPreserveMachineCodesWithoutRecordingRawPaths(message: \"Access denied: C:/synthetic/private/file.bin\", expected: \"EXCEPTION-DETAIL-REDACTED\")",
+        "Outcome": "Passed"
+      }
+    ]
+  },
+  "ExitCode": 0,
+  "OriginalWO23Cause": "UNKNOWN",
+  "DeletePending": "NOT OBSERVED",
+  "Unexecuted": [
+    "new disk-full injection",
+    "new independent ACL-denial injection",
+    "real antivirus attribution"
+  ],
+  "Caution": "Held read handle can prevent rollback; review status remains visible. Byte preservation is not successful restoration."
+}

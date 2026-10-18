@@ -1,0 +1,31 @@
+{
+  "Status": "PASS",
+  "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+  "Environment": "Windows .NET10 x64; isolated synthetic files; local host and noninteractive GitHub-hosted runner; no product guest",
+  "Command": "WO25 focused TRX",
+  "Input": "Fresh, legacy, archived schema 1, restored schema 1, changed restored content",
+  "Output": [
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO25InstallationHistoryIntegrationTests.FreshAndLegacyRemainUnverifiedCompatible(existing: False)",
+      "Outcome": "Passed"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO25InstallationHistoryIntegrationTests.FreshAndLegacyRemainUnverifiedCompatible(existing: True)",
+      "Outcome": "Passed"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO25InstallationHistoryIntegrationTests.ArchivedLegacyTransitionRemainsUnverifiedAndCanAcceptSignedUpdate(terminal: Restored)",
+      "Outcome": "Passed"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO25InstallationHistoryIntegrationTests.ArchivedLegacyRestorationWithChangedBytesRequiresReview",
+      "Outcome": "Passed"
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO25InstallationHistoryIntegrationTests.ArchivedLegacyTransitionRemainsUnverifiedAndCanAcceptSignedUpdate(terminal: Committed)",
+      "Outcome": "Passed"
+    }
+  ],
+  "ExitCode": 0,
+  "Policy": "Unverified compatibility does not confer signed trust or restore authority"
+}

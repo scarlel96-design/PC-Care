@@ -1,0 +1,23 @@
+{
+  "Status": "PASS",
+  "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+  "Environment": "Windows .NET10 x64; isolated synthetic files; local host and noninteractive GitHub-hosted runner; no product guest",
+  "Command": "dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests -c Release -p:Platform=x64 --no-restore -m:1 --logger trx;LogFileName=wo25-securitylab-final.trx -v:minimal",
+  "Input": "Separate SecurityLab suite",
+  "Output": {
+    "Local": {
+      "Pass": 36,
+      "Fail": 0,
+      "Skip": 0,
+      "Total": 36
+    },
+    "CI": {
+      "Pass": 36,
+      "Fail": 0,
+      "Skip": 0,
+      "Total": 36
+    }
+  },
+  "ExitCode": 0,
+  "CI": "https://github.com/scarlel96-design/PC-Care/actions/runs/39055483722"
+}

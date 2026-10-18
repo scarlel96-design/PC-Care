@@ -87,3 +87,7 @@ docs/rework/evidence/wo24/ORIGINAL_FILE -text
 docs/rework/evidence/wo24/MODIFIED_FILE -text
 docs/rework/evidence/wo24/DIFF_FILE -text
 docs/rework/evidence/wo24/ROLLBACK.sh text eol=lf
+
+# Preserve exact WO25 evidence bytes.
+docs/rework/evidence/wo25/** -text -whitespace
+docs/rework/evidence/wo25/ROLLBACK.sh text eol=lf

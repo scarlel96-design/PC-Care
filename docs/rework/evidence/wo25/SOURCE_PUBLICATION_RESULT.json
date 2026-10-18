@@ -1,0 +1,101 @@
+{
+  "Status": "PASS",
+  "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+  "RemoteHead": "80b00305e96c55064f15734ae932a433a8178f4d",
+  "Tree": "0ee2840c598dcb03e3174b48caa22b14efcb5e82",
+  "Command": "git ls-remote; gh api git tree; git ls-tree",
+  "Input": "Committed WO25 implementation files",
+  "Output": [
+    {
+      "Path": ".github/workflows/wo25-windows-validation.yml",
+      "Blob": "e9d8450ecfd1cfbc8667b2c5eec648f6ac760664",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "scripts/wo24-signed-deployment.ps1",
+      "Blob": "b68393f83655b8d4099d66e33d7b13cd5b9d5285",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "scripts/wo25-input-closure.ps1",
+      "Blob": "05115cc95fe76b1ba4cf53d5a8745a4b95cc4d9f",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "scripts/wo25-process-validation.ps1",
+      "Blob": "9acbc03da50ce53633a4a759da1534387ec2c467",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "scripts/wo25-signed-deployment.ps1",
+      "Blob": "834af09672b3ed1eeee7daeac5abca54b43ffce5",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.App/Services/Update/UpdateRecoveryCoordinator.cs",
+      "Blob": "f0889ed1779dede83df05356b791886a78905df1",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.App/UpdateRecoveryWindow.cs",
+      "Blob": "888a85476bff781eb24261330551b762cb0406a8",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/InstallationHistoryQualification.cs",
+      "Blob": "3aad9aeaeaf62f1e1b8ff24ace91beae5ceaf370",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/InstallationTrustPolicy.cs",
+      "Blob": "71436857b219ca06feabafc5142b1d10a100c3ce",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/SignedDeploymentClosure.cs",
+      "Blob": "308a72c2c8157e8a9e491db8cc63f259e1d303f1",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/StartupInstallationTrust.cs",
+      "Blob": "d009662ebb6e2cd672e45a7d3ee6ccef3e3701d9",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/UpdateFailureDiagnostic.cs",
+      "Blob": "b18bc8846a6f1dd6376e4bcbdbe5af79cbd1bda2",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/UpdateStateText.cs",
+      "Blob": "8f46ca46fbe7f6626e2f27322f0cf6e02039e6fb",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs",
+      "Blob": "2d06235d409e6a632b68b6c6d95455f6ae63eb3f",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "tests/SmartPerformanceDoctor.Tests/WO25QualificationTests.cs",
+      "Blob": "7c6ab168d9a4ce33e26391d7238da5fa291ef149",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "tools/SmartPerformanceDoctor.InstallationLauncher/Program.cs",
+      "Blob": "ff76d7d6eec91059a9a58d89c117942498598ab9",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "tools/SmartPerformanceDoctor.WO25Probe/Program.cs",
+      "Blob": "836672456c6a0eb5f1900e46457ae0fdb916e4aa",
+      "RemoteMatched": true
+    },
+    {
+      "Path": "tools/SmartPerformanceDoctor.WO25Probe/SmartPerformanceDoctor.WO25Probe.csproj",
+      "Blob": "16320487c03af666bbd1db89650a7475d2850ad0",
+      "RemoteMatched": true
+    }
+  ],
+  "ExitCode": 0
+}
