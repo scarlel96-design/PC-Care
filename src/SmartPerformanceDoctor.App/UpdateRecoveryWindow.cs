@@ -122,7 +122,8 @@ public sealed class UpdateRecoveryWindow : Window
         Show(status);
     }
 
-    private void Show(UpdateRecoveryStatus status) => _status.Text = (status.Code.StartsWith("INSTALLATION-",StringComparison.Ordinal) || status.Code == "SIGNED-HISTORY-VERIFIED")
+    private void Show(UpdateRecoveryStatus status) => _status.Text = status.Code == "ORIGINAL-STATE-VERIFIED"
+        ? "원본 상태를 확인해 미완료 거래를 정리했습니다. 실제 파일 복원은 필요하지 않았습니다." : (status.Code.StartsWith("INSTALLATION-",StringComparison.Ordinal) || status.Code == "SIGNED-HISTORY-VERIFIED")
         ? UpdateStateText.Installation(status.Code) : status.Code == "SIGNED-INSTALLATION-VERIFIED"
         ? "서명된 설치 목록과 실제 파일 해시를 확인했습니다." : status.State switch
     {

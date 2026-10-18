@@ -484,6 +484,7 @@ public sealed partial class UpdateTransaction
             var diagnostic = UpdateFailureDiagnostic.Capture(ex, failurePhase, journal.Stage, boundTarget,
                 installPin.Identity.Split(':')[0], workPin.Identity.Split(':')[0], _strictAcl, mutationStarted);
             journal.Failure = $"{diagnostic.ErrorCode}; {diagnostic.ExceptionType}; phase={diagnostic.Phase}; HRESULT={diagnostic.HResult}; Win32={diagnostic.NativeErrorCode}";
+            if (!mutationStarted) journal.Failure = "PRE-MUTATION-REJECTED; " + journal.Failure;
             journal.Stage = UpdateStage.RollbackPending;
             try { faultInjector?.Invoke(UpdateFaultPoint.BeforeFailureJournal); WriteJournal(txDir, journal); }
             catch (Exception journalError)
@@ -610,6 +611,7 @@ public sealed partial class UpdateTransaction
                 }
             }
             var completed = false;
+            var originalsOnly = true;
             var declaredCurrent=VerifiedCurrentDeclarationPaths(installRoot);
             foreach (var dir in Directory.EnumerateDirectories(_workRoot, "tx-*")
                          .OrderBy(x => x, StringComparer.Ordinal))
@@ -638,6 +640,7 @@ public sealed partial class UpdateTransaction
                     catch(Exception ex) when(ex is IOException or InvalidDataException or UnauthorizedAccessException)
                     {return new(UpdateRecoveryState.RecoveryRequired,"RESTORATION-CONTENT-REVIEW",journal.TransactionId);}
                     completed = true;
+                    originalsOnly &= journal.Failure.StartsWith("PRE-MUTATION-REJECTED;", StringComparison.Ordinal);
                 }
                 else if (journal.Stage == UpdateStage.RecoveryRequired &&
                          (journal.Failure?.Contains("rollback:", StringComparison.OrdinalIgnoreCase) ?? false))
@@ -649,7 +652,7 @@ public sealed partial class UpdateTransaction
                 InspectInstallation(installRoot).Code=="INSTALLATION-RECOVERY-REQUIRED")
                 return new(UpdateRecoveryState.RecoveryRequired,"INSTALLATION-RECOVERY-REQUIRED","");
             return completed
-                ? new(UpdateRecoveryState.RecoveryCompleted, "RESTORED", "")
+                ? new(UpdateRecoveryState.RecoveryCompleted, originalsOnly ? "ORIGINAL-STATE-VERIFIED" : "RESTORED", "")
                 : new(UpdateRecoveryState.NoPendingTransaction, "NO-PENDING", "");
         }
         catch (UnauthorizedAccessException)

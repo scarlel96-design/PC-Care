@@ -28,6 +28,7 @@ public sealed class WO26RecoveryStateClassificationTests
             var result=f.Engine.Apply(f.Package("51.0.4","51.0.5","target.bin"),f.Install,"51.0.4");
             Assert.Equal(5,result.Diagnostic!.NativeErrorCode);Assert.Equal("PreMutationRejected",result.RecoveryDisposition);
             Assert.True(result.OriginalBytesVerified); Assert.False(result.AnyMutationStarted);
+            Assert.Equal("ORIGINAL-STATE-VERIFIED",f.Engine.InspectRecovery(f.Install).Code);
             Assert.Equal("original",File.ReadAllText(path));
         }
         finally {File.SetAttributes(path,FileAttributes.Normal);}
