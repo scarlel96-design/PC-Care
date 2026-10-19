@@ -82,6 +82,7 @@ jobs:
           dotnet build tools/SmartPerformanceDoctor.WO27Probe -c Release -p:Platform=x64 -m:1 -v:minimal
           if ($LASTEXITCODE -ne 0) { throw 'WO27 probe build failed' }
           ./scripts/wo27-midcopy-validation.ps1
+          ./scripts/wo27-default-copy-validation.ps1
           ./scripts/wo27-history-comparison.ps1
           New-Item -ItemType Directory -Force artifacts/wo27-cross-volume | Out-Null
           $probe='./tools/SmartPerformanceDoctor.WO27Probe/bin/x64/Release/net10.0-windows10.0.26100.0/SmartPerformanceDoctor.WO27Probe.exe'

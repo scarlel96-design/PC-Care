@@ -147,6 +147,35 @@ if(verb=="check")
  var absent=!File.Exists(Path.Combine(target,"new.bin"));var recovery=engine.InspectRecovery(target);
  Print(new{Status=actual==expected&&absent?"ORIGINAL_BYTES_VERIFIED":"REVIEW_REQUIRED",OriginalHash=expected,ActualHash=actual,NewFileAbsent=absent,Transactions=Directory.GetDirectories(Path.Combine(root,"work"),"tx-*").Length,Recovery=recovery});return actual==expected&&absent?0:10;
 }
+if(verb=="default-copy")
+{
+ var result=engine.ResumeVerifiedRecovery(target,p=>
+ {
+  if(p!=UpdateFaultPoint.AfterRollbackStarted)return;
+  File.WriteAllText(Path.Combine(root,"ready.signal"),"DEFAULT_COPY_READY");
+  var timer=Stopwatch.StartNew();
+  while(!File.Exists(Path.Combine(root,"go.signal")))
+  {
+   if(timer.Elapsed.TotalSeconds>60)throw new IOException("SYNTHETIC-START-TIMEOUT");
+   Thread.Sleep(1);
+  }
+ });
+ Print(result);return result.Stage==UpdateStage.Restored?0:10;
+}
+if(verb=="layout")
+{
+ using var lease=WindowsFileBoundary.OpenRead(target,"app.txt");
+ var buffer=new byte[65536];long leading=0;var tail=false;var valid=true;int count;
+ while((count=lease.Stream.Read(buffer))!=0)
+ {
+  for(var i=0;i<count;i++)
+  {
+   if(!tail&&buffer[i]==0x41)leading++;
+   else {tail=true;if(buffer[i]!=0x72)valid=false;}
+  }
+ }
+ Print(new{LeadingOriginalBytes=leading,TotalBytes=lease.Stream.Length,TailMatchesUpdatedFixture=valid,NoPlaintextExported=true});return valid?0:10;
+}
 if(verb=="inspect")
 {
  using var file=WindowsFileBoundary.OpenRead(target,"app.txt");
