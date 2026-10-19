@@ -41,6 +41,14 @@ public sealed partial class UpdateTransaction
             {
                 using var transactionTimer = PerformanceProfile?.Measure("HistoryTransactionRead");
                 if (++scanned > 4096) throw new InvalidDataException("HISTORY-LIMIT");
+                // Keep both journal candidates stable while the existing reader selects a valid record.
+                foreach (var name in new[] { "journal.json", "journal.previous.json" })
+                {
+                    if (!File.Exists(Path.Combine(directory, name))) continue;
+                    var journalFile = WindowsFileBoundary.OpenMetadata(directory, name);
+                    held.Add(journalFile);
+                    VerifyProtectedFile(journalFile, directory);
+                }
                 if (!TryReadTrustedJournal(directory, installRoot, out var journal, out _) || journal is null)
                     throw new InvalidDataException("HISTORY-JOURNAL");
                 if (journal.Stage == UpdateStage.Restored || journal.SchemaVersion == 1) continue;

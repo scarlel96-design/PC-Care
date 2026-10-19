@@ -17,7 +17,10 @@ function KillAt([string]$Verb,[string]$Root){
  $child=[Diagnostics.Process]::Start($start);$watch=[Diagnostics.Stopwatch]::StartNew()
  try{
   while(!(Test-Path -LiteralPath $signal) -and !$child.HasExited -and $watch.Elapsed.TotalSeconds -lt 60){Start-Sleep -Milliseconds 20}
-  if(!(Test-Path -LiteralPath $signal)){throw "CHECKPOINT_NOT_REACHED:$Verb/$($child.StandardError.ReadToEnd())"}
+  if(!(Test-Path -LiteralPath $signal)){
+   if(!$child.HasExited){$child.Kill($true);$child.WaitForExit()}
+   throw "CHECKPOINT_NOT_REACHED:$Verb/$($child.StandardError.ReadToEnd())"
+  }
   $child.Kill($true);$child.WaitForExit()
   @{Command="WO27Probe $Verb <SYNTHETIC_ROOT>; parent Process.Kill(true)";ExitCode=$child.ExitCode;Output=$child.StandardOutput.ReadToEnd();KilledByParent=$true}
  }finally{if(!$child.HasExited){$child.Kill($true);$child.WaitForExit()};$child.Dispose()}

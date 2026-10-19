@@ -51,7 +51,7 @@ public sealed class WO27HistoryHandleBudgetTests
         var result=e.InspectInstallationHistory(f.Install);
         Assert.True(result.Verified);Assert.Equal(count,result.Transactions);
         Assert.InRange(result.RetainedDirectoryHandles,1,count+20);Assert.True(result.ReusedDirectoryHandles>count);
-        Assert.InRange(result.RetainedFileHandles,count,count+4);
+        Assert.InRange(result.RetainedFileHandles,2*count,3*count+4);
         var declaration=Directory.GetFiles(f.Work,"committed-attestation.json",SearchOption.AllDirectories).First();
         using var exclusive=new FileStream(declaration,FileMode.Open,FileAccess.ReadWrite,FileShare.None);
     }
