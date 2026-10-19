@@ -1,0 +1,573 @@
+{
+  "Status": "PASS",
+  "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+  "Environment": "Windows .NET10 x64; local synthetic files and GitHub-hosted noninteractive runner",
+  "Command": "scripts/wo26-process-validation.ps1",
+  "Input": "Local separate-process matrix",
+  "Output": {
+    "PrivacyProjection": "Native identity and volume fields use document-local aliases. Actual exit codes and outcomes remain unchanged.",
+    "RawRecordSha256": "047f24c64970e80cf7b70b31a21da27925ae1e6a139adce577767611ee5b481c",
+    "DigestEncoding": "SHA256 of UTF-8 json.dumps(input,sort_keys=True); canonical input record, not raw file bytes",
+    "Records": [
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe init <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"ActualDifferentVolumes\":false}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "init",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe apply <SYNTHETIC_ROOT>",
+        "Output": "{\"Code\":\"ROLLED-BACK\",\"Stage\":\"Restored\",\"Diagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":32,\"Phase\":\"DestinationHandleAcquisition\",\"JournalStage\":4,\"TargetIdentity\":\"synthetic-id-2\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"EXCEPTION-DETAIL-REDACTED\"},\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"PreMutationRejected\",\"OriginalBytesVerified\":true,\"AnyMutationStarted\":false,\"ElapsedMs\":325.1387,\"Startup\":{\"State\":6,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ATTESTATION-MISSING-WITH-HISTORY\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "apply",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows separate process",
+        "Termination": "Parent killed separate process; not reboot",
+        "Command": "WO25Probe hold:read <SYNTHETIC_ROOT>",
+        "Output": "READY\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "hold:read",
+        "ExitCode": -1
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":1,\"Recovery\":{\"State\":3,\"Code\":\"ORIGINAL-STATE-VERIFIED\",\"TransactionId\":\"\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "check",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe init <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"ActualDifferentVolumes\":false}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "init",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe apply <SYNTHETIC_ROOT>",
+        "Output": "{\"Code\":\"ROLLED-BACK\",\"Stage\":\"Restored\",\"Diagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":32,\"Phase\":\"BackupPreparation\",\"JournalStage\":2,\"TargetIdentity\":\"\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"EXCEPTION-DETAIL-REDACTED\"},\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"PreMutationRejected\",\"OriginalBytesVerified\":false,\"AnyMutationStarted\":false,\"ElapsedMs\":305.4226,\"Startup\":{\"State\":6,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ATTESTATION-MISSING-WITH-HISTORY\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "apply",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows separate process",
+        "Termination": "Parent killed separate process; not reboot",
+        "Command": "WO25Probe hold:write <SYNTHETIC_ROOT>",
+        "Output": "READY\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "hold:write",
+        "ExitCode": -1
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":1,\"Recovery\":{\"State\":3,\"Code\":\"ORIGINAL-STATE-VERIFIED\",\"TransactionId\":\"\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "check",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe init <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"ActualDifferentVolumes\":false}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "init",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe apply <SYNTHETIC_ROOT>",
+        "Output": "{\"Code\":\"ROLLED-BACK\",\"Stage\":\"Restored\",\"Diagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":32,\"Phase\":\"BackupPreparation\",\"JournalStage\":2,\"TargetIdentity\":\"\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"EXCEPTION-DETAIL-REDACTED\"},\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"PreMutationRejected\",\"OriginalBytesVerified\":false,\"AnyMutationStarted\":false,\"ElapsedMs\":273.7366,\"Startup\":{\"State\":6,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ATTESTATION-MISSING-WITH-HISTORY\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "apply",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows separate process",
+        "Termination": "Parent killed separate process; not reboot",
+        "Command": "WO25Probe hold:exclusive <SYNTHETIC_ROOT>",
+        "Output": "READY\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "hold:exclusive",
+        "ExitCode": -1
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":1,\"Recovery\":{\"State\":3,\"Code\":\"ORIGINAL-STATE-VERIFIED\",\"TransactionId\":\"\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "check",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe init <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"ActualDifferentVolumes\":false}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "init",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe readonly <SYNTHETIC_ROOT>",
+        "Output": "{\"Code\":\"ROLLED-BACK\",\"Stage\":\"Restored\",\"Diagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":5,\"Phase\":\"DestinationHandleAcquisition\",\"JournalStage\":4,\"TargetIdentity\":\"synthetic-id-3\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"EXCEPTION-DETAIL-REDACTED\"},\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"PreMutationRejected\",\"OriginalBytesVerified\":true,\"AnyMutationStarted\":false,\"ElapsedMs\":336.1263,\"Startup\":{\"State\":6,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ATTESTATION-MISSING-WITH-HISTORY\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "readonly",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":1,\"Recovery\":{\"State\":3,\"Code\":\"ORIGINAL-STATE-VERIFIED\",\"TransactionId\":\"\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "check",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe init <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"ActualDifferentVolumes\":false}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "init",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe defer <SYNTHETIC_ROOT>",
+        "Output": "{\"Code\":\"ROLLBACK-FAIL\",\"Stage\":\"RecoveryRequired\",\"Diagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":null,\"Phase\":\"BackupPreparation\",\"JournalStage\":4,\"TargetIdentity\":\"\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"SYNTHETIC-RECOVERY-PAUSE\"},\"RecoveryDiagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":null,\"Phase\":\"Rollback\",\"JournalStage\":10,\"TargetIdentity\":\"\",\"InstallVolume\":\"\",\"StagingVolume\":\"\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"SYNTHETIC-RECOVERY-PAUSE\"},\"RecoveryDisposition\":\"RecoveryDeferred\",\"OriginalBytesVerified\":false,\"AnyMutationStarted\":false,\"ElapsedMs\":313.4087,\"Startup\":{\"State\":5,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ROLLBACK-FAIL\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "defer",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe reconcile <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":\"RecoveryDeferred\",\"Code\":\"RECOVERY-SHARING-VIOLATION\",\"TransactionId\":\"3f998879485b4040aa2c145317a539ee\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "reconcile",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows separate process",
+        "Termination": "Parent killed separate process; not reboot",
+        "Command": "WO25Probe hold:exclusive <SYNTHETIC_ROOT>",
+        "Output": "READY\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "hold:exclusive",
+        "ExitCode": -1
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe reconcile <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":\"RecoveryRequired\",\"Code\":\"ORIGINAL-BYTES-PRESERVED-PENDING\",\"TransactionId\":\"3f998879485b4040aa2c145317a539ee\",\"OriginalBytesVerified\":true,\"CanRequestRecovery\":true,\"Files\":[{\"Path\":\"payload/app.txt\",\"State\":\"OriginalVerified\",\"BackupVerified\":true},{\"Path\":\"payload/new.bin\",\"State\":\"NewFileAbsent\",\"BackupVerified\":true}]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "reconcile",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe resume <SYNTHETIC_ROOT>",
+        "Output": "{\"Stage\":9,\"Code\":\"ROLLED-BACK\",\"TransactionId\":\"3f998879485b4040aa2c145317a539ee\",\"FilesApplied\":0,\"Failure\":\"PRE-MUTATION-REJECTED; SYNTHETIC-RECOVERY-PAUSE; IOException; phase=BackupPreparation; HRESULT=0x80131620; Win32=; rollback: IOException: SYNTHETIC-RECOVERY-PAUSE\",\"Diagnostic\":null,\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"OriginalStateVerified\",\"OriginalBytesVerified\":true,\"WasCancellationRequested\":false,\"AnyMutationStarted\":false,\"CancellationDisposition\":\"NotRequested\"}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "resume",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":1,\"Recovery\":{\"State\":3,\"Code\":\"ORIGINAL-STATE-VERIFIED\",\"TransactionId\":\"\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "check",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe init <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"ActualDifferentVolumes\":false}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "init",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe defer <SYNTHETIC_ROOT>",
+        "Output": "{\"Code\":\"ROLLBACK-FAIL\",\"Stage\":\"RecoveryRequired\",\"Diagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":null,\"Phase\":\"BackupPreparation\",\"JournalStage\":4,\"TargetIdentity\":\"\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"SYNTHETIC-RECOVERY-PAUSE\"},\"RecoveryDiagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":null,\"Phase\":\"Rollback\",\"JournalStage\":10,\"TargetIdentity\":\"\",\"InstallVolume\":\"\",\"StagingVolume\":\"\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"SYNTHETIC-RECOVERY-PAUSE\"},\"RecoveryDisposition\":\"RecoveryDeferred\",\"OriginalBytesVerified\":false,\"AnyMutationStarted\":false,\"ElapsedMs\":306.3805,\"Startup\":{\"State\":5,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ROLLBACK-FAIL\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "defer",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe reconcile <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":\"RecoveryDeferred\",\"Code\":\"RECOVERY-SHARING-VIOLATION\",\"TransactionId\":\"8600dad3ca734a4886f37db0181929bc\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "reconcile",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows separate process",
+        "Termination": "Parent killed separate process; not reboot",
+        "Command": "WO25Probe hold:exclusive <SYNTHETIC_ROOT>",
+        "Output": "READY\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "hold:exclusive",
+        "ExitCode": -1
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe reconcile <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":\"ManualReviewRequired\",\"Code\":\"RECOVERY-EVIDENCE-REJECTED\",\"TransactionId\":\"8600dad3ca734a4886f37db0181929bc\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "reconcile",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe resume <SYNTHETIC_ROOT>",
+        "Output": "{\"Stage\":10,\"Code\":\"RECOVERY-EVIDENCE-REJECTED\",\"TransactionId\":\"8600dad3ca734a4886f37db0181929bc\",\"FilesApplied\":0,\"Failure\":\"\",\"Diagnostic\":null,\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"ManualReviewRequired\",\"OriginalBytesVerified\":false,\"WasCancellationRequested\":false,\"AnyMutationStarted\":false,\"CancellationDisposition\":\"NotRequested\"}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "resume",
+        "ExitCode": 10
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe init <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"ActualDifferentVolumes\":false}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "init",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe defer <SYNTHETIC_ROOT>",
+        "Output": "{\"Code\":\"ROLLBACK-FAIL\",\"Stage\":\"RecoveryRequired\",\"Diagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":null,\"Phase\":\"BackupPreparation\",\"JournalStage\":4,\"TargetIdentity\":\"\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"SYNTHETIC-RECOVERY-PAUSE\"},\"RecoveryDiagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":null,\"Phase\":\"Rollback\",\"JournalStage\":10,\"TargetIdentity\":\"\",\"InstallVolume\":\"\",\"StagingVolume\":\"\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"SYNTHETIC-RECOVERY-PAUSE\"},\"RecoveryDisposition\":\"RecoveryDeferred\",\"OriginalBytesVerified\":false,\"AnyMutationStarted\":false,\"ElapsedMs\":334.3357,\"Startup\":{\"State\":5,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ROLLBACK-FAIL\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "defer",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe reconcile <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":\"RecoveryDeferred\",\"Code\":\"RECOVERY-SHARING-VIOLATION\",\"TransactionId\":\"8cf81f48dc304b1885d8c8d7291a0973\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "reconcile",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows separate process",
+        "Termination": "Parent killed separate process; not reboot",
+        "Command": "WO25Probe hold:exclusive <SYNTHETIC_ROOT>",
+        "Output": "READY\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "hold:exclusive",
+        "ExitCode": -1
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe reconcile <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":\"ManualReviewRequired\",\"Code\":\"RECOVERY-EVIDENCE-REJECTED\",\"TransactionId\":\"8cf81f48dc304b1885d8c8d7291a0973\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "reconcile",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe resume <SYNTHETIC_ROOT>",
+        "Output": "{\"Stage\":10,\"Code\":\"RECOVERY-EVIDENCE-REJECTED\",\"TransactionId\":\"8cf81f48dc304b1885d8c8d7291a0973\",\"FilesApplied\":0,\"Failure\":\"\",\"Diagnostic\":null,\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"ManualReviewRequired\",\"OriginalBytesVerified\":false,\"WasCancellationRequested\":false,\"AnyMutationStarted\":false,\"CancellationDisposition\":\"NotRequested\"}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "resume",
+        "ExitCode": 10
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe init <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"ActualDifferentVolumes\":false}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "init",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe defer <SYNTHETIC_ROOT>",
+        "Output": "{\"Code\":\"ROLLBACK-FAIL\",\"Stage\":\"RecoveryRequired\",\"Diagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":null,\"Phase\":\"BackupPreparation\",\"JournalStage\":4,\"TargetIdentity\":\"\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"SYNTHETIC-RECOVERY-PAUSE\"},\"RecoveryDiagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":null,\"Phase\":\"Rollback\",\"JournalStage\":10,\"TargetIdentity\":\"\",\"InstallVolume\":\"\",\"StagingVolume\":\"\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"SYNTHETIC-RECOVERY-PAUSE\"},\"RecoveryDisposition\":\"RecoveryDeferred\",\"OriginalBytesVerified\":false,\"AnyMutationStarted\":false,\"ElapsedMs\":280.1825,\"Startup\":{\"State\":5,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ROLLBACK-FAIL\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "defer",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe reconcile <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":\"RecoveryDeferred\",\"Code\":\"RECOVERY-SHARING-VIOLATION\",\"TransactionId\":\"d6e3108d56944d45852d1b2c5f05e6f1\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "reconcile",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows separate process",
+        "Termination": "Parent killed separate process; not reboot",
+        "Command": "WO25Probe hold:exclusive <SYNTHETIC_ROOT>",
+        "Output": "READY\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "hold:exclusive",
+        "ExitCode": -1
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe reconcile <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":\"ManualReviewRequired\",\"Code\":\"RECOVERY-PACKAGE-REJECTED\",\"TransactionId\":\"d6e3108d56944d45852d1b2c5f05e6f1\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "reconcile",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe resume <SYNTHETIC_ROOT>",
+        "Output": "{\"Stage\":10,\"Code\":\"RECOVERY-PACKAGE-REJECTED\",\"TransactionId\":\"d6e3108d56944d45852d1b2c5f05e6f1\",\"FilesApplied\":0,\"Failure\":\"\",\"Diagnostic\":null,\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"ManualReviewRequired\",\"OriginalBytesVerified\":false,\"WasCancellationRequested\":false,\"AnyMutationStarted\":false,\"CancellationDisposition\":\"NotRequested\"}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "resume",
+        "ExitCode": 10
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe init <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"ActualDifferentVolumes\":false}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "init",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe defer <SYNTHETIC_ROOT>",
+        "Output": "{\"Code\":\"ROLLBACK-FAIL\",\"Stage\":\"RecoveryRequired\",\"Diagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":null,\"Phase\":\"BackupPreparation\",\"JournalStage\":4,\"TargetIdentity\":\"\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"SYNTHETIC-RECOVERY-PAUSE\"},\"RecoveryDiagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":null,\"Phase\":\"Rollback\",\"JournalStage\":10,\"TargetIdentity\":\"\",\"InstallVolume\":\"\",\"StagingVolume\":\"\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"SYNTHETIC-RECOVERY-PAUSE\"},\"RecoveryDisposition\":\"RecoveryDeferred\",\"OriginalBytesVerified\":false,\"AnyMutationStarted\":false,\"ElapsedMs\":296.1898,\"Startup\":{\"State\":5,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ROLLBACK-FAIL\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "defer",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe reconcile <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":\"RecoveryDeferred\",\"Code\":\"RECOVERY-SHARING-VIOLATION\",\"TransactionId\":\"6b3b6fc3ded647dabb89549daba4448a\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "reconcile",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows separate process",
+        "Termination": "Parent killed separate process; not reboot",
+        "Command": "WO25Probe hold:exclusive <SYNTHETIC_ROOT>",
+        "Output": "READY\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "hold:exclusive",
+        "ExitCode": -1
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe reconcile <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":\"ManualReviewRequired\",\"Code\":\"RECOVERY-CONTENT-REVIEW\",\"TransactionId\":\"6b3b6fc3ded647dabb89549daba4448a\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[{\"Path\":\"payload/app.txt\",\"State\":\"UnknownContent\",\"BackupVerified\":true},{\"Path\":\"payload/new.bin\",\"State\":\"NewFileAbsent\",\"BackupVerified\":true}]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "reconcile",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe resume <SYNTHETIC_ROOT>",
+        "Output": "{\"Stage\":10,\"Code\":\"RECOVERY-CONTENT-REVIEW\",\"TransactionId\":\"6b3b6fc3ded647dabb89549daba4448a\",\"FilesApplied\":0,\"Failure\":\"\",\"Diagnostic\":null,\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"ManualReviewRequired\",\"OriginalBytesVerified\":false,\"WasCancellationRequested\":false,\"AnyMutationStarted\":false,\"CancellationDisposition\":\"NotRequested\"}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "resume",
+        "ExitCode": 10
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe init <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"ActualDifferentVolumes\":false}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "init",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows separate process",
+        "Termination": "Parent killed separate process; not reboot",
+        "Command": "WO25Probe kill:AfterFirstReplacement <SYNTHETIC_ROOT>",
+        "Output": "CHECKPOINT:AfterFirstReplacement\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "kill:AfterFirstReplacement",
+        "ExitCode": -1
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe reconcile <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":\"RecoveryRequired\",\"Code\":\"RECOVERY-INPUTS-VERIFIED\",\"TransactionId\":\"212a29ee9728408a887b445e19248edf\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":true,\"Files\":[{\"Path\":\"payload/app.txt\",\"State\":\"UpdatedVerified\",\"BackupVerified\":true},{\"Path\":\"payload/new.bin\",\"State\":\"NewFileAbsent\",\"BackupVerified\":true}]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "reconcile",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows separate process",
+        "Termination": "Parent killed separate process; not reboot",
+        "Command": "WO25Probe kill-recovery:AfterRollbackStarted <SYNTHETIC_ROOT>",
+        "Output": "CHECKPOINT:AfterRollbackStarted\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "kill-recovery:AfterRollbackStarted",
+        "ExitCode": -1
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe reconcile <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":\"RecoveryRequired\",\"Code\":\"RECOVERY-INPUTS-VERIFIED\",\"TransactionId\":\"212a29ee9728408a887b445e19248edf\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":true,\"Files\":[{\"Path\":\"payload/app.txt\",\"State\":\"UpdatedVerified\",\"BackupVerified\":true},{\"Path\":\"payload/new.bin\",\"State\":\"NewFileAbsent\",\"BackupVerified\":true}]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "reconcile",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe resume <SYNTHETIC_ROOT>",
+        "Output": "{\"Stage\":9,\"Code\":\"ROLLED-BACK\",\"TransactionId\":\"212a29ee9728408a887b445e19248edf\",\"FilesApplied\":1,\"Failure\":\"\",\"Diagnostic\":null,\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"RecoveryCompleted\",\"OriginalBytesVerified\":true,\"WasCancellationRequested\":false,\"AnyMutationStarted\":true,\"CancellationDisposition\":\"NotRequested\"}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "resume",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":1,\"Recovery\":{\"State\":3,\"Code\":\"RESTORED\",\"TransactionId\":\"\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "check",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe init <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"ActualDifferentVolumes\":false}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "init",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows separate process",
+        "Termination": "Parent killed separate process; not reboot",
+        "Command": "WO25Probe kill:AfterFirstReplacement <SYNTHETIC_ROOT>",
+        "Output": "CHECKPOINT:AfterFirstReplacement\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "kill:AfterFirstReplacement",
+        "ExitCode": -1
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe reconcile <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":\"RecoveryRequired\",\"Code\":\"RECOVERY-INPUTS-VERIFIED\",\"TransactionId\":\"1d9dee7bb921440d8f50db76aa141009\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":true,\"Files\":[{\"Path\":\"payload/app.txt\",\"State\":\"UpdatedVerified\",\"BackupVerified\":true},{\"Path\":\"payload/new.bin\",\"State\":\"NewFileAbsent\",\"BackupVerified\":true}]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "reconcile",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows separate process",
+        "Termination": "Parent killed separate process; not reboot",
+        "Command": "WO25Probe kill-recovery:DuringRollbackCopy <SYNTHETIC_ROOT>",
+        "Output": "CHECKPOINT:DuringRollbackCopy\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "kill-recovery:DuringRollbackCopy",
+        "ExitCode": -1
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe reconcile <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":\"RecoveryRequired\",\"Code\":\"ORIGINAL-BYTES-PRESERVED-PENDING\",\"TransactionId\":\"1d9dee7bb921440d8f50db76aa141009\",\"OriginalBytesVerified\":true,\"CanRequestRecovery\":true,\"Files\":[{\"Path\":\"payload/app.txt\",\"State\":\"OriginalVerified\",\"BackupVerified\":true},{\"Path\":\"payload/new.bin\",\"State\":\"NewFileAbsent\",\"BackupVerified\":true}]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "reconcile",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe resume <SYNTHETIC_ROOT>",
+        "Output": "{\"Stage\":9,\"Code\":\"ROLLED-BACK\",\"TransactionId\":\"1d9dee7bb921440d8f50db76aa141009\",\"FilesApplied\":1,\"Failure\":\"\",\"Diagnostic\":null,\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"OriginalStateVerified\",\"OriginalBytesVerified\":true,\"WasCancellationRequested\":false,\"AnyMutationStarted\":false,\"CancellationDisposition\":\"NotRequested\"}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "resume",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":1,\"Recovery\":{\"State\":3,\"Code\":\"RESTORED\",\"TransactionId\":\"\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "check",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe init <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"ActualDifferentVolumes\":false}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "init",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows separate process",
+        "Termination": "Parent killed separate process; not reboot",
+        "Command": "WO25Probe kill:AfterFirstReplacement <SYNTHETIC_ROOT>",
+        "Output": "CHECKPOINT:AfterFirstReplacement\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "kill:AfterFirstReplacement",
+        "ExitCode": -1
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe reconcile <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":\"RecoveryRequired\",\"Code\":\"RECOVERY-INPUTS-VERIFIED\",\"TransactionId\":\"427f68b5a22548e0a5f86efc1d330e20\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":true,\"Files\":[{\"Path\":\"payload/app.txt\",\"State\":\"UpdatedVerified\",\"BackupVerified\":true},{\"Path\":\"payload/new.bin\",\"State\":\"NewFileAbsent\",\"BackupVerified\":true}]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "reconcile",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows separate process",
+        "Termination": "Parent killed separate process; not reboot",
+        "Command": "WO25Probe kill-recovery:BeforeRestoredJournal <SYNTHETIC_ROOT>",
+        "Output": "CHECKPOINT:BeforeRestoredJournal\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "kill-recovery:BeforeRestoredJournal",
+        "ExitCode": -1
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe reconcile <SYNTHETIC_ROOT>",
+        "Output": "{\"State\":\"RecoveryRequired\",\"Code\":\"ORIGINAL-BYTES-PRESERVED-PENDING\",\"TransactionId\":\"427f68b5a22548e0a5f86efc1d330e20\",\"OriginalBytesVerified\":true,\"CanRequestRecovery\":true,\"Files\":[{\"Path\":\"payload/app.txt\",\"State\":\"OriginalVerified\",\"BackupVerified\":true},{\"Path\":\"payload/new.bin\",\"State\":\"NewFileAbsent\",\"BackupVerified\":true}]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "reconcile",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe resume <SYNTHETIC_ROOT>",
+        "Output": "{\"Stage\":9,\"Code\":\"ROLLED-BACK\",\"TransactionId\":\"427f68b5a22548e0a5f86efc1d330e20\",\"FilesApplied\":1,\"Failure\":\"\",\"Diagnostic\":null,\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"OriginalStateVerified\",\"OriginalBytesVerified\":true,\"WasCancellationRequested\":false,\"AnyMutationStarted\":false,\"CancellationDisposition\":\"NotRequested\"}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "resume",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":1,\"Recovery\":{\"State\":3,\"Code\":\"RESTORED\",\"TransactionId\":\"\"}}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "check",
+        "ExitCode": 0
+      },
+      {
+        "Environment": "PowerShell process only; prior environment restored",
+        "Command": "Assert-Wo26RuntimeEnvironment",
+        "Output": "DEPLOYMENT_RUNTIME_ENVIRONMENT_REVIEW",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": "Synthetic process-local additional-deps override",
+        "ExitCode": 0
+      }
+    ]
+  },
+  "ExitCode": 0
+}

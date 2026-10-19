@@ -1,0 +1,26 @@
+{
+  "Status": "FAIL",
+  "Source": "Uncommitted WO26 working copy before the first implementation commit",
+  "Base": "1a4fd0811f263f35a94389791860d374c710759f",
+  "Environment": "Local Windows synthetic test run",
+  "Command": "NOT RECORDED in retained TRX; local artifacts/wo26-initial.txt retains console output",
+  "Input": "Initial implementation and retained expectation",
+  "Output": {
+    "Counts": {
+      "Pass": 72,
+      "Fail": 1,
+      "Skip": 0,
+      "Total": 73
+    },
+    "Failures": [
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WindowsFileBoundaryTests.LockedLaterDestinationStopsBeforeExistingContentChanges",
+        "Outcome": "Failed",
+        "Reason": "Assert.Equal() Failure: Values differ\r\nExpected: RecoveryRequired\r\nActual:   Restored"
+      }
+    ]
+  },
+  "ExitCode": null,
+  "ExitCodeStatus": "TRX records failure but does not retain the process exit code",
+  "Disposition": "Retained test name; corrected obsolete expectation and added byte-preservation assertions"
+}

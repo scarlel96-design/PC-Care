@@ -1,0 +1,53 @@
+WORK ITEM: WO26
+STATUS: PARTIAL / Phase 1 NO-GO
+BRANCH: codex/pccare-wo26-transaction-recovery-volume-staging
+BASELINE SHA: 1a4fd0811f263f35a94389791860d374c710759f
+VERIFIED SOURCE SHA: bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262
+CI: https://github.com/scarlel96-design/PC-Care/actions/runs/39166559052
+CHANGED BRANCH: RollbackCore reads and authenticates intact originals before requesting write access.
+RESULT FIELD: RecoveryDisposition=PreMutationRejected; OriginalBytesVerified separates preservation from actual restoration.
+ENVIRONMENT: Windows independent source copies; synthetic signed one-file update; held FileShare.Read; strictAcl=false.
+PATH: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo26\MODIFIED_FILE
+PATH: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo26\DIFF_FILE
+PATH: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo26\VERIFICATION.txt
+PATH: C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo26\ROLLBACK.sh
+ORIGINAL_FILE SHA256: 225bb7d9dd3a4a8e1a06d034b52f3cb57d5ed0557a0f1929fc550d8b62edc113
+MODIFIED_FILE SHA256: 6ef35e5023aa38f77636a100919d0d9587f7b67da2ab0a2d76bec466f85e7384
+
+STAGE: BASELINE
+COMMAND: dotnet "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\wo26-rollback-2a37cde41a76481e9f337b093566be59\baseline\bin\Release\net10.0-windows10.0.26100.0\Proof.dll" "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\wo26-rollback-2a37cde41a76481e9f337b093566be59\baseline\fixture-held-read"
+INPUT: Synthetic signed one-file update; original held with FileShare.Read; strictAcl=false
+OUTPUT (literal):
+{"Stage":"RecoveryRequired","Code":"ROLLBACK-FAIL","AnyMutationStarted":false,"RecoveryDisposition":null,"OriginalPreserved":true}
+EXIT CODE: 0
+
+STAGE: MODIFIED
+COMMAND: dotnet "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\wo26-rollback-2a37cde41a76481e9f337b093566be59\modified\bin\Release\net10.0-windows10.0.26100.0\Proof.dll" "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\wo26-rollback-2a37cde41a76481e9f337b093566be59\modified\fixture-held-read"
+INPUT: Synthetic signed one-file update; original held with FileShare.Read; strictAcl=false
+OUTPUT (literal):
+{"Stage":"Restored","Code":"ROLLED-BACK","AnyMutationStarted":false,"RecoveryDisposition":"PreMutationRejected","OriginalPreserved":true}
+EXIT CODE: 0
+
+STAGE: RollbackScript
+COMMAND: "C:/Program Files/Git/bin/bash.exe" "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\work\PC-Care\docs\rework\evidence\wo26\ROLLBACK.sh" "C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/wo26-rollback-2a37cde41a76481e9f337b093566be59/restored/Engine/UpdateTransaction.cs"
+INPUT: Independent modified source copy
+OUTPUT (literal):
+SOURCE_COPY_RESTORED
+EXIT CODE: 0
+
+STAGE: RESTORED
+COMMAND: dotnet "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\wo26-rollback-2a37cde41a76481e9f337b093566be59\restored\bin\Release\net10.0-windows10.0.26100.0\Proof.dll" "C:\Users\scarl\Documents\Codex\2026-07-18\c-users-scarl-desktop-pccare-pc\wo26-rollback-2a37cde41a76481e9f337b093566be59\restored\fixture-held-read"
+INPUT: Synthetic signed one-file update; original held with FileShare.Read; strictAcl=false
+OUTPUT (literal):
+{"Stage":"RecoveryRequired","Code":"ROLLBACK-FAIL","AnyMutationStarted":false,"RecoveryDisposition":null,"OriginalPreserved":true}
+EXIT CODE: 0
+
+RESTORED STATUS: Original bytes and baseline behavior restored on independent copy.
+MODIFIED STATUS: Repository and MODIFIED_FILE remain changed.
+SOURCE COPY != INSTALLATION OR VAULT RECOVERY.
+APP LOCAL/CI: {'Pass': 1429, 'Fail': 0, 'Skip': 111, 'Total': 1540}
+NEW WO26: 21 PASS; included in app total.
+SECURITYLAB: 36 PASS; separate.
+ACTUAL GUI/UAC/SIGNED BRIDGE E2E/INDEPENDENT SID/REBOOT: NOT TESTED.
+CROSS-VOLUME: C refusal retained; protected copy staging is not implemented.
+AV3 six flags false; no production publisher change; no main merge or release.

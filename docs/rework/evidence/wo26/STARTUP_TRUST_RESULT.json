@@ -1,0 +1,18 @@
+{
+  "Status": "PASS",
+  "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+  "Environment": "Windows .NET10 x64; local synthetic files and GitHub-hosted noninteractive runner",
+  "Command": "WO26 and retained WO25 startup tests",
+  "Input": "Signed scope, current data and terminal original-state review",
+  "Output": [
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO26StartupTrustRegressionTests.JournalPathOutsideSignedScopeReturnsReviewInsteadOfThrowing",
+      "Outcome": "Passed",
+      "Reason": ""
+    }
+  ],
+  "ExitCode": 0,
+  "IndependentFreshness": false,
+  "PreClrBoundary": false,
+  "RetainedWO25Tests": "32 cases retained in whole app regression"
+}

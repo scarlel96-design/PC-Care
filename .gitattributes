@@ -91,3 +91,7 @@ docs/rework/evidence/wo24/ROLLBACK.sh text eol=lf
 # Preserve exact WO25 evidence bytes.
 docs/rework/evidence/wo25/** -text -whitespace
 docs/rework/evidence/wo25/ROLLBACK.sh text eol=lf
+
+# Preserve WO26 evidence bytes and executable rollback line endings.
+docs/rework/evidence/wo26/** -text -whitespace
+docs/rework/evidence/wo26/ROLLBACK.sh text eol=lf

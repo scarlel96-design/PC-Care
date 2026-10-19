@@ -1,0 +1,270 @@
+{
+  "Status": "PASS",
+  "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+  "Environment": "Windows .NET10 x64; local synthetic files and GitHub-hosted noninteractive runner",
+  "Command": "Retained WO23 Windows API CI matrix",
+  "Input": "Disposable Windows runner; synthetic ACL objects and PE files",
+  "Output": {
+    "PrivacyProjection": "Native identity and volume fields use document-local aliases. Actual exit codes and outcomes remain unchanged.",
+    "RawRecordSha256": "df22905fc9cf896c966026557103fc88384c5a99d6aa3f311c653030288a3764",
+    "DigestEncoding": "SHA256 of UTF-8 json.dumps(input,sort_keys=True); canonical input record, not raw file bytes",
+    "Records": {
+      "ExpiredCertificate": "NOT TESTED",
+      "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+      "Status": "PASS",
+      "TrustStore": "Disposable CI LocalMachine Root; own entries removed in finally",
+      "Timestamp": "NOT TESTED",
+      "UAC": "NOT TESTED",
+      "Scope": "Actual PE Authenticode in disposable GitHub-hosted Windows; test pin only; production pins unchanged",
+      "Tests": [
+        {
+          "Name": "UnsignedRejected:SmartPerformanceDoctor.UpdateBridge.exe",
+          "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>",
+          "Accepted": false,
+          "Output": {
+            "Code": -2146762496,
+            "Thumbprint": null,
+            "Identity": "synthetic-id-1",
+            "Hash": "750B7715C2847039B66B047E71F77B7EE76B4A4C7C55F0A22DDA8772FE9EEB96",
+            "BlockedMutations": 0,
+            "ProductionAccepted": false
+          },
+          "ExitCode": 0,
+          "Input": "SmartPerformanceDoctor.UpdateBridge.exe",
+          "ExpectedAccepted": false,
+          "Status": "PASS"
+        },
+        {
+          "Name": "SignedAccepted:SmartPerformanceDoctor.UpdateBridge.exe",
+          "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>",
+          "Accepted": true,
+          "Output": {
+            "Code": 0,
+            "Thumbprint": "EEC18EA5344DAFBB012A6BE88D3C617862FE55D0",
+            "Identity": "synthetic-id-1",
+            "Hash": "D3C4A40B780631657DB9B3FC3A482AA96E6606C2D548966892A09E985D646EE5",
+            "BlockedMutations": 0,
+            "ProductionAccepted": false
+          },
+          "ExitCode": 0,
+          "Input": "SmartPerformanceDoctor.UpdateBridge.exe",
+          "ExpectedAccepted": true,
+          "Status": "PASS"
+        },
+        {
+          "Name": "UnsignedRejected:SmartPerformanceDoctor.UpdateBridge.dll",
+          "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>",
+          "Accepted": false,
+          "Output": {
+            "Code": -2146762496,
+            "Thumbprint": null,
+            "Identity": "synthetic-id-2",
+            "Hash": "2DD1921E0F5025F443C1A136D581E172523DCB6427F886CFC5BA287F118371BB",
+            "BlockedMutations": 0,
+            "ProductionAccepted": false
+          },
+          "ExitCode": 0,
+          "Input": "SmartPerformanceDoctor.UpdateBridge.dll",
+          "ExpectedAccepted": false,
+          "Status": "PASS"
+        },
+        {
+          "Name": "SignedAccepted:SmartPerformanceDoctor.UpdateBridge.dll",
+          "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>",
+          "Accepted": true,
+          "Output": {
+            "Code": 0,
+            "Thumbprint": "EEC18EA5344DAFBB012A6BE88D3C617862FE55D0",
+            "Identity": "synthetic-id-2",
+            "Hash": "DFA08B6FC2AE401CD4C4BCE971A24C3E55A21B26BBE7B883B7F68181FADB6C8E",
+            "BlockedMutations": 0,
+            "ProductionAccepted": false
+          },
+          "ExitCode": 0,
+          "Input": "SmartPerformanceDoctor.UpdateBridge.dll",
+          "ExpectedAccepted": true,
+          "Status": "PASS"
+        },
+        {
+          "Name": "UnsignedRejected:SmartPerformanceDoctor.UpdateEngine.dll",
+          "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>",
+          "Accepted": false,
+          "Output": {
+            "Code": -2146762496,
+            "Thumbprint": null,
+            "Identity": "synthetic-id-3",
+            "Hash": "F19D64DCEC023F20AF629D431FBA285D9051CC32AF3022B658416AA2D90C5B39",
+            "BlockedMutations": 0,
+            "ProductionAccepted": false
+          },
+          "ExitCode": 0,
+          "Input": "SmartPerformanceDoctor.UpdateEngine.dll",
+          "ExpectedAccepted": false,
+          "Status": "PASS"
+        },
+        {
+          "Name": "SignedAccepted:SmartPerformanceDoctor.UpdateEngine.dll",
+          "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>",
+          "Accepted": true,
+          "Output": {
+            "Code": 0,
+            "Thumbprint": "EEC18EA5344DAFBB012A6BE88D3C617862FE55D0",
+            "Identity": "synthetic-id-3",
+            "Hash": "C9FFAC1890A59A15CB2E07E61798CEF54D42C4B73E0F0D60C5823A6E880A9E21",
+            "BlockedMutations": 0,
+            "ProductionAccepted": false
+          },
+          "ExitCode": 0,
+          "Input": "SmartPerformanceDoctor.UpdateEngine.dll",
+          "ExpectedAccepted": true,
+          "Status": "PASS"
+        },
+        {
+          "Name": "UnsignedRejected:SmartPerformanceDoctor.UpdateHelper.exe",
+          "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>",
+          "Accepted": false,
+          "Output": {
+            "Code": -2146762496,
+            "Thumbprint": null,
+            "Identity": "synthetic-id-4",
+            "Hash": "8541274D2F54B4DCDC32039365F47636D1A78FDB580839D8C27CAAC6294C22A7",
+            "BlockedMutations": 0,
+            "ProductionAccepted": false
+          },
+          "ExitCode": 0,
+          "Input": "SmartPerformanceDoctor.UpdateHelper.exe",
+          "ExpectedAccepted": false,
+          "Status": "PASS"
+        },
+        {
+          "Name": "SignedAccepted:SmartPerformanceDoctor.UpdateHelper.exe",
+          "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>",
+          "Accepted": true,
+          "Output": {
+            "Code": 0,
+            "Thumbprint": "EEC18EA5344DAFBB012A6BE88D3C617862FE55D0",
+            "Identity": "synthetic-id-4",
+            "Hash": "8885FF9520A624624115DB2F2F769CDA043B4C168594A2011F3920B086886756",
+            "BlockedMutations": 0,
+            "ProductionAccepted": false
+          },
+          "ExitCode": 0,
+          "Input": "SmartPerformanceDoctor.UpdateHelper.exe",
+          "ExpectedAccepted": true,
+          "Status": "PASS"
+        },
+        {
+          "Name": "UnsignedRejected:SmartPerformanceDoctor.UpdateHelper.dll",
+          "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>",
+          "Accepted": false,
+          "Output": {
+            "Code": -2146762496,
+            "Thumbprint": null,
+            "Identity": "synthetic-id-5",
+            "Hash": "B435ACBF1B17D8CC1C0097FBC5A8584DBADC1C5E29AF57D59C2FC2D63F1A4AB3",
+            "BlockedMutations": 0,
+            "ProductionAccepted": false
+          },
+          "ExitCode": 0,
+          "Input": "SmartPerformanceDoctor.UpdateHelper.dll",
+          "ExpectedAccepted": false,
+          "Status": "PASS"
+        },
+        {
+          "Name": "SignedAccepted:SmartPerformanceDoctor.UpdateHelper.dll",
+          "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>",
+          "Accepted": true,
+          "Output": {
+            "Code": 0,
+            "Thumbprint": "EEC18EA5344DAFBB012A6BE88D3C617862FE55D0",
+            "Identity": "synthetic-id-5",
+            "Hash": "DE8A5856E23B175EF5442F218B8199A387301925CC31B710B1DE75C27CA885FB",
+            "BlockedMutations": 0,
+            "ProductionAccepted": false
+          },
+          "ExitCode": 0,
+          "Input": "SmartPerformanceDoctor.UpdateHelper.dll",
+          "ExpectedAccepted": true,
+          "Status": "PASS"
+        },
+        {
+          "Name": "SignedFinalHandleRejectsDeletionAndMutation",
+          "ExitCode": 0,
+          "Command": "WO23WindowsProbe verify-pinned <CI_SYNTHETIC_PE>",
+          "Status": "PASS",
+          "Output": {
+            "Code": 0,
+            "Thumbprint": "EEC18EA5344DAFBB012A6BE88D3C617862FE55D0",
+            "Identity": "synthetic-id-3",
+            "Hash": "C9FFAC1890A59A15CB2E07E61798CEF54D42C4B73E0F0D60C5823A6E880A9E21",
+            "BlockedMutations": 2,
+            "ProductionAccepted": false
+          }
+        },
+        {
+          "Name": "SignedDllCopyHasDifferentFileIdentity",
+          "ExitCode": 0,
+          "Status": "PASS",
+          "Output": {
+            "DifferentIdentity": true,
+            "SameHash": true
+          }
+        },
+        {
+          "Name": "ValidOtherPublisherRejectedByExpectedPin",
+          "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>",
+          "Accepted": false,
+          "Output": {
+            "Code": 0,
+            "Thumbprint": "F24E0C607CF43334EC28EBF56D0E4CB5B7099ED8",
+            "Identity": "synthetic-id-6",
+            "Hash": "606A07552A613F59F024EF12B9F645FA85B6C57ABB21CC1D167DF9E324CBF30C",
+            "BlockedMutations": 0,
+            "ProductionAccepted": false
+          },
+          "ExitCode": 0,
+          "Input": "other.dll",
+          "ExpectedAccepted": false,
+          "Status": "PASS"
+        },
+        {
+          "Name": "PostSigningModificationRejected",
+          "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>",
+          "Accepted": false,
+          "Output": {
+            "Code": -2146869232,
+            "Thumbprint": null,
+            "Identity": "synthetic-id-7",
+            "Hash": "D70DE8B0DDFDA22C4D5FB9D0DDA2ACCB67A6E4B0AB86C22AC85A053196FBBBAC",
+            "BlockedMutations": 0,
+            "ProductionAccepted": false
+          },
+          "ExitCode": 0,
+          "Input": "edited.dll",
+          "ExpectedAccepted": false,
+          "Status": "PASS"
+        },
+        {
+          "Name": "UntrustedChainRejected",
+          "Command": "WO23WindowsProbe verify <CI_SYNTHETIC_PE>",
+          "Accepted": false,
+          "Output": {
+            "Code": -2146762487,
+            "Thumbprint": null,
+            "Identity": "synthetic-id-8",
+            "Hash": "96162B884FA51F172B1C079E4126BA3B50C8C41D7C4F495EE50FDD9BC67CA447",
+            "BlockedMutations": 0,
+            "ProductionAccepted": false
+          },
+          "ExitCode": 0,
+          "Input": "untrusted.dll",
+          "ExpectedAccepted": false,
+          "Status": "PASS"
+        }
+      ],
+      "CertificateCleanupVerified": true
+    }
+  },
+  "ExitCode": 0,
+  "Scope": "No independent SID/UAC/full signed Bridge deployment claim"
+}

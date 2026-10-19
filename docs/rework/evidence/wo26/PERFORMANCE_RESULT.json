@@ -1,0 +1,91 @@
+{
+  "Status": "PARTIAL",
+  "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+  "Environment": "Windows .NET10 x64; local synthetic files and GitHub-hosted noninteractive runner",
+  "Command": "pwsh -NoProfile -File wo26-history-comparison.ps1",
+  "Input": "Same constructed 100-transaction root; interleaved six process runs",
+  "Output": {
+    "Medians": {
+      "baseline": {
+        "ElapsedMs": 5610.4089,
+        "CpuMs": 8937.5,
+        "AllocatedBytes": 83001816,
+        "PeakSampledWorkingSetBytes": 73269248,
+        "PeakSampledHandles": 1539,
+        "HandlesAfter": 296
+      },
+      "modified": {
+        "ElapsedMs": 6540.9802,
+        "CpuMs": 10625,
+        "AllocatedBytes": 71920040,
+        "PeakSampledWorkingSetBytes": 56320000,
+        "PeakSampledHandles": 1536,
+        "HandlesAfter": 293
+      }
+    },
+    "Runs": [
+      {
+        "Environment": "Windows; isolated component comparison; only InstallationHistoryQualification.cs varies",
+        "ExitCode": 0,
+        "HistoryComponentSource": "1a4fd0811f263f35a94389791860d374c710759f",
+        "Kind": "baseline",
+        "Input": "100 constructed signed transactions; same root; interleaved process runs",
+        "Command": "dotnet C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\wo26-history-comparison\\baseline\\bin\\Release\\net10.0-windows10.0.26100.0\\Profile.dll history-profile <SAME_SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":100,\"Files\":1},\"ElapsedMs\":13710.093,\"CpuMs\":17593.75,\"AllocatedBytes\":83831840,\"PeakSampledHandles\":1541,\"HandlesBefore\":238,\"HandlesAfter\":298,\"PeakSampledWorkingSetBytes\":78438400,\"Phases\":[]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262"
+      },
+      {
+        "Environment": "Windows; isolated component comparison; only InstallationHistoryQualification.cs varies",
+        "ExitCode": 0,
+        "HistoryComponentSource": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Kind": "modified",
+        "Input": "100 constructed signed transactions; same root; interleaved process runs",
+        "Command": "dotnet C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\wo26-history-comparison\\modified\\bin\\Release\\net10.0-windows10.0.26100.0\\Profile.dll history-profile <SAME_SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":100,\"Files\":1},\"ElapsedMs\":11114.4654,\"CpuMs\":16109.375,\"AllocatedBytes\":72017824,\"PeakSampledHandles\":1538,\"HandlesBefore\":238,\"HandlesAfter\":295,\"PeakSampledWorkingSetBytes\":60862464,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":20204,\"ElapsedMs\":8396.9103,\"AllocatedBytes\":32517552},{\"Name\":\"FileOpenAndBind\",\"Calls\":305,\"ElapsedMs\":4874.9353,\"AllocatedBytes\":20314720},{\"Name\":\"FileIdentityValidation\",\"Calls\":112,\"ElapsedMs\":333.9297,\"AllocatedBytes\":2270192},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":65.5839,\"AllocatedBytes\":515872},{\"Name\":\"HistoryJsonParse\",\"Calls\":100,\"ElapsedMs\":21.3366,\"AllocatedBytes\":837600},{\"Name\":\"HistorySignatureVerification\",\"Calls\":100,\"ElapsedMs\":249.9248,\"AllocatedBytes\":466216},{\"Name\":\"HistoryTransactionRead\",\"Calls\":100,\"ElapsedMs\":4947.1906,\"AllocatedBytes\":37375352},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":11018.2036,\"AllocatedBytes\":70863616}]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262"
+      },
+      {
+        "Environment": "Windows; isolated component comparison; only InstallationHistoryQualification.cs varies",
+        "ExitCode": 0,
+        "HistoryComponentSource": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Kind": "modified",
+        "Input": "100 constructed signed transactions; same root; interleaved process runs",
+        "Command": "dotnet C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\wo26-history-comparison\\modified\\bin\\Release\\net10.0-windows10.0.26100.0\\Profile.dll history-profile <SAME_SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":100,\"Files\":1},\"ElapsedMs\":6540.9802,\"CpuMs\":10625,\"AllocatedBytes\":71385408,\"PeakSampledHandles\":1536,\"HandlesBefore\":238,\"HandlesAfter\":293,\"PeakSampledWorkingSetBytes\":56201216,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":20204,\"ElapsedMs\":4192.5197,\"AllocatedBytes\":32816784},{\"Name\":\"FileOpenAndBind\",\"Calls\":305,\"ElapsedMs\":2683.705,\"AllocatedBytes\":20473440},{\"Name\":\"FileIdentityValidation\",\"Calls\":112,\"ElapsedMs\":236.1103,\"AllocatedBytes\":2270192},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":39.6225,\"AllocatedBytes\":515872},{\"Name\":\"HistoryJsonParse\",\"Calls\":100,\"ElapsedMs\":23.8856,\"AllocatedBytes\":837600},{\"Name\":\"HistorySignatureVerification\",\"Calls\":100,\"ElapsedMs\":236.9107,\"AllocatedBytes\":481776},{\"Name\":\"HistoryTransactionRead\",\"Calls\":100,\"ElapsedMs\":3461.5541,\"AllocatedBytes\":37205704},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":6479.2831,\"AllocatedBytes\":70709888}]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262"
+      },
+      {
+        "Environment": "Windows; isolated component comparison; only InstallationHistoryQualification.cs varies",
+        "ExitCode": 0,
+        "HistoryComponentSource": "1a4fd0811f263f35a94389791860d374c710759f",
+        "Kind": "baseline",
+        "Input": "100 constructed signed transactions; same root; interleaved process runs",
+        "Command": "dotnet C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\wo26-history-comparison\\baseline\\bin\\Release\\net10.0-windows10.0.26100.0\\Profile.dll history-profile <SAME_SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":100,\"Files\":1},\"ElapsedMs\":5610.4089,\"CpuMs\":8937.5,\"AllocatedBytes\":82897392,\"PeakSampledHandles\":1539,\"HandlesBefore\":238,\"HandlesAfter\":296,\"PeakSampledWorkingSetBytes\":73269248,\"Phases\":[]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262"
+      },
+      {
+        "Environment": "Windows; isolated component comparison; only InstallationHistoryQualification.cs varies",
+        "ExitCode": 0,
+        "HistoryComponentSource": "1a4fd0811f263f35a94389791860d374c710759f",
+        "Kind": "baseline",
+        "Input": "100 constructed signed transactions; same root; interleaved process runs",
+        "Command": "dotnet C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\wo26-history-comparison\\baseline\\bin\\Release\\net10.0-windows10.0.26100.0\\Profile.dll history-profile <SAME_SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":100,\"Files\":1},\"ElapsedMs\":5089.2755,\"CpuMs\":7437.5,\"AllocatedBytes\":83001816,\"PeakSampledHandles\":1538,\"HandlesBefore\":238,\"HandlesAfter\":296,\"PeakSampledWorkingSetBytes\":73244672,\"Phases\":[]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262"
+      },
+      {
+        "Environment": "Windows; isolated component comparison; only InstallationHistoryQualification.cs varies",
+        "ExitCode": 0,
+        "HistoryComponentSource": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Kind": "modified",
+        "Input": "100 constructed signed transactions; same root; interleaved process runs",
+        "Command": "dotnet C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\wo26-history-comparison\\modified\\bin\\Release\\net10.0-windows10.0.26100.0\\Profile.dll history-profile <SAME_SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":100,\"Files\":1},\"ElapsedMs\":3596.9269,\"CpuMs\":5921.875,\"AllocatedBytes\":71920040,\"PeakSampledHandles\":1535,\"HandlesBefore\":238,\"HandlesAfter\":292,\"PeakSampledWorkingSetBytes\":56320000,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":20204,\"ElapsedMs\":1958.5301,\"AllocatedBytes\":33559608},{\"Name\":\"FileOpenAndBind\",\"Calls\":305,\"ElapsedMs\":1331.0267,\"AllocatedBytes\":20945824},{\"Name\":\"FileIdentityValidation\",\"Calls\":112,\"ElapsedMs\":115.7646,\"AllocatedBytes\":2270192},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":20.0779,\"AllocatedBytes\":515872},{\"Name\":\"HistoryJsonParse\",\"Calls\":100,\"ElapsedMs\":22.3162,\"AllocatedBytes\":837600},{\"Name\":\"HistorySignatureVerification\",\"Calls\":100,\"ElapsedMs\":166.4951,\"AllocatedBytes\":486240},{\"Name\":\"HistoryTransactionRead\",\"Calls\":100,\"ElapsedMs\":1805.4191,\"AllocatedBytes\":38012104},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":3537.6789,\"AllocatedBytes\":71464136}]}",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262"
+      }
+    ]
+  },
+  "ExitCode": 0,
+  "Scope": "Isolated history component comparison; concurrent local regression can affect timing; no controlled product startup gain"
+}

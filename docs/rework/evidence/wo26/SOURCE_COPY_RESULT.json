@@ -1,0 +1,46 @@
+{
+  "ModifiedPreserved": true,
+  "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+  "Status": "PASS",
+  "RestoredByteEquality": true,
+  "Environment": "Windows; isolated source copies; no product installation or vault rollback",
+  "Records": [
+    {
+      "SourceHash": "225BB7D9DD3A4A8E1A06D034B52F3CB57D5ED0557A0F1929FC550D8B62EDC113",
+      "ExitCode": 0,
+      "Command": "dotnet \"C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\wo26-rollback-2a37cde41a76481e9f337b093566be59\\baseline\\bin\\Release\\net10.0-windows10.0.26100.0\\Proof.dll\" \"C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\wo26-rollback-2a37cde41a76481e9f337b093566be59\\baseline\\fixture-held-read\"",
+      "BuildCommand": "dotnet build \"C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\wo26-rollback-2a37cde41a76481e9f337b093566be59\\baseline\\Proof.csproj\" -c Release -v:minimal",
+      "Stage": "BASELINE",
+      "BuildExitCode": 0,
+      "Output": "{\"Stage\":\"RecoveryRequired\",\"Code\":\"ROLLBACK-FAIL\",\"AnyMutationStarted\":false,\"RecoveryDisposition\":null,\"OriginalPreserved\":true}",
+      "Input": "Synthetic signed one-file update; original held with FileShare.Read; strictAcl=false"
+    },
+    {
+      "SourceHash": "6EF35E5023AA38F77636A100919D0D9587F7B67DA2AB0A2D76BEC466F85E7384",
+      "ExitCode": 0,
+      "Command": "dotnet \"C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\wo26-rollback-2a37cde41a76481e9f337b093566be59\\modified\\bin\\Release\\net10.0-windows10.0.26100.0\\Proof.dll\" \"C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\wo26-rollback-2a37cde41a76481e9f337b093566be59\\modified\\fixture-held-read\"",
+      "BuildCommand": "dotnet build \"C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\wo26-rollback-2a37cde41a76481e9f337b093566be59\\modified\\Proof.csproj\" -c Release -v:minimal",
+      "Stage": "MODIFIED",
+      "BuildExitCode": 0,
+      "Output": "{\"Stage\":\"Restored\",\"Code\":\"ROLLED-BACK\",\"AnyMutationStarted\":false,\"RecoveryDisposition\":\"PreMutationRejected\",\"OriginalPreserved\":true}",
+      "Input": "Synthetic signed one-file update; original held with FileShare.Read; strictAcl=false"
+    },
+    {
+      "ExitCode": 0,
+      "Output": "SOURCE_COPY_RESTORED",
+      "Input": "Independent modified source copy",
+      "Stage": "RollbackScript",
+      "Command": "\"C:/Program Files/Git/bin/bash.exe\" \"C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\work\\PC-Care\\docs\\rework\\evidence\\wo26\\ROLLBACK.sh\" \"C:/Users/scarl/Documents/Codex/2026-07-18/c-users-scarl-desktop-pccare-pc/wo26-rollback-2a37cde41a76481e9f337b093566be59/restored/Engine/UpdateTransaction.cs\""
+    },
+    {
+      "SourceHash": "225BB7D9DD3A4A8E1A06D034B52F3CB57D5ED0557A0F1929FC550D8B62EDC113",
+      "ExitCode": 0,
+      "Command": "dotnet \"C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\wo26-rollback-2a37cde41a76481e9f337b093566be59\\restored\\bin\\Release\\net10.0-windows10.0.26100.0\\Proof.dll\" \"C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\wo26-rollback-2a37cde41a76481e9f337b093566be59\\restored\\fixture-held-read\"",
+      "BuildCommand": "dotnet build \"C:\\Users\\scarl\\Documents\\Codex\\2026-07-18\\c-users-scarl-desktop-pccare-pc\\wo26-rollback-2a37cde41a76481e9f337b093566be59\\restored\\Proof.csproj\" -c Release -v:minimal",
+      "Stage": "RESTORED",
+      "BuildExitCode": 0,
+      "Output": "{\"Stage\":\"RecoveryRequired\",\"Code\":\"ROLLBACK-FAIL\",\"AnyMutationStarted\":false,\"RecoveryDisposition\":null,\"OriginalPreserved\":true}",
+      "Input": "Synthetic signed one-file update; original held with FileShare.Read; strictAcl=false"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "Status": "PASS",
+  "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+  "Environment": "Windows .NET10 x64; local synthetic files and GitHub-hosted noninteractive runner",
+  "Command": "WO26 focused tests and process harness",
+  "Input": "Held read/write/exclusive originals and read-only target",
+  "Output": [
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO26RecoveryStateClassificationTests.ReadOnlyOriginalDoesNotRequireRollbackWrite",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO26RecoveryStateClassificationTests.ReconciliationRechecksEvidenceBeforeExplicitResume(change: \"identity\")",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO26RecoveryStateClassificationTests.SharingConflictPreservesOriginalsAndSeparatesMutation(mode: \"write\")",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO26RecoveryStateClassificationTests.CompletedJournalWithChangedOriginalStillRequiresReview",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO26RecoveryStateClassificationTests.ReconciliationRechecksEvidenceBeforeExplicitResume(change: \"none\")",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO26RecoveryStateClassificationTests.ReconciliationRechecksEvidenceBeforeExplicitResume(change: \"content\")",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO26RecoveryStateClassificationTests.ReconciliationRechecksEvidenceBeforeExplicitResume(change: \"package\")",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO26RecoveryStateClassificationTests.ActualRestorationReportsMutationSeparately",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO26RecoveryStateClassificationTests.ReconciliationRechecksEvidenceBeforeExplicitResume(change: \"backup\")",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO26RecoveryStateClassificationTests.SharingConflictPreservesOriginalsAndSeparatesMutation(mode: \"exclusive\")",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO26RecoveryStateClassificationTests.SharingConflictPreservesOriginalsAndSeparatesMutation(mode: \"read\")",
+      "Outcome": "Passed",
+      "Reason": ""
+    }
+  ],
+  "ExitCode": 0,
+  "Scope": "Original preservation, performed restoration and deferred recovery are separate."
+}

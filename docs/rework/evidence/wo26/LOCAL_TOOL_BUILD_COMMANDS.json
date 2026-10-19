@@ -1,0 +1,20 @@
+[
+  {
+    "Input": "Current frozen source",
+    "ExitCode": 0,
+    "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+    "Command": "dotnet build tools/SmartPerformanceDoctor.WO20Probe -c Release -p:Platform=x64 -m:1 -v:minimal"
+  },
+  {
+    "Input": "Current frozen source",
+    "ExitCode": 0,
+    "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+    "Command": "dotnet build tools/SmartPerformanceDoctor.WO24Probe -c Release -p:Platform=x64 -m:1 -v:minimal"
+  },
+  {
+    "Input": "Current frozen source",
+    "ExitCode": 0,
+    "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+    "Command": "dotnet build tools/SmartPerformanceDoctor.GuiProbe -c Release -p:Platform=x64 -m:1 -v:minimal"
+  }
+]

@@ -1,0 +1,288 @@
+{
+  "Status": "PASS",
+  "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+  "Command": "python -X utf8 wo26-prepublish.py",
+  "Input": "Every WO26 report and evidence artifact",
+  "Output": "All required artifacts reopened; JSON parsed; known secret patterns absent; source-copy bytes verified",
+  "ExitCode": 0,
+  "Files": [
+    {
+      "Name": "ACL_RAW_RESULT.json",
+      "Bytes": 3025,
+      "Sha256": "5896a0acd135ac7f7e6abf02a3f4be1f7cb258e6bc9c7beae18bb74c257145b5"
+    },
+    {
+      "Name": "AUTHENTICODE_RAW_RESULT.json",
+      "Bytes": 10734,
+      "Sha256": "4e1cfb911457f5ba267315356fa4b25189c4f6a1da06cd8abb2fc7556132c387"
+    },
+    {
+      "Name": "BASELINE_RESULT.txt",
+      "Bytes": 903,
+      "Sha256": "1d70e075f7e4a1690179a62244fff0dae0fca5b31d07b8772bbac9e0db1feea9"
+    },
+    {
+      "Name": "BUILD_RESULT.txt",
+      "Bytes": 7740,
+      "Sha256": "8000c8820e377b2b5a8471d4a0d35b79eeaffc11e3a8f2b318cc707b8c3c18e6"
+    },
+    {
+      "Name": "CI_RUN_RESULT.json",
+      "Bytes": 9989,
+      "Sha256": "92bbae60845ee2587c367b57ba6fe6efdeadf5c70a05761f854739d745bb1d3f"
+    },
+    {
+      "Name": "CROSS_VOLUME_CRASH_RESULT.json",
+      "Bytes": 5595,
+      "Sha256": "527ffe98758168bac8b92afe499cbbb9fbe2fdb6df0a4dbc18f4eeb802232803"
+    },
+    {
+      "Name": "CROSS_VOLUME_STAGING_RESULT.json",
+      "Bytes": 5646,
+      "Sha256": "ede6f4b77bf4cbe171a4c748ff407ea9d4860c386a08ebf75cf3cc00996cecf5"
+    },
+    {
+      "Name": "DAYBREAK_DEFERRED.txt",
+      "Bytes": 441,
+      "Sha256": "7e6c445b82015b0d37a1112b18d9d0746460c181266a7de0345a411e73744d36"
+    },
+    {
+      "Name": "DEPENDENCY_SCRIPT.ps1.txt",
+      "Bytes": 3542,
+      "Sha256": "26a3f28184189a2e4c0cb7bb90630cbe4fd8d1959802f117240e977bad704af7"
+    },
+    {
+      "Name": "DEPENDENCY_SCRIPT_RESULT.json",
+      "Bytes": 1359,
+      "Sha256": "666e3fe438d54226b86b47374ad646bb3d4c089491baf4968b917aa0d7701aaa"
+    },
+    {
+      "Name": "DEPLOYMENT_DEPENDENCY_RESULT.json",
+      "Bytes": 3428,
+      "Sha256": "8eafbc68d3cff7e471af22121fcc627205a938e746c9ce298c2191fbfbb4a970"
+    },
+    {
+      "Name": "DIAGNOSTIC_PRIVACY_RESULT.json",
+      "Bytes": 1228,
+      "Sha256": "3f5a714f12c30fa956d250013e58cba33fdd87b21e45a81d0d268b52d1a9a7c8"
+    },
+    {
+      "Name": "DIFF_FILE",
+      "Bytes": 10435,
+      "Sha256": "e92aafcef627d1bbac146273a24e97c8d6fbcf94bfdd67f5a33b8fdaffa24fc6"
+    },
+    {
+      "Name": "ENVIRONMENT_RESULT.json",
+      "Bytes": 2800,
+      "Sha256": "0b8914a5e54af853568ddda79b4c010e2d3ae99422ac2e7bd608c020faa35567"
+    },
+    {
+      "Name": "FAILED_CI_PROCESS_RESULT.json",
+      "Bytes": 2557,
+      "Sha256": "9a60965ad15a24d5846f25eee13242ee38d42afbfa31270e615c91980a3fc4bc"
+    },
+    {
+      "Name": "FOCUSED_TESTS.json",
+      "Bytes": 4962,
+      "Sha256": "89b4adcadeb116ca1698df5a9ac13003a825aee65de2db12c3a45cbbeacbc10c"
+    },
+    {
+      "Name": "FULL_TEST_RESULT.txt",
+      "Bytes": 290815,
+      "Sha256": "95cbcbecfdfe51ab2ba956a4eee9b22e7cfbe261b144a59a02498b424cf5829d"
+    },
+    {
+      "Name": "GITHUB_RESULT.txt",
+      "Bytes": 778,
+      "Sha256": "6bf5bcd62bb797b67497ccfeb9ef3c6f5409ddaf3f6a87e5d1b5d7c564074c17"
+    },
+    {
+      "Name": "HISTORY_COMPARISON_HARNESS.ps1.txt",
+      "Bytes": 1774,
+      "Sha256": "70b83f67be5ff6c92a4f2a0793b2c0142af0f0b7176ec3f8b064d6872503ec84"
+    },
+    {
+      "Name": "HISTORY_COMPONENT_COMPARISON.json",
+      "Bytes": 8824,
+      "Sha256": "0f5adfd27f3ab6ec490a729ca045926db4f2d9d7386264479829f8baef9dec54"
+    },
+    {
+      "Name": "HISTORY_SUMMARY.json",
+      "Bytes": 8543,
+      "Sha256": "dd08ae31fa21e7da37c3aa855522610298f3e46f509c2cc05eafd7ac5c838148"
+    },
+    {
+      "Name": "INITIAL_FAILED_TEST_RESULT.json",
+      "Bytes": 1039,
+      "Sha256": "129213d064e5746014f2c3c0935c65c7b5d64df9f80530e3b84ac3b25bd7f846"
+    },
+    {
+      "Name": "INSTALLATION_HISTORY_PROFILE.json",
+      "Bytes": 35054,
+      "Sha256": "654f681c2e357988fe36c048b55d8e5c1ebf21b0f469b52c8eca40c157ebe3f3"
+    },
+    {
+      "Name": "INTERMEDIATE_RESULTS.json",
+      "Bytes": 833,
+      "Sha256": "bf6100feaacdad6bdf3fe6d4cc319db7bbf3c076e3eb23a4f24fae3090b0223c"
+    },
+    {
+      "Name": "local-build.txt",
+      "Bytes": 3160,
+      "Sha256": "02d1dc6388a76f89e7d8250af048da5ef31350e1a92abb516aea455c6aacf380"
+    },
+    {
+      "Name": "local-probe-build.txt",
+      "Bytes": 695,
+      "Sha256": "3a3dc0f6d31565ba5fa767e0582ff99a4badec49a153b142f684dfb1e44d86ee"
+    },
+    {
+      "Name": "local-securitylab.txt",
+      "Bytes": 1174,
+      "Sha256": "d01677f6c59438d2c63301c5932e65d2b52091e4c23ba124ba02a97b312f0ee9"
+    },
+    {
+      "Name": "LOCAL_BINARY_RECEIPT.json",
+      "Bytes": 265808,
+      "Sha256": "1e6fd14edd3f9695449d21f34e2579b4919d4b60a1b81a4ab0ea2e7ae9cc8dac"
+    },
+    {
+      "Name": "LOCAL_BUILD_COMMAND.json",
+      "Bytes": 398,
+      "Sha256": "53103182dfb9bee22f5a38f2478b9b9d821764ffd94e37de2b6b5cb85d3552c8"
+    },
+    {
+      "Name": "LOCAL_PROCESS_RESULT.json",
+      "Bytes": 43459,
+      "Sha256": "d11a6db7d7f200054eb3bb3a919a1b528a7b4191c603194ef403891f0c6b95c1"
+    },
+    {
+      "Name": "LOCAL_TEST_COMMAND.json",
+      "Bytes": 555,
+      "Sha256": "ca1427dcb91283671bdcd9f144de1f66c4efd38c1c3f34af5f778f2e9f3b3df5"
+    },
+    {
+      "Name": "LOCAL_TOOL_BUILD_COMMANDS.json",
+      "Bytes": 730,
+      "Sha256": "5438ba5804e807a9245ca7fe36711dcdb329eb85c9edfcfe7a26ce9c387ce672"
+    },
+    {
+      "Name": "MODIFIED_FILE",
+      "Bytes": 70616,
+      "Sha256": "6ef35e5023aa38f77636a100919d0d9587f7b67da2ab0a2d76bec466f85e7384"
+    },
+    {
+      "Name": "ORIGINAL_FILE",
+      "Bytes": 66423,
+      "Sha256": "225bb7d9dd3a4a8e1a06d034b52f3cb57d5ed0557a0f1929fc550d8b62edc113"
+    },
+    {
+      "Name": "PERFORMANCE_RESULT.json",
+      "Bytes": 9567,
+      "Sha256": "b5da78245686d0f67b2c4fcb2d59881c49d943f011fee450d19e44a75c9f28fc"
+    },
+    {
+      "Name": "PROCESS_RAW_RESULT.json",
+      "Bytes": 43475,
+      "Sha256": "8f659c006b77d563e2b1f391ba5e2deb62a854f531b9aa99ead84f23773a6d09"
+    },
+    {
+      "Name": "PRODUCTION_GATES.json",
+      "Bytes": 520,
+      "Sha256": "e89b7ac88e728d3dc19120a2ad82a1b34f10794ed2e38d0a023df694cd54e23b"
+    },
+    {
+      "Name": "RECOVERY_CLASSIFICATION_RESULT.json",
+      "Bytes": 2780,
+      "Sha256": "2a83eb7876cbdd3c6ef524ca70278768e9e84f5caf1d6c6b573f5fb8b5391477"
+    },
+    {
+      "Name": "RECOVERY_RECONCILIATION_RESULT.json",
+      "Bytes": 43832,
+      "Sha256": "386e08a37e07827d6b763ccf7acef3437f5ff055dfd5f2668935cac92b8d411f"
+    },
+    {
+      "Name": "ROLLBACK.sh",
+      "Bytes": 542,
+      "Sha256": "9de097b583a12bc9978a4c82488cf970a465c5ca3c80758e85196a5108410923"
+    },
+    {
+      "Name": "SECURITYLAB_RESULT.txt",
+      "Bytes": 653,
+      "Sha256": "2e993259874fdb877934232a62b34bec8070f68ede4ca331a816a6a92f3a263d"
+    },
+    {
+      "Name": "SHARING_VIOLATION_RESULT.json",
+      "Bytes": 43630,
+      "Sha256": "c6c7a98f01a65c713b12e5919d36b4f25ecbd8795a894c86bd33510693224792"
+    },
+    {
+      "Name": "SKIP_REASONS.json",
+      "Bytes": 33842,
+      "Sha256": "975af3c21c9a1ba5cedb47a194dca2b22747930a477e00ca915689427e208ff1"
+    },
+    {
+      "Name": "source-copy-baseline-build.txt",
+      "Bytes": 522,
+      "Sha256": "fba6a0686d790299646fbed622cc4dbf25e7f789c53d44076b7102a1f391d46a"
+    },
+    {
+      "Name": "source-copy-modified-build.txt",
+      "Bytes": 522,
+      "Sha256": "6a3b93aec23b5aae4b4b624974fd2c924b54829f764c9e1161187033749144a0"
+    },
+    {
+      "Name": "source-copy-restored-build.txt",
+      "Bytes": 522,
+      "Sha256": "b1a6c386f64f609355257d6a79b943435cba6258b9736d46dd947c89f4ae6e72"
+    },
+    {
+      "Name": "SOURCE_COPY_HARNESS.ps1.txt",
+      "Bytes": 6429,
+      "Sha256": "c5eba4e94285ffb7dbc80899b4fa62a7e71f5791bd1b1f80575f125ac5a4af5d"
+    },
+    {
+      "Name": "SOURCE_COPY_RESULT.json",
+      "Bytes": 3951,
+      "Sha256": "80cbc5c33a03a6d9002bf4e3cf08a10618d101413b97dfd07f4fe51cfbd311cd"
+    },
+    {
+      "Name": "STARTUP_TRUST_RESULT.json",
+      "Bytes": 688,
+      "Sha256": "854b588cf2302dc3917525d9642f93aec3fcf6b384e4a1c7ff3b97fd184f02b1"
+    },
+    {
+      "Name": "UI_TEST_RESULT.json",
+      "Bytes": 1206,
+      "Sha256": "a25caac37cdc1c36c53b00d62717a92480e01aa86de13d54783ba59075f11e1a"
+    },
+    {
+      "Name": "VAULT_COMPATIBILITY_RESULT.json",
+      "Bytes": 31176,
+      "Sha256": "432180673479951055af2a684acde98298c440e831ef5cafe922931561892c08"
+    },
+    {
+      "Name": "VERIFICATION.txt",
+      "Bytes": 4275,
+      "Sha256": "1e024b31669e0012cf5d422f8a6664bceab858e8bc1ded44d09110703a66a868"
+    }
+  ],
+  "Reports": [
+    "WO26_CROSS_VOLUME_CRASH_RECOVERY.md",
+    "WO26_CROSS_VOLUME_STAGING.md",
+    "WO26_DAYBREAK_DEFERRED.md",
+    "WO26_DEPLOYMENT_DEPENDENCIES.md",
+    "WO26_ERROR_DIAGNOSTICS.md",
+    "WO26_EXECUTION_REPORT.md",
+    "WO26_INSTALLATION_HISTORY_PERFORMANCE.md",
+    "WO26_PRODUCT_READINESS.md",
+    "WO26_REAL_ENVIRONMENT_STATUS.md",
+    "WO26_RECOVERY_STATE_CLASSIFICATION.md",
+    "WO26_SHARING_VIOLATION_RECOVERY.md",
+    "WO26_STARTUP_TRUST.md",
+    "WO26_TRANSACTION_RECONCILIATION.md",
+    "WO26_UI_INTEGRATION.md",
+    "WO26_VAULT_COMPATIBILITY.md"
+  ],
+  "Scope": "Pattern scan is not independent security review"
+}

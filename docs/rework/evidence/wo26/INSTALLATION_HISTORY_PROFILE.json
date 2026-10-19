@@ -1,0 +1,324 @@
+{
+  "Status": "PARTIAL",
+  "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+  "Environment": "Windows .NET10 x64; local synthetic files and GitHub-hosted noninteractive runner",
+  "Command": "scripts/wo26-history-profile.ps1",
+  "Input": "0/1/10/100/500/1000/4096 constructed signed histories; 120s/512MiB budgets",
+  "Output": {
+    "CI": [
+      {
+        "Input": {
+          "Iteration": 0,
+          "Transactions": 0,
+          "TimeoutSeconds": 120,
+          "MemoryCeilingBytes": 536870912
+        },
+        "Output": "{\"History\":{\"Verified\":false,\"State\":\"InstallationUnattested\",\"Code\":\"INSTALLATION-NOT-ATTESTED\",\"Transactions\":0,\"Files\":0},\"ElapsedMs\":29.8629,\"CpuMs\":15.625,\"AllocatedBytes\":18376,\"PeakSampledHandles\":253,\"HandlesBefore\":227,\"HandlesAfter\":256,\"PeakSampledWorkingSetBytes\":31764480,\"Phases\":[{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":2.9872,\"AllocatedBytes\":280}]}\r\n",
+        "ExitCode": 0,
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>"
+      },
+      {
+        "Input": {
+          "Iteration": 0,
+          "Transactions": 1,
+          "TimeoutSeconds": 120,
+          "MemoryCeilingBytes": 536870912
+        },
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":1,\"Files\":1},\"ElapsedMs\":130.2687,\"CpuMs\":171.875,\"AllocatedBytes\":1938472,\"PeakSampledHandles\":307,\"HandlesBefore\":227,\"HandlesAfter\":281,\"PeakSampledWorkingSetBytes\":42672128,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":322,\"ElapsedMs\":9.4699,\"AllocatedBytes\":459872},{\"Name\":\"FileOpenAndBind\",\"Calls\":8,\"ElapsedMs\":5.7429,\"AllocatedBytes\":240672},{\"Name\":\"FileIdentityValidation\",\"Calls\":13,\"ElapsedMs\":2.0648,\"AllocatedBytes\":120696},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":7.1802,\"AllocatedBytes\":457616},{\"Name\":\"HistoryJsonParse\",\"Calls\":1,\"ElapsedMs\":0.1074,\"AllocatedBytes\":8376},{\"Name\":\"HistorySignatureVerification\",\"Calls\":1,\"ElapsedMs\":0.8,\"AllocatedBytes\":4840},{\"Name\":\"HistoryTransactionRead\",\"Calls\":1,\"ElapsedMs\":3.4725,\"AllocatedBytes\":256568},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":101.1048,\"AllocatedBytes\":1895488}]}\r\n",
+        "ExitCode": 0,
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>"
+      },
+      {
+        "Input": {
+          "Iteration": 1,
+          "Transactions": 1,
+          "TimeoutSeconds": 120,
+          "MemoryCeilingBytes": 536870912
+        },
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":1,\"Files\":1},\"ElapsedMs\":128.4316,\"CpuMs\":140.625,\"AllocatedBytes\":1898752,\"PeakSampledHandles\":307,\"HandlesBefore\":227,\"HandlesAfter\":281,\"PeakSampledWorkingSetBytes\":42688512,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":322,\"ElapsedMs\":9.0772,\"AllocatedBytes\":459872},{\"Name\":\"FileOpenAndBind\",\"Calls\":8,\"ElapsedMs\":5.2879,\"AllocatedBytes\":240672},{\"Name\":\"FileIdentityValidation\",\"Calls\":13,\"ElapsedMs\":2.0614,\"AllocatedBytes\":120696},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":6.9873,\"AllocatedBytes\":457616},{\"Name\":\"HistoryJsonParse\",\"Calls\":1,\"ElapsedMs\":0.0981,\"AllocatedBytes\":8376},{\"Name\":\"HistorySignatureVerification\",\"Calls\":1,\"ElapsedMs\":0.9418,\"AllocatedBytes\":4840},{\"Name\":\"HistoryTransactionRead\",\"Calls\":1,\"ElapsedMs\":3.5999,\"AllocatedBytes\":256568},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":100.5028,\"AllocatedBytes\":1852968}]}\r\n",
+        "ExitCode": 0,
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>"
+      },
+      {
+        "Input": {
+          "Iteration": 2,
+          "Transactions": 1,
+          "TimeoutSeconds": 120,
+          "MemoryCeilingBytes": 536870912
+        },
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":1,\"Files\":1},\"ElapsedMs\":131.1298,\"CpuMs\":156.25,\"AllocatedBytes\":1927384,\"PeakSampledHandles\":311,\"HandlesBefore\":227,\"HandlesAfter\":281,\"PeakSampledWorkingSetBytes\":42999808,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":322,\"ElapsedMs\":10.7021,\"AllocatedBytes\":459872},{\"Name\":\"FileOpenAndBind\",\"Calls\":8,\"ElapsedMs\":6.424,\"AllocatedBytes\":240672},{\"Name\":\"FileIdentityValidation\",\"Calls\":13,\"ElapsedMs\":2.7553,\"AllocatedBytes\":120696},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":8.2223,\"AllocatedBytes\":457616},{\"Name\":\"HistoryJsonParse\",\"Calls\":1,\"ElapsedMs\":0.1066,\"AllocatedBytes\":8376},{\"Name\":\"HistorySignatureVerification\",\"Calls\":1,\"ElapsedMs\":0.7622,\"AllocatedBytes\":4840},{\"Name\":\"HistoryTransactionRead\",\"Calls\":1,\"ElapsedMs\":3.6626,\"AllocatedBytes\":256568},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":103.1818,\"AllocatedBytes\":1884808}]}\r\n",
+        "ExitCode": 0,
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>"
+      },
+      {
+        "Input": {
+          "Iteration": 0,
+          "Transactions": 10,
+          "TimeoutSeconds": 120,
+          "MemoryCeilingBytes": 536870912
+        },
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":10,\"Files\":1},\"ElapsedMs\":164.3826,\"CpuMs\":156.25,\"AllocatedBytes\":6214944,\"PeakSampledHandles\":361,\"HandlesBefore\":227,\"HandlesAfter\":281,\"PeakSampledWorkingSetBytes\":46862336,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":1294,\"ElapsedMs\":31.3634,\"AllocatedBytes\":1860704},{\"Name\":\"FileOpenAndBind\",\"Calls\":35,\"ElapsedMs\":19.7227,\"AllocatedBytes\":1135272},{\"Name\":\"FileIdentityValidation\",\"Calls\":22,\"ElapsedMs\":3.572,\"AllocatedBytes\":217248},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":7.517,\"AllocatedBytes\":457616},{\"Name\":\"HistoryJsonParse\",\"Calls\":10,\"ElapsedMs\":0.7051,\"AllocatedBytes\":83760},{\"Name\":\"HistorySignatureVerification\",\"Calls\":10,\"ElapsedMs\":5.5578,\"AllocatedBytes\":48400},{\"Name\":\"HistoryTransactionRead\",\"Calls\":10,\"ElapsedMs\":25.8112,\"AllocatedBytes\":2565032},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":136.0097,\"AllocatedBytes\":6156288}]}\r\n",
+        "ExitCode": 0,
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>"
+      },
+      {
+        "Input": {
+          "Iteration": 0,
+          "Transactions": 100,
+          "TimeoutSeconds": 120,
+          "MemoryCeilingBytes": 536870912
+        },
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":100,\"Files\":1},\"ElapsedMs\":528.7876,\"CpuMs\":640.625,\"AllocatedBytes\":49967064,\"PeakSampledHandles\":1004,\"HandlesBefore\":227,\"HandlesAfter\":281,\"PeakSampledWorkingSetBytes\":48431104,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":11014,\"ElapsedMs\":245.0889,\"AllocatedBytes\":15869024},{\"Name\":\"FileOpenAndBind\",\"Calls\":305,\"ElapsedMs\":156.8603,\"AllocatedBytes\":10081272},{\"Name\":\"FileIdentityValidation\",\"Calls\":112,\"ElapsedMs\":17.2117,\"AllocatedBytes\":1182768},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":6.7557,\"AllocatedBytes\":457840},{\"Name\":\"HistoryJsonParse\",\"Calls\":100,\"ElapsedMs\":5.7962,\"AllocatedBytes\":837600},{\"Name\":\"HistorySignatureVerification\",\"Calls\":100,\"ElapsedMs\":46.5776,\"AllocatedBytes\":486240},{\"Name\":\"HistoryTransactionRead\",\"Calls\":100,\"ElapsedMs\":252.8551,\"AllocatedBytes\":25984872},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":502.3652,\"AllocatedBytes\":49818840}]}\r\n",
+        "ExitCode": 0,
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>"
+      },
+      {
+        "Input": {
+          "Iteration": 1,
+          "Transactions": 100,
+          "TimeoutSeconds": 120,
+          "MemoryCeilingBytes": 536870912
+        },
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":100,\"Files\":1},\"ElapsedMs\":522.5428,\"CpuMs\":578.125,\"AllocatedBytes\":50085536,\"PeakSampledHandles\":1004,\"HandlesBefore\":227,\"HandlesAfter\":281,\"PeakSampledWorkingSetBytes\":49192960,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":11014,\"ElapsedMs\":240.3191,\"AllocatedBytes\":15976880},{\"Name\":\"FileOpenAndBind\",\"Calls\":305,\"ElapsedMs\":153.5395,\"AllocatedBytes\":10116408},{\"Name\":\"FileIdentityValidation\",\"Calls\":112,\"ElapsedMs\":17.4454,\"AllocatedBytes\":1235760},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":6.5615,\"AllocatedBytes\":458704},{\"Name\":\"HistoryJsonParse\",\"Calls\":100,\"ElapsedMs\":5.2706,\"AllocatedBytes\":837600},{\"Name\":\"HistorySignatureVerification\",\"Calls\":100,\"ElapsedMs\":46.1367,\"AllocatedBytes\":486240},{\"Name\":\"HistoryTransactionRead\",\"Calls\":100,\"ElapsedMs\":249.1198,\"AllocatedBytes\":26036712},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":494.3881,\"AllocatedBytes\":49937312}]}\r\n",
+        "ExitCode": 0,
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>"
+      },
+      {
+        "Input": {
+          "Iteration": 2,
+          "Transactions": 100,
+          "TimeoutSeconds": 120,
+          "MemoryCeilingBytes": 536870912
+        },
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":100,\"Files\":1},\"ElapsedMs\":536.8778,\"CpuMs\":531.25,\"AllocatedBytes\":50125528,\"PeakSampledHandles\":1004,\"HandlesBefore\":227,\"HandlesAfter\":281,\"PeakSampledWorkingSetBytes\":49430528,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":11014,\"ElapsedMs\":244.0592,\"AllocatedBytes\":16012448},{\"Name\":\"FileOpenAndBind\",\"Calls\":305,\"ElapsedMs\":155.5297,\"AllocatedBytes\":10139304},{\"Name\":\"FileIdentityValidation\",\"Calls\":112,\"ElapsedMs\":17.3777,\"AllocatedBytes\":1235760},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":7.2365,\"AllocatedBytes\":458704},{\"Name\":\"HistoryJsonParse\",\"Calls\":100,\"ElapsedMs\":5.9447,\"AllocatedBytes\":837600},{\"Name\":\"HistorySignatureVerification\",\"Calls\":100,\"ElapsedMs\":46.2035,\"AllocatedBytes\":486240},{\"Name\":\"HistoryTransactionRead\",\"Calls\":100,\"ElapsedMs\":252.5365,\"AllocatedBytes\":26072280},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":505.5406,\"AllocatedBytes\":49974160}]}\r\n",
+        "ExitCode": 0,
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>"
+      },
+      {
+        "Input": {
+          "Iteration": 0,
+          "Transactions": 500,
+          "TimeoutSeconds": 120,
+          "MemoryCeilingBytes": 536870912
+        },
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":500,\"Files\":1},\"ElapsedMs\":2243.989,\"CpuMs\":2437.5,\"AllocatedBytes\":247266320,\"PeakSampledHandles\":3807,\"HandlesBefore\":227,\"HandlesAfter\":284,\"PeakSampledWorkingSetBytes\":64311296,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":54214,\"ElapsedMs\":1227.019,\"AllocatedBytes\":81262752},{\"Name\":\"FileOpenAndBind\",\"Calls\":1505,\"ElapsedMs\":783.1042,\"AllocatedBytes\":51544928},{\"Name\":\"FileIdentityValidation\",\"Calls\":512,\"ElapsedMs\":87.0005,\"AllocatedBytes\":5728560},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":6.8013,\"AllocatedBytes\":458704},{\"Name\":\"HistoryJsonParse\",\"Calls\":500,\"ElapsedMs\":30.7235,\"AllocatedBytes\":4188000},{\"Name\":\"HistorySignatureVerification\",\"Calls\":500,\"ElapsedMs\":230.9867,\"AllocatedBytes\":2429856},{\"Name\":\"HistoryTransactionRead\",\"Calls\":500,\"ElapsedMs\":1296.3612,\"AllocatedBytes\":132161432},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":2216.5012,\"AllocatedBytes\":246657624}]}\r\n",
+        "ExitCode": 0,
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>"
+      },
+      {
+        "Input": {
+          "Iteration": 0,
+          "Transactions": 1000,
+          "TimeoutSeconds": 120,
+          "MemoryCeilingBytes": 536870912
+        },
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":1000,\"Files\":1},\"ElapsedMs\":4317.9089,\"CpuMs\":5109.375,\"AllocatedBytes\":493212616,\"PeakSampledHandles\":7307,\"HandlesBefore\":227,\"HandlesAfter\":284,\"PeakSampledWorkingSetBytes\":67371008,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":108214,\"ElapsedMs\":2469.3197,\"AllocatedBytes\":162432096},{\"Name\":\"FileOpenAndBind\",\"Calls\":3005,\"ElapsedMs\":1582.558,\"AllocatedBytes\":103067712},{\"Name\":\"FileIdentityValidation\",\"Calls\":1012,\"ElapsedMs\":164.3767,\"AllocatedBytes\":11344560},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":6.6951,\"AllocatedBytes\":458704},{\"Name\":\"HistoryJsonParse\",\"Calls\":1000,\"ElapsedMs\":56.0537,\"AllocatedBytes\":8379952},{\"Name\":\"HistorySignatureVerification\",\"Calls\":1000,\"ElapsedMs\":469.1987,\"AllocatedBytes\":4869528},{\"Name\":\"HistoryTransactionRead\",\"Calls\":1000,\"ElapsedMs\":2535.8526,\"AllocatedBytes\":264108624},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":4291.3828,\"AllocatedBytes\":491995456}]}\r\n",
+        "ExitCode": 0,
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>"
+      },
+      {
+        "Input": {
+          "Iteration": 0,
+          "Transactions": 4096,
+          "TimeoutSeconds": 120,
+          "MemoryCeilingBytes": 536870912
+        },
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":4096,\"Files\":1},\"ElapsedMs\":15755.3633,\"CpuMs\":17859.375,\"AllocatedBytes\":1982582656,\"PeakSampledHandles\":28982,\"HandlesBefore\":227,\"HandlesAfter\":287,\"PeakSampledWorkingSetBytes\":135692288,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":442582,\"ElapsedMs\":9633.1494,\"AllocatedBytes\":640648656},{\"Name\":\"FileOpenAndBind\",\"Calls\":12293,\"ElapsedMs\":6126.6759,\"AllocatedBytes\":407285920},{\"Name\":\"FileIdentityValidation\",\"Calls\":4108,\"ElapsedMs\":612.2388,\"AllocatedBytes\":44051856},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":6.718,\"AllocatedBytes\":457840},{\"Name\":\"HistoryJsonParse\",\"Calls\":4096,\"ElapsedMs\":144.3123,\"AllocatedBytes\":34312600},{\"Name\":\"HistorySignatureVerification\",\"Calls\":4096,\"ElapsedMs\":1735.9038,\"AllocatedBytes\":18665064},{\"Name\":\"HistoryTransactionRead\",\"Calls\":4096,\"ElapsedMs\":9040.2836,\"AllocatedBytes\":1054872744},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":15728.413,\"AllocatedBytes\":1978188576}]}\r\n",
+        "ExitCode": 0,
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>"
+      }
+    ],
+    "Local": [
+      {
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":false,\"State\":\"InstallationUnattested\",\"Code\":\"INSTALLATION-NOT-ATTESTED\",\"Transactions\":0,\"Files\":0},\"ElapsedMs\":32.3346,\"CpuMs\":62.5,\"AllocatedBytes\":15488,\"PeakSampledHandles\":281,\"HandlesBefore\":255,\"HandlesAfter\":284,\"PeakSampledWorkingSetBytes\":35315712,\"Phases\":[{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":3.4192,\"AllocatedBytes\":520}]}\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": {
+          "MemoryCeilingBytes": 536870912,
+          "Transactions": 0,
+          "Iteration": 0,
+          "TimeoutSeconds": 120
+        },
+        "ExitCode": 0
+      },
+      {
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":1,\"Files\":1},\"ElapsedMs\":160.4,\"CpuMs\":281.25,\"AllocatedBytes\":2501752,\"PeakSampledHandles\":363,\"HandlesBefore\":255,\"HandlesAfter\":309,\"PeakSampledWorkingSetBytes\":45961216,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":602,\"ElapsedMs\":25.6008,\"AllocatedBytes\":958016},{\"Name\":\"FileOpenAndBind\",\"Calls\":8,\"ElapsedMs\":16.5379,\"AllocatedBytes\":501184},{\"Name\":\"FileIdentityValidation\",\"Calls\":13,\"ElapsedMs\":6.0124,\"AllocatedBytes\":242464},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":9.6136,\"AllocatedBytes\":515552},{\"Name\":\"HistoryJsonParse\",\"Calls\":1,\"ElapsedMs\":0.1764,\"AllocatedBytes\":8376},{\"Name\":\"HistorySignatureVerification\",\"Calls\":1,\"ElapsedMs\":1.1534,\"AllocatedBytes\":4840},{\"Name\":\"HistoryTransactionRead\",\"Calls\":1,\"ElapsedMs\":8.9673,\"AllocatedBytes\":368552},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":131.9341,\"AllocatedBytes\":2465088}]}\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": {
+          "MemoryCeilingBytes": 536870912,
+          "Transactions": 1,
+          "Iteration": 0,
+          "TimeoutSeconds": 120
+        },
+        "ExitCode": 0
+      },
+      {
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":1,\"Files\":1},\"ElapsedMs\":178.4362,\"CpuMs\":343.75,\"AllocatedBytes\":2519168,\"PeakSampledHandles\":360,\"HandlesBefore\":255,\"HandlesAfter\":309,\"PeakSampledWorkingSetBytes\":45842432,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":602,\"ElapsedMs\":27.9923,\"AllocatedBytes\":958016},{\"Name\":\"FileOpenAndBind\",\"Calls\":8,\"ElapsedMs\":16.5996,\"AllocatedBytes\":501184},{\"Name\":\"FileIdentityValidation\",\"Calls\":13,\"ElapsedMs\":6.8036,\"AllocatedBytes\":242464},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":10.1618,\"AllocatedBytes\":515552},{\"Name\":\"HistoryJsonParse\",\"Calls\":1,\"ElapsedMs\":0.1941,\"AllocatedBytes\":8376},{\"Name\":\"HistorySignatureVerification\",\"Calls\":1,\"ElapsedMs\":1.2309,\"AllocatedBytes\":4840},{\"Name\":\"HistoryTransactionRead\",\"Calls\":1,\"ElapsedMs\":9.4335,\"AllocatedBytes\":368552},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":144.1354,\"AllocatedBytes\":2476216}]}\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": {
+          "MemoryCeilingBytes": 536870912,
+          "Transactions": 1,
+          "Iteration": 1,
+          "TimeoutSeconds": 120
+        },
+        "ExitCode": 0
+      },
+      {
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":1,\"Files\":1},\"ElapsedMs\":174.5324,\"CpuMs\":312.5,\"AllocatedBytes\":2516856,\"PeakSampledHandles\":358,\"HandlesBefore\":255,\"HandlesAfter\":309,\"PeakSampledWorkingSetBytes\":45895680,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":602,\"ElapsedMs\":26.3421,\"AllocatedBytes\":958016},{\"Name\":\"FileOpenAndBind\",\"Calls\":8,\"ElapsedMs\":15.9014,\"AllocatedBytes\":501184},{\"Name\":\"FileIdentityValidation\",\"Calls\":13,\"ElapsedMs\":6.0398,\"AllocatedBytes\":242464},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":9.9768,\"AllocatedBytes\":515552},{\"Name\":\"HistoryJsonParse\",\"Calls\":1,\"ElapsedMs\":0.1944,\"AllocatedBytes\":8376},{\"Name\":\"HistorySignatureVerification\",\"Calls\":1,\"ElapsedMs\":1.1949,\"AllocatedBytes\":4840},{\"Name\":\"HistoryTransactionRead\",\"Calls\":1,\"ElapsedMs\":8.9399,\"AllocatedBytes\":368552},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":140.4705,\"AllocatedBytes\":2477048}]}\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": {
+          "MemoryCeilingBytes": 536870912,
+          "Transactions": 1,
+          "Iteration": 2,
+          "TimeoutSeconds": 120
+        },
+        "ExitCode": 0
+      },
+      {
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":10,\"Files\":1},\"ElapsedMs\":274.4037,\"CpuMs\":406.25,\"AllocatedBytes\":8625808,\"PeakSampledHandles\":471,\"HandlesBefore\":255,\"HandlesAfter\":309,\"PeakSampledWorkingSetBytes\":51798016,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":2384,\"ElapsedMs\":90.5457,\"AllocatedBytes\":3819152},{\"Name\":\"FileOpenAndBind\",\"Calls\":35,\"ElapsedMs\":60.3344,\"AllocatedBytes\":2306656},{\"Name\":\"FileIdentityValidation\",\"Calls\":22,\"ElapsedMs\":9.9788,\"AllocatedBytes\":426640},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":9.511,\"AllocatedBytes\":515552},{\"Name\":\"HistoryJsonParse\",\"Calls\":10,\"ElapsedMs\":1.3872,\"AllocatedBytes\":83760},{\"Name\":\"HistorySignatureVerification\",\"Calls\":10,\"ElapsedMs\":8.2729,\"AllocatedBytes\":48400},{\"Name\":\"HistoryTransactionRead\",\"Calls\":10,\"ElapsedMs\":74.8768,\"AllocatedBytes\":3684872},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":244.197,\"AllocatedBytes\":8567416}]}\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": {
+          "MemoryCeilingBytes": 536870912,
+          "Transactions": 10,
+          "Iteration": 0,
+          "TimeoutSeconds": 120
+        },
+        "ExitCode": 0
+      },
+      {
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":100,\"Files\":1},\"ElapsedMs\":1542.0043,\"CpuMs\":2312.5,\"AllocatedBytes\":71401296,\"PeakSampledHandles\":1552,\"HandlesBefore\":255,\"HandlesAfter\":309,\"PeakSampledWorkingSetBytes\":55361536,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":20204,\"ElapsedMs\":798.2877,\"AllocatedBytes\":33187952},{\"Name\":\"FileOpenAndBind\",\"Calls\":305,\"ElapsedMs\":554.0713,\"AllocatedBytes\":20706544},{\"Name\":\"FileIdentityValidation\",\"Calls\":112,\"ElapsedMs\":48.1894,\"AllocatedBytes\":2359552},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":9.9999,\"AllocatedBytes\":517360},{\"Name\":\"HistoryJsonParse\",\"Calls\":100,\"ElapsedMs\":13.4074,\"AllocatedBytes\":837600},{\"Name\":\"HistorySignatureVerification\",\"Calls\":100,\"ElapsedMs\":87.5939,\"AllocatedBytes\":486240},{\"Name\":\"HistoryTransactionRead\",\"Calls\":100,\"ElapsedMs\":818.046,\"AllocatedBytes\":37852456},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":1509.133,\"AllocatedBytes\":71077352}]}\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": {
+          "MemoryCeilingBytes": 536870912,
+          "Transactions": 100,
+          "Iteration": 0,
+          "TimeoutSeconds": 120
+        },
+        "ExitCode": 0
+      },
+      {
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":100,\"Files\":1},\"ElapsedMs\":1734.9162,\"CpuMs\":3421.875,\"AllocatedBytes\":71391504,\"PeakSampledHandles\":1551,\"HandlesBefore\":255,\"HandlesAfter\":309,\"PeakSampledWorkingSetBytes\":55566336,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":20204,\"ElapsedMs\":904.1282,\"AllocatedBytes\":33134600},{\"Name\":\"FileOpenAndBind\",\"Calls\":305,\"ElapsedMs\":622.0481,\"AllocatedBytes\":20719288},{\"Name\":\"FileIdentityValidation\",\"Calls\":112,\"ElapsedMs\":57.4996,\"AllocatedBytes\":2268400},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":10.1359,\"AllocatedBytes\":515776},{\"Name\":\"HistoryJsonParse\",\"Calls\":100,\"ElapsedMs\":16.3712,\"AllocatedBytes\":837600},{\"Name\":\"HistorySignatureVerification\",\"Calls\":100,\"ElapsedMs\":102.3291,\"AllocatedBytes\":486240},{\"Name\":\"HistoryTransactionRead\",\"Calls\":100,\"ElapsedMs\":946.4211,\"AllocatedBytes\":37862184},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":1702.6248,\"AllocatedBytes\":71023184}]}\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": {
+          "MemoryCeilingBytes": 536870912,
+          "Transactions": 100,
+          "Iteration": 1,
+          "TimeoutSeconds": 120
+        },
+        "ExitCode": 0
+      },
+      {
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":100,\"Files\":1},\"ElapsedMs\":1425.6498,\"CpuMs\":2718.75,\"AllocatedBytes\":71324536,\"PeakSampledHandles\":1551,\"HandlesBefore\":255,\"HandlesAfter\":309,\"PeakSampledWorkingSetBytes\":55046144,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":20204,\"ElapsedMs\":741.2,\"AllocatedBytes\":33129200},{\"Name\":\"FileOpenAndBind\",\"Calls\":305,\"ElapsedMs\":510.0364,\"AllocatedBytes\":20669536},{\"Name\":\"FileIdentityValidation\",\"Calls\":112,\"ElapsedMs\":47.3257,\"AllocatedBytes\":2359552},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":9.3225,\"AllocatedBytes\":517360},{\"Name\":\"HistoryJsonParse\",\"Calls\":100,\"ElapsedMs\":12.0084,\"AllocatedBytes\":837600},{\"Name\":\"HistorySignatureVerification\",\"Calls\":100,\"ElapsedMs\":81.4546,\"AllocatedBytes\":486240},{\"Name\":\"HistoryTransactionRead\",\"Calls\":100,\"ElapsedMs\":749.7287,\"AllocatedBytes\":37793624},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":1394.8236,\"AllocatedBytes\":71019096}]}\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": {
+          "MemoryCeilingBytes": 536870912,
+          "Transactions": 100,
+          "Iteration": 2,
+          "TimeoutSeconds": 120
+        },
+        "ExitCode": 0
+      },
+      {
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":500,\"Files\":1},\"ElapsedMs\":6651.1146,\"CpuMs\":11359.375,\"AllocatedBytes\":346584096,\"PeakSampledHandles\":6356,\"HandlesBefore\":255,\"HandlesAfter\":314,\"PeakSampledWorkingSetBytes\":76791808,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":99404,\"ElapsedMs\":3704.2191,\"AllocatedBytes\":160429304},{\"Name\":\"FileOpenAndBind\",\"Calls\":1505,\"ElapsedMs\":2566.0226,\"AllocatedBytes\":100561936},{\"Name\":\"FileIdentityValidation\",\"Calls\":512,\"ElapsedMs\":219.5769,\"AllocatedBytes\":10454000},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":10.3845,\"AllocatedBytes\":515776},{\"Name\":\"HistoryJsonParse\",\"Calls\":500,\"ElapsedMs\":47.7659,\"AllocatedBytes\":4188000},{\"Name\":\"HistorySignatureVerification\",\"Calls\":500,\"ElapsedMs\":426.7094,\"AllocatedBytes\":2391184},{\"Name\":\"HistoryTransactionRead\",\"Calls\":500,\"ElapsedMs\":3817.551,\"AllocatedBytes\":186045488},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":6620.6854,\"AllocatedBytes\":345167152}]}\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": {
+          "MemoryCeilingBytes": 536870912,
+          "Transactions": 500,
+          "Iteration": 0,
+          "TimeoutSeconds": 120
+        },
+        "ExitCode": 0
+      },
+      {
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":1000,\"Files\":1},\"ElapsedMs\":13710.1913,\"CpuMs\":20265.625,\"AllocatedBytes\":689665896,\"PeakSampledHandles\":12358,\"HandlesBefore\":255,\"HandlesAfter\":315,\"PeakSampledWorkingSetBytes\":88338432,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":198404,\"ElapsedMs\":7812.3697,\"AllocatedBytes\":319180856},{\"Name\":\"FileOpenAndBind\",\"Calls\":3005,\"ElapsedMs\":5442.3165,\"AllocatedBytes\":200112160},{\"Name\":\"FileIdentityValidation\",\"Calls\":1012,\"ElapsedMs\":448.0277,\"AllocatedBytes\":20686000},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":10.631,\"AllocatedBytes\":515776},{\"Name\":\"HistoryJsonParse\",\"Calls\":1000,\"ElapsedMs\":84.584,\"AllocatedBytes\":8376000},{\"Name\":\"HistorySignatureVerification\",\"Calls\":1000,\"ElapsedMs\":852.0353,\"AllocatedBytes\":4506352},{\"Name\":\"HistoryTransactionRead\",\"Calls\":1000,\"ElapsedMs\":8021.0021,\"AllocatedBytes\":371286176},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":13674.6219,\"AllocatedBytes\":686779016}]}\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": {
+          "MemoryCeilingBytes": 536870912,
+          "Transactions": 1000,
+          "Iteration": 0,
+          "TimeoutSeconds": 120
+        },
+        "ExitCode": 0
+      },
+      {
+        "Status": "PASS",
+        "Environment": "Windows synthetic signed history; strictAcl=false; constructed rather than applied transactions",
+        "Command": "WO25Probe history-profile <SYNTHETIC_ROOT>",
+        "Output": "{\"History\":{\"Verified\":true,\"State\":\"InstallationVerified\",\"Code\":\"RETAINED-SIGNED-HISTORY-VERIFIED\",\"Transactions\":4096,\"Files\":1},\"ElapsedMs\":52190.0222,\"CpuMs\":80265.625,\"AllocatedBytes\":2809713952,\"PeakSampledHandles\":49508,\"HandlesBefore\":255,\"HandlesAfter\":313,\"PeakSampledWorkingSetBytes\":160100352,\"Phases\":[{\"Name\":\"NativeIdentityCheck\",\"Calls\":811412,\"ElapsedMs\":29003.1314,\"AllocatedBytes\":1303763168},{\"Name\":\"FileOpenAndBind\",\"Calls\":12293,\"ElapsedMs\":20886.7007,\"AllocatedBytes\":817610992},{\"Name\":\"FileIdentityValidation\",\"Calls\":4108,\"ElapsedMs\":1532.4296,\"AllocatedBytes\":84042544},{\"Name\":\"HashAndIdentity\",\"Calls\":3,\"ElapsedMs\":10.158,\"AllocatedBytes\":519896},{\"Name\":\"HistoryJsonParse\",\"Calls\":4096,\"ElapsedMs\":318.2175,\"AllocatedBytes\":34308096},{\"Name\":\"HistorySignatureVerification\",\"Calls\":4096,\"ElapsedMs\":3094.0725,\"AllocatedBytes\":18319592},{\"Name\":\"HistoryTransactionRead\",\"Calls\":4096,\"ElapsedMs\":31527.3487,\"AllocatedBytes\":1514658208},{\"Name\":\"HistoryTotal\",\"Calls\":1,\"ElapsedMs\":52156.6663,\"AllocatedBytes\":2798999216}]}\r\n",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Input": {
+          "MemoryCeilingBytes": 536870912,
+          "Transactions": 4096,
+          "Iteration": 0,
+          "TimeoutSeconds": 120
+        },
+        "ExitCode": 0
+      }
+    ]
+  },
+  "ExitCode": 0,
+  "PhysicalLowEnd": "NOT TESTED",
+  "Scope": "Constructed metadata; not thousands of executed updates. Sampled peaks; nested timings overlap."
+}

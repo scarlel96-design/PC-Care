@@ -1,0 +1,14 @@
+{
+  "Status": "FAILURES PRESERVED",
+  "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+  "CancelledCI": 39165657873,
+  "FailedCI": 39165942479,
+  "FailedCICause": "WO25Probe Program.cs was omitted from the source commit; old probe lacked new result fields. Commit bd2d6d1 publishes the exact tested tool.",
+  "InitialFocused": "72 PASS / 1 FAIL; obsolete locked-later-destination expectation corrected with stronger preservation assertions",
+  "InvalidatedRun": "Initial local 2aaa run stopped after source changed; not accepted qualification",
+  "OtherFailures": [
+    "Auxiliary probe variable shadow and finally-return compilation errors corrected",
+    "Test helper Start alias conflict corrected with unique function names",
+    "Diagnostic overload ambiguity corrected with explicit TransactionResult"
+  ]
+}

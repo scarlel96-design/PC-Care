@@ -1,0 +1,15 @@
+{
+  "Status": "PASS",
+  "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+  "Environment": "Windows .NET10 x64; local synthetic files and GitHub-hosted noninteractive runner",
+  "Command": "git push; gh run view; final remote tree/blob verification",
+  "Input": "Requested branch and final CI source",
+  "Output": {
+    "Branch": "codex/pccare-wo26-transaction-recovery-volume-staging",
+    "CISource": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+    "CI": "https://github.com/scarlel96-design/PC-Care/actions/runs/39166559052",
+    "Conclusion": "success"
+  },
+  "ExitCode": 0,
+  "FinalDocumentReceipt": "Final commit and all changed blobs are verified after publication in the outside-repository final report. A document cannot embed its own commit SHA."
+}

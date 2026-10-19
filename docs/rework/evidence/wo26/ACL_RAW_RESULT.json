@@ -1,0 +1,81 @@
+{
+  "Status": "PASS",
+  "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+  "Environment": "Windows .NET10 x64; local synthetic files and GitHub-hosted noninteractive runner",
+  "Command": "Retained WO23 Windows API CI matrix",
+  "Input": "Disposable Windows runner; synthetic ACL objects and PE files",
+  "Output": {
+    "PrivacyProjection": "Native identity and volume fields use document-local aliases. Actual exit codes and outcomes remain unchanged.",
+    "RawRecordSha256": "6ddc6853f594b9e75d3e781fea98e8be1326a57b33581907234ddad8a9579b83",
+    "DigestEncoding": "SHA256 of UTF-8 json.dumps(input,sort_keys=True); canonical input record, not raw file bytes",
+    "Records": {
+      "Input": "Actual NTFS ACL and file handle operations",
+      "ExitCode": 0,
+      "Command": "WO23WindowsProbe acl <CI_TEMP>/wo23-acl",
+      "Output": {
+        "Status": "PASS",
+        "Scope": "Actual Windows APIs in disposable runner; no independent standard-user token",
+        "RestrictedToken": "NOT TESTED",
+        "Tests": [
+          {
+            "Name": "ProtectedOwnerAndExplicitAces",
+            "Status": "PASS",
+            "Input": "Disposable runner synthetic filesystem",
+            "ExitCode": 0
+          },
+          {
+            "Name": "InheritedFileAces",
+            "Status": "PASS",
+            "Input": "Disposable runner synthetic filesystem",
+            "ExitCode": 0
+          },
+          {
+            "Name": "WritableNonAdminAceRejected",
+            "Status": "PASS",
+            "Input": "Disposable runner synthetic filesystem",
+            "ExitCode": 0
+          },
+          {
+            "Name": "PinnedPathReplacementAndMutationDenied",
+            "Status": "PASS",
+            "Input": "Disposable runner synthetic filesystem",
+            "ExitCode": 0
+          },
+          {
+            "Name": "ReplacementFileIdRejected",
+            "Status": "PASS",
+            "Input": "Disposable runner synthetic filesystem",
+            "ExitCode": 0
+          },
+          {
+            "Name": "HardlinkRejected",
+            "Status": "PASS",
+            "Input": "Disposable runner synthetic filesystem",
+            "ExitCode": 0
+          },
+          {
+            "Name": "SymbolicLinkRejected",
+            "Status": "PASS",
+            "Input": "Disposable runner synthetic filesystem",
+            "ExitCode": 0
+          },
+          {
+            "Name": "JunctionRejected",
+            "Status": "PASS",
+            "Input": "Disposable runner synthetic filesystem",
+            "ExitCode": 0
+          },
+          {
+            "Name": "DeleteDispositionUsesRetainedHandle",
+            "Status": "PASS",
+            "Input": "Disposable runner synthetic filesystem",
+            "ExitCode": 0
+          }
+        ]
+      },
+      "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262"
+    }
+  },
+  "ExitCode": 0,
+  "Scope": "No independent SID/UAC/full signed Bridge deployment claim"
+}

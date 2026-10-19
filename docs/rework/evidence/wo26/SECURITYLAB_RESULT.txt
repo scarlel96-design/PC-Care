@@ -1,0 +1,23 @@
+{
+  "Status": "PASS",
+  "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+  "Environment": "Windows .NET10 x64; local synthetic files and GitHub-hosted noninteractive runner",
+  "Command": "dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests -c Release -p:Platform=x64 --no-restore -m:1",
+  "Input": "Separate Lab suite",
+  "Output": {
+    "CI": {
+      "Pass": 36,
+      "Fail": 0,
+      "Skip": 0,
+      "Total": 36
+    },
+    "Local": {
+      "Pass": 36,
+      "Fail": 0,
+      "Skip": 0,
+      "Total": 36
+    }
+  },
+  "ExitCode": 0,
+  "CI": "https://github.com/scarlel96-design/PC-Care/actions/runs/39166559052"
+}

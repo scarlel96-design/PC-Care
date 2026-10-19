@@ -1,0 +1,147 @@
+diff --git a/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs b/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
+index 2d06235..bccfa3a 100644
+--- a/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
++++ b/src/SmartPerformanceDoctor.UpdateEngine/UpdateTransaction.cs
+@@ -49,6 +49,9 @@ public sealed record TransactionResult(UpdateStage Stage, string Code, string Tr
+ {
+     public string Failure { get; init; } = "";
+     public UpdateFailureDiagnostic? Diagnostic { get; init; }
++    public UpdateFailureDiagnostic? RecoveryDiagnostic { get; init; }
++    public string RecoveryDisposition { get; init; } = "Unclassified";
++    public bool OriginalBytesVerified { get; init; }
+     public bool WasCancellationRequested { get; init; }
+     public bool AnyMutationStarted { get; init; }
+     public string CancellationDisposition { get; init; } = "NotRequested";
+@@ -481,14 +484,17 @@ public sealed partial class UpdateTransaction
+             var diagnostic = UpdateFailureDiagnostic.Capture(ex, failurePhase, journal.Stage, boundTarget,
+                 installPin.Identity.Split(':')[0], workPin.Identity.Split(':')[0], _strictAcl, mutationStarted);
+             journal.Failure = $"{diagnostic.ErrorCode}; {diagnostic.ExceptionType}; phase={diagnostic.Phase}; HRESULT={diagnostic.HResult}; Win32={diagnostic.NativeErrorCode}";
++            if (!mutationStarted) journal.Failure = "PRE-MUTATION-REJECTED; " + journal.Failure;
+             journal.Stage = UpdateStage.RollbackPending;
+             try { faultInjector?.Invoke(UpdateFaultPoint.BeforeFailureJournal); WriteJournal(txDir, journal); }
+             catch (Exception journalError)
+             {
+                 return FailureResult(journal, ex, journalError) with { Diagnostic = diagnostic };
+             }
+-            return RollbackCore(txDir, installRoot, journal, faultInjector) with
+-            {Diagnostic=diagnostic,AnyMutationStarted=mutationStarted,WasCancellationRequested=cancellationToken.IsCancellationRequested,
++            var rollback = RollbackCore(txDir, installRoot, journal, faultInjector);
++            return rollback with
++            {Diagnostic=diagnostic,RecoveryDisposition=rollback.Stage == UpdateStage.Restored
++                ? mutationStarted ? "RecoveryCompleted" : "PreMutationRejected" : "RecoveryDeferred",AnyMutationStarted=mutationStarted,WasCancellationRequested=cancellationToken.IsCancellationRequested,
+                 CancellationDisposition=cancellationToken.IsCancellationRequested?"DeferredUntilSafeCompletion":"NotRequested"};
+         }
+         finally
+@@ -518,7 +524,16 @@ public sealed partial class UpdateTransaction
+         return result with {WasCancellationRequested=cancellationToken.IsCancellationRequested,
+             CancellationDisposition=cancellationToken.IsCancellationRequested?"DeferredUntilSafeCompletion":"NotRequested"};
+     }
+-    private TransactionResult RecoverCore(string installRoot,Action<UpdateFaultPoint>? faultInjector)
++    public TransactionResult ResumeVerifiedRecovery(string installRoot, Action<UpdateFaultPoint>? faultInjector = null)
++    {
++        var observation = ReconcileRecovery(installRoot);
++        if (observation.State != "NoPendingTransaction" && observation.State != "NotStarted" && !observation.CanRequestRecovery)
++            return new(UpdateStage.RecoveryRequired, observation.Code, observation.TransactionId, 0)
++                {RecoveryDisposition=observation.State,OriginalBytesVerified=observation.OriginalBytesVerified};
++        return RecoverCore(installRoot, faultInjector, verifyResume: true);
++    }
++
++    private TransactionResult RecoverCore(string installRoot,Action<UpdateFaultPoint>? faultInjector, bool verifyResume = false)
+     {
+         using var measurements = PerformanceProfile?.Activate();
+         _journalFault = faultInjector;
+@@ -541,6 +556,13 @@ public sealed partial class UpdateTransaction
+         }
+         if (pendingMutations > 1)
+             return new(UpdateStage.RecoveryRequired, "MULTIPLE-PENDING-TRANSACTIONS", "", 0);
++        if (verifyResume)
++        {
++            var observation = ReconcileRecoveryCore(installRoot, gateHeld: true);
++            if (observation.State != "NoPendingTransaction" && !observation.CanRequestRecovery)
++                return new(UpdateStage.RecoveryRequired, observation.Code, observation.TransactionId, 0)
++                    {RecoveryDisposition=observation.State,OriginalBytesVerified=observation.OriginalBytesVerified};
++        }
+         TransactionResult? restored = null;
+         foreach (var dir in Directory.EnumerateDirectories(_workRoot, "tx-*").OrderBy(x => x, StringComparer.Ordinal))
+         {
+@@ -589,6 +611,7 @@ public sealed partial class UpdateTransaction
+                 }
+             }
+             var completed = false;
++            var originalsOnly = true;
+             var declaredCurrent=VerifiedCurrentDeclarationPaths(installRoot);
+             foreach (var dir in Directory.EnumerateDirectories(_workRoot, "tx-*")
+                          .OrderBy(x => x, StringComparer.Ordinal))
+@@ -617,6 +640,7 @@ public sealed partial class UpdateTransaction
+                     catch(Exception ex) when(ex is IOException or InvalidDataException or UnauthorizedAccessException)
+                     {return new(UpdateRecoveryState.RecoveryRequired,"RESTORATION-CONTENT-REVIEW",journal.TransactionId);}
+                     completed = true;
++                    originalsOnly &= journal.Failure.StartsWith("PRE-MUTATION-REJECTED;", StringComparison.Ordinal);
+                 }
+                 else if (journal.Stage == UpdateStage.RecoveryRequired &&
+                          (journal.Failure?.Contains("rollback:", StringComparison.OrdinalIgnoreCase) ?? false))
+@@ -628,7 +652,7 @@ public sealed partial class UpdateTransaction
+                 InspectInstallation(installRoot).Code=="INSTALLATION-RECOVERY-REQUIRED")
+                 return new(UpdateRecoveryState.RecoveryRequired,"INSTALLATION-RECOVERY-REQUIRED","");
+             return completed
+-                ? new(UpdateRecoveryState.RecoveryCompleted, "RESTORED", "")
++                ? new(UpdateRecoveryState.RecoveryCompleted, originalsOnly ? "ORIGINAL-STATE-VERIFIED" : "RESTORED", "")
+                 : new(UpdateRecoveryState.NoPendingTransaction, "NO-PENDING", "");
+         }
+         catch (UnauthorizedAccessException)
+@@ -813,9 +837,19 @@ public sealed partial class UpdateTransaction
+                         backup = WindowsFileBoundary.OpenRead(Path.Combine(txDir, "backup"), relative);
+                         VerifyProtectedFile(backup, Path.GetDirectoryName(Resolve(Path.Combine(txDir, "backup"), relative))!);
+                         backup.Verify(entry.OriginalLength, entry.OriginalSha256, entry.BackupIdentity);
+-                        target = WindowsFileBoundary.OpenWrite(installRoot, relative);
++                        target = WindowsFileBoundary.OpenRead(installRoot, relative);
+                         target.Validate(entry.OriginalIdentity);
++                        if (_strictAcl) ValidateProtectedSecurity(target.ReadSecurity(), false);
+                         var hash = target.Hash();
++                        var originalIntact = target.Stream.Length == entry.OriginalLength && hash == entry.OriginalSha256;
++                        if (!originalIntact)
++                        {
++                            target.Dispose(); target = null;
++                            target = WindowsFileBoundary.OpenWrite(installRoot, relative);
++                            target.Validate(entry.OriginalIdentity);
++                            if (_strictAcl) ValidateProtectedSecurity(target.ReadSecurity(), false);
++                            hash = target.Hash();
++                        }
+                         if (entry.Applied && hash != entry.NewSha256 && hash != entry.OriginalSha256)
+                             throw new InvalidDataException("RESTORE-TARGET-CONTENT-CHANGED");
+                     }
+@@ -854,8 +888,11 @@ public sealed partial class UpdateTransaction
+             {
+                 if (item.Entry.Existed)
+                 {
+-                    mutationStarted=true;
+-                    item.Target!.CopyFrom(item.Backup!);
++                    if (item.Target!.Stream.Length != item.Entry.OriginalLength || item.Target.Hash() != item.Entry.OriginalSha256)
++                    {
++                        mutationStarted=true;
++                        item.Target.CopyFrom(item.Backup!);
++                    }
+                     faultInjector?.Invoke(UpdateFaultPoint.DuringRollbackCopy);
+                     item.Target.Verify(item.Entry.OriginalLength, item.Entry.OriginalSha256, item.Entry.OriginalIdentity);
+                 }
+@@ -871,7 +908,8 @@ public sealed partial class UpdateTransaction
+             journal.Stage = UpdateStage.Restored;
+             WriteJournal(txDir, journal);
+             return new(UpdateStage.Restored, "ROLLED-BACK", journal.TransactionId, journal.Files.Count(f => f.Applied))
+-                { Failure = journal.Failure,AnyMutationStarted=mutationStarted };
++                { Failure = journal.Failure,AnyMutationStarted=mutationStarted, OriginalBytesVerified=journal.Files.Count > 0,
++                    RecoveryDisposition=mutationStarted ? "RecoveryCompleted" : "OriginalStateVerified" };
+         }
+         catch (Exception ex)
+         {
+@@ -880,7 +918,9 @@ public sealed partial class UpdateTransaction
+             try { faultInjector?.Invoke(UpdateFaultPoint.BeforeFailureJournal); WriteJournal(txDir, journal); }
+             catch (Exception journalError) { return FailureResult(journal, ex, journalError) with {AnyMutationStarted=mutationStarted}; }
+             return new(UpdateStage.RecoveryRequired, "ROLLBACK-FAIL", journal.TransactionId, journal.Files.Count(f => f.Applied))
+-                { Failure = journal.Failure,AnyMutationStarted=mutationStarted };
++                { Failure = journal.Failure,AnyMutationStarted=mutationStarted,
++                    RecoveryDiagnostic=UpdateFailureDiagnostic.Capture(ex,"Rollback",journal.Stage,"","","",_strictAcl,mutationStarted),
++                    RecoveryDisposition="RecoveryDeferred" };
+         }
+         finally
+         {

@@ -1,0 +1,96 @@
+{
+  "Status": "PARTIAL",
+  "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+  "Environment": "Windows .NET10 x64; local synthetic files and GitHub-hosted noninteractive runner",
+  "Command": "WO26 dependency tests; wo26-dependency-script-test.ps1",
+  "Input": "Same leaf at wrong path; runtime/native/RID; signed external probing; duplicate JSON; process-local override",
+  "Output": {
+    "UnitTests": [
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO26DeploymentDependencyTests.ExternalProbingRequiresReviewEvenWhenSigned",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO26DeploymentDependencyTests.MatchingLeafInAnotherDirectoryDoesNotSatisfyAsset(kind: \"runtime\")",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO26DeploymentDependencyTests.MatchingLeafInAnotherDirectoryDoesNotSatisfyAsset(kind: \"runtimeTargets\")",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO26DeploymentDependencyTests.MatchingLeafInAnotherDirectoryDoesNotSatisfyAsset(kind: \"native\")",
+        "Outcome": "Passed",
+        "Reason": ""
+      }
+    ],
+    "PowerShell": {
+      "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+      "ExitCode": 0,
+      "Command": "pwsh -NoProfile -File wo26-dependency-script-test.ps1",
+      "Records": [
+        {
+          "ExitCode": 0,
+          "Input": "valid",
+          "Output": "AUTHENTICATED_CONTENT_BOUND",
+          "ActualGuestDeployment": false
+        },
+        {
+          "ExitCode": 0,
+          "Input": "missing",
+          "Output": "DEPLOYMENT_DEPENDENCY_MISSING",
+          "ActualGuestDeployment": false
+        },
+        {
+          "ExitCode": 0,
+          "Input": "wrong-path",
+          "Output": "DEPLOYMENT_DEPENDENCY_MISSING",
+          "ActualGuestDeployment": false
+        },
+        {
+          "ExitCode": 0,
+          "Input": "native",
+          "Output": "DEPLOYMENT_DEPENDENCY_MISSING",
+          "ActualGuestDeployment": false
+        },
+        {
+          "ExitCode": 0,
+          "Input": "runtimeTargets",
+          "Output": "DEPLOYMENT_DEPENDENCY_MISSING",
+          "ActualGuestDeployment": false
+        },
+        {
+          "ExitCode": 0,
+          "Input": "probing",
+          "Output": "DEPLOYMENT_EXTERNAL_PROBING",
+          "ActualGuestDeployment": false
+        },
+        {
+          "ExitCode": 0,
+          "Input": "duplicate",
+          "Output": "DEPLOYMENT_DUPLICATE_PROPERTY",
+          "ActualGuestDeployment": false
+        }
+      ],
+      "Status": "PASS",
+      "Environment": "Local Windows synthetic files; ephemeral private key remains in memory only"
+    },
+    "RuntimeOverride": [
+      {
+        "Input": "Synthetic process-local additional-deps override",
+        "Output": "DEPLOYMENT_RUNTIME_ENVIRONMENT_REVIEW",
+        "ExitCode": 0,
+        "Environment": "PowerShell process only; prior environment restored",
+        "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+        "Command": "Assert-Wo26RuntimeEnvironment"
+      }
+    ]
+  },
+  "ExitCode": 0,
+  "ActualGuestPEDeployment": "NOT TESTED",
+  "SharedFrameworkVersionQualification": "NOT TESTED",
+  "RuntimeLoaderReimplementation": false
+}

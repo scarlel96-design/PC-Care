@@ -1,0 +1,36 @@
+$ErrorActionPreference='Stop'
+$repo=Join-Path $PSScriptRoot 'work/PC-Care'
+. (Join-Path $repo 'scripts/wo25-input-closure.ps1')
+$records=foreach($variant in @('valid','missing','wrong-path','native','runtimeTargets','probing','duplicate')){
+ $missing=$variant -eq 'missing'
+ $root=Join-Path $PSScriptRoot ('wo26-dependency-'+[guid]::NewGuid().ToString('N'));$inputRoot=Join-Path $root 'inputs'
+ New-Item -ItemType Directory -Force $inputRoot|Out-Null
+ [IO.File]::WriteAllText((Join-Path $inputRoot 'payload.dat'),'synthetic')
+ $asset=if($missing){'missing.dat'}else{'payload.dat'}
+ [IO.File]::WriteAllText((Join-Path $inputRoot 'app.deps.json'),('{"targets":{"net10.0":{"app/1.0":{"runtime":{"'+$asset+'":{}}}}}}'))
+ if($variant -in 'wrong-path','native','runtimeTargets'){
+  New-Item -ItemType Directory -Force (Join-Path $inputRoot 'wrong')|Out-Null
+  Move-Item -LiteralPath (Join-Path $inputRoot 'payload.dat') -Destination (Join-Path $inputRoot 'wrong/payload.dat')
+  $kind=if($variant -eq 'wrong-path'){'runtime'}else{$variant}
+  [IO.File]::WriteAllText((Join-Path $inputRoot 'app.deps.json'),('{"targets":{"net10.0":{"app/1.0":{"'+$kind+'":{"payload.dat":{}}}}}}'))
+ }
+ if($variant -eq 'probing'){[IO.File]::WriteAllText((Join-Path $inputRoot 'app.runtimeconfig.json'),'{"runtimeOptions":{"additionalProbingPaths":["C:/synthetic-external"]}}')}
+ if($variant -eq 'duplicate'){[IO.File]::WriteAllText((Join-Path $inputRoot 'app.deps.json'),'{"targets":{},"targets":{}}')}
+ $files=@(Get-ChildItem $inputRoot -File -Recurse|ForEach-Object {[ordered]@{Path=[IO.Path]::GetRelativePath($inputRoot,$_.FullName).Replace('\','/');Length=$_.Length;Sha256=(Get-FileHash -LiteralPath $_.FullName).Hash;IsPe=$false}})
+ $raw=[Text.Encoding]::UTF8.GetBytes((@{Format='pccare-test-deployment-v1';Version='1.0.0';Publisher=('A'*40);Files=$files}|ConvertTo-Json -Depth 6 -Compress))
+ $key=[Security.Cryptography.ECDsa]::Create([Security.Cryptography.ECCurve+NamedCurves]::nistP256)
+ try{
+  $pub=$key.ExportSubjectPublicKeyInfo();$pin=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($pub))
+  [IO.File]::WriteAllBytes((Join-Path $root 'manifest.json'),$raw);[IO.File]::WriteAllBytes((Join-Path $root 'public.bin'),$pub)
+  [IO.File]::WriteAllBytes((Join-Path $root 'signature.bin'),$key.SignData($raw,[Security.Cryptography.HashAlgorithmName]::SHA256,[Security.Cryptography.DSASignatureFormat]::IeeeP1363FixedFieldConcatenation))
+ }finally{$key.Dispose()}
+ $binding=$null;$output=''
+ try{$binding=Open-Wo25InputClosure $inputRoot (Join-Path $root 'manifest.json') (Join-Path $root 'signature.bin') (Join-Path $root 'public.bin') $pin;$output=$binding.Status}
+ catch{$output=$_.Exception.Message}
+ finally{if($binding){foreach($stream in $binding.Leases){$stream.Dispose()}}}
+ $expected=switch($variant){'valid'{'AUTHENTICATED_CONTENT_BOUND'}'probing'{'DEPLOYMENT_EXTERNAL_PROBING'}'duplicate'{'DEPLOYMENT_DUPLICATE_PROPERTY'}default{'DEPLOYMENT_DEPENDENCY_MISSING'}}
+ if($output -ne $expected){throw ('WO25_DEPENDENCY_EXPECTATION:'+ $output)}
+ @{Input=$variant;Output=$output;ExitCode=0;ActualGuestDeployment=$false}
+}
+@{Status='PASS';Source=(& git -C $repo rev-parse HEAD).Trim();Command='pwsh -NoProfile -File wo26-dependency-script-test.ps1';Environment='Local Windows synthetic files; ephemeral private key remains in memory only';Records=$records;ExitCode=0}|ConvertTo-Json -Depth 7|Set-Content (Join-Path $repo 'docs/rework/evidence/wo26/DEPENDENCY_SCRIPT_RESULT.json')
+'WO26_DEPENDENCY_SCRIPT=PASS'

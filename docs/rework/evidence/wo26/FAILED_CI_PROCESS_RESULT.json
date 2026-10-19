@@ -1,0 +1,41 @@
+{
+  "Status": "FAIL",
+  "Source": "5fddd7cea113f03f6896f3cc5a7ff471c428a2b7",
+  "CI": 39165942479,
+  "Command": "scripts/wo26-process-validation.ps1",
+  "Input": "Old committed probe with current engine; new additive fields missing",
+  "Output": {
+    "PrivacyProjection": "Native identity and volume fields use document-local aliases. Actual exit codes and outcomes remain unchanged.",
+    "RawRecordSha256": "253ad7b7f7654248316d50da55a1a1871737c6314b8c3bba7017eb37d749b585",
+    "DigestEncoding": "SHA256 of UTF-8 json.dumps(input,sort_keys=True); canonical input record, not raw file bytes",
+    "Records": [
+      {
+        "Source": "5fddd7cea113f03f6896f3cc5a7ff471c428a2b7",
+        "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"ActualDifferentVolumes\":false}",
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe init <SYNTHETIC_ROOT>",
+        "Input": "init",
+        "ExitCode": 0
+      },
+      {
+        "Source": "5fddd7cea113f03f6896f3cc5a7ff471c428a2b7",
+        "Output": "{\"Code\":\"ROLLED-BACK\",\"Stage\":\"Restored\",\"Diagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":32,\"Phase\":\"DestinationHandleAcquisition\",\"JournalStage\":4,\"TargetIdentity\":\"synthetic-id-2\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"EXCEPTION-DETAIL-REDACTED\"},\"AnyMutationStarted\":false,\"ElapsedMs\":264.0021,\"Startup\":{\"State\":6,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ATTESTATION-MISSING-WITH-HISTORY\"}}",
+        "Environment": "Windows synthetic files; strictAcl=false",
+        "Command": "WO25Probe apply <SYNTHETIC_ROOT>",
+        "Input": "apply",
+        "ExitCode": 0
+      },
+      {
+        "Termination": "Parent killed separate process; not reboot",
+        "Source": "5fddd7cea113f03f6896f3cc5a7ff471c428a2b7",
+        "Output": "READY\r\n",
+        "Environment": "Windows separate process",
+        "Command": "WO25Probe hold:read <SYNTHETIC_ROOT>",
+        "Input": "hold:read",
+        "ExitCode": -1
+      }
+    ]
+  },
+  "ExitCode": 1,
+  "Correction": "Tool source committed in bd2d6d1; final CI is separately required"
+}

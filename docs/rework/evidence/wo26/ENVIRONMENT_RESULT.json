@@ -1,0 +1,56 @@
+{
+  "Status": "PARTIAL",
+  "Source": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+  "Environment": "Windows .NET10 x64; local synthetic files and GitHub-hosted noninteractive runner",
+  "Command": "Read retained WO25 environment evidence; no repeated inventory",
+  "Input": "No new isolated VM or independent SID supplied",
+  "Output": {
+    "Status": "PARTIAL",
+    "Source": "80b00305e96c55064f15734ae932a433a8178f4d",
+    "Environment": "Windows .NET10 x64; isolated synthetic files; local host and noninteractive GitHub-hosted runner; no product guest",
+    "Command": "Read retained WO24 ENVIRONMENT_RESULT.json; do not repeat VM discovery",
+    "Input": "No new guest, checkpoint or independent SID supplied",
+    "Output": {
+      "PreviousEvidence": {
+        "Status": "PARTIAL",
+        "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+        "Command": "Reuse committed WO23 ENVIRONMENT_RESULT.json; no repeated host discovery",
+        "Input": "No new VM, checkpoint or independent SID supplied",
+        "Output": {
+          "Guest": "VM_UNAVAILABLE",
+          "Checkpoint": "NOT TESTED",
+          "InteractiveUAC": "INTERACTIVE_UAC_UNAVAILABLE",
+          "IndependentSid": "NOT TESTED",
+          "Reboot": "NOT TESTED",
+          "CI": "Noninteractive GitHub-hosted runner only"
+        },
+        "ExitCode": null,
+        "PriorEvidence": "../wo23/ENVIRONMENT_RESULT.json",
+        "Environment": "Local Windows host; no new disposable guest, independent test SID or interactive UAC session supplied. Actual guest execution not performed.",
+        "ReadOnlyEvidenceAction": "Read retained WO23 environment evidence; completed without error. No new VM inventory executed.",
+        "ExecutedCI": {
+          "Run": 39015974010,
+          "Source": "e996082e9656d26564d88d371f6ea992095d2b75",
+          "Conclusion": "success",
+          "Url": "https://github.com/scarlel96-design/PC-Care/actions/runs/39015974010",
+          "Scope": "Disposable noninteractive GitHub-hosted Windows runner; actual synthetic NTFS files, ACL and native signatures. No independent SID pair, UAC, guest deployment or reboot."
+        }
+      },
+      "Guest": "VM_UNAVAILABLE",
+      "UAC": "INTERACTIVE_UAC_UNAVAILABLE",
+      "Signing": "TEST_CERTIFICATE_UNAVAILABLE",
+      "IndependentSID": "NOT TESTED",
+      "Reboot": "NOT TESTED",
+      "GUI": "NOT TESTED",
+      "Physical": "PHYSICAL_HARDWARE_UNAVAILABLE"
+    },
+    "ExitCode": null,
+    "CI": "https://github.com/scarlel96-design/PC-Care/actions/runs/39055483722"
+  },
+  "ExitCode": null,
+  "Guest": "VM_UNAVAILABLE",
+  "UAC": "INTERACTIVE_UAC_UNAVAILABLE",
+  "Signing": "TEST_CERTIFICATE_UNAVAILABLE",
+  "Physical": "PHYSICAL_HARDWARE_UNAVAILABLE",
+  "GUI": "NOT TESTED"
+}
