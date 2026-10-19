@@ -99,3 +99,29 @@ public sealed class WO27DiagnosticPrivacyTests
     }
 }
 
+
+public sealed class WO27CrossVolumeStagingContractTests
+{
+    [Theory][InlineData(false)][InlineData(true)]
+    public void SameVolumePublicationRequiresTheBoundHandleDeleteAccess(bool deletable)
+    {
+        using var f=new WO23LegacyPublicationGapTests.Fixture();
+        var stage=Path.Combine(f.Root,"stage");var destination=Path.Combine(f.Root,"published");
+        Directory.CreateDirectory(stage);Directory.CreateDirectory(destination);
+        File.WriteAllBytes(Path.Combine(f.Install,"source.bin"),RandomNumberGenerator.GetBytes(4096));
+        using var source=WindowsFileBoundary.OpenRead(f.Install,"source.bin");
+        using var prepared=WindowsFileBoundary.OpenWrite(stage,"prepared.tmp",create:true,deletable:deletable);
+        prepared.CopyFrom(source);var id=prepared.Identity;var hash=source.Hash();
+        if(!deletable)
+        {
+            Assert.Throws<IOException>(()=>prepared.PublishOpenedFile(destination,"target.bin"));
+            prepared.Verify(4096,hash,id);Assert.False(File.Exists(Path.Combine(destination,"target.bin")));
+        }
+        else
+        {
+            prepared.PublishOpenedFile(destination,"target.bin");prepared.Verify(4096,hash,id);
+            Assert.True(File.Exists(Path.Combine(destination,"target.bin")));
+        }
+        source.Verify(4096,hash);
+    }
+}
