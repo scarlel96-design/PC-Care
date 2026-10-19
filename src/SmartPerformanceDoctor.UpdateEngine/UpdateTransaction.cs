@@ -838,6 +838,18 @@ public sealed partial class UpdateTransaction
     {
         var mutationStarted=false;
         var leases = new List<(UpdateFileJournal Entry, WindowsFileBoundary.FileLease? Backup, WindowsFileBoundary.FileLease? Target)>();
+        void MarkRecoveryMutation()
+        {
+            if (mutationStarted) return;
+            const string preMutation = "PRE-MUTATION-REJECTED;";
+            if (journal.Failure.StartsWith(preMutation, StringComparison.Ordinal))
+            {
+                journal.Failure = journal.Failure[preMutation.Length..];
+                // Persist the changed disposition before installation bytes can change.
+                WriteJournal(txDir, journal);
+            }
+            mutationStarted = true;
+        }
         try
         {
             // Keep every validated handle open until all restore operations end.
@@ -906,7 +918,7 @@ public sealed partial class UpdateTransaction
                 {
                     if (item.Target!.Stream.Length != item.Entry.OriginalLength || item.Target.Hash() != item.Entry.OriginalSha256)
                     {
-                        mutationStarted=true;
+                        MarkRecoveryMutation();
                         if (_syntheticCopyObserver is null) item.Target.CopyFrom(item.Backup!);
                         else item.Target.CopyFromObserved(item.Backup!, _syntheticCopyObserver);
                     }
@@ -915,7 +927,7 @@ public sealed partial class UpdateTransaction
                 }
                 else if (item.Target is not null)
                 {
-                    mutationStarted=true;
+                    MarkRecoveryMutation();
                     item.Target.DeleteOpenedFile();
                 }
                 item.Entry.Restored = true;

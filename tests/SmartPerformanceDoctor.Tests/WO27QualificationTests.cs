@@ -17,6 +17,7 @@ public sealed class WO27RecoveryDispositionTests
         Assert.Equal(UpdateStage.Restored,result.Stage);Assert.False(result.ApplyMutationStarted);
         Assert.True(result.RecoveryMutationStarted);Assert.True(result.AnyMutationStarted);
         Assert.Equal("RecoveryCompleted",result.RecoveryDisposition);Assert.Equal("original",File.ReadAllText(path));
+        Assert.Equal("RESTORED",f.Engine.InspectRecovery(f.Install).Code);
     }
     [Theory][InlineData(false)][InlineData(true)]
     public void UnknownContentRemainsPreservedRegardlessOfAppliedFlag(bool applied)
