@@ -1,0 +1,49 @@
+{
+  "Status": "PASS",
+  "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+  "Environment": "Windows .NET 10 x64; synthetic local files and GitHub-hosted runner",
+  "Command": "WO25Probe init; defer; synthetic signed-byte change; resume; fresh check",
+  "Input": "Five distinct setup/restore/query process observations; original full SHA256 and persisted RESTORED",
+  "Output": {
+    "PrivacyProjection": "Document-local native identity aliases; workspace paths redacted. Outputs and exit codes retain their meaning.",
+    "RawCanonicalSha256": "ef70e7104a286cda2020745506b41969ec59df0142f99bfad17f59bfb98da311",
+    "Records": [
+      {
+        "ExitCode": 0,
+        "Input": "Synthetic signed fixture",
+        "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"ActualDifferentVolumes\":false}",
+        "Command": "WO25Probe init <SYNTHETIC_ROOT>",
+        "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365"
+      },
+      {
+        "ExitCode": 0,
+        "Input": "Synthetic signed fixture",
+        "Output": "{\"Code\":\"ROLLBACK-FAIL\",\"Stage\":\"RecoveryRequired\",\"Diagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":null,\"Phase\":\"BackupPreparation\",\"JournalStage\":4,\"TargetIdentity\":\"\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"SYNTHETIC-RECOVERY-PAUSE\"},\"RecoveryDiagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":null,\"Phase\":\"Rollback\",\"JournalStage\":10,\"TargetIdentity\":\"\",\"InstallVolume\":\"\",\"StagingVolume\":\"\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"SYNTHETIC-RECOVERY-PAUSE\"},\"RecoveryDisposition\":\"RecoveryDeferred\",\"OriginalBytesVerified\":false,\"AnyMutationStarted\":false,\"ElapsedMs\":271.2467,\"Startup\":{\"State\":5,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ROLLBACK-FAIL\"}}",
+        "Command": "WO25Probe defer <SYNTHETIC_ROOT>",
+        "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365"
+      },
+      {
+        "ExitCode": 0,
+        "Input": "Only the generated fixture; exact updated payload bytes",
+        "Output": "SYNTHETIC_UPDATED_CONTENT_PREPARED",
+        "Command": "WriteAllText(<SYNTHETIC_ROOT>/install/app.txt, known signed updated fixture bytes)",
+        "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365"
+      },
+      {
+        "ExitCode": 0,
+        "Input": "Separate process; original SHA-256 and persisted outcome",
+        "Output": "{\"Stage\":9,\"Code\":\"ROLLED-BACK\",\"TransactionId\":\"c55c67dc66f445be8843e88fb44978c2\",\"FilesApplied\":0,\"Failure\":\" SYNTHETIC-RECOVERY-PAUSE; IOException; phase=BackupPreparation; HRESULT=0x80131620; Win32=; rollback: IOException: SYNTHETIC-RECOVERY-PAUSE\",\"Diagnostic\":null,\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"RecoveryCompleted\",\"OriginalBytesVerified\":true,\"WasCancellationRequested\":false,\"AnyMutationStarted\":true,\"ApplyMutationStarted\":false,\"RecoveryMutationStarted\":true,\"CancellationDisposition\":\"NotRequested\"}",
+        "Command": "WO25Probe resume <SYNTHETIC_ROOT>",
+        "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365"
+      },
+      {
+        "ExitCode": 0,
+        "Input": "Separate process; original SHA-256 and persisted outcome",
+        "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":1,\"Recovery\":{\"State\":3,\"Code\":\"RESTORED\",\"TransactionId\":\"\"}}",
+        "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+        "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365"
+      }
+    ]
+  },
+  "ExitCode": 0
+}

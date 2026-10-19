@@ -1,0 +1,28 @@
+{
+  "Status": "PASS",
+  "Source": "20364a068de9c3d8e919a1de1c10e990981c7de8",
+  "Tree": "663a197ef3ee530fac17b9f244f86e7bae0df8d3",
+  "Command": "git status --short; git rev-parse HEAD; git rev-parse HEAD^{tree}; gh run view 39166559052 --json headSha,conclusion,url",
+  "Input": "Exact WO26 baseline; clean tree before WO27 changes",
+  "Environment": "Windows local repository; GitHub Actions API",
+  "Output": {
+    "CI": "success",
+    "CISource": "bd2d6d1aa62cfcfb556e8a8b32dd9aa28cd3f262",
+    "URL": "https://github.com/scarlel96-design/PC-Care/actions/runs/39166559052",
+    "App": {
+      "Passed": 1429,
+      "Failed": 0,
+      "Skipped": 111
+    },
+    "SecurityLab": {
+      "Passed": 36,
+      "Failed": 0
+    },
+    "AclPassed": 9,
+    "AuthenticodePassed": 15,
+    "RestoreWarnings": 0,
+    "ReleaseWarnings": 0
+  },
+  "ExitCode": 0,
+  "CountsSource": "Retained WO26 CI artifacts and execution report; live run identity reconfirmed"
+}

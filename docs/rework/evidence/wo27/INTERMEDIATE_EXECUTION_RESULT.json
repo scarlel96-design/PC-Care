@@ -1,0 +1,40 @@
+{
+  "Status": "PARTIAL",
+  "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+  "Environment": "Windows .NET 10 x64; synthetic local files and GitHub-hosted runner",
+  "Command": "Retained CI run history and local qualification receipts",
+  "Input": "Superseded runs remain separate from final qualification",
+  "Output": {
+    "FailedCI": {
+      "Run": 39194657532,
+      "Source": "cc02c95d000e352d1cf6f3fbced46a68f24fda45",
+      "Failure": "Synthetic A staging publish handle omitted DELETE access; FILE-RENAME Access denied (5)",
+      "Correction": "Request deletable:true for the isolated publish handle; add positive and negative filesystem regressions",
+      "AclPolicyWeakened": false
+    },
+    "SupersededCancelledCI": [
+      39194314530,
+      39195877897,
+      39195903514,
+      39196401176
+    ],
+    "RejectedLocalQualification": {
+      "Source": "7adc0b1f90a473014eedb284e9dbcb5fe244f613",
+      "AppObservedPass": 1443,
+      "Reason": "Source changed during qualification; not accepted"
+    },
+    "IncompleteLocalRuns": [
+      {
+        "Source": "cc02c95d000e352d1cf6f3fbced46a68f24fda45",
+        "ObservedPass": 1241
+      },
+      {
+        "Source": "8b1aa536ed27996f2eb608255ee407954080d875",
+        "ObservedPass": 1363
+      }
+    ],
+    "IncompleteReason": "Own superseded testhost terminated; no full regression claim",
+    "HarnessCorrection": "Outside helper function shadowed dotnet; renamed helper before the successful extra run"
+  },
+  "ExitCode": null
+}

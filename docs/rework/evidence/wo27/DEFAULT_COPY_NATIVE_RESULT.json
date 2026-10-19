@@ -1,0 +1,192 @@
+{
+  "Status": "PASS",
+  "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+  "Environment": "Windows .NET 10 x64; synthetic local files and GitHub-hosted runner",
+  "Command": "scripts/wo27-default-copy-validation.ps1",
+  "Input": "Four 64MiB repeated-pattern fixtures; actual default FileStream.CopyTo; parent live read then forced process termination",
+  "Output": {
+    "PrivacyProjection": "Document-local native identity aliases; workspace paths redacted. Outputs and exit codes retain their meaning.",
+    "RawCanonicalSha256": "24cc55c0957ac3dbd9289efd1856eeed6880c848befd4b2f2ca7fa065eb0f529",
+    "Records": [
+      {
+        "CopyTermination": {
+          "ObservedLiveMidCopy": true,
+          "KilledByParent": true,
+          "Command": "WO27Probe default-copy; parent reads completed prefix and unchanged tail, then Process.Kill(true)",
+          "ExitCode": -1
+        },
+        "Input": {
+          "Attempt": 0,
+          "DataKind": "repeat",
+          "Size": 67108864,
+          "Threshold": 1048576
+        },
+        "ApplyTerminationExitCode": -1,
+        "Inspection": {
+          "Output": "{\"Current\":{\"Identity\":\"synthetic-id-1\",\"Length\":67108864,\"Hash\":\"1E1501B6F4A6A36DC21AA920DBB7AF46D3A13242EFF08CAC2E69B81DDE47531F\",\"AclHash\":\"32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D\"},\"Backup\":{\"Identity\":\"synthetic-id-2\",\"Length\":67108864,\"Hash\":\"DBFACA2662CB70B69DFEFD5AC95D1F54A73663092D46CEFDC9609DC695A12C98\"},\"Journal\":{\"Stage\":\"RollingBack\",\"SchemaVersion\":2,\"Hash\":\"BE285180E5735F634F560A5BC76D6222E3C31DE8A54293714C596A59D35A6BDF\"},\"TemporaryFiles\":0,\"Reconciliation\":{\"State\":\"ManualReviewRequired\",\"Code\":\"RECOVERY-CONTENT-REVIEW\",\"TransactionId\":\"ad62648b3bb94c4f9fa76b4c12d77a9a\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[{\"Path\":\"payload/app.txt\",\"State\":\"UnknownContent\",\"BackupVerified\":true}]}}",
+          "Command": "WO27Probe inspect <SYNTHETIC_ROOT>",
+          "ExitCode": 0
+        },
+        "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+        "Setup": {
+          "Output": "{\"Status\":\"PREPARED\",\"Size\":67108864,\"DataKind\":\"repeat\",\"OriginalHash\":\"DBFACA2662CB70B69DFEFD5AC95D1F54A73663092D46CEFDC9609DC695A12C98\",\"UpdatedHash\":\"0F8D1B2C1CB150B55B0C4CB224D11427401D0E748CA5A2666C6B1B1D508E7794\",\"Identity\":\"synthetic-id-1\",\"AclHash\":\"32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D\"}",
+          "Command": "WO27Probe init:67108864:repeat <SYNTHETIC_ROOT>",
+          "ExitCode": 0
+        },
+        "PhysicalPowerLoss": "NOT TESTED",
+        "Status": "PASS",
+        "Layout": {
+          "Output": "{\"LeadingOriginalBytes\":4063232,\"TotalBytes\":67108864,\"TailMatchesUpdatedFixture\":true,\"NoPlaintextExported\":true}",
+          "Command": "WO27Probe layout <SYNTHETIC_ROOT>",
+          "ExitCode": 0
+        },
+        "Resume": {
+          "Output": "{\"Stage\":10,\"Code\":\"RECOVERY-CONTENT-REVIEW\",\"TransactionId\":\"ad62648b3bb94c4f9fa76b4c12d77a9a\",\"FilesApplied\":0,\"Failure\":\"\",\"Diagnostic\":null,\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"ManualReviewRequired\",\"OriginalBytesVerified\":false,\"WasCancellationRequested\":false,\"AnyMutationStarted\":false,\"ApplyMutationStarted\":false,\"RecoveryMutationStarted\":false,\"CancellationDisposition\":\"NotRequested\"}",
+          "Command": "WO27Probe resume <SYNTHETIC_ROOT>",
+          "ExitCode": 10
+        },
+        "Environment": "Windows synthetic filesystem; default FileStream.CopyTo path; no observed-copy hook",
+        "After": {
+          "Output": "{\"Current\":{\"Identity\":\"synthetic-id-1\",\"Length\":67108864,\"Hash\":\"1E1501B6F4A6A36DC21AA920DBB7AF46D3A13242EFF08CAC2E69B81DDE47531F\",\"AclHash\":\"32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D\"},\"Backup\":{\"Identity\":\"synthetic-id-2\",\"Length\":67108864,\"Hash\":\"DBFACA2662CB70B69DFEFD5AC95D1F54A73663092D46CEFDC9609DC695A12C98\"},\"Journal\":{\"Stage\":\"RollingBack\",\"SchemaVersion\":2,\"Hash\":\"BE285180E5735F634F560A5BC76D6222E3C31DE8A54293714C596A59D35A6BDF\"},\"TemporaryFiles\":0,\"Reconciliation\":{\"State\":\"ManualReviewRequired\",\"Code\":\"RECOVERY-CONTENT-REVIEW\",\"TransactionId\":\"ad62648b3bb94c4f9fa76b4c12d77a9a\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[{\"Path\":\"payload/app.txt\",\"State\":\"UnknownContent\",\"BackupVerified\":true}]}}",
+          "Command": "WO27Probe inspect <SYNTHETIC_ROOT>",
+          "ExitCode": 0
+        }
+      },
+      {
+        "CopyTermination": {
+          "ObservedLiveMidCopy": true,
+          "KilledByParent": true,
+          "Command": "WO27Probe default-copy; parent reads completed prefix and unchanged tail, then Process.Kill(true)",
+          "ExitCode": -1
+        },
+        "Input": {
+          "Attempt": 0,
+          "DataKind": "repeat",
+          "Size": 67108864,
+          "Threshold": 16777216
+        },
+        "ApplyTerminationExitCode": -1,
+        "Inspection": {
+          "Output": "{\"Current\":{\"Identity\":\"synthetic-id-3\",\"Length\":67108864,\"Hash\":\"7D1756519639DCDF8E71869E84009A58947759231631DF3C5B08F3224A9C64AF\",\"AclHash\":\"32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D\"},\"Backup\":{\"Identity\":\"synthetic-id-4\",\"Length\":67108864,\"Hash\":\"DBFACA2662CB70B69DFEFD5AC95D1F54A73663092D46CEFDC9609DC695A12C98\"},\"Journal\":{\"Stage\":\"RollingBack\",\"SchemaVersion\":2,\"Hash\":\"4B5468E423D49F4B2FDD6651511658CA8FEC37D72818F4004E51A8891D85E1AE\"},\"TemporaryFiles\":0,\"Reconciliation\":{\"State\":\"ManualReviewRequired\",\"Code\":\"RECOVERY-CONTENT-REVIEW\",\"TransactionId\":\"6094a5ec0830475697a44ff27e096ce0\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[{\"Path\":\"payload/app.txt\",\"State\":\"UnknownContent\",\"BackupVerified\":true}]}}",
+          "Command": "WO27Probe inspect <SYNTHETIC_ROOT>",
+          "ExitCode": 0
+        },
+        "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+        "Setup": {
+          "Output": "{\"Status\":\"PREPARED\",\"Size\":67108864,\"DataKind\":\"repeat\",\"OriginalHash\":\"DBFACA2662CB70B69DFEFD5AC95D1F54A73663092D46CEFDC9609DC695A12C98\",\"UpdatedHash\":\"0F8D1B2C1CB150B55B0C4CB224D11427401D0E748CA5A2666C6B1B1D508E7794\",\"Identity\":\"synthetic-id-3\",\"AclHash\":\"32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D\"}",
+          "Command": "WO27Probe init:67108864:repeat <SYNTHETIC_ROOT>",
+          "ExitCode": 0
+        },
+        "PhysicalPowerLoss": "NOT TESTED",
+        "Status": "PASS",
+        "Layout": {
+          "Output": "{\"LeadingOriginalBytes\":21757952,\"TotalBytes\":67108864,\"TailMatchesUpdatedFixture\":true,\"NoPlaintextExported\":true}",
+          "Command": "WO27Probe layout <SYNTHETIC_ROOT>",
+          "ExitCode": 0
+        },
+        "Resume": {
+          "Output": "{\"Stage\":10,\"Code\":\"RECOVERY-CONTENT-REVIEW\",\"TransactionId\":\"6094a5ec0830475697a44ff27e096ce0\",\"FilesApplied\":0,\"Failure\":\"\",\"Diagnostic\":null,\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"ManualReviewRequired\",\"OriginalBytesVerified\":false,\"WasCancellationRequested\":false,\"AnyMutationStarted\":false,\"ApplyMutationStarted\":false,\"RecoveryMutationStarted\":false,\"CancellationDisposition\":\"NotRequested\"}",
+          "Command": "WO27Probe resume <SYNTHETIC_ROOT>",
+          "ExitCode": 10
+        },
+        "Environment": "Windows synthetic filesystem; default FileStream.CopyTo path; no observed-copy hook",
+        "After": {
+          "Output": "{\"Current\":{\"Identity\":\"synthetic-id-3\",\"Length\":67108864,\"Hash\":\"7D1756519639DCDF8E71869E84009A58947759231631DF3C5B08F3224A9C64AF\",\"AclHash\":\"32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D\"},\"Backup\":{\"Identity\":\"synthetic-id-4\",\"Length\":67108864,\"Hash\":\"DBFACA2662CB70B69DFEFD5AC95D1F54A73663092D46CEFDC9609DC695A12C98\"},\"Journal\":{\"Stage\":\"RollingBack\",\"SchemaVersion\":2,\"Hash\":\"4B5468E423D49F4B2FDD6651511658CA8FEC37D72818F4004E51A8891D85E1AE\"},\"TemporaryFiles\":0,\"Reconciliation\":{\"State\":\"ManualReviewRequired\",\"Code\":\"RECOVERY-CONTENT-REVIEW\",\"TransactionId\":\"6094a5ec0830475697a44ff27e096ce0\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[{\"Path\":\"payload/app.txt\",\"State\":\"UnknownContent\",\"BackupVerified\":true}]}}",
+          "Command": "WO27Probe inspect <SYNTHETIC_ROOT>",
+          "ExitCode": 0
+        }
+      },
+      {
+        "CopyTermination": {
+          "ObservedLiveMidCopy": true,
+          "KilledByParent": true,
+          "Command": "WO27Probe default-copy; parent reads completed prefix and unchanged tail, then Process.Kill(true)",
+          "ExitCode": -1
+        },
+        "Input": {
+          "Attempt": 0,
+          "DataKind": "repeat",
+          "Size": 67108864,
+          "Threshold": 33554432
+        },
+        "ApplyTerminationExitCode": -1,
+        "Inspection": {
+          "Output": "{\"Current\":{\"Identity\":\"synthetic-id-5\",\"Length\":67108864,\"Hash\":\"FD31039602112D916247C10EAA0F6607C093C70F76E79D136F6550706643D0AB\",\"AclHash\":\"32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D\"},\"Backup\":{\"Identity\":\"synthetic-id-6\",\"Length\":67108864,\"Hash\":\"DBFACA2662CB70B69DFEFD5AC95D1F54A73663092D46CEFDC9609DC695A12C98\"},\"Journal\":{\"Stage\":\"RollingBack\",\"SchemaVersion\":2,\"Hash\":\"213AD275D58C8EBEECA24DAD2DFC55ED24EB2148736CD4E9DF85390A6A801443\"},\"TemporaryFiles\":0,\"Reconciliation\":{\"State\":\"ManualReviewRequired\",\"Code\":\"RECOVERY-CONTENT-REVIEW\",\"TransactionId\":\"ce9a367163374dc79bd6086b6c6fbac8\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[{\"Path\":\"payload/app.txt\",\"State\":\"UnknownContent\",\"BackupVerified\":true}]}}",
+          "Command": "WO27Probe inspect <SYNTHETIC_ROOT>",
+          "ExitCode": 0
+        },
+        "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+        "Setup": {
+          "Output": "{\"Status\":\"PREPARED\",\"Size\":67108864,\"DataKind\":\"repeat\",\"OriginalHash\":\"DBFACA2662CB70B69DFEFD5AC95D1F54A73663092D46CEFDC9609DC695A12C98\",\"UpdatedHash\":\"0F8D1B2C1CB150B55B0C4CB224D11427401D0E748CA5A2666C6B1B1D508E7794\",\"Identity\":\"synthetic-id-5\",\"AclHash\":\"32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D\"}",
+          "Command": "WO27Probe init:67108864:repeat <SYNTHETIC_ROOT>",
+          "ExitCode": 0
+        },
+        "PhysicalPowerLoss": "NOT TESTED",
+        "Status": "PASS",
+        "Layout": {
+          "Output": "{\"LeadingOriginalBytes\":35913728,\"TotalBytes\":67108864,\"TailMatchesUpdatedFixture\":true,\"NoPlaintextExported\":true}",
+          "Command": "WO27Probe layout <SYNTHETIC_ROOT>",
+          "ExitCode": 0
+        },
+        "Resume": {
+          "Output": "{\"Stage\":10,\"Code\":\"RECOVERY-CONTENT-REVIEW\",\"TransactionId\":\"ce9a367163374dc79bd6086b6c6fbac8\",\"FilesApplied\":0,\"Failure\":\"\",\"Diagnostic\":null,\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"ManualReviewRequired\",\"OriginalBytesVerified\":false,\"WasCancellationRequested\":false,\"AnyMutationStarted\":false,\"ApplyMutationStarted\":false,\"RecoveryMutationStarted\":false,\"CancellationDisposition\":\"NotRequested\"}",
+          "Command": "WO27Probe resume <SYNTHETIC_ROOT>",
+          "ExitCode": 10
+        },
+        "Environment": "Windows synthetic filesystem; default FileStream.CopyTo path; no observed-copy hook",
+        "After": {
+          "Output": "{\"Current\":{\"Identity\":\"synthetic-id-5\",\"Length\":67108864,\"Hash\":\"FD31039602112D916247C10EAA0F6607C093C70F76E79D136F6550706643D0AB\",\"AclHash\":\"32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D\"},\"Backup\":{\"Identity\":\"synthetic-id-6\",\"Length\":67108864,\"Hash\":\"DBFACA2662CB70B69DFEFD5AC95D1F54A73663092D46CEFDC9609DC695A12C98\"},\"Journal\":{\"Stage\":\"RollingBack\",\"SchemaVersion\":2,\"Hash\":\"213AD275D58C8EBEECA24DAD2DFC55ED24EB2148736CD4E9DF85390A6A801443\"},\"TemporaryFiles\":0,\"Reconciliation\":{\"State\":\"ManualReviewRequired\",\"Code\":\"RECOVERY-CONTENT-REVIEW\",\"TransactionId\":\"ce9a367163374dc79bd6086b6c6fbac8\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[{\"Path\":\"payload/app.txt\",\"State\":\"UnknownContent\",\"BackupVerified\":true}]}}",
+          "Command": "WO27Probe inspect <SYNTHETIC_ROOT>",
+          "ExitCode": 0
+        }
+      },
+      {
+        "CopyTermination": {
+          "ObservedLiveMidCopy": true,
+          "KilledByParent": true,
+          "Command": "WO27Probe default-copy; parent reads completed prefix and unchanged tail, then Process.Kill(true)",
+          "ExitCode": -1
+        },
+        "Input": {
+          "Attempt": 0,
+          "DataKind": "repeat",
+          "Size": 67108864,
+          "Threshold": 50331648
+        },
+        "ApplyTerminationExitCode": -1,
+        "Inspection": {
+          "Output": "{\"Current\":{\"Identity\":\"synthetic-id-7\",\"Length\":67108864,\"Hash\":\"619618C209DC97B456409858E83F40A1FAABAE8C978F3A6281050F2E08239321\",\"AclHash\":\"32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D\"},\"Backup\":{\"Identity\":\"synthetic-id-8\",\"Length\":67108864,\"Hash\":\"DBFACA2662CB70B69DFEFD5AC95D1F54A73663092D46CEFDC9609DC695A12C98\"},\"Journal\":{\"Stage\":\"RollingBack\",\"SchemaVersion\":2,\"Hash\":\"7B535E875946C844350BCA769A28C78C1FD933546FBC45BF6C5744386DB59FDF\"},\"TemporaryFiles\":0,\"Reconciliation\":{\"State\":\"ManualReviewRequired\",\"Code\":\"RECOVERY-CONTENT-REVIEW\",\"TransactionId\":\"1c63cf43a34a48d1b314530eca16068b\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[{\"Path\":\"payload/app.txt\",\"State\":\"UnknownContent\",\"BackupVerified\":true}]}}",
+          "Command": "WO27Probe inspect <SYNTHETIC_ROOT>",
+          "ExitCode": 0
+        },
+        "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+        "Setup": {
+          "Output": "{\"Status\":\"PREPARED\",\"Size\":67108864,\"DataKind\":\"repeat\",\"OriginalHash\":\"DBFACA2662CB70B69DFEFD5AC95D1F54A73663092D46CEFDC9609DC695A12C98\",\"UpdatedHash\":\"0F8D1B2C1CB150B55B0C4CB224D11427401D0E748CA5A2666C6B1B1D508E7794\",\"Identity\":\"synthetic-id-7\",\"AclHash\":\"32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D\"}",
+          "Command": "WO27Probe init:67108864:repeat <SYNTHETIC_ROOT>",
+          "ExitCode": 0
+        },
+        "PhysicalPowerLoss": "NOT TESTED",
+        "Status": "PASS",
+        "Layout": {
+          "Output": "{\"LeadingOriginalBytes\":51773440,\"TotalBytes\":67108864,\"TailMatchesUpdatedFixture\":true,\"NoPlaintextExported\":true}",
+          "Command": "WO27Probe layout <SYNTHETIC_ROOT>",
+          "ExitCode": 0
+        },
+        "Resume": {
+          "Output": "{\"Stage\":10,\"Code\":\"RECOVERY-CONTENT-REVIEW\",\"TransactionId\":\"1c63cf43a34a48d1b314530eca16068b\",\"FilesApplied\":0,\"Failure\":\"\",\"Diagnostic\":null,\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"ManualReviewRequired\",\"OriginalBytesVerified\":false,\"WasCancellationRequested\":false,\"AnyMutationStarted\":false,\"ApplyMutationStarted\":false,\"RecoveryMutationStarted\":false,\"CancellationDisposition\":\"NotRequested\"}",
+          "Command": "WO27Probe resume <SYNTHETIC_ROOT>",
+          "ExitCode": 10
+        },
+        "Environment": "Windows synthetic filesystem; default FileStream.CopyTo path; no observed-copy hook",
+        "After": {
+          "Output": "{\"Current\":{\"Identity\":\"synthetic-id-7\",\"Length\":67108864,\"Hash\":\"619618C209DC97B456409858E83F40A1FAABAE8C978F3A6281050F2E08239321\",\"AclHash\":\"32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D\"},\"Backup\":{\"Identity\":\"synthetic-id-8\",\"Length\":67108864,\"Hash\":\"DBFACA2662CB70B69DFEFD5AC95D1F54A73663092D46CEFDC9609DC695A12C98\"},\"Journal\":{\"Stage\":\"RollingBack\",\"SchemaVersion\":2,\"Hash\":\"7B535E875946C844350BCA769A28C78C1FD933546FBC45BF6C5744386DB59FDF\"},\"TemporaryFiles\":0,\"Reconciliation\":{\"State\":\"ManualReviewRequired\",\"Code\":\"RECOVERY-CONTENT-REVIEW\",\"TransactionId\":\"1c63cf43a34a48d1b314530eca16068b\",\"OriginalBytesVerified\":false,\"CanRequestRecovery\":false,\"Files\":[{\"Path\":\"payload/app.txt\",\"State\":\"UnknownContent\",\"BackupVerified\":true}]}}",
+          "Command": "WO27Probe inspect <SYNTHETIC_ROOT>",
+          "ExitCode": 0
+        }
+      }
+    ]
+  },
+  "ExitCode": 0,
+  "ActualMidCopy": 4,
+  "PhysicalPowerLoss": "NOT TESTED"
+}

@@ -1,0 +1,22 @@
+{
+  "Status": "PARTIAL",
+  "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+  "Environment": "Windows .NET 10 x64; synthetic local files and GitHub-hosted runner",
+  "Command": "WO27DiagnosticPrivacyTests; retained UI source contracts",
+  "Input": "Fixed diagnostic fields and recovery request gating",
+  "Output": [
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO27DiagnosticPrivacyTests.MutationFieldsAreNumericOrBooleanAndPrivateIdentifiersStayExcluded",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO27DiagnosticPrivacyTests.UiRequiresReadOnlyRecheckBeforeRecoveryRequest",
+      "Outcome": "Passed",
+      "Reason": ""
+    }
+  ],
+  "ExitCode": 0,
+  "ActualGUI": "NOT TESTED",
+  "ScreenControlSessionOpened": false
+}

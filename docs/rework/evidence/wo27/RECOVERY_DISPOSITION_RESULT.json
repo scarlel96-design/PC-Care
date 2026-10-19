@@ -1,0 +1,123 @@
+{
+  "Status": "PASS",
+  "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+  "Environment": "Windows .NET 10 x64; synthetic local files and GitHub-hosted runner",
+  "Command": "WO27RecoveryDispositionTests; independent source-copy proof",
+  "Input": "Recovery writes after apply rejection; unknown current content with Applied=false/true",
+  "Output": {
+    "Tests": [
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27RecoveryDispositionTests.UnknownContentRemainsPreservedRegardlessOfAppliedFlag(applied: True)",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27RecoveryDispositionTests.SyntheticCopyObserverRejectsProductionAndUnmarkedRoots",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27RecoveryDispositionTests.RecoveryMutationSurvivesApplyErrorResultComposition",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27RecoveryDispositionTests.UnknownContentRemainsPreservedRegardlessOfAppliedFlag(applied: False)",
+        "Outcome": "Passed",
+        "Reason": ""
+      }
+    ],
+    "SourceCopy": {
+      "PrivacyProjection": "Document-local native identity aliases; workspace paths redacted. Outputs and exit codes retain their meaning.",
+      "RawCanonicalSha256": "c2f2ff13075b86bd959fae8262cdf2ccec08c241db5c9bb4ac6e8c831acb8cec",
+      "Records": {
+        "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+        "Environment": "Windows; isolated source copies; no product installation or vault rollback",
+        "Status": "PASS",
+        "Records": [
+          {
+            "Stage": "BASELINE",
+            "Output": "{\"Stage\":\"Restored\",\"Code\":\"ROLLED-BACK\",\"AnyMutationStarted\":false,\"RecoveryDisposition\":\"PreMutationRejected\",\"OriginalPreserved\":true,\"PersistedRecovery\":\"ORIGINAL-STATE-VERIFIED\"}",
+            "BuildCommand": "dotnet build \"<WORKSPACE>\\wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383\\baseline\\Proof.csproj\" -c Release -v:minimal",
+            "Input": "Synthetic signed one-file update; signed updated bytes appear after Applying journal; apply throws before its own write; rollback restores original; strictAcl=false",
+            "ExitCode": 0,
+            "BuildExitCode": 0,
+            "Command": "dotnet \"<WORKSPACE>\\wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383\\baseline\\bin\\Release\\net10.0-windows10.0.26100.0\\Proof.dll\" \"<WORKSPACE>\\wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383\\baseline\\fixture-disposition\"",
+            "SourceHash": "6EF35E5023AA38F77636A100919D0D9587F7B67DA2AB0A2D76BEC466F85E7384"
+          },
+          {
+            "Stage": "MODIFIED",
+            "Output": "{\"Stage\":\"Restored\",\"Code\":\"ROLLED-BACK\",\"AnyMutationStarted\":true,\"RecoveryDisposition\":\"RecoveryCompleted\",\"OriginalPreserved\":true,\"PersistedRecovery\":\"RESTORED\"}",
+            "BuildCommand": "dotnet build \"<WORKSPACE>\\wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383\\modified\\Proof.csproj\" -c Release -v:minimal",
+            "Input": "Synthetic signed one-file update; signed updated bytes appear after Applying journal; apply throws before its own write; rollback restores original; strictAcl=false",
+            "ExitCode": 0,
+            "BuildExitCode": 0,
+            "Command": "dotnet \"<WORKSPACE>\\wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383\\modified\\bin\\Release\\net10.0-windows10.0.26100.0\\Proof.dll\" \"<WORKSPACE>\\wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383\\modified\\fixture-disposition\"",
+            "SourceHash": "617913A51C390283EDEB34F714C0C37F57397E543CD66E58675D7F7A523FFAFD"
+          },
+          {
+            "Output": "SOURCE_COPY_RESTORED",
+            "Stage": "RollbackScript",
+            "Command": "\"C:/Program Files/Git/bin/bash.exe\" \"<WORKSPACE>\\work\\PC-Care\\docs\\rework\\evidence\\wo27\\ROLLBACK.sh\" \"<WORKSPACE>/wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383/restored/Engine/UpdateTransaction.cs\"",
+            "Input": "Independent modified source copy",
+            "ExitCode": 0
+          },
+          {
+            "Stage": "RESTORED",
+            "Output": "{\"Stage\":\"Restored\",\"Code\":\"ROLLED-BACK\",\"AnyMutationStarted\":false,\"RecoveryDisposition\":\"PreMutationRejected\",\"OriginalPreserved\":true,\"PersistedRecovery\":\"ORIGINAL-STATE-VERIFIED\"}",
+            "BuildCommand": "dotnet build \"<WORKSPACE>\\wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383\\restored\\Proof.csproj\" -c Release -v:minimal",
+            "Input": "Synthetic signed one-file update; signed updated bytes appear after Applying journal; apply throws before its own write; rollback restores original; strictAcl=false",
+            "ExitCode": 0,
+            "BuildExitCode": 0,
+            "Command": "dotnet \"<WORKSPACE>\\wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383\\restored\\bin\\Release\\net10.0-windows10.0.26100.0\\Proof.dll\" \"<WORKSPACE>\\wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383\\restored\\fixture-disposition\"",
+            "SourceHash": "6EF35E5023AA38F77636A100919D0D9587F7B67DA2AB0A2D76BEC466F85E7384"
+          }
+        ],
+        "RestoredByteEquality": true,
+        "ModifiedPreserved": true
+      }
+    },
+    "SeparateProcess": {
+      "PrivacyProjection": "Document-local native identity aliases; workspace paths redacted. Outputs and exit codes retain their meaning.",
+      "RawCanonicalSha256": "ef70e7104a286cda2020745506b41969ec59df0142f99bfad17f59bfb98da311",
+      "Records": [
+        {
+          "ExitCode": 0,
+          "Input": "Synthetic signed fixture",
+          "Output": "{\"Status\":\"PREPARED\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"ActualDifferentVolumes\":false}",
+          "Command": "WO25Probe init <SYNTHETIC_ROOT>",
+          "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365"
+        },
+        {
+          "ExitCode": 0,
+          "Input": "Synthetic signed fixture",
+          "Output": "{\"Code\":\"ROLLBACK-FAIL\",\"Stage\":\"RecoveryRequired\",\"Diagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":null,\"Phase\":\"BackupPreparation\",\"JournalStage\":4,\"TargetIdentity\":\"\",\"InstallVolume\":\"synthetic-id-1\",\"StagingVolume\":\"synthetic-id-1\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"SYNTHETIC-RECOVERY-PAUSE\"},\"RecoveryDiagnostic\":{\"ExceptionType\":\"IOException\",\"HResult\":\"0x80131620\",\"NativeErrorCode\":null,\"Phase\":\"Rollback\",\"JournalStage\":10,\"TargetIdentity\":\"\",\"InstallVolume\":\"\",\"StagingVolume\":\"\",\"StrictAclChecksRequired\":false,\"AnyMutationStarted\":false,\"AccessContract\":\"Boundary: Read + ReadControl; Write for writable handles; Delete only for publication\",\"ShareMode\":\"FILE_SHARE_READ\",\"DeletePending\":\"NOT OBSERVED\",\"ErrorCode\":\"SYNTHETIC-RECOVERY-PAUSE\"},\"RecoveryDisposition\":\"RecoveryDeferred\",\"OriginalBytesVerified\":false,\"AnyMutationStarted\":false,\"ElapsedMs\":271.2467,\"Startup\":{\"State\":5,\"Verified\":false,\"RequiresReview\":true,\"Code\":\"ROLLBACK-FAIL\"}}",
+          "Command": "WO25Probe defer <SYNTHETIC_ROOT>",
+          "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365"
+        },
+        {
+          "ExitCode": 0,
+          "Input": "Only the generated fixture; exact updated payload bytes",
+          "Output": "SYNTHETIC_UPDATED_CONTENT_PREPARED",
+          "Command": "WriteAllText(<SYNTHETIC_ROOT>/install/app.txt, known signed updated fixture bytes)",
+          "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365"
+        },
+        {
+          "ExitCode": 0,
+          "Input": "Separate process; original SHA-256 and persisted outcome",
+          "Output": "{\"Stage\":9,\"Code\":\"ROLLED-BACK\",\"TransactionId\":\"c55c67dc66f445be8843e88fb44978c2\",\"FilesApplied\":0,\"Failure\":\" SYNTHETIC-RECOVERY-PAUSE; IOException; phase=BackupPreparation; HRESULT=0x80131620; Win32=; rollback: IOException: SYNTHETIC-RECOVERY-PAUSE\",\"Diagnostic\":null,\"RecoveryDiagnostic\":null,\"RecoveryDisposition\":\"RecoveryCompleted\",\"OriginalBytesVerified\":true,\"WasCancellationRequested\":false,\"AnyMutationStarted\":true,\"ApplyMutationStarted\":false,\"RecoveryMutationStarted\":true,\"CancellationDisposition\":\"NotRequested\"}",
+          "Command": "WO25Probe resume <SYNTHETIC_ROOT>",
+          "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365"
+        },
+        {
+          "ExitCode": 0,
+          "Input": "Separate process; original SHA-256 and persisted outcome",
+          "Output": "{\"Status\":\"ORIGINAL_BYTES_VERIFIED\",\"OriginalHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"ActualHash\":\"52C3935626C104B2CBC9031291A1C4D56614C38F52072A361D658A58A9C48698\",\"NewFileAbsent\":true,\"Transactions\":1,\"Recovery\":{\"State\":3,\"Code\":\"RESTORED\",\"TransactionId\":\"\"}}",
+          "Command": "WO25Probe check <SYNTHETIC_ROOT>",
+          "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365"
+        }
+      ]
+    }
+  },
+  "ExitCode": 0
+}

@@ -1,0 +1,45 @@
+{
+  "Status": "PASS",
+  "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+  "Environment": "Windows .NET 10 x64; synthetic local files and GitHub-hosted runner",
+  "Command": "Local frozen-source build and test commands",
+  "Input": "Final source; no concurrent performance sampling",
+  "Output": [
+    {
+      "Input": "Frozen source; x64; synthetic test data",
+      "ExitCode": 0,
+      "Command": "dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64",
+      "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+      "OutputFile": "restore.txt"
+    },
+    {
+      "Input": "Frozen source; x64; synthetic test data",
+      "ExitCode": 0,
+      "Command": "dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal",
+      "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+      "OutputFile": "release.txt"
+    },
+    {
+      "Input": "Frozen source; x64; synthetic test data",
+      "ExitCode": 0,
+      "Command": "dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests -c Release -p:Platform=x64 --no-restore -m:1 --logger trx;LogFileName=<WORKSPACE>\\work\\PC-Care\\artifacts\\wo27-extra\\securitylab.trx -v:minimal",
+      "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+      "OutputFile": "securitylab.txt"
+    },
+    {
+      "Input": "Frozen source; x64; synthetic test data",
+      "ExitCode": 0,
+      "Command": "dotnet build tools/SmartPerformanceDoctor.WO25Probe -c Release -p:Platform=x64 -m:1 -v:minimal",
+      "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+      "OutputFile": "wo25-build.txt"
+    },
+    {
+      "Input": "Frozen source; x64; synthetic test data",
+      "ExitCode": 0,
+      "Command": "dotnet build tools/SmartPerformanceDoctor.GuiProbe -c Release -p:Platform=x64 -m:1 -v:minimal",
+      "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+      "OutputFile": "gui-probe-build.txt"
+    }
+  ],
+  "ExitCode": 0
+}

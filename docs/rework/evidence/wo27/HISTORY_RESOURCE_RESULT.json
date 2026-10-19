@@ -1,0 +1,2763 @@
+{
+  "Status": "PASS",
+  "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+  "Environment": "Windows .NET 10 x64; synthetic local files and GitHub-hosted runner",
+  "Command": "scripts/wo27-history-comparison.ps1",
+  "Input": "0/1/10/100/500/1000/4096; three processes per variant; no simultaneous regression",
+  "Output": {
+    "Local": [
+      {
+        "Transactions": 0,
+        "baseline": {
+          "ElapsedMs": {
+            "Median": 31.3511,
+            "Min": 29.3972,
+            "Max": 33.2092,
+            "PopulationVariance": 2.422400535555557
+          },
+          "CpuMs": {
+            "Median": 31.25,
+            "Min": 15.625,
+            "Max": 46.875,
+            "PopulationVariance": 162.76041666666666
+          },
+          "AllocatedBytes": {
+            "Median": 21552,
+            "Min": 11288,
+            "Max": 26312,
+            "PopulationVariance": 39303096.88888889
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 36405248,
+            "Min": 35606528,
+            "Max": 36454400,
+            "PopulationVariance": 151028498432
+          },
+          "PeakSampledHandles": {
+            "Median": 256,
+            "Min": 253,
+            "Max": 258,
+            "PopulationVariance": 4.222222222222222
+          },
+          "HandlesBefore": {
+            "Median": 227,
+            "Min": 227,
+            "Max": 227,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 256,
+            "Min": 256,
+            "Max": 256,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 3.3812,
+              "AllocatedBytes": 504
+            }
+          ],
+          "History": {
+            "Verified": false,
+            "State": "InstallationUnattested",
+            "Code": "INSTALLATION-NOT-ATTESTED",
+            "Transactions": 0,
+            "Files": 0
+          }
+        },
+        "modified": {
+          "ElapsedMs": {
+            "Median": 37.1729,
+            "Min": 36.4188,
+            "Max": 37.5997,
+            "PopulationVariance": 0.23837220666666717
+          },
+          "CpuMs": {
+            "Median": 62.5,
+            "Min": 46.875,
+            "Max": 62.5,
+            "PopulationVariance": 54.25347222222222
+          },
+          "AllocatedBytes": {
+            "Median": 14568,
+            "Min": 11192,
+            "Max": 15632,
+            "PopulationVariance": 3582563.5555555555
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 37040128,
+            "Min": 35340288,
+            "Max": 37347328,
+            "PopulationVariance": 779115269688.8889
+          },
+          "PeakSampledHandles": {
+            "Median": 253,
+            "Min": 253,
+            "Max": 256,
+            "PopulationVariance": 2
+          },
+          "HandlesBefore": {
+            "Median": 227,
+            "Min": 227,
+            "Max": 227,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 256,
+            "Min": 256,
+            "Max": 256,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 4.53,
+              "AllocatedBytes": 656
+            }
+          ],
+          "History": {
+            "Verified": false,
+            "State": "InstallationUnattested",
+            "Code": "INSTALLATION-NOT-ATTESTED",
+            "Transactions": 0,
+            "Files": 0,
+            "RetainedDirectoryHandles": 0,
+            "ReusedDirectoryHandles": 0,
+            "RetainedFileHandles": 0
+          }
+        }
+      },
+      {
+        "Transactions": 1,
+        "baseline": {
+          "ElapsedMs": {
+            "Median": 146.6357,
+            "Min": 144.1357,
+            "Max": 148.4961,
+            "PopulationVariance": 3.1915751466666644
+          },
+          "CpuMs": {
+            "Median": 156.25,
+            "Min": 140.625,
+            "Max": 171.875,
+            "PopulationVariance": 162.76041666666666
+          },
+          "AllocatedBytes": {
+            "Median": 2519704,
+            "Min": 2508600,
+            "Max": 2532088,
+            "PopulationVariance": 92038712.8888889
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 44920832,
+            "Min": 44605440,
+            "Max": 45051904,
+            "PopulationVariance": 35109120682.666664
+          },
+          "PeakSampledHandles": {
+            "Median": 336,
+            "Min": 335,
+            "Max": 336,
+            "PopulationVariance": 0.2222222222222222
+          },
+          "HandlesBefore": {
+            "Median": 227,
+            "Min": 227,
+            "Max": 227,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 281,
+            "Min": 281,
+            "Max": 281,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 602,
+              "ElapsedMs": 23.4266,
+              "AllocatedBytes": 954608
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 8,
+              "ElapsedMs": 14.216,
+              "AllocatedBytes": 498816
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 13,
+              "ElapsedMs": 5.5018,
+              "AllocatedBytes": 241568
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 9.1108,
+              "AllocatedBytes": 515136
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 1,
+              "ElapsedMs": 0.1951,
+              "AllocatedBytes": 8376
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 1,
+              "ElapsedMs": 1.1109,
+              "AllocatedBytes": 4840
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 1,
+              "ElapsedMs": 8.2715,
+              "AllocatedBytes": 367520
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 121.237,
+              "AllocatedBytes": 2499216
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 1,
+            "Files": 1
+          }
+        },
+        "modified": {
+          "ElapsedMs": {
+            "Median": 143.8619,
+            "Min": 143.0896,
+            "Max": 147.383,
+            "PopulationVariance": 3.4919862288889223
+          },
+          "CpuMs": {
+            "Median": 171.875,
+            "Min": 156.25,
+            "Max": 171.875,
+            "PopulationVariance": 54.25347222222222
+          },
+          "AllocatedBytes": {
+            "Median": 2597848,
+            "Min": 2577112,
+            "Max": 2599408,
+            "PopulationVariance": 103280768
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 45682688,
+            "Min": 45633536,
+            "Max": 46178304,
+            "PopulationVariance": 60535923598.22222
+          },
+          "PeakSampledHandles": {
+            "Median": 297,
+            "Min": 296,
+            "Max": 298,
+            "PopulationVariance": 0.6666666666666666
+          },
+          "HandlesBefore": {
+            "Median": 227,
+            "Min": 227,
+            "Max": 227,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 281,
+            "Min": 281,
+            "Max": 281,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 660,
+              "ElapsedMs": 24.8152,
+              "AllocatedBytes": 1048816
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 9,
+              "ElapsedMs": 12.958,
+              "AllocatedBytes": 541544
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 14,
+              "ElapsedMs": 5.6717,
+              "AllocatedBytes": 261888
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 8.7606,
+              "AllocatedBytes": 515136
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 1,
+              "ElapsedMs": 0.1591,
+              "AllocatedBytes": 8376
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 1,
+              "ElapsedMs": 1.0441,
+              "AllocatedBytes": 4840
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 1,
+              "ElapsedMs": 7.8991,
+              "AllocatedBytes": 420904
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 114.4956,
+              "AllocatedBytes": 2534720
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 1,
+            "Files": 1,
+            "RetainedDirectoryHandles": 12,
+            "ReusedDirectoryHandles": 166,
+            "RetainedFileHandles": 4
+          }
+        }
+      },
+      {
+        "Transactions": 10,
+        "baseline": {
+          "ElapsedMs": {
+            "Median": 247.1793,
+            "Min": 240.6553,
+            "Max": 247.2554,
+            "PopulationVariance": 9.569965246666664
+          },
+          "CpuMs": {
+            "Median": 453.125,
+            "Min": 265.625,
+            "Max": 484.375,
+            "PopulationVariance": 9331.597222222223
+          },
+          "AllocatedBytes": {
+            "Median": 8640488,
+            "Min": 8615800,
+            "Max": 8659936,
+            "PopulationVariance": 326189838.2222222
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 51134464,
+            "Min": 50728960,
+            "Max": 51171328,
+            "PopulationVariance": 40164655104
+          },
+          "PeakSampledHandles": {
+            "Median": 442,
+            "Min": 421,
+            "Max": 443,
+            "PopulationVariance": 102.88888888888889
+          },
+          "HandlesBefore": {
+            "Median": 227,
+            "Min": 227,
+            "Max": 227,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 281,
+            "Min": 281,
+            "Max": 281,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 2384,
+              "ElapsedMs": 85.8713,
+              "AllocatedBytes": 3805376
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 35,
+              "ElapsedMs": 56.5181,
+              "AllocatedBytes": 2289456
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 22,
+              "ElapsedMs": 9.0126,
+              "AllocatedBytes": 425024
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 7.971,
+              "AllocatedBytes": 515136
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 10,
+              "ElapsedMs": 1.2822,
+              "AllocatedBytes": 83760
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 10,
+              "ElapsedMs": 7.4769,
+              "AllocatedBytes": 48400
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 10,
+              "ElapsedMs": 71.3479,
+              "AllocatedBytes": 3674552
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 221.3751,
+              "AllocatedBytes": 8561056
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 10,
+            "Files": 1
+          }
+        },
+        "modified": {
+          "ElapsedMs": {
+            "Median": 246.8006,
+            "Min": 238.8063,
+            "Max": 255.6272,
+            "PopulationVariance": 47.19559742888886
+          },
+          "CpuMs": {
+            "Median": 421.875,
+            "Min": 265.625,
+            "Max": 468.75,
+            "PopulationVariance": 7541.232638888889
+          },
+          "AllocatedBytes": {
+            "Median": 9300504,
+            "Min": 9297216,
+            "Max": 9322728,
+            "PopulationVariance": 128397696
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 52690944,
+            "Min": 52690944,
+            "Max": 52764672,
+            "PopulationVariance": 1207959552
+          },
+          "PeakSampledHandles": {
+            "Median": 324,
+            "Min": 324,
+            "Max": 325,
+            "PopulationVariance": 0.2222222222222222
+          },
+          "HandlesBefore": {
+            "Median": 227,
+            "Min": 227,
+            "Max": 227,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 281,
+            "Min": 281,
+            "Max": 281,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 2865,
+              "ElapsedMs": 105.3323,
+              "AllocatedBytes": 4590424
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 45,
+              "ElapsedMs": 60.7362,
+              "AllocatedBytes": 2830520
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 32,
+              "ElapsedMs": 14.7746,
+              "AllocatedBytes": 628224
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 8.4581,
+              "AllocatedBytes": 515136
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 10,
+              "ElapsedMs": 1.3151,
+              "AllocatedBytes": 83760
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 10,
+              "ElapsedMs": 7.9392,
+              "AllocatedBytes": 48400
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 10,
+              "ElapsedMs": 71.6786,
+              "AllocatedBytes": 4208672
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 222.4139,
+              "AllocatedBytes": 9242584
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 10,
+            "Files": 1,
+            "RetainedDirectoryHandles": 21,
+            "ReusedDirectoryHandles": 931,
+            "RetainedFileHandles": 22
+          }
+        }
+      },
+      {
+        "Transactions": 100,
+        "baseline": {
+          "ElapsedMs": {
+            "Median": 1405.743,
+            "Min": 1307.9532,
+            "Max": 1417.3471,
+            "PopulationVariance": 2407.169497562223
+          },
+          "CpuMs": {
+            "Median": 1921.875,
+            "Min": 1718.75,
+            "Max": 2625,
+            "PopulationVariance": 150770.39930555556
+          },
+          "AllocatedBytes": {
+            "Median": 71444688,
+            "Min": 70973272,
+            "Max": 71453072,
+            "PopulationVariance": 50279041834.666664
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 54562816,
+            "Min": 54370304,
+            "Max": 54636544,
+            "PopulationVariance": 12597825080.88889
+          },
+          "PeakSampledHandles": {
+            "Median": 1524,
+            "Min": 1523,
+            "Max": 1524,
+            "PopulationVariance": 0.2222222222222222
+          },
+          "HandlesBefore": {
+            "Median": 227,
+            "Min": 227,
+            "Max": 227,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 281,
+            "Min": 281,
+            "Max": 281,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 20204,
+              "ElapsedMs": 689.6097,
+              "AllocatedBytes": 32874944
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 305,
+              "ElapsedMs": 472.9068,
+              "AllocatedBytes": 20486736
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 112,
+              "ElapsedMs": 44.775,
+              "AllocatedBytes": 2350736
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 7.784,
+              "AllocatedBytes": 516944
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 100,
+              "ElapsedMs": 10.4171,
+              "AllocatedBytes": 837600
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 100,
+              "ElapsedMs": 76.0747,
+              "AllocatedBytes": 486240
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 100,
+              "ElapsedMs": 700.818,
+              "AllocatedBytes": 37553624
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 1282.4436,
+              "AllocatedBytes": 70690840
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 100,
+            "Files": 1
+          }
+        },
+        "modified": {
+          "ElapsedMs": {
+            "Median": 1263.4,
+            "Min": 1190.1817,
+            "Max": 1472.5771,
+            "PopulationVariance": 14318.126728939988
+          },
+          "CpuMs": {
+            "Median": 1765.625,
+            "Min": 1359.375,
+            "Max": 2828.125,
+            "PopulationVariance": 383463.5416666667
+          },
+          "AllocatedBytes": {
+            "Median": 78049576,
+            "Min": 77733768,
+            "Max": 78575176,
+            "PopulationVariance": 120439719480.88889
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 56221696,
+            "Min": 55906304,
+            "Max": 57008128,
+            "PopulationVariance": 214662614584.8889
+          },
+          "PeakSampledHandles": {
+            "Median": 595,
+            "Min": 595,
+            "Max": 595,
+            "PopulationVariance": 0
+          },
+          "HandlesBefore": {
+            "Median": 227,
+            "Min": 227,
+            "Max": 227,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 281,
+            "Min": 281,
+            "Max": 281,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 24915,
+              "ElapsedMs": 804.3194,
+              "AllocatedBytes": 40828240
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 405,
+              "ElapsedMs": 488.4563,
+              "AllocatedBytes": 26166456
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 212,
+              "ElapsedMs": 79.0902,
+              "AllocatedBytes": 4469136
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 8.4614,
+              "AllocatedBytes": 516944
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 100,
+              "ElapsedMs": 10.4895,
+              "AllocatedBytes": 837600
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 100,
+              "ElapsedMs": 70.4323,
+              "AllocatedBytes": 486240
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 100,
+              "ElapsedMs": 655.4636,
+              "AllocatedBytes": 43059552
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 1155.9407,
+              "AllocatedBytes": 77791880
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 100,
+            "Files": 1,
+            "RetainedDirectoryHandles": 111,
+            "ReusedDirectoryHandles": 8581,
+            "RetainedFileHandles": 202
+          }
+        }
+      },
+      {
+        "Transactions": 500,
+        "baseline": {
+          "ElapsedMs": {
+            "Median": 5797.9224,
+            "Min": 5797.4829,
+            "Max": 6830.2843,
+            "PopulationVariance": 236938.89084153558
+          },
+          "CpuMs": {
+            "Median": 8875,
+            "Min": 6984.375,
+            "Max": 11890.625,
+            "PopulationVariance": 4082194.0104166665
+          },
+          "AllocatedBytes": {
+            "Median": 346157648,
+            "Min": 345790512,
+            "Max": 348582152,
+            "PopulationVariance": 1534029153123.5557
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 68243456,
+            "Min": 68034560,
+            "Max": 71663616,
+            "PopulationVariance": 2767908823950.222
+          },
+          "PeakSampledHandles": {
+            "Median": 6328,
+            "Min": 6327,
+            "Max": 6328,
+            "PopulationVariance": 0.2222222222222222
+          },
+          "HandlesBefore": {
+            "Median": 227,
+            "Min": 227,
+            "Max": 227,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 285,
+            "Min": 285,
+            "Max": 285,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 99404,
+              "ElapsedMs": 3803.2325,
+              "AllocatedBytes": 159924936
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 1505,
+              "ElapsedMs": 2607.0988,
+              "AllocatedBytes": 100127280
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 512,
+              "ElapsedMs": 249.7201,
+              "AllocatedBytes": 10413184
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 14.4186,
+              "AllocatedBytes": 539984
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 500,
+              "ElapsedMs": 48.3132,
+              "AllocatedBytes": 4188000
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 500,
+              "ElapsedMs": 433.0471,
+              "AllocatedBytes": 2402640
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 500,
+              "ElapsedMs": 3892.445,
+              "AllocatedBytes": 185511992
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 6792.1773,
+              "AllocatedBytes": 344369864
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 500,
+            "Files": 1
+          }
+        },
+        "modified": {
+          "ElapsedMs": {
+            "Median": 5777.4927,
+            "Min": 5315.0926,
+            "Max": 6345.4847,
+            "PopulationVariance": 177570.73825404668
+          },
+          "CpuMs": {
+            "Median": 9312.5,
+            "Min": 8609.375,
+            "Max": 11046.875,
+            "PopulationVariance": 1049316.40625
+          },
+          "AllocatedBytes": {
+            "Median": 380536288,
+            "Min": 380211016,
+            "Max": 383548248,
+            "PopulationVariance": 2257202481934.222
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 75751424,
+            "Min": 75673600,
+            "Max": 76165120,
+            "PopulationVariance": 46532540643.55556
+          },
+          "PeakSampledHandles": {
+            "Median": 1799,
+            "Min": 1799,
+            "Max": 1799,
+            "PopulationVariance": 0
+          },
+          "HandlesBefore": {
+            "Median": 227,
+            "Min": 227,
+            "Max": 227,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 285,
+            "Min": 285,
+            "Max": 285,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 122915,
+              "ElapsedMs": 4673.8196,
+              "AllocatedBytes": 198568360
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 2005,
+              "ElapsedMs": 2869.8861,
+              "AllocatedBytes": 127946008
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 1012,
+              "ElapsedMs": 421.9323,
+              "AllocatedBytes": 20573184
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 9.2962,
+              "AllocatedBytes": 515360
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 500,
+              "ElapsedMs": 52.9735,
+              "AllocatedBytes": 4188000
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 500,
+              "ElapsedMs": 456.1986,
+              "AllocatedBytes": 2430304
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 500,
+              "ElapsedMs": 3964.1709,
+              "AllocatedBytes": 212332664
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 6307.2081,
+              "AllocatedBytes": 378899368
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 500,
+            "Files": 1,
+            "RetainedDirectoryHandles": 511,
+            "ReusedDirectoryHandles": 42581,
+            "RetainedFileHandles": 1002
+          }
+        }
+      },
+      {
+        "Transactions": 1000,
+        "baseline": {
+          "ElapsedMs": {
+            "Median": 11461.5026,
+            "Min": 11348.4068,
+            "Max": 12744.3655,
+            "PopulationVariance": 400803.1746977487
+          },
+          "CpuMs": {
+            "Median": 20500,
+            "Min": 16546.875,
+            "Max": 21875,
+            "PopulationVariance": 5100748.697916667
+          },
+          "AllocatedBytes": {
+            "Median": 687437440,
+            "Min": 687403560,
+            "Max": 687991168,
+            "PopulationVariance": 72560634894.22223
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 87203840,
+            "Min": 87101440,
+            "Max": 87642112,
+            "PopulationVariance": 54988257507.55556
+          },
+          "PeakSampledHandles": {
+            "Median": 12330,
+            "Min": 12330,
+            "Max": 12330,
+            "PopulationVariance": 0
+          },
+          "HandlesBefore": {
+            "Median": 227,
+            "Min": 227,
+            "Max": 227,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 287,
+            "Min": 287,
+            "Max": 287,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 198404,
+              "ElapsedMs": 6553.3276,
+              "AllocatedBytes": 318275384
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 3005,
+              "ElapsedMs": 4531.2593,
+              "AllocatedBytes": 199303488
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 1012,
+              "ElapsedMs": 368.2298,
+              "AllocatedBytes": 20605184
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 8.0531,
+              "AllocatedBytes": 515360
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 1000,
+              "ElapsedMs": 70.2321,
+              "AllocatedBytes": 8376000
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 1000,
+              "ElapsedMs": 700.3319,
+              "AllocatedBytes": 4549776
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 1000,
+              "ElapsedMs": 6606.4202,
+              "AllocatedBytes": 370009192
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 11433.0851,
+              "AllocatedBytes": 684985712
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 1000,
+            "Files": 1
+          }
+        },
+        "modified": {
+          "ElapsedMs": {
+            "Median": 11191.3662,
+            "Min": 10331.4545,
+            "Max": 11582.7897,
+            "PopulationVariance": 273166.69676757546
+          },
+          "CpuMs": {
+            "Median": 19218.75,
+            "Min": 17234.375,
+            "Max": 19343.75,
+            "PopulationVariance": 933648.0034722222
+          },
+          "AllocatedBytes": {
+            "Median": 756566320,
+            "Min": 756456360,
+            "Max": 756847912,
+            "PopulationVariance": 27188691640.88889
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 88424448,
+            "Min": 88293376,
+            "Max": 90128384,
+            "PopulationVariance": 698648013482.6666
+          },
+          "PeakSampledHandles": {
+            "Median": 3301,
+            "Min": 3301,
+            "Max": 3301,
+            "PopulationVariance": 0
+          },
+          "HandlesBefore": {
+            "Median": 227,
+            "Min": 227,
+            "Max": 227,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 287,
+            "Min": 287,
+            "Max": 287,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 245415,
+              "ElapsedMs": 8534.3204,
+              "AllocatedBytes": 395760288
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 4005,
+              "ElapsedMs": 5135.0087,
+              "AllocatedBytes": 254876680
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 2012,
+              "ElapsedMs": 825.679,
+              "AllocatedBytes": 40925184
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 8.5511,
+              "AllocatedBytes": 515360
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 1000,
+              "ElapsedMs": 72.9897,
+              "AllocatedBytes": 8376000
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 1000,
+              "ElapsedMs": 764.3717,
+              "AllocatedBytes": 4622344
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 1000,
+              "ElapsedMs": 6785.1317,
+              "AllocatedBytes": 423793496
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 11159.8627,
+              "AllocatedBytes": 754496104
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 1000,
+            "Files": 1,
+            "RetainedDirectoryHandles": 1011,
+            "ReusedDirectoryHandles": 85081,
+            "RetainedFileHandles": 2002
+          }
+        }
+      },
+      {
+        "Transactions": 4096,
+        "baseline": {
+          "ElapsedMs": {
+            "Median": 47566.1238,
+            "Min": 45988.5837,
+            "Max": 49203.8664,
+            "PopulationVariance": 1723208.4924313358
+          },
+          "CpuMs": {
+            "Median": 73750,
+            "Min": 69890.625,
+            "Max": 77718.75,
+            "PopulationVariance": 10213921.440972222
+          },
+          "AllocatedBytes": {
+            "Median": 2803470504,
+            "Min": 2801323040,
+            "Max": 2803471120,
+            "PopulationVariance": 1025094410794.6666
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 155684864,
+            "Min": 155430912,
+            "Max": 155803648,
+            "PopulationVariance": 24170375850.666668
+          },
+          "PeakSampledHandles": {
+            "Median": 49480,
+            "Min": 49480,
+            "Max": 49480,
+            "PopulationVariance": 0
+          },
+          "HandlesBefore": {
+            "Median": 227,
+            "Min": 227,
+            "Max": 227,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 285,
+            "Min": 285,
+            "Max": 285,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 811412,
+              "ElapsedMs": 27392.663,
+              "AllocatedBytes": 1299124072
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 12293,
+              "ElapsedMs": 18992.3736,
+              "AllocatedBytes": 813708200
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 4108,
+              "ElapsedMs": 1553.6121,
+              "AllocatedBytes": 83714048
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 9.4133,
+              "AllocatedBytes": 519480
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 4096,
+              "ElapsedMs": 277.0303,
+              "AllocatedBytes": 34308096
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 4096,
+              "ElapsedMs": 2751.0817,
+              "AllocatedBytes": 18325640
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 4096,
+              "ElapsedMs": 27003.7888,
+              "AllocatedBytes": 1510530992
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 47532.2673,
+              "AllocatedBytes": 2791636600
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 4096,
+            "Files": 1
+          }
+        },
+        "modified": {
+          "ElapsedMs": {
+            "Median": 42538.9894,
+            "Min": 41468.5068,
+            "Max": 42652.3691,
+            "PopulationVariance": 284479.7665151259
+          },
+          "CpuMs": {
+            "Median": 62906.25,
+            "Min": 61468.75,
+            "Max": 66656.25,
+            "PopulationVariance": 4782118.055555556
+          },
+          "AllocatedBytes": {
+            "Median": 3082823224,
+            "Min": 3082143928,
+            "Max": 3085863384,
+            "PopulationVariance": 2615374313016.8887
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 146235392,
+            "Min": 146190336,
+            "Max": 146411520,
+            "PopulationVariance": 9108164152.88889
+          },
+          "PeakSampledHandles": {
+            "Median": 12587,
+            "Min": 12587,
+            "Max": 12587,
+            "PopulationVariance": 0
+          },
+          "HandlesBefore": {
+            "Median": 227,
+            "Min": 227,
+            "Max": 227,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 285,
+            "Min": 285,
+            "Max": 285,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 1003935,
+              "ElapsedMs": 32391.1641,
+              "AllocatedBytes": 1617958560
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 16389,
+              "ElapsedMs": 19477.8045,
+              "AllocatedBytes": 1041809480
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 8204,
+              "ElapsedMs": 2862.8673,
+              "AllocatedBytes": 166944768
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 9.0781,
+              "AllocatedBytes": 519480
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 4096,
+              "ElapsedMs": 244.5166,
+              "AllocatedBytes": 34308096
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 4096,
+              "ElapsedMs": 2684.5672,
+              "AllocatedBytes": 18334672
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 4096,
+              "ElapsedMs": 24732.739,
+              "AllocatedBytes": 1729863624
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 41429.5495,
+              "AllocatedBytes": 3077253536
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 4096,
+            "Files": 1,
+            "RetainedDirectoryHandles": 4107,
+            "ReusedDirectoryHandles": 348241,
+            "RetainedFileHandles": 8194
+          }
+        }
+      }
+    ],
+    "CI": [
+      {
+        "Transactions": 0,
+        "baseline": {
+          "ElapsedMs": {
+            "Median": 39.8139,
+            "Min": 39.1193,
+            "Max": 42.5836,
+            "PopulationVariance": 2.2394535266666615
+          },
+          "CpuMs": {
+            "Median": 62.5,
+            "Min": 46.875,
+            "Max": 78.125,
+            "PopulationVariance": 162.76041666666666
+          },
+          "AllocatedBytes": {
+            "Median": 20400,
+            "Min": 17304,
+            "Max": 22528,
+            "PopulationVariance": 4600419.555555556
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 31625216,
+            "Min": 31150080,
+            "Max": 34045952,
+            "PopulationVariance": 1607976848952.889
+          },
+          "PeakSampledHandles": {
+            "Median": 232,
+            "Min": 232,
+            "Max": 235,
+            "PopulationVariance": 2
+          },
+          "HandlesBefore": {
+            "Median": 206,
+            "Min": 206,
+            "Max": 206,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 235,
+            "Min": 235,
+            "Max": 235,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 3.6472,
+              "AllocatedBytes": 280
+            }
+          ],
+          "History": {
+            "Verified": false,
+            "State": "InstallationUnattested",
+            "Code": "INSTALLATION-NOT-ATTESTED",
+            "Transactions": 0,
+            "Files": 0
+          }
+        },
+        "modified": {
+          "ElapsedMs": {
+            "Median": 57.8288,
+            "Min": 51.0894,
+            "Max": 61.8507,
+            "PopulationVariance": 19.71119662888891
+          },
+          "CpuMs": {
+            "Median": 62.5,
+            "Min": 62.5,
+            "Max": 93.75,
+            "PopulationVariance": 217.01388888888889
+          },
+          "AllocatedBytes": {
+            "Median": 23216,
+            "Min": 18912,
+            "Max": 24088,
+            "PopulationVariance": 5119530.666666667
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 34693120,
+            "Min": 32518144,
+            "Max": 35282944,
+            "PopulationVariance": 1413614665728
+          },
+          "PeakSampledHandles": {
+            "Median": 233,
+            "Min": 232,
+            "Max": 235,
+            "PopulationVariance": 1.5555555555555556
+          },
+          "HandlesBefore": {
+            "Median": 206,
+            "Min": 206,
+            "Max": 206,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 235,
+            "Min": 235,
+            "Max": 235,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 4.9237,
+              "AllocatedBytes": 432
+            }
+          ],
+          "History": {
+            "Verified": false,
+            "State": "InstallationUnattested",
+            "Code": "INSTALLATION-NOT-ATTESTED",
+            "Transactions": 0,
+            "Files": 0,
+            "RetainedDirectoryHandles": 0,
+            "ReusedDirectoryHandles": 0,
+            "RetainedFileHandles": 0
+          }
+        }
+      },
+      {
+        "Transactions": 1,
+        "baseline": {
+          "ElapsedMs": {
+            "Median": 170.3222,
+            "Min": 165.3711,
+            "Max": 174.4534,
+            "PopulationVariance": 13.785375326666593
+          },
+          "CpuMs": {
+            "Median": 234.375,
+            "Min": 171.875,
+            "Max": 234.375,
+            "PopulationVariance": 868.0555555555555
+          },
+          "AllocatedBytes": {
+            "Median": 1940768,
+            "Min": 1905320,
+            "Max": 1948232,
+            "PopulationVariance": 350412416
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 41676800,
+            "Min": 41476096,
+            "Max": 42065920,
+            "PopulationVariance": 59954313443.55556
+          },
+          "PeakSampledHandles": {
+            "Median": 289,
+            "Min": 278,
+            "Max": 290,
+            "PopulationVariance": 29.555555555555557
+          },
+          "HandlesBefore": {
+            "Median": 206,
+            "Min": 206,
+            "Max": 206,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 260,
+            "Min": 260,
+            "Max": 260,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 322,
+              "ElapsedMs": 14.2044,
+              "AllocatedBytes": 459872
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 8,
+              "ElapsedMs": 8.2449,
+              "AllocatedBytes": 240672
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 13,
+              "ElapsedMs": 3.0646,
+              "AllocatedBytes": 120696
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 8.3757,
+              "AllocatedBytes": 457616
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 1,
+              "ElapsedMs": 0.1418,
+              "AllocatedBytes": 8376
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 1,
+              "ElapsedMs": 0.9871,
+              "AllocatedBytes": 4840
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 1,
+              "ElapsedMs": 4.7723,
+              "AllocatedBytes": 256568
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 126.7516,
+              "AllocatedBytes": 1895360
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 1,
+            "Files": 1
+          }
+        },
+        "modified": {
+          "ElapsedMs": {
+            "Median": 185.2099,
+            "Min": 174.5343,
+            "Max": 188.4532,
+            "PopulationVariance": 35.35813416222226
+          },
+          "CpuMs": {
+            "Median": 187.5,
+            "Min": 156.25,
+            "Max": 218.75,
+            "PopulationVariance": 651.0416666666666
+          },
+          "AllocatedBytes": {
+            "Median": 1986696,
+            "Min": 1970792,
+            "Max": 1997872,
+            "PopulationVariance": 123462954.66666667
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 42618880,
+            "Min": 42541056,
+            "Max": 42946560,
+            "PopulationVariance": 30873805710.22222
+          },
+          "PeakSampledHandles": {
+            "Median": 269,
+            "Min": 268,
+            "Max": 271,
+            "PopulationVariance": 1.5555555555555556
+          },
+          "HandlesBefore": {
+            "Median": 206,
+            "Min": 206,
+            "Max": 206,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 260,
+            "Min": 260,
+            "Max": 260,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 355,
+              "ElapsedMs": 17.501,
+              "AllocatedBytes": 507960
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 9,
+              "ElapsedMs": 10.0096,
+              "AllocatedBytes": 265408
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 14,
+              "ElapsedMs": 3.9766,
+              "AllocatedBytes": 131376
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 10.424,
+              "AllocatedBytes": 457616
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 1,
+              "ElapsedMs": 0.1382,
+              "AllocatedBytes": 8376
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 1,
+              "ElapsedMs": 1.0999,
+              "AllocatedBytes": 4840
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 1,
+              "ElapsedMs": 6.5768,
+              "AllocatedBytes": 285176
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 141.2463,
+              "AllocatedBytes": 1926008
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 1,
+            "Files": 1,
+            "RetainedDirectoryHandles": 7,
+            "ReusedDirectoryHandles": 86,
+            "RetainedFileHandles": 4
+          }
+        }
+      },
+      {
+        "Transactions": 10,
+        "baseline": {
+          "ElapsedMs": {
+            "Median": 210.0343,
+            "Min": 207.7742,
+            "Max": 243.8515,
+            "PopulationVariance": 272.25362701555525
+          },
+          "CpuMs": {
+            "Median": 265.625,
+            "Min": 218.75,
+            "Max": 281.25,
+            "PopulationVariance": 705.2951388888889
+          },
+          "AllocatedBytes": {
+            "Median": 6236440,
+            "Min": 6221072,
+            "Max": 6236592,
+            "PopulationVariance": 53007658.666666664
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 46211072,
+            "Min": 46120960,
+            "Max": 46702592,
+            "PopulationVariance": 65334207374.22222
+          },
+          "PeakSampledHandles": {
+            "Median": 345,
+            "Min": 340,
+            "Max": 352,
+            "PopulationVariance": 24.22222222222222
+          },
+          "HandlesBefore": {
+            "Median": 206,
+            "Min": 206,
+            "Max": 206,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 260,
+            "Min": 260,
+            "Max": 260,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 1294,
+              "ElapsedMs": 57.7588,
+              "AllocatedBytes": 1860704
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 35,
+              "ElapsedMs": 35.5044,
+              "AllocatedBytes": 1135272
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 22,
+              "ElapsedMs": 5.4133,
+              "AllocatedBytes": 217248
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 10.8329,
+              "AllocatedBytes": 457616
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 10,
+              "ElapsedMs": 1.1531,
+              "AllocatedBytes": 83760
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 10,
+              "ElapsedMs": 8.4199,
+              "AllocatedBytes": 48400
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 10,
+              "ElapsedMs": 48.3352,
+              "AllocatedBytes": 2565032
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 205.2166,
+              "AllocatedBytes": 6156928
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 10,
+            "Files": 1
+          }
+        },
+        "modified": {
+          "ElapsedMs": {
+            "Median": 236.5346,
+            "Min": 213.603,
+            "Max": 238.5048,
+            "PopulationVariance": 127.75995664888879
+          },
+          "CpuMs": {
+            "Median": 234.375,
+            "Min": 218.75,
+            "Max": 250,
+            "PopulationVariance": 162.76041666666666
+          },
+          "AllocatedBytes": {
+            "Median": 6618624,
+            "Min": 6606464,
+            "Max": 6623544,
+            "PopulationVariance": 51533155.55555555
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 47710208,
+            "Min": 47308800,
+            "Max": 47747072,
+            "PopulationVariance": 39396631438.22222
+          },
+          "PeakSampledHandles": {
+            "Median": 298,
+            "Min": 297,
+            "Max": 298,
+            "PopulationVariance": 0.2222222222222222
+          },
+          "HandlesBefore": {
+            "Median": 206,
+            "Min": 206,
+            "Max": 206,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 260,
+            "Min": 260,
+            "Max": 260,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 1570,
+              "ElapsedMs": 58.6014,
+              "AllocatedBytes": 2265120
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 45,
+              "ElapsedMs": 34.7598,
+              "AllocatedBytes": 1422168
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 32,
+              "ElapsedMs": 8.306,
+              "AllocatedBytes": 324048
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 9.3489,
+              "AllocatedBytes": 457616
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 10,
+              "ElapsedMs": 1.147,
+              "AllocatedBytes": 83760
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 10,
+              "ElapsedMs": 7.1365,
+              "AllocatedBytes": 48400
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 10,
+              "ElapsedMs": 42.54,
+              "AllocatedBytes": 2851392
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 192.3321,
+              "AllocatedBytes": 6545496
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 10,
+            "Files": 1,
+            "RetainedDirectoryHandles": 16,
+            "ReusedDirectoryHandles": 491,
+            "RetainedFileHandles": 22
+          }
+        }
+      },
+      {
+        "Transactions": 100,
+        "baseline": {
+          "ElapsedMs": {
+            "Median": 738.8984,
+            "Min": 735.5975,
+            "Max": 743.5787,
+            "PopulationVariance": 10.722300260000141
+          },
+          "CpuMs": {
+            "Median": 765.625,
+            "Min": 734.375,
+            "Max": 781.25,
+            "PopulationVariance": 379.77430555555554
+          },
+          "AllocatedBytes": {
+            "Median": 50001448,
+            "Min": 49993176,
+            "Max": 50002600,
+            "PopulationVariance": 17618318.222222224
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 47947776,
+            "Min": 47648768,
+            "Max": 48017408,
+            "PopulationVariance": 25572205454.22222
+          },
+          "PeakSampledHandles": {
+            "Median": 983,
+            "Min": 982,
+            "Max": 983,
+            "PopulationVariance": 0.2222222222222222
+          },
+          "HandlesBefore": {
+            "Median": 206,
+            "Min": 206,
+            "Max": 206,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 260,
+            "Min": 260,
+            "Max": 260,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 11014,
+              "ElapsedMs": 366.547,
+              "AllocatedBytes": 15869024
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 305,
+              "ElapsedMs": 229.4959,
+              "AllocatedBytes": 10081272
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 112,
+              "ElapsedMs": 24.6461,
+              "AllocatedBytes": 1182768
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 9.0259,
+              "AllocatedBytes": 457840
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 100,
+              "ElapsedMs": 8.6237,
+              "AllocatedBytes": 837600
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 100,
+              "ElapsedMs": 58.7453,
+              "AllocatedBytes": 510864
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 100,
+              "ElapsedMs": 348.4343,
+              "AllocatedBytes": 26009496
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 703.9335,
+              "AllocatedBytes": 49819240
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 100,
+            "Files": 1
+          }
+        },
+        "modified": {
+          "ElapsedMs": {
+            "Median": 766.7641,
+            "Min": 757.0759,
+            "Max": 776.0235,
+            "PopulationVariance": 59.845472595555336
+          },
+          "CpuMs": {
+            "Median": 781.25,
+            "Min": 765.625,
+            "Max": 859.375,
+            "PopulationVariance": 1681.857638888889
+          },
+          "AllocatedBytes": {
+            "Median": 54330944,
+            "Min": 53864120,
+            "Max": 54362632,
+            "PopulationVariance": 51938110051.55556
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 49950720,
+            "Min": 49356800,
+            "Max": 50241536,
+            "PopulationVariance": 135563633550.22223
+          },
+          "PeakSampledHandles": {
+            "Median": 569,
+            "Min": 568,
+            "Max": 569,
+            "PopulationVariance": 0.2222222222222222
+          },
+          "HandlesBefore": {
+            "Median": 206,
+            "Min": 206,
+            "Max": 206,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 260,
+            "Min": 260,
+            "Max": 260,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 13720,
+              "ElapsedMs": 433.6165,
+              "AllocatedBytes": 20315520
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 405,
+              "ElapsedMs": 270.1738,
+              "AllocatedBytes": 13261816
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 212,
+              "ElapsedMs": 45.067,
+              "AllocatedBytes": 2354160
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 8.8872,
+              "AllocatedBytes": 458704
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 100,
+              "ElapsedMs": 9.5927,
+              "AllocatedBytes": 837600
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 100,
+              "ElapsedMs": 60.1668,
+              "AllocatedBytes": 486240
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 100,
+              "ElapsedMs": 377.7792,
+              "AllocatedBytes": 29212496
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 722.7222,
+              "AllocatedBytes": 54166856
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 100,
+            "Files": 1,
+            "RetainedDirectoryHandles": 106,
+            "ReusedDirectoryHandles": 4541,
+            "RetainedFileHandles": 202
+          }
+        }
+      },
+      {
+        "Transactions": 500,
+        "baseline": {
+          "ElapsedMs": {
+            "Median": 3133.4048,
+            "Min": 3084.5502,
+            "Max": 3140.2953,
+            "PopulationVariance": 615.7519006022204
+          },
+          "CpuMs": {
+            "Median": 3390.625,
+            "Min": 3390.625,
+            "Max": 3578.125,
+            "PopulationVariance": 7812.5
+          },
+          "AllocatedBytes": {
+            "Median": 245711272,
+            "Min": 245589648,
+            "Max": 245717752,
+            "PopulationVariance": 3471669176.888889
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 63787008,
+            "Min": 63696896,
+            "Max": 63799296,
+            "PopulationVariance": 2084103054.2222223
+          },
+          "PeakSampledHandles": {
+            "Median": 3786,
+            "Min": 3786,
+            "Max": 3786,
+            "PopulationVariance": 0
+          },
+          "HandlesBefore": {
+            "Median": 206,
+            "Min": 206,
+            "Max": 206,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 263,
+            "Min": 263,
+            "Max": 264,
+            "PopulationVariance": 0.2222222222222222
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 54214,
+              "ElapsedMs": 1813.8005,
+              "AllocatedBytes": 79438872
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 1505,
+              "ElapsedMs": 1150.438,
+              "AllocatedBytes": 50481496
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 512,
+              "ElapsedMs": 111.064,
+              "AllocatedBytes": 5473968
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 9.2144,
+              "AllocatedBytes": 457840
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 500,
+              "ElapsedMs": 38.3891,
+              "AllocatedBytes": 4188000
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 500,
+              "ElapsedMs": 303.204,
+              "AllocatedBytes": 2429856
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 500,
+              "ElapsedMs": 1800.7261,
+              "AllocatedBytes": 130246704
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 3104.0134,
+              "AllocatedBytes": 244833920
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 500,
+            "Files": 1
+          }
+        },
+        "modified": {
+          "ElapsedMs": {
+            "Median": 3088.1977,
+            "Min": 3086.641,
+            "Max": 3106.4215,
+            "PopulationVariance": 80.64426461999837
+          },
+          "CpuMs": {
+            "Median": 3484.375,
+            "Min": 3421.875,
+            "Max": 3562.5,
+            "PopulationVariance": 3309.4618055555557
+          },
+          "AllocatedBytes": {
+            "Median": 265879608,
+            "Min": 265719832,
+            "Max": 267566440,
+            "PopulationVariance": 697876852451.5555
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 66187264,
+            "Min": 65908736,
+            "Max": 66269184,
+            "PopulationVariance": 23801277098.666668
+          },
+          "PeakSampledHandles": {
+            "Median": 1772,
+            "Min": 1772,
+            "Max": 1772,
+            "PopulationVariance": 0
+          },
+          "HandlesBefore": {
+            "Median": 206,
+            "Min": 206,
+            "Max": 206,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 263,
+            "Min": 263,
+            "Max": 263,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 67720,
+              "ElapsedMs": 2108.0252,
+              "AllocatedBytes": 100042392
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 2005,
+              "ElapsedMs": 1301.0483,
+              "AllocatedBytes": 65714896
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 1012,
+              "ElapsedMs": 238.8771,
+              "AllocatedBytes": 10813968
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 8.7373,
+              "AllocatedBytes": 457840
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 500,
+              "ElapsedMs": 38.6798,
+              "AllocatedBytes": 4188000
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 500,
+              "ElapsedMs": 289.9621,
+              "AllocatedBytes": 2429856
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 500,
+              "ElapsedMs": 1837.9471,
+              "AllocatedBytes": 145473288
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 3063.5544,
+              "AllocatedBytes": 264929056
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 500,
+            "Files": 1,
+            "RetainedDirectoryHandles": 506,
+            "ReusedDirectoryHandles": 22541,
+            "RetainedFileHandles": 1002
+          }
+        }
+      },
+      {
+        "Transactions": 1000,
+        "baseline": {
+          "ElapsedMs": {
+            "Median": 5844.2694,
+            "Min": 5737.4839,
+            "Max": 5872.191,
+            "PopulationVariance": 3369.8623941355413
+          },
+          "CpuMs": {
+            "Median": 6828.125,
+            "Min": 6609.375,
+            "Max": 6875,
+            "PopulationVariance": 13400.607638888889
+          },
+          "AllocatedBytes": {
+            "Median": 492417872,
+            "Min": 492322896,
+            "Max": 492524752,
+            "PopulationVariance": 6798846634.666667
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 67088384,
+            "Min": 66920448,
+            "Max": 67108864,
+            "PopulationVariance": 7124724394.666667
+          },
+          "PeakSampledHandles": {
+            "Median": 7287,
+            "Min": 7287,
+            "Max": 7287,
+            "PopulationVariance": 0
+          },
+          "HandlesBefore": {
+            "Median": 206,
+            "Min": 206,
+            "Max": 206,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 264,
+            "Min": 264,
+            "Max": 264,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 108214,
+              "ElapsedMs": 3548.966,
+              "AllocatedBytes": 161158232
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 3005,
+              "ElapsedMs": 2251.8186,
+              "AllocatedBytes": 102474304
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 1012,
+              "ElapsedMs": 207.8681,
+              "AllocatedBytes": 10837968
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 8.6402,
+              "AllocatedBytes": 457840
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 1000,
+              "ElapsedMs": 63.4605,
+              "AllocatedBytes": 8376000
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 1000,
+              "ElapsedMs": 585.4217,
+              "AllocatedBytes": 4858480
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 1000,
+              "ElapsedMs": 3418.0427,
+              "AllocatedBytes": 262852824
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 5836.9082,
+              "AllocatedBytes": 490781904
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 1000,
+            "Files": 1
+          }
+        },
+        "modified": {
+          "ElapsedMs": {
+            "Median": 5923.2091,
+            "Min": 5914.3466,
+            "Max": 5938.3989,
+            "PopulationVariance": 98.6430072866689
+          },
+          "CpuMs": {
+            "Median": 7078.125,
+            "Min": 7062.5,
+            "Max": 7109.375,
+            "PopulationVariance": 379.77430555555554
+          },
+          "AllocatedBytes": {
+            "Median": 528662880,
+            "Min": 527748712,
+            "Max": 532304432,
+            "PopulationVariance": 3872354313258.6665
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 78290944,
+            "Min": 78004224,
+            "Max": 78774272,
+            "PopulationVariance": 100976470698.66667
+          },
+          "PeakSampledHandles": {
+            "Median": 3273,
+            "Min": 3273,
+            "Max": 3273,
+            "PopulationVariance": 0
+          },
+          "HandlesBefore": {
+            "Median": 206,
+            "Min": 206,
+            "Max": 206,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 264,
+            "Min": 264,
+            "Max": 264,
+            "PopulationVariance": 0
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 135220,
+              "ElapsedMs": 4187.5047,
+              "AllocatedBytes": 197410584
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 4005,
+              "ElapsedMs": 2607.3822,
+              "AllocatedBytes": 129611872
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 2012,
+              "ElapsedMs": 424.9811,
+              "AllocatedBytes": 21517968
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 8.3995,
+              "AllocatedBytes": 457840
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 1000,
+              "ElapsedMs": 67.8206,
+              "AllocatedBytes": 8389928
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 1000,
+              "ElapsedMs": 584.4398,
+              "AllocatedBytes": 4875472
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 1000,
+              "ElapsedMs": 3585.1275,
+              "AllocatedBytes": 288603592
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 5871.8876,
+              "AllocatedBytes": 526123104
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 1000,
+            "Files": 1,
+            "RetainedDirectoryHandles": 1006,
+            "ReusedDirectoryHandles": 45041,
+            "RetainedFileHandles": 2002
+          }
+        }
+      },
+      {
+        "Transactions": 4096,
+        "baseline": {
+          "ElapsedMs": {
+            "Median": 21811.0326,
+            "Min": 21436.506,
+            "Max": 21933.9684,
+            "PopulationVariance": 44761.3582714399
+          },
+          "CpuMs": {
+            "Median": 24625,
+            "Min": 23828.125,
+            "Max": 24718.75,
+            "PopulationVariance": 159667.96875
+          },
+          "AllocatedBytes": {
+            "Median": 1982848768,
+            "Min": 1981706592,
+            "Max": 1983256328,
+            "PopulationVariance": 430261426474.6667
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 134533120,
+            "Min": 134434816,
+            "Max": 134676480,
+            "PopulationVariance": 9846361656.88889
+          },
+          "PeakSampledHandles": {
+            "Median": 28958,
+            "Min": 28958,
+            "Max": 28961,
+            "PopulationVariance": 2
+          },
+          "HandlesBefore": {
+            "Median": 206,
+            "Min": 206,
+            "Max": 206,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 263,
+            "Min": 263,
+            "Max": 266,
+            "PopulationVariance": 2
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 442582,
+              "ElapsedMs": 13740.4461,
+              "AllocatedBytes": 640032320
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 12293,
+              "ElapsedMs": 8580.7455,
+              "AllocatedBytes": 406742928
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 4108,
+              "ElapsedMs": 847.8727,
+              "AllocatedBytes": 44051856
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 8.47,
+              "AllocatedBytes": 457840
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 4096,
+              "ElapsedMs": 178.3691,
+              "AllocatedBytes": 34312168
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 4096,
+              "ElapsedMs": 2131.0368,
+              "AllocatedBytes": 18399392
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 4096,
+              "ElapsedMs": 12263.6312,
+              "AllocatedBytes": 1054964264
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 21402.1468,
+              "AllocatedBytes": 1977282752
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 4096,
+            "Files": 1
+          }
+        },
+        "modified": {
+          "ElapsedMs": {
+            "Median": 21763.5945,
+            "Min": 21689.6767,
+            "Max": 22774.8972,
+            "PopulationVariance": 245100.0584227088
+          },
+          "CpuMs": {
+            "Median": 24156.25,
+            "Min": 23859.375,
+            "Max": 25656.25,
+            "PopulationVariance": 618543.8368055555
+          },
+          "AllocatedBytes": {
+            "Median": 2141241968,
+            "Min": 2140828944,
+            "Max": 2146168936,
+            "PopulationVariance": 5884568561962.667
+          },
+          "PeakSampledWorkingSetBytes": {
+            "Median": 133218304,
+            "Min": 133128192,
+            "Max": 133779456,
+            "PopulationVariance": 83017393038.22223
+          },
+          "PeakSampledHandles": {
+            "Median": 12563,
+            "Min": 12560,
+            "Max": 12563,
+            "PopulationVariance": 2
+          },
+          "HandlesBefore": {
+            "Median": 206,
+            "Min": 206,
+            "Max": 206,
+            "PopulationVariance": 0
+          },
+          "HandlesAfter": {
+            "Median": 266,
+            "Min": 263,
+            "Max": 266,
+            "PopulationVariance": 2
+          },
+          "Counters": [
+            {
+              "Name": "NativeIdentityCheck",
+              "Calls": 553180,
+              "ElapsedMs": 16412.3862,
+              "AllocatedBytes": 807244384
+            },
+            {
+              "Name": "FileOpenAndBind",
+              "Calls": 16389,
+              "ElapsedMs": 10055.7402,
+              "AllocatedBytes": 528147736
+            },
+            {
+              "Name": "FileIdentityValidation",
+              "Calls": 8204,
+              "ElapsedMs": 1631.5667,
+              "AllocatedBytes": 87797136
+            },
+            {
+              "Name": "HashAndIdentity",
+              "Calls": 3,
+              "ElapsedMs": 8.5307,
+              "AllocatedBytes": 457840
+            },
+            {
+              "Name": "HistoryJsonParse",
+              "Calls": 4096,
+              "ElapsedMs": 173.5924,
+              "AllocatedBytes": 34315440
+            },
+            {
+              "Name": "HistorySignatureVerification",
+              "Calls": 4096,
+              "ElapsedMs": 2162.362,
+              "AllocatedBytes": 18469032
+            },
+            {
+              "Name": "HistoryTransactionRead",
+              "Calls": 4096,
+              "ElapsedMs": 12990.7055,
+              "AllocatedBytes": 1171770664
+            },
+            {
+              "Name": "HistoryTotal",
+              "Calls": 1,
+              "ElapsedMs": 21721.2493,
+              "AllocatedBytes": 2140124576
+            }
+          ],
+          "History": {
+            "Verified": true,
+            "State": "InstallationVerified",
+            "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+            "Transactions": 4096,
+            "Files": 1,
+            "RetainedDirectoryHandles": 4102,
+            "ReusedDirectoryHandles": 184361,
+            "RetainedFileHandles": 8194
+          }
+        }
+      }
+    ],
+    "LocalSource": "cc02c95d000e352d1cf6f3fbced46a68f24fda45",
+    "CISource": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+    "LocalHistoryImplementationAndProbeMatchFinalSource": true,
+    "LocalMeasurementPredatesFinalRollbackDispositionFix": true
+  },
+  "ExitCode": 0,
+  "Scope": "Constructed signed metadata, sampled peaks; not product cold start or low-end hardware"
+}

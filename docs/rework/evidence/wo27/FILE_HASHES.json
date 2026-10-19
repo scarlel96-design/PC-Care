@@ -1,0 +1,211 @@
+{
+  "Status": "PASS",
+  "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+  "Command": "python -X utf8 wo27-prepublish.py",
+  "Input": "Every WO27 report and evidence artifact",
+  "Output": "All required files reopened; JSON parsed; known secret patterns absent; source-copy bytes verified",
+  "ExitCode": 0,
+  "Files": [
+    {
+      "Name": "BASELINE_RESULT.txt",
+      "Bytes": 976,
+      "Sha256": "242862142d7e5c9dcc1f09ff5ae538ca781ffb000243c302f34ecc1df7333553"
+    },
+    {
+      "Name": "BUILD_RESULT.txt",
+      "Bytes": 664,
+      "Sha256": "0d8e90a00ef37aa871e2bf030c2c33d6e529000be4a4a0a8169bde1f6e17b348"
+    },
+    {
+      "Name": "CI_RUN_RESULT.json",
+      "Bytes": 10251,
+      "Sha256": "fe95ff3a98a0400976f0544dbae3cf68c1d1193e6a42f683fa707d22b24368f1"
+    },
+    {
+      "Name": "CROSS_VOLUME_RESULT.json",
+      "Bytes": 1690,
+      "Sha256": "aee1f628edc933ec0650469d814fd44f9527fdd16ccb9f9a6581a33e3a5ba9c2"
+    },
+    {
+      "Name": "DAYBREAK_DEFERRED.txt",
+      "Bytes": 302,
+      "Sha256": "ef86a7fc530abdc5ad661d38655008c219ce551cddd410d01b9501f0db6f05c0"
+    },
+    {
+      "Name": "DEFAULT_COPY_NATIVE_RESULT.json",
+      "Bytes": 16867,
+      "Sha256": "901ac81c407a8ea484c9f11f2203a6c5afc352763b3a9297cd7ee74b81cb64d5"
+    },
+    {
+      "Name": "DIFF_FILE",
+      "Bytes": 8539,
+      "Sha256": "ff10494ce4b1f168e41fcf610542a38734d40fcee480bbff039b1d59b2c3584a"
+    },
+    {
+      "Name": "DURABLE_DISPOSITION_PROCESS_RESULT.json",
+      "Bytes": 4354,
+      "Sha256": "15fb929b9a540d35048ee487ca96dee83a276643c3ea5986579c691561efd892"
+    },
+    {
+      "Name": "ENVIRONMENT_RESULT.json",
+      "Bytes": 609,
+      "Sha256": "bfa85d143e5e6ca4568385505fc72b66ba50e31d15d12ae257440b6eb20db908"
+    },
+    {
+      "Name": "FINAL_METRICS.json",
+      "Bytes": 82637,
+      "Sha256": "848c1254cfdd0c8c29a2d1bf8d2a884a733257b9373a0172f477967455a036f4"
+    },
+    {
+      "Name": "FOCUSED_TESTS.json",
+      "Bytes": 3839,
+      "Sha256": "e094c72b2a061b0dbd4e69f51c6d7dda79583e35f65969b06bcefd9299a87b32"
+    },
+    {
+      "Name": "FULL_TEST_RESULT.txt",
+      "Bytes": 12161,
+      "Sha256": "e2aeb08e4a9db852191d06c2b0b501380a167c718283e25d9148d90509b52006"
+    },
+    {
+      "Name": "GITHUB_RESULT.txt",
+      "Bytes": 718,
+      "Sha256": "780f2b5390854b5320b498ab190d04c90ea93853bda4e71a482c65250d511303"
+    },
+    {
+      "Name": "HISTORY_COMPARISON_RESULT.json",
+      "Bytes": 237767,
+      "Sha256": "8d9ee16e4e5eaceed0040d31f7017e5a4c63875ad8fd66e34148be7ce5694c46"
+    },
+    {
+      "Name": "HISTORY_INTEGRITY_RESULT.json",
+      "Bytes": 2139,
+      "Sha256": "b7c3281d423bfbfe47bc8725962dc68cdc6133d848948d6e71bf685d535c1049"
+    },
+    {
+      "Name": "HISTORY_RESOURCE_RESULT.json",
+      "Bytes": 82733,
+      "Sha256": "e3e3076b770fd1e628f1ab470e560516f512355c38b951aa1703f7252fd4f360"
+    },
+    {
+      "Name": "INTERMEDIATE_EXECUTION_RESULT.json",
+      "Bytes": 1542,
+      "Sha256": "2aab5d2d4a177b60d1b3a413bf0ea1fcbb1906c04bbb573c01c9039bcbb0fcff"
+    },
+    {
+      "Name": "LOCAL_COMMAND_RECEIPTS.json",
+      "Bytes": 1965,
+      "Sha256": "5051498fa79910cd26668b82efa5817a9c17e218021664321952484836a1a467"
+    },
+    {
+      "Name": "LOCAL_QUALIFICATION_RECEIPTS.json",
+      "Bytes": 634689,
+      "Sha256": "ce9b0b641379dc67cc19309a701f41b5d2bba8e7337202137d2694924c420aeb"
+    },
+    {
+      "Name": "MIDCOPY_CRASH_RESULT.json",
+      "Bytes": 214173,
+      "Sha256": "29453e39a0743d0b85b3e2334796c6f277e0ab1733f43f8411ae364d381f5846"
+    },
+    {
+      "Name": "MODIFIED_FILE",
+      "Bytes": 72577,
+      "Sha256": "617913a51c390283edeb34f714c0c37f57397e543cd66e58675d7f7a523ffafd"
+    },
+    {
+      "Name": "ORIGINAL_FILE",
+      "Bytes": 70616,
+      "Sha256": "6ef35e5023aa38f77636a100919d0d9587f7b67da2ab0a2d76bec466f85e7384"
+    },
+    {
+      "Name": "PARTIAL_CONTENT_RESULT.json",
+      "Bytes": 103093,
+      "Sha256": "db231884fcb7f2de7187e2a104cd65c841e30cc5338089eae7884fc838f224fc"
+    },
+    {
+      "Name": "PRODUCTION_GATES.json",
+      "Bytes": 520,
+      "Sha256": "8d9ae59bd5f11feb16fd0956b41d0f5e5d2c92cf2c3c03c84bd4d4b0a838bad0"
+    },
+    {
+      "Name": "RECOVERY_DISPOSITION_RESULT.json",
+      "Bytes": 9464,
+      "Sha256": "def03975ecf23fb66d760c37bd28aab4102d2541dcc1f43fcb97d89477f8a91c"
+    },
+    {
+      "Name": "ROLLBACK.sh",
+      "Bytes": 542,
+      "Sha256": "1cefabd4e52c84095b4a34a7e71ffe6c479a273f8671fab39116243eb3267065"
+    },
+    {
+      "Name": "SECURITYLAB_RESULT.txt",
+      "Bytes": 594,
+      "Sha256": "448eca06604bd2b85e30e5e3b5ae78658830b86d607264b3e730efaec3c5d63d"
+    },
+    {
+      "Name": "SKIP_REASONS.json",
+      "Bytes": 33814,
+      "Sha256": "d95c745cbcd0489d7de11e6f46358227f607bc98f64874ffbd0e658b1b539933"
+    },
+    {
+      "Name": "source-copy-baseline-build.txt",
+      "Bytes": 398,
+      "Sha256": "254a5b57e9926d2fadfaee571f544005228026ad46cc07cb9d05136ad2da79e8"
+    },
+    {
+      "Name": "source-copy-modified-build.txt",
+      "Bytes": 398,
+      "Sha256": "f6b37c34eed3a6975c8220c0313abd8186bf85a7cff6eb2e3de19d8aaca76fe0"
+    },
+    {
+      "Name": "source-copy-restored-build.txt",
+      "Bytes": 398,
+      "Sha256": "f6fcf4ba2874720d9d8c7b85759d60cea52d26d44f51d3e1bc7af1e59f7f0165"
+    },
+    {
+      "Name": "SOURCE_COPY_RESULT.json",
+      "Bytes": 3945,
+      "Sha256": "8e71ddf1ee3af2693cb9d068135c24e38c02c4bf1c6d266cf5d74f25f6742764"
+    },
+    {
+      "Name": "UI_DIAGNOSTIC_RESULT.json",
+      "Bytes": 812,
+      "Sha256": "ddba3f1993af3eca4f0226e24b950b29ce8941bce8bff474cf79d54bebc8866c"
+    },
+    {
+      "Name": "VAULT_COMPATIBILITY_RESULT.json",
+      "Bytes": 31145,
+      "Sha256": "fc839b6011b139e1cb9c4310bcc3314ff3bc63013989d1aebad97ad2bc09091c"
+    },
+    {
+      "Name": "VERIFICATION.txt",
+      "Bytes": 3868,
+      "Sha256": "5d85f123b43eca84e5c8a6cce399fd5ba19cdb92c759fb3417c9cb4e07bb9018"
+    },
+    {
+      "Name": "VERIFIED_RESUME_RESULT.json",
+      "Bytes": 213692,
+      "Sha256": "74edc184c435c64d412e1a80fdafc06d4b791870b4d2bfa29ca1b64881bb6a4c"
+    },
+    {
+      "Name": "WINDOWS_SECURITY_RESULT.json",
+      "Bytes": 13901,
+      "Sha256": "bf710347091edb8189f4b371470e6eb898a2801204d8c8f67c7fc74b81333a17"
+    }
+  ],
+  "Reports": [
+    "WO27_CROSS_VOLUME_STAGING.md",
+    "WO27_DAYBREAK_DEFERRED.md",
+    "WO27_EXECUTION_REPORT.md",
+    "WO27_HISTORY_INTEGRITY.md",
+    "WO27_HISTORY_OPTIMIZATION.md",
+    "WO27_HISTORY_RESOURCE_MODEL.md",
+    "WO27_MIDCOPY_CRASH_MATRIX.md",
+    "WO27_PARTIAL_CONTENT_RECOVERY.md",
+    "WO27_PRODUCT_READINESS.md",
+    "WO27_REAL_ENVIRONMENT_STATUS.md",
+    "WO27_RECOVERY_DISPOSITION.md",
+    "WO27_UI_DIAGNOSTICS.md",
+    "WO27_VERIFIED_RESUME.md"
+  ],
+  "Scope": "Pattern scan is not independent security review"
+}

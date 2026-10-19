@@ -1,0 +1,18 @@
+{
+  "Status": "PARTIAL",
+  "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+  "Environment": "Windows .NET 10 x64; synthetic local files and GitHub-hosted runner",
+  "Command": "Reuse WO26 environment inventory",
+  "Input": "No new VM or test SID supplied",
+  "Output": {
+    "VM": "VM_UNAVAILABLE",
+    "SignedBridge": "TEST_CERTIFICATE_UNAVAILABLE",
+    "UAC": "INTERACTIVE_UAC_UNAVAILABLE",
+    "IndependentSid": "NOT TESTED",
+    "Reboot": "NOT TESTED",
+    "GUI": "NOT TESTED",
+    "LowEnd": "PHYSICAL_HARDWARE_UNAVAILABLE",
+    "PowerLoss": "NOT TESTED"
+  },
+  "ExitCode": null
+}

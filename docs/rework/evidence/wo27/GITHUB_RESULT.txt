@@ -1,0 +1,15 @@
+{
+  "Status": "PASS",
+  "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+  "Environment": "Windows .NET 10 x64; synthetic local files and GitHub-hosted runner",
+  "Command": "git push; gh run view; gh api git commits/trees/blobs",
+  "Input": "Requested branch; final CI source",
+  "Output": {
+    "Branch": "codex/pccare-wo27-recovery-midcopy-bounded-history",
+    "CISource": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+    "CI": "https://github.com/scarlel96-design/PC-Care/actions/runs/39197282336",
+    "Conclusion": "success"
+  },
+  "ExitCode": 0,
+  "PublicationReceipt": "Final document commit, tree and all changed blobs are independently verified in the outside-repository final report."
+}

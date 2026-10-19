@@ -1,0 +1,52 @@
+WORK ITEM: WO27
+STATUS: PARTIAL / Phase 1 NO-GO
+SOURCE: f6d29413a77c7522210de6eba3b1dbae745b2365
+BASE: 20364a068de9c3d8e919a1de1c10e990981c7de8
+CI: https://github.com/scarlel96-design/PC-Care/actions/runs/39197282336
+CHANGED FIELD: ApplyMutationStarted / RecoveryMutationStarted; AnyMutationStarted is their union.
+CHANGED BRANCH: RollbackCore rejects unknown current hashes regardless of Applied.
+SOURCE COPY ROLLBACK IS NOT INSTALLATION OR VAULT RECOVERY.
+PATH: <WORKSPACE>\work\PC-Care\docs\rework\evidence\wo27\MODIFIED_FILE
+PATH: <WORKSPACE>\work\PC-Care\docs\rework\evidence\wo27\DIFF_FILE
+PATH: <WORKSPACE>\work\PC-Care\docs\rework\evidence\wo27\VERIFICATION.txt
+PATH: <WORKSPACE>\work\PC-Care\docs\rework\evidence\wo27\ROLLBACK.sh
+ORIGINAL_FILE SHA256: 6ef35e5023aa38f77636a100919d0d9587f7b67da2ab0a2d76bec466f85e7384
+MODIFIED_FILE SHA256: 617913a51c390283edeb34f714c0c37f57397e543cd66e58675d7f7a523ffafd
+
+STAGE: BASELINE
+COMMAND: dotnet "<WORKSPACE>\wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383\baseline\bin\Release\net10.0-windows10.0.26100.0\Proof.dll" "<WORKSPACE>\wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383\baseline\fixture-disposition"
+INPUT: Synthetic signed one-file update; signed updated bytes appear after Applying journal; apply throws before its own write; rollback restores original; strictAcl=false
+OUTPUT (literal):
+{"Stage":"Restored","Code":"ROLLED-BACK","AnyMutationStarted":false,"RecoveryDisposition":"PreMutationRejected","OriginalPreserved":true,"PersistedRecovery":"ORIGINAL-STATE-VERIFIED"}
+EXIT CODE: 0
+
+STAGE: MODIFIED
+COMMAND: dotnet "<WORKSPACE>\wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383\modified\bin\Release\net10.0-windows10.0.26100.0\Proof.dll" "<WORKSPACE>\wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383\modified\fixture-disposition"
+INPUT: Synthetic signed one-file update; signed updated bytes appear after Applying journal; apply throws before its own write; rollback restores original; strictAcl=false
+OUTPUT (literal):
+{"Stage":"Restored","Code":"ROLLED-BACK","AnyMutationStarted":true,"RecoveryDisposition":"RecoveryCompleted","OriginalPreserved":true,"PersistedRecovery":"RESTORED"}
+EXIT CODE: 0
+
+STAGE: RollbackScript
+COMMAND: "C:/Program Files/Git/bin/bash.exe" "<WORKSPACE>\work\PC-Care\docs\rework\evidence\wo27\ROLLBACK.sh" "<WORKSPACE>/wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383/restored/Engine/UpdateTransaction.cs"
+INPUT: Independent modified source copy
+OUTPUT (literal):
+SOURCE_COPY_RESTORED
+EXIT CODE: 0
+
+STAGE: RESTORED
+COMMAND: dotnet "<WORKSPACE>\wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383\restored\bin\Release\net10.0-windows10.0.26100.0\Proof.dll" "<WORKSPACE>\wo27-rollback-ec9f85b9ca9c47a3be2947a72324b383\restored\fixture-disposition"
+INPUT: Synthetic signed one-file update; signed updated bytes appear after Applying journal; apply throws before its own write; rollback restores original; strictAcl=false
+OUTPUT (literal):
+{"Stage":"Restored","Code":"ROLLED-BACK","AnyMutationStarted":false,"RecoveryDisposition":"PreMutationRejected","OriginalPreserved":true,"PersistedRecovery":"ORIGINAL-STATE-VERIFIED"}
+EXIT CODE: 0
+
+RESTORED STATUS: Baseline source bytes and baseline behavior restored on the independent copy.
+MODIFIED STATUS: Repository and MODIFIED_FILE retain the corrected implementation.
+APP: {'Pass': 1445, 'Fail': 0, 'Skip': 111}
+SECURITYLAB: {'Pass': 36, 'Fail': 0, 'Skip': 0}
+MIDCOPY: 47 observed-profile terminations plus 4 default CopyTo terminations; 24 actual partial files preserved.
+History journal and declaration leases remain held through approval.
+Actual GUI/UAC/privileged recovery/reboot/physical power loss: NOT TESTED.
+All production gates remain closed; no main merge or release.
+PRIVACY: Public workspace paths are redacted. Exact executed local commands are retained in the private final report.

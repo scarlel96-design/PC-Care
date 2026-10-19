@@ -1,0 +1,95 @@
+{
+  "Status": "PASS",
+  "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+  "Environment": "Windows .NET 10 x64; synthetic local files and GitHub-hosted runner",
+  "Command": "dotnet test --filter FullyQualifiedName~WO27",
+  "Input": "Windows synthetic filesystem and contract regressions",
+  "Output": {
+    "Pass": 16,
+    "Fail": 0,
+    "Skip": 0,
+    "Tests": [
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27HistoryHandleBudgetTests.ReducedHandleCountNeverPromotesTamperedHistory(change: \"declaration\")",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27DiagnosticPrivacyTests.MutationFieldsAreNumericOrBooleanAndPrivateIdentifiersStayExcluded",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27HistoryHandleBudgetTests.SharingRetainsIdentityAndReleasesHandlesAfterInspection(count: 1)",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27HistoryHandleBudgetTests.SharedAncestorsKeepTheOriginalNoDeleteBoundary",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27HistoryHandleBudgetTests.ReducedHandleCountNeverPromotesTamperedHistory(change: \"journal\")",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27RecoveryDispositionTests.UnknownContentRemainsPreservedRegardlessOfAppliedFlag(applied: True)",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27DiagnosticPrivacyTests.UiRequiresReadOnlyRecheckBeforeRecoveryRequest",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27RecoveryDispositionTests.SyntheticCopyObserverRejectsProductionAndUnmarkedRoots",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27HistoryHandleBudgetTests.SharingRetainsIdentityAndReleasesHandlesAfterInspection(count: 10)",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27HistoryHandleBudgetTests.ReducedHandleCountNeverPromotesTamperedHistory(change: \"pointer\")",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27HistoryHandleBudgetTests.ReducedHandleCountNeverPromotesTamperedHistory(change: \"content\")",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27RecoveryDispositionTests.RecoveryMutationSurvivesApplyErrorResultComposition",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27RecoveryDispositionTests.UnknownContentRemainsPreservedRegardlessOfAppliedFlag(applied: False)",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27CrossVolumeStagingContractTests.SameVolumePublicationRequiresTheBoundHandleDeleteAccess(deletable: True)",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27HistoryHandleBudgetTests.ReducedHandleCountNeverPromotesTamperedHistory(change: \"identity\")",
+        "Outcome": "Passed",
+        "Reason": ""
+      },
+      {
+        "Name": "SmartPerformanceDoctor.Tests.WO27CrossVolumeStagingContractTests.SameVolumePublicationRequiresTheBoundHandleDeleteAccess(deletable: False)",
+        "Outcome": "Passed",
+        "Reason": ""
+      }
+    ]
+  },
+  "ExitCode": 0
+}

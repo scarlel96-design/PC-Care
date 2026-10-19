@@ -1,0 +1,44 @@
+{
+  "Status": "PARTIAL",
+  "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+  "Environment": "Windows .NET 10 x64; synthetic local files and GitHub-hosted runner",
+  "Command": "WO27Probe stage:A; WO27Probe stage:B; retained WO25 production C tests",
+  "Input": "Disposable hosted runner, protected synthetic roots on distinct volumes",
+  "Output": {
+    "PrivacyProjection": "Document-local native identity aliases; workspace paths redacted. Outputs and exit codes retain their meaning.",
+    "RawCanonicalSha256": "3bf83042cfcd778b147ecdecf10ca9cc1d99550d87204c41e885e7c5a1aa8d35",
+    "Records": [
+      {
+        "Status": "PASS",
+        "Mode": "A",
+        "DistinctVolumes": true,
+        "Hash": "277F3B394A4C0D59D984FC81089F6FE58D89DD6E84F04884C2D17B8F5C483CC9",
+        "Bytes": 1048576,
+        "PublishedBytesVerified": true,
+        "CollisionBlocked": true,
+        "ProtectedRootAcl": true,
+        "ProductionConnected": false,
+        "InterruptedCopy": "NOT TESTED",
+        "PowerLoss": "NOT TESTED"
+      },
+      {
+        "Status": "PASS",
+        "Mode": "B",
+        "DistinctVolumes": true,
+        "Hash": "1AA9CA6B96186620F10899D5B13E36835BDAFE5FD37517A93D2F1AFBFACC3A5C",
+        "Bytes": 1048576,
+        "PublishedBytesVerified": true,
+        "CollisionBlocked": true,
+        "ProtectedRootAcl": true,
+        "ProductionConnected": false,
+        "InterruptedCopy": "NOT TESTED",
+        "PowerLoss": "NOT TESTED"
+      }
+    ]
+  },
+  "ExitCode": 0,
+  "Production": "C refusal remains; A/B not connected",
+  "CopyInterruption": "NOT TESTED",
+  "GuestPrivileges": "NOT TESTED",
+  "PowerLoss": "NOT TESTED"
+}

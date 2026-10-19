@@ -1,0 +1,51 @@
+{
+  "Status": "PASS",
+  "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+  "Environment": "Windows .NET 10 x64; synthetic local files and GitHub-hosted runner",
+  "Command": "WO27HistoryHandleBudgetTests and retained WO23-WO26 history regressions",
+  "Input": "Pinned directory replacement and missing/corrupt/replaced evidence",
+  "Output": [
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO27HistoryHandleBudgetTests.ReducedHandleCountNeverPromotesTamperedHistory(change: \"declaration\")",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO27HistoryHandleBudgetTests.SharingRetainsIdentityAndReleasesHandlesAfterInspection(count: 1)",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO27HistoryHandleBudgetTests.SharedAncestorsKeepTheOriginalNoDeleteBoundary",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO27HistoryHandleBudgetTests.ReducedHandleCountNeverPromotesTamperedHistory(change: \"journal\")",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO27HistoryHandleBudgetTests.SharingRetainsIdentityAndReleasesHandlesAfterInspection(count: 10)",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO27HistoryHandleBudgetTests.ReducedHandleCountNeverPromotesTamperedHistory(change: \"pointer\")",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO27HistoryHandleBudgetTests.ReducedHandleCountNeverPromotesTamperedHistory(change: \"content\")",
+      "Outcome": "Passed",
+      "Reason": ""
+    },
+    {
+      "Name": "SmartPerformanceDoctor.Tests.WO27HistoryHandleBudgetTests.ReducedHandleCountNeverPromotesTamperedHistory(change: \"identity\")",
+      "Outcome": "Passed",
+      "Reason": ""
+    }
+  ],
+  "ExitCode": 0,
+  "SecurityScope": "All retained file and directory handles remain open through approval; journal candidates included"
+}
