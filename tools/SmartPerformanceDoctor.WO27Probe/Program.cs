@@ -34,7 +34,7 @@ if(verb.StartsWith("stage:",StringComparison.Ordinal))
  var sourceRoot=mode=="A"?stage:root;File.WriteAllBytes(Path.Combine(sourceRoot,"input.bin"),bytes);
  using var source=WindowsFileBoundary.OpenRead(sourceRoot,"input.bin");
  var sourceId=source.Identity;
- using(var prepared=WindowsFileBoundary.OpenWrite(stage,"publish.tmp",create:true))
+ using(var prepared=WindowsFileBoundary.OpenWrite(stage,"publish.tmp",create:true,deletable:true))
  {
   prepared.CopyFrom(source);prepared.Verify(bytes.Length,hash);source.Validate(sourceId);
   var security=prepared.ReadSecurity();
@@ -45,7 +45,7 @@ if(verb.StartsWith("stage:",StringComparison.Ordinal))
  }
  using var published=WindowsFileBoundary.OpenRead(install,"published.bin");published.Verify(bytes.Length,hash);
  bool collisionBlocked=false;
- using(var collision=WindowsFileBoundary.OpenWrite(stage,"collision.tmp",create:true))
+ using(var collision=WindowsFileBoundary.OpenWrite(stage,"collision.tmp",create:true,deletable:true))
  {
   collision.CopyFrom(source);
   try{collision.PublishOpenedFile(install,"published.bin");}catch(IOException){collisionBlocked=true;}
