@@ -1,7 +1,12 @@
 using System.Text.Json;
 namespace SmartPerformanceDoctor.UpdateEngine;
 
-public sealed record InstallationHistoryResult(bool Verified, string State, string Code, int Transactions, int Files);
+public sealed record InstallationHistoryResult(bool Verified, string State, string Code, int Transactions, int Files)
+{
+    public int RetainedDirectoryHandles { get; init; }
+    public int ReusedDirectoryHandles { get; init; }
+    public int RetainedFileHandles { get; init; }
+}
 public sealed partial class UpdateTransaction
 {
     private CommittedInstallation ParseHistoryDeclaration(Stream stream)
@@ -21,6 +26,7 @@ public sealed partial class UpdateTransaction
     {
         using var measurements = PerformanceProfile?.Activate();
         using var historyTimer = PerformanceProfile?.Measure("HistoryTotal");
+        using var directoryHandles = WindowsFileBoundary.RetainSharedDirectoryHandles();
         var current = InspectInstallation(installRoot);
         if (!current.Verified)
             return new(false, current.RequiresReview ? "ManualReviewRequired" : "InstallationUnattested", current.Code, 0, 0);
@@ -104,7 +110,13 @@ public sealed partial class UpdateTransaction
             }
             foreach (var file in held) file.Validate();
             install.Validate(); work.Validate();
-            return new(true, "InstallationVerified", "RETAINED-SIGNED-HISTORY-VERIFIED", records.Count, expected.Count);
+            directoryHandles.Validate();
+            return new(true, "InstallationVerified", "RETAINED-SIGNED-HISTORY-VERIFIED", records.Count, expected.Count)
+            {
+                RetainedDirectoryHandles = directoryHandles.UniqueHandles,
+                ReusedDirectoryHandles = directoryHandles.ReusedHandles,
+                RetainedFileHandles = held.Count
+            };
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidDataException or JsonException or InvalidOperationException or NullReferenceException)
         {

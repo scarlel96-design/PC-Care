@@ -10,6 +10,7 @@ namespace SmartPerformanceDoctor.App;
 public sealed class UpdateRecoveryWindow : Window
 {
     private readonly TextBlock _status;
+    private Button? _recoverRequest;
     public UpdateRecoveryWindow(UpdateRecoveryStatus status, bool readOnly)
     {
         Title = "PC 케어 · 업데이트 상태";
@@ -26,6 +27,7 @@ public sealed class UpdateRecoveryWindow : Window
         refresh.Click += async (_, _) =>
         {
             refresh.IsEnabled = false;
+            if (_recoverRequest is not null) _recoverRequest.IsEnabled = false;
             _status.Text = "설치 이력과 복구 상태를 확인하고 있습니다.";
             try { Show(await Task.Run(UpdateRecoveryCoordinator.Inspect)); }
             catch (Exception) { _status.Text = "설치 상태를 확인하지 못했습니다. 기존 파일과 기록을 보존하며 추가 확인이 필요합니다."; }
@@ -37,7 +39,13 @@ public sealed class UpdateRecoveryWindow : Window
         inspect.Click += async (_, _) =>
         {
             inspect.IsEnabled = false;
-            try { _status.Text = UpdateStateText.Recovery(await Task.Run(UpdateRecoveryCoordinator.Reconcile)); }
+            if (_recoverRequest is not null) _recoverRequest.IsEnabled = false;
+            try
+            {
+                var observation = await Task.Run(UpdateRecoveryCoordinator.Reconcile);
+                _status.Text = UpdateStateText.Recovery(observation);
+                if (_recoverRequest is not null) _recoverRequest.IsEnabled = observation.CanRequestRecovery;
+            }
             catch (Exception) { _status.Text = "파일 상태를 확인하지 못했습니다. 기록을 보존하며 추가 확인이 필요합니다."; }
             finally { inspect.IsEnabled = true; }
         };
@@ -63,17 +71,27 @@ public sealed class UpdateRecoveryWindow : Window
 
         if (!readOnly)
         {
-            var recover = new Button { Content = "관리자 복구 요청" };
+            var recover = new Button { Content = "관리자 복구 요청", IsEnabled = false };
+            _recoverRequest = recover;
             AutomationProperties.SetAutomationId(recover, "UpdateRecoveryRequest");
-            recover.Click += (_, _) =>
+            recover.Click += async (_, _) =>
             {
+                recover.IsEnabled = false;
+                try
+                {
+                    var observation = await Task.Run(UpdateRecoveryCoordinator.Reconcile);
+                    if (!observation.CanRequestRecovery) { _status.Text = UpdateStateText.Recovery(observation); return; }
                 var result = UpdateRecoveryCoordinator.LaunchElevatedRecovery();
                 _status.Text = result == RecoveryLaunchResult.Cancelled ? "관리자 승인이 취소됐습니다. 기존 상태를 보존했습니다." :
                     result == RecoveryLaunchResult.Launched ? "복구 도우미를 시작했습니다. 앱을 종료한 뒤 다시 실행해 결과를 확인하세요." :
                     "신뢰할 수 있는 복구 도우미를 시작하지 못했습니다. 설치 자료와 거래 기록을 보존했습니다.";
                 if (result == RecoveryLaunchResult.Launched) Application.Current.Exit();
+                }
+                catch (Exception) { _status.Text = "복구 입력을 확인하지 못했습니다. 원본과 백업을 보존하며 다시 검사하세요."; }
             };
             panel.Children.Add(recover);
+            panel.Children.Add(new TextBlock { Text = "파일 보존 상태를 재검사하면 관리자 복구 요청 가능 여부를 확인할 수 있습니다.",
+                TextWrapping = TextWrapping.Wrap });
             var package=new TextBox {Header="이전 버전의 서명된 패키지 경로"};
             var previous=new TextBox {Header="패키지의 이전 버전",PlaceholderText="예: 51.0.3"};
             var consent=new CheckBox {Content="확인한 설치 파일을 이전 버전으로 복원하는 데 동의합니다."};

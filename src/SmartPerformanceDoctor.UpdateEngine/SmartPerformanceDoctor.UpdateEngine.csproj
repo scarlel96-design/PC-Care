@@ -5,4 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Platforms>x64</Platforms>
   </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="SmartPerformanceDoctor.WO27Probe" />
+    <InternalsVisibleTo Include="SmartPerformanceDoctor.Tests" />
+  </ItemGroup>
 </Project>

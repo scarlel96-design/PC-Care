@@ -9,6 +9,8 @@ public static class UpdateDiagnosticExport
         Stage = result.Stage.ToString(),
         result.FilesApplied,
         result.AnyMutationStarted,
+        result.ApplyMutationStarted,
+        result.RecoveryMutationStarted,
         result.WasCancellationRequested,
         Disposition = result.RecoveryDisposition is "PreMutationRejected" or "OriginalStateVerified" or "RecoveryCompleted" or "RecoveryDeferred"
             ? result.RecoveryDisposition : "ManualReviewRequired",

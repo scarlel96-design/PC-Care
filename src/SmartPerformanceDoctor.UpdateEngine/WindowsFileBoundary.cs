@@ -21,9 +21,57 @@ public static class WindowsFileBoundary
     private const uint Read = 0x80000000, Write = 0x40000000, Delete = 0x10000;
     private const uint OpenReparse = 0x00200000, BackupSemantics = 0x02000000;
 
+#if !PCCARE_VAULT_BOUNDARY
+    [ThreadStatic] private static DirectoryHandleScope? _directoryScope;
+
+    // Retain each native directory handle until the synchronous inspection ends.
+    internal sealed class DirectoryHandleScope : IDisposable
+    {
+        private readonly DirectoryHandleScope? _previous = _directoryScope;
+        private readonly Dictionary<string, (SafeFileHandle Handle, string Path, string Id)> _handles = new(StringComparer.OrdinalIgnoreCase);
+        internal int ReusedHandles { get; private set; }
+        internal int UniqueHandles => _handles.Count;
+        internal DirectoryHandleScope() { _directoryScope = this; }
+        internal (SafeFileHandle Handle, string Path, string Id) Acquire(string path)
+        {
+            if (_handles.TryGetValue(path, out var existing))
+            {
+                if (Check(existing.Handle, path, true) != existing.Id) throw new IOException("DIRECTORY-IDENTITY-CHANGED");
+                ReusedHandles++;
+                return existing;
+            }
+            var handle = CreateFileW(NativePath(path), 0x80, 3, IntPtr.Zero, 3, OpenReparse | BackupSemantics, IntPtr.Zero);
+            if (handle.IsInvalid) { handle.Dispose(); throw Error("DIRECTORY-PIN"); }
+            try
+            {
+                var item = (handle, path, Check(handle, path, true));
+                _handles.Add(path, item);
+                return item;
+            }
+            catch { handle.Dispose(); throw; }
+        }
+        internal void Validate()
+        {
+            foreach (var item in _handles.Values)
+                if (Check(item.Handle, item.Path, true) != item.Id) throw new IOException("DIRECTORY-IDENTITY-CHANGED");
+        }
+        public void Dispose()
+        {
+            _directoryScope = _previous;
+            foreach (var item in _handles.Values) item.Handle.Dispose();
+            _handles.Clear();
+        }
+    }
+    internal static DirectoryHandleScope RetainSharedDirectoryHandles() => new();
+    internal sealed record CopyProgress(string Phase, long BytesWritten, long TotalBytes, int WriteCalls);
+#endif
+
     public sealed class DirectoryPin : IDisposable
     {
         private readonly List<(SafeFileHandle Handle, string Path, string Id)> _handles = [];
+#if !PCCARE_VAULT_BOUNDARY
+        private readonly DirectoryHandleScope? _owner = _directoryScope;
+#endif
         public string Root { get; }
         public string Identity => _handles[^1].Id;
 
@@ -51,6 +99,9 @@ public static class WindowsFileBoundary
 
         private void Add(string path)
         {
+#if !PCCARE_VAULT_BOUNDARY
+            if (_owner is not null) { _handles.Add(_owner.Acquire(path)); return; }
+#endif
             var handle = CreateFileW(NativePath(path), 0x80, 3, IntPtr.Zero, 3, OpenReparse | BackupSemantics, IntPtr.Zero);
             if (handle.IsInvalid) { handle.Dispose(); throw Error("DIRECTORY-PIN"); }
             try
@@ -70,6 +121,9 @@ public static class WindowsFileBoundary
 
         public void Dispose()
         {
+#if !PCCARE_VAULT_BOUNDARY
+            if (_owner is not null) { _handles.Clear(); return; }
+#endif
             for (var index = _handles.Count - 1; index >= 0; index--) _handles[index].Handle.Dispose();
             _handles.Clear();
         }
@@ -193,6 +247,45 @@ public static class WindowsFileBoundary
             source.Validate();
             Validate();
         }
+
+#if !PCCARE_VAULT_BOUNDARY
+        // The synthetic profile observes completed native writes, not managed buffer acceptance.
+        internal void CopyFromObserved(FileLease source, Action<CopyProgress> observe)
+        {
+            source.Validate(); Validate();
+            source.Stream.Position = 0;
+            Stream.Flush();
+            var total = source.Stream.Length;
+            long written = 0;
+            var calls = 0;
+            var buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(4096);
+            void Report(string phase) => observe(new(phase, written, total, calls));
+            try
+            {
+                Report("BeforeFirstWrite");
+                while (written < total)
+                {
+                    var count = source.Stream.Read(buffer, 0, (int)Math.Min(4096, total - written));
+                    if (count == 0) throw new EndOfStreamException("COPY-SOURCE-SHORT");
+                    if (written + count == total) Report("BeforeLastWrite");
+                    RandomAccess.Write(Stream.SafeFileHandle, buffer.AsSpan(0, count), written);
+                    written += count; calls++;
+                    Report("AfterWrite");
+                    if (written == total) Report("AfterLastWrite");
+                }
+                Stream.SetLength(written);
+                Report("BeforeFlush");
+                Stream.Flush(flushToDisk: true);
+                Report("AfterFlush");
+                source.Validate(); Validate();
+            }
+            finally
+            {
+                CryptographicOperations.ZeroMemory(buffer);
+                System.Buffers.ArrayPool<byte>.Shared.Return(buffer);
+            }
+        }
+#endif
 
         public void DeleteOpenedFile()
         {
