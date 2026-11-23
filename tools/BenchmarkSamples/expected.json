@@ -1,0 +1,7 @@
+{
+  "scope": "Synthetic artifacts authored before analysis; no user data",
+  "plain": {"assembly":"Plain","type":"PcCare.BenchmarkSamples.Marker","method":"Version"},
+  "calls": {"assembly":"Calls","type":"PcCare.BenchmarkSamples.Calculator","methods":["Double","Evaluate"],"expectedCall":{"caller":"Evaluate","callee":"Double"}},
+  "javascript": {"entry":"index.js","modules":["index.js","service.js","math.js"],"imports":[["index.js","service.js"],["service.js","math.js"]],"calls":[["run","evaluate"],["evaluate","double"]]},
+  "native": "NOT TESTED: no configured Ghidra provider"
+}
