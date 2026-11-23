@@ -191,24 +191,50 @@ public static class WindowsFileBoundary
             return security;
         }
 
-        public string Hash()
+        public string Hash() => Hash(null);
+
+        internal string Hash(Action<long, long>? onRead)
         {
 #if !PCCARE_VAULT_BOUNDARY
             using var measurement = UpdatePerformanceProfile.Active?.Measure("HashAndIdentity");
 #endif
             Validate();
             Stream.Position = 0;
-            var hash = Convert.ToHexString(SHA256.HashData(Stream));
+            using var observer = onRead is null ? null : new ObservedReadStream(Stream, onRead);
+            var hash = Convert.ToHexString(SHA256.HashData((Stream?)observer ?? Stream));
             Stream.Position = 0;
             Validate();
             return hash;
         }
 
-        public void Verify(long length, string hash, string? identity = null)
+        public void Verify(long length, string hash, string? identity = null) => Verify(length, hash, identity, null);
+
+        internal void Verify(long length, string hash, string? identity, Action<long, long>? onRead)
         {
             Validate(identity);
-            if (Stream.Length != length || !Hash().Equals(hash, StringComparison.OrdinalIgnoreCase))
+            if (Stream.Length != length || !Hash(onRead).Equals(hash, StringComparison.OrdinalIgnoreCase))
                 throw new InvalidDataException("FILE-INTEGRITY");
+        }
+
+        // The lease owns the source stream. Only the test probe supplies a read observer.
+        private sealed class ObservedReadStream(Stream source, Action<long, long> observe) : Stream
+        {
+            public override int Read(byte[] buffer, int offset, int count) => Read(buffer.AsSpan(offset, count));
+            public override int Read(Span<byte> buffer)
+            {
+                int count = source.Read(buffer);
+                if (count > 0) observe(source.Position, source.Length);
+                return count;
+            }
+            public override bool CanRead => true;
+            public override bool CanSeek => false;
+            public override bool CanWrite => false;
+            public override long Length => source.Length;
+            public override long Position { get => source.Position; set => throw new NotSupportedException(); }
+            public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+            public override void SetLength(long value) => throw new NotSupportedException();
+            public override void Flush() => throw new NotSupportedException();
+            public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
         }
 
         public void CopyFrom(FileLease source, Action? afterFirstWrite = null, CancellationToken cancellationToken = default)

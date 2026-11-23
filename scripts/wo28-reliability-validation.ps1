@@ -1,4 +1,4 @@
-param([string]$OutputDirectory='artifacts/wo28-reliability')
+param([string]$OutputDirectory='artifacts/wo28-reliability',[switch]$EngineCheckpoints)
 $ErrorActionPreference='Stop'
 $repo=Split-Path $PSScriptRoot -Parent
 if(!$env:RUNNER_TEMP -or ![IO.Path]::IsPathFullyQualified($env:RUNNER_TEMP)){throw 'ABSOLUTE_RUNNER_TEMP_REQUIRED'}
@@ -37,13 +37,13 @@ function Inspect-Root([string]$Root,[string]$Control){
  $result=Run-Probe $probe @('inspect',$Root,$Control)
  $result.Output|ConvertFrom-Json
 }
-function Stop-Inventory([string]$Root,[string]$Control){
+function Stop-Inventory([string]$Root,[string]$Control,[string]$Verb){
  $signal=Join-Path $Control 'ready.json'
  if(Test-Path -LiteralPath $signal){Remove-Item -LiteralPath $signal}
  $start=[Diagnostics.ProcessStartInfo]::new($probe)
  $start.UseShellExecute=$false;$start.CreateNoWindow=$true
  $start.RedirectStandardOutput=$true;$start.RedirectStandardError=$true
- foreach($arg in @('hold-inventory',$Root,$Control)){$start.ArgumentList.Add($arg)}
+ foreach($arg in @($Verb,$Root,$Control)){$start.ArgumentList.Add($arg)}
  $child=[Diagnostics.Process]::Start($start)
  $watch=[Diagnostics.Stopwatch]::StartNew()
  try{
@@ -52,15 +52,20 @@ function Stop-Inventory([string]$Root,[string]$Control){
    if(!$child.HasExited){$child.Kill($true);$child.WaitForExit()}
    throw ('READONLY_CHECKPOINT_NOT_REACHED:'+ $child.StandardError.ReadToEnd())
   }
+  $writeBlocked=$null
+  if($Verb -eq 'hold-inventory'){
   $writeBlocked=$false
   try{
    $attempt=[IO.FileStream]::new((Join-Path $Root 'install/app.txt'),[IO.FileMode]::Open,[IO.FileAccess]::Write,[IO.FileShare]::ReadWrite)
    $attempt.Dispose()
   }catch [IO.IOException]{$writeBlocked=$true}
   if(!$writeBlocked){throw 'INVENTORY_WRITER_EXCLUSION_FAILED'}
+  }
   $child.Kill($true);$child.WaitForExit()
   $checkpoint=Get-Content -LiteralPath $signal -Raw|ConvertFrom-Json
-  $record=@{Command='WO28ReliabilityProbe hold-inventory <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)';ExitCode=$child.ExitCode;KilledByParent=$true;Output=$child.StandardOutput.ReadToEnd();Checkpoint=$checkpoint;ConcurrentWriterOpenBlocked=$writeBlocked}
+  if($child.ExitCode -eq 0){throw 'CHILD_TERMINATION_NOT_VERIFIED'}
+  if($Verb.StartsWith('hold-engine:') -and (!$checkpoint.InsideRecoveryEngine -or $checkpoint.Phase -ne $Verb.Substring(12))){throw 'WRONG_ENGINE_CHECKPOINT'}
+  $record=@{Command="WO28ReliabilityProbe $Verb <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)";ExitCode=$child.ExitCode;KilledByParent=$true;Output=$child.StandardOutput.ReadToEnd();Checkpoint=$checkpoint;ConcurrentWriterOpenBlocked=$writeBlocked}
   $commands.Add($record)
   $record
  }finally{if(!$child.HasExited){$child.Kill($true);$child.WaitForExit()};$child.Dispose()}
@@ -102,8 +107,13 @@ try{
   $before=Inspect-Root $root $control
   if($before.Reconciliation.Files[0].State -ne $case.State){throw 'EXPECTED_RECONCILIATION_STATE_MISMATCH'}
   $kills=[Collections.Generic.List[object]]::new()
-  foreach($repeat in 1..2){
-   $kills.Add((Stop-Inventory $root $control))
+  $verbs=@('hold-inventory','hold-inventory')
+  if($EngineCheckpoints){
+   $verbs=@('JournalLoaded','PackageOpened','PackageVerified','BeforeTargetIdentity','InputsRevalidated')|ForEach-Object{"hold-engine:$_"}
+   if($case.Bytes -ge 1048576){$verbs+=@('hold-engine:BackupHashRead','hold-engine:TargetHashRead')}
+  }
+  foreach($verb in $verbs){
+   $kills.Add((Stop-Inventory $root $control $verb))
    $again=Inspect-Root $root $control
    if($again.InventoryDigest -ne $before.InventoryDigest -or ($again.Reconciliation|ConvertTo-Json -Depth 12 -Compress) -ne ($before.Reconciliation|ConvertTo-Json -Depth 12 -Compress)){throw 'READONLY_RESTART_MUTATED_INPUT'}
   }
@@ -116,9 +126,9 @@ try{
    $target=$after.Inventory|Where-Object{$_.RelativePath -eq 'install/app.txt'}
    if($target.Sha256 -ne $preparedInput.OriginalHash){throw 'KNOWN_CONTENT_RECOVERY_FAILED'}
   }
-  $records.Add(@{Status='PASS';Input=$case;Before=$before;Terminations=$kills;Resume=$resume;After=$after;FullResidualInventoryVerified=$true;ExcludedFileCount=0;QueryRestartPreservedAllInputs=$true;EngineInternalReconciliationTermination='NOT TESTED';PhysicalPowerLoss='NOT TESTED'})
+  $records.Add(@{Status='PASS';Input=$case;Before=$before;Terminations=$kills;Resume=$resume;After=$after;FullResidualInventoryVerified=$true;ExcludedFileCount=0;QueryRestartPreservedAllInputs=$true;EngineInternalReconciliationTermination=$(if($EngineCheckpoints){'PASS'}else{'NOT TESTED'});PhysicalPowerLoss='NOT TESTED'})
  }
  'WO28_READONLY_INVENTORY_RESTART_PASS='+$records.Count
 }finally{
- @{Source=$source;SourceClassification=$sourceClassification;Environment='Windows synthetic filesystem; RUNNER_TEMP outside repository; strictAcl=false';Scope='ReconcileRecovery returns, then parent kills the read-only full-inventory hash phase. The engine call is not interrupted.';Records=$records;BoundaryTests=$boundaries;Commands=$commands;ProbeSha256=(Get-FileHash -LiteralPath $probe -Algorithm SHA256).Hash;SetupProbeSha256=(Get-FileHash -LiteralPath $wo27 -Algorithm SHA256).Hash;ProgramSha256=(Get-FileHash -LiteralPath (Join-Path $repo 'tools/SmartPerformanceDoctor.WO28ReliabilityProbe/Program.cs') -Algorithm SHA256).Hash;ScriptSha256=(Get-FileHash -LiteralPath $PSCommandPath -Algorithm SHA256).Hash;EngineSha256=(Get-FileHash -LiteralPath (Join-Path (Split-Path $probe) 'SmartPerformanceDoctor.UpdateEngine.dll') -Algorithm SHA256).Hash;ProductionEngineChanged=$false}|ConvertTo-Json -Depth 24|Set-Content -LiteralPath (Join-Path $out 'reliability.json')
+ @{Source=$source;SourceClassification=$sourceClassification;Environment='Windows synthetic filesystem; RUNNER_TEMP outside repository; strictAcl=false';Scope=$(if($EngineCheckpoints){'Parent kills the child inside the read-only reconciliation call.'}else{'Parent kills the subsequent inventory pass.'});Records=$records;BoundaryTests=$boundaries;Commands=$commands;ProbeSha256=(Get-FileHash -LiteralPath $probe -Algorithm SHA256).Hash;SetupProbeSha256=(Get-FileHash -LiteralPath $wo27 -Algorithm SHA256).Hash;ProgramSha256=(Get-FileHash -LiteralPath (Join-Path $repo 'tools/SmartPerformanceDoctor.WO28ReliabilityProbe/Program.cs') -Algorithm SHA256).Hash;ScriptSha256=(Get-FileHash -LiteralPath $PSCommandPath -Algorithm SHA256).Hash;EngineSha256=(Get-FileHash -LiteralPath (Join-Path (Split-Path $probe) 'SmartPerformanceDoctor.UpdateEngine.dll') -Algorithm SHA256).Hash;ProductionEngineChanged=[bool]$EngineCheckpoints}|ConvertTo-Json -Depth 24|Set-Content -LiteralPath (Join-Path $out 'reliability.json')
 }

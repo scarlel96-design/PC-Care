@@ -19,7 +19,9 @@ static int Execute(string[] args)
 {
 if (!OperatingSystem.IsWindows() || args.Length != 3) return 2;
 var verb = args[0];
-if (verb is not ("inspect" or "hold-inventory")) return 2;
+var stage = verb.StartsWith("hold-engine:", StringComparison.Ordinal) ? verb["hold-engine:".Length..] : "";
+if (verb is not ("inspect" or "hold-inventory") && stage is not
+    ("JournalLoaded" or "PackageOpened" or "PackageVerified" or "BackupHashRead" or "BeforeTargetIdentity" or "TargetHashRead" or "InputsRevalidated")) return 2;
 var root = SyntheticRoot(args[1], "wo27-");
 var control = SyntheticRoot(args[2], "wo28-control-");
 if (root.Equals(control, StringComparison.OrdinalIgnoreCase) ||
@@ -38,6 +40,22 @@ publicKey.Stream.CopyTo(keyData);
 var engine = new UpdateTransaction(new PublisherTrustPolicy([
     new TrustedPublisherKey("WO25-Fixture", "ephemeral", "stable", keyData.ToArray())
 ]), Path.Combine(root, "work"), false);
+if (stage.Length > 0)
+{
+    engine.ReadCheckpoint = (phase, read, total) =>
+    {
+        if (phase != stage || (total > 0 && read >= total)) return;
+        var pending = Path.Combine(control, "ready.pending");
+        using (var signal = new FileStream(pending, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+        {
+            JsonSerializer.Serialize(signal, new { Phase = phase, BytesRead = read, TotalBytes = total,
+                InsideRecoveryEngine = true, EngineReconciliationCompleted = false, AnyMutationRequested = false });
+            signal.Flush(true);
+        }
+        File.Move(pending, Path.Combine(control, "ready.json"));
+        Thread.Sleep(Timeout.Infinite);
+    };
+}
 var reconciliation = engine.ReconcileRecovery(Path.Combine(root, "install"));
 var interrupted = false;
 var inventory = Inventory(root, (relative, consumed, total) =>

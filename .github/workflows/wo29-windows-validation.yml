@@ -1,0 +1,70 @@
+name: WO29 Windows regression and benchmark qualification
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/pccare-wo29-guest-e2e-recovery-durability]
+    paths-ignore: ['docs/**']
+permissions:
+  contents: read
+jobs:
+  qualification:
+    runs-on: windows-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.402'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.16.0'
+      - name: Select the WO27 comparison SDK
+        shell: pwsh
+        run: |
+          if(Test-Path global.json){throw 'Unexpected repository SDK selection'}
+          '{"sdk":{"version":"10.0.402","rollForward":"disable"}}' | Set-Content global.json
+          if((dotnet --version) -ne '10.0.402'){throw 'SDK mismatch'}
+      - name: Restore
+        run: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
+      - name: Release
+        run: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+      - name: Full application
+        run: ./scripts/wo21-qualification.ps1 -FixtureRoot (Join-Path $env:RUNNER_TEMP 'wo21-wo28-full') -OutputDirectory artifacts/wo28-full
+      - name: SecurityLab
+        run: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+      - name: Compile verification probes
+        run: |
+          foreach($tool in 'WO27Probe','WO28ReliabilityProbe','WO23WindowsProbe','UpdateBridge'){
+            dotnet build "tools/SmartPerformanceDoctor.$tool" -c Release -p:Platform=x64 -m:1 -v:minimal
+            if($LASTEXITCODE){throw "Build failed for $tool"}
+          }
+      - name: Windows boundaries
+        run: ./scripts/wo23-windows-security.ps1
+      - name: Midcopy interruptions
+        run: ./scripts/wo27-midcopy-validation.ps1
+      - name: Restart residual inventory
+        run: ./scripts/wo28-reliability-validation.ps1
+      - name: Internal reconciliation interruption
+        run: ./scripts/wo28-reliability-validation.ps1 -EngineCheckpoints -OutputDirectory artifacts/wo29-engine
+      - name: Build self-authored samples
+        run: |
+          foreach($sample in 'Plain','Calls'){
+            dotnet build "tools/BenchmarkSamples/$sample" -c Release
+            if($LASTEXITCODE){throw "Sample build failed"}
+          }
+      - name: Install isolated benchmark dependencies
+        working-directory: tools/BenchmarkSamples/rea-runtime
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Validate static samples
+        run: node scripts/wo28-rea-validation.mjs tools/BenchmarkSamples/rea-runtime/node_modules/rea-agents "${{ runner.temp }}/wo28-rea-results"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: wo29-qualification
+          path: |
+            artifacts/wo28-full/*RESULT*.txt
+            artifacts/wo28-reliability/reliability.json
+
+            artifacts/wo29-engine/reliability.json

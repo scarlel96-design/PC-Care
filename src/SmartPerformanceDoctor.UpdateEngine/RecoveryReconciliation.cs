@@ -6,6 +6,8 @@ public sealed record RecoveryReconciliation(string State, string Code, string Tr
 
 public sealed partial class UpdateTransaction
 {
+    internal Action<string, long, long>? ReadCheckpoint { private get; set; }
+
     /// <summary>Observe authenticated pending inputs. This method never writes or grants execution authority.</summary>
     public RecoveryReconciliation ReconcileRecovery(string installRoot) => ReconcileRecoveryCore(installRoot, false);
 
@@ -30,6 +32,7 @@ public sealed partial class UpdateTransaction
                 if (++scanned > 4096) return new("ManualReviewRequired", "HISTORY-LIMIT", "", false, false, observations);
                 if (!TryReadTrustedJournal(dir, installRoot, out var journal, out var reason) || journal is null)
                     return new("ManualReviewRequired", reason, "", false, false, observations);
+                ReadCheckpoint?.Invoke("JournalLoaded", 0, 0);
                 if (journal.Stage is not (UpdateStage.Committed or UpdateStage.Restored)) pending.Add((dir, journal));
                 if (pending.Count > 1) return new("ManualReviewRequired", "MULTIPLE-PENDING-TRANSACTIONS", "", false, false, observations);
             }
@@ -45,11 +48,13 @@ public sealed partial class UpdateTransaction
             using var transaction = WindowsFileBoundary.PinDirectory(directory);
             if (_strictAcl) VerifyProtectedAcl(directory);
             using var package = WindowsFileBoundary.OpenRead(directory, "package.spdup");
+            ReadCheckpoint?.Invoke("PackageOpened", 0, 0);
             VerifyProtectedFile(package, directory);
             var signed = SignedPackage.Verify(package.Stream, record.FromVersion, _policy);
             if (!signed.CanApply || signed.Manifest is null || signed.Manifest.PackageId != record.PackageId ||
                 signed.Manifest.ToVersion != record.ToVersion || signed.Manifest.Files.Count != record.Files.Count)
                 return new("ManualReviewRequired", "RECOVERY-PACKAGE-REJECTED", id, false, false, observations);
+            ReadCheckpoint?.Invoke("PackageVerified", 0, 0);
             var signedFiles = signed.Manifest.Files.ToDictionary(x => x.Path, StringComparer.Ordinal);
             var held = new List<WindowsFileBoundary.FileLease>();
             try
@@ -72,17 +77,21 @@ public sealed partial class UpdateTransaction
                     }
                     var backup = WindowsFileBoundary.OpenRead(Path.Combine(directory, "backup"), Relative(entry.Path)); held.Add(backup);
                     VerifyProtectedFile(backup, Path.Combine(directory, "backup"));
-                    backup.Verify(entry.OriginalLength, entry.OriginalSha256, entry.BackupIdentity);
+                    backup.Verify(entry.OriginalLength, entry.OriginalSha256, entry.BackupIdentity,
+                        ReadCheckpoint is null ? null : (n, total) => ReadCheckpoint?.Invoke("BackupHashRead", n, total));
                     var current = WindowsFileBoundary.OpenRead(installRoot, Relative(entry.Path)); held.Add(current);
+                    ReadCheckpoint?.Invoke("BeforeTargetIdentity", 0, 0);
                     current.Validate(entry.OriginalIdentity);
                     if (_strictAcl) ValidateProtectedSecurity(current.ReadSecurity(), false);
-                    var hash = current.Hash();
+                    var hash = current.Hash(ReadCheckpoint is null ? null :
+                        (n, total) => ReadCheckpoint?.Invoke("TargetHashRead", n, total));
                     var state = current.Stream.Length == entry.OriginalLength && hash == entry.OriginalSha256 ? "OriginalVerified" :
                         current.Stream.Length == expected.Length && hash == expected.Sha256 ? "UpdatedVerified" : "UnknownContent";
                     observations.Add(new(entry.Path, state, true));
                 }
                 foreach (var file in held) file.Validate();
                 install.Validate(); work.Validate(); transaction.Validate(); package.Validate();
+                ReadCheckpoint?.Invoke("InputsRevalidated", 0, 0);
                 var unknown = observations.Any(x => x.State == "UnknownContent");
                 var originals = observations.All(x => x.State is "OriginalVerified" or "NewFileAbsent");
                 return new(unknown ? "ManualReviewRequired" : "RecoveryRequired",
