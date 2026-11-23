@@ -29,6 +29,9 @@ public static class WindowsFileBoundary
     {
         private readonly DirectoryHandleScope? _previous = _directoryScope;
         private readonly Dictionary<string, (SafeFileHandle Handle, string Path, string Id)> _handles = new(StringComparer.OrdinalIgnoreCase);
+#if WO29_HISTORY_EXPERIMENT
+        internal StringBuilder PathBuffer { get; } = new(512);
+#endif
         internal int ReusedHandles { get; private set; }
         internal int UniqueHandles => _handles.Count;
         internal DirectoryHandleScope() { _directoryScope = this; }
@@ -394,7 +397,11 @@ public static class WindowsFileBoundary
             (!directory && basic.Links != 1)) throw new IOException("BOUNDARY-LINK-OR-TYPE");
         if (!GetFileInformationByHandleEx(handle, 18, out var id, (uint)Marshal.SizeOf<FileIdInfo>()))
             throw Error("FILE-ID-UNSUPPORTED");
+#if WO29_HISTORY_EXPERIMENT && !PCCARE_VAULT_BOUNDARY
+        var buffer = _directoryScope?.PathBuffer.Clear() ?? new StringBuilder(512);
+#else
         var buffer = new StringBuilder(512);
+#endif
         var size = GetFinalPathNameByHandleW(handle, buffer, (uint)buffer.Capacity, 0);
         if (size >= buffer.Capacity && size <= 32768)
         {

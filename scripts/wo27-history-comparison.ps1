@@ -1,5 +1,7 @@
+param([switch]$Wo29Experiment)
 $ErrorActionPreference='Stop'
-$repo=Split-Path $PSScriptRoot -Parent;$out=Join-Path $repo 'artifacts/wo27-history-comparison';New-Item -ItemType Directory -Force $out|Out-Null
+$comparisonBase=if($Wo29Experiment){(& git -C $PSScriptRoot rev-parse HEAD).Trim()}else{'20364a068de9c3d8e919a1de1c10e990981c7de8'}
+$repo=Split-Path $PSScriptRoot -Parent;$out=Join-Path $repo $(if($Wo29Experiment){'artifacts/wo29-history'}else{'artifacts/wo27-history-comparison'});New-Item -ItemType Directory -Force $out|Out-Null
 if(!$env:RUNNER_TEMP){throw 'RUNNER_TEMP_REQUIRED'}
 $shadow=Join-Path $env:RUNNER_TEMP ('wo27-history-comparison-'+[guid]::NewGuid().ToString('N'));New-Item -ItemType Directory -Force $shadow|Out-Null
 $paths=@{}
@@ -7,12 +9,13 @@ foreach($kind in @('baseline','modified')){
  $dir=Join-Path $shadow $kind;New-Item -ItemType Directory -Force (Join-Path $dir 'Engine')|Out-Null
  foreach($file in Get-ChildItem (Join-Path $repo 'src/SmartPerformanceDoctor.UpdateEngine/*.cs')){
   $target=Join-Path $dir ('Engine/'+$file.Name)
-  if($kind -eq 'baseline'){ $raw=& git -C $repo show ('20364a068de9c3d8e919a1de1c10e990981c7de8:src/SmartPerformanceDoctor.UpdateEngine/'+$file.Name);if($LASTEXITCODE -eq 0){[IO.File]::WriteAllText($target,($raw -join "`n"))} }
+  if($kind -eq 'baseline' -and !$Wo29Experiment){ $raw=& git -C $repo show ('20364a068de9c3d8e919a1de1c10e990981c7de8:src/SmartPerformanceDoctor.UpdateEngine/'+$file.Name);if($LASTEXITCODE -eq 0){[IO.File]::WriteAllText($target,($raw -join "`n"))} }
   else {Copy-Item -LiteralPath $file.FullName -Destination $target}
  }
  Copy-Item (Join-Path $repo 'tools/SmartPerformanceDoctor.WO25Probe/Program.cs') (Join-Path $dir 'Program.cs')
  [IO.File]::WriteAllText((Join-Path $dir 'Profile.csproj'),'<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0-windows10.0.26100.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup></Project>')
- & dotnet build (Join-Path $dir 'Profile.csproj') -c Release -v:minimal *> (Join-Path $out ($kind+'-build.txt'))
+ $defines=if($Wo29Experiment -and $kind -eq 'modified'){'-p:DefineConstants=WO29_HISTORY_EXPERIMENT'}else{'-p:WoComparison=true'}
+ & dotnet build (Join-Path $dir 'Profile.csproj') $defines -p:NuGetAudit=false -p:RestoreIgnoreFailedSources=true -c Release -v:minimal *> (Join-Path $out ($kind+'-build.txt'))
  if($LASTEXITCODE -ne 0){throw ('COMPARISON_BUILD_FAILED:'+ $kind)}
  $paths[$kind]=Join-Path $dir 'bin/Release/net10.0-windows10.0.26100.0/Profile.dll'
 }
@@ -35,9 +38,10 @@ try{
   $root=Join-Path $env:RUNNER_TEMP ('wo25-history-'+[guid]::NewGuid().ToString('N'))
   & dotnet $paths.modified ('history-init:'+$count) $root | Out-Null
   if($LASTEXITCODE -ne 0){throw 'COMPARISON_INPUT_FAILED'}
-  foreach($kind in @('baseline','modified','modified','baseline','baseline','modified')){
+  $order=if($Wo29Experiment){@('baseline','modified','modified','baseline') * $(if($count -eq 4096){3}else{1})}else{@('baseline','modified','modified','baseline','baseline','modified')}
+  foreach($kind in $order){
    $raw=Profile $paths[$kind] $root;$code=0
-   $rows.Add(@{Kind=$kind;Source=(& git -C $repo rev-parse HEAD).Trim();BaselineSource='20364a068de9c3d8e919a1de1c10e990981c7de8';Command='dotnet '+$paths[$kind]+' history-profile <SAME_SYNTHETIC_ROOT>';Input=@{Transactions=$count;Order='ABBAAB';ConcurrentRegression=$false};Output=($raw -join "`n");ExitCode=$code;Environment='Windows; complete baseline/current engine copies; same synthetic signed history; strictAcl=false'})
+   $rows.Add(@{Kind=$kind;Source=(& git -C $repo rev-parse HEAD).Trim();BaselineSource=$comparisonBase;Command='dotnet <'+$kind+'-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>';Input=@{Transactions=$count;Order=($order -join ',');ConcurrentRegression=$false};Output=($raw -join "`n");ExitCode=$code;Environment='Windows; complete baseline/current engine copies; same synthetic signed history; strictAcl=false'})
    $rows|ConvertTo-Json -Depth 8|Set-Content (Join-Path $out 'comparison.json')
    if($code -ne 0){throw 'COMPARISON_RUN_FAILED'}
   }
