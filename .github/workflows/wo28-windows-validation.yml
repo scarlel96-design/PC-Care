@@ -16,10 +16,16 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '10.0.402'
       - uses: actions/setup-node@v4
         with:
           node-version: '24.16.0'
+      - name: Select the WO27 comparison SDK
+        shell: pwsh
+        run: |
+          if(Test-Path global.json){throw 'Unexpected repository SDK selection'}
+          '{"sdk":{"version":"10.0.402","rollForward":"disable"}}' | Set-Content global.json
+          if((dotnet --version) -ne '10.0.402'){throw 'SDK mismatch'}
       - name: Restore
         run: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
       - name: Release
