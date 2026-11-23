@@ -1,0 +1,12 @@
+CI: https://github.com/scarlel96-design/PC-Care/actions/runs/45111151437
+Source: 2aa9ac05a5d286ee3aa250274d0a8b0d07c2c62b
+Environment: GitHub Actions windows-latest x64; SDK 10.0.402; Node 24.16.0.
+
+Command: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
+Input: clean WO-28 checkout and solution. Exit: 0. Restore log: no warning/error diagnostics observed.
+Command: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+Exit: 0.
+0 Warning(s)
+0 Error(s)
+Earlier CI 45110634480 failed with CsWinRT1032 on SDK selection. This run pinned the comparison SDK.
+Separate runner annotation: four v4 GitHub actions target Node 20; runner used Node 24.

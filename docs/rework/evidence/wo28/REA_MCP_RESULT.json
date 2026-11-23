@@ -1,0 +1,26 @@
+{
+  "Source": "43b843309ae462d5f1e46b9beb8164cd9232b2b6",
+  "Environment": "Windows x64; isolated synthetic samples; local paths redacted",
+  "Status": "REA_MCP_CONNECTED",
+  "Command": "mcp__rea__inspect_managed_members",
+  "Input": "Calls.dll",
+  "FixtureSHA256": "db2de8e8d15ccb91f9222076686d8e2c71aa7c217a58449c20c41b7dbcf1fcaf",
+  "ExpectedCall": "Calculator.Evaluate -> Calculator.Double",
+  "Observed": true,
+  "ActiveSessionEvidenceId": "ev_4695f1c447454471c2112a96025f2a339cb316f15d1261a149cb3cc288e8ab56",
+  "Provider": "rea-dotnet-static",
+  "SDKClient": {
+    "ActiveCodexSessionConnected": false,
+    "Scope": "Independent SDK stdio client; not the running Codex tool connection",
+    "Server": {
+      "name": "rea",
+      "version": "6.7.0"
+    },
+    "ToolCount": 207,
+    "AnalysisEvidenceId": "ev_42d9fe936a0dde954ee36b19edff58a84117ed70f2440e01e9e37bfd1f058165",
+    "TransportAnalysisPass": true,
+    "OwnedServerExited": true
+  },
+  "ExitCode": null,
+  "ExitCodeNote": "Active MCP calls return a structured response, not a process exit code."
+}

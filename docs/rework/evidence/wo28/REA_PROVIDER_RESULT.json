@@ -1,0 +1,14 @@
+{
+  "Source": "43b843309ae462d5f1e46b9beb8164cd9232b2b6",
+  "Environment": "Windows x64; isolated synthetic samples; local paths redacted",
+  "Scope": "Package doctor at setup; static CLI and MCP checked separately",
+  "Health": {
+    "doctor": false,
+    "client-doctor": true,
+    "skill-doctor": false,
+    "mcp-doctor-after": true,
+    "ghidra-doctor": false
+  },
+  "Native": "REA_PROVIDER_UNAVAILABLE",
+  "NativeQualification": "NOT TESTED"
+}

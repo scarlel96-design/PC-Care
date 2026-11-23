@@ -1,0 +1,13 @@
+{
+  "Source": "43b843309ae462d5f1e46b9beb8164cd9232b2b6",
+  "Environment": "Windows x64; isolated synthetic samples; local paths redacted",
+  "Package": "rea-agents",
+  "Selected": "6.7.0",
+  "Engines": {
+    "node": "^22.19.0 || ^24.11.0 || >=26.0.0"
+  },
+  "ResumeCommand": "npm view rea-agents dist-tags.latest --registry=https://registry.npmjs.org --fetch-retries=0",
+  "ResumeStdout": "6.10.1",
+  "ResumeExitCode": 0,
+  "Upgraded": false
+}

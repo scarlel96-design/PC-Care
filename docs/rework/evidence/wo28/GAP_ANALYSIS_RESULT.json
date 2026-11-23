@@ -1,0 +1,285 @@
+{
+  "WorkOrder": "WO28",
+  "Status": "STATIC_RESEARCH_COMPLETE",
+  "ProductQualification": "PARTIAL",
+  "Phase1": "NO-GO",
+  "ObservedUtc": "2026-10-19",
+  "PcCareBaselineSource": "620ca720a192a5fdb54afebd3ad00ca11c2fe391",
+  "Methods": [
+    "Read-only local source inspection",
+    "Official web documentation",
+    "GitHub REST pinned public source inspection"
+  ],
+  "ReaCompetitorAnalysis": false,
+  "CompetitorApplicationExecution": false,
+  "PerformanceComparison": "NOT TESTED",
+  "GuiComparison": "NOT TESTED",
+  "SourcePins": {
+    "Cryptomator": "cb74d2c2adbca5c50b46ab60a5e1b4ac7165940a",
+    "BleachBit": "61f477afc2af11a982402294a319e741da4b97a0",
+    "VeraCrypt": "21c4d8817bd746e320bfecead81d35978006fdc8",
+    "PowerToys": "1b33221dfa19f30d71409eb550807883fb27283a"
+  },
+  "InspectedPcCareFiles": [
+    {
+      "Path": "src/SmartPerformanceDoctor.App/Services/SystemCare/StorageInventory.cs",
+      "Sha256": "f7b099537157d412462433d4f7a245a83cd3d5072c628f0b1adcc1f95b6a134c"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.App/Services/SystemCare/StorageTargetPolicy.cs",
+      "Sha256": "aa0ab80296992c2e4387afb04f091d981f9e507b782e61304fb571aa1626e04e"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.App/Services/SystemCare/StorageProtectionRegistry.cs",
+      "Sha256": "956f92be53841e96eeeddd7a7648700a3a74711e765f76eadacc89c6a8bf561d"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.App/Services/Security/SecureVaultLabBackend.cs",
+      "Sha256": "e5415bdba8ac3cebac6c5be8c1677b9d14c201c30320f1d7980f6596f503b541"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.cs",
+      "Sha256": "70107690827216a9c8e773f9860d91ae6b39ff789c95ddba6a43a43d9d05c566"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.Phase2.cs",
+      "Sha256": "50156381d76973aa029866db3419121cff4144ddad9271d92592aa0b8ed48e79"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService.TrustedRecovery.cs",
+      "Sha256": "81506f854c4db252bfed721bcd377b207700b0111ff2e7872393a129b900ca77"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/RecoveryReconciliation.cs",
+      "Sha256": "7cb707aa6fda92645b0a5ec7bd404dafc242779628d79bdfff2ba1c8ae98291f"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.UpdateEngine/InstallationHistoryQualification.cs",
+      "Sha256": "fac7414d488c8f5beb0e6883742e8d7f073d8b2dcb500376fe534def5bbd2992"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.Diagnostics/BottleneckAnalyzer.cs",
+      "Sha256": "312dba0ca3c524bd5199ddbf9525f8526cec2cfb91acfb214986c98a119e80a8"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.Diagnostics/RecoveryPlanner.cs",
+      "Sha256": "ae31aa7fb5db579741eb07ee2472fe26cbed54bf7c2e85003038ee875be4000f"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeleteExecutionResult.cs",
+      "Sha256": "d8ff15620967a44c101870eeee3d777b0325afecf67b9c197c4611e958c2a439"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeletePreflight.cs",
+      "Sha256": "e3dab93c24e6c63466c806c58534f963df8ebafce7a1fb7f898aa850e867eb9b"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeleteStorageProfiler.cs",
+      "Sha256": "ed97447a1f6beb339a5a8da69fbed283afc674102282aa00f68fd454e0f55865"
+    },
+    {
+      "Path": "src/SmartPerformanceDoctor.App/Services/Commercial/SecureDeleteAuditChain.cs",
+      "Sha256": "c04c2bad52767eef0933823cdf73f8299c045260cc6d43ea031ffb8df75a71b6"
+    }
+  ],
+  "Products": [
+    "Cryptomator",
+    "BleachBit",
+    "Microsoft SDelete",
+    "VeraCrypt",
+    "PowerToys"
+  ],
+  "ConfirmedFindings": [
+    {
+      "Id": "G01",
+      "Classification": "개선 필요",
+      "Finding": "Separate configuration recovery, authenticated content recovery, code consumption and freshness in user-facing state."
+    },
+    {
+      "Id": "G04",
+      "Classification": "개선 필요",
+      "Finding": "Use independent read-only provider metadata; do not import CleanerML execution actions."
+    },
+    {
+      "Id": "G05",
+      "Classification": "도입 가치 없음",
+      "Finding": "Do not import an unrestricted CleanerML execution language into the read-only provider boundary."
+    },
+    {
+      "Id": "G06",
+      "Classification": "부분 구현",
+      "Finding": "File Clear limitation reporting exists; physical sanitization remains unqualified."
+    },
+    {
+      "Id": "G09",
+      "Classification": "개선 필요",
+      "Finding": "WO27 reduced handles, but managed allocation growth needs a dedicated profile."
+    },
+    {
+      "Id": "G10",
+      "Classification": "부분 구현",
+      "Finding": "Complete residual inventory and reconciliation retermination remain independent stability work."
+    }
+  ],
+  "NonAdoptions": [
+    "No SDelete binary analysis or redistribution",
+    "No competitor source copied",
+    "No driver or new encryption format adopted",
+    "No external cleaner rule imported"
+  ],
+  "Commands": [
+    {
+      "Command": "rg --files and rg -n selected PC-Care symbols; Get-Content selected source paths",
+      "Input": "PC-Care baseline source tree",
+      "Result": "Selected implementation symbols inspected",
+      "ExitCode": 0
+    },
+    {
+      "Command": "GitHub REST GET commits?per_page=1; GET git/trees/<tree>?recursive=1; GET raw.githubusercontent.com/<repo>/<pin>/<path>",
+      "Input": "Four official public source repositories",
+      "Result": "Four commit pins and selected source files read",
+      "ExitCode": null,
+      "ExitCodeReason": "Connector API calls return structured success rather than shell exit status"
+    },
+    {
+      "Command": "web.run open/search official vendor documentation URLs",
+      "Input": "Cryptomator, BleachBit, Microsoft and VeraCrypt primary pages",
+      "Result": "Official functionality and limitations reviewed",
+      "ExitCode": null,
+      "ExitCodeReason": "Web tool has no process exit status"
+    },
+    {
+      "Command": "rg -n ... src/SmartPerformanceDoctor.SecurityLab/src/VaultV4/LabVaultService*.cs",
+      "Input": "PowerShell literal wildcard path",
+      "Result": "Path wildcard rejected (error 123); corrected with directory plus -g LabVaultService*.cs",
+      "ExitCode": 1
+    }
+  ],
+  "Documents": [
+    "VAULT_COMPARISON.md",
+    "PC_OPTIMIZATION_COMPARISON.md",
+    "SECURE_DELETION_COMPARISON.md",
+    "SYSTEM_DIAGNOSTICS_COMPARISON.md",
+    "UPDATE_RECOVERY_COMPARISON.md",
+    "PC_CARE_GAP_ANALYSIS.md",
+    "IMPROVEMENT_BACKLOG.md",
+    "LICENSE_COMPLIANCE.md"
+  ],
+  "Priorities": [
+    "B01 residual inventory and reconciliation termination",
+    "B02 real isolated signed/privileged environment",
+    "B03/B04 recovery UI and code semantics",
+    "B05 allocation profiling",
+    "B06 read-only cache providers"
+  ],
+  "Deferred": [
+    "Real competitor runtime benchmarking",
+    "Physical device sanitization",
+    "Actual GUI accessibility comparison",
+    "Independent Witness special-approval qualification"
+  ],
+  "NonAdoptionDetails": [
+    "Cryptomator BackupRestorer uses modification time and REPLACE_EXISTING; preserve authenticated generation selection.",
+    "VeraCrypt sector encryption does not replace PC-Care authenticated file content.",
+    "PowerToys settings restore does not establish installation rollback guarantees."
+  ],
+  "InspectedRemoteSource": [
+    {
+      "Repository": "cryptomator/cryptomator",
+      "Commit": "cb74d2c2adbca5c50b46ab60a5e1b4ac7165940a",
+      "Path": "LICENSE.txt",
+      "Url": "https://github.com/cryptomator/cryptomator/blob/cb74d2c2adbca5c50b46ab60a5e1b4ac7165940a/LICENSE.txt",
+      "Read": true
+    },
+    {
+      "Repository": "cryptomator/cryptomator",
+      "Commit": "cb74d2c2adbca5c50b46ab60a5e1b4ac7165940a",
+      "Path": "src/main/java/org/cryptomator/common/recovery/BackupRestorer.java",
+      "Url": "https://github.com/cryptomator/cryptomator/blob/cb74d2c2adbca5c50b46ab60a5e1b4ac7165940a/src/main/java/org/cryptomator/common/recovery/BackupRestorer.java",
+      "Read": true
+    },
+    {
+      "Repository": "cryptomator/cryptomator",
+      "Commit": "cb74d2c2adbca5c50b46ab60a5e1b4ac7165940a",
+      "Path": "src/main/java/org/cryptomator/common/recovery/RecoveryDirectory.java",
+      "Url": "https://github.com/cryptomator/cryptomator/blob/cb74d2c2adbca5c50b46ab60a5e1b4ac7165940a/src/main/java/org/cryptomator/common/recovery/RecoveryDirectory.java",
+      "Read": true
+    },
+    {
+      "Repository": "cryptomator/cryptomator",
+      "Commit": "cb74d2c2adbca5c50b46ab60a5e1b4ac7165940a",
+      "Path": "src/main/java/org/cryptomator/ui/recoverykey/RecoveryKeyResetPasswordController.java",
+      "Url": "https://github.com/cryptomator/cryptomator/blob/cb74d2c2adbca5c50b46ab60a5e1b4ac7165940a/src/main/java/org/cryptomator/ui/recoverykey/RecoveryKeyResetPasswordController.java",
+      "Read": true
+    },
+    {
+      "Repository": "bleachbit/bleachbit",
+      "Commit": "61f477afc2af11a982402294a319e741da4b97a0",
+      "Path": "COPYING",
+      "Url": "https://github.com/bleachbit/bleachbit/blob/61f477afc2af11a982402294a319e741da4b97a0/COPYING",
+      "Read": true
+    },
+    {
+      "Repository": "bleachbit/bleachbit",
+      "Commit": "61f477afc2af11a982402294a319e741da4b97a0",
+      "Path": "bleachbit/CleanerML.py",
+      "Url": "https://github.com/bleachbit/bleachbit/blob/61f477afc2af11a982402294a319e741da4b97a0/bleachbit/CleanerML.py",
+      "Read": true
+    },
+    {
+      "Repository": "bleachbit/bleachbit",
+      "Commit": "61f477afc2af11a982402294a319e741da4b97a0",
+      "Path": "bleachbit/Cleaner.py",
+      "Url": "https://github.com/bleachbit/bleachbit/blob/61f477afc2af11a982402294a319e741da4b97a0/bleachbit/Cleaner.py",
+      "Read": true
+    },
+    {
+      "Repository": "veracrypt/VeraCrypt",
+      "Commit": "21c4d8817bd746e320bfecead81d35978006fdc8",
+      "Path": "License.txt",
+      "Url": "https://github.com/veracrypt/VeraCrypt/blob/21c4d8817bd746e320bfecead81d35978006fdc8/License.txt",
+      "Read": true
+    },
+    {
+      "Repository": "veracrypt/VeraCrypt",
+      "Commit": "21c4d8817bd746e320bfecead81d35978006fdc8",
+      "Path": "src/Common/Volumes.c",
+      "Url": "https://github.com/veracrypt/VeraCrypt/blob/21c4d8817bd746e320bfecead81d35978006fdc8/src/Common/Volumes.c",
+      "Read": true
+    },
+    {
+      "Repository": "microsoft/PowerToys",
+      "Commit": "1b33221dfa19f30d71409eb550807883fb27283a",
+      "Path": "LICENSE",
+      "Url": "https://github.com/microsoft/PowerToys/blob/1b33221dfa19f30d71409eb550807883fb27283a/LICENSE",
+      "Read": true
+    },
+    {
+      "Repository": "microsoft/PowerToys",
+      "Commit": "1b33221dfa19f30d71409eb550807883fb27283a",
+      "Path": "doc/devdocs/modules/interface.md",
+      "Url": "https://github.com/microsoft/PowerToys/blob/1b33221dfa19f30d71409eb550807883fb27283a/doc/devdocs/modules/interface.md",
+      "Read": true
+    },
+    {
+      "Repository": "microsoft/PowerToys",
+      "Commit": "1b33221dfa19f30d71409eb550807883fb27283a",
+      "Path": "src/settings-ui/Settings.UI.Library/SettingsBackupAndRestoreUtils.cs",
+      "Url": "https://github.com/microsoft/PowerToys/blob/1b33221dfa19f30d71409eb550807883fb27283a/src/settings-ui/Settings.UI.Library/SettingsBackupAndRestoreUtils.cs",
+      "Read": true
+    },
+    {
+      "Repository": "microsoft/PowerToys",
+      "Commit": "1b33221dfa19f30d71409eb550807883fb27283a",
+      "Path": "src/settings-ui/Settings.UI.Library/backup_restore_settings.json",
+      "Url": "https://github.com/microsoft/PowerToys/blob/1b33221dfa19f30d71409eb550807883fb27283a/src/settings-ui/Settings.UI.Library/backup_restore_settings.json",
+      "Read": true
+    }
+  ],
+  "ArtifactValidation": {
+    "Command": "python -X utf8 - (read all eight UTF-8 reports; parse GAP_ANALYSIS_RESULT.json; check source and scope labels)",
+    "Input": "Eight comparison documents and one evidence JSON",
+    "Output": "REOPEN_ALL_OWNED_ARTIFACTS=PASS",
+    "ExitCode": 0
+  }
+}

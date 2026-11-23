@@ -1,0 +1,208 @@
+{
+  "Source": "43b843309ae462d5f1e46b9beb8164cd9232b2b6",
+  "Environment": "Windows x64; isolated synthetic samples; local paths redacted",
+  "Command": "./scripts/wo28-reliability-validation.ps1",
+  "ExitCode": 0,
+  "Output": "WO28_READONLY_INVENTORY_RESTART_PASS=4",
+  "RawResultSHA256": "f3e770553cbbb8cacb96841bb3850acc2ffe36dc5b55944c0a09384ecd827b0d",
+  "Cases": [
+    {
+      "Status": "PASS",
+      "Input": {
+        "Bytes": 4096,
+        "State": "OriginalVerified"
+      },
+      "QueryRestartPreservedAllInputs": true,
+      "FullResidualInventoryVerified": true,
+      "EngineInternalReconciliationTermination": "NOT TESTED",
+      "PhysicalPowerLoss": "NOT TESTED",
+      "InventoryBefore": "7C60AB1F57F46F5DDE45E71D986D4788FA799D3B9A38D32226CA6CF9A8756931",
+      "InventoryAfter": "CF867127A15EC4BB80CB651B09C7C34FB0A085B734BC77FA8F7F184CE9CCFC0C",
+      "ResumeCode": "ROLLED-BACK",
+      "ParentStops": [
+        {
+          "Point": {
+            "Phase": "ResidualInventoryHashRead",
+            "EngineReconciliationCompleted": true,
+            "RelativePath": "install/app.txt",
+            "BytesHashed": 4096,
+            "TotalBytes": 4096,
+            "ReconciliationState": "RecoveryRequired",
+            "ReconciliationCode": "ORIGINAL-BYTES-PRESERVED-PENDING",
+            "InsideRecoveryEngine": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1
+        },
+        {
+          "Point": {
+            "Phase": "ResidualInventoryHashRead",
+            "EngineReconciliationCompleted": true,
+            "RelativePath": "install/app.txt",
+            "BytesHashed": 4096,
+            "TotalBytes": 4096,
+            "ReconciliationState": "RecoveryRequired",
+            "ReconciliationCode": "ORIGINAL-BYTES-PRESERVED-PENDING",
+            "InsideRecoveryEngine": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1
+        }
+      ]
+    },
+    {
+      "Status": "PASS",
+      "Input": {
+        "Bytes": 1048576,
+        "State": "UpdatedVerified"
+      },
+      "QueryRestartPreservedAllInputs": true,
+      "FullResidualInventoryVerified": true,
+      "EngineInternalReconciliationTermination": "NOT TESTED",
+      "PhysicalPowerLoss": "NOT TESTED",
+      "InventoryBefore": "87F71F6CC4BDF6E92C29302B988E6A9B9A80E7993E29A25AD7280A6E617CAF5A",
+      "InventoryAfter": "BF93FD375D9516FF0BE377DDCB680CBB98AC6C4D6F33E89E5AAC627C84DF747A",
+      "ResumeCode": "ROLLED-BACK",
+      "ParentStops": [
+        {
+          "Point": {
+            "Phase": "ResidualInventoryHashRead",
+            "EngineReconciliationCompleted": true,
+            "RelativePath": "install/app.txt",
+            "BytesHashed": 65536,
+            "TotalBytes": 1048576,
+            "ReconciliationState": "RecoveryRequired",
+            "ReconciliationCode": "RECOVERY-INPUTS-VERIFIED",
+            "InsideRecoveryEngine": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1
+        },
+        {
+          "Point": {
+            "Phase": "ResidualInventoryHashRead",
+            "EngineReconciliationCompleted": true,
+            "RelativePath": "install/app.txt",
+            "BytesHashed": 65536,
+            "TotalBytes": 1048576,
+            "ReconciliationState": "RecoveryRequired",
+            "ReconciliationCode": "RECOVERY-INPUTS-VERIFIED",
+            "InsideRecoveryEngine": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1
+        }
+      ]
+    },
+    {
+      "Status": "PASS",
+      "Input": {
+        "Bytes": 16777216,
+        "State": "UnknownContent"
+      },
+      "QueryRestartPreservedAllInputs": true,
+      "FullResidualInventoryVerified": true,
+      "EngineInternalReconciliationTermination": "NOT TESTED",
+      "PhysicalPowerLoss": "NOT TESTED",
+      "InventoryBefore": "623B0DD65AAB92E48D62DD4401362C87116D0010DCF26C2AF6B5B85DF1703793",
+      "InventoryAfter": "623B0DD65AAB92E48D62DD4401362C87116D0010DCF26C2AF6B5B85DF1703793",
+      "ResumeCode": "RECOVERY-CONTENT-REVIEW",
+      "ParentStops": [
+        {
+          "Point": {
+            "Phase": "ResidualInventoryHashRead",
+            "EngineReconciliationCompleted": true,
+            "RelativePath": "install/app.txt",
+            "BytesHashed": 65536,
+            "TotalBytes": 16777216,
+            "ReconciliationState": "ManualReviewRequired",
+            "ReconciliationCode": "RECOVERY-CONTENT-REVIEW",
+            "InsideRecoveryEngine": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1
+        },
+        {
+          "Point": {
+            "Phase": "ResidualInventoryHashRead",
+            "EngineReconciliationCompleted": true,
+            "RelativePath": "install/app.txt",
+            "BytesHashed": 65536,
+            "TotalBytes": 16777216,
+            "ReconciliationState": "ManualReviewRequired",
+            "ReconciliationCode": "RECOVERY-CONTENT-REVIEW",
+            "InsideRecoveryEngine": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1
+        }
+      ]
+    },
+    {
+      "Status": "PASS",
+      "Input": {
+        "Bytes": 67108864,
+        "State": "UnknownContent"
+      },
+      "QueryRestartPreservedAllInputs": true,
+      "FullResidualInventoryVerified": true,
+      "EngineInternalReconciliationTermination": "NOT TESTED",
+      "PhysicalPowerLoss": "NOT TESTED",
+      "InventoryBefore": "38A2D68808EF849D991931E00132A11E95ACF124761964AAF954879628A3F114",
+      "InventoryAfter": "38A2D68808EF849D991931E00132A11E95ACF124761964AAF954879628A3F114",
+      "ResumeCode": "RECOVERY-CONTENT-REVIEW",
+      "ParentStops": [
+        {
+          "Point": {
+            "Phase": "ResidualInventoryHashRead",
+            "EngineReconciliationCompleted": true,
+            "RelativePath": "install/app.txt",
+            "BytesHashed": 65536,
+            "TotalBytes": 67108864,
+            "ReconciliationState": "ManualReviewRequired",
+            "ReconciliationCode": "RECOVERY-CONTENT-REVIEW",
+            "InsideRecoveryEngine": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1
+        },
+        {
+          "Point": {
+            "Phase": "ResidualInventoryHashRead",
+            "EngineReconciliationCompleted": true,
+            "RelativePath": "install/app.txt",
+            "BytesHashed": 65536,
+            "TotalBytes": 67108864,
+            "ReconciliationState": "ManualReviewRequired",
+            "ReconciliationCode": "RECOVERY-CONTENT-REVIEW",
+            "InsideRecoveryEngine": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1
+        }
+      ]
+    }
+  ],
+  "BoundaryCases": [
+    {
+      "Name": "RelativeRootRejected",
+      "ExitCode": 3,
+      "Status": "PASS"
+    },
+    {
+      "Name": "MissingMarkerRejected",
+      "ExitCode": 3,
+      "Status": "PASS"
+    },
+    {
+      "Name": "JunctionRejected",
+      "ExitCode": 3,
+      "Status": "PASS"
+    },
+    {
+      "Name": "HardlinkRejected",
+      "ExitCode": 3,
+      "Status": "PASS"
+    }
+  ]
+}

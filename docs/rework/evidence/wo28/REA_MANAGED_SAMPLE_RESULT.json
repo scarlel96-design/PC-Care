@@ -1,0 +1,30 @@
+{
+  "Source": "43b843309ae462d5f1e46b9beb8164cd9232b2b6",
+  "Environment": "Windows x64; isolated synthetic samples; local paths redacted",
+  "Status": "REA_MANAGED_ANALYSIS_PASS",
+  "SHA256": {
+    "Plain": "7533d967a5dbfd823317184c4263d364b5e0680f4088477d310b416f6822d768",
+    "Calls": "db2de8e8d15ccb91f9222076686d8e2c71aa7c217a58449c20c41b7dbcf1fcaf"
+  },
+  "Artifacts": 2,
+  "CallVerified": true,
+  "Operations": [
+    {
+      "Command": "node.exe rea.mjs inspect-managed-artifact Plain.dll --json",
+      "ExitCode": 0
+    },
+    {
+      "Command": "node.exe rea.mjs inspect-managed-members Plain.dll --json",
+      "ExitCode": 0
+    },
+    {
+      "Command": "node.exe rea.mjs inspect-managed-artifact Calls.dll --json",
+      "ExitCode": 0
+    },
+    {
+      "Command": "node.exe rea.mjs inspect-managed-members Calls.dll --json",
+      "ExitCode": 0
+    }
+  ],
+  "HarnessExitCode": 0
+}

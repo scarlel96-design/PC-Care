@@ -1,0 +1,21 @@
+{
+  "Source": "43b843309ae462d5f1e46b9beb8164cd9232b2b6",
+  "Environment": "Windows x64; isolated synthetic samples; local paths redacted",
+  "Command": "rea-agents@6.7.0 setup --client codex --dry-run --json",
+  "ExitCode": 0,
+  "Status": "planned",
+  "Actions": [
+    {
+      "Kind": "configure_client",
+      "Operation": "update",
+      "TargetName": "config.toml",
+      "BackupPlanned": true
+    },
+    {
+      "Kind": "install_skill",
+      "Operation": "install",
+      "TargetName": "reverse-engineer-anything",
+      "BackupPlanned": false
+    }
+  ]
+}

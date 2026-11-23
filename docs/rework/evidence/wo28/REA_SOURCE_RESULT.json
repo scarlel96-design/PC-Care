@@ -1,0 +1,30 @@
+{
+  "Source": "43b843309ae462d5f1e46b9beb8164cd9232b2b6",
+  "Environment": "Windows x64; isolated synthetic samples; local paths redacted",
+  "Repository": "git+https://github.com/morluto/rea.git",
+  "License": "MIT",
+  "DocumentationCommit": "91884c374385182726a93d56059720d5e78a0e42",
+  "DocumentSHA256": {
+    "installation.md": "84b970e89869172cfd351994bd4ffa0ec76e96006a42dc70432ca9a21ec14457",
+    "cli.md": "f71eb1ba7792c914ab0d949fa44fbace4c8ee1d1013ac0325cb982fa78314220",
+    "windows-ghidra-p0.md": "5c90bf05ba54fd4f3d73d3f5d96c5c17a11bda40acc8084f2b2f25cb2763a87a",
+    "managed-code-analysis.md": "7df4b5ac015aaee4fdc590008065d5c093e4de632f92f6f50f3901a274e0cabb",
+    "javascript-application-workflows.md": "212edad26b8e17253e4009867a2b662ea97f50c1e50dfe1998ae53f77ec02161",
+    "mcp-contracts.md": "9f6e7b2ce963b239467a2281bd51ec4261bead5673a418cf69ca9997543e9012"
+  },
+  "Command": "npm view rea-agents@6.7.0 version engines dist license repository --json; hash archived tarball with SHA-512",
+  "TarballIntegrity": "sha512-yhIx2ioJYYT1C/tONfYeitC6LhnKmCh+ZwRUOgYuhSc733lGhkkt73zhug9WmLgxoMdKuqIYGCoBfD4fXkOhFw==",
+  "IntegrityMatched": true,
+  "ArchiveSignatures": {
+    "invalid": [],
+    "missing": []
+  },
+  "ArchiveAuditCounts": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  }
+}

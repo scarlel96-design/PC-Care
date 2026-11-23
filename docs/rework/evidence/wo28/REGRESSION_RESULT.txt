@@ -1,0 +1,17 @@
+CI: https://github.com/scarlel96-design/PC-Care/actions/runs/45111151437
+Source: 2aa9ac05a5d286ee3aa250274d0a8b0d07c2c62b
+Environment: GitHub Actions windows-latest x64; SDK 10.0.402; Node 24.16.0.
+
+Command: ./scripts/wo21-qualification.ps1 -FixtureRoot (Join-Path $env:RUNNER_TEMP 'wo21-wo28-full') -OutputDirectory artifacts/wo28-full
+Exit: 0.
+Passed!  - Failed:     0, Passed:  1445, Skipped:   111, Total:  1556, Duration: 9 m 52 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+WO21_QUALIFICATION=PASS
+Additional Windows probes; do not add to the app total.
+./scripts/wo23-windows-security.ps1; exit 0.
+WO23_ACTUAL_WINDOWS_ACL_AND_AUTHENTICODE=PASS
+./scripts/wo27-midcopy-validation.ps1; exit 0.
+WO27_MIDCOPY_MATRIX_PASS=47
+./scripts/wo28-reliability-validation.ps1; exit 0.
+WO28_READONLY_INVENTORY_RESTART_PASS=4
+node scripts/wo28-rea-validation.mjs tools/BenchmarkSamples/rea-runtime/node_modules/rea-agents <runner-temp>/wo28-rea-results; exit 0.
+WO28_REA_SAMPLE_VALIDATION_PASS

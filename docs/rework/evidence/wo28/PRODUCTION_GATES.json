@@ -1,0 +1,17 @@
+{
+  "Source": "43b843309ae462d5f1e46b9beb8164cd9232b2b6",
+  "Environment": "Windows x64; isolated synthetic samples; local paths redacted",
+  "File": "src/SmartPerformanceDoctor.AstraVault/Target/Av3PhaseGate.cs",
+  "FileSHA256": "ea8cd62058de41125a1c593d76c8adafdc9aa81c2376dcb37e8aa025764cb0e3",
+  "Command": "git diff --exit-code 620ca720a192a5fdb54afebd3ad00ca11c2fe391 HEAD -- src",
+  "Scope": "Product source diff; independent of runtime qualification",
+  "Phase1": "NO-GO",
+  "Flags": {
+    "ProductionWriterEnabled": false,
+    "JournalWriterEnabled": false,
+    "MigrationEnabled": false,
+    "WriterEnableReady": false,
+    "ExternalReviewCompleted": false,
+    "ProductionEnableAuthorized": false
+  }
+}

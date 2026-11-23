@@ -1,0 +1,19 @@
+{
+  "Source": "43b843309ae462d5f1e46b9beb8164cd9232b2b6",
+  "Environment": "Windows x64; isolated synthetic samples; local paths redacted",
+  "Status": "REA_INSTALLATION_PASS",
+  "SetupCommand": "rea-agents@6.7.0 setup --client codex",
+  "SetupStatus": "ready",
+  "Actions": [
+    "configured_codex",
+    "installed_skill"
+  ],
+  "ScopedHealthAtSetup": {
+    "doctor": false,
+    "client-doctor": true,
+    "skill-doctor": false,
+    "mcp-doctor-after": true,
+    "ghidra-doctor": false
+  },
+  "ReinstalledOnResume": false
+}

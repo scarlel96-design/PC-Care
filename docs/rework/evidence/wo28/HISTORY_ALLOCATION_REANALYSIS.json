@@ -1,0 +1,319 @@
+{
+  "Input": {
+    "StrictAcl": false,
+    "Order": "ABBAAB",
+    "Transactions": 4096
+  },
+  "NewPerformanceTrial": false,
+  "NestedPhaseValuesAreNotAdditive": true,
+  "Status": "HistoricalEvidenceReanalysis",
+  "Environment": "Windows GitHub-hosted runner; WO27 existing comparison",
+  "Records": [
+    {
+      "History": {
+        "Verified": true,
+        "State": "InstallationVerified",
+        "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+        "Transactions": 4096,
+        "Files": 1
+      },
+      "Kind": "baseline",
+      "Phases": [
+        {
+          "Name": "NativeIdentityCheck",
+          "Calls": 442582,
+          "ElapsedMs": 13740.4461,
+          "AllocatedBytes": 640032320
+        },
+        {
+          "Name": "FileOpenAndBind",
+          "Calls": 12293,
+          "ElapsedMs": 8580.7455,
+          "AllocatedBytes": 406742928
+        },
+        {
+          "Name": "FileIdentityValidation",
+          "Calls": 4108,
+          "ElapsedMs": 847.8727,
+          "AllocatedBytes": 44051856
+        },
+        {
+          "Name": "HashAndIdentity",
+          "Calls": 3,
+          "ElapsedMs": 8.47,
+          "AllocatedBytes": 457840
+        },
+        {
+          "Name": "HistoryJsonParse",
+          "Calls": 4096,
+          "ElapsedMs": 178.3691,
+          "AllocatedBytes": 34312168
+        },
+        {
+          "Name": "HistorySignatureVerification",
+          "Calls": 4096,
+          "ElapsedMs": 2131.0368,
+          "AllocatedBytes": 18399392
+        }
+      ],
+      "WholeProcessAllocatedBytes": 1983256328
+    },
+    {
+      "History": {
+        "Verified": true,
+        "State": "InstallationVerified",
+        "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+        "Transactions": 4096,
+        "Files": 1
+      },
+      "Kind": "baseline",
+      "Phases": [
+        {
+          "Name": "NativeIdentityCheck",
+          "Calls": 442582,
+          "ElapsedMs": 14069.4747,
+          "AllocatedBytes": 639129704
+        },
+        {
+          "Name": "FileOpenAndBind",
+          "Calls": 12293,
+          "ElapsedMs": 8759.8706,
+          "AllocatedBytes": 406303256
+        },
+        {
+          "Name": "FileIdentityValidation",
+          "Calls": 4108,
+          "ElapsedMs": 932.8323,
+          "AllocatedBytes": 44051856
+        },
+        {
+          "Name": "HashAndIdentity",
+          "Calls": 3,
+          "ElapsedMs": 8.5823,
+          "AllocatedBytes": 457840
+        },
+        {
+          "Name": "HistoryJsonParse",
+          "Calls": 4096,
+          "ElapsedMs": 183.4501,
+          "AllocatedBytes": 34312480
+        },
+        {
+          "Name": "HistorySignatureVerification",
+          "Calls": 4096,
+          "ElapsedMs": 2216.9575,
+          "AllocatedBytes": 18400152
+        }
+      ],
+      "WholeProcessAllocatedBytes": 1981706592
+    },
+    {
+      "History": {
+        "Verified": true,
+        "State": "InstallationVerified",
+        "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+        "Transactions": 4096,
+        "Files": 1
+      },
+      "Kind": "baseline",
+      "Phases": [
+        {
+          "Name": "NativeIdentityCheck",
+          "Calls": 442582,
+          "ElapsedMs": 13975.7761,
+          "AllocatedBytes": 639921848
+        },
+        {
+          "Name": "FileOpenAndBind",
+          "Calls": 12293,
+          "ElapsedMs": 8698.3081,
+          "AllocatedBytes": 406646504
+        },
+        {
+          "Name": "FileIdentityValidation",
+          "Calls": 4108,
+          "ElapsedMs": 806.496,
+          "AllocatedBytes": 44051856
+        },
+        {
+          "Name": "HashAndIdentity",
+          "Calls": 3,
+          "ElapsedMs": 8.2204,
+          "AllocatedBytes": 482464
+        },
+        {
+          "Name": "HistoryJsonParse",
+          "Calls": 4096,
+          "ElapsedMs": 177.2345,
+          "AllocatedBytes": 34308096
+        },
+        {
+          "Name": "HistorySignatureVerification",
+          "Calls": 4096,
+          "ElapsedMs": 2190.9991,
+          "AllocatedBytes": 18403504
+        }
+      ],
+      "WholeProcessAllocatedBytes": 1982848768
+    },
+    {
+      "History": {
+        "Verified": true,
+        "State": "InstallationVerified",
+        "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+        "Transactions": 4096,
+        "Files": 1,
+        "RetainedDirectoryHandles": 4102,
+        "ReusedDirectoryHandles": 184361,
+        "RetainedFileHandles": 8194
+      },
+      "Kind": "modified",
+      "Phases": [
+        {
+          "Name": "NativeIdentityCheck",
+          "Calls": 553180,
+          "ElapsedMs": 16412.3862,
+          "AllocatedBytes": 807244384
+        },
+        {
+          "Name": "FileOpenAndBind",
+          "Calls": 16389,
+          "ElapsedMs": 10055.7402,
+          "AllocatedBytes": 528147736
+        },
+        {
+          "Name": "FileIdentityValidation",
+          "Calls": 8204,
+          "ElapsedMs": 1631.5667,
+          "AllocatedBytes": 87797136
+        },
+        {
+          "Name": "HashAndIdentity",
+          "Calls": 3,
+          "ElapsedMs": 8.5307,
+          "AllocatedBytes": 457840
+        },
+        {
+          "Name": "HistoryJsonParse",
+          "Calls": 4096,
+          "ElapsedMs": 173.5924,
+          "AllocatedBytes": 34315440
+        },
+        {
+          "Name": "HistorySignatureVerification",
+          "Calls": 4096,
+          "ElapsedMs": 2162.362,
+          "AllocatedBytes": 18469032
+        }
+      ],
+      "WholeProcessAllocatedBytes": 2146168936
+    },
+    {
+      "History": {
+        "Verified": true,
+        "State": "InstallationVerified",
+        "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+        "Transactions": 4096,
+        "Files": 1,
+        "RetainedDirectoryHandles": 4102,
+        "ReusedDirectoryHandles": 184361,
+        "RetainedFileHandles": 8194
+      },
+      "Kind": "modified",
+      "Phases": [
+        {
+          "Name": "NativeIdentityCheck",
+          "Calls": 553180,
+          "ElapsedMs": 16349.9001,
+          "AllocatedBytes": 802042744
+        },
+        {
+          "Name": "FileOpenAndBind",
+          "Calls": 16389,
+          "ElapsedMs": 10013.4829,
+          "AllocatedBytes": 525735864
+        },
+        {
+          "Name": "FileIdentityValidation",
+          "Calls": 8204,
+          "ElapsedMs": 1606.4032,
+          "AllocatedBytes": 87797136
+        },
+        {
+          "Name": "HashAndIdentity",
+          "Calls": 3,
+          "ElapsedMs": 8.1634,
+          "AllocatedBytes": 457840
+        },
+        {
+          "Name": "HistoryJsonParse",
+          "Calls": 4096,
+          "ElapsedMs": 175.0198,
+          "AllocatedBytes": 34311312
+        },
+        {
+          "Name": "HistorySignatureVerification",
+          "Calls": 4096,
+          "ElapsedMs": 2151.3587,
+          "AllocatedBytes": 18478144
+        }
+      ],
+      "WholeProcessAllocatedBytes": 2140828944
+    },
+    {
+      "History": {
+        "Verified": true,
+        "State": "InstallationVerified",
+        "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+        "Transactions": 4096,
+        "Files": 1,
+        "RetainedDirectoryHandles": 4102,
+        "ReusedDirectoryHandles": 184361,
+        "RetainedFileHandles": 8194
+      },
+      "Kind": "modified",
+      "Phases": [
+        {
+          "Name": "NativeIdentityCheck",
+          "Calls": 553180,
+          "ElapsedMs": 17208.1898,
+          "AllocatedBytes": 802362960
+        },
+        {
+          "Name": "FileOpenAndBind",
+          "Calls": 16389,
+          "ElapsedMs": 10457.3455,
+          "AllocatedBytes": 525840240
+        },
+        {
+          "Name": "FileIdentityValidation",
+          "Calls": 8204,
+          "ElapsedMs": 1629.4103,
+          "AllocatedBytes": 87797136
+        },
+        {
+          "Name": "HashAndIdentity",
+          "Calls": 3,
+          "ElapsedMs": 8.4239,
+          "AllocatedBytes": 457840
+        },
+        {
+          "Name": "HistoryJsonParse",
+          "Calls": 4096,
+          "ElapsedMs": 172.3364,
+          "AllocatedBytes": 34308096
+        },
+        {
+          "Name": "HistorySignatureVerification",
+          "Calls": 4096,
+          "ElapsedMs": 2168.9697,
+          "AllocatedBytes": 18470968
+        }
+      ],
+      "WholeProcessAllocatedBytes": 2141241968
+    }
+  ],
+  "Run": 39197282336,
+  "Source": "f6d29413a77c7522210de6eba3b1dbae745b2365",
+  "OptimizationApplied": false
+}

@@ -1,0 +1,7 @@
+*.txt text eol=lf
+*.json text eol=lf
+.gitattributes text eol=lf
+ORIGINAL_FILE -text
+MODIFIED_FILE -text whitespace=cr-at-eol
+DIFF_FILE -text
+ROLLBACK.sh text eol=lf

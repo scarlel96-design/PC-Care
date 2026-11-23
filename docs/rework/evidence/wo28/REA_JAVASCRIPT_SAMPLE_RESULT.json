@@ -1,0 +1,18 @@
+{
+  "Source": "43b843309ae462d5f1e46b9beb8164cd9232b2b6",
+  "Environment": "Windows x64; isolated synthetic samples; local paths redacted",
+  "Status": "REA_JAVASCRIPT_ANALYSIS_PASS",
+  "Scope": "module and import graph only",
+  "Applications": 1,
+  "ImportsVerified": true,
+  "GeneralCallsQualified": false,
+  "Unknowns": 13,
+  "Evidence": "ev_4d9b4f1a36b15d64458de2bd2249a0b9dc268b047d88ab39fe533c67b7a45ff7",
+  "Operations": [
+    {
+      "Command": "node.exe rea.mjs analyze-javascript-application JavaScript --json",
+      "ExitCode": 0
+    }
+  ],
+  "HarnessExitCode": 0
+}

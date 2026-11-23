@@ -1,0 +1,25 @@
+WO-28 / isolated source-copy verification
+Implementation: 43b843309ae462d5f1e46b9beb8164cd9232b2b6
+CI workflow SDK pin: 2aa9ac05a5d286ee3aa250274d0a8b0d07c2c62b
+Platform: Windows x64, Git Bash, Node.js. Input: Infinity.
+Changed target: tools/BenchmarkSamples/JavaScript/math.js, double(value).
+New branch: reject non-finite values with RangeError. Finite inputs retain value * 2.
+Evidence root: docs/rework/evidence/wo28/
+Artifacts: ORIGINAL_FILE, MODIFIED_FILE, DIFF_FILE, ROLLBACK.sh, VERIFICATION.txt
+Command: & 'C:/Program Files/Git/bin/bash.exe' docs/rework/evidence/wo28/ROLLBACK.sh
+Each stage executes from a private temporary directory with its own copy of math.mjs.
+Per-stage command: node --input-type=module -e "import {double} from './math.mjs'; try{console.log(double(Infinity))}catch(e){console.log(e.name)}"
+BASELINE: ORIGINAL_FILE; stdout Infinity; exit 0.
+MODIFIED: MODIFIED_FILE; stdout RangeError; exit 0 (the observer catches the thrown error).
+ROLLBACK: ORIGINAL_FILE restored to the temporary copy; stdout Infinity; exit 0.
+Wrapper stdout:
+BASELINE=Infinity
+MODIFIED=RangeError
+ROLLBACK=Infinity
+RESTORED_BYTES_IDENTICAL
+Wrapper exit 0. cmp verified restored bytes. The tracked sample retained the changed behavior.
+Original SHA-256: 37db806f1818bdff0d2e9a3a371217ceaa5cc4c7e8713889477b764aef4d04dc
+Modified SHA-256: 8f3905fe0e435e6c671da21d6f2ca203ac60784cfb983148f54be51153384c45
+The independent source-copy test does not restore a PC-Care transaction, user vault or Codex MCP configuration.
+For interrupted synthetic transactions use RELIABILITY_RESULT.json and REGRESSION_RESULT.txt.
+The modified evidence file preserves the local fixture line endings. Git normalizes the tracked JavaScript source to LF.

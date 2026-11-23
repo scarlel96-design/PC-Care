@@ -1,0 +1,1926 @@
+{
+  "schema": 1,
+  "work_order": "WO-28",
+  "status": "CATALOG_RESEARCH_COMPLETE_WITH_LIMITS",
+  "access_date": "2026-10-19",
+  "source_baseline": "620ca720a192a5fdb54afebd3ad00ca11c2fe391",
+  "branch": "codex/pccare-wo28-rea-benchmark-reliability",
+  "command": "web.run open, find and official-domain search_query calls",
+  "input": "WO-28 initial five competitor groups; BleachBit and PrivaZer deduplicated; PowerToys added.",
+  "environment": "Codex public web tool. No target binary was downloaded or executed.",
+  "actual_output": {
+    "initial_canonical_products": 62,
+    "total_canonical_products": 63,
+    "rea_analyzed_competitors": 0,
+    "executed_competitors": 0,
+    "category_counts": {
+      "PC management and optimization": 14,
+      "Hardware and system diagnostics": 12,
+      "Vault and encryption": 15,
+      "Secure deletion": 12,
+      "Application management, updates and backup": 11,
+      "Additional modular integration target": 1
+    }
+  },
+  "exit_code": null,
+  "exit_code_reason": "Web tools return retrieved pages and errors; no shell exit code exists.",
+  "actual_search_queries": [
+    "site.macrium.com Reflect X Home Reflect Free end of support",
+    "site.enpass.io password manager pricing Windows",
+    "site.oo-software.com SafeErase download",
+    "site.blancco.com products drive eraser",
+    "site.eraser.heidi.ie Eraser GPL latest",
+    "site.ccleaner.com ccleaner free professional",
+    "site.privazer.com Goversoft free donor",
+    "site.hwinfo.com licensing non commercial Pro",
+    "site.support.nordlocker.com discontinued desktop app support",
+    "site.patchmypc.com home updater personal free",
+    "site.eraser.heidi.ie 6.2.0.2996 release",
+    "site.diskcryptor.org release Windows 11"
+  ],
+  "official_page_open_inputs": [
+    "https://www.ccleaner.com/download",
+    "https://www.iobit.com/en/advancedsystemcarefree.php",
+    "https://www.glarysoft.com/glary-utilities/",
+    "https://www.wisecleaner.com/wise-care-365.html",
+    "https://www.ashampoo.com/en-us/winoptimizer",
+    "https://www.iolo.com/products/system-mechanic/",
+    "https://www.avg.com/en-us/avg-pctuneup",
+    "https://us.norton.com/products/norton-utilities-ultimate",
+    "https://www.auslogics.com/en/software/boost-speed/",
+    "https://www.bleachbit.org/",
+    "https://pcmanager.microsoft.com/en-us",
+    "https://github.com/ChrisTitusTech/winutil",
+    "https://privazer.com/en/",
+    "https://www.razer.com/cortex",
+    "https://www.hwinfo.com/",
+    "https://www.ocbase.com/",
+    "https://bitsum.com/",
+    "https://learn.microsoft.com/en-us/sysinternals/downloads/process-explorer",
+    "https://learn.microsoft.com/en-us/sysinternals/downloads/procmon",
+    "https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns",
+    "https://learn.microsoft.com/en-us/sysinternals/downloads/rammap",
+    "https://diskanalyzer.com/about",
+    "https://www.jam-software.com/treesize",
+    "https://windirstat.net/",
+    "https://crystalmark.info/en/software/crystaldiskinfo/",
+    "https://www.hdsentinel.com/",
+    "https://github.com/veracrypt/VeraCrypt",
+    "https://cryptomator.org/",
+    "https://keepassxc.org/",
+    "https://keepass.info/",
+    "https://bitwarden.com/",
+    "https://1password.com/",
+    "https://axcrypt.net/",
+    "https://nordlocker.com/",
+    "https://www.newsoftwares.net/folderlock/",
+    "https://jetico.com/data-encryption/",
+    "https://rohos.com/products/rohos-disk-encryption/rohos-mini-drive/",
+    "https://diskcryptor.org/",
+    "https://www.enpass.io/pricing/",
+    "https://www.7-zip.org/",
+    "https://peazip.github.io/",
+    "https://learn.microsoft.com/en-us/sysinternals/downloads/sdelete",
+    "https://eraser.heidi.ie/",
+    "https://www.oo-software.com/en/safeerase",
+    "https://jetico.com/data-wiping/",
+    "https://blancco.com/products/drive-eraser/",
+    "https://www.bitraser.com/",
+    "https://www.killdisk.com/eraser.html",
+    "https://github.com/PartialVolume/shredos.x86_64",
+    "https://github.com/martijnvanbrummelen/nwipe",
+    "https://partedmagic.com/",
+    "https://www.revouninstaller.com/",
+    "https://www.bcuninstaller.com/",
+    "https://geekuninstaller.com/",
+    "https://www.hibitsoft.ir/Uninstaller.html",
+    "https://www.iobit.com/en/advanceduninstaller.php",
+    "https://learn.microsoft.com/en-us/windows/package-manager/winget/",
+    "https://github.com/Devolutions/UniGetUI",
+    "https://ninite.com/",
+    "https://patchmypc.com/product/home-updater/",
+    "https://www.macrium.com/product-support-policy",
+    "https://www.veeam.com/products/free/microsoft-windows.html",
+    "https://github.com/microsoft/PowerToys"
+  ],
+  "repository_license_find_inputs": [
+    "https://github.com/bleachbit/bleachbit",
+    "https://github.com/ChrisTitusTech/winutil",
+    "https://github.com/windirstat/windirstat",
+    "https://github.com/hiyohiyo/CrystalDiskInfo",
+    "https://github.com/veracrypt/VeraCrypt",
+    "https://github.com/cryptomator/cryptomator",
+    "https://github.com/keepassxreboot/keepassxc",
+    "https://keepass.info/help/v2/license.html",
+    "https://github.com/bitwarden/clients",
+    "https://github.com/axcrypt/AxCrypt-Net",
+    "https://github.com/DiskCryptor/DiskCryptor",
+    "https://www.7-zip.org/license.txt",
+    "https://github.com/peazip/PeaZip",
+    "https://sourceforge.net/projects/eraser/",
+    "https://github.com/PartialVolume/shredos.x86_64",
+    "https://github.com/martijnvanbrummelen/nwipe",
+    "https://github.com/BCUninstaller/Bulk-Crap-Uninstaller",
+    "https://github.com/microsoft/winget-cli",
+    "https://github.com/Devolutions/UniGetUI",
+    "https://github.com/microsoft/PowerToys"
+  ],
+  "followup_open_inputs": [
+    "https://www.hwinfo.com/files/license.pdf",
+    "https://github.com/keepassxreboot/keepassxc/blob/develop/COPYING",
+    "https://github.com/bitwarden/clients/blob/main/LICENSE.txt",
+    "https://support.nordlocker.com/hc/en-us/articles/360006676017-NordLocker-supported-operating-systems",
+    "https://manuals.oo-software.com/en/oosafeerase/21/professional/01_introduction.html",
+    "https://www.oo-software.com/en/download/archive",
+    "https://github.com/PartialVolume/shredos.x86_64/blob/master/COPYING",
+    "https://geekuninstaller.com/about",
+    "https://kbx.macrium.com/macrium-reflect-x/macrium-reflect-x-licensing-policy",
+    "https://github.com/diskcryptor/DiskCryptor/releases"
+  ],
+  "retrieval_failures": [
+    {
+      "url": "https://www.ccleaner.com/ccleaner",
+      "actual_result": "JavaScript requirement only",
+      "resolution": "Official download page retrieved"
+    },
+    {
+      "url": "https://www.veracrypt.fr/en/Home.html",
+      "actual_result": "Redirected to inaccessible veracrypt.io address",
+      "resolution": "Official repository retrieved"
+    },
+    {
+      "url": "https://www.enpass.io/",
+      "actual_result": "Internal retrieval error",
+      "resolution": "Official pricing search index available; direct pricing open also failed"
+    },
+    {
+      "url": "https://eraser.heidi.ie/",
+      "actual_result": "HTTP 403",
+      "resolution": "Project SourceForge listing and indexed official forum observed; supported release Unknown"
+    },
+    {
+      "url": "https://www.oo-software.com/en/safeerase",
+      "actual_result": "Inaccessible via web tool",
+      "resolution": "Official v21 manual and download archive retrieved"
+    },
+    {
+      "url": "https://blancco.com/products/blancco-drive-eraser/",
+      "actual_result": "Internal retrieval error",
+      "resolution": "Correct official /products/drive-eraser/ page retrieved"
+    },
+    {
+      "url": "https://www.macrium.com/reflect-home",
+      "actual_result": "Internal retrieval error",
+      "resolution": "Official support policy retrieved"
+    },
+    {
+      "url": "https://www.ocbase.com/purchase",
+      "actual_result": "HTTP 404",
+      "resolution": "Main official offering observed; precise entitlements Unknown"
+    },
+    {
+      "url": "https://www.axcrypt.net/pricing/",
+      "actual_result": "Inaccessible via web tool",
+      "resolution": "Official site and source repository retrieved"
+    }
+  ],
+  "products": [
+    {
+      "id": "C01",
+      "product": "CCleaner",
+      "developer": "Piriform / CCleaner",
+      "categories": [
+        "optimization"
+      ],
+      "official_url": "https://www.ccleaner.com/download",
+      "edition_and_price_type": "Free / Professional; home and business editions differ",
+      "license": "Vendor EULA",
+      "documented_feature": "Cleanup, startup and app maintenance",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.ccleaner.com/download"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Main page was JavaScript-only. Official download page was retrieved. Home and business edition rights differ."
+    },
+    {
+      "id": "C02",
+      "product": "Advanced SystemCare",
+      "developer": "IObit",
+      "categories": [
+        "optimization"
+      ],
+      "official_url": "https://www.iobit.com/en/advancedsystemcarefree.php",
+      "edition_and_price_type": "Free / Pro / Ultimate",
+      "license": "Vendor EULA",
+      "documented_feature": "Cleanup and system tune-up",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.iobit.com/en/advancedsystemcarefree.php"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C03",
+      "product": "Glary Utilities",
+      "developer": "Glarysoft",
+      "categories": [
+        "optimization"
+      ],
+      "official_url": "https://www.glarysoft.com/glary-utilities/",
+      "edition_and_price_type": "Free / Pro",
+      "license": "Vendor EULA; business-use eligibility requires review",
+      "documented_feature": "System maintenance and cleanup",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.glarysoft.com/glary-utilities/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C04",
+      "product": "Wise Care 365",
+      "developer": "WiseCleaner",
+      "categories": [
+        "optimization"
+      ],
+      "official_url": "https://www.wisecleaner.com/wise-care-365.html",
+      "edition_and_price_type": "Free / Pro",
+      "license": "Vendor EULA",
+      "documented_feature": "Cleanup, privacy and monitoring",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.wisecleaner.com/wise-care-365.html"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C05",
+      "product": "Ashampoo WinOptimizer",
+      "developer": "Ashampoo",
+      "categories": [
+        "optimization"
+      ],
+      "official_url": "https://www.ashampoo.com/en-us/winoptimizer",
+      "edition_and_price_type": "Paid Pro 29 listing; Free edition not reviewed",
+      "license": "Vendor EULA",
+      "documented_feature": "Windows maintenance",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.ashampoo.com/en-us/winoptimizer"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C06",
+      "product": "System Mechanic",
+      "developer": "iolo",
+      "categories": [
+        "optimization"
+      ],
+      "official_url": "https://www.iolo.com/products/system-mechanic/",
+      "edition_and_price_type": "Paid / trial",
+      "license": "Vendor EULA",
+      "documented_feature": "PC maintenance and tune-up",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.iolo.com/products/system-mechanic/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C07",
+      "product": "AVG TuneUp",
+      "developer": "AVG",
+      "categories": [
+        "optimization"
+      ],
+      "official_url": "https://www.avg.com/en-us/avg-pctuneup",
+      "edition_and_price_type": "Paid / trial",
+      "license": "Vendor EULA",
+      "documented_feature": "Cleanup and app maintenance",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.avg.com/en-us/avg-pctuneup"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C08",
+      "product": "Norton Utilities Ultimate",
+      "developer": "Norton",
+      "categories": [
+        "optimization"
+      ],
+      "official_url": "https://us.norton.com/products/norton-utilities-ultimate",
+      "edition_and_price_type": "Paid Utilities Ultimate",
+      "license": "Vendor EULA",
+      "documented_feature": "PC cleanup and maintenance",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://us.norton.com/products/norton-utilities-ultimate"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C09",
+      "product": "Auslogics BoostSpeed",
+      "developer": "Auslogics",
+      "categories": [
+        "optimization"
+      ],
+      "official_url": "https://www.auslogics.com/en/software/boost-speed/",
+      "edition_and_price_type": "Free / paid upgrade",
+      "license": "Vendor EULA",
+      "documented_feature": "Cleanup and tune-up tools",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.auslogics.com/en/software/boost-speed/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C10",
+      "product": "BleachBit",
+      "developer": "BleachBit contributors",
+      "categories": [
+        "optimization",
+        "deletion"
+      ],
+      "official_url": "https://www.bleachbit.org/",
+      "edition_and_price_type": "Free open source",
+      "license": "GPL-3.0-or-later including cleaner definitions; component exceptions",
+      "documented_feature": "Rule-based cleanup and preview",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/bleachbit/bleachbit"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.bleachbit.org/",
+        "https://github.com/bleachbit/bleachbit"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C11",
+      "product": "Microsoft PC Manager",
+      "developer": "Microsoft",
+      "categories": [
+        "optimization"
+      ],
+      "official_url": "https://pcmanager.microsoft.com/en-us",
+      "edition_and_price_type": "Free offering",
+      "license": "Microsoft product terms; source grant not established",
+      "documented_feature": "Storage and startup management",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://pcmanager.microsoft.com/en-us"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C12",
+      "product": "Chris Titus Tech WinUtil",
+      "developer": "Chris Titus Tech and contributors",
+      "categories": [
+        "optimization",
+        "integration"
+      ],
+      "official_url": "https://github.com/ChrisTitusTech/winutil",
+      "edition_and_price_type": "Free open source",
+      "license": "MIT",
+      "documented_feature": "Windows install, tweak, fix and update workflows",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/ChrisTitusTech/winutil"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://github.com/ChrisTitusTech/winutil"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C13",
+      "product": "PrivaZer",
+      "developer": "Goversoft",
+      "categories": [
+        "optimization",
+        "deletion"
+      ],
+      "official_url": "https://privazer.com/en/",
+      "edition_and_price_type": "Free / donor offering",
+      "license": "Vendor terms; source grant not established",
+      "documented_feature": "Privacy trace cleanup",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://privazer.com/en/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C14",
+      "product": "Razer Cortex",
+      "developer": "Razer",
+      "categories": [
+        "optimization"
+      ],
+      "official_url": "https://www.razer.com/cortex",
+      "edition_and_price_type": "Free offering",
+      "license": "Vendor EULA",
+      "documented_feature": "Gaming and system boost features",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.razer.com/cortex"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C15",
+      "product": "HWiNFO",
+      "developer": "Martin Malik / REALiX",
+      "categories": [
+        "diagnostics"
+      ],
+      "official_url": "https://www.hwinfo.com/",
+      "edition_and_price_type": "Free non-commercial; Pro commercial licenses",
+      "license": "Vendor license; embedding requires explicit approval",
+      "documented_feature": "Hardware and sensor monitoring",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.hwinfo.com/",
+        "https://www.hwinfo.com/files/license.pdf"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "License PDF requires explicit approval for embedding. No embedding permission was obtained."
+    },
+    {
+      "id": "C16",
+      "product": "OCCT",
+      "developer": "OCBASE",
+      "categories": [
+        "diagnostics"
+      ],
+      "official_url": "https://www.ocbase.com/",
+      "edition_and_price_type": "Individual / professional; exact entitlement Unknown",
+      "license": "Vendor terms; precise license not reviewed",
+      "documented_feature": "Stress tests, stability and monitoring",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.ocbase.com/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Main page offers individual and professional paths. Purchase URL returned 404; exact free and paid entitlements remain Unknown."
+    },
+    {
+      "id": "C17",
+      "product": "Process Lasso",
+      "developer": "Bitsum",
+      "categories": [
+        "diagnostics"
+      ],
+      "official_url": "https://bitsum.com/",
+      "edition_and_price_type": "Free / Pro",
+      "license": "Vendor EULA",
+      "documented_feature": "CPU rules, affinity, priority and responsiveness",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://bitsum.com/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C18",
+      "product": "Process Explorer",
+      "developer": "Microsoft Sysinternals / Mark Russinovich",
+      "categories": [
+        "diagnostics"
+      ],
+      "official_url": "https://learn.microsoft.com/en-us/sysinternals/downloads/process-explorer",
+      "edition_and_price_type": "Free download",
+      "license": "Sysinternals terms; source grant not established",
+      "documented_feature": "Processes, handles and loaded modules",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "OFFICIAL_DOCUMENTATION_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://learn.microsoft.com/en-us/sysinternals/downloads/process-explorer"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C19",
+      "product": "Process Monitor",
+      "developer": "Microsoft Sysinternals",
+      "categories": [
+        "diagnostics"
+      ],
+      "official_url": "https://learn.microsoft.com/en-us/sysinternals/downloads/procmon",
+      "edition_and_price_type": "Free download",
+      "license": "Sysinternals terms; source grant not established",
+      "documented_feature": "File, registry and process activity tracing",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "OFFICIAL_DOCUMENTATION_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://learn.microsoft.com/en-us/sysinternals/downloads/procmon"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C20",
+      "product": "Autoruns",
+      "developer": "Microsoft Sysinternals",
+      "categories": [
+        "diagnostics"
+      ],
+      "official_url": "https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns",
+      "edition_and_price_type": "Free download",
+      "license": "Sysinternals terms; source grant not established",
+      "documented_feature": "Autostart inventory and management",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "OFFICIAL_DOCUMENTATION_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C21",
+      "product": "RAMMap",
+      "developer": "Microsoft Sysinternals",
+      "categories": [
+        "diagnostics"
+      ],
+      "official_url": "https://learn.microsoft.com/en-us/sysinternals/downloads/rammap",
+      "edition_and_price_type": "Free download",
+      "license": "Sysinternals terms; source grant not established",
+      "documented_feature": "Physical memory allocation analysis",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "OFFICIAL_DOCUMENTATION_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://learn.microsoft.com/en-us/sysinternals/downloads/rammap"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C22",
+      "product": "WizTree",
+      "developer": "Antibody Software",
+      "categories": [
+        "diagnostics"
+      ],
+      "official_url": "https://diskanalyzer.com/about",
+      "edition_and_price_type": "Free / paid licensing; eligibility requires review",
+      "license": "Vendor EULA",
+      "documented_feature": "Disk usage visualization and MFT scanning",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://diskanalyzer.com/about"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C23",
+      "product": "TreeSize",
+      "developer": "JAM Software",
+      "categories": [
+        "diagnostics"
+      ],
+      "official_url": "https://www.jam-software.com/treesize",
+      "edition_and_price_type": "Free private non-commercial desktop; Personal / Professional paid",
+      "license": "Vendor EULA",
+      "documented_feature": "Disk usage and edition-dependent reporting",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.jam-software.com/treesize"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Current Free terms restrict use to private non-commercial desktop environments. Free does not cover Windows Server."
+    },
+    {
+      "id": "C24",
+      "product": "WinDirStat",
+      "developer": "WinDirStat contributors",
+      "categories": [
+        "diagnostics"
+      ],
+      "official_url": "https://windirstat.net/",
+      "edition_and_price_type": "Free open source",
+      "license": "GPL-3.0 as identified by current repository; release-specific review required",
+      "documented_feature": "Disk usage and visual maps",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/windirstat/windirstat"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://windirstat.net/",
+        "https://github.com/windirstat/windirstat"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Current repository identifies GPL-3.0. Do not reuse older release license descriptions without checking that release."
+    },
+    {
+      "id": "C25",
+      "product": "CrystalDiskInfo",
+      "developer": "hiyohiyo / Crystal Dew World",
+      "categories": [
+        "diagnostics"
+      ],
+      "official_url": "https://crystalmark.info/en/software/crystaldiskinfo/",
+      "edition_and_price_type": "Free open source",
+      "license": "MIT",
+      "documented_feature": "Storage health and information",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/hiyohiyo/CrystalDiskInfo"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://crystalmark.info/en/software/crystaldiskinfo/",
+        "https://github.com/hiyohiyo/CrystalDiskInfo"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Repository documents partial support for some USB, RAID and NVMe configurations. Hardware support was not tested."
+    },
+    {
+      "id": "C26",
+      "product": "Hard Disk Sentinel",
+      "developer": "H.D.S. Hungary",
+      "categories": [
+        "diagnostics"
+      ],
+      "official_url": "https://www.hdsentinel.com/",
+      "edition_and_price_type": "Paid Standard / Professional; trial",
+      "license": "Vendor EULA",
+      "documented_feature": "Disk health and temperature monitoring",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.hdsentinel.com/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C27",
+      "product": "VeraCrypt",
+      "developer": "IDRIX and contributors",
+      "categories": [
+        "vault"
+      ],
+      "official_url": "https://github.com/veracrypt/VeraCrypt",
+      "edition_and_price_type": "Free source-available application",
+      "license": "VeraCrypt / TrueCrypt-derived License.txt and component terms",
+      "documented_feature": "Encrypted containers, volumes and header recovery",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/veracrypt/VeraCrypt"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://github.com/veracrypt/VeraCrypt"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Legacy website redirect failed. Official repository was retrieved. Its own license and component terms require review."
+    },
+    {
+      "id": "C28",
+      "product": "Cryptomator",
+      "developer": "Skymatic / Cryptomator contributors",
+      "categories": [
+        "vault"
+      ],
+      "official_url": "https://cryptomator.org/",
+      "edition_and_price_type": "Free desktop; mobile / Hub terms differ",
+      "license": "GPL-3.0 desktop repository; component terms differ",
+      "documented_feature": "Client-side file and filename encryption",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/cryptomator/cryptomator"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://cryptomator.org/",
+        "https://github.com/cryptomator/cryptomator"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Desktop, mobile and Hub are distinct scopes. No shipped artifact or encrypted fixture was examined in this catalog."
+    },
+    {
+      "id": "C29",
+      "product": "KeePassXC",
+      "developer": "KeePassXC Team",
+      "categories": [
+        "vault"
+      ],
+      "official_url": "https://keepassxc.org/",
+      "edition_and_price_type": "Free open source",
+      "license": "GPL-2 or GPL-3 core; COPYING contains component-specific terms",
+      "documented_feature": "Local password database",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/keepassxreboot/keepassxc"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://keepassxc.org/",
+        "https://github.com/keepassxreboot/keepassxc",
+        "https://github.com/keepassxreboot/keepassxc/blob/develop/COPYING"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "COPYING records multiple component licenses. Password databases differ from arbitrary file vaults."
+    },
+    {
+      "id": "C30",
+      "product": "KeePass",
+      "developer": "Dominik Reichl",
+      "categories": [
+        "vault"
+      ],
+      "official_url": "https://keepass.info/",
+      "edition_and_price_type": "Free open source",
+      "license": "GPL-2.0-or-later for 2.x; component terms",
+      "documented_feature": "Password database and repair tools",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://keepass.info/help/v2/license.html"
+      },
+      "support_status": "OFFICIAL_DOCUMENTATION_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://keepass.info/",
+        "https://keepass.info/help/v2/license.html"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "License verification covers 2.x. Password databases differ from arbitrary file vaults."
+    },
+    {
+      "id": "C31",
+      "product": "Bitwarden",
+      "developer": "Bitwarden",
+      "categories": [
+        "vault"
+      ],
+      "official_url": "https://bitwarden.com/",
+      "edition_and_price_type": "Free / paid personal and business",
+      "license": "Client GPL-3.0 except bitwarden_license under Bitwarden License v1.0; server terms separate",
+      "documented_feature": "Password and secrets management",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/bitwarden/clients"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://bitwarden.com/",
+        "https://github.com/bitwarden/clients",
+        "https://github.com/bitwarden/clients/blob/main/LICENSE.txt"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Client source has GPL and Bitwarden License scopes. Server and hosted service terms are separate."
+    },
+    {
+      "id": "C32",
+      "product": "1Password",
+      "developer": "1Password",
+      "categories": [
+        "vault"
+      ],
+      "official_url": "https://1password.com/",
+      "edition_and_price_type": "Paid personal / family / business",
+      "license": "Vendor subscription terms",
+      "documented_feature": "Password and access management",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://1password.com/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C33",
+      "product": "AxCrypt",
+      "developer": "AxCrypt AB",
+      "categories": [
+        "vault"
+      ],
+      "official_url": "https://axcrypt.net/",
+      "edition_and_price_type": "Vendor plans; source license separate",
+      "license": "AxCrypt-Net GPL-3.0-or-later; brands, certificates and services excluded",
+      "documented_feature": "File encryption and sharing",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/axcrypt/AxCrypt-Net"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://axcrypt.net/",
+        "https://github.com/axcrypt/AxCrypt-Net"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Public source license does not grant rights to AxCrypt trademarks, signing certificates or services."
+    },
+    {
+      "id": "C34",
+      "product": "NordLocker",
+      "developer": "NordLocker",
+      "categories": [
+        "vault"
+      ],
+      "official_url": "https://nordlocker.com/",
+      "edition_and_price_type": "Cloud plans; current free entitlement not reviewed",
+      "license": "Vendor service terms",
+      "documented_feature": "Encrypted cloud file vault",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://nordlocker.com/",
+        "https://support.nordlocker.com/hc/en-us/articles/360006676017-NordLocker-supported-operating-systems"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Current official support page covers web and desktop/mobile compatibility. Older local-locker behavior was not assumed."
+    },
+    {
+      "id": "C35",
+      "product": "Folder Lock",
+      "developer": "NewSoftwares.net",
+      "categories": [
+        "vault"
+      ],
+      "official_url": "https://www.newsoftwares.net/folderlock/",
+      "edition_and_price_type": "Paid / trial",
+      "license": "Vendor EULA",
+      "documented_feature": "File locking, encryption and backup",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.newsoftwares.net/folderlock/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C36",
+      "product": "BestCrypt",
+      "developer": "Jetico",
+      "categories": [
+        "vault"
+      ],
+      "official_url": "https://jetico.com/data-encryption/",
+      "edition_and_price_type": "Commercial Container / Volume / Data Shelter",
+      "license": "Vendor license; component terms require review",
+      "documented_feature": "Container and volume encryption",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://jetico.com/data-encryption/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Container Encryption, Volume Encryption and Data Shelter are distinct products."
+    },
+    {
+      "id": "C37",
+      "product": "Rohos",
+      "developer": "Rohos",
+      "categories": [
+        "vault"
+      ],
+      "official_url": "https://rohos.com/products/rohos-disk-encryption/rohos-mini-drive/",
+      "edition_and_price_type": "Mini Drive free; Disk Encryption paid",
+      "license": "Vendor license",
+      "documented_feature": "Encrypted USB and disk containers",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://rohos.com/products/rohos-disk-encryption/rohos-mini-drive/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Mini Drive and Disk Encryption differ. Exact edition size limits were not independently verified."
+    },
+    {
+      "id": "C38",
+      "product": "DiskCryptor",
+      "developer": "DiskCryptor contributors",
+      "categories": [
+        "vault"
+      ],
+      "official_url": "https://diskcryptor.org/",
+      "edition_and_price_type": "Free open source",
+      "license": "GPL-3.0",
+      "documented_feature": "Full-disk and partition encryption",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/DiskCryptor/DiskCryptor"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://diskcryptor.org/",
+        "https://github.com/DiskCryptor/DiskCryptor",
+        "https://github.com/diskcryptor/DiskCryptor/releases"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Official release notes describe Windows 11 and signing limitations. No driver or bootloader was installed."
+    },
+    {
+      "id": "C39",
+      "product": "Enpass",
+      "developer": "Enpass",
+      "categories": [
+        "vault"
+      ],
+      "official_url": "https://www.enpass.io/pricing/",
+      "edition_and_price_type": "Personal / family / business plans; free scope not reviewed",
+      "license": "Vendor terms",
+      "documented_feature": "Password and passkey management",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "OFFICIAL_SEARCH_INDEX_ONLY_SUPPORT_UNKNOWN",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.enpass.io/pricing/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Direct main and pricing page retrieval failed. Findings use indexed official pricing text; support SLA remains Unknown."
+    },
+    {
+      "id": "C40",
+      "product": "7-Zip",
+      "developer": "Igor Pavlov",
+      "categories": [
+        "vault"
+      ],
+      "official_url": "https://www.7-zip.org/",
+      "edition_and_price_type": "Free including commercial use",
+      "license": "LGPL-2.1-or-later; specified BSD and unRAR restrictions",
+      "documented_feature": "Archive creation and encryption",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://www.7-zip.org/license.txt"
+      },
+      "support_status": "OFFICIAL_DOCUMENTATION_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.7-zip.org/",
+        "https://www.7-zip.org/license.txt"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Archive encryption is not a mounted file vault. Redistribution requires applicable notices and unRAR restrictions."
+    },
+    {
+      "id": "C41",
+      "product": "PeaZip",
+      "developer": "Giorgio Tani / PeaZip contributors",
+      "categories": [
+        "vault"
+      ],
+      "official_url": "https://peazip.github.io/",
+      "edition_and_price_type": "Free open source",
+      "license": "LGPL-3.0 application; backend terms differ",
+      "documented_feature": "Archive management and encryption",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/peazip/PeaZip"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://peazip.github.io/",
+        "https://github.com/peazip/PeaZip"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C42",
+      "product": "Microsoft SDelete",
+      "developer": "Microsoft Sysinternals / Mark Russinovich",
+      "categories": [
+        "deletion"
+      ],
+      "official_url": "https://learn.microsoft.com/en-us/sysinternals/downloads/sdelete",
+      "edition_and_price_type": "Free download",
+      "license": "Sysinternals terms; source grant not established",
+      "documented_feature": "File deletion and free-space cleaning",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "OFFICIAL_DOCUMENTATION_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://learn.microsoft.com/en-us/sysinternals/downloads/sdelete"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Official v2.06 documentation was retrieved. Magnetic-media descriptions do not establish SSD physical erasure."
+    },
+    {
+      "id": "C43",
+      "product": "Eraser",
+      "developer": "Eraser project",
+      "categories": [
+        "deletion"
+      ],
+      "official_url": "https://eraser.heidi.ie/",
+      "edition_and_price_type": "Free open source project",
+      "license": "GPL-3.0 as listed by project SourceForge page",
+      "documented_feature": "Scheduled file and free-space erasure",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://sourceforge.net/projects/eraser/"
+      },
+      "support_status": "PROJECT_LISTING_OBSERVED_SUPPORTED_RELEASE_UNKNOWN",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://eraser.heidi.ie/",
+        "https://sourceforge.net/projects/eraser/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Official website returned HTTP 403. Project SourceForge listing reports activity; current supported release remains Unknown."
+    },
+    {
+      "id": "C44",
+      "product": "O&O SafeErase",
+      "developer": "O&O Software",
+      "categories": [
+        "deletion"
+      ],
+      "official_url": "https://www.oo-software.com/en/safeerase",
+      "edition_and_price_type": "Paid Professional / trial",
+      "license": "Vendor EULA",
+      "documented_feature": "File and disk erasure",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "OFFICIAL_DOCUMENTATION_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.oo-software.com/en/safeerase",
+        "https://manuals.oo-software.com/en/oosafeerase/21/professional/01_introduction.html",
+        "https://www.oo-software.com/en/download/archive"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Main page was inaccessible. Official version 21 manual and official download archive were retrieved."
+    },
+    {
+      "id": "C45",
+      "product": "BCWipe",
+      "developer": "Jetico",
+      "categories": [
+        "deletion"
+      ],
+      "official_url": "https://jetico.com/data-wiping/",
+      "edition_and_price_type": "Commercial; Total WipeOut is separate",
+      "license": "Vendor EULA",
+      "documented_feature": "File and free-space wiping",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://jetico.com/data-wiping/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "BCWipe file wiping and BCWipe Total WipeOut whole-drive wiping are separate products."
+    },
+    {
+      "id": "C46",
+      "product": "Blancco Drive Eraser",
+      "developer": "Blancco Technology Group",
+      "categories": [
+        "deletion"
+      ],
+      "official_url": "https://blancco.com/products/drive-eraser/",
+      "edition_and_price_type": "Commercial / trial request",
+      "license": "Commercial vendor license",
+      "documented_feature": "Whole-drive sanitization and reports",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://blancco.com/products/drive-eraser/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor certification claims have version and device scope. They do not certify PC-Care."
+    },
+    {
+      "id": "C47",
+      "product": "BitRaser",
+      "developer": "Stellar / BitRaser",
+      "categories": [
+        "deletion"
+      ],
+      "official_url": "https://www.bitraser.com/",
+      "edition_and_price_type": "Commercial Drive / File / Mobile products",
+      "license": "Commercial vendor license",
+      "documented_feature": "Data erasure and reports",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.bitraser.com/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Drive, File and Mobile products are separate. No certification or erasure claim was independently validated."
+    },
+    {
+      "id": "C48",
+      "product": "Active@ KillDisk",
+      "developer": "LSoft Technologies",
+      "categories": [
+        "deletion"
+      ],
+      "official_url": "https://www.killdisk.com/eraser.html",
+      "edition_and_price_type": "Free / commercial editions",
+      "license": "Vendor license",
+      "documented_feature": "Disk erasure and sanitization",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.killdisk.com/eraser.html"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C49",
+      "product": "ShredOS",
+      "developer": "PartialVolume and contributors",
+      "categories": [
+        "deletion"
+      ],
+      "official_url": "https://github.com/PartialVolume/shredos.x86_64",
+      "edition_and_price_type": "Free bootable distribution",
+      "license": "Buildroot GPL-2.0-or-later with exceptions; package terms differ",
+      "documented_feature": "Bootable disk erasure using nwipe",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/PartialVolume/shredos.x86_64"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://github.com/PartialVolume/shredos.x86_64",
+        "https://github.com/PartialVolume/shredos.x86_64/blob/master/COPYING"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "This bootable distribution contains multiple licensed packages. No disk image was booted."
+    },
+    {
+      "id": "C50",
+      "product": "nwipe",
+      "developer": "nwipe contributors",
+      "categories": [
+        "deletion"
+      ],
+      "official_url": "https://github.com/martijnvanbrummelen/nwipe",
+      "edition_and_price_type": "Free open source",
+      "license": "GPL-2.0",
+      "documented_feature": "Disk wiping and result reporting",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/martijnvanbrummelen/nwipe"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://github.com/martijnvanbrummelen/nwipe"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Linux disk erasure differs from a Windows file cleanup service. No physical-device test was performed."
+    },
+    {
+      "id": "C51",
+      "product": "Parted Magic",
+      "developer": "Parted Magic",
+      "categories": [
+        "deletion"
+      ],
+      "official_url": "https://partedmagic.com/",
+      "edition_and_price_type": "Paid distribution",
+      "license": "Distribution terms and included component licenses differ",
+      "documented_feature": "Partitioning, cloning, rescue and erasure",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://partedmagic.com/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Paid distribution includes separately licensed components. No component-level manifest was audited."
+    },
+    {
+      "id": "C52",
+      "product": "Revo Uninstaller",
+      "developer": "VS REVO GROUP",
+      "categories": [
+        "management"
+      ],
+      "official_url": "https://www.revouninstaller.com/",
+      "edition_and_price_type": "Free / Pro; Pro trial",
+      "license": "Vendor EULA",
+      "documented_feature": "Uninstall, leftovers, backup and history",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.revouninstaller.com/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C53",
+      "product": "Bulk Crap Uninstaller",
+      "developer": "Klocman / BCUninstaller contributors",
+      "categories": [
+        "management"
+      ],
+      "official_url": "https://www.bcuninstaller.com/",
+      "edition_and_price_type": "Free open source",
+      "license": "Apache-2.0",
+      "documented_feature": "Batch uninstall and leftover detection",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/BCUninstaller/Bulk-Crap-Uninstaller"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.bcuninstaller.com/",
+        "https://github.com/BCUninstaller/Bulk-Crap-Uninstaller"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Official site documents use of original uninstallers. Legacy website requirements were not generalized to current binaries."
+    },
+    {
+      "id": "C54",
+      "product": "Geek Uninstaller",
+      "developer": "Thomas Koen",
+      "categories": [
+        "management"
+      ],
+      "official_url": "https://geekuninstaller.com/",
+      "edition_and_price_type": "Free; paid Uninstall Tool is a distinct CrystalIDEA product",
+      "license": "Vendor terms; source grant not established",
+      "documented_feature": "Portable uninstall and leftover cleanup",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://geekuninstaller.com/",
+        "https://geekuninstaller.com/about"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Author page identifies C++ and Thomas Koen. Paid Pro branding refers to CrystalIDEA Uninstall Tool."
+    },
+    {
+      "id": "C55",
+      "product": "HiBit Uninstaller",
+      "developer": "HiBitSoft",
+      "categories": [
+        "management"
+      ],
+      "official_url": "https://www.hibitsoft.ir/Uninstaller.html",
+      "edition_and_price_type": "Download listing; business entitlement Unknown",
+      "license": "Precise vendor license not verified",
+      "documented_feature": "Uninstall and system tools",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.hibitsoft.ir/Uninstaller.html"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "No public source grant or current broad business entitlement was established."
+    },
+    {
+      "id": "C56",
+      "product": "IObit Uninstaller",
+      "developer": "IObit",
+      "categories": [
+        "management"
+      ],
+      "official_url": "https://www.iobit.com/en/advanceduninstaller.php",
+      "edition_and_price_type": "Free / Pro",
+      "license": "Vendor EULA",
+      "documented_feature": "Application and leftover removal",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.iobit.com/en/advanceduninstaller.php"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C57",
+      "product": "WinGet",
+      "developer": "Microsoft and contributors",
+      "categories": [
+        "management"
+      ],
+      "official_url": "https://learn.microsoft.com/en-us/windows/package-manager/winget/",
+      "edition_and_price_type": "Free open source client",
+      "license": "MIT client; source packages retain their terms",
+      "documented_feature": "Package discovery, install and upgrade",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/microsoft/winget-cli"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://learn.microsoft.com/en-us/windows/package-manager/winget/",
+        "https://github.com/microsoft/winget-cli"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Client MIT license does not grant redistribution rights to third-party packages."
+    },
+    {
+      "id": "C58",
+      "product": "UniGetUI",
+      "developer": "Devolutions / UniGetUI contributors",
+      "categories": [
+        "management"
+      ],
+      "official_url": "https://github.com/Devolutions/UniGetUI",
+      "edition_and_price_type": "Free open source",
+      "license": "MIT",
+      "documented_feature": "Graphical interface for package managers",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/Devolutions/UniGetUI"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://github.com/Devolutions/UniGetUI"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Former marticliment repository redirects to Devolutions. The repository warns about unrelated lookalike websites."
+    },
+    {
+      "id": "C59",
+      "product": "Ninite",
+      "developer": "Ninite",
+      "categories": [
+        "management"
+      ],
+      "official_url": "https://ninite.com/",
+      "edition_and_price_type": "Free interactive installer; Pro paid",
+      "license": "Vendor license",
+      "documented_feature": "Multi-app installation and updates",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://ninite.com/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C60",
+      "product": "Patch My PC",
+      "developer": "Patch My PC",
+      "categories": [
+        "management"
+      ],
+      "official_url": "https://patchmypc.com/product/home-updater/",
+      "edition_and_price_type": "Free non-commercial Home Updater; enterprise paid",
+      "license": "Vendor terms; Home is non-commercial only",
+      "documented_feature": "App installation, patching and scheduling",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://patchmypc.com/product/home-updater/"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Official page deprecates Home Updater v4 from 2025-08-19. Current v5 is 64-bit and Home use is non-commercial."
+    },
+    {
+      "id": "C61",
+      "product": "Macrium Reflect",
+      "developer": "Macrium",
+      "categories": [
+        "management"
+      ],
+      "official_url": "https://www.macrium.com/product-support-policy",
+      "edition_and_price_type": "Reflect X paid; historical Free v8 EOL",
+      "license": "Commercial terms; historical Free usage license persists",
+      "documented_feature": "Image backup, cloning and recovery",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "OFFICIAL_LIFECYCLE_VERIFIED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.macrium.com/product-support-policy",
+        "https://kbx.macrium.com/macrium-reflect-x/macrium-reflect-x-licensing-policy"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Official policy: Free v8 security changes ended 2024-01-01; Reflect 8 extended support ended 2026-02-27. Reflect X is separate."
+    },
+    {
+      "id": "C62",
+      "product": "Veeam Agent for Microsoft Windows",
+      "developer": "Veeam",
+      "categories": [
+        "management"
+      ],
+      "official_url": "https://www.veeam.com/products/free/microsoft-windows.html",
+      "edition_and_price_type": "Free standalone; paid editions separate",
+      "license": "Veeam vendor license",
+      "documented_feature": "Endpoint backup and recovery",
+      "public_source": {
+        "status": "NO_PUBLIC_SOURCE_GRANT_ESTABLISHED_IN_REVIEWED_PAGE",
+        "url": null
+      },
+      "support_status": "CURRENT_LISTING_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://www.veeam.com/products/free/microsoft-windows.html"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Vendor-documented capabilities only. Runtime, reliability, accessibility and security claims were not independently tested."
+    },
+    {
+      "id": "C63",
+      "product": "Microsoft PowerToys",
+      "developer": "Microsoft and contributors",
+      "categories": [
+        "integration"
+      ],
+      "official_url": "https://github.com/microsoft/PowerToys",
+      "edition_and_price_type": "Free open source",
+      "license": "MIT with component notices",
+      "documented_feature": "Modular Windows productivity and customization",
+      "public_source": {
+        "status": "PUBLIC_SOURCE_OR_LICENSE_REFERENCE",
+        "url": "https://github.com/microsoft/PowerToys"
+      },
+      "support_status": "PUBLIC_REPOSITORY_OBSERVED",
+      "support_scope": "Listing availability is not a support SLA or independent compatibility verification.",
+      "evidence_urls": [
+        "https://github.com/microsoft/PowerToys"
+      ],
+      "access_date": "2026-10-19",
+      "analysis_tool": "web.run official-page and repository review",
+      "rea_analysis_performed": false,
+      "runtime_test": "NOT TESTED",
+      "performance_comparison": "NOT MEASURED",
+      "limitations": "Additional priority-five comparison target. Productivity utilities do not establish system-recovery guarantees."
+    }
+  ],
+  "limits": [
+    "No competitor runtime, recovery, accessibility or comparative performance test was executed.",
+    "No competitor REA analysis was performed in this catalog. WO-28 sample analysis is separate.",
+    "Vendor claims are not independent proof. A live listing is not a support SLA.",
+    "Exact latest binary version and EULA were not exhaustively verified for every edition.",
+    "No commercial executable, private source, license key or sensitive user data was copied.",
+    "Public source observations do not establish shipped-binary equivalence.",
+    "No overall competitive ranking is established by this catalog."
+  ]
+}

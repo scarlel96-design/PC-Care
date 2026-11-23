@@ -1,0 +1,4 @@
+export function double(value) {
+  if (!Number.isFinite(value)) throw new RangeError('Expected a finite sample value');
+  return value * 2;
+}
