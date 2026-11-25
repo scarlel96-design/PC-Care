@@ -1,0 +1,478 @@
+{
+  "evidenceType": "GitHub Actions actual job log inspection, summarized without raw logs",
+  "repository": "scarlel96-design/PC-Care",
+  "failedHead": "74d62eaab3ce8e45fca5f0c35432b21c09e346ab",
+  "sourceComparedWith": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+  "successfulBaseline": {
+    "runId": 45535219952,
+    "jobId": 138940048642,
+    "headSha": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+    "sdk": "10.0.402"
+  },
+  "expectedFailures": 26,
+  "notes": [
+    "Each failure job log was inspected through the GitHub connector.",
+    "Each log exposed 128 CsWinRT1032 error emissions at 64 unique source positions across 23 C# filenames.",
+    "Compiler errors appear twice because the build and GitHub runner error annotation report the same locations.",
+    "The 10.0.404 SDK was directly verified in WO23 and WO02 failure logs. Other failed jobs have no SDK assertion in this manifest.",
+    "All failed runs stopped at a build step; no user product source changes were present between compared commits.",
+    "Successful WO29 used pinned .NET SDK 10.0.402. This does not prove the SDK difference caused the errors.",
+    "Raw logs are not committed. Log hash attestation and full end-to-end rerun are NOT TESTED."
+  ],
+  "runs": [
+    {
+      "runId": 45570191416,
+      "jobId": 139054659704,
+      "workflow": "WO23",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": "10.0.404",
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191416"
+    },
+    {
+      "runId": 45570191302,
+      "jobId": 139054659290,
+      "workflow": "WO12",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191302"
+    },
+    {
+      "runId": 45570191424,
+      "jobId": 139054659638,
+      "workflow": "WO16",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191424"
+    },
+    {
+      "runId": 45570191412,
+      "jobId": 139054659621,
+      "workflow": "WO08",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191412"
+    },
+    {
+      "runId": 45570191460,
+      "jobId": 139054660114,
+      "workflow": "WO25",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191460"
+    },
+    {
+      "runId": 45570191310,
+      "jobId": 139054659184,
+      "workflow": "WO07",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191310"
+    },
+    {
+      "runId": 45570191348,
+      "jobId": 139054659330,
+      "workflow": "WO24",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191348"
+    },
+    {
+      "runId": 45570191309,
+      "jobId": 139054659157,
+      "workflow": "WO06",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191309"
+    },
+    {
+      "runId": 45570191353,
+      "jobId": 139054659609,
+      "workflow": "WO26",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191353"
+    },
+    {
+      "runId": 45570191388,
+      "jobId": 139054659378,
+      "workflow": "WO13",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191388"
+    },
+    {
+      "runId": 45570191462,
+      "jobId": 139054659736,
+      "workflow": "WO19",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191462"
+    },
+    {
+      "runId": 45570191280,
+      "jobId": 139054660806,
+      "workflow": "WO05",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191280"
+    },
+    {
+      "runId": 45570191474,
+      "jobId": 139054660018,
+      "workflow": "WO14",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191474"
+    },
+    {
+      "runId": 45570191441,
+      "jobId": 139054659697,
+      "workflow": "WO20",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191441"
+    },
+    {
+      "runId": 45570191526,
+      "jobId": 139054661095,
+      "workflow": "WO02",
+      "conclusion": "failure",
+      "failedStep": "Release x64 build",
+      "sdk": "10.0.404",
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191526"
+    },
+    {
+      "runId": 45570191390,
+      "jobId": 139054659754,
+      "workflow": "WO22",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191390"
+    },
+    {
+      "runId": 45570191534,
+      "jobId": 139054659994,
+      "workflow": "WO10",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191534"
+    },
+    {
+      "runId": 45570191222,
+      "jobId": 139054659168,
+      "workflow": "WO11",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191222"
+    },
+    {
+      "runId": 45570191217,
+      "jobId": 139054659073,
+      "workflow": "WO17",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191217"
+    },
+    {
+      "runId": 45570191055,
+      "jobId": 139054658858,
+      "workflow": "WO15",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191055"
+    },
+    {
+      "runId": 45570191085,
+      "jobId": 139054658637,
+      "workflow": "WO04",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191085"
+    },
+    {
+      "runId": 45570191167,
+      "jobId": 139054659200,
+      "workflow": "WO03",
+      "conclusion": "failure",
+      "failedStep": "Build solution",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191167"
+    },
+    {
+      "runId": 45570191161,
+      "jobId": 139054659067,
+      "workflow": "WO27",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191161"
+    },
+    {
+      "runId": 45570191115,
+      "jobId": 139054658745,
+      "workflow": "WO21",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191115"
+    },
+    {
+      "runId": 45570191128,
+      "jobId": 139054658806,
+      "workflow": "WO18",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191128"
+    },
+    {
+      "runId": 45570191273,
+      "jobId": 139054658904,
+      "workflow": "WO09",
+      "conclusion": "failure",
+      "failedStep": "Release build",
+      "sdk": null,
+      "logSummary": {
+        "emittedErrorLines": 128,
+        "uniqueLocations": 64,
+        "uniqueFiles": 23,
+        "codes": {
+          "CsWinRT1032": 128
+        }
+      },
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191273"
+    },
+    {
+      "runId": 45535219952,
+      "jobId": 138940048642,
+      "conclusion": "success",
+      "sdk": "10.0.402",
+      "url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45535219952"
+    }
+  ],
+  "baseline": {
+    "runId": 45535219952,
+    "conclusion": "success",
+    "sdk": "10.0.402"
+  }
+}
