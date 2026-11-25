@@ -1,0 +1,80 @@
+{
+  "status": "REVIEW",
+  "leftRunId": 45535219952,
+  "rightRunId": 45570191416,
+  "differences": [
+    {
+      "key": "installedSdk",
+      "label": "setup-dotnet SDK installation",
+      "left": "10.0.402",
+      "right": "10.0.404"
+    }
+  ],
+  "matches": [
+    {
+      "key": "runnerImage",
+      "label": "runner image release",
+      "value": "win25-vs2026/20261116.315"
+    },
+    {
+      "key": "windowsAppSdkDeclared",
+      "label": "Windows App SDK declared version",
+      "value": "2.2.0"
+    },
+    {
+      "key": "csWin32Declared",
+      "label": "CsWin32 declared version",
+      "value": "0.3.358"
+    },
+    {
+      "key": "buildCommand",
+      "label": "build command",
+      "value": "dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal"
+    }
+  ],
+  "unknown": [
+    {
+      "key": "selectedSdk",
+      "label": "executed dotnet SDK",
+      "left": null,
+      "right": null,
+      "reason": "Cannot compare an absent observation"
+    },
+    {
+      "key": "compilerVersion",
+      "label": "C# compiler version",
+      "left": null,
+      "right": null,
+      "reason": "Cannot compare an absent observation"
+    },
+    {
+      "key": "msbuildVersion",
+      "label": "MSBuild version",
+      "left": null,
+      "right": null,
+      "reason": "Cannot compare an absent observation"
+    },
+    {
+      "key": "windowsAppSdkResolved",
+      "label": "Windows App SDK resolved version",
+      "left": null,
+      "right": null,
+      "reason": "Cannot compare an absent observation"
+    },
+    {
+      "key": "csWinRtGeneratorVersion",
+      "label": "CsWinRT generator version",
+      "left": null,
+      "right": null,
+      "reason": "Cannot compare an absent observation"
+    }
+  ],
+  "sameSourceCommit": false,
+  "sameSourceTree": null,
+  "causeVerified": false,
+  "notes": [
+    "Differences establish environmental drift, not causation.",
+    "Identical source and clean A/B builds with logged toolchain versions are required for a causality claim.",
+    "Unknown versions must not be filled with declared package versions."
+  ]
+}

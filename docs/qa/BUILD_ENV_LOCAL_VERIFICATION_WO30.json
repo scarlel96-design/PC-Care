@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "source": "local Node.js execution during GPT independent work 08",
+  "nodeVersion": "v22.16.0",
+  "testCommand": "node --test tests/chatgpt-qa/build-env-provenance.test.mjs",
+  "tests": {
+    "pass": 34,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "syntax": {
+    "core": "PASS",
+    "cli": "PASS"
+  },
+  "compareSample": {
+    "file": "docs/qa/BUILD_ENV_COMPARE_WO23_WO30.json",
+    "exitCode": 1,
+    "expected": "REVIEW",
+    "observed": "REVIEW",
+    "observedDifferences": [
+      "installedSdk"
+    ],
+    "unknownFieldCount": 5
+  },
+  "fullRepositoryCheckoutAudit": "NOT TESTED",
+  "windowsABBuilds": "NOT TESTED",
+  "githubActionsRun": "NOT RUN",
+  "productSourceChanges": 0
+}
