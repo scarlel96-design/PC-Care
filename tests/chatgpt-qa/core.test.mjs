@@ -72,8 +72,48 @@ test('QA08 detects missing paths',()=>assert.equal(checkCiScope('on:\n  pull_req
 test('QA09 reads pinned PackageVersion attributes',()=>{const q=auditDependencies('<PackageVersion Include="A" Version="1.2.3" /><PackageVersion Include="B" Version="2.0.0" />');assert.equal(q.status,'PARTIAL');assert.equal(q.details.packages,2);});
 test('QA09 rejects duplicate package names and wildcards',()=>assert.equal(auditDependencies('<PackageVersion Include="A" Version="1.*" /><PackageVersion Include="a" Version="2.0.0" />').status,'FAIL'));
 // QA10: preserve explicit integration blockers.
-test('QA10 remains blocked without observed remote CI',()=>{const q=premergeChecks([{id:'QA02',status:'PASS'}],{codexRefKnown:true,testExecutionObserved:true,githubActionsObserved:false});assert.equal(q.status,'BLOCKED');});
-test('QA10 fails when any contributing audit failed',()=>assert.equal(premergeChecks([{id:'QA02',status:'FAIL'}],{codexRefKnown:true,testExecutionObserved:true,githubActionsObserved:true}).status,'FAIL'));
-test('QA10 passes only with checks and all prerequisites',()=>assert.equal(premergeChecks([{id:'QA02',status:'PASS'}],{codexRefKnown:true,testExecutionObserved:true,githubActionsObserved:true}).status,'PASS'));
-
-test('QA10 blocks if a required audit is partial',()=>assert.equal(premergeChecks([{id:'QA06',status:'PARTIAL'}],{codexRefKnown:true,testExecutionObserved:true,githubActionsObserved:true}).status,'BLOCKED'));
+const completeChecks=()=>QA_TASKS.map(id=>({id,status:'PASS'}));
+const approvals={codexRefKnown:true,testExecutionObserved:true,githubActionsObserved:true};
+test('QA10 blocks missing audits even with all three asserted prerequisites',()=>{
+  const q=premergeChecks([{id:'QA02_SECURITY_POLICY',status:'PASS'}],approvals);
+  assert.equal(q.status,'BLOCKED');
+  assert.equal(q.details.missingChecks.length,9);
+  assert.equal(q.details.ready,false);
+});
+test('QA10 remains blocked without observed remote CI',()=>{
+  const q=premergeChecks(completeChecks(),{...approvals,githubActionsObserved:false});
+  assert.equal(q.status,'BLOCKED');
+});
+test('QA10 fails when any contributing audit failed',()=>{
+  const checks=completeChecks();checks[1].status='FAIL';
+  assert.equal(premergeChecks(checks,approvals).status,'FAIL');
+});
+test('QA10 passes only with all ten checks and all asserted prerequisites',()=>{
+  const q=premergeChecks(completeChecks(),approvals);
+  assert.equal(q.status,'PASS');assert.equal(q.details.required,10);
+  assert.equal(q.details.reviewOnly,true);
+});
+test('QA10 blocks if a required audit is partial',()=>{
+  const checks=completeChecks();checks[5].status='PARTIAL';
+  assert.equal(premergeChecks(checks,approvals).status,'BLOCKED');
+});
+test('QA10 rejects duplicate and unknown audit IDs',()=>{
+  const duplicate=premergeChecks([...completeChecks(),completeChecks()[0]],approvals);
+  assert.equal(duplicate.status,'FAIL');
+  const unknown=premergeChecks([...completeChecks(),{id:'NOT_A_TASK',status:'PASS'}],approvals);
+  assert.equal(unknown.status,'FAIL');
+});
+test('QA10 rejects unexpected states and malformed inputs',()=>{
+  const checks=completeChecks();checks[0].status='SUCCESS';
+  assert.equal(premergeChecks(checks,approvals).status,'FAIL');
+  assert.equal(premergeChecks(null,approvals).status,'FAIL');
+});
+test('QA08 prevents duplicate branch push trigger',()=>{
+  const workflow=local('../../.github/workflows/chatgpt-qa.yml');
+  assert.equal(checkCiScope(workflow).status,'PASS');
+  assert.ok(checkCiScope(workflow.replace('  pull_request:', '  push:\n  pull_request:')).findings.some(f=>f.code==='REDUNDANT_PUSH_TRIGGER'));
+});
+test('QA08 requires obsolete-run cancellation',()=>{
+  const workflow=local('../../.github/workflows/chatgpt-qa.yml');
+  assert.ok(checkCiScope(workflow.replace('  cancel-in-progress: true', '  cancel-in-progress: false')).findings.some(f=>f.code==='CONCURRENCY_MISSING'));
+});

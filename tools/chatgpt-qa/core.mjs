@@ -197,21 +197,56 @@ export function auditDependencies(xml) {
   if (!packages.length) findings.push(finding('QA09_DEPENDENCY_AUDIT','NO_PACKAGES','No PackageVersion entries found; may require manual review','REVIEW'));
   return result('QA09_DEPENDENCY_AUDIT',{packages:packages.length,staticOnly:true,licenseAuditPerformed:false,networkAdvisoriesChecked:false},findings,findings.some(f=>f.severity==='ERROR')?'FAIL':'PARTIAL');
 }
+// Verify CI scope structurally. A PR-only trigger avoids duplicate branch and PR runs.
 export function checkCiScope(yaml) {
   const findings=[];
+  if(typeof yaml !== 'string')return result('QA08_CI_SCOPE',{},[finding('QA08_CI_SCOPE','INVALID_WORKFLOW','Expected workflow text')]);
   for(const required of ['pull_request:', 'workflow_dispatch:', 'contents: read','node --test tests/chatgpt-qa/', 'node tools/chatgpt-qa/cli.mjs']) {
     if(!yaml.includes(required))findings.push(finding('QA08_CI_SCOPE','MISSING_CI_POLICY',required));
   }
   if(!yaml.includes('tools/chatgpt-qa/**')||!yaml.includes('tests/chatgpt-qa/**'))findings.push(finding('QA08_CI_SCOPE','UNSCOPED_CI','Missing independent path filters'));
-  return result('QA08_CI_SCOPE',{independent:true,runObserved:false},findings);
+  if(/^  push:\s*$/m.test(yaml))findings.push(finding('QA08_CI_SCOPE','REDUNDANT_PUSH_TRIGGER','QA runs on PR only; remove duplicate branch push trigger'));
+  if(!/^concurrency:\s*$/m.test(yaml) || !/^  cancel-in-progress:\s*true\s*$/m.test(yaml)) {
+    findings.push(finding('QA08_CI_SCOPE','CONCURRENCY_MISSING','Require cancellation of obsolete QA runs'));
+  }
+  return result('QA08_CI_SCOPE',{independent:true,prOnly:!/^  push:\s*$/m.test(yaml),runObserved:false},findings);
 }
-export function premergeChecks(checks, {codexRefKnown, testExecutionObserved, githubActionsObserved}) {
-  const failures=checks.filter(x=>x.status==='FAIL').map(x=>x.id);
-  const blockers=checks.filter(x=>['BLOCKED','NOT_TESTED','PARTIAL'].includes(x.status)).map(x=>`${x.id}: ${x.status}`);
-  if(!codexRefKnown)blockers.push('Codex base head not compared');
-  if(!testExecutionObserved)blockers.push('Local test execution not observed');
-  if(!githubActionsObserved)blockers.push('GitHub Actions result not observed');
-  return result('QA10_PREMERGE',{failures,blockers,ready:failures.length===0&&blockers.length===0},[],failures.length?'FAIL':blockers.length?'BLOCKED':'PASS');
+
+// A partial check set must never be accepted as the full ten-task QA review.
+// Inputs describing remote CI and Codex changes are assertions, not authenticated evidence.
+export function premergeChecks(checks, options = {}) {
+  const failures=[];
+  const blockers=[];
+  if(!Array.isArray(checks)) {
+    return result('QA10_PREMERGE',{ready:false,failures:['INVALID_CHECK_SET'],blockers:[],missingChecks:[...QA_TASKS],reviewOnly:true},[], 'FAIL');
+  }
+  const seen=new Set();
+  const validStatuses=new Set(['PASS','FAIL','PARTIAL','BLOCKED','NOT_TESTED']);
+  for(const check of checks) {
+    if(!check || typeof check.id !== 'string' || !QA_TASKS.includes(check.id)) {
+      failures.push(`UNKNOWN_CHECK: ${String(check?.id)}`);
+      continue;
+    }
+    if(seen.has(check.id))failures.push(`DUPLICATE_CHECK: ${check.id}`);
+    seen.add(check.id);
+    if(!validStatuses.has(check.status)) {
+      failures.push(`INVALID_STATUS: ${check.id}`);
+    } else if(check.status==='FAIL') {
+      failures.push(`${check.id}: FAIL`);
+    } else if(check.status!=='PASS') {
+      blockers.push(`${check.id}: ${check.status}`);
+    }
+  }
+  const missingChecks=QA_TASKS.filter(id=>!seen.has(id));
+  for(const id of missingChecks)blockers.push(`MISSING_CHECK: ${id}`);
+  if(options.codexRefKnown!==true)blockers.push('Codex base head not compared');
+  if(options.testExecutionObserved!==true)blockers.push('Local test execution not observed');
+  if(options.githubActionsObserved!==true)blockers.push('GitHub Actions result not observed');
+  const ready=failures.length===0&&blockers.length===0;
+  return result('QA10_PREMERGE',{
+    failures,blockers,missingChecks,checked:seen.size,required:QA_TASKS.length,
+    ready,reviewOnly:true,externalClaimsNotVerified:true,
+  },[],failures.length?'FAIL':blockers.length?'BLOCKED':'PASS');
 }
 
 // Read only; no subprocess and no mutation of product files.
