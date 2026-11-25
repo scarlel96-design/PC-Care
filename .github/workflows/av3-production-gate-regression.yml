@@ -1,0 +1,32 @@
+name: AV3 production gate regression
+on:
+  push:
+    branches:
+      - chatgpt/pccare-av3-production-gate-regression
+    paths:
+      - src/SmartPerformanceDoctor.AstraVault/Target/Av3PhaseGate.cs
+      - scripts/check-av3-production-gates.mjs
+      - tests/quality/check-av3-production-gates.test.mjs
+      - .github/workflows/av3-production-gate-regression.yml
+  pull_request:
+    paths:
+      - src/SmartPerformanceDoctor.AstraVault/Target/Av3PhaseGate.cs
+      - scripts/check-av3-production-gates.mjs
+      - tests/quality/check-av3-production-gates.test.mjs
+      - .github/workflows/av3-production-gate-regression.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  av3-gates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.16.0'
+      - name: Unit tests
+        run: node --test tests/quality/check-av3-production-gates.test.mjs
+      - name: Check current AV3 source
+        run: node scripts/check-av3-production-gates.mjs
