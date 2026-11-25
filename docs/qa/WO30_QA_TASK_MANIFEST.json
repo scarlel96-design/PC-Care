@@ -1,0 +1,79 @@
+{
+  "baseline_sha": "f1d4e7a4872aca8d1114183840441d687a8b5c5e",
+  "product_files_modified": false,
+  "owned_prefixes": [
+    "tools/chatgpt-qa/",
+    "tests/chatgpt-qa/",
+    "docs/qa/"
+  ],
+  "owned_ci_file": ".github/workflows/chatgpt-qa.yml",
+  "task_count": 10,
+  "tasks": [
+    {
+      "id": "QA01_CHANGE_IMPACT",
+      "scope": "change impact and ownership",
+      "product_engine_implementation": false,
+      "depends_on_wo30_windows_vm": false
+    },
+    {
+      "id": "QA02_SECURITY_POLICY",
+      "scope": "AV3 production gate policy",
+      "product_engine_implementation": false,
+      "depends_on_wo30_windows_vm": false
+    },
+    {
+      "id": "QA03_TEST_AUTOMATION",
+      "scope": "independent Node tests",
+      "product_engine_implementation": false,
+      "depends_on_wo30_windows_vm": false
+    },
+    {
+      "id": "QA04_PERFORMANCE",
+      "scope": "history profile statistics",
+      "product_engine_implementation": false,
+      "depends_on_wo30_windows_vm": false
+    },
+    {
+      "id": "QA05_EVIDENCE",
+      "scope": "report and evidence consistency",
+      "product_engine_implementation": false,
+      "depends_on_wo30_windows_vm": false
+    },
+    {
+      "id": "QA06_UI_STATIC",
+      "scope": "XAML candidates",
+      "product_engine_implementation": false,
+      "depends_on_wo30_windows_vm": false
+    },
+    {
+      "id": "QA07_DIAGNOSTIC_FIXTURES",
+      "scope": "synthetic diagnostic data",
+      "product_engine_implementation": false,
+      "depends_on_wo30_windows_vm": false
+    },
+    {
+      "id": "QA08_CI_SCOPE",
+      "scope": "isolated CI triggers",
+      "product_engine_implementation": false,
+      "depends_on_wo30_windows_vm": false
+    },
+    {
+      "id": "QA09_DEPENDENCY_AUDIT",
+      "scope": "central package versions",
+      "product_engine_implementation": false,
+      "depends_on_wo30_windows_vm": false
+    },
+    {
+      "id": "QA10_PREMERGE",
+      "scope": "integrated readiness blockers",
+      "product_engine_implementation": false,
+      "depends_on_wo30_windows_vm": false
+    }
+  ],
+  "merge_requires": [
+    "Latest Codex change list comparison",
+    "Independent unit tests",
+    "Observed GitHub Actions run",
+    "Human PR review"
+  ]
+}

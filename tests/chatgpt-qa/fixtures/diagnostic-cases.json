@@ -1,0 +1,272 @@
+[
+  {
+    "id": "startup-issue",
+    "category": "startup",
+    "observation": "10 startup registrations and a measured startup delay",
+    "expected": "ISSUE",
+    "rationale": "Synthetic issue scenario for startup; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "startup-normal",
+    "category": "startup",
+    "observation": "No startup anomalies in three measurements",
+    "expected": "NORMAL",
+    "rationale": "Synthetic normal scenario for startup; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "startup-insufficient-evidence",
+    "category": "startup",
+    "observation": "No boot-duration samples supplied",
+    "expected": "INSUFFICIENT_EVIDENCE",
+    "rationale": "Synthetic insufficient_evidence scenario for startup; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "cache-issue",
+    "category": "cache",
+    "observation": "Allowlisted cache is 1 GiB and has verified ownership",
+    "expected": "ISSUE",
+    "rationale": "Synthetic issue scenario for cache; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "cache-normal",
+    "category": "cache",
+    "observation": "Allowlisted cache contains only 8 KiB and no cleanup request",
+    "expected": "NORMAL",
+    "rationale": "Synthetic normal scenario for cache; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "cache-insufficient-evidence",
+    "category": "cache",
+    "observation": "Cache location cannot be resolved to one owner",
+    "expected": "INSUFFICIENT_EVIDENCE",
+    "rationale": "Synthetic insufficient_evidence scenario for cache; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "disk-issue",
+    "category": "disk",
+    "observation": "Drive reports 1% free capacity over repeated reads",
+    "expected": "ISSUE",
+    "rationale": "Synthetic issue scenario for disk; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "disk-normal",
+    "category": "disk",
+    "observation": "Drive reports 50% free capacity with stable IO",
+    "expected": "NORMAL",
+    "rationale": "Synthetic normal scenario for disk; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "disk-insufficient-evidence",
+    "category": "disk",
+    "observation": "Storage volume cannot be identified",
+    "expected": "INSUFFICIENT_EVIDENCE",
+    "rationale": "Synthetic insufficient_evidence scenario for disk; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "memory-issue",
+    "category": "memory",
+    "observation": "Sustained low available memory and correlated hard faults",
+    "expected": "ISSUE",
+    "rationale": "Synthetic issue scenario for memory; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "memory-normal",
+    "category": "memory",
+    "observation": "Available memory stable with no hard-fault pressure",
+    "expected": "NORMAL",
+    "rationale": "Synthetic normal scenario for memory; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "memory-insufficient-evidence",
+    "category": "memory",
+    "observation": "Single short memory snapshot provided",
+    "expected": "INSUFFICIENT_EVIDENCE",
+    "rationale": "Synthetic insufficient_evidence scenario for memory; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "cpu-issue",
+    "category": "cpu",
+    "observation": "CPU above 95% over three intervals and a correlated process",
+    "expected": "ISSUE",
+    "rationale": "Synthetic issue scenario for cpu; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "cpu-normal",
+    "category": "cpu",
+    "observation": "CPU idle at 5% during the representative interval",
+    "expected": "NORMAL",
+    "rationale": "Synthetic normal scenario for cpu; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "cpu-insufficient-evidence",
+    "category": "cpu",
+    "observation": "CPU usage sample has invalid timestamp",
+    "expected": "INSUFFICIENT_EVIDENCE",
+    "rationale": "Synthetic insufficient_evidence scenario for cpu; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "service-issue",
+    "category": "service",
+    "observation": "Required Windows service repeatedly fails to start",
+    "expected": "ISSUE",
+    "rationale": "Synthetic issue scenario for service; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "service-normal",
+    "category": "service",
+    "observation": "Service reports Running without error events",
+    "expected": "NORMAL",
+    "rationale": "Synthetic normal scenario for service; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "service-insufficient-evidence",
+    "category": "service",
+    "observation": "Service query failed with access denied",
+    "expected": "INSUFFICIENT_EVIDENCE",
+    "rationale": "Synthetic insufficient_evidence scenario for service; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "windows-update-issue",
+    "category": "windows-update",
+    "observation": "Update failure code repeats in three recent events",
+    "expected": "ISSUE",
+    "rationale": "Synthetic issue scenario for windows-update; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "windows-update-normal",
+    "category": "windows-update",
+    "observation": "Update completes successfully with valid completion status",
+    "expected": "NORMAL",
+    "rationale": "Synthetic normal scenario for windows-update; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "windows-update-insufficient-evidence",
+    "category": "windows-update",
+    "observation": "Update event history unavailable",
+    "expected": "INSUFFICIENT_EVIDENCE",
+    "rationale": "Synthetic insufficient_evidence scenario for windows-update; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "network-issue",
+    "category": "network",
+    "observation": "DNS resolution fails repeatedly with correlated evidence",
+    "expected": "ISSUE",
+    "rationale": "Synthetic issue scenario for network; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "network-normal",
+    "category": "network",
+    "observation": "DNS lookup and request complete within baseline",
+    "expected": "NORMAL",
+    "rationale": "Synthetic normal scenario for network; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "network-insufficient-evidence",
+    "category": "network",
+    "observation": "Only a single timeout occurred without context",
+    "expected": "INSUFFICIENT_EVIDENCE",
+    "rationale": "Synthetic insufficient_evidence scenario for network; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "driver-issue",
+    "category": "driver",
+    "observation": "Device manager reports a persistent driver error code",
+    "expected": "ISSUE",
+    "rationale": "Synthetic issue scenario for driver; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "driver-normal",
+    "category": "driver",
+    "observation": "All queried device drivers report healthy state",
+    "expected": "NORMAL",
+    "rationale": "Synthetic normal scenario for driver; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "driver-insufficient-evidence",
+    "category": "driver",
+    "observation": "Hardware device enumeration incomplete",
+    "expected": "INSUFFICIENT_EVIDENCE",
+    "rationale": "Synthetic insufficient_evidence scenario for driver; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "audio-issue",
+    "category": "audio",
+    "observation": "Default endpoint missing and audio service error is present",
+    "expected": "ISSUE",
+    "rationale": "Synthetic issue scenario for audio; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "audio-normal",
+    "category": "audio",
+    "observation": "Default endpoint is active with successful playback test",
+    "expected": "NORMAL",
+    "rationale": "Synthetic normal scenario for audio; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  },
+  {
+    "id": "audio-insufficient-evidence",
+    "category": "audio",
+    "observation": "Audio endpoint access is blocked by permissions",
+    "expected": "INSUFFICIENT_EVIDENCE",
+    "rationale": "Synthetic insufficient_evidence scenario for audio; manual expectation only.",
+    "mayMutate": false,
+    "source": "GPT synthetic fixture, not measured from Windows"
+  }
+]

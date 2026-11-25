@@ -1,0 +1,54 @@
+{
+  "repository": "scarlel96-design/PC-Care",
+  "wo29_final_head": "f1d4e7a4872aca8d1114183840441d687a8b5c5e",
+  "windows_tested_source": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+  "evidence_source": "GitHub connector direct file retrieval on 2026-11-25",
+  "app": {
+    "passed": 1445,
+    "failed": 0,
+    "skipped": 111,
+    "run_url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45535219952"
+  },
+  "security_lab": {
+    "passed": 36,
+    "failed": 0,
+    "skipped": 0,
+    "run_url": "https://github.com/scarlel96-design/PC-Care/actions/runs/45535219952"
+  },
+  "recovery_inspection": {
+    "terminated_processes": 26,
+    "synthetic_only": true
+  },
+  "vault": {
+    "reopen_checks": 33,
+    "file_hash_comparisons": 132,
+    "physical_reboot": "NOT TESTED"
+  },
+  "history": {
+    "transactions": 4096,
+    "baseline_runs": 6,
+    "modified_runs": 6,
+    "baseline_allocated_median_bytes": 3012904692,
+    "modified_allocated_median_bytes": 1908865628,
+    "allocation_reduction_percent": 36.64,
+    "native_identity_calls_each": 1003935,
+    "production_optimization_enabled": false,
+    "speed_improvement_proven": false
+  },
+  "phase_1": "NO-GO",
+  "av3_production_gates": {
+    "ProductionWriterEnabled": false,
+    "JournalWriterEnabled": false,
+    "MigrationEnabled": false,
+    "WriterEnableReady": false,
+    "ExternalReviewCompleted": false,
+    "ProductionEnableAuthorized": false
+  },
+  "limitations": [
+    "No privileged Windows guest qualification",
+    "No full Windows post-reboot vault extraction",
+    "No actual accessibility audit",
+    "No unsigned production update authorization",
+    "No observed GitHub Actions run for this new QA package"
+  ]
+}
