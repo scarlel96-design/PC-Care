@@ -1,0 +1,36 @@
+name: ChatGPT independent QA
+on:
+  pull_request:
+    paths:
+      - 'tools/chatgpt-qa/**'
+      - 'tests/chatgpt-qa/**'
+      - 'docs/qa/**'
+      - '.github/workflows/chatgpt-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: chatgpt-qa-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  independent-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Validate JavaScript syntax
+        run: |
+          node --check tools/chatgpt-qa/core.mjs
+          node --check tools/chatgpt-qa/cli.mjs
+      - name: Independent QA unit tests
+        run: node --test tests/chatgpt-qa/core.test.mjs
+      - name: Audit WO-29 baseline evidence
+        run: node tools/chatgpt-qa/cli.mjs wo29 --root .
+      - name: Inventory XAML review candidates
+        run: |
+          git ls-files '*.xaml' > .chatgpt-qa-xaml-list.txt
+          node tools/chatgpt-qa/cli.mjs ui --paths .chatgpt-qa-xaml-list.txt
+          rm .chatgpt-qa-xaml-list.txt

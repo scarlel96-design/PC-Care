@@ -1,0 +1,35 @@
+{
+  "work": "QA-08 and QA-10 hardening",
+  "scope": "GPT QA only; no product edits",
+  "baseCommit": "11c8a9977ba0f4c09d655bf18ae7c6adf8616b3a",
+  "checks": [
+    {
+      "command": "node --check tools/chatgpt-qa/core.mjs",
+      "exitCode": 0,
+      "summary": ""
+    },
+    {
+      "command": "node --check tests/chatgpt-qa/core.test.mjs",
+      "exitCode": 0,
+      "summary": ""
+    },
+    {
+      "command": "node --test tests/chatgpt-qa/core.test.mjs",
+      "exitCode": 0,
+      "summary": "# tests 36 | # suites 0 | # pass 36 | # fail 0 | # cancelled 0 | # skipped 0 | # todo 0 | # duration_ms 136.484028"
+    }
+  ],
+  "filesSha256": {
+    "tools/chatgpt-qa/core.mjs": "f554bca7aed0c5a18050b393b6cb4ca84b699ca54483f48be26f0011532f1197",
+    "tests/chatgpt-qa/core.test.mjs": "1208d4cc6802afc1f0677f963aef7fe1dcb21599bc6d5dfe1b2c36ef45d8269a",
+    ".github/workflows/chatgpt-qa.yml": "4dd376275631768b2abba8bb146bbb13d6d747a11c271cef69f186b3d1a8cb0d",
+    "docs/qa/QA_NEXT_STEP_HARDENING.md": "e5bb2b32c5908c93c905873c5fc236b6ca51ad6e909bfcb804865dd0a5798933"
+  },
+  "remoteWorkflow": "NOT YET VERIFIED",
+  "status": "LOCAL_PASS_REMOTE_PENDING",
+  "limitations": [
+    "Static checks cannot prove runtime release readiness",
+    "PR-wide workflow fan-out not addressed",
+    "No Windows VM/UAC/reboot/UI test executed"
+  ]
+}

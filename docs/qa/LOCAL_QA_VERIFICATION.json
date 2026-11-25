@@ -1,0 +1,34 @@
+{
+  "scope": "GPT independent QA unit and syntax tests only; not Windows product testing",
+  "date": "2026-11-25",
+  "runtime": "Node.js v22.16.0 (local Linux)",
+  "command": "node --test tests/chatgpt-qa/core.test.mjs",
+  "syntax_commands": [
+    "node --check tools/chatgpt-qa/core.mjs",
+    "node --check tools/chatgpt-qa/cli.mjs"
+  ],
+  "status": "PASS",
+  "tests": 31,
+  "passed": 31,
+  "failed": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "source_sha256": {
+    "tools/chatgpt-qa/README.md": "d83e10b5848307499b541a82791f9bc3c3a96dfab93c7f14171fe7c50d8ce25d",
+    "tools/chatgpt-qa/core.mjs": "8de7bf1ac77c01e1e2ca33dbb75a31b893d47558e31f7e1ee70385b30e609979",
+    "tools/chatgpt-qa/cli.mjs": "53a0cf3de6ced3d51bcd02b091c1fbf3971356f3e5d8c465b903e1d21ec5c150",
+    "docs/qa/WO30_GPT_INDEPENDENT_WORKPACK.md": "a17fad419cbc54954a632c15c0ee08c0430b9c7da131a86514d83c4f45701520",
+    "docs/qa/WO30_QA_TASK_MANIFEST.json": "ac6626399d135d6cd71be2acb1bc91d440f60f5ed04c7ef7009894a72788f430",
+    "docs/qa/WO29_EVIDENCE_REFERENCE.json": "cc149ef4bab7cd1059fbf73b582ed79d65780466540c4a0947d61c441cd84a24",
+    ".github/workflows/chatgpt-qa.yml": "961cc2e30bad4c60bcd0eca0f3f954e83a22be9ed2a87a6a9d133d0be7d25c3a",
+    "tests/chatgpt-qa/core.test.mjs": "9aa84e94d06c24d73225f945d03ba73b49ead3e879209087ca2cfc0583e4ba84",
+    "tests/chatgpt-qa/fixtures/diagnostic-cases.json": "ccaf50177afd1c1132d8008e12ba6691988386e9af14d6168b0de9c915a59cb9"
+  },
+  "github_actions_status": "NOT TESTED",
+  "wo30_live_branch_comparison": "BLOCKED: branch not found at creation",
+  "limitations": [
+    "The actual WO-29 checkout was not present in this local environment",
+    "GitHub Actions integration is pending",
+    "Actual Windows VM / GUI / reboot / UAC were not tested"
+  ]
+}
