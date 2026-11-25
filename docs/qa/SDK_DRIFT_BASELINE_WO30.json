@@ -1,0 +1,119 @@
+{
+  "schema": 1,
+  "repository": "scarlel96-design/PC-Care",
+  "sourceCommit": "e430e571948515d091dcd1ab8210d2c715ae9b32",
+  "observedDate": "2026-11-25",
+  "method": "GitHub connector inspection of each .github/workflows entry; exact setup-dotnet selector and in-workflow global.json pin where present",
+  "rootGlobalJson": "NOT_FOUND in this GitHub branch",
+  "note": "This is a previously observed configuration baseline, not a policy approval to keep floating SDKs.",
+  "workflows": {
+    "chatgpt-qa.yml": {
+      "classification": "NOT_APPLICABLE"
+    },
+    "wo02-windows-security.yml": {
+      "classification": "FLOATING"
+    },
+    "wo03-windows-updater.yml": {
+      "classification": "FLOATING"
+    },
+    "wo04-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo05-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo06-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo07-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo08-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo09-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo10-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo11-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo12-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo13-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo14-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo15-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo16-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo17-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo18-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo19-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo20-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo21-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo22-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo23-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo24-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo25-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo26-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo27-windows-validation.yml": {
+      "classification": "FLOATING"
+    },
+    "wo28-windows-validation.yml": {
+      "classification": "GUARDED_EXACT",
+      "setupSelectors": [
+        {
+          "value": "10.0.402",
+          "kind": "EXACT"
+        }
+      ]
+    },
+    "wo29-stage-vault.yml": {
+      "classification": "EXACT_NO_GUARD"
+    },
+    "wo29-windows-validation.yml": {
+      "classification": "GUARDED_EXACT",
+      "setupSelectors": [
+        {
+          "value": "10.0.402",
+          "kind": "EXACT"
+        }
+      ]
+    }
+  },
+  "counts": {
+    "FLOATING": 26,
+    "GUARDED_EXACT": 2,
+    "EXACT_NO_GUARD": 1,
+    "NOT_APPLICABLE": 1
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "repository": "scarlel96-design/PC-Care",
+  "sourceComparedWith": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+  "failedQaCommit": "74d62eaab3ce8e45fca5f0c35432b21c09e346ab",
+  "observations": [
+    {
+      "runId": 45535219952,
+      "conclusion": "success",
+      "workflow": "WO29 Windows regression and benchmark qualification",
+      "installedSdk": "10.0.402",
+      "jobId": 138940048642,
+      "evidence": "https://github.com/scarlel96-design/PC-Care/actions/runs/45535219952"
+    },
+    {
+      "runId": 45570191416,
+      "conclusion": "failure",
+      "workflow": "WO23 Windows security and update hardening",
+      "installedSdk": "10.0.404",
+      "jobId": 139054659704,
+      "compilerErrors": [
+        "CsWinRT1032"
+      ],
+      "evidence": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191416"
+    },
+    {
+      "runId": 45570191526,
+      "conclusion": "failure",
+      "workflow": "WO02 Windows security gate",
+      "installedSdk": "10.0.404",
+      "jobId": 139054661095,
+      "compilerErrors": [
+        "CsWinRT1032"
+      ],
+      "evidence": "https://github.com/scarlel96-design/PC-Care/actions/runs/45570191526"
+    }
+  ],
+  "limitations": [
+    "Observed installed SDK versions, not a direct dotnet --version transcript for each build invocation.",
+    "Only two failed job logs have an explicitly verified installed SDK in this evidence.",
+    "SDK drift and CsWinRT1032 are correlated here; an SDK-driven cause is not established.",
+    "No controlled identical-source Windows build comparison was performed.",
+    "No product source files, workflow SDK selectors, or AV3 security gates were changed."
+  ]
+}

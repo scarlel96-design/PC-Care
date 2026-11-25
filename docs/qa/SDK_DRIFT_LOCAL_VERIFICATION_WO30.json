@@ -1,0 +1,15 @@
+{
+  "node_version": "v22.16.0",
+  "command": "node --test tests/chatgpt-qa/sdk-drift-audit.test.mjs",
+  "test_count": 38,
+  "pass": 38,
+  "fail": 0,
+  "syntax_checks": [
+    "node --check tools/chatgpt-qa/sdk-drift-audit.mjs",
+    "node --check tools/chatgpt-qa/sdk-drift-cli.mjs"
+  ],
+  "syntax_pass": true,
+  "actual_full_repo_checkout_audit": "NOT TESTED",
+  "github_actions_workflow": "NOT RUN",
+  "windows_dotnet_402_404_reproduction": "NOT TESTED"
+}
