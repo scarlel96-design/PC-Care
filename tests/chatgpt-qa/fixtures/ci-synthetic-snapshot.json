@@ -1,0 +1,16 @@
+{
+  "fixture": "SYNTHETIC EXAMPLE - not a GitHub API observation",
+  "total_count": 2,
+  "workflow_runs": [
+    { "id": 901, "workflow_id": 11, "name": "Old Windows", "head_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "event": "pull_request", "status": "completed", "conclusion": "failure", "run_attempt": 1 },
+    { "id": 902, "workflow_id": 12, "name": "Independent QA", "head_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "event": "pull_request", "status": "completed", "conclusion": "success", "run_attempt": 1 }
+  ],
+  "jobs_by_run": {
+    "901": { "total_count": 1, "jobs": [
+      { "id": 9091, "status": "completed", "conclusion": "failure", "created_at": "2026-11-25T00:00:00Z", "started_at": "2026-11-25T00:00:15Z", "completed_at": "2026-11-25T00:02:15Z", "steps": [{ "name": "Release build", "conclusion": "failure" }] }
+    ]},
+    "902": { "total_count": 1, "jobs": [
+      { "id": 9092, "status": "completed", "conclusion": "success", "created_at": "2026-11-25T00:00:00Z", "started_at": "2026-11-25T00:00:05Z", "completed_at": "2026-11-25T00:00:19Z", "steps": [{ "name": "QA test", "conclusion": "success" }] }
+    ]}
+  }
+}

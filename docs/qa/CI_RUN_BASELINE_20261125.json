@@ -1,0 +1,245 @@
+{
+  "schema": "pc-care-ci-observed-job-summary-v1",
+  "repository": "scarlel96-design/PC-Care",
+  "head_sha": "74d62eaab3ce8e45fca5f0c35432b21c09e346ab",
+  "source": "GitHub REST: GET /repos/{owner}/{repo}/actions/runs?head_sha=... and GET /actions/runs/{id}/jobs",
+  "source_url": "https://github.com/scarlel96-design/PC-Care/commit/74d62eaab3ce8e45fca5f0c35432b21c09e346ab",
+  "observed_utc_date": "2026-11-25",
+  "measurement": "completed job started_at to completed_at, summed across jobs",
+  "counts": {
+    "runs": 27,
+    "completed_jobs": 27,
+    "success_runs": 1,
+    "failed_runs": 26
+  },
+  "job_wall_seconds": 3552,
+  "job_wall_minutes": 59.2,
+  "legacy_windows_job_wall_seconds": 3538,
+  "qa_job_wall_seconds": 14,
+  "median_job_wall_seconds": 136,
+  "billed_minutes": null,
+  "limitations": [
+    "Not GitHub billing usage; sum of wall times can include concurrency.",
+    "Not evidence that CI optimization was already effective. This run preceded a reviewed integration of path filters.",
+    "Failure conclusions were observed. Failure root causes were not verified for every job.",
+    "Only two sampled failing jobs were inspected for failure step; both failed at Release build."
+  ],
+  "runs": [
+    {
+      "run_id": 45570191416,
+      "workflow": "WO23 Windows security and update hardening",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 119
+    },
+    {
+      "run_id": 45570191302,
+      "workflow": "WO12 vault reliability and product UX",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 116
+    },
+    {
+      "run_id": 45570191424,
+      "workflow": "WO16 standard mode vault stability",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 121
+    },
+    {
+      "run_id": 45570191412,
+      "workflow": "WO08 Windows diagnostic accuracy",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 141
+    },
+    {
+      "run_id": 45570191460,
+      "workflow": "WO25 installation trust and volume hardening",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 142
+    },
+    {
+      "run_id": 45570191310,
+      "workflow": "WO07 Windows performance diagnostics",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 136
+    },
+    {
+      "run_id": 45570191348,
+      "workflow": "WO24 isolated qualification foundation",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 136
+    },
+    {
+      "run_id": 45570191309,
+      "workflow": "WO06 Windows bootstrap recovery",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 137
+    },
+    {
+      "run_id": 45570191353,
+      "workflow": "WO26 transaction recovery and volume staging",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 130
+    },
+    {
+      "run_id": 45570191388,
+      "workflow": "WO13 authenticated vault crash recovery",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 134
+    },
+    {
+      "run_id": 45570191462,
+      "workflow": "WO19 update recovery closure",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 133
+    },
+    {
+      "run_id": 45570191280,
+      "workflow": "WO05 Windows filesystem hardening",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 114
+    },
+    {
+      "run_id": 45570191474,
+      "workflow": "WO14 legacy vault compatibility and recovery",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 139
+    },
+    {
+      "run_id": 45570191441,
+      "workflow": "WO20 bootstrap legacy recovery closure",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 138
+    },
+    {
+      "run_id": 45570191526,
+      "workflow": "WO02 Windows security gate",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 155
+    },
+    {
+      "run_id": 45570191390,
+      "workflow": "WO22 recovery state and product reliability",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 161
+    },
+    {
+      "run_id": 45570191534,
+      "workflow": "WO10 reference correction and synthetic recovery",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 154
+    },
+    {
+      "run_id": 45570191222,
+      "workflow": "WO11 evidence based system care",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 122
+    },
+    {
+      "run_id": 45570191217,
+      "workflow": "WO17 safe storagecare and secure delete",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 125
+    },
+    {
+      "run_id": 45570191055,
+      "workflow": "WO15 vault freshness and recovery receipts",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 161
+    },
+    {
+      "run_id": 45570191085,
+      "workflow": "WO04 Windows final validation",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 138
+    },
+    {
+      "run_id": 45570191167,
+      "workflow": "WO03 Windows signed updater",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 140
+    },
+    {
+      "run_id": 45570191161,
+      "workflow": "WO27 midcopy recovery and bounded history",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 139
+    },
+    {
+      "run_id": 45570191115,
+      "workflow": "WO21 signed installation qualification",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 136
+    },
+    {
+      "run_id": 45570191252,
+      "workflow": "ChatGPT independent QA",
+      "status": "completed",
+      "conclusion": "success",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 14
+    },
+    {
+      "run_id": 45570191128,
+      "workflow": "WO18 durable secure delete and storage safety",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 135
+    },
+    {
+      "run_id": 45570191273,
+      "workflow": "WO09 independent qualification and recovery planning",
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_job_count": 1,
+      "observed_job_wall_seconds": 136
+    }
+  ]
+}
