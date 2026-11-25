@@ -1,0 +1,6 @@
+Source: e638ca51ca0e12082df0d00dffb037a583e097c0
+Environment: GitHub Actions Windows x64
+Run: https://github.com/scarlel96-design/PC-Care/actions/runs/45535219952
+Command: dotnet test tests/SmartPerformanceDoctor.SecurityLab.Tests -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+Output: Passed!  - Failed:     0, Passed:    36, Skipped:     0, Total:    36, Duration: 1 m 13 s - SmartPerformanceDoctor.SecurityLab.Tests.dll (net10.0)
+Exit: 0

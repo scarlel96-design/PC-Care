@@ -1,0 +1,11 @@
+{
+  "Package": "rea-agents@6.7.0",
+  "ReinstalledOnUserHost": false,
+  "ManagedSample": "Calls.dll",
+  "Sha256": "db2de8e8d15ccb91f9222076686d8e2c71aa7c217a58449c20c41b7dbcf1fcaf",
+  "McpReceipt": "ev_bd625ea29dfa546d09fdc1299cd4acc0845f5aff5aebcf9ab3385cf82e50f159",
+  "CliCommand": "node scripts/wo28-rea-validation.mjs <isolated-rea> <runner-output>",
+  "CliWindowsRun": 45161472670,
+  "CliExitCode": 0,
+  "Scope": "2 self-authored managed samples and 1 JavaScript fixture; no commercial binary or native qualification"
+}

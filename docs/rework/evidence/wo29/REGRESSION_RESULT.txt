@@ -1,0 +1,6 @@
+Source: e638ca51ca0e12082df0d00dffb037a583e097c0
+Environment: GitHub Actions Windows x64
+Run: https://github.com/scarlel96-design/PC-Care/actions/runs/45535219952
+Command: ./scripts/wo21-qualification.ps1 -FixtureRoot (Join-Path $env:RUNNER_TEMP 'wo21-wo28-full') -OutputDirectory artifacts/wo28-full
+Output: Passed!  - Failed:     0, Passed:  1445, Skipped:   111, Total:  1556, Duration: 9 m 59 s - SmartPerformanceDoctor.Tests.dll (net10.0)
+Exit: 0

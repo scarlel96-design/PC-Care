@@ -1,0 +1,384 @@
+{
+  "Environment": "GitHub-hosted Windows; private synthetic directories",
+  "Rows": [
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": null,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "A",
+      "Checkpoint": "BeforeDirectory",
+      "SourceHash": null,
+      "PublishedHash": null,
+      "State": "NoPeer",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:A:BeforeDirectory <fixture>; WO27Probe stage29:inspect:A:BeforeDirectory <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": null,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "A",
+      "Checkpoint": "AfterDirectory",
+      "SourceHash": null,
+      "PublishedHash": null,
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:A:AfterDirectory <fixture>; WO27Probe stage29:inspect:A:AfterDirectory <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": null,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "A",
+      "Checkpoint": "BeforeCopy",
+      "SourceHash": "0DB7974832B197BFFF15405C4BF737C9DAD3C25C9B451FEEF8A3FFE32D2729AF",
+      "PublishedHash": null,
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:A:BeforeCopy <fixture>; WO27Probe stage29:inspect:A:BeforeCopy <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": 4096,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "A",
+      "Checkpoint": "DuringCopy",
+      "SourceHash": "FC238AC9DC7FB5083B06C7157B5DA5395E8CA310A12A7F5EDD77F89A84553699",
+      "PublishedHash": null,
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:A:DuringCopy <fixture>; WO27Probe stage29:inspect:A:DuringCopy <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": 1048576,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "A",
+      "Checkpoint": "AfterCopy",
+      "SourceHash": "003DA9841503DE2EF74B61956A06E2D0286CD40F003C48A6860C16EF58DECAC2",
+      "PublishedHash": null,
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:A:AfterCopy <fixture>; WO27Probe stage29:inspect:A:AfterCopy <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": 1048576,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "A",
+      "Checkpoint": "BeforeFlush",
+      "SourceHash": "8D154E104B8D09CF6D23E9F39F9F186B63844186CFEC860ACC76DF3426A57BBC",
+      "PublishedHash": null,
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:A:BeforeFlush <fixture>; WO27Probe stage29:inspect:A:BeforeFlush <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": 1048576,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "A",
+      "Checkpoint": "AfterFlush",
+      "SourceHash": "922EE11FCD2DE6925FBB6EADB0DE0FD669CF108D3B0B6E0914A4ADDFF75089EA",
+      "PublishedHash": null,
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:A:AfterFlush <fixture>; WO27Probe stage29:inspect:A:AfterFlush <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": 1048576,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "A",
+      "Checkpoint": "BeforePublish",
+      "SourceHash": "D1489D5C28B165EE4F62F67014BAC0352A009D329BA7A51D233E7F2FA8FCE61A",
+      "PublishedHash": null,
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:A:BeforePublish <fixture>; WO27Probe stage29:inspect:A:BeforePublish <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": null,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "A",
+      "Checkpoint": "AfterPublish",
+      "SourceHash": "14F3738A53372816E7A41FA722CB68EAA38AFD595E51C5D3B8CB20ED2503B722",
+      "PublishedHash": "14F3738A53372816E7A41FA722CB68EAA38AFD595E51C5D3B8CB20ED2503B722",
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:A:AfterPublish <fixture>; WO27Probe stage29:inspect:A:AfterPublish <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": null,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "A",
+      "Checkpoint": "BeforeJournal",
+      "SourceHash": "1FFA5FBE98E7CB3306A4252C702672D25E2E81D0AC696E03541F4A754FE4A2E8",
+      "PublishedHash": "1FFA5FBE98E7CB3306A4252C702672D25E2E81D0AC696E03541F4A754FE4A2E8",
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:A:BeforeJournal <fixture>; WO27Probe stage29:inspect:A:BeforeJournal <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": null,
+      "ReceiptVerified": true,
+      "KilledExit": -1,
+      "Mode": "A",
+      "Checkpoint": "AfterJournal",
+      "SourceHash": "89E5B9D3E936AFDF98086A444178B344EEC16F55D910616D4D23625E90520322",
+      "PublishedHash": "89E5B9D3E936AFDF98086A444178B344EEC16F55D910616D4D23625E90520322",
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:A:AfterJournal <fixture>; WO27Probe stage29:inspect:A:AfterJournal <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": null,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "B",
+      "Checkpoint": "BeforeDirectory",
+      "SourceHash": null,
+      "PublishedHash": null,
+      "State": "NoPeer",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:B:BeforeDirectory <fixture>; WO27Probe stage29:inspect:B:BeforeDirectory <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": null,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "B",
+      "Checkpoint": "AfterDirectory",
+      "SourceHash": null,
+      "PublishedHash": null,
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:B:AfterDirectory <fixture>; WO27Probe stage29:inspect:B:AfterDirectory <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": null,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "B",
+      "Checkpoint": "BeforeCopy",
+      "SourceHash": "26CE8396302A3FA16F0A98038B0AB0BB5C95D59B40F92E64EE534C66A9EF82AE",
+      "PublishedHash": null,
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:B:BeforeCopy <fixture>; WO27Probe stage29:inspect:B:BeforeCopy <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": 4096,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "B",
+      "Checkpoint": "DuringCopy",
+      "SourceHash": "C2C5BAEF7EC6FD5DEC3D67065732DED715FF83BB32811C685D52A809FED93547",
+      "PublishedHash": null,
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:B:DuringCopy <fixture>; WO27Probe stage29:inspect:B:DuringCopy <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": 1048576,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "B",
+      "Checkpoint": "AfterCopy",
+      "SourceHash": "03D71BD928C565CC7E685D5C495FE92EBBEBB9F6251717714CB558383A80A1A0",
+      "PublishedHash": null,
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:B:AfterCopy <fixture>; WO27Probe stage29:inspect:B:AfterCopy <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": 1048576,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "B",
+      "Checkpoint": "BeforeFlush",
+      "SourceHash": "08A36946800E706E4DBA4A05BC0119BE8155C4C3496818D41822497BBB3A767B",
+      "PublishedHash": null,
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:B:BeforeFlush <fixture>; WO27Probe stage29:inspect:B:BeforeFlush <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": 1048576,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "B",
+      "Checkpoint": "AfterFlush",
+      "SourceHash": "C7926321C9FBA022D5D4F250521D4BDA0606CA119AA480B416BF8FD2915C2611",
+      "PublishedHash": null,
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:B:AfterFlush <fixture>; WO27Probe stage29:inspect:B:AfterFlush <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": 1048576,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "B",
+      "Checkpoint": "BeforePublish",
+      "SourceHash": "235D79CFA1C28D158F6141F65AAD2870BE3115908CB2EE826D422FE409E7508F",
+      "PublishedHash": null,
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:B:BeforePublish <fixture>; WO27Probe stage29:inspect:B:BeforePublish <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": null,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "B",
+      "Checkpoint": "AfterPublish",
+      "SourceHash": "93D32199D56F4C6EB6D6D11D725B391E96EA3137E73C6520DDA2D4EBF1996FCD",
+      "PublishedHash": "93D32199D56F4C6EB6D6D11D725B391E96EA3137E73C6520DDA2D4EBF1996FCD",
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:B:AfterPublish <fixture>; WO27Probe stage29:inspect:B:AfterPublish <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": null,
+      "ReceiptVerified": false,
+      "KilledExit": -1,
+      "Mode": "B",
+      "Checkpoint": "BeforeJournal",
+      "SourceHash": "DBAE77DE81AE35A273243252DC58385058896B523DCDF0322D2C2CCA50190971",
+      "PublishedHash": "DBAE77DE81AE35A273243252DC58385058896B523DCDF0322D2C2CCA50190971",
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:B:BeforeJournal <fixture>; WO27Probe stage29:inspect:B:BeforeJournal <fixture> twice"
+    },
+    {
+      "Status": "PASS",
+      "InspectionExits": [
+        0,
+        0
+      ],
+      "StagedBytes": null,
+      "ReceiptVerified": true,
+      "KilledExit": -1,
+      "Mode": "B",
+      "Checkpoint": "AfterJournal",
+      "SourceHash": "968AD8BE59DCEB5C586D1C97ECF0DB06C60A00978B4A95CBB2028FD16793AEF4",
+      "PublishedHash": "968AD8BE59DCEB5C586D1C97ECF0DB06C60A00978B4A95CBB2028FD16793AEF4",
+      "State": "Inspected",
+      "IdenticalReads": true,
+      "Command": "WO27Probe stage29:run:B:AfterJournal <fixture>; WO27Probe stage29:inspect:B:AfterJournal <fixture> twice"
+    }
+  ],
+  "ProbeSha256": "6C9E6439D9D57CC4F038BD4A8CAF0FFCA996FA0DE625B8CD5096D17E332BFCE0",
+  "Source": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+  "Command": "pwsh -File scripts/wo29-volume-interruptions.ps1",
+  "Run": 45535220086,
+  "ExitCode": 0
+}

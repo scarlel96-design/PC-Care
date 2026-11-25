@@ -1,0 +1,866 @@
+{
+  "Source": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+  "Environment": "Windows synthetic filesystem; strictAcl=false; ephemeral package key; no Authenticode E2E",
+  "Run": 45535220086,
+  "Checks": [
+    {
+      "Sequence": 1,
+      "After": "WO20Probe prepare <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "4B086986A741148541EB7F0F4CAB0CAC70F2B69E7D3FA04885DEA113F7BC53BE",
+          "sample-1048576.bin": "DFA7DBA7AD9FACE62EA2278A336EA4393490ED9C8E52DD8B37C779049BBB97B4",
+          "sample-4194304.bin": "D010E6D732804CC59CF6AC08D5DB1B98E8956EB960818D3280DF1F4C82C846B6"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "4B086986A741148541EB7F0F4CAB0CAC70F2B69E7D3FA04885DEA113F7BC53BE",
+          "sample-1048576.bin": "DFA7DBA7AD9FACE62EA2278A336EA4393490ED9C8E52DD8B37C779049BBB97B4",
+          "sample-4194304.bin": "D010E6D732804CC59CF6AC08D5DB1B98E8956EB960818D3280DF1F4C82C846B6"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 3,
+      "After": "WO20Probe apply <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "4B086986A741148541EB7F0F4CAB0CAC70F2B69E7D3FA04885DEA113F7BC53BE",
+          "sample-1048576.bin": "DFA7DBA7AD9FACE62EA2278A336EA4393490ED9C8E52DD8B37C779049BBB97B4",
+          "sample-4194304.bin": "D010E6D732804CC59CF6AC08D5DB1B98E8956EB960818D3280DF1F4C82C846B6"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "4B086986A741148541EB7F0F4CAB0CAC70F2B69E7D3FA04885DEA113F7BC53BE",
+          "sample-1048576.bin": "DFA7DBA7AD9FACE62EA2278A336EA4393490ED9C8E52DD8B37C779049BBB97B4",
+          "sample-4194304.bin": "D010E6D732804CC59CF6AC08D5DB1B98E8956EB960818D3280DF1F4C82C846B6"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 5,
+      "After": "WO20Probe prepare-random <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "D25795C464FD5BFD8CB5260EC2C7097497ED973F6EE3D49ECE5A9E57E9821A41",
+          "sample-1048576.bin": "EA4D3EC29D8B27DAD0DDB5E0AD908997DE6E3F1BFE1BF41DB21AF327611A4FD1",
+          "sample-4194304.bin": "AAAA9742885001ADCBDF9AAB09C4195B61C5E4EFB5BD1F62079AFB327110BA8C"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "D25795C464FD5BFD8CB5260EC2C7097497ED973F6EE3D49ECE5A9E57E9821A41",
+          "sample-1048576.bin": "EA4D3EC29D8B27DAD0DDB5E0AD908997DE6E3F1BFE1BF41DB21AF327611A4FD1",
+          "sample-4194304.bin": "AAAA9742885001ADCBDF9AAB09C4195B61C5E4EFB5BD1F62079AFB327110BA8C"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 7,
+      "After": "WO20Probe apply <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "D25795C464FD5BFD8CB5260EC2C7097497ED973F6EE3D49ECE5A9E57E9821A41",
+          "sample-1048576.bin": "EA4D3EC29D8B27DAD0DDB5E0AD908997DE6E3F1BFE1BF41DB21AF327611A4FD1",
+          "sample-4194304.bin": "AAAA9742885001ADCBDF9AAB09C4195B61C5E4EFB5BD1F62079AFB327110BA8C"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "D25795C464FD5BFD8CB5260EC2C7097497ED973F6EE3D49ECE5A9E57E9821A41",
+          "sample-1048576.bin": "EA4D3EC29D8B27DAD0DDB5E0AD908997DE6E3F1BFE1BF41DB21AF327611A4FD1",
+          "sample-4194304.bin": "AAAA9742885001ADCBDF9AAB09C4195B61C5E4EFB5BD1F62079AFB327110BA8C"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 9,
+      "After": "WO20Probe prepare-many <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "D58F66F98DD88EEEF8B4EB7C6CC4C3613940AF2370AAA5983789512D760EADEF",
+          "sample-1048576.bin": "CAB498D96D124F80F4465D04FF529384518BE153986FA3C6A3B48E9EB606616C",
+          "sample-4194304.bin": "D4B089EF3BBAEFC363DFBE1E1F5263573B6BF51E6056168EFCAD56A21A4C53C0"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "D58F66F98DD88EEEF8B4EB7C6CC4C3613940AF2370AAA5983789512D760EADEF",
+          "sample-1048576.bin": "CAB498D96D124F80F4465D04FF529384518BE153986FA3C6A3B48E9EB606616C",
+          "sample-4194304.bin": "D4B089EF3BBAEFC363DFBE1E1F5263573B6BF51E6056168EFCAD56A21A4C53C0"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 11,
+      "After": "WO20Probe apply <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "D58F66F98DD88EEEF8B4EB7C6CC4C3613940AF2370AAA5983789512D760EADEF",
+          "sample-1048576.bin": "CAB498D96D124F80F4465D04FF529384518BE153986FA3C6A3B48E9EB606616C",
+          "sample-4194304.bin": "D4B089EF3BBAEFC363DFBE1E1F5263573B6BF51E6056168EFCAD56A21A4C53C0"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "D58F66F98DD88EEEF8B4EB7C6CC4C3613940AF2370AAA5983789512D760EADEF",
+          "sample-1048576.bin": "CAB498D96D124F80F4465D04FF529384518BE153986FA3C6A3B48E9EB606616C",
+          "sample-4194304.bin": "D4B089EF3BBAEFC363DFBE1E1F5263573B6BF51E6056168EFCAD56A21A4C53C0"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 13,
+      "After": "WO20Probe prepare <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "14F5B465EEB00B778F75CF3C74BA86C6566B576D90F1819C0ACAD757242339BF",
+          "sample-1048576.bin": "D447CAF6A871DBFC7FEFF4FF19D98B2B6C97BCF6CD49CC93F1D2D4889C2554E7",
+          "sample-4194304.bin": "D12F3318D2C2E7DCF67800BE66B8DD4744B4BB4BC3C1013002BF0A2542926AE6"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "14F5B465EEB00B778F75CF3C74BA86C6566B576D90F1819C0ACAD757242339BF",
+          "sample-1048576.bin": "D447CAF6A871DBFC7FEFF4FF19D98B2B6C97BCF6CD49CC93F1D2D4889C2554E7",
+          "sample-4194304.bin": "D12F3318D2C2E7DCF67800BE66B8DD4744B4BB4BC3C1013002BF0A2542926AE6"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 15,
+      "After": "WO20Probe apply-kill <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "14F5B465EEB00B778F75CF3C74BA86C6566B576D90F1819C0ACAD757242339BF",
+          "sample-1048576.bin": "D447CAF6A871DBFC7FEFF4FF19D98B2B6C97BCF6CD49CC93F1D2D4889C2554E7",
+          "sample-4194304.bin": "D12F3318D2C2E7DCF67800BE66B8DD4744B4BB4BC3C1013002BF0A2542926AE6"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "14F5B465EEB00B778F75CF3C74BA86C6566B576D90F1819C0ACAD757242339BF",
+          "sample-1048576.bin": "D447CAF6A871DBFC7FEFF4FF19D98B2B6C97BCF6CD49CC93F1D2D4889C2554E7",
+          "sample-4194304.bin": "D12F3318D2C2E7DCF67800BE66B8DD4744B4BB4BC3C1013002BF0A2542926AE6"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 18,
+      "After": "WO20Probe verify-original <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "14F5B465EEB00B778F75CF3C74BA86C6566B576D90F1819C0ACAD757242339BF",
+          "sample-1048576.bin": "D447CAF6A871DBFC7FEFF4FF19D98B2B6C97BCF6CD49CC93F1D2D4889C2554E7",
+          "sample-4194304.bin": "D12F3318D2C2E7DCF67800BE66B8DD4744B4BB4BC3C1013002BF0A2542926AE6"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "14F5B465EEB00B778F75CF3C74BA86C6566B576D90F1819C0ACAD757242339BF",
+          "sample-1048576.bin": "D447CAF6A871DBFC7FEFF4FF19D98B2B6C97BCF6CD49CC93F1D2D4889C2554E7",
+          "sample-4194304.bin": "D12F3318D2C2E7DCF67800BE66B8DD4744B4BB4BC3C1013002BF0A2542926AE6"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 20,
+      "After": "WO20Probe prepare <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "C8BC5BC3710F017D2FF0A28202CAD82ABF32407EE39B1C57F46E009068183B09",
+          "sample-1048576.bin": "73C1A2B3D2A6603FDCAEEB458A06B0BAD52A02F31DB149DD1AC278797FB54352",
+          "sample-4194304.bin": "DEEBEC47FA3370138BC262FBD1D09E8632FB3D56066E8A08E61C39C7CB88F831"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "C8BC5BC3710F017D2FF0A28202CAD82ABF32407EE39B1C57F46E009068183B09",
+          "sample-1048576.bin": "73C1A2B3D2A6603FDCAEEB458A06B0BAD52A02F31DB149DD1AC278797FB54352",
+          "sample-4194304.bin": "DEEBEC47FA3370138BC262FBD1D09E8632FB3D56066E8A08E61C39C7CB88F831"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 23,
+      "After": "WO20Probe legacy-kill:AuthorizationVerified <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "C8BC5BC3710F017D2FF0A28202CAD82ABF32407EE39B1C57F46E009068183B09",
+          "sample-1048576.bin": "73C1A2B3D2A6603FDCAEEB458A06B0BAD52A02F31DB149DD1AC278797FB54352",
+          "sample-4194304.bin": "DEEBEC47FA3370138BC262FBD1D09E8632FB3D56066E8A08E61C39C7CB88F831"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "C8BC5BC3710F017D2FF0A28202CAD82ABF32407EE39B1C57F46E009068183B09",
+          "sample-1048576.bin": "73C1A2B3D2A6603FDCAEEB458A06B0BAD52A02F31DB149DD1AC278797FB54352",
+          "sample-4194304.bin": "DEEBEC47FA3370138BC262FBD1D09E8632FB3D56066E8A08E61C39C7CB88F831"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 26,
+      "After": "WO20Probe verify-original <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "C8BC5BC3710F017D2FF0A28202CAD82ABF32407EE39B1C57F46E009068183B09",
+          "sample-1048576.bin": "73C1A2B3D2A6603FDCAEEB458A06B0BAD52A02F31DB149DD1AC278797FB54352",
+          "sample-4194304.bin": "DEEBEC47FA3370138BC262FBD1D09E8632FB3D56066E8A08E61C39C7CB88F831"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "C8BC5BC3710F017D2FF0A28202CAD82ABF32407EE39B1C57F46E009068183B09",
+          "sample-1048576.bin": "73C1A2B3D2A6603FDCAEEB458A06B0BAD52A02F31DB149DD1AC278797FB54352",
+          "sample-4194304.bin": "DEEBEC47FA3370138BC262FBD1D09E8632FB3D56066E8A08E61C39C7CB88F831"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 28,
+      "After": "WO20Probe prepare <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "4A3BA001AF1DC914C0F318E84F66D5DE4DADDE98FC5179E864112DA7F4FFD46E",
+          "sample-1048576.bin": "738A015441170A5C1F3B043383ED72F08AD43AEBB952A38794EDA60C5947046F",
+          "sample-4194304.bin": "BFA97E413C50BBC433F763ED07DCE06D1B73CA291E1724398FAFD25C9E50BAF8"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "4A3BA001AF1DC914C0F318E84F66D5DE4DADDE98FC5179E864112DA7F4FFD46E",
+          "sample-1048576.bin": "738A015441170A5C1F3B043383ED72F08AD43AEBB952A38794EDA60C5947046F",
+          "sample-4194304.bin": "BFA97E413C50BBC433F763ED07DCE06D1B73CA291E1724398FAFD25C9E50BAF8"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 31,
+      "After": "WO20Probe legacy-kill:BeforePromotion <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "4A3BA001AF1DC914C0F318E84F66D5DE4DADDE98FC5179E864112DA7F4FFD46E",
+          "sample-1048576.bin": "738A015441170A5C1F3B043383ED72F08AD43AEBB952A38794EDA60C5947046F",
+          "sample-4194304.bin": "BFA97E413C50BBC433F763ED07DCE06D1B73CA291E1724398FAFD25C9E50BAF8"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "4A3BA001AF1DC914C0F318E84F66D5DE4DADDE98FC5179E864112DA7F4FFD46E",
+          "sample-1048576.bin": "738A015441170A5C1F3B043383ED72F08AD43AEBB952A38794EDA60C5947046F",
+          "sample-4194304.bin": "BFA97E413C50BBC433F763ED07DCE06D1B73CA291E1724398FAFD25C9E50BAF8"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 34,
+      "After": "WO20Probe verify-original <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "4A3BA001AF1DC914C0F318E84F66D5DE4DADDE98FC5179E864112DA7F4FFD46E",
+          "sample-1048576.bin": "738A015441170A5C1F3B043383ED72F08AD43AEBB952A38794EDA60C5947046F",
+          "sample-4194304.bin": "BFA97E413C50BBC433F763ED07DCE06D1B73CA291E1724398FAFD25C9E50BAF8"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "4A3BA001AF1DC914C0F318E84F66D5DE4DADDE98FC5179E864112DA7F4FFD46E",
+          "sample-1048576.bin": "738A015441170A5C1F3B043383ED72F08AD43AEBB952A38794EDA60C5947046F",
+          "sample-4194304.bin": "BFA97E413C50BBC433F763ED07DCE06D1B73CA291E1724398FAFD25C9E50BAF8"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 36,
+      "After": "WO20Probe prepare <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "C7B6D28B2E2FE292247A0042AE82B0B24A7C0F3A075B227E7803EE5779630179",
+          "sample-1048576.bin": "57274C82EDB6CCB2EB2F7A9FB95709157E7BAAFAC9DF52E167CAAAA59E90D745",
+          "sample-4194304.bin": "B4CA5AB2025FD71E003B1FB6CF5C8BCB9C78D01D5357DF55CA96E5F259882247"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "C7B6D28B2E2FE292247A0042AE82B0B24A7C0F3A075B227E7803EE5779630179",
+          "sample-1048576.bin": "57274C82EDB6CCB2EB2F7A9FB95709157E7BAAFAC9DF52E167CAAAA59E90D745",
+          "sample-4194304.bin": "B4CA5AB2025FD71E003B1FB6CF5C8BCB9C78D01D5357DF55CA96E5F259882247"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 39,
+      "After": "WO20Probe legacy-kill:AfterPromotion <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "C7B6D28B2E2FE292247A0042AE82B0B24A7C0F3A075B227E7803EE5779630179",
+          "sample-1048576.bin": "57274C82EDB6CCB2EB2F7A9FB95709157E7BAAFAC9DF52E167CAAAA59E90D745",
+          "sample-4194304.bin": "B4CA5AB2025FD71E003B1FB6CF5C8BCB9C78D01D5357DF55CA96E5F259882247"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "C7B6D28B2E2FE292247A0042AE82B0B24A7C0F3A075B227E7803EE5779630179",
+          "sample-1048576.bin": "57274C82EDB6CCB2EB2F7A9FB95709157E7BAAFAC9DF52E167CAAAA59E90D745",
+          "sample-4194304.bin": "B4CA5AB2025FD71E003B1FB6CF5C8BCB9C78D01D5357DF55CA96E5F259882247"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 42,
+      "After": "WO20Probe verify-original <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "C7B6D28B2E2FE292247A0042AE82B0B24A7C0F3A075B227E7803EE5779630179",
+          "sample-1048576.bin": "57274C82EDB6CCB2EB2F7A9FB95709157E7BAAFAC9DF52E167CAAAA59E90D745",
+          "sample-4194304.bin": "B4CA5AB2025FD71E003B1FB6CF5C8BCB9C78D01D5357DF55CA96E5F259882247"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "C7B6D28B2E2FE292247A0042AE82B0B24A7C0F3A075B227E7803EE5779630179",
+          "sample-1048576.bin": "57274C82EDB6CCB2EB2F7A9FB95709157E7BAAFAC9DF52E167CAAAA59E90D745",
+          "sample-4194304.bin": "B4CA5AB2025FD71E003B1FB6CF5C8BCB9C78D01D5357DF55CA96E5F259882247"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 44,
+      "After": "WO20Probe prepare <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "0DC2782C6EF6EDEF5406CB2A2ED899C5D54928DC380B3E365056FDB83227D105",
+          "sample-1048576.bin": "4CB72474EBEEABCB94838C2B5B18EF5D413E02574487FF01277BD7AD590AFC80",
+          "sample-4194304.bin": "CC883BB79C838703C52C2841F5F3F2BF6DB6B3E950C36A0E4CAA2D81DF2DF9F3"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "0DC2782C6EF6EDEF5406CB2A2ED899C5D54928DC380B3E365056FDB83227D105",
+          "sample-1048576.bin": "4CB72474EBEEABCB94838C2B5B18EF5D413E02574487FF01277BD7AD590AFC80",
+          "sample-4194304.bin": "CC883BB79C838703C52C2841F5F3F2BF6DB6B3E950C36A0E4CAA2D81DF2DF9F3"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 47,
+      "After": "WO20Probe legacy-kill:BeforeRestore <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "0DC2782C6EF6EDEF5406CB2A2ED899C5D54928DC380B3E365056FDB83227D105",
+          "sample-1048576.bin": "4CB72474EBEEABCB94838C2B5B18EF5D413E02574487FF01277BD7AD590AFC80",
+          "sample-4194304.bin": "CC883BB79C838703C52C2841F5F3F2BF6DB6B3E950C36A0E4CAA2D81DF2DF9F3"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "0DC2782C6EF6EDEF5406CB2A2ED899C5D54928DC380B3E365056FDB83227D105",
+          "sample-1048576.bin": "4CB72474EBEEABCB94838C2B5B18EF5D413E02574487FF01277BD7AD590AFC80",
+          "sample-4194304.bin": "CC883BB79C838703C52C2841F5F3F2BF6DB6B3E950C36A0E4CAA2D81DF2DF9F3"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 50,
+      "After": "WO20Probe verify-original <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "0DC2782C6EF6EDEF5406CB2A2ED899C5D54928DC380B3E365056FDB83227D105",
+          "sample-1048576.bin": "4CB72474EBEEABCB94838C2B5B18EF5D413E02574487FF01277BD7AD590AFC80",
+          "sample-4194304.bin": "CC883BB79C838703C52C2841F5F3F2BF6DB6B3E950C36A0E4CAA2D81DF2DF9F3"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "0DC2782C6EF6EDEF5406CB2A2ED899C5D54928DC380B3E365056FDB83227D105",
+          "sample-1048576.bin": "4CB72474EBEEABCB94838C2B5B18EF5D413E02574487FF01277BD7AD590AFC80",
+          "sample-4194304.bin": "CC883BB79C838703C52C2841F5F3F2BF6DB6B3E950C36A0E4CAA2D81DF2DF9F3"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 52,
+      "After": "WO20Probe prepare <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "B7FEBC5AF4B63A11CE5CFFCB75CEEA91443DEFF2A32B1D06924B59CCE5AFC029",
+          "sample-1048576.bin": "AAA4F47686C44785C19219EF7908C90914B350242537BA81C7812C7C693F1913",
+          "sample-4194304.bin": "6D022346BF0341188C30BA14D063FBF0CCE87AE5DEE37A285E02321F06786BD1"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "B7FEBC5AF4B63A11CE5CFFCB75CEEA91443DEFF2A32B1D06924B59CCE5AFC029",
+          "sample-1048576.bin": "AAA4F47686C44785C19219EF7908C90914B350242537BA81C7812C7C693F1913",
+          "sample-4194304.bin": "6D022346BF0341188C30BA14D063FBF0CCE87AE5DEE37A285E02321F06786BD1"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 55,
+      "After": "WO20Probe legacy-kill:AfterFileRestore <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "B7FEBC5AF4B63A11CE5CFFCB75CEEA91443DEFF2A32B1D06924B59CCE5AFC029",
+          "sample-1048576.bin": "AAA4F47686C44785C19219EF7908C90914B350242537BA81C7812C7C693F1913",
+          "sample-4194304.bin": "6D022346BF0341188C30BA14D063FBF0CCE87AE5DEE37A285E02321F06786BD1"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "B7FEBC5AF4B63A11CE5CFFCB75CEEA91443DEFF2A32B1D06924B59CCE5AFC029",
+          "sample-1048576.bin": "AAA4F47686C44785C19219EF7908C90914B350242537BA81C7812C7C693F1913",
+          "sample-4194304.bin": "6D022346BF0341188C30BA14D063FBF0CCE87AE5DEE37A285E02321F06786BD1"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 58,
+      "After": "WO20Probe verify-original <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "B7FEBC5AF4B63A11CE5CFFCB75CEEA91443DEFF2A32B1D06924B59CCE5AFC029",
+          "sample-1048576.bin": "AAA4F47686C44785C19219EF7908C90914B350242537BA81C7812C7C693F1913",
+          "sample-4194304.bin": "6D022346BF0341188C30BA14D063FBF0CCE87AE5DEE37A285E02321F06786BD1"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "B7FEBC5AF4B63A11CE5CFFCB75CEEA91443DEFF2A32B1D06924B59CCE5AFC029",
+          "sample-1048576.bin": "AAA4F47686C44785C19219EF7908C90914B350242537BA81C7812C7C693F1913",
+          "sample-4194304.bin": "6D022346BF0341188C30BA14D063FBF0CCE87AE5DEE37A285E02321F06786BD1"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 60,
+      "After": "WO20Probe prepare <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "9A640D93B5E4394B31E68F26A653DFB6E7D63D2AE2C28DD6A965B3722A3B96F8",
+          "sample-1048576.bin": "F4A79DDF31D9405E7A07C6E253CD1E72617B2964DFE36B0B7064B5E827E3730F",
+          "sample-4194304.bin": "768697EF19BA663060AD38DCA4A19799B7E1C23133B7BC7E7CE1E57F24C43D92"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "9A640D93B5E4394B31E68F26A653DFB6E7D63D2AE2C28DD6A965B3722A3B96F8",
+          "sample-1048576.bin": "F4A79DDF31D9405E7A07C6E253CD1E72617B2964DFE36B0B7064B5E827E3730F",
+          "sample-4194304.bin": "768697EF19BA663060AD38DCA4A19799B7E1C23133B7BC7E7CE1E57F24C43D92"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 63,
+      "After": "WO20Probe legacy-kill:SecondFileRestore <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "9A640D93B5E4394B31E68F26A653DFB6E7D63D2AE2C28DD6A965B3722A3B96F8",
+          "sample-1048576.bin": "F4A79DDF31D9405E7A07C6E253CD1E72617B2964DFE36B0B7064B5E827E3730F",
+          "sample-4194304.bin": "768697EF19BA663060AD38DCA4A19799B7E1C23133B7BC7E7CE1E57F24C43D92"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "9A640D93B5E4394B31E68F26A653DFB6E7D63D2AE2C28DD6A965B3722A3B96F8",
+          "sample-1048576.bin": "F4A79DDF31D9405E7A07C6E253CD1E72617B2964DFE36B0B7064B5E827E3730F",
+          "sample-4194304.bin": "768697EF19BA663060AD38DCA4A19799B7E1C23133B7BC7E7CE1E57F24C43D92"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 66,
+      "After": "WO20Probe verify-original <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "9A640D93B5E4394B31E68F26A653DFB6E7D63D2AE2C28DD6A965B3722A3B96F8",
+          "sample-1048576.bin": "F4A79DDF31D9405E7A07C6E253CD1E72617B2964DFE36B0B7064B5E827E3730F",
+          "sample-4194304.bin": "768697EF19BA663060AD38DCA4A19799B7E1C23133B7BC7E7CE1E57F24C43D92"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "9A640D93B5E4394B31E68F26A653DFB6E7D63D2AE2C28DD6A965B3722A3B96F8",
+          "sample-1048576.bin": "F4A79DDF31D9405E7A07C6E253CD1E72617B2964DFE36B0B7064B5E827E3730F",
+          "sample-4194304.bin": "768697EF19BA663060AD38DCA4A19799B7E1C23133B7BC7E7CE1E57F24C43D92"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 68,
+      "After": "WO20Probe prepare <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "5FD0D087A7ADDBCDEC7FC2A20C61EC3FBBB016ED8631201E9DE49BA386A2A461",
+          "sample-1048576.bin": "A4C2197CE3F8A433F497CD17F6E4E713915702C0B79D0975AABF6C9DEF8689C7",
+          "sample-4194304.bin": "CAF7EF978B40D2D2D595496C83F45445526F9B9418144364CF5CFDB891820397"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "5FD0D087A7ADDBCDEC7FC2A20C61EC3FBBB016ED8631201E9DE49BA386A2A461",
+          "sample-1048576.bin": "A4C2197CE3F8A433F497CD17F6E4E713915702C0B79D0975AABF6C9DEF8689C7",
+          "sample-4194304.bin": "CAF7EF978B40D2D2D595496C83F45445526F9B9418144364CF5CFDB891820397"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 71,
+      "After": "WO20Probe legacy-kill:BeforeRestoredJournal <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "5FD0D087A7ADDBCDEC7FC2A20C61EC3FBBB016ED8631201E9DE49BA386A2A461",
+          "sample-1048576.bin": "A4C2197CE3F8A433F497CD17F6E4E713915702C0B79D0975AABF6C9DEF8689C7",
+          "sample-4194304.bin": "CAF7EF978B40D2D2D595496C83F45445526F9B9418144364CF5CFDB891820397"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "5FD0D087A7ADDBCDEC7FC2A20C61EC3FBBB016ED8631201E9DE49BA386A2A461",
+          "sample-1048576.bin": "A4C2197CE3F8A433F497CD17F6E4E713915702C0B79D0975AABF6C9DEF8689C7",
+          "sample-4194304.bin": "CAF7EF978B40D2D2D595496C83F45445526F9B9418144364CF5CFDB891820397"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 74,
+      "After": "WO20Probe verify-original <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "5FD0D087A7ADDBCDEC7FC2A20C61EC3FBBB016ED8631201E9DE49BA386A2A461",
+          "sample-1048576.bin": "A4C2197CE3F8A433F497CD17F6E4E713915702C0B79D0975AABF6C9DEF8689C7",
+          "sample-4194304.bin": "CAF7EF978B40D2D2D595496C83F45445526F9B9418144364CF5CFDB891820397"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "5FD0D087A7ADDBCDEC7FC2A20C61EC3FBBB016ED8631201E9DE49BA386A2A461",
+          "sample-1048576.bin": "A4C2197CE3F8A433F497CD17F6E4E713915702C0B79D0975AABF6C9DEF8689C7",
+          "sample-4194304.bin": "CAF7EF978B40D2D2D595496C83F45445526F9B9418144364CF5CFDB891820397"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 76,
+      "After": "WO20Probe prepare <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "7AE8734F408D06380C9A543CDC662899973BD1DAA0C8C5B2A0A70620FE96D7B9",
+          "sample-1048576.bin": "6BAD9AE6D4699DBF84786BCB823FE9ACE8169F7FDE625E1BC200AAEA1812BC75",
+          "sample-4194304.bin": "4D3B202815D4EA1DB6DD591D275DB516CE88250DFBF7B8BDB1C535DD4605FA9B"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "7AE8734F408D06380C9A543CDC662899973BD1DAA0C8C5B2A0A70620FE96D7B9",
+          "sample-1048576.bin": "6BAD9AE6D4699DBF84786BCB823FE9ACE8169F7FDE625E1BC200AAEA1812BC75",
+          "sample-4194304.bin": "4D3B202815D4EA1DB6DD591D275DB516CE88250DFBF7B8BDB1C535DD4605FA9B"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 79,
+      "After": "WO20Probe legacy-kill:AfterRestoredJournal <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "7AE8734F408D06380C9A543CDC662899973BD1DAA0C8C5B2A0A70620FE96D7B9",
+          "sample-1048576.bin": "6BAD9AE6D4699DBF84786BCB823FE9ACE8169F7FDE625E1BC200AAEA1812BC75",
+          "sample-4194304.bin": "4D3B202815D4EA1DB6DD591D275DB516CE88250DFBF7B8BDB1C535DD4605FA9B"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "7AE8734F408D06380C9A543CDC662899973BD1DAA0C8C5B2A0A70620FE96D7B9",
+          "sample-1048576.bin": "6BAD9AE6D4699DBF84786BCB823FE9ACE8169F7FDE625E1BC200AAEA1812BC75",
+          "sample-4194304.bin": "4D3B202815D4EA1DB6DD591D275DB516CE88250DFBF7B8BDB1C535DD4605FA9B"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    },
+    {
+      "Sequence": 82,
+      "After": "WO20Probe verify-original <SYNTHETIC_ROOT>",
+      "Command": "WO20Probe vault-check <SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "Output": {
+        "Status": "BYTES_VERIFIED",
+        "Format": "spd-vault-v5-lab",
+        "RecoverySlotsRemaining": 10,
+        "RecoveryCodeUsed": false,
+        "Files": 4,
+        "OriginalHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "7AE8734F408D06380C9A543CDC662899973BD1DAA0C8C5B2A0A70620FE96D7B9",
+          "sample-1048576.bin": "6BAD9AE6D4699DBF84786BCB823FE9ACE8169F7FDE625E1BC200AAEA1812BC75",
+          "sample-4194304.bin": "4D3B202815D4EA1DB6DD591D275DB516CE88250DFBF7B8BDB1C535DD4605FA9B"
+        },
+        "ExtractedHashes": {
+          "sample-0.bin": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "sample-4096.bin": "7AE8734F408D06380C9A543CDC662899973BD1DAA0C8C5B2A0A70620FE96D7B9",
+          "sample-1048576.bin": "6BAD9AE6D4699DBF84786BCB823FE9ACE8169F7FDE625E1BC200AAEA1812BC75",
+          "sample-4194304.bin": "4D3B202815D4EA1DB6DD591D275DB516CE88250DFBF7B8BDB1C535DD4605FA9B"
+        },
+        "Reboot": "NOT TESTED"
+      }
+    }
+  ],
+  "Reboot": "NOT TESTED"
+}

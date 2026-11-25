@@ -1,0 +1,5 @@
+ORIGINAL_FILE -text
+MODIFIED_FILE -text
+DIFF_FILE -text
+ROLLBACK.sh text eol=lf
+DIFF_FILE whitespace=-blank-at-eol

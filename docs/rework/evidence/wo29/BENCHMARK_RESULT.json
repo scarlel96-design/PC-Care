@@ -1,0 +1,35 @@
+{
+  "Method": "Primary documentation and public interface review; no competitor binary execution",
+  "Products": [
+    {
+      "Product": "Cryptomator",
+      "Source": "https://docs.cryptomator.org/desktop/password-and-recovery-key/",
+      "Finding": "Recovery credentials need a separate handling policy.",
+      "Acceptance": "Test recovery on a copy. Verify every exported file before reporting success."
+    },
+    {
+      "Product": "BleachBit",
+      "Source": "https://docs.bleachbit.org/cml/cleanerml/",
+      "Finding": "Cleaner rules separate selection and action. Rules alone cannot authorize deletion.",
+      "Acceptance": "Compare preview inventory with a synthetic tree. Keep production cleanup disabled."
+    },
+    {
+      "Product": "SDelete",
+      "Source": "https://learn.microsoft.com/en-us/sysinternals/downloads/sdelete",
+      "Finding": "Free-space cleaning has limits, including filename remnants.",
+      "Acceptance": "Label the selected scope and medium. Never infer physical SSD erasure from file disappearance."
+    },
+    {
+      "Product": "VeraCrypt",
+      "Source": "https://veracrypt.io/en/Program%20Menu.html",
+      "Finding": "Header restoration addresses volume access; file integrity needs separate evidence.",
+      "Acceptance": "Reopen a fixture copy and verify authenticated extraction after recovery."
+    },
+    {
+      "Product": "PowerToys",
+      "Source": "https://raw.githubusercontent.com/microsoft/PowerToys/main/src/modules/interface/powertoy_module_interface.h",
+      "Finding": "The public module interface separates settings from enable and disable operations.",
+      "Acceptance": "Test repeated start, cancel and dispose. Verify that the module releases resources."
+    }
+  ]
+}

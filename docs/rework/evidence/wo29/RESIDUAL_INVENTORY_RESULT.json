@@ -1,0 +1,1740 @@
+{
+  "Source": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+  "Environment": "Windows CI 45535219952; isolated synthetic fixtures; StrictAcl=false",
+  "Command": "./scripts/wo28-reliability-validation.ps1 -EngineCheckpoints -OutputDirectory artifacts/wo29-engine",
+  "ExitCode": 0,
+  "Records": [
+    {
+      "Input": {
+        "Bytes": 4096,
+        "State": "OriginalVerified"
+      },
+      "Before": [
+        {
+          "RelativePath": ".",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "D2A000ACF576E78BB132AA79769AA9AD195F7D67CE3AFB2640BA56F71E8731DA",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "fixture.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "EB6ADEC9C7000C0D1E7E40B069157E3AF3A371B9D82F8F1E254DE0DB7B883440",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726007678835,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "install",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "D7F41C7DC38903F525141F699E44242A9D612C033804DE828CB0407C534FCEDE",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "install/app.txt",
+          "Kind": "File",
+          "Length": 4096,
+          "Sha256": "6896D9EA3F73A4434F5832BC65714E7D066F177373F36F34DC8A6F735DAA41B1",
+          "IdentityDigest": "3D90318E73778FC276734C66CFC06FA49B844BA3F22D04BF7A33718AE8AE0E8F",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726007862603,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "install/fixture.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "54BE3272666364E2B22F3BEE963CB7CF51EDF01AEC5CF9CC57A46FB41F9D2505",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726007857589,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "new-hash.txt",
+          "Kind": "File",
+          "Length": 64,
+          "Sha256": "A5E9FD60262BA98E827899414521275534A4EB631CF8872F6A204415DE082134",
+          "IdentityDigest": "E4FD2CDBC2031FD1D4515209611AC985ECCA5A8FD2A88555A2F4DDB503BC645C",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726007891756,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "old-hash.txt",
+          "Kind": "File",
+          "Length": 64,
+          "Sha256": "79E4BD67DA302683F91C638ED3B7C87B7A3CB75D4FD261033ACC6425EC403344",
+          "IdentityDigest": "7B9AFA0E5FFBF79A37C4B29C90034E625A1C199A539B3C68B58E710F1A801690",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726007882698,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "public.bin",
+          "Kind": "File",
+          "Length": 91,
+          "Sha256": "688860A5ECBEC07072250E7A54ABD1987E7B79BFAF9740777549713C5F7FBFF5",
+          "IdentityDigest": "ADC396501C9747F2C6A44EFFF95BE866967C9A0C73A64E3AC1BFC7E125E60928",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726007822399,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "update.spdup",
+          "Kind": "File",
+          "Length": 837,
+          "Sha256": "DD9F9213813FC754CF423E47348364E88D794C4C6921920AFD5CF3D0B792F2E6",
+          "IdentityDigest": "DE1E954FF69A904FDD6A141C312962FBBB2E9CCB78D008EBDC830F2C7C051DEF",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726008455721,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "wo27.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "C992885846FF880CDA34232056FD3B7845BDB4509F58D985986BBB533D23A864",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726007857589,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "wo28.marker",
+          "Kind": "File",
+          "Length": 25,
+          "Sha256": "D1101D5686FA73C4C5EB690F5138C0D0297019789C3703AF34F76282A050D8D8",
+          "IdentityDigest": "714A336DB4346C075228AF8CCAE6121FC2488689240CCADAF0E12C8729111329",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726012719341,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "1A102E7625FAD20CF0DF8938844B806CA8EE19487842979FA6CF0663C35F2C1D",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "12A8B8DB856AFF35F9982A50F6A66778DB7C842D16F4873FDAE351C154848542",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/backup",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "6BDB2A1FF13EB36EEC8D4C90C354ED6560FF23421165D8F9757DBC0DBA08F3F7",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/backup/app.txt",
+          "Kind": "File",
+          "Length": 4096,
+          "Sha256": "6896D9EA3F73A4434F5832BC65714E7D066F177373F36F34DC8A6F735DAA41B1",
+          "IdentityDigest": "AF55DBF531C281F57C61D2089850FD9E53FAEB1006BC260A72F3A50E1DAE6717",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726011762800,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/journal.json",
+          "Kind": "File",
+          "Length": 1105,
+          "Sha256": "A455596AE05B7548EF1714A655ECC148FA65BEDDD84C3F28742F22BA8AC3AF9C",
+          "IdentityDigest": "0AE8F102D1DAEEC4E8C00A5F0288B63AB42DECD0F28041988E3A36348187519F",
+          "AclDigest": "B99961EDC9E6B5924B595605D9ECFF17D181B8DDB52918426F89CEA1D6CCCAD4",
+          "LastWriteUtcTicks": 639311726012162478,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/journal.previous.json",
+          "Kind": "File",
+          "Length": 1055,
+          "Sha256": "FF248D085B41205AE44344F2F1D9AD8A7D27FE2E2DD5B135C83AE69A341019A6",
+          "IdentityDigest": "B5C41E1F4A8B0314005F7DB19EF76824DF95EEA2600DDC3BE4D41DE33226EFBF",
+          "AclDigest": "B99961EDC9E6B5924B595605D9ECFF17D181B8DDB52918426F89CEA1D6CCCAD4",
+          "LastWriteUtcTicks": 639311726012101865,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/package.spdup",
+          "Kind": "File",
+          "Length": 837,
+          "Sha256": "DD9F9213813FC754CF423E47348364E88D794C4C6921920AFD5CF3D0B792F2E6",
+          "IdentityDigest": "A8496CE89D304AA3E71036C323B9FF581B6C96403E4F8F298EA0B154988CB270",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726011471312,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/stage",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "1298214B17502D0A614C9F75CF10CAACD5F62FC2C243619C6466E2A69BE97788",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/stage/app.txt",
+          "Kind": "File",
+          "Length": 4096,
+          "Sha256": "D50650A0E0AC7F0B74212A83B75D27BB5609040A0CB79255C32E10B175E6FBFD",
+          "IdentityDigest": "44C61ACACD8BC70C317AE46F819FAB477DE3AAAC0EB3D91B7B62417267B3C909",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726011606268,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/update.lock",
+          "Kind": "File",
+          "Length": 0,
+          "Sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "IdentityDigest": "D207631FCE00999A0EB56DC167F7A023096EC663BC89AF7E89DB1D49BF46C769",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726010372243,
+          "Attributes": 32
+        }
+      ],
+      "AfterResume": [
+        {
+          "RelativePath": ".",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "D2A000ACF576E78BB132AA79769AA9AD195F7D67CE3AFB2640BA56F71E8731DA",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "fixture.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "EB6ADEC9C7000C0D1E7E40B069157E3AF3A371B9D82F8F1E254DE0DB7B883440",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726007678835,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "install",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "D7F41C7DC38903F525141F699E44242A9D612C033804DE828CB0407C534FCEDE",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "install/app.txt",
+          "Kind": "File",
+          "Length": 4096,
+          "Sha256": "6896D9EA3F73A4434F5832BC65714E7D066F177373F36F34DC8A6F735DAA41B1",
+          "IdentityDigest": "3D90318E73778FC276734C66CFC06FA49B844BA3F22D04BF7A33718AE8AE0E8F",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726007862603,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "install/fixture.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "54BE3272666364E2B22F3BEE963CB7CF51EDF01AEC5CF9CC57A46FB41F9D2505",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726007857589,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "new-hash.txt",
+          "Kind": "File",
+          "Length": 64,
+          "Sha256": "A5E9FD60262BA98E827899414521275534A4EB631CF8872F6A204415DE082134",
+          "IdentityDigest": "E4FD2CDBC2031FD1D4515209611AC985ECCA5A8FD2A88555A2F4DDB503BC645C",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726007891756,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "old-hash.txt",
+          "Kind": "File",
+          "Length": 64,
+          "Sha256": "79E4BD67DA302683F91C638ED3B7C87B7A3CB75D4FD261033ACC6425EC403344",
+          "IdentityDigest": "7B9AFA0E5FFBF79A37C4B29C90034E625A1C199A539B3C68B58E710F1A801690",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726007882698,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "public.bin",
+          "Kind": "File",
+          "Length": 91,
+          "Sha256": "688860A5ECBEC07072250E7A54ABD1987E7B79BFAF9740777549713C5F7FBFF5",
+          "IdentityDigest": "ADC396501C9747F2C6A44EFFF95BE866967C9A0C73A64E3AC1BFC7E125E60928",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726007822399,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "update.spdup",
+          "Kind": "File",
+          "Length": 837,
+          "Sha256": "DD9F9213813FC754CF423E47348364E88D794C4C6921920AFD5CF3D0B792F2E6",
+          "IdentityDigest": "DE1E954FF69A904FDD6A141C312962FBBB2E9CCB78D008EBDC830F2C7C051DEF",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726008455721,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "wo27.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "C992885846FF880CDA34232056FD3B7845BDB4509F58D985986BBB533D23A864",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726007857589,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "wo28.marker",
+          "Kind": "File",
+          "Length": 25,
+          "Sha256": "D1101D5686FA73C4C5EB690F5138C0D0297019789C3703AF34F76282A050D8D8",
+          "IdentityDigest": "714A336DB4346C075228AF8CCAE6121FC2488689240CCADAF0E12C8729111329",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726012719341,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "1A102E7625FAD20CF0DF8938844B806CA8EE19487842979FA6CF0663C35F2C1D",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "12A8B8DB856AFF35F9982A50F6A66778DB7C842D16F4873FDAE351C154848542",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/backup",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "6BDB2A1FF13EB36EEC8D4C90C354ED6560FF23421165D8F9757DBC0DBA08F3F7",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/backup/app.txt",
+          "Kind": "File",
+          "Length": 4096,
+          "Sha256": "6896D9EA3F73A4434F5832BC65714E7D066F177373F36F34DC8A6F735DAA41B1",
+          "IdentityDigest": "AF55DBF531C281F57C61D2089850FD9E53FAEB1006BC260A72F3A50E1DAE6717",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726011762800,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/journal.json",
+          "Kind": "File",
+          "Length": 1103,
+          "Sha256": "D7A7903BF785A764FD904AA4A742914DA3464586EDE10308E9223B64CB8053C4",
+          "IdentityDigest": "24C35BA785308B0065BC6D43942B06D7BCECBE44E515C6B2ECFE629B946A4894",
+          "AclDigest": "B99961EDC9E6B5924B595605D9ECFF17D181B8DDB52918426F89CEA1D6CCCAD4",
+          "LastWriteUtcTicks": 639311726051751357,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/journal.previous.json",
+          "Kind": "File",
+          "Length": 1103,
+          "Sha256": "4886BDA64473CFEEEA27D917DD88303AFCD9FAAAD28E1798DA8A10084F706CFF",
+          "IdentityDigest": "D2B9F5A1011CE28C55E48A11D54A75531747FD0FFE7132B1195F940BAF796A7D",
+          "AclDigest": "B99961EDC9E6B5924B595605D9ECFF17D181B8DDB52918426F89CEA1D6CCCAD4",
+          "LastWriteUtcTicks": 639311726051693596,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/package.spdup",
+          "Kind": "File",
+          "Length": 837,
+          "Sha256": "DD9F9213813FC754CF423E47348364E88D794C4C6921920AFD5CF3D0B792F2E6",
+          "IdentityDigest": "A8496CE89D304AA3E71036C323B9FF581B6C96403E4F8F298EA0B154988CB270",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726011471312,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/stage",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "1298214B17502D0A614C9F75CF10CAACD5F62FC2C243619C6466E2A69BE97788",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/stage/app.txt",
+          "Kind": "File",
+          "Length": 4096,
+          "Sha256": "D50650A0E0AC7F0B74212A83B75D27BB5609040A0CB79255C32E10B175E6FBFD",
+          "IdentityDigest": "44C61ACACD8BC70C317AE46F819FAB477DE3AAAC0EB3D91B7B62417267B3C909",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726011606268,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/update.lock",
+          "Kind": "File",
+          "Length": 0,
+          "Sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "IdentityDigest": "D207631FCE00999A0EB56DC167F7A023096EC663BC89AF7E89DB1D49BF46C769",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726010372243,
+          "Attributes": 32
+        }
+      ],
+      "ExcludedFiles": 0,
+      "RestartPreservedInventory": true,
+      "AtomicSnapshot": false
+    },
+    {
+      "Input": {
+        "Bytes": 1048576,
+        "State": "UpdatedVerified"
+      },
+      "Before": [
+        {
+          "RelativePath": ".",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "1832B815FF41326604EA5F5E244E840CFABEB09EADBA9A1D75A50B26C05C0744",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "fixture.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "B8A8B523E77D203080F71408BD1D81058B51EE878605CBD47290BFFA2E4B12DD",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726056059989,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "install",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "EF9CDA0C053FC3AEF81D0D2775740E99F3313803A584B6DE726E06FA64D5E370",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "install/app.txt",
+          "Kind": "File",
+          "Length": 1048576,
+          "Sha256": "1F763EA478EC75459ED5B2B86463A21EBFFE4C3CE8604D1E8C8CA7018F091AB1",
+          "IdentityDigest": "43E3FDC7CBB28FC32559A2C406E5D6B5943938C2824327D34AA060911D9739FC",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726061690914,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "install/fixture.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "00FC5F8A9DCBA73F476FCDB03BD4ACE5D6D143EAA8BF520FA72215188F26A388",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726056238598,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "new-hash.txt",
+          "Kind": "File",
+          "Length": 64,
+          "Sha256": "74FE9E3022CC51E2F28F3D2971E192C580FAD04B9B392927767BBC6C0DDABEB8",
+          "IdentityDigest": "B427E7BAF98097E0DA478B555796983AD9E68FF4C4DDBFC15A3D087E65DC7B84",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726056278829,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "old-hash.txt",
+          "Kind": "File",
+          "Length": 64,
+          "Sha256": "965E0C728D8C99DA6B90058BE66557CBD8C8342281143E0B3E68485976D94CA9",
+          "IdentityDigest": "EA32E96C75BEBB7E7C1396E5A17A9170B099475D80634737DA26063F5A4184E1",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726056278829,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "public.bin",
+          "Kind": "File",
+          "Length": 91,
+          "Sha256": "9375210B0560EBE5A9F87ABAECF45CBA3C1B26D58CA042567ABE043A4F2F284B",
+          "IdentityDigest": "763A6BF47E7FF0F03694C2ABD8AEACACBC6AF80153170FAD1DED2AE5859F7721",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726056198346,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "update.spdup",
+          "Kind": "File",
+          "Length": 1858,
+          "Sha256": "6B420FA42D343982FE8904F3E33ABF699A5DA97ADDDDC46F5E7F67298388F058",
+          "IdentityDigest": "FA66A753A7C91CC464B7EE532B9F4BA43066C2F2597D60D5F82FF5B686FCF2E4",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726056852035,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "wo27.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "C30F92AD1BCDCC1492DA9F10DF0618BE9CB659C038800423A36218ED14B22069",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726056238598,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "wo28.marker",
+          "Kind": "File",
+          "Length": 25,
+          "Sha256": "D1101D5686FA73C4C5EB690F5138C0D0297019789C3703AF34F76282A050D8D8",
+          "IdentityDigest": "3F65221BD482948404F29F07F4A476CEC9CEF8B90E37AF77EAFBE684EF226130",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726061532475,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "A5CCC6576BCD2881AB70B14186B675E9BEA5C824FDD290F2E89DD020FDA3337F",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "9AE30EBC471B7AC32183452A6AA0C347B277D9D43B7A6208638A9159572E1D08",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/backup",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "AAEB5F1028E8385690A000EDFBE1BE76D03906629FE2CD4FEE932025421131C3",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/backup/app.txt",
+          "Kind": "File",
+          "Length": 1048576,
+          "Sha256": "4E29AD18AB9F42D7C233500771A39D7C852B200BAF328FD00FBBE3FECEA1EB56",
+          "IdentityDigest": "71D7F3D9E7BC3A3035A5A8B75008A03263AFA6B6DCFED58B6849B790ADA4BB36",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726060501819,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/journal.json",
+          "Kind": "File",
+          "Length": 1111,
+          "Sha256": "64DC8E585D92265EFBD54F6F2260BF19EAB23E6484045C9569B85EA028E99B39",
+          "IdentityDigest": "E73F1A2993899A807CD91D589CF8B59DFD6C410D5639DA2CA69326FD147AA276",
+          "AclDigest": "B99961EDC9E6B5924B595605D9ECFF17D181B8DDB52918426F89CEA1D6CCCAD4",
+          "LastWriteUtcTicks": 639311726060976776,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/journal.previous.json",
+          "Kind": "File",
+          "Length": 1061,
+          "Sha256": "720DA8E669AF9D29764274DDEBF7C2230C72C7449D75367D191CD880409DD862",
+          "IdentityDigest": "A462EC67D8D4815F7283D3E5DE9260D1C965C071CF3BF1D9096E3A1F75519978",
+          "AclDigest": "B99961EDC9E6B5924B595605D9ECFF17D181B8DDB52918426F89CEA1D6CCCAD4",
+          "LastWriteUtcTicks": 639311726060898881,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/package.spdup",
+          "Kind": "File",
+          "Length": 1858,
+          "Sha256": "6B420FA42D343982FE8904F3E33ABF699A5DA97ADDDDC46F5E7F67298388F058",
+          "IdentityDigest": "A87F6E5EC903F627F7586C4E7F7BCDDA4DA89CD1EE20B1C603D7F15B2B16A9F4",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726059933784,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/stage",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "F1D0BC2DA2E5FBCF78640B726AF0EF92B5845A7D6A7B0ED1CE05F3D11BD3F475",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/stage/app.txt",
+          "Kind": "File",
+          "Length": 1048576,
+          "Sha256": "1F763EA478EC75459ED5B2B86463A21EBFFE4C3CE8604D1E8C8CA7018F091AB1",
+          "IdentityDigest": "454C6750AE5495BE77701FA12522C52FEC2446BED6606EEE6FA7C019DEDAD288",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726060149775,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/update.lock",
+          "Kind": "File",
+          "Length": 0,
+          "Sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "IdentityDigest": "1E9BB17F55F035E7E9192190A2CC74D41320DF04B040B5C75A67972A3A851323",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726058689016,
+          "Attributes": 32
+        }
+      ],
+      "AfterResume": [
+        {
+          "RelativePath": ".",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "1832B815FF41326604EA5F5E244E840CFABEB09EADBA9A1D75A50B26C05C0744",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "fixture.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "B8A8B523E77D203080F71408BD1D81058B51EE878605CBD47290BFFA2E4B12DD",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726056059989,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "install",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "EF9CDA0C053FC3AEF81D0D2775740E99F3313803A584B6DE726E06FA64D5E370",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "install/app.txt",
+          "Kind": "File",
+          "Length": 1048576,
+          "Sha256": "4E29AD18AB9F42D7C233500771A39D7C852B200BAF328FD00FBBE3FECEA1EB56",
+          "IdentityDigest": "43E3FDC7CBB28FC32559A2C406E5D6B5943938C2824327D34AA060911D9739FC",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726113701218,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "install/fixture.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "00FC5F8A9DCBA73F476FCDB03BD4ACE5D6D143EAA8BF520FA72215188F26A388",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726056238598,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "new-hash.txt",
+          "Kind": "File",
+          "Length": 64,
+          "Sha256": "74FE9E3022CC51E2F28F3D2971E192C580FAD04B9B392927767BBC6C0DDABEB8",
+          "IdentityDigest": "B427E7BAF98097E0DA478B555796983AD9E68FF4C4DDBFC15A3D087E65DC7B84",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726056278829,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "old-hash.txt",
+          "Kind": "File",
+          "Length": 64,
+          "Sha256": "965E0C728D8C99DA6B90058BE66557CBD8C8342281143E0B3E68485976D94CA9",
+          "IdentityDigest": "EA32E96C75BEBB7E7C1396E5A17A9170B099475D80634737DA26063F5A4184E1",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726056278829,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "public.bin",
+          "Kind": "File",
+          "Length": 91,
+          "Sha256": "9375210B0560EBE5A9F87ABAECF45CBA3C1B26D58CA042567ABE043A4F2F284B",
+          "IdentityDigest": "763A6BF47E7FF0F03694C2ABD8AEACACBC6AF80153170FAD1DED2AE5859F7721",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726056198346,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "update.spdup",
+          "Kind": "File",
+          "Length": 1858,
+          "Sha256": "6B420FA42D343982FE8904F3E33ABF699A5DA97ADDDDC46F5E7F67298388F058",
+          "IdentityDigest": "FA66A753A7C91CC464B7EE532B9F4BA43066C2F2597D60D5F82FF5B686FCF2E4",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726056852035,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "wo27.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "C30F92AD1BCDCC1492DA9F10DF0618BE9CB659C038800423A36218ED14B22069",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726056238598,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "wo28.marker",
+          "Kind": "File",
+          "Length": 25,
+          "Sha256": "D1101D5686FA73C4C5EB690F5138C0D0297019789C3703AF34F76282A050D8D8",
+          "IdentityDigest": "3F65221BD482948404F29F07F4A476CEC9CEF8B90E37AF77EAFBE684EF226130",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726061532475,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "A5CCC6576BCD2881AB70B14186B675E9BEA5C824FDD290F2E89DD020FDA3337F",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "9AE30EBC471B7AC32183452A6AA0C347B277D9D43B7A6208638A9159572E1D08",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/backup",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "AAEB5F1028E8385690A000EDFBE1BE76D03906629FE2CD4FEE932025421131C3",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/backup/app.txt",
+          "Kind": "File",
+          "Length": 1048576,
+          "Sha256": "4E29AD18AB9F42D7C233500771A39D7C852B200BAF328FD00FBBE3FECEA1EB56",
+          "IdentityDigest": "71D7F3D9E7BC3A3035A5A8B75008A03263AFA6B6DCFED58B6849B790ADA4BB36",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726060501819,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/journal.json",
+          "Kind": "File",
+          "Length": 1087,
+          "Sha256": "0066037B57EE439DCF69A6582E3ED47AFCB1FA53D796A2B126276C8D151A33DF",
+          "IdentityDigest": "BF1B4306D5A35638A8E180C7D1BFEB7C5EAB54C589BEC40E064C8B96BC9A6FA4",
+          "AclDigest": "B99961EDC9E6B5924B595605D9ECFF17D181B8DDB52918426F89CEA1D6CCCAD4",
+          "LastWriteUtcTicks": 639311726113811502,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/journal.previous.json",
+          "Kind": "File",
+          "Length": 1087,
+          "Sha256": "4D4184EBE3799B7DC9262FB294526464886507B6C8EAC4BF27709626BFF4B3F8",
+          "IdentityDigest": "FB2F8D51662A5CA46FFFB036CF5A6FA7C8BFF8BE5B72F5799C1561D4BDB4E8BD",
+          "AclDigest": "B99961EDC9E6B5924B595605D9ECFF17D181B8DDB52918426F89CEA1D6CCCAD4",
+          "LastWriteUtcTicks": 639311726113762075,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/package.spdup",
+          "Kind": "File",
+          "Length": 1858,
+          "Sha256": "6B420FA42D343982FE8904F3E33ABF699A5DA97ADDDDC46F5E7F67298388F058",
+          "IdentityDigest": "A87F6E5EC903F627F7586C4E7F7BCDDA4DA89CD1EE20B1C603D7F15B2B16A9F4",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726059933784,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/stage",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "F1D0BC2DA2E5FBCF78640B726AF0EF92B5845A7D6A7B0ED1CE05F3D11BD3F475",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/stage/app.txt",
+          "Kind": "File",
+          "Length": 1048576,
+          "Sha256": "1F763EA478EC75459ED5B2B86463A21EBFFE4C3CE8604D1E8C8CA7018F091AB1",
+          "IdentityDigest": "454C6750AE5495BE77701FA12522C52FEC2446BED6606EEE6FA7C019DEDAD288",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726060149775,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/update.lock",
+          "Kind": "File",
+          "Length": 0,
+          "Sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "IdentityDigest": "1E9BB17F55F035E7E9192190A2CC74D41320DF04B040B5C75A67972A3A851323",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726058689016,
+          "Attributes": 32
+        }
+      ],
+      "ExcludedFiles": 0,
+      "RestartPreservedInventory": true,
+      "AtomicSnapshot": false
+    },
+    {
+      "Input": {
+        "Bytes": 16777216,
+        "State": "UnknownContent"
+      },
+      "Before": [
+        {
+          "RelativePath": ".",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "C1019951A6B253E7CCC28A7FA531269A8F8AE64B2AEC86D29F92DD24CC8869C8",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "fixture.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "B3E70C3463CCDC5CA8D9E19D318A8D52A6865C3C9B25704A5BEF322485FCA063",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726118202217,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "install",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "5C13B15BB407FBA27CAA4623998807D6E1010F88EF177EFE93E2EEB75E928B7C",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "install/app.txt",
+          "Kind": "File",
+          "Length": 16777216,
+          "Sha256": "A7FB21BB0099B7781DBC880EEDDE104D0BA77C55F299763A5C78505FCB131A0E",
+          "IdentityDigest": "4B2256ACAF41C41445B282FD0CBF48A2BF67F5D00CB32E3AE1C352AC74911C39",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726126472451,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "install/fixture.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "F0C39EE73586E84A330D8AB507D6FDB03196FB641A136A08ABC373661EFDD231",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726118500085,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "new-hash.txt",
+          "Kind": "File",
+          "Length": 64,
+          "Sha256": "6716B86B046C6691D88BEF1A8967A0A0033FD5C2DCF0A85EAC09DF4E952403EC",
+          "IdentityDigest": "D25E84469069EE90A39C40C769A3E767383F17E2E90C4755DFA7A5725E5E54A2",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726118818107,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "old-hash.txt",
+          "Kind": "File",
+          "Length": 64,
+          "Sha256": "B6EE3DAD738FFF1C9ECCCFC79584E25CBF59DA2ACE2E0CBD64C2339830FCC159",
+          "IdentityDigest": "351413980ADB5E246449C9BCC13DB143871E3146432827C2114CC467159C0207",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726118699212,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "public.bin",
+          "Kind": "File",
+          "Length": 91,
+          "Sha256": "E6C1AFFF6598927D351619EE8574FDEACD4413C04467CE89B3524FDDFBD306C4",
+          "IdentityDigest": "397ED2532C2E260021B38585F41306D0181F953F509178416DBCF0AF7E04CB3F",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726118328853,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "update.spdup",
+          "Kind": "File",
+          "Length": 17137,
+          "Sha256": "0E652219098884BAD85AB15503F2483EED10994B1C32D981A91CED24BA763177",
+          "IdentityDigest": "5EB8E198C5496EC311E774ABAF17E258A0073E1C2BE613158A20A777C374454B",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726119630075,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "wo27.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "E30C825D0E8E268C14E96C295C70704856E8320C9F77CFED5C1CF3A47A1CA881",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726118479955,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "wo28.marker",
+          "Kind": "File",
+          "Length": 25,
+          "Sha256": "D1101D5686FA73C4C5EB690F5138C0D0297019789C3703AF34F76282A050D8D8",
+          "IdentityDigest": "8DAF51974B1F71376EE4725009552CEF7FCFF1A0D141AB1EAB1803C1F16F1688",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726126391364,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "D48A92BBBA56A69D4F5C3412EEE1B95B68BF47E9817259085CD19451A3A80D36",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "913A4505B05D6C1DA160A38BA856650381BABC99C6B17A2232D4551429AFA668",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/backup",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "BA53EA696A71C6B711379D59FD9FA7343BF7466671C688152F52ADCB3C055A58",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/backup/app.txt",
+          "Kind": "File",
+          "Length": 16777216,
+          "Sha256": "E6C907C2D418FA03118465063701B759C4F0F0A9D70AE90AA7CEC552E2D33931",
+          "IdentityDigest": "B42B7317944B4D3785A3EE475F58AB6020793870D0FC2C71610085867833EBB0",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726124935013,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/journal.json",
+          "Kind": "File",
+          "Length": 1113,
+          "Sha256": "0CFB2FF75D7C2F17B8192925E5E36856F6FBE0D3A0C67769CC1CC76B71686D05",
+          "IdentityDigest": "135B57DBACA07E525B6A3863B626273F6088E84876DDD6A3032219C73BDD5148",
+          "AclDigest": "B99961EDC9E6B5924B595605D9ECFF17D181B8DDB52918426F89CEA1D6CCCAD4",
+          "LastWriteUtcTicks": 639311726125809869,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/journal.previous.json",
+          "Kind": "File",
+          "Length": 1063,
+          "Sha256": "862F1B09E7F53C05F86777872A53D27332ACBE45E4642D0B5F24ED8E87668680",
+          "IdentityDigest": "5728AAC23AF869E6BB10824FA777E35F666EBA4514FB30A5E39A640AFD03E553",
+          "AclDigest": "B99961EDC9E6B5924B595605D9ECFF17D181B8DDB52918426F89CEA1D6CCCAD4",
+          "LastWriteUtcTicks": 639311726125763400,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/package.spdup",
+          "Kind": "File",
+          "Length": 17137,
+          "Sha256": "0E652219098884BAD85AB15503F2483EED10994B1C32D981A91CED24BA763177",
+          "IdentityDigest": "9FE0F4BA9252F314F56A60FDDE25331B8C0CB65FAEC4CFC730AED8349C59B6F9",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726123032467,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/stage",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "5A2BDDFCC1FA64CEC70F7C983977FF92B9213D88EA3D029D762A2E3BE3AA5E45",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/stage/app.txt",
+          "Kind": "File",
+          "Length": 16777216,
+          "Sha256": "D578DB1458827855CA402AD0A78C5BB8003D9302409D547F814F0A690C10DADD",
+          "IdentityDigest": "CB340DAE631A1E092D4CAC8F227E5211A3922B10F31A2AD526634C0986FA0A55",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726123865636,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/update.lock",
+          "Kind": "File",
+          "Length": 0,
+          "Sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "IdentityDigest": "8FF37D22A759FB6C60A4ACA57776ECB4C78FA5128CEE4E3834E5D0614AABE70B",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726121713331,
+          "Attributes": 32
+        }
+      ],
+      "AfterResume": [
+        {
+          "RelativePath": ".",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "C1019951A6B253E7CCC28A7FA531269A8F8AE64B2AEC86D29F92DD24CC8869C8",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "fixture.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "B3E70C3463CCDC5CA8D9E19D318A8D52A6865C3C9B25704A5BEF322485FCA063",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726118202217,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "install",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "5C13B15BB407FBA27CAA4623998807D6E1010F88EF177EFE93E2EEB75E928B7C",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "install/app.txt",
+          "Kind": "File",
+          "Length": 16777216,
+          "Sha256": "A7FB21BB0099B7781DBC880EEDDE104D0BA77C55F299763A5C78505FCB131A0E",
+          "IdentityDigest": "4B2256ACAF41C41445B282FD0CBF48A2BF67F5D00CB32E3AE1C352AC74911C39",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726126472451,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "install/fixture.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "F0C39EE73586E84A330D8AB507D6FDB03196FB641A136A08ABC373661EFDD231",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726118500085,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "new-hash.txt",
+          "Kind": "File",
+          "Length": 64,
+          "Sha256": "6716B86B046C6691D88BEF1A8967A0A0033FD5C2DCF0A85EAC09DF4E952403EC",
+          "IdentityDigest": "D25E84469069EE90A39C40C769A3E767383F17E2E90C4755DFA7A5725E5E54A2",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726118818107,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "old-hash.txt",
+          "Kind": "File",
+          "Length": 64,
+          "Sha256": "B6EE3DAD738FFF1C9ECCCFC79584E25CBF59DA2ACE2E0CBD64C2339830FCC159",
+          "IdentityDigest": "351413980ADB5E246449C9BCC13DB143871E3146432827C2114CC467159C0207",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726118699212,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "public.bin",
+          "Kind": "File",
+          "Length": 91,
+          "Sha256": "E6C1AFFF6598927D351619EE8574FDEACD4413C04467CE89B3524FDDFBD306C4",
+          "IdentityDigest": "397ED2532C2E260021B38585F41306D0181F953F509178416DBCF0AF7E04CB3F",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726118328853,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "update.spdup",
+          "Kind": "File",
+          "Length": 17137,
+          "Sha256": "0E652219098884BAD85AB15503F2483EED10994B1C32D981A91CED24BA763177",
+          "IdentityDigest": "5EB8E198C5496EC311E774ABAF17E258A0073E1C2BE613158A20A777C374454B",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726119630075,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "wo27.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "E30C825D0E8E268C14E96C295C70704856E8320C9F77CFED5C1CF3A47A1CA881",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726118479955,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "wo28.marker",
+          "Kind": "File",
+          "Length": 25,
+          "Sha256": "D1101D5686FA73C4C5EB690F5138C0D0297019789C3703AF34F76282A050D8D8",
+          "IdentityDigest": "8DAF51974B1F71376EE4725009552CEF7FCFF1A0D141AB1EAB1803C1F16F1688",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726126391364,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "D48A92BBBA56A69D4F5C3412EEE1B95B68BF47E9817259085CD19451A3A80D36",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "913A4505B05D6C1DA160A38BA856650381BABC99C6B17A2232D4551429AFA668",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/backup",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "BA53EA696A71C6B711379D59FD9FA7343BF7466671C688152F52ADCB3C055A58",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/backup/app.txt",
+          "Kind": "File",
+          "Length": 16777216,
+          "Sha256": "E6C907C2D418FA03118465063701B759C4F0F0A9D70AE90AA7CEC552E2D33931",
+          "IdentityDigest": "B42B7317944B4D3785A3EE475F58AB6020793870D0FC2C71610085867833EBB0",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726124935013,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/journal.json",
+          "Kind": "File",
+          "Length": 1113,
+          "Sha256": "0CFB2FF75D7C2F17B8192925E5E36856F6FBE0D3A0C67769CC1CC76B71686D05",
+          "IdentityDigest": "135B57DBACA07E525B6A3863B626273F6088E84876DDD6A3032219C73BDD5148",
+          "AclDigest": "B99961EDC9E6B5924B595605D9ECFF17D181B8DDB52918426F89CEA1D6CCCAD4",
+          "LastWriteUtcTicks": 639311726125809869,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/journal.previous.json",
+          "Kind": "File",
+          "Length": 1063,
+          "Sha256": "862F1B09E7F53C05F86777872A53D27332ACBE45E4642D0B5F24ED8E87668680",
+          "IdentityDigest": "5728AAC23AF869E6BB10824FA777E35F666EBA4514FB30A5E39A640AFD03E553",
+          "AclDigest": "B99961EDC9E6B5924B595605D9ECFF17D181B8DDB52918426F89CEA1D6CCCAD4",
+          "LastWriteUtcTicks": 639311726125763400,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/package.spdup",
+          "Kind": "File",
+          "Length": 17137,
+          "Sha256": "0E652219098884BAD85AB15503F2483EED10994B1C32D981A91CED24BA763177",
+          "IdentityDigest": "9FE0F4BA9252F314F56A60FDDE25331B8C0CB65FAEC4CFC730AED8349C59B6F9",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726123032467,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/stage",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "5A2BDDFCC1FA64CEC70F7C983977FF92B9213D88EA3D029D762A2E3BE3AA5E45",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/stage/app.txt",
+          "Kind": "File",
+          "Length": 16777216,
+          "Sha256": "D578DB1458827855CA402AD0A78C5BB8003D9302409D547F814F0A690C10DADD",
+          "IdentityDigest": "CB340DAE631A1E092D4CAC8F227E5211A3922B10F31A2AD526634C0986FA0A55",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726123865636,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/update.lock",
+          "Kind": "File",
+          "Length": 0,
+          "Sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "IdentityDigest": "8FF37D22A759FB6C60A4ACA57776ECB4C78FA5128CEE4E3834E5D0614AABE70B",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726121713331,
+          "Attributes": 32
+        }
+      ],
+      "ExcludedFiles": 0,
+      "RestartPreservedInventory": true,
+      "AtomicSnapshot": false
+    },
+    {
+      "Input": {
+        "Bytes": 67108864,
+        "State": "UnknownContent"
+      },
+      "Before": [
+        {
+          "RelativePath": ".",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "A4B8BD9CC62DE0D7C6E1C153C34E493098F2D248E7F10EFD452F83559B376B24",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "fixture.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "1947A019B2EC4B8C931DDF5101876DAA10123457B6A44E5EAA899F80E8BB785E",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726194813581,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "install",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "68FF1BCEDF882818AC0F7676DD1C4183AC394EC6DB1770B238D7D357744AC3E1",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "install/app.txt",
+          "Kind": "File",
+          "Length": 67108864,
+          "Sha256": "45758187DBC19E24F0D76CA9641D019D1490525DE9D1BE12C4E715CA2A20D871",
+          "IdentityDigest": "7B742FFD28384EF333E6EF56E9683BD764E1587C74655533F7A481629B18210D",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726212669284,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "install/fixture.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "618232F9FFA63BC6D5D6266B6568B3D3E7AB4E0AF6394E4DE7EE416871C5E1DA",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726195325710,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "new-hash.txt",
+          "Kind": "File",
+          "Length": 64,
+          "Sha256": "846F968C338024AA2D6A7E9048BC1CE901BE5014E2948916A8EFB151673F69D3",
+          "IdentityDigest": "576E624423CC048C1469CE76D67A24280AA4DC1CDC87745A696BCE037D117098",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726197028772,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "old-hash.txt",
+          "Kind": "File",
+          "Length": 64,
+          "Sha256": "3EF179C940F16ADBB57EA4336A273B3491F5F327F15AE9889AF9CDBB9DFCED79",
+          "IdentityDigest": "FC2B9B1DDA34BD81A9BE64B857E960BB15E2D413E5CF937ABC0E7A3C9CF5C7FC",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726196593671,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "public.bin",
+          "Kind": "File",
+          "Length": 91,
+          "Sha256": "20CB123154A1C12BB2B45AB5FCA7433E576C6E6BAD753244536BFDA83DCAEEC6",
+          "IdentityDigest": "61861D0F2574A7FB64B5BC57394512F9F225446F05AE9E1F617589D4628EBFDF",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726194947916,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "update.spdup",
+          "Kind": "File",
+          "Length": 66067,
+          "Sha256": "3E058EED2F31884B3B433C146456B1DA0C8F4461EDA6A2E89561D3CDE6AA2CC2",
+          "IdentityDigest": "B576DF9D7F480B956CEE33BB51CD7E63AAC0E3BDF681C098BA5483BE478EA2E2",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726198306675,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "wo27.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "863FF4882D7726D96489BB796768E6FC6FC049A2CD7411F1E92E354B9CD884D6",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726195325710,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "wo28.marker",
+          "Kind": "File",
+          "Length": 25,
+          "Sha256": "D1101D5686FA73C4C5EB690F5138C0D0297019789C3703AF34F76282A050D8D8",
+          "IdentityDigest": "21CF2DF2481AFF1CBB2E05A672CC2322F1918E096B5396398973BD58175A04D2",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726212437948,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "68C8C77292A0FB1456A325FDD76503E78823C9987F56E4E1243EEA6592F349DA",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "61672443B24BACF0CFD53F49C980894CB0A252FA6E33AC6EC576E9705C97B893",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/backup",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "CF43197363ED745FACB4369C8D20F1BA490E08F70D4E6CDE26F27CB148AD8BEB",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/backup/app.txt",
+          "Kind": "File",
+          "Length": 67108864,
+          "Sha256": "DBFACA2662CB70B69DFEFD5AC95D1F54A73663092D46CEFDC9609DC695A12C98",
+          "IdentityDigest": "F84E97B740E827B62329B400A7F345008C7F6472662979014CD4161E87313121",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726209786817,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/journal.json",
+          "Kind": "File",
+          "Length": 1113,
+          "Sha256": "F068702D301DBF937F4489F240753717CBFC167752AEFE702819E0CEF6EBE12C",
+          "IdentityDigest": "47E96BDFFAD5D5FD47625C523EDF085DFBD4DAEA503D431B9026E7553A389232",
+          "AclDigest": "B99961EDC9E6B5924B595605D9ECFF17D181B8DDB52918426F89CEA1D6CCCAD4",
+          "LastWriteUtcTicks": 639311726211854891,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/journal.previous.json",
+          "Kind": "File",
+          "Length": 1063,
+          "Sha256": "258677C6E6949699440F4603FC1B754B1D12AE9AB8B8E1608CA133B844F08F51",
+          "IdentityDigest": "8EE44F4FE8D0B68717F7243B834DF55D7A46BE50CA2AB3630D74B25A990AD391",
+          "AclDigest": "B99961EDC9E6B5924B595605D9ECFF17D181B8DDB52918426F89CEA1D6CCCAD4",
+          "LastWriteUtcTicks": 639311726211814613,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/package.spdup",
+          "Kind": "File",
+          "Length": 66067,
+          "Sha256": "3E058EED2F31884B3B433C146456B1DA0C8F4461EDA6A2E89561D3CDE6AA2CC2",
+          "IdentityDigest": "3B02A039A59B0F97BF380AC0186A7975C749713909A5516B2515BE48766BF532",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726202675582,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/stage",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "369C6461CAFEA80A1073F28EA198C079542732ADB075B4DA3CE7389E9C147EE9",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/stage/app.txt",
+          "Kind": "File",
+          "Length": 67108864,
+          "Sha256": "0F8D1B2C1CB150B55B0C4CB224D11427401D0E748CA5A2666C6B1B1D508E7794",
+          "IdentityDigest": "FA324297CEBC2B8AC9E0CEEDDBBDEE2888CD1B2C0E53B36F61079E42C52D0D61",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726205807024,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/update.lock",
+          "Kind": "File",
+          "Length": 0,
+          "Sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "IdentityDigest": "97A2286603B0DBCC171B4003187556BCA7AFD720F23EA66603486BD0FEC5193A",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726201088365,
+          "Attributes": 32
+        }
+      ],
+      "AfterResume": [
+        {
+          "RelativePath": ".",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "A4B8BD9CC62DE0D7C6E1C153C34E493098F2D248E7F10EFD452F83559B376B24",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "fixture.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "1947A019B2EC4B8C931DDF5101876DAA10123457B6A44E5EAA899F80E8BB785E",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726194813581,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "install",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "68FF1BCEDF882818AC0F7676DD1C4183AC394EC6DB1770B238D7D357744AC3E1",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "install/app.txt",
+          "Kind": "File",
+          "Length": 67108864,
+          "Sha256": "45758187DBC19E24F0D76CA9641D019D1490525DE9D1BE12C4E715CA2A20D871",
+          "IdentityDigest": "7B742FFD28384EF333E6EF56E9683BD764E1587C74655533F7A481629B18210D",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726212669284,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "install/fixture.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "618232F9FFA63BC6D5D6266B6568B3D3E7AB4E0AF6394E4DE7EE416871C5E1DA",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726195325710,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "new-hash.txt",
+          "Kind": "File",
+          "Length": 64,
+          "Sha256": "846F968C338024AA2D6A7E9048BC1CE901BE5014E2948916A8EFB151673F69D3",
+          "IdentityDigest": "576E624423CC048C1469CE76D67A24280AA4DC1CDC87745A696BCE037D117098",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726197028772,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "old-hash.txt",
+          "Kind": "File",
+          "Length": 64,
+          "Sha256": "3EF179C940F16ADBB57EA4336A273B3491F5F327F15AE9889AF9CDBB9DFCED79",
+          "IdentityDigest": "FC2B9B1DDA34BD81A9BE64B857E960BB15E2D413E5CF937ABC0E7A3C9CF5C7FC",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726196593671,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "public.bin",
+          "Kind": "File",
+          "Length": 91,
+          "Sha256": "20CB123154A1C12BB2B45AB5FCA7433E576C6E6BAD753244536BFDA83DCAEEC6",
+          "IdentityDigest": "61861D0F2574A7FB64B5BC57394512F9F225446F05AE9E1F617589D4628EBFDF",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726194947916,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "update.spdup",
+          "Kind": "File",
+          "Length": 66067,
+          "Sha256": "3E058EED2F31884B3B433C146456B1DA0C8F4461EDA6A2E89561D3CDE6AA2CC2",
+          "IdentityDigest": "B576DF9D7F480B956CEE33BB51CD7E63AAC0E3BDF681C098BA5483BE478EA2E2",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726198306675,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "wo27.marker",
+          "Kind": "File",
+          "Length": 19,
+          "Sha256": "096D84912F7A62492F0DD1F3FE4137D104CCF9DF92AF1C9EA955D59893DFE861",
+          "IdentityDigest": "863FF4882D7726D96489BB796768E6FC6FC049A2CD7411F1E92E354B9CD884D6",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726195325710,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "wo28.marker",
+          "Kind": "File",
+          "Length": 25,
+          "Sha256": "D1101D5686FA73C4C5EB690F5138C0D0297019789C3703AF34F76282A050D8D8",
+          "IdentityDigest": "21CF2DF2481AFF1CBB2E05A672CC2322F1918E096B5396398973BD58175A04D2",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726212437948,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "68C8C77292A0FB1456A325FDD76503E78823C9987F56E4E1243EEA6592F349DA",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "61672443B24BACF0CFD53F49C980894CB0A252FA6E33AC6EC576E9705C97B893",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/backup",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "CF43197363ED745FACB4369C8D20F1BA490E08F70D4E6CDE26F27CB148AD8BEB",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/backup/app.txt",
+          "Kind": "File",
+          "Length": 67108864,
+          "Sha256": "DBFACA2662CB70B69DFEFD5AC95D1F54A73663092D46CEFDC9609DC695A12C98",
+          "IdentityDigest": "F84E97B740E827B62329B400A7F345008C7F6472662979014CD4161E87313121",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726209786817,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/journal.json",
+          "Kind": "File",
+          "Length": 1113,
+          "Sha256": "F068702D301DBF937F4489F240753717CBFC167752AEFE702819E0CEF6EBE12C",
+          "IdentityDigest": "47E96BDFFAD5D5FD47625C523EDF085DFBD4DAEA503D431B9026E7553A389232",
+          "AclDigest": "B99961EDC9E6B5924B595605D9ECFF17D181B8DDB52918426F89CEA1D6CCCAD4",
+          "LastWriteUtcTicks": 639311726211854891,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/journal.previous.json",
+          "Kind": "File",
+          "Length": 1063,
+          "Sha256": "258677C6E6949699440F4603FC1B754B1D12AE9AB8B8E1608CA133B844F08F51",
+          "IdentityDigest": "8EE44F4FE8D0B68717F7243B834DF55D7A46BE50CA2AB3630D74B25A990AD391",
+          "AclDigest": "B99961EDC9E6B5924B595605D9ECFF17D181B8DDB52918426F89CEA1D6CCCAD4",
+          "LastWriteUtcTicks": 639311726211814613,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/package.spdup",
+          "Kind": "File",
+          "Length": 66067,
+          "Sha256": "3E058EED2F31884B3B433C146456B1DA0C8F4461EDA6A2E89561D3CDE6AA2CC2",
+          "IdentityDigest": "3B02A039A59B0F97BF380AC0186A7975C749713909A5516B2515BE48766BF532",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726202675582,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/stage",
+          "Kind": "Directory",
+          "Length": 0,
+          "Sha256": "",
+          "IdentityDigest": "369C6461CAFEA80A1073F28EA198C079542732ADB075B4DA3CE7389E9C147EE9",
+          "AclDigest": "3AC69529B49FDF35ABF51E40810541A05029B3FDDA4248941EA3E2911441128B",
+          "LastWriteUtcTicks": 0,
+          "Attributes": 0
+        },
+        {
+          "RelativePath": "work/tx-<FIXTURE_ID>/stage/app.txt",
+          "Kind": "File",
+          "Length": 67108864,
+          "Sha256": "0F8D1B2C1CB150B55B0C4CB224D11427401D0E748CA5A2666C6B1B1D508E7794",
+          "IdentityDigest": "FA324297CEBC2B8AC9E0CEEDDBBDEE2888CD1B2C0E53B36F61079E42C52D0D61",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726205807024,
+          "Attributes": 32
+        },
+        {
+          "RelativePath": "work/update.lock",
+          "Kind": "File",
+          "Length": 0,
+          "Sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+          "IdentityDigest": "97A2286603B0DBCC171B4003187556BCA7AFD720F23EA66603486BD0FEC5193A",
+          "AclDigest": "32E52BEEBE62E531DF417B69C55F4D3F0F842FE838D6A676EACDB2C3C93C751D",
+          "LastWriteUtcTicks": 639311726201088365,
+          "Attributes": 32
+        }
+      ],
+      "ExcludedFiles": 0,
+      "RestartPreservedInventory": true,
+      "AtomicSnapshot": false
+    }
+  ]
+}

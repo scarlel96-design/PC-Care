@@ -1,0 +1,3414 @@
+{
+  "BuildSource": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+  "Environment": "Windows; complete baseline/current engine copies; same synthetic signed history; strictAcl=false",
+  "Command": "./scripts/wo27-history-comparison.ps1 -Wo29Experiment",
+  "ExitCode": 0,
+  "Schedule": "ABBA per non-4096 size; ABBA x 3 at 4096. Sequential fresh processes. Per-row HEAD is not build provenance.",
+  "Rows": [
+    {
+      "Sequence": 1,
+      "Transactions": 0,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": false,
+          "State": "InstallationUnattested",
+          "Code": "INSTALLATION-NOT-ATTESTED",
+          "Transactions": 0,
+          "Files": 0,
+          "RetainedDirectoryHandles": 0,
+          "ReusedDirectoryHandles": 0,
+          "RetainedFileHandles": 0
+        },
+        "ElapsedMs": 78.7771,
+        "CpuMs": 62.5,
+        "AllocatedBytes": 37184,
+        "PeakSampledHandles": 243,
+        "HandlesBefore": 214,
+        "HandlesAfter": 243,
+        "PeakSampledWorkingSetBytes": 37789696,
+        "Phases": [
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 12.3358,
+            "AllocatedBytes": 584
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 2,
+      "Transactions": 0,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": false,
+          "State": "InstallationUnattested",
+          "Code": "INSTALLATION-NOT-ATTESTED",
+          "Transactions": 0,
+          "Files": 0,
+          "RetainedDirectoryHandles": 0,
+          "ReusedDirectoryHandles": 0,
+          "RetainedFileHandles": 0
+        },
+        "ElapsedMs": 74.1085,
+        "CpuMs": 109.375,
+        "AllocatedBytes": 21840,
+        "PeakSampledHandles": 242,
+        "HandlesBefore": 214,
+        "HandlesAfter": 243,
+        "PeakSampledWorkingSetBytes": 37531648,
+        "Phases": [
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 11.4918,
+            "AllocatedBytes": 1688
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 3,
+      "Transactions": 0,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": false,
+          "State": "InstallationUnattested",
+          "Code": "INSTALLATION-NOT-ATTESTED",
+          "Transactions": 0,
+          "Files": 0,
+          "RetainedDirectoryHandles": 0,
+          "ReusedDirectoryHandles": 0,
+          "RetainedFileHandles": 0
+        },
+        "ElapsedMs": 76.6701,
+        "CpuMs": 78.125,
+        "AllocatedBytes": 27016,
+        "PeakSampledHandles": 240,
+        "HandlesBefore": 214,
+        "HandlesAfter": 243,
+        "PeakSampledWorkingSetBytes": 37482496,
+        "Phases": [
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 10.9636,
+            "AllocatedBytes": 1688
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 4,
+      "Transactions": 0,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": false,
+          "State": "InstallationUnattested",
+          "Code": "INSTALLATION-NOT-ATTESTED",
+          "Transactions": 0,
+          "Files": 0,
+          "RetainedDirectoryHandles": 0,
+          "ReusedDirectoryHandles": 0,
+          "RetainedFileHandles": 0
+        },
+        "ElapsedMs": 73.3609,
+        "CpuMs": 62.5,
+        "AllocatedBytes": 34088,
+        "PeakSampledHandles": 240,
+        "HandlesBefore": 214,
+        "HandlesAfter": 243,
+        "PeakSampledWorkingSetBytes": 37654528,
+        "Phases": [
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 11.5113,
+            "AllocatedBytes": 584
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 5,
+      "Transactions": 1,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 1,
+          "Files": 1,
+          "RetainedDirectoryHandles": 12,
+          "ReusedDirectoryHandles": 166,
+          "RetainedFileHandles": 4
+        },
+        "ElapsedMs": 274.1217,
+        "CpuMs": 250,
+        "AllocatedBytes": 2553696,
+        "PeakSampledHandles": 284,
+        "HandlesBefore": 214,
+        "HandlesAfter": 268,
+        "PeakSampledWorkingSetBytes": 46030848,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 660,
+            "ElapsedMs": 43.8568,
+            "AllocatedBytes": 1013616
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 9,
+            "ElapsedMs": 24.5374,
+            "AllocatedBytes": 519328
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 14,
+            "ElapsedMs": 10.4912,
+            "AllocatedBytes": 252688
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 17.405,
+            "AllocatedBytes": 511136
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 1,
+            "ElapsedMs": 0.251,
+            "AllocatedBytes": 8376
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 1,
+            "ElapsedMs": 1.5099,
+            "AllocatedBytes": 4912
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 1,
+            "ElapsedMs": 14.6644,
+            "AllocatedBytes": 409656
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 217.5239,
+            "AllocatedBytes": 2496184
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 6,
+      "Transactions": 1,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 1,
+          "Files": 1,
+          "RetainedDirectoryHandles": 12,
+          "ReusedDirectoryHandles": 166,
+          "RetainedFileHandles": 4
+        },
+        "ElapsedMs": 280.9843,
+        "CpuMs": 281.25,
+        "AllocatedBytes": 1832976,
+        "PeakSampledHandles": 284,
+        "HandlesBefore": 214,
+        "HandlesAfter": 268,
+        "PeakSampledWorkingSetBytes": 45441024,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 660,
+            "ElapsedMs": 43.3698,
+            "AllocatedBytes": 290256
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 9,
+            "ElapsedMs": 23.4057,
+            "AllocatedBytes": 197104
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 14,
+            "ElapsedMs": 10.3426,
+            "AllocatedBytes": 79520
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 18.0638,
+            "AllocatedBytes": 436608
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 1,
+            "ElapsedMs": 0.2657,
+            "AllocatedBytes": 8376
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 1,
+            "ElapsedMs": 1.5765,
+            "AllocatedBytes": 4912
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 1,
+            "ElapsedMs": 14.697,
+            "AllocatedBytes": 251832
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 223.457,
+            "AllocatedBytes": 1772008
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 7,
+      "Transactions": 1,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 1,
+          "Files": 1,
+          "RetainedDirectoryHandles": 12,
+          "ReusedDirectoryHandles": 166,
+          "RetainedFileHandles": 4
+        },
+        "ElapsedMs": 296.883,
+        "CpuMs": 453.125,
+        "AllocatedBytes": 1823960,
+        "PeakSampledHandles": 285,
+        "HandlesBefore": 214,
+        "HandlesAfter": 268,
+        "PeakSampledWorkingSetBytes": 45658112,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 660,
+            "ElapsedMs": 49.965,
+            "AllocatedBytes": 290256
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 9,
+            "ElapsedMs": 28.2229,
+            "AllocatedBytes": 197104
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 14,
+            "ElapsedMs": 12.672,
+            "AllocatedBytes": 79520
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 17.1512,
+            "AllocatedBytes": 436608
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 1,
+            "ElapsedMs": 0.2988,
+            "AllocatedBytes": 8376
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 1,
+            "ElapsedMs": 1.8944,
+            "AllocatedBytes": 4912
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 1,
+            "ElapsedMs": 16.0074,
+            "AllocatedBytes": 251832
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 240.2092,
+            "AllocatedBytes": 1760176
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 8,
+      "Transactions": 1,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 1,
+          "Files": 1,
+          "RetainedDirectoryHandles": 12,
+          "ReusedDirectoryHandles": 166,
+          "RetainedFileHandles": 4
+        },
+        "ElapsedMs": 302.994,
+        "CpuMs": 296.875,
+        "AllocatedBytes": 2611944,
+        "PeakSampledHandles": 283,
+        "HandlesBefore": 214,
+        "HandlesAfter": 268,
+        "PeakSampledWorkingSetBytes": 46641152,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 660,
+            "ElapsedMs": 50.1259,
+            "AllocatedBytes": 1013616
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 9,
+            "ElapsedMs": 27.6898,
+            "AllocatedBytes": 519328
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 14,
+            "ElapsedMs": 10.9047,
+            "AllocatedBytes": 252688
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 15.6482,
+            "AllocatedBytes": 511136
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 1,
+            "ElapsedMs": 0.2595,
+            "AllocatedBytes": 8376
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 1,
+            "ElapsedMs": 1.5987,
+            "AllocatedBytes": 4912
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 1,
+            "ElapsedMs": 16.0528,
+            "AllocatedBytes": 409656
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 235.6018,
+            "AllocatedBytes": 2544736
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 9,
+      "Transactions": 10,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 10,
+          "Files": 1,
+          "RetainedDirectoryHandles": 21,
+          "ReusedDirectoryHandles": 931,
+          "RetainedFileHandles": 22
+        },
+        "ElapsedMs": 579.4382,
+        "CpuMs": 625,
+        "AllocatedBytes": 9147416,
+        "PeakSampledHandles": 311,
+        "HandlesBefore": 214,
+        "HandlesAfter": 268,
+        "PeakSampledWorkingSetBytes": 53170176,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 2865,
+            "ElapsedMs": 213.8937,
+            "AllocatedBytes": 4433256
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 45,
+            "ElapsedMs": 138.2655,
+            "AllocatedBytes": 2711752
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 32,
+            "ElapsedMs": 26.6096,
+            "AllocatedBytes": 605632
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 18.0252,
+            "AllocatedBytes": 511136
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 10,
+            "ElapsedMs": 2.3621,
+            "AllocatedBytes": 83760
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 10,
+            "ElapsedMs": 14.2184,
+            "AllocatedBytes": 49120
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 10,
+            "ElapsedMs": 159.5301,
+            "AllocatedBytes": 4096192
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 503.3892,
+            "AllocatedBytes": 9027824
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 10,
+      "Transactions": 10,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 10,
+          "Files": 1,
+          "RetainedDirectoryHandles": 21,
+          "ReusedDirectoryHandles": 931,
+          "RetainedFileHandles": 22
+        },
+        "ElapsedMs": 734.3918,
+        "CpuMs": 750,
+        "AllocatedBytes": 6040552,
+        "PeakSampledHandles": 312,
+        "HandlesBefore": 214,
+        "HandlesAfter": 268,
+        "PeakSampledWorkingSetBytes": 49963008,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 2865,
+            "ElapsedMs": 330.2479,
+            "AllocatedBytes": 1293216
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 45,
+            "ElapsedMs": 203.6229,
+            "AllocatedBytes": 1048024
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 32,
+            "ElapsedMs": 39.2804,
+            "AllocatedBytes": 195728
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 28.618,
+            "AllocatedBytes": 436608
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 10,
+            "ElapsedMs": 3.6492,
+            "AllocatedBytes": 83760
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 10,
+            "ElapsedMs": 24.0238,
+            "AllocatedBytes": 49120
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 10,
+            "ElapsedMs": 254.4496,
+            "AllocatedBytes": 2517952
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 666.9333,
+            "AllocatedBytes": 5886904
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 11,
+      "Transactions": 10,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 10,
+          "Files": 1,
+          "RetainedDirectoryHandles": 21,
+          "ReusedDirectoryHandles": 931,
+          "RetainedFileHandles": 22
+        },
+        "ElapsedMs": 553.0781,
+        "CpuMs": 546.875,
+        "AllocatedBytes": 6027368,
+        "PeakSampledHandles": 311,
+        "HandlesBefore": 214,
+        "HandlesAfter": 268,
+        "PeakSampledWorkingSetBytes": 50556928,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 2865,
+            "ElapsedMs": 207.8224,
+            "AllocatedBytes": 1328856
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 45,
+            "ElapsedMs": 133.7316,
+            "AllocatedBytes": 1055656
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 32,
+            "ElapsedMs": 26.6669,
+            "AllocatedBytes": 217760
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 18.1892,
+            "AllocatedBytes": 438192
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 10,
+            "ElapsedMs": 2.7194,
+            "AllocatedBytes": 83760
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 10,
+            "ElapsedMs": 15.8969,
+            "AllocatedBytes": 49120
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 10,
+            "ElapsedMs": 157.5418,
+            "AllocatedBytes": 2524144
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 488.2422,
+            "AllocatedBytes": 5911032
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 12,
+      "Transactions": 10,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 10,
+          "Files": 1,
+          "RetainedDirectoryHandles": 21,
+          "ReusedDirectoryHandles": 931,
+          "RetainedFileHandles": 22
+        },
+        "ElapsedMs": 660.8387,
+        "CpuMs": 671.875,
+        "AllocatedBytes": 9173816,
+        "PeakSampledHandles": 311,
+        "HandlesBefore": 214,
+        "HandlesAfter": 268,
+        "PeakSampledWorkingSetBytes": 52748288,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 2865,
+            "ElapsedMs": 224.0544,
+            "AllocatedBytes": 4433256
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 45,
+            "ElapsedMs": 144.2489,
+            "AllocatedBytes": 2711752
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 32,
+            "ElapsedMs": 26.0786,
+            "AllocatedBytes": 605632
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 17.1397,
+            "AllocatedBytes": 511136
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 10,
+            "ElapsedMs": 2.4064,
+            "AllocatedBytes": 83760
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 10,
+            "ElapsedMs": 14.7901,
+            "AllocatedBytes": 49120
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 10,
+            "ElapsedMs": 163.5155,
+            "AllocatedBytes": 4096192
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 549.8957,
+            "AllocatedBytes": 9038824
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 13,
+      "Transactions": 100,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 100,
+          "Files": 1,
+          "RetainedDirectoryHandles": 111,
+          "ReusedDirectoryHandles": 8581,
+          "RetainedFileHandles": 202
+        },
+        "ElapsedMs": 2596.2384,
+        "CpuMs": 3218.75,
+        "AllocatedBytes": 76357752,
+        "PeakSampledHandles": 582,
+        "HandlesBefore": 214,
+        "HandlesAfter": 268,
+        "PeakSampledWorkingSetBytes": 57933824,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 24915,
+            "ElapsedMs": 1599.9714,
+            "AllocatedBytes": 39408768
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 405,
+            "ElapsedMs": 1044.7397,
+            "AllocatedBytes": 25101752
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 212,
+            "ElapsedMs": 164.207,
+            "AllocatedBytes": 4135072
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 16.5375,
+            "AllocatedBytes": 511360
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 100,
+            "ElapsedMs": 18.894,
+            "AllocatedBytes": 837600
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 100,
+            "ElapsedMs": 130.5004,
+            "AllocatedBytes": 494560
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 100,
+            "ElapsedMs": 1382.8956,
+            "AllocatedBytes": 41774608
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 2540.3517,
+            "AllocatedBytes": 75824792
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 14,
+      "Transactions": 100,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 100,
+          "Files": 1,
+          "RetainedDirectoryHandles": 111,
+          "ReusedDirectoryHandles": 8581,
+          "RetainedFileHandles": 202
+        },
+        "ElapsedMs": 2903.0387,
+        "CpuMs": 3125,
+        "AllocatedBytes": 49265520,
+        "PeakSampledHandles": 582,
+        "HandlesBefore": 214,
+        "HandlesAfter": 268,
+        "PeakSampledWorkingSetBytes": 54079488,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 24915,
+            "ElapsedMs": 1799.8563,
+            "AllocatedBytes": 12244992
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 405,
+            "ElapsedMs": 1179.7705,
+            "AllocatedBytes": 10108808
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 212,
+            "ElapsedMs": 188.8547,
+            "AllocatedBytes": 1357808
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 20.0381,
+            "AllocatedBytes": 436832
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 100,
+            "ElapsedMs": 20.7378,
+            "AllocatedBytes": 837600
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 100,
+            "ElapsedMs": 150.7169,
+            "AllocatedBytes": 494560
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 100,
+            "ElapsedMs": 1595.2743,
+            "AllocatedBytes": 26083216
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 2845.0755,
+            "AllocatedBytes": 48673376
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 15,
+      "Transactions": 100,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 100,
+          "Files": 1,
+          "RetainedDirectoryHandles": 111,
+          "ReusedDirectoryHandles": 8581,
+          "RetainedFileHandles": 202
+        },
+        "ElapsedMs": 3422.1643,
+        "CpuMs": 4109.375,
+        "AllocatedBytes": 48967336,
+        "PeakSampledHandles": 582,
+        "HandlesBefore": 214,
+        "HandlesAfter": 268,
+        "PeakSampledWorkingSetBytes": 54857728,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 24915,
+            "ElapsedMs": 2083.1627,
+            "AllocatedBytes": 11837688
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 405,
+            "ElapsedMs": 1353.8246,
+            "AllocatedBytes": 9834632
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 212,
+            "ElapsedMs": 186.3617,
+            "AllocatedBytes": 1357808
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 20.295,
+            "AllocatedBytes": 436832
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 100,
+            "ElapsedMs": 24.5679,
+            "AllocatedBytes": 837600
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 100,
+            "ElapsedMs": 162.9452,
+            "AllocatedBytes": 519184
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 100,
+            "ElapsedMs": 1776.0452,
+            "AllocatedBytes": 25752808
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 3325.0553,
+            "AllocatedBytes": 48269928
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 16,
+      "Transactions": 100,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 100,
+          "Files": 1,
+          "RetainedDirectoryHandles": 111,
+          "ReusedDirectoryHandles": 8581,
+          "RetainedFileHandles": 202
+        },
+        "ElapsedMs": 2487.5887,
+        "CpuMs": 2937.5,
+        "AllocatedBytes": 76846208,
+        "PeakSampledHandles": 582,
+        "HandlesBefore": 214,
+        "HandlesAfter": 268,
+        "PeakSampledWorkingSetBytes": 57950208,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 24915,
+            "ElapsedMs": 1546.5927,
+            "AllocatedBytes": 39918600
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 405,
+            "ElapsedMs": 1017.0083,
+            "AllocatedBytes": 25395224
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 212,
+            "ElapsedMs": 156.5232,
+            "AllocatedBytes": 4312624
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 17.9643,
+            "AllocatedBytes": 512944
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 100,
+            "ElapsedMs": 17.1689,
+            "AllocatedBytes": 837600
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 100,
+            "ElapsedMs": 129.1209,
+            "AllocatedBytes": 494560
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 100,
+            "ElapsedMs": 1376.4586,
+            "AllocatedBytes": 42342544
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 2427.8392,
+            "AllocatedBytes": 76328416
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 17,
+      "Transactions": 500,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 500,
+          "Files": 1,
+          "RetainedDirectoryHandles": 511,
+          "ReusedDirectoryHandles": 42581,
+          "RetainedFileHandles": 1002
+        },
+        "ElapsedMs": 14691.9044,
+        "CpuMs": 18187.5,
+        "AllocatedBytes": 373322328,
+        "PeakSampledHandles": 1788,
+        "HandlesBefore": 214,
+        "HandlesAfter": 274,
+        "PeakSampledWorkingSetBytes": 78061568,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 122915,
+            "ElapsedMs": 10104.8661,
+            "AllocatedBytes": 192990800
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 2005,
+            "ElapsedMs": 6703.168,
+            "AllocatedBytes": 122925752
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 1012,
+            "ElapsedMs": 991.6147,
+            "AllocatedBytes": 19821472
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 14.3909,
+            "AllocatedBytes": 511360
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 500,
+            "ElapsedMs": 87.838,
+            "AllocatedBytes": 4188000
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 500,
+            "ElapsedMs": 730.6314,
+            "AllocatedBytes": 2332912
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 500,
+            "ElapsedMs": 9098.3767,
+            "AllocatedBytes": 206482632
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 14632.184,
+            "AllocatedBytes": 370282256
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 18,
+      "Transactions": 500,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 500,
+          "Files": 1,
+          "RetainedDirectoryHandles": 511,
+          "ReusedDirectoryHandles": 42581,
+          "RetainedFileHandles": 1002
+        },
+        "ElapsedMs": 13885.7259,
+        "CpuMs": 17265.625,
+        "AllocatedBytes": 236558752,
+        "PeakSampledHandles": 1788,
+        "HandlesBefore": 214,
+        "HandlesAfter": 274,
+        "PeakSampledWorkingSetBytes": 71364608,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 122915,
+            "ElapsedMs": 9632.2071,
+            "AllocatedBytes": 56520760
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 2005,
+            "ElapsedMs": 6317.3973,
+            "AllocatedBytes": 47391672
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 1012,
+            "ElapsedMs": 944.0259,
+            "AllocatedBytes": 6522608
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 14.0613,
+            "AllocatedBytes": 436832
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 500,
+            "ElapsedMs": 78.2402,
+            "AllocatedBytes": 4188000
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 500,
+            "ElapsedMs": 646.5708,
+            "AllocatedBytes": 2331840
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 500,
+            "ElapsedMs": 8276.1815,
+            "AllocatedBytes": 127333928
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 13837.3736,
+            "AllocatedBytes": 233716528
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 19,
+      "Transactions": 500,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 500,
+          "Files": 1,
+          "RetainedDirectoryHandles": 511,
+          "ReusedDirectoryHandles": 42581,
+          "RetainedFileHandles": 1002
+        },
+        "ElapsedMs": 12938.8932,
+        "CpuMs": 15703.125,
+        "AllocatedBytes": 236152080,
+        "PeakSampledHandles": 1788,
+        "HandlesBefore": 214,
+        "HandlesAfter": 274,
+        "PeakSampledWorkingSetBytes": 72237056,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 122915,
+            "ElapsedMs": 9001.7931,
+            "AllocatedBytes": 56234704
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 2005,
+            "ElapsedMs": 5950.7587,
+            "AllocatedBytes": 47287432
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 1012,
+            "ElapsedMs": 822.7784,
+            "AllocatedBytes": 6522608
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 13.8685,
+            "AllocatedBytes": 436832
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 500,
+            "ElapsedMs": 78.1808,
+            "AllocatedBytes": 4188000
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 500,
+            "ElapsedMs": 644.2846,
+            "AllocatedBytes": 2351296
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 500,
+            "ElapsedMs": 8312.7376,
+            "AllocatedBytes": 127408144
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 12878.8711,
+            "AllocatedBytes": 233493544
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 20,
+      "Transactions": 500,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 500,
+          "Files": 1,
+          "RetainedDirectoryHandles": 511,
+          "ReusedDirectoryHandles": 42581,
+          "RetainedFileHandles": 1002
+        },
+        "ElapsedMs": 12184.2914,
+        "CpuMs": 15687.5,
+        "AllocatedBytes": 371253368,
+        "PeakSampledHandles": 1788,
+        "HandlesBefore": 214,
+        "HandlesAfter": 274,
+        "PeakSampledWorkingSetBytes": 78061568,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 122915,
+            "ElapsedMs": 8250.9527,
+            "AllocatedBytes": 191372816
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 2005,
+            "ElapsedMs": 5459.553,
+            "AllocatedBytes": 122187848
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 1012,
+            "ElapsedMs": 713.6638,
+            "AllocatedBytes": 19821472
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 13.2128,
+            "AllocatedBytes": 511360
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 500,
+            "ElapsedMs": 73.4209,
+            "AllocatedBytes": 4188000
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 500,
+            "ElapsedMs": 609.8009,
+            "AllocatedBytes": 2352472
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 500,
+            "ElapsedMs": 7198.6872,
+            "AllocatedBytes": 206388688
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 12134.4107,
+            "AllocatedBytes": 368706328
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 21,
+      "Transactions": 1000,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 1000,
+          "Files": 1,
+          "RetainedDirectoryHandles": 1011,
+          "ReusedDirectoryHandles": 85081,
+          "RetainedFileHandles": 2002
+        },
+        "ElapsedMs": 24825.1586,
+        "CpuMs": 28953.125,
+        "AllocatedBytes": 739211320,
+        "PeakSampledHandles": 3285,
+        "HandlesBefore": 214,
+        "HandlesAfter": 271,
+        "PeakSampledWorkingSetBytes": 85508096,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 245415,
+            "ElapsedMs": 17480.2282,
+            "AllocatedBytes": 381135352
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 4005,
+            "ElapsedMs": 11173.041,
+            "AllocatedBytes": 243475216
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 2012,
+            "ElapsedMs": 1762.052,
+            "AllocatedBytes": 39429472
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 18.1505,
+            "AllocatedBytes": 515480
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 1000,
+            "ElapsedMs": 131.1974,
+            "AllocatedBytes": 8376000
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 1000,
+            "ElapsedMs": 1105.3056,
+            "AllocatedBytes": 4558968
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 1000,
+            "ElapsedMs": 14223.5708,
+            "AllocatedBytes": 412253184
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 24763.7869,
+            "AllocatedBytes": 734058760
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 22,
+      "Transactions": 1000,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 1000,
+          "Files": 1,
+          "RetainedDirectoryHandles": 1011,
+          "ReusedDirectoryHandles": 85081,
+          "RetainedFileHandles": 2002
+        },
+        "ElapsedMs": 24793.7514,
+        "CpuMs": 28515.625,
+        "AllocatedBytes": 469745040,
+        "PeakSampledHandles": 3285,
+        "HandlesBefore": 214,
+        "HandlesAfter": 272,
+        "PeakSampledWorkingSetBytes": 74342400,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 245415,
+            "ElapsedMs": 17419.7741,
+            "AllocatedBytes": 111970088
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 4005,
+            "ElapsedMs": 11269.9173,
+            "AllocatedBytes": 94176544
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 2012,
+            "ElapsedMs": 1626.0453,
+            "AllocatedBytes": 12985616
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 15.9338,
+            "AllocatedBytes": 440952
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 1000,
+            "ElapsedMs": 147.8328,
+            "AllocatedBytes": 8376000
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 1000,
+            "ElapsedMs": 1159.1344,
+            "AllocatedBytes": 4554776
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 1000,
+            "ElapsedMs": 14797.7257,
+            "AllocatedBytes": 254072448
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 24738.0171,
+            "AllocatedBytes": 464597720
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 23,
+      "Transactions": 1000,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 1000,
+          "Files": 1,
+          "RetainedDirectoryHandles": 1011,
+          "ReusedDirectoryHandles": 85081,
+          "RetainedFileHandles": 2002
+        },
+        "ElapsedMs": 24065.2025,
+        "CpuMs": 27687.5,
+        "AllocatedBytes": 469659904,
+        "PeakSampledHandles": 3285,
+        "HandlesBefore": 214,
+        "HandlesAfter": 271,
+        "PeakSampledWorkingSetBytes": 78913536,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 245415,
+            "ElapsedMs": 16919.7518,
+            "AllocatedBytes": 112131160
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 4005,
+            "ElapsedMs": 10885.2761,
+            "AllocatedBytes": 94228328
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 2012,
+            "ElapsedMs": 1751.1864,
+            "AllocatedBytes": 12978904
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 15.9076,
+            "AllocatedBytes": 440952
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 1000,
+            "ElapsedMs": 136.268,
+            "AllocatedBytes": 8376000
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 1000,
+            "ElapsedMs": 1127.8349,
+            "AllocatedBytes": 4556864
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 1000,
+            "ElapsedMs": 14141.8102,
+            "AllocatedBytes": 254017064
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 24012.727,
+            "AllocatedBytes": 464707992
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 24,
+      "Transactions": 1000,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 1000,
+          "Files": 1,
+          "RetainedDirectoryHandles": 1011,
+          "ReusedDirectoryHandles": 85081,
+          "RetainedFileHandles": 2002
+        },
+        "ElapsedMs": 24907.1241,
+        "CpuMs": 27062.5,
+        "AllocatedBytes": 741372208,
+        "PeakSampledHandles": 3285,
+        "HandlesBefore": 214,
+        "HandlesAfter": 271,
+        "PeakSampledWorkingSetBytes": 85467136,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 245415,
+            "ElapsedMs": 17732.1849,
+            "AllocatedBytes": 383128192
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 4005,
+            "ElapsedMs": 11568.3434,
+            "AllocatedBytes": 244380928
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 2012,
+            "ElapsedMs": 1584.5582,
+            "AllocatedBytes": 39429472
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 15.2012,
+            "AllocatedBytes": 515480
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 1000,
+            "ElapsedMs": 134.1468,
+            "AllocatedBytes": 8376000
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 1000,
+            "ElapsedMs": 1094.854,
+            "AllocatedBytes": 4603808
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 1000,
+            "ElapsedMs": 14981.8493,
+            "AllocatedBytes": 412403736
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 24849.5892,
+            "AllocatedBytes": 736251656
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 25,
+      "Transactions": 4096,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "6682a27f4e56fd497f81217292fa6ad1d30658a2",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 4096,
+          "Files": 1,
+          "RetainedDirectoryHandles": 4107,
+          "ReusedDirectoryHandles": 348241,
+          "RetainedFileHandles": 8194
+        },
+        "ElapsedMs": 103052.808,
+        "CpuMs": 105734.375,
+        "AllocatedBytes": 3015231120,
+        "PeakSampledHandles": 12574,
+        "HandlesBefore": 214,
+        "HandlesAfter": 272,
+        "PeakSampledWorkingSetBytes": 141574144,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 1003935,
+            "ElapsedMs": 73625.438,
+            "AllocatedBytes": 1557385512
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 16389,
+            "ElapsedMs": 47999.784,
+            "AllocatedBytes": 995420488
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 8204,
+            "ElapsedMs": 6118.5059,
+            "AllocatedBytes": 160842208
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 13.0692,
+            "AllocatedBytes": 515480
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 4096,
+            "ElapsedMs": 595.3594,
+            "AllocatedBytes": 34308096
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 4096,
+            "ElapsedMs": 4867.7793,
+            "AllocatedBytes": 18639904
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 4096,
+            "ElapsedMs": 63375.4663,
+            "AllocatedBytes": 1684069696
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 102987.793,
+            "AllocatedBytes": 2994759032
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 26,
+      "Transactions": 4096,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 4096,
+          "Files": 1,
+          "RetainedDirectoryHandles": 4107,
+          "ReusedDirectoryHandles": 348241,
+          "RetainedFileHandles": 8194
+        },
+        "ElapsedMs": 97309.4668,
+        "CpuMs": 101828.125,
+        "AllocatedBytes": 1912412096,
+        "PeakSampledHandles": 12574,
+        "HandlesBefore": 214,
+        "HandlesAfter": 272,
+        "PeakSampledWorkingSetBytes": 143749120,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 1003935,
+            "ElapsedMs": 69530.3934,
+            "AllocatedBytes": 457826576
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 16389,
+            "ElapsedMs": 44897.2501,
+            "AllocatedBytes": 385094680
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 8204,
+            "ElapsedMs": 6320.2432,
+            "AllocatedBytes": 52954160
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 12.3238,
+            "AllocatedBytes": 440952
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 4096,
+            "ElapsedMs": 547.259,
+            "AllocatedBytes": 34308096
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 4096,
+            "ElapsedMs": 4509.8408,
+            "AllocatedBytes": 18618040
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 4096,
+            "ElapsedMs": 58012.7097,
+            "AllocatedBytes": 1035456480
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 97256.9176,
+            "AllocatedBytes": 1893001136
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 27,
+      "Transactions": 4096,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 4096,
+          "Files": 1,
+          "RetainedDirectoryHandles": 4107,
+          "ReusedDirectoryHandles": 348241,
+          "RetainedFileHandles": 8194
+        },
+        "ElapsedMs": 97110.8097,
+        "CpuMs": 99796.875,
+        "AllocatedBytes": 1912043528,
+        "PeakSampledHandles": 12574,
+        "HandlesBefore": 214,
+        "HandlesAfter": 272,
+        "PeakSampledWorkingSetBytes": 144154624,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 1003935,
+            "ElapsedMs": 69443.9538,
+            "AllocatedBytes": 457339456
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 16389,
+            "ElapsedMs": 44592.9081,
+            "AllocatedBytes": 384842336
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 8204,
+            "ElapsedMs": 7020.6879,
+            "AllocatedBytes": 52954160
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 17.43,
+            "AllocatedBytes": 440952
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 4096,
+            "ElapsedMs": 546.6169,
+            "AllocatedBytes": 34308096
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 4096,
+            "ElapsedMs": 4449.9933,
+            "AllocatedBytes": 18606920
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 4096,
+            "ElapsedMs": 57513.8588,
+            "AllocatedBytes": 1035615712
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 97056.0308,
+            "AllocatedBytes": 1892624952
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 28,
+      "Transactions": 4096,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 4096,
+          "Files": 1,
+          "RetainedDirectoryHandles": 4107,
+          "ReusedDirectoryHandles": 348241,
+          "RetainedFileHandles": 8194
+        },
+        "ElapsedMs": 102266.0844,
+        "CpuMs": 99718.75,
+        "AllocatedBytes": 3016888184,
+        "PeakSampledHandles": 12574,
+        "HandlesBefore": 214,
+        "HandlesAfter": 272,
+        "PeakSampledWorkingSetBytes": 145465344,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 1003935,
+            "ElapsedMs": 70327.6349,
+            "AllocatedBytes": 1559400568
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 16389,
+            "ElapsedMs": 45961.3004,
+            "AllocatedBytes": 996329176
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 8204,
+            "ElapsedMs": 5925.1164,
+            "AllocatedBytes": 160842208
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 13.844,
+            "AllocatedBytes": 515480
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 4096,
+            "ElapsedMs": 534.6306,
+            "AllocatedBytes": 34308096
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 4096,
+            "ElapsedMs": 4506.6676,
+            "AllocatedBytes": 18641576
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 4096,
+            "ElapsedMs": 58389.5217,
+            "AllocatedBytes": 1683902560
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 102213.6567,
+            "AllocatedBytes": 2996616568
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 29,
+      "Transactions": 4096,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 4096,
+          "Files": 1,
+          "RetainedDirectoryHandles": 4107,
+          "ReusedDirectoryHandles": 348241,
+          "RetainedFileHandles": 8194
+        },
+        "ElapsedMs": 97203.7793,
+        "CpuMs": 99500,
+        "AllocatedBytes": 3014462664,
+        "PeakSampledHandles": 12574,
+        "HandlesBefore": 214,
+        "HandlesAfter": 272,
+        "PeakSampledWorkingSetBytes": 141238272,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 1003935,
+            "ElapsedMs": 68003.5934,
+            "AllocatedBytes": 1557866272
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 16389,
+            "ElapsedMs": 43935.2778,
+            "AllocatedBytes": 995651432
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 8204,
+            "ElapsedMs": 6096.4579,
+            "AllocatedBytes": 160842208
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 15.3698,
+            "AllocatedBytes": 515480
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 4096,
+            "ElapsedMs": 533.265,
+            "AllocatedBytes": 34309512
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 4096,
+            "ElapsedMs": 4362.8574,
+            "AllocatedBytes": 18655048
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 4096,
+            "ElapsedMs": 56153.9585,
+            "AllocatedBytes": 1683930424
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 97143.2052,
+            "AllocatedBytes": 2995134208
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 30,
+      "Transactions": 4096,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 4096,
+          "Files": 1,
+          "RetainedDirectoryHandles": 4107,
+          "ReusedDirectoryHandles": 348241,
+          "RetainedFileHandles": 8194
+        },
+        "ElapsedMs": 81463.5422,
+        "CpuMs": 83562.5,
+        "AllocatedBytes": 1908832632,
+        "PeakSampledHandles": 12574,
+        "HandlesBefore": 214,
+        "HandlesAfter": 272,
+        "PeakSampledWorkingSetBytes": 143945728,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 1003935,
+            "ElapsedMs": 57858.4759,
+            "AllocatedBytes": 457317576
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 16389,
+            "ElapsedMs": 37865.1449,
+            "AllocatedBytes": 384872912
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 8204,
+            "ElapsedMs": 4286.6127,
+            "AllocatedBytes": 52954160
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 11.179,
+            "AllocatedBytes": 440952
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 4096,
+            "ElapsedMs": 454.6683,
+            "AllocatedBytes": 34308096
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 4096,
+            "ElapsedMs": 3731.1017,
+            "AllocatedBytes": 18628752
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 4096,
+            "ElapsedMs": 47969.1479,
+            "AllocatedBytes": 1035221920
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 81417.5437,
+            "AllocatedBytes": 1892316440
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 31,
+      "Transactions": 4096,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 4096,
+          "Files": 1,
+          "RetainedDirectoryHandles": 4107,
+          "ReusedDirectoryHandles": 348241,
+          "RetainedFileHandles": 8194
+        },
+        "ElapsedMs": 79230.4122,
+        "CpuMs": 81406.25,
+        "AllocatedBytes": 1908898624,
+        "PeakSampledHandles": 12574,
+        "HandlesBefore": 214,
+        "HandlesAfter": 273,
+        "PeakSampledWorkingSetBytes": 143851520,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 1003935,
+            "ElapsedMs": 56587.2188,
+            "AllocatedBytes": 458038768
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 16389,
+            "ElapsedMs": 36162.7501,
+            "AllocatedBytes": 385225584
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 8204,
+            "ElapsedMs": 5441.7825,
+            "AllocatedBytes": 52954160
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 11.6269,
+            "AllocatedBytes": 440952
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 4096,
+            "ElapsedMs": 443.0823,
+            "AllocatedBytes": 34315784
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 4096,
+            "ElapsedMs": 3724.6671,
+            "AllocatedBytes": 18616264
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 4096,
+            "ElapsedMs": 46223.5381,
+            "AllocatedBytes": 1035171248
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 79185.6001,
+            "AllocatedBytes": 1892987104
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 32,
+      "Transactions": 4096,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 4096,
+          "Files": 1,
+          "RetainedDirectoryHandles": 4107,
+          "ReusedDirectoryHandles": 348241,
+          "RetainedFileHandles": 8194
+        },
+        "ElapsedMs": 67150.998,
+        "CpuMs": 71234.375,
+        "AllocatedBytes": 3007933536,
+        "PeakSampledHandles": 12574,
+        "HandlesBefore": 214,
+        "HandlesAfter": 272,
+        "PeakSampledWorkingSetBytes": 146034688,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 1003935,
+            "ElapsedMs": 47809.9419,
+            "AllocatedBytes": 1557609664
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 16389,
+            "ElapsedMs": 29686.5729,
+            "AllocatedBytes": 995536000
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 8204,
+            "ElapsedMs": 4522.2819,
+            "AllocatedBytes": 160842208
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 14.0564,
+            "AllocatedBytes": 515480
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 4096,
+            "ElapsedMs": 313.7366,
+            "AllocatedBytes": 34308096
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 4096,
+            "ElapsedMs": 2788.983,
+            "AllocatedBytes": 18647928
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 4096,
+            "ElapsedMs": 33387.0266,
+            "AllocatedBytes": 1683588256
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 67099.3973,
+            "AllocatedBytes": 2994396696
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 33,
+      "Transactions": 4096,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 4096,
+          "Files": 1,
+          "RetainedDirectoryHandles": 4107,
+          "ReusedDirectoryHandles": 348241,
+          "RetainedFileHandles": 8194
+        },
+        "ElapsedMs": 79864.0489,
+        "CpuMs": 84234.375,
+        "AllocatedBytes": 3011346720,
+        "PeakSampledHandles": 12574,
+        "HandlesBefore": 214,
+        "HandlesAfter": 272,
+        "PeakSampledWorkingSetBytes": 145829888,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 1003935,
+            "ElapsedMs": 57422.1296,
+            "AllocatedBytes": 1557952240
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 16389,
+            "ElapsedMs": 36447.5534,
+            "AllocatedBytes": 995697704
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 8204,
+            "ElapsedMs": 5625.6754,
+            "AllocatedBytes": 160842208
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 11.3385,
+            "AllocatedBytes": 515480
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 4096,
+            "ElapsedMs": 421.3858,
+            "AllocatedBytes": 34308992
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 4096,
+            "ElapsedMs": 3607.8158,
+            "AllocatedBytes": 18634152
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 4096,
+            "ElapsedMs": 46146.0506,
+            "AllocatedBytes": 1684094816
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 79827.1424,
+            "AllocatedBytes": 2995328376
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 34,
+      "Transactions": 4096,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 4096,
+          "Files": 1,
+          "RetainedDirectoryHandles": 4107,
+          "ReusedDirectoryHandles": 348241,
+          "RetainedFileHandles": 8194
+        },
+        "ElapsedMs": 60516.7859,
+        "CpuMs": 62109.375,
+        "AllocatedBytes": 1907000448,
+        "PeakSampledHandles": 12574,
+        "HandlesBefore": 214,
+        "HandlesAfter": 272,
+        "PeakSampledWorkingSetBytes": 142381056,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 1003935,
+            "ElapsedMs": 44302.7702,
+            "AllocatedBytes": 460370280
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 16389,
+            "ElapsedMs": 26169.2394,
+            "AllocatedBytes": 386307168
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 8204,
+            "ElapsedMs": 7570.7683,
+            "AllocatedBytes": 52954160
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 13.3843,
+            "AllocatedBytes": 440952
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 4096,
+            "ElapsedMs": 325.5894,
+            "AllocatedBytes": 34308096
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 4096,
+            "ElapsedMs": 2795.8039,
+            "AllocatedBytes": 18641008
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 4096,
+            "ElapsedMs": 34756.8278,
+            "AllocatedBytes": 1034439176
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 60468.2354,
+            "AllocatedBytes": 1894668720
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 35,
+      "Transactions": 4096,
+      "Kind": "modified",
+      "Command": "dotnet <modified-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 4096,
+          "Files": 1,
+          "RetainedDirectoryHandles": 4107,
+          "ReusedDirectoryHandles": 348241,
+          "RetainedFileHandles": 8194
+        },
+        "ElapsedMs": 58944.4371,
+        "CpuMs": 61265.625,
+        "AllocatedBytes": 1904504984,
+        "PeakSampledHandles": 12574,
+        "HandlesBefore": 214,
+        "HandlesAfter": 272,
+        "PeakSampledWorkingSetBytes": 143093760,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 1003935,
+            "ElapsedMs": 42014.0984,
+            "AllocatedBytes": 457692384
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 16389,
+            "ElapsedMs": 27372.7245,
+            "AllocatedBytes": 385117336
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 8204,
+            "ElapsedMs": 3598.5287,
+            "AllocatedBytes": 52954160
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 11.9229,
+            "AllocatedBytes": 440952
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 4096,
+            "ElapsedMs": 349.1403,
+            "AllocatedBytes": 34308096
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 4096,
+            "ElapsedMs": 3018.7892,
+            "AllocatedBytes": 18645232
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 4096,
+            "ElapsedMs": 36291.0334,
+            "AllocatedBytes": 1034922240
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 58902.1393,
+            "AllocatedBytes": 1892522736
+          }
+        ]
+      }
+    },
+    {
+      "Sequence": 36,
+      "Transactions": 4096,
+      "Kind": "baseline",
+      "Command": "dotnet <baseline-Profile.dll> history-profile <SAME_SYNTHETIC_ROOT>",
+      "ExitCode": 0,
+      "ObservedHeadAtMeasurement": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+      "Output": {
+        "History": {
+          "Verified": true,
+          "State": "InstallationVerified",
+          "Code": "RETAINED-SIGNED-HISTORY-VERIFIED",
+          "Transactions": 4096,
+          "Files": 1,
+          "RetainedDirectoryHandles": 4107,
+          "ReusedDirectoryHandles": 348241,
+          "RetainedFileHandles": 8194
+        },
+        "ElapsedMs": 46169.583,
+        "CpuMs": 47093.75,
+        "AllocatedBytes": 3004639688,
+        "PeakSampledHandles": 12574,
+        "HandlesBefore": 214,
+        "HandlesAfter": 272,
+        "PeakSampledWorkingSetBytes": 146288640,
+        "Phases": [
+          {
+            "Name": "NativeIdentityCheck",
+            "Calls": 1003935,
+            "ElapsedMs": 32902.0562,
+            "AllocatedBytes": 1558166928
+          },
+          {
+            "Name": "FileOpenAndBind",
+            "Calls": 16389,
+            "ElapsedMs": 20882.1504,
+            "AllocatedBytes": 995924936
+          },
+          {
+            "Name": "FileIdentityValidation",
+            "Calls": 8204,
+            "ElapsedMs": 3302.6286,
+            "AllocatedBytes": 160842208
+          },
+          {
+            "Name": "HashAndIdentity",
+            "Calls": 3,
+            "ElapsedMs": 9.057,
+            "AllocatedBytes": 515480
+          },
+          {
+            "Name": "HistoryJsonParse",
+            "Calls": 4096,
+            "ElapsedMs": 260.8127,
+            "AllocatedBytes": 34314904
+          },
+          {
+            "Name": "HistorySignatureVerification",
+            "Calls": 4096,
+            "ElapsedMs": 2394.9539,
+            "AllocatedBytes": 18658128
+          },
+          {
+            "Name": "HistoryTransactionRead",
+            "Calls": 4096,
+            "ElapsedMs": 27489.9614,
+            "AllocatedBytes": 1683523456
+          },
+          {
+            "Name": "HistoryTotal",
+            "Calls": 1,
+            "ElapsedMs": 46135.2122,
+            "AllocatedBytes": 2995181600
+          }
+        ]
+      }
+    }
+  ],
+  "Summary": {
+    "0": {
+      "baseline": {
+        "ElapsedMs": {
+          "Median": 76.069,
+          "Min": 73.3609,
+          "Max": 78.7771,
+          "SampleSD": 3.83
+        },
+        "CpuMs": {
+          "Median": 62.5,
+          "Min": 62.5,
+          "Max": 62.5,
+          "SampleSD": 0.0
+        },
+        "AllocatedBytes": {
+          "Median": 35636.0,
+          "Min": 34088,
+          "Max": 37184,
+          "SampleSD": 2189.2
+        },
+        "PeakSampledHandles": {
+          "Median": 241.5,
+          "Min": 240,
+          "Max": 243,
+          "SampleSD": 2.12
+        },
+        "PeakSampledWorkingSetBytes": {
+          "Median": 37722112.0,
+          "Min": 37654528,
+          "Max": 37789696,
+          "SampleSD": 95578.21
+        },
+        "HandlesAfter": {
+          "Median": 243.0,
+          "Min": 243,
+          "Max": 243,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityCalls": {
+          "Median": 0.0,
+          "Min": 0,
+          "Max": 0,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityElapsedMs": {
+          "Median": 0.0,
+          "Min": 0,
+          "Max": 0,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityAllocatedBytes": {
+          "Median": 0.0,
+          "Min": 0,
+          "Max": 0,
+          "SampleSD": 0.0
+        }
+      },
+      "modified": {
+        "ElapsedMs": {
+          "Median": 75.3893,
+          "Min": 74.1085,
+          "Max": 76.6701,
+          "SampleSD": 1.81
+        },
+        "CpuMs": {
+          "Median": 93.75,
+          "Min": 78.125,
+          "Max": 109.375,
+          "SampleSD": 22.1
+        },
+        "AllocatedBytes": {
+          "Median": 24428.0,
+          "Min": 21840,
+          "Max": 27016,
+          "SampleSD": 3659.98
+        },
+        "PeakSampledHandles": {
+          "Median": 241.0,
+          "Min": 240,
+          "Max": 242,
+          "SampleSD": 1.41
+        },
+        "PeakSampledWorkingSetBytes": {
+          "Median": 37507072.0,
+          "Min": 37482496,
+          "Max": 37531648,
+          "SampleSD": 34755.71
+        },
+        "HandlesAfter": {
+          "Median": 243.0,
+          "Min": 243,
+          "Max": 243,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityCalls": {
+          "Median": 0.0,
+          "Min": 0,
+          "Max": 0,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityElapsedMs": {
+          "Median": 0.0,
+          "Min": 0,
+          "Max": 0,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityAllocatedBytes": {
+          "Median": 0.0,
+          "Min": 0,
+          "Max": 0,
+          "SampleSD": 0.0
+        }
+      }
+    },
+    "1": {
+      "baseline": {
+        "ElapsedMs": {
+          "Median": 288.55785000000003,
+          "Min": 274.1217,
+          "Max": 302.994,
+          "SampleSD": 20.42
+        },
+        "CpuMs": {
+          "Median": 273.4375,
+          "Min": 250,
+          "Max": 296.875,
+          "SampleSD": 33.15
+        },
+        "AllocatedBytes": {
+          "Median": 2582820.0,
+          "Min": 2553696,
+          "Max": 2611944,
+          "SampleSD": 41187.56
+        },
+        "PeakSampledHandles": {
+          "Median": 283.5,
+          "Min": 283,
+          "Max": 284,
+          "SampleSD": 0.71
+        },
+        "PeakSampledWorkingSetBytes": {
+          "Median": 46336000.0,
+          "Min": 46030848,
+          "Max": 46641152,
+          "SampleSD": 431550.1
+        },
+        "HandlesAfter": {
+          "Median": 268.0,
+          "Min": 268,
+          "Max": 268,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityCalls": {
+          "Median": 660.0,
+          "Min": 660,
+          "Max": 660,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityElapsedMs": {
+          "Median": 46.99135,
+          "Min": 43.8568,
+          "Max": 50.1259,
+          "SampleSD": 4.43
+        },
+        "NativeIdentityAllocatedBytes": {
+          "Median": 1013616.0,
+          "Min": 1013616,
+          "Max": 1013616,
+          "SampleSD": 0.0
+        }
+      },
+      "modified": {
+        "ElapsedMs": {
+          "Median": 288.93365,
+          "Min": 280.9843,
+          "Max": 296.883,
+          "SampleSD": 11.24
+        },
+        "CpuMs": {
+          "Median": 367.1875,
+          "Min": 281.25,
+          "Max": 453.125,
+          "SampleSD": 121.53
+        },
+        "AllocatedBytes": {
+          "Median": 1828468.0,
+          "Min": 1823960,
+          "Max": 1832976,
+          "SampleSD": 6375.27
+        },
+        "PeakSampledHandles": {
+          "Median": 284.5,
+          "Min": 284,
+          "Max": 285,
+          "SampleSD": 0.71
+        },
+        "PeakSampledWorkingSetBytes": {
+          "Median": 45549568.0,
+          "Min": 45441024,
+          "Max": 45658112,
+          "SampleSD": 153504.4
+        },
+        "HandlesAfter": {
+          "Median": 268.0,
+          "Min": 268,
+          "Max": 268,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityCalls": {
+          "Median": 660.0,
+          "Min": 660,
+          "Max": 660,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityElapsedMs": {
+          "Median": 46.6674,
+          "Min": 43.3698,
+          "Max": 49.965,
+          "SampleSD": 4.66
+        },
+        "NativeIdentityAllocatedBytes": {
+          "Median": 290256.0,
+          "Min": 290256,
+          "Max": 290256,
+          "SampleSD": 0.0
+        }
+      }
+    },
+    "10": {
+      "baseline": {
+        "ElapsedMs": {
+          "Median": 620.13845,
+          "Min": 579.4382,
+          "Max": 660.8387,
+          "SampleSD": 57.56
+        },
+        "CpuMs": {
+          "Median": 648.4375,
+          "Min": 625,
+          "Max": 671.875,
+          "SampleSD": 33.15
+        },
+        "AllocatedBytes": {
+          "Median": 9160616.0,
+          "Min": 9147416,
+          "Max": 9173816,
+          "SampleSD": 18667.62
+        },
+        "PeakSampledHandles": {
+          "Median": 311.0,
+          "Min": 311,
+          "Max": 311,
+          "SampleSD": 0.0
+        },
+        "PeakSampledWorkingSetBytes": {
+          "Median": 52959232.0,
+          "Min": 52748288,
+          "Max": 53170176,
+          "SampleSD": 298319.87
+        },
+        "HandlesAfter": {
+          "Median": 268.0,
+          "Min": 268,
+          "Max": 268,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityCalls": {
+          "Median": 2865.0,
+          "Min": 2865,
+          "Max": 2865,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityElapsedMs": {
+          "Median": 218.97404999999998,
+          "Min": 213.8937,
+          "Max": 224.0544,
+          "SampleSD": 7.18
+        },
+        "NativeIdentityAllocatedBytes": {
+          "Median": 4433256.0,
+          "Min": 4433256,
+          "Max": 4433256,
+          "SampleSD": 0.0
+        }
+      },
+      "modified": {
+        "ElapsedMs": {
+          "Median": 643.73495,
+          "Min": 553.0781,
+          "Max": 734.3918,
+          "SampleSD": 128.21
+        },
+        "CpuMs": {
+          "Median": 648.4375,
+          "Min": 546.875,
+          "Max": 750,
+          "SampleSD": 143.63
+        },
+        "AllocatedBytes": {
+          "Median": 6033960.0,
+          "Min": 6027368,
+          "Max": 6040552,
+          "SampleSD": 9322.5
+        },
+        "PeakSampledHandles": {
+          "Median": 311.5,
+          "Min": 311,
+          "Max": 312,
+          "SampleSD": 0.71
+        },
+        "PeakSampledWorkingSetBytes": {
+          "Median": 50259968.0,
+          "Min": 49963008,
+          "Max": 50556928,
+          "SampleSD": 419964.86
+        },
+        "HandlesAfter": {
+          "Median": 268.0,
+          "Min": 268,
+          "Max": 268,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityCalls": {
+          "Median": 2865.0,
+          "Min": 2865,
+          "Max": 2865,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityElapsedMs": {
+          "Median": 269.03515,
+          "Min": 207.8224,
+          "Max": 330.2479,
+          "SampleSD": 86.57
+        },
+        "NativeIdentityAllocatedBytes": {
+          "Median": 1311036.0,
+          "Min": 1293216,
+          "Max": 1328856,
+          "SampleSD": 25201.29
+        }
+      }
+    },
+    "100": {
+      "baseline": {
+        "ElapsedMs": {
+          "Median": 2541.91355,
+          "Min": 2487.5887,
+          "Max": 2596.2384,
+          "SampleSD": 76.83
+        },
+        "CpuMs": {
+          "Median": 3078.125,
+          "Min": 2937.5,
+          "Max": 3218.75,
+          "SampleSD": 198.87
+        },
+        "AllocatedBytes": {
+          "Median": 76601980.0,
+          "Min": 76357752,
+          "Max": 76846208,
+          "SampleSD": 345390.55
+        },
+        "PeakSampledHandles": {
+          "Median": 582.0,
+          "Min": 582,
+          "Max": 582,
+          "SampleSD": 0.0
+        },
+        "PeakSampledWorkingSetBytes": {
+          "Median": 57942016.0,
+          "Min": 57933824,
+          "Max": 57950208,
+          "SampleSD": 11585.24
+        },
+        "HandlesAfter": {
+          "Median": 268.0,
+          "Min": 268,
+          "Max": 268,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityCalls": {
+          "Median": 24915.0,
+          "Min": 24915,
+          "Max": 24915,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityElapsedMs": {
+          "Median": 1573.2820499999998,
+          "Min": 1546.5927,
+          "Max": 1599.9714,
+          "SampleSD": 37.74
+        },
+        "NativeIdentityAllocatedBytes": {
+          "Median": 39663684.0,
+          "Min": 39408768,
+          "Max": 39918600,
+          "SampleSD": 360505.66
+        }
+      },
+      "modified": {
+        "ElapsedMs": {
+          "Median": 3162.6014999999998,
+          "Min": 2903.0387,
+          "Max": 3422.1643,
+          "SampleSD": 367.08
+        },
+        "CpuMs": {
+          "Median": 3617.1875,
+          "Min": 3125,
+          "Max": 4109.375,
+          "SampleSD": 696.06
+        },
+        "AllocatedBytes": {
+          "Median": 49116428.0,
+          "Min": 48967336,
+          "Max": 49265520,
+          "SampleSD": 210847.93
+        },
+        "PeakSampledHandles": {
+          "Median": 582.0,
+          "Min": 582,
+          "Max": 582,
+          "SampleSD": 0.0
+        },
+        "PeakSampledWorkingSetBytes": {
+          "Median": 54468608.0,
+          "Min": 54079488,
+          "Max": 54857728,
+          "SampleSD": 550298.78
+        },
+        "HandlesAfter": {
+          "Median": 268.0,
+          "Min": 268,
+          "Max": 268,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityCalls": {
+          "Median": 24915.0,
+          "Min": 24915,
+          "Max": 24915,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityElapsedMs": {
+          "Median": 1941.5095,
+          "Min": 1799.8563,
+          "Max": 2083.1627,
+          "SampleSD": 200.33
+        },
+        "NativeIdentityAllocatedBytes": {
+          "Median": 12041340.0,
+          "Min": 11837688,
+          "Max": 12244992,
+          "SampleSD": 288007.42
+        }
+      }
+    },
+    "500": {
+      "baseline": {
+        "ElapsedMs": {
+          "Median": 13438.0979,
+          "Min": 12184.2914,
+          "Max": 14691.9044,
+          "SampleSD": 1773.15
+        },
+        "CpuMs": {
+          "Median": 16937.5,
+          "Min": 15687.5,
+          "Max": 18187.5,
+          "SampleSD": 1767.77
+        },
+        "AllocatedBytes": {
+          "Median": 372287848.0,
+          "Min": 371253368,
+          "Max": 373322328,
+          "SampleSD": 1462975.65
+        },
+        "PeakSampledHandles": {
+          "Median": 1788.0,
+          "Min": 1788,
+          "Max": 1788,
+          "SampleSD": 0.0
+        },
+        "PeakSampledWorkingSetBytes": {
+          "Median": 78061568.0,
+          "Min": 78061568,
+          "Max": 78061568,
+          "SampleSD": 0.0
+        },
+        "HandlesAfter": {
+          "Median": 274.0,
+          "Min": 274,
+          "Max": 274,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityCalls": {
+          "Median": 122915.0,
+          "Min": 122915,
+          "Max": 122915,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityElapsedMs": {
+          "Median": 9177.9094,
+          "Min": 8250.9527,
+          "Max": 10104.8661,
+          "SampleSD": 1310.91
+        },
+        "NativeIdentityAllocatedBytes": {
+          "Median": 192181808.0,
+          "Min": 191372816,
+          "Max": 192990800,
+          "SampleSD": 1144087.46
+        }
+      },
+      "modified": {
+        "ElapsedMs": {
+          "Median": 13412.30955,
+          "Min": 12938.8932,
+          "Max": 13885.7259,
+          "SampleSD": 669.51
+        },
+        "CpuMs": {
+          "Median": 16484.375,
+          "Min": 15703.125,
+          "Max": 17265.625,
+          "SampleSD": 1104.85
+        },
+        "AllocatedBytes": {
+          "Median": 236355416.0,
+          "Min": 236152080,
+          "Max": 236558752,
+          "SampleSD": 287560.53
+        },
+        "PeakSampledHandles": {
+          "Median": 1788.0,
+          "Min": 1788,
+          "Max": 1788,
+          "SampleSD": 0.0
+        },
+        "PeakSampledWorkingSetBytes": {
+          "Median": 71800832.0,
+          "Min": 71364608,
+          "Max": 72237056,
+          "SampleSD": 616913.9
+        },
+        "HandlesAfter": {
+          "Median": 274.0,
+          "Min": 274,
+          "Max": 274,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityCalls": {
+          "Median": 122915.0,
+          "Min": 122915,
+          "Max": 122915,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityElapsedMs": {
+          "Median": 9317.000100000001,
+          "Min": 9001.7931,
+          "Max": 9632.2071,
+          "SampleSD": 445.77
+        },
+        "NativeIdentityAllocatedBytes": {
+          "Median": 56377732.0,
+          "Min": 56234704,
+          "Max": 56520760,
+          "SampleSD": 202272.14
+        }
+      }
+    },
+    "1000": {
+      "baseline": {
+        "ElapsedMs": {
+          "Median": 24866.141349999998,
+          "Min": 24825.1586,
+          "Max": 24907.1241,
+          "SampleSD": 57.96
+        },
+        "CpuMs": {
+          "Median": 28007.8125,
+          "Min": 27062.5,
+          "Max": 28953.125,
+          "SampleSD": 1336.87
+        },
+        "AllocatedBytes": {
+          "Median": 740291764.0,
+          "Min": 739211320,
+          "Max": 741372208,
+          "SampleSD": 1527978.56
+        },
+        "PeakSampledHandles": {
+          "Median": 3285.0,
+          "Min": 3285,
+          "Max": 3285,
+          "SampleSD": 0.0
+        },
+        "PeakSampledWorkingSetBytes": {
+          "Median": 85487616.0,
+          "Min": 85467136,
+          "Max": 85508096,
+          "SampleSD": 28963.09
+        },
+        "HandlesAfter": {
+          "Median": 271.0,
+          "Min": 271,
+          "Max": 271,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityCalls": {
+          "Median": 245415.0,
+          "Min": 245415,
+          "Max": 245415,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityElapsedMs": {
+          "Median": 17606.206550000003,
+          "Min": 17480.2282,
+          "Max": 17732.1849,
+          "SampleSD": 178.16
+        },
+        "NativeIdentityAllocatedBytes": {
+          "Median": 382131772.0,
+          "Min": 381135352,
+          "Max": 383128192,
+          "SampleSD": 1409150.68
+        }
+      },
+      "modified": {
+        "ElapsedMs": {
+          "Median": 24429.47695,
+          "Min": 24065.2025,
+          "Max": 24793.7514,
+          "SampleSD": 515.16
+        },
+        "CpuMs": {
+          "Median": 28101.5625,
+          "Min": 27687.5,
+          "Max": 28515.625,
+          "SampleSD": 585.57
+        },
+        "AllocatedBytes": {
+          "Median": 469702472.0,
+          "Min": 469659904,
+          "Max": 469745040,
+          "SampleSD": 60200.24
+        },
+        "PeakSampledHandles": {
+          "Median": 3285.0,
+          "Min": 3285,
+          "Max": 3285,
+          "SampleSD": 0.0
+        },
+        "PeakSampledWorkingSetBytes": {
+          "Median": 76627968.0,
+          "Min": 74342400,
+          "Max": 78913536,
+          "SampleSD": 3232281.26
+        },
+        "HandlesAfter": {
+          "Median": 271.5,
+          "Min": 271,
+          "Max": 272,
+          "SampleSD": 0.71
+        },
+        "NativeIdentityCalls": {
+          "Median": 245415.0,
+          "Min": 245415,
+          "Max": 245415,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityElapsedMs": {
+          "Median": 17169.762949999997,
+          "Min": 16919.7518,
+          "Max": 17419.7741,
+          "SampleSD": 353.57
+        },
+        "NativeIdentityAllocatedBytes": {
+          "Median": 112050624.0,
+          "Min": 111970088,
+          "Max": 112131160,
+          "SampleSD": 113895.1
+        }
+      }
+    },
+    "4096": {
+      "baseline": {
+        "ElapsedMs": {
+          "Median": 88533.9141,
+          "Min": 46169.583,
+          "Max": 103052.808,
+          "SampleSD": 22766.96
+        },
+        "CpuMs": {
+          "Median": 91867.1875,
+          "Min": 47093.75,
+          "Max": 105734.375,
+          "SampleSD": 22283.36
+        },
+        "AllocatedBytes": {
+          "Median": 3012904692.0,
+          "Min": 3004639688,
+          "Max": 3016888184,
+          "SampleSD": 4715129.81
+        },
+        "PeakSampledHandles": {
+          "Median": 12574.0,
+          "Min": 12574,
+          "Max": 12574,
+          "SampleSD": 0.0
+        },
+        "PeakSampledWorkingSetBytes": {
+          "Median": 145647616.0,
+          "Min": 141238272,
+          "Max": 146288640,
+          "SampleSD": 2340962.61
+        },
+        "HandlesAfter": {
+          "Median": 272.0,
+          "Min": 272,
+          "Max": 272,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityCalls": {
+          "Median": 1003935.0,
+          "Min": 1003935,
+          "Max": 1003935,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityElapsedMs": {
+          "Median": 62712.8615,
+          "Min": 32902.0562,
+          "Max": 73625.438,
+          "SampleSD": 15681.49
+        },
+        "NativeIdentityAllocatedBytes": {
+          "Median": 1557909256.0,
+          "Min": 1557385512,
+          "Max": 1559400568,
+          "SampleSD": 709275.79
+        }
+      },
+      "modified": {
+        "ElapsedMs": {
+          "Median": 80346.9772,
+          "Min": 58944.4371,
+          "Max": 97309.4668,
+          "SampleSD": 16811.66
+        },
+        "CpuMs": {
+          "Median": 82484.375,
+          "Min": 61265.625,
+          "Max": 101828.125,
+          "SampleSD": 17535.91
+        },
+        "AllocatedBytes": {
+          "Median": 1908865628.0,
+          "Min": 1904504984,
+          "Max": 1912412096,
+          "SampleSD": 3004375.12
+        },
+        "PeakSampledHandles": {
+          "Median": 12574.0,
+          "Min": 12574,
+          "Max": 12574,
+          "SampleSD": 0.0
+        },
+        "PeakSampledWorkingSetBytes": {
+          "Median": 143800320.0,
+          "Min": 142381056,
+          "Max": 144154624,
+          "SampleSD": 667045.47
+        },
+        "HandlesAfter": {
+          "Median": 272.0,
+          "Min": 272,
+          "Max": 273,
+          "SampleSD": 0.41
+        },
+        "NativeIdentityCalls": {
+          "Median": 1003935.0,
+          "Min": 1003935,
+          "Max": 1003935,
+          "SampleSD": 0.0
+        },
+        "NativeIdentityElapsedMs": {
+          "Median": 57222.84735,
+          "Min": 42014.0984,
+          "Max": 69530.3934,
+          "SampleSD": 11812.82
+        },
+        "NativeIdentityAllocatedBytes": {
+          "Median": 457759480.0,
+          "Min": 457317576,
+          "Max": 460370280,
+          "SampleSD": 1147990.36
+        }
+      }
+    }
+  },
+  "ProductionSelected": false
+}

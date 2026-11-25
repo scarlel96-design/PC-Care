@@ -236,3 +236,7 @@ No product was declared discontinued because a page failed to load.
 6. Read the five priority comparison reports before adopting a PC-Care improvement.
 
 Machine-readable evidence: `docs/rework/evidence/wo28/COMPETITOR_CATALOG_RESULT.json`.
+
+## WO-29
+
+Five priority entries received a source review. No competitor binary was run. See [findings and acceptance tests](BENCHMARK_WO29_FINDINGS.md).

@@ -1,0 +1,10 @@
+Source: e638ca51ca0e12082df0d00dffb037a583e097c0
+Environment: GitHub Actions Windows x64
+Run: https://github.com/scarlel96-design/PC-Care/actions/runs/45535219952
+Command: dotnet restore SmartPerformanceDoctor.sln -p:Platform=x64
+Exit: 0
+Command: dotnet build SmartPerformanceDoctor.sln -c Release -p:Platform=x64 --no-restore -m:1 -v:minimal
+Output: Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+Exit: 0

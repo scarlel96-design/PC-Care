@@ -1,0 +1,6 @@
+Branch: codex/pccare-wo29-guest-e2e-recovery-durability
+Baseline: dada1c96bfdb548af8c4c0d4d80ffba2d850c930
+Windows CI source: e638ca51ca0e12082df0d00dffb037a583e097c0
+Regression: https://github.com/scarlel96-design/PC-Care/actions/runs/45535219952 SUCCESS
+Staging and vault: https://github.com/scarlel96-design/PC-Care/actions/runs/45535220086 SUCCESS
+The subsequent evidence commit contains reports only. Resolve its tree with git rev-parse HEAD^{tree}. See the delivery message for the final remote SHA.

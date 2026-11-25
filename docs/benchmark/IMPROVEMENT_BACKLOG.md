@@ -29,3 +29,7 @@ Do not replace authenticated generation choice with timestamps. Do not import ex
 ## External qualification
 
 Independent Witness evaluation remains DAYBREAK_DEFERRED where special approval is required. Standard UI and ordinary file tests remain independent work. Physical device and power-loss tests require separate equipment evidence.
+
+## WO-29
+
+Prioritize read-only vault recovery guidance, cleaner previews and explicit erasure limits. Verify module cancellation before enabling new actions. See [findings and acceptance tests](BENCHMARK_WO29_FINDINGS.md).

@@ -1,0 +1,598 @@
+{
+  "Source": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+  "Environment": "Windows CI 45535219952; isolated synthetic fixtures; StrictAcl=false",
+  "Command": "./scripts/wo28-reliability-validation.ps1 -EngineCheckpoints -OutputDirectory artifacts/wo29-engine",
+  "ExitCode": 0,
+  "Records": [
+    {
+      "Input": {
+        "Bytes": 4096,
+        "State": "OriginalVerified"
+      },
+      "Terminations": [
+        {
+          "Checkpoint": {
+            "Phase": "JournalLoaded",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:JournalLoaded <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "PackageOpened",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:PackageOpened <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "PackageVerified",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:PackageVerified <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "BeforeTargetIdentity",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:BeforeTargetIdentity <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "InputsRevalidated",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:InputsRevalidated <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        }
+      ],
+      "Before": {
+        "State": "RecoveryRequired",
+        "Code": "ORIGINAL-BYTES-PRESERVED-PENDING",
+        "OriginalBytesVerified": true,
+        "CanRequestRecovery": true,
+        "Files": [
+          {
+            "Path": "payload/app.txt",
+            "State": "OriginalVerified",
+            "BackupVerified": true
+          }
+        ]
+      },
+      "Resume": {
+        "Output": {
+          "Stage": 9,
+          "Code": "ROLLED-BACK",
+          "FilesApplied": 0,
+          "Failure": "PRE-MUTATION-REJECTED; SYNTHETIC-RECOVERY-PAUSE; IOException; phase=BackupPreparation; HRESULT=0x80131620; Win32=; rollback: IOException: SYNTHETIC-RECOVERY-PAUSE",
+          "Diagnostic": null,
+          "RecoveryDiagnostic": null,
+          "RecoveryDisposition": "OriginalStateVerified",
+          "OriginalBytesVerified": true,
+          "WasCancellationRequested": false,
+          "AnyMutationStarted": false,
+          "ApplyMutationStarted": false,
+          "RecoveryMutationStarted": false,
+          "CancellationDisposition": "NotRequested"
+        },
+        "Command": "SmartPerformanceDoctor.WO27Probe.exe resume <SYNTHETIC_ROOT>",
+        "ExitCode": 0
+      },
+      "After": {
+        "State": "NoPendingTransaction",
+        "Code": "ORIGINAL-STATE-VERIFIED",
+        "OriginalBytesVerified": false,
+        "CanRequestRecovery": false,
+        "Files": []
+      }
+    },
+    {
+      "Input": {
+        "Bytes": 1048576,
+        "State": "UpdatedVerified"
+      },
+      "Terminations": [
+        {
+          "Checkpoint": {
+            "Phase": "JournalLoaded",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:JournalLoaded <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "PackageOpened",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:PackageOpened <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "PackageVerified",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:PackageVerified <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "BeforeTargetIdentity",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:BeforeTargetIdentity <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "InputsRevalidated",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:InputsRevalidated <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "BackupHashRead",
+            "BytesRead": 4096,
+            "TotalBytes": 1048576,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:BackupHashRead <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "TargetHashRead",
+            "BytesRead": 4096,
+            "TotalBytes": 1048576,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:TargetHashRead <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        }
+      ],
+      "Before": {
+        "State": "RecoveryRequired",
+        "Code": "RECOVERY-INPUTS-VERIFIED",
+        "OriginalBytesVerified": false,
+        "CanRequestRecovery": true,
+        "Files": [
+          {
+            "Path": "payload/app.txt",
+            "State": "UpdatedVerified",
+            "BackupVerified": true
+          }
+        ]
+      },
+      "Resume": {
+        "Output": {
+          "Stage": 9,
+          "Code": "ROLLED-BACK",
+          "FilesApplied": 0,
+          "Failure": " SYNTHETIC-RECOVERY-PAUSE; IOException; phase=BackupPreparation; HRESULT=0x80131620; Win32=; rollback: IOException: SYNTHETIC-RECOVERY-PAUSE",
+          "Diagnostic": null,
+          "RecoveryDiagnostic": null,
+          "RecoveryDisposition": "RecoveryCompleted",
+          "OriginalBytesVerified": true,
+          "WasCancellationRequested": false,
+          "AnyMutationStarted": true,
+          "ApplyMutationStarted": false,
+          "RecoveryMutationStarted": true,
+          "CancellationDisposition": "NotRequested"
+        },
+        "Command": "SmartPerformanceDoctor.WO27Probe.exe resume <SYNTHETIC_ROOT>",
+        "ExitCode": 0
+      },
+      "After": {
+        "State": "NoPendingTransaction",
+        "Code": "RESTORED",
+        "OriginalBytesVerified": false,
+        "CanRequestRecovery": false,
+        "Files": []
+      }
+    },
+    {
+      "Input": {
+        "Bytes": 16777216,
+        "State": "UnknownContent"
+      },
+      "Terminations": [
+        {
+          "Checkpoint": {
+            "Phase": "JournalLoaded",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:JournalLoaded <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "PackageOpened",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:PackageOpened <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "PackageVerified",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:PackageVerified <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "BeforeTargetIdentity",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:BeforeTargetIdentity <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "InputsRevalidated",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:InputsRevalidated <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "BackupHashRead",
+            "BytesRead": 4096,
+            "TotalBytes": 16777216,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:BackupHashRead <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "TargetHashRead",
+            "BytesRead": 4096,
+            "TotalBytes": 16777216,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:TargetHashRead <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        }
+      ],
+      "Before": {
+        "State": "ManualReviewRequired",
+        "Code": "RECOVERY-CONTENT-REVIEW",
+        "OriginalBytesVerified": false,
+        "CanRequestRecovery": false,
+        "Files": [
+          {
+            "Path": "payload/app.txt",
+            "State": "UnknownContent",
+            "BackupVerified": true
+          }
+        ]
+      },
+      "Resume": {
+        "Output": {
+          "Stage": 10,
+          "Code": "RECOVERY-CONTENT-REVIEW",
+          "FilesApplied": 0,
+          "Failure": "",
+          "Diagnostic": null,
+          "RecoveryDiagnostic": null,
+          "RecoveryDisposition": "ManualReviewRequired",
+          "OriginalBytesVerified": false,
+          "WasCancellationRequested": false,
+          "AnyMutationStarted": false,
+          "ApplyMutationStarted": false,
+          "RecoveryMutationStarted": false,
+          "CancellationDisposition": "NotRequested"
+        },
+        "Command": "SmartPerformanceDoctor.WO27Probe.exe resume <SYNTHETIC_ROOT>",
+        "ExitCode": 10
+      },
+      "After": {
+        "State": "ManualReviewRequired",
+        "Code": "RECOVERY-CONTENT-REVIEW",
+        "OriginalBytesVerified": false,
+        "CanRequestRecovery": false,
+        "Files": [
+          {
+            "Path": "payload/app.txt",
+            "State": "UnknownContent",
+            "BackupVerified": true
+          }
+        ]
+      }
+    },
+    {
+      "Input": {
+        "Bytes": 67108864,
+        "State": "UnknownContent"
+      },
+      "Terminations": [
+        {
+          "Checkpoint": {
+            "Phase": "JournalLoaded",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:JournalLoaded <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "PackageOpened",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:PackageOpened <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "PackageVerified",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:PackageVerified <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "BeforeTargetIdentity",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:BeforeTargetIdentity <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "InputsRevalidated",
+            "BytesRead": 0,
+            "TotalBytes": 0,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:InputsRevalidated <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "BackupHashRead",
+            "BytesRead": 4096,
+            "TotalBytes": 67108864,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:BackupHashRead <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        },
+        {
+          "Checkpoint": {
+            "Phase": "TargetHashRead",
+            "BytesRead": 4096,
+            "TotalBytes": 67108864,
+            "InsideRecoveryEngine": true,
+            "EngineReconciliationCompleted": false,
+            "AnyMutationRequested": false
+          },
+          "ExitCode": -1,
+          "KilledByParent": true,
+          "ConcurrentWriterOpenBlocked": null,
+          "Command": "WO28ReliabilityProbe hold-engine:TargetHashRead <FIXTURE_ROOT> <CONTROL_ROOT>; parent Process.Kill(true)",
+          "Output": ""
+        }
+      ],
+      "Before": {
+        "State": "ManualReviewRequired",
+        "Code": "RECOVERY-CONTENT-REVIEW",
+        "OriginalBytesVerified": false,
+        "CanRequestRecovery": false,
+        "Files": [
+          {
+            "Path": "payload/app.txt",
+            "State": "UnknownContent",
+            "BackupVerified": true
+          }
+        ]
+      },
+      "Resume": {
+        "Output": {
+          "Stage": 10,
+          "Code": "RECOVERY-CONTENT-REVIEW",
+          "FilesApplied": 0,
+          "Failure": "",
+          "Diagnostic": null,
+          "RecoveryDiagnostic": null,
+          "RecoveryDisposition": "ManualReviewRequired",
+          "OriginalBytesVerified": false,
+          "WasCancellationRequested": false,
+          "AnyMutationStarted": false,
+          "ApplyMutationStarted": false,
+          "RecoveryMutationStarted": false,
+          "CancellationDisposition": "NotRequested"
+        },
+        "Command": "SmartPerformanceDoctor.WO27Probe.exe resume <SYNTHETIC_ROOT>",
+        "ExitCode": 10
+      },
+      "After": {
+        "State": "ManualReviewRequired",
+        "Code": "RECOVERY-CONTENT-REVIEW",
+        "OriginalBytesVerified": false,
+        "CanRequestRecovery": false,
+        "Files": [
+          {
+            "Path": "payload/app.txt",
+            "State": "UnknownContent",
+            "BackupVerified": true
+          }
+        ]
+      }
+    }
+  ]
+}

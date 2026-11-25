@@ -1,0 +1,13 @@
+Target: src/SmartPerformanceDoctor.UpdateEngine/RecoveryReconciliation.cs
+Base: dada1c96bfdb548af8c4c0d4d80ffba2d850c930
+Modified: e638ca51ca0e12082df0d00dffb037a583e097c0
+Original SHA256 313c141dbcd5a1ead3b4f8c1685af257ed9d594a9b4f48c5f33657aa877d0367
+Modified SHA256 565b180eb8b7b5af880ce507b43b5228d15fdfbfa1ed09efd4fd50b1c7c9b642
+Environment: Windows Git Bash. First restricted launch failed during MSYS initialization with 0xC0000022. Approved retry:
+Command: & 'C:/Program Files/Git/bin/bash.exe' docs/rework/evidence/wo29/ROLLBACK.sh
+Input: independent copy of MODIFIED_FILE and DIFF_FILE. Test: presence of the JournalLoaded observation in the source.
+BASELINE: checkpoint-absent
+MODIFIED: checkpoint-present
+RESTORED: checkpoint-absent
+313c141dbcd5a1ead3b4f8c1685af257ed9d594a9b4f48c5f33657aa877d0367
+Exit 0. cmp confirmed byte-exact original. This check is not an installation transaction. Runtime results: RECOVERY_CRASH_RESULT.json.
