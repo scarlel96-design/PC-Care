@@ -1,0 +1,37 @@
+name: WO29 synthetic staging and vault
+on:
+  push:
+    branches: [codex/pccare-wo29-guest-e2e-recovery-durability]
+    paths-ignore: ['docs/**']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fixture:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        probe: [WO20Probe, WO27Probe]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.402'
+      - name: Build fixture
+        shell: pwsh
+        run: |
+          '{"sdk":{"version":"10.0.402","rollForward":"disable"}}' | Set-Content global.json
+          dotnet build tools/SmartPerformanceDoctor.${{ matrix.probe }} -c Release -p:Platform=x64 -m:1
+      - if: matrix.probe == 'WO27Probe'
+        run: ./scripts/wo29-volume-interruptions.ps1
+      - if: matrix.probe == 'WO20Probe'
+        run: ./scripts/wo20-process-validation.ps1 -OutputDirectory artifacts/wo29-vault
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: wo29-${{ matrix.probe }}
+          path: |
+            artifacts/wo29-stage/staging.json
+            artifacts/wo29-vault/process-results.json

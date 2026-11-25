@@ -9,6 +9,7 @@ var verb=args[0];var root=Path.GetFullPath(args[1]);var parent=Environment.GetEn
 if(string.IsNullOrWhiteSpace(parent)||!root.StartsWith(Path.GetFullPath(parent).TrimEnd('\\')+"\\",StringComparison.OrdinalIgnoreCase)||!Path.GetFileName(root).StartsWith("wo27-"))return 3;
 string Hash(byte[] bytes)=>Convert.ToHexString(SHA256.HashData(bytes));
 void Print(object value)=>Console.WriteLine(JsonSerializer.Serialize(value));
+if(verb.StartsWith("stage29:", StringComparison.Ordinal)) return Stage29.Run(verb, root, parent);
 if(verb.StartsWith("stage:",StringComparison.Ordinal))
 {
  if(Environment.GetEnvironmentVariable("GITHUB_ACTIONS")!="true"||Environment.GetEnvironmentVariable("RUNNER_ENVIRONMENT")!="github-hosted")
