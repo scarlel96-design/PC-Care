@@ -1,0 +1,36 @@
+{
+  "purpose": "Source-shaped samples from inspected PC-Care files. Not complete files or compiler reproduction.",
+  "sourceCommit": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+  "examples": [
+    {
+      "sourcePath": "src/SmartPerformanceDoctor.App/Services/MacIconCatalog.cs",
+      "snippet": "public static IReadOnlyList<MacNavigationItem> NavigationItems { get; } =\n[ new(\"quick\", \"빠른 검사\", \"⌁\", \"Diagnostics\", \"빠른 상태 확인\") ];",
+      "expectedRule": "INTERFACE_PROPERTY_INITIALIZER"
+    },
+    {
+      "sourcePath": "src/SmartPerformanceDoctor.App/Services/DashboardMetricCatalog.cs",
+      "snippet": "public static IReadOnlyList<DashboardMetricCard> Cards { get; } = [new(\"시스템 상태\", \"대기\")];",
+      "expectedRule": "INTERFACE_PROPERTY_INITIALIZER"
+    },
+    {
+      "sourcePath": "src/SmartPerformanceDoctor.App/Platform/BuiltInProductModules.cs",
+      "snippet": "public IEnumerable<ProductFeatureDescriptor> Features => [new(\"home\", \"홈\", SearchTerms: [\"상태\", \"점수\"])];",
+      "expectedRule": "INTERFACE_EXPRESSION_BODY"
+    },
+    {
+      "sourcePath": "src/SmartPerformanceDoctor.App/Services/DriverAudioSystemRepairIntelligenceService.cs",
+      "snippet": "public IReadOnlyList<IntelligentRepairPlan> BuildPlans() { return\n[ new(\"driver-safe-rescan-v39\", [\"문제 장치 목록 확인\"]) ]; }",
+      "expectedRule": "INTERFACE_METHOD_RETURN"
+    },
+    {
+      "sourcePath": "src/SmartPerformanceDoctor.App/Views/AdvancedCenterPage.xaml.cs",
+      "snippet": "private void AddSection(string title, IEnumerable<(string label, string target)> items) {}\nvoid Build() { AddSection(\"고급 도구\", [ (\"복구 방법\", \"ProtocolCenterPage\") ]); }",
+      "expectedRule": "INTERFACE_CALL_ARGUMENT"
+    },
+    {
+      "sourcePath": "src/SmartPerformanceDoctor.App/Services/RepairActionRegistry.cs",
+      "snippet": "public static IReadOnlyList<RepairActionDescriptor> DriverActions { get; } = [new(\"driver\")];",
+      "expectedRule": "INTERFACE_PROPERTY_INITIALIZER"
+    }
+  ]
+}

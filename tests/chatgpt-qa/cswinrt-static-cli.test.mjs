@@ -1,0 +1,24 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync, symlinkSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { collectSource, compareReports, run } from '../../tools/chatgpt-qa/cswinrt-static-cli.mjs';
+const tmp = fn => {const root=mkdtempSync(join(tmpdir(),'cswinrt-qa-'));try{return fn(root);}finally{rmSync(root,{recursive:true,force:true});}};
+const fixture = root => {mkdirSync(join(root,'src/SmartPerformanceDoctor.App'),{recursive:true});writeFileSync(join(root,'src/SmartPerformanceDoctor.App/A.cs'),'IReadOnlyList<int> Data = [1];');};
+test('read-only CLI collects C# from default App subtree',()=>tmp(root=>{fixture(root);assert.equal(Object.keys(collectSource(root)).length,1);}));
+test('CLI reports high-confidence candidates without auto failure',()=>tmp(root=>{fixture(root);const r=run(['--root',root]);assert.equal(r.exitCode,0);assert.equal(r.report.highConfidence,1);}));
+test('explicit fail-high exits nonzero',()=>tmp(root=>{fixture(root);assert.equal(run(['--root',root,'--fail-high']).exitCode,1);}));
+test('summary hides detailed results but retains counts',()=>tmp(root=>{fixture(root);const r=run(['--root',root,'--summary']);assert.equal(r.report.results,undefined);assert.equal(r.report.highConfidence,1);}));
+test('file list mode limits scan to listed files',()=>tmp(root=>{fixture(root);writeFileSync(join(root,'files.txt'),'src/SmartPerformanceDoctor.App/A.cs\n');assert.equal(Object.keys(collectSource(root,{filesList:'files.txt'})).length,1);}));
+test('rooted traversal is rejected',()=>tmp(root=>{fixture(root);assert.throws(()=>collectSource(root,{start:'../'}),/escapes/);}));
+test('absolute file list is rejected',()=>tmp(root=>{fixture(root);assert.throws(()=>collectSource(root,{filesList:'/etc/passwd'}));}));
+test('symlink outside root is rejected',()=>tmp(root=>{fixture(root);symlinkSync('/etc/passwd',join(root,'bad.cs'));writeFileSync(join(root,'files.txt'),'bad.cs\n');assert.throws(()=>collectSource(root,{filesList:'files.txt'}));}));
+test('unknown arguments fail closed',()=>tmp(root=>{fixture(root);assert.throws(()=>run(['--root',root,'--danger']));}));
+test('fail-new without baseline fails',()=>tmp(root=>{fixture(root);assert.throws(()=>run(['--root',root,'--fail-new']));}));
+test('unchanged baseline reports no new errors',()=>tmp(root=>{fixture(root);const before=run(['--root',root]).report;writeFileSync(join(root,'baseline.json'),JSON.stringify(before));const after=run(['--root',root,'--baseline','baseline.json','--fail-new']);assert.equal(after.report.comparison.newHighConfidence,0);assert.equal(after.exitCode,0);}));
+test('added error against baseline fails when requested',()=>tmp(root=>{fixture(root);const before=run(['--root',root]).report;writeFileSync(join(root,'baseline.json'),JSON.stringify(before));writeFileSync(join(root,'src/SmartPerformanceDoctor.App/B.cs'),'IEnumerable<int> Values = [1];');const after=run(['--root',root,'--baseline','baseline.json','--fail-new']);assert.equal(after.report.comparison.newHighConfidence,1);assert.equal(after.exitCode,1);}));
+test('line movement creates conservative new-warning comparison',()=>tmp(root=>{fixture(root);const before=run(['--root',root]).report;writeFileSync(join(root,'src/SmartPerformanceDoctor.App/A.cs'),'\nIReadOnlyList<int> Data = [1];');const after=run(['--root',root]).report;assert.equal(compareReports(before,after).newHighConfidence,1);}));
+test('invalid baseline rejected',()=>assert.throws(()=>compareReports({},{}),TypeError));
+test('invalid listed extensions rejected',()=>tmp(root=>{fixture(root);writeFileSync(join(root,'files.txt'),'secret.json\n');assert.throws(()=>collectSource(root,{filesList:'files.txt'}));}));
+test('unknown root path rejected',()=>assert.throws(()=>run(['--root','/path/nonexistent'])))

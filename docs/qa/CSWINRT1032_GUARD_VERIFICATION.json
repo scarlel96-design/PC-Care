@@ -1,0 +1,41 @@
+{
+  "task": "WO-30 independent CsWinRT1032 source-risk static guard",
+  "parentCommit": "7f7c1463e75c09a697c5990b429123b778a80ea4",
+  "historicalCompilerSource": "e638ca51ca0e12082df0d00dffb037a583e097c0",
+  "historicalEvidence": "docs/qa/CI_FAILURE_EVIDENCE_WO30.json",
+  "historicalFailureRuns": 26,
+  "historicalEmittedDiagnosticsPerRun": 128,
+  "historicalUniquePositionsPerRun": 64,
+  "verification": {
+    "nodeVersion": "v22.16.0",
+    "unitTestsPass": 68,
+    "unitTestsFail": 0,
+    "syntaxChecksPass": 2,
+    "abbreviatedRealSourceShapes": 6,
+    "sourceShapeFindingsHigh": 6,
+    "sourceShapeFindingsAdvisory": 1,
+    "cliDefaultExit": 0,
+    "cliStrictExit": 1,
+    "fullRepositoryScan": "NOT TESTED",
+    "actualWindowsBuild": "NOT TESTED",
+    "githubActions": "NOT TESTED"
+  },
+  "filesSha256": {
+    "docs/qa/CSWINRT1032_STATIC_GUARD.md": "8d31ca4c7f1574877591b5c9d683ca5b76802bee75e889caca00124b17bb03ae",
+    "tests/chatgpt-qa/cswinrt-patterns.test.mjs": "3c7155a40e8f5ea02998266239adad05065e0ed2925eb697746431119955424c",
+    "tests/chatgpt-qa/cswinrt-static-cli.test.mjs": "1d120cb4e513001c8707506e2d66a0e775816ac4a77c265721434496ffce4d40",
+    "tests/chatgpt-qa/cswinrt-static.test.mjs": "28c666dde6197f78a50901478ea16d2eab95249fcde59777d2ac06d6477f424b",
+    "tests/chatgpt-qa/fixtures/cswinrt-known-patterns.json": "1798071e04eb5f00700e19ec604125badde8cf9e2fd969fbcdcfd98f4982b1e6",
+    "tools/chatgpt-qa/cswinrt-static-cli.mjs": "6af57d909d47741abdbdb0a9ddc48df9cb1e6e2b2e0108c14532adb0b47cf533",
+    "tools/chatgpt-qa/cswinrt-static.mjs": "202d5ac6f3ab00d41d33ace5178517ba31f5cc3d8623feb0ea7b9e75a121d205"
+  },
+  "limitations": [
+    "No complete Roslyn semantic analysis",
+    "Source examples are abbreviated",
+    "No locally available full PC-Care checkout",
+    "No automatic production CI gating",
+    "SDK difference is unconfirmed causal hypothesis"
+  ],
+  "productSourceEdited": false,
+  "mainEdited": false
+}
