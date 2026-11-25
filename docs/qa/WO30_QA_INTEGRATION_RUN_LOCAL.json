@@ -1,0 +1,153 @@
+{
+  "schema": "pc-care-independent-qa-integration-v1",
+  "sourceSha": null,
+  "profile": "offline",
+  "checkSelection": "all",
+  "status": "PARTIAL",
+  "summary": {
+    "status": "PARTIAL",
+    "counts": {
+      "PASS": 4,
+      "WARN": 1,
+      "BLOCKED": 0,
+      "SKIPPED": 8,
+      "ERROR": 0
+    },
+    "executed": 5,
+    "total": 13
+  },
+  "checks": [
+    {
+      "id": "unit-tests",
+      "title": "Independent QA unit tests",
+      "status": "PASS",
+      "evidence": "LOCAL_EXECUTION",
+      "exitCode": 0,
+      "reason": null,
+      "details": {
+        "total": 277,
+        "passed": 277,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "ci-failure-evidence",
+      "title": "Historical 26-job failure summary",
+      "status": "PASS",
+      "evidence": "HISTORICAL_GITHUB_SUMMARY",
+      "exitCode": 0,
+      "reason": null,
+      "details": {
+        "toolStatus": "COMPLETE",
+        "failedRuns": 26,
+        "commonToAllFailures": [
+          "CsWinRT1032"
+        ]
+      }
+    },
+    {
+      "id": "sdk-run-compare",
+      "title": "Observed installed SDK comparison",
+      "status": "PASS",
+      "evidence": "HISTORICAL_GITHUB_SUMMARY",
+      "exitCode": 0,
+      "reason": null,
+      "details": {
+        "toolStatus": "COMPLETE",
+        "sdkVersionsDiffer": true,
+        "causeVerified": false
+      }
+    },
+    {
+      "id": "build-env-run-compare",
+      "title": "Observed build environment comparison",
+      "status": "WARN",
+      "evidence": "HISTORICAL_GITHUB_SUMMARY",
+      "exitCode": 1,
+      "reason": "Known SDK difference needs controlled reproduction",
+      "details": {
+        "toolStatus": "REVIEW",
+        "differences": 1,
+        "causeVerified": false
+      }
+    },
+    {
+      "id": "ci-observability-synthetic",
+      "title": "CI aggregation parser fixture",
+      "status": "PASS",
+      "evidence": "SYNTHETIC_FIXTURE",
+      "exitCode": 0,
+      "reason": null,
+      "details": {
+        "toolStatus": "COMPLETE"
+      }
+    },
+    {
+      "id": "wo29-source-evidence",
+      "title": "WO-29 security and evidence check",
+      "status": "SKIPPED",
+      "reason": "Requires checkout with WO-29 evidence and product source",
+      "evidence": "LOCAL_CHECKOUT"
+    },
+    {
+      "id": "sdk-workflow-drift",
+      "title": "SDK workflow baseline comparison",
+      "status": "SKIPPED",
+      "reason": "Requires complete GitHub workflow checkout",
+      "evidence": "LOCAL_CHECKOUT"
+    },
+    {
+      "id": "build-env-checkout",
+      "title": "Project and workflow package configuration",
+      "status": "SKIPPED",
+      "reason": "Requires complete product source and workflows",
+      "evidence": "LOCAL_CHECKOUT"
+    },
+    {
+      "id": "cswinrt-source-guard",
+      "title": "CsWinRT1032 source risk scan",
+      "status": "SKIPPED",
+      "reason": "Requires C# source checkout",
+      "evidence": "LOCAL_CHECKOUT"
+    },
+    {
+      "id": "workflow-trigger-scope",
+      "title": "Legacy workflow PR path scope",
+      "status": "SKIPPED",
+      "reason": "PR #3 workflow scope tool not present, or checkout incomplete",
+      "evidence": "OPTIONAL_BRANCH_TOOL"
+    },
+    {
+      "id": "change-impact",
+      "title": "Codex versus GPT changed-file ownership",
+      "status": "SKIPPED",
+      "reason": "Requires both changed-file lists",
+      "evidence": "USER_SUPPLIED"
+    },
+    {
+      "id": "ui-static-review",
+      "title": "XAML static review",
+      "status": "SKIPPED",
+      "reason": "Requires UI path list",
+      "evidence": "USER_SUPPLIED"
+    },
+    {
+      "id": "premerge-readiness",
+      "title": "Ten-task integration premerge gate",
+      "status": "SKIPPED",
+      "reason": "Requires approved ten-task evidence inputs",
+      "evidence": "USER_SUPPLIED"
+    }
+  ],
+  "releaseDecision": "NOT_ASSESSED",
+  "productPhase1Go": false,
+  "remoteCiObservedByThisRun": false,
+  "limitations": [
+    "PASS indicates only independent QA checks, not Windows product qualification.",
+    "Historical GitHub summaries are not live re-fetched by this offline runner.",
+    "SYNTHETIC_FIXTURE results are synthetic and cannot establish production behavior.",
+    "Codex conflict, UI, and premerge checks need explicit evidence inputs.",
+    "No signing, reboot, UAC, interactive Windows, or AV3 production authorization is claimed."
+  ]
+}

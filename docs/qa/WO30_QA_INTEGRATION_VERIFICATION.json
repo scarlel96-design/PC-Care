@@ -1,0 +1,42 @@
+{
+  "schema": "pc-care-integrated-qa-local-verification-v1",
+  "workOrder": "WO-30",
+  "taskIndex": 9,
+  "taskMax": 10,
+  "baselineBranch": "chatgpt/pccare-wo30-build-env-provenance",
+  "baselineCommit": "c5d5c8e7cbff9cc586c363213e754bb50b3badc2",
+  "localAssembly": "previously published GPT QA tool artifacts; not a complete PC-Care source checkout",
+  "nodeVersion": "v22.16.0",
+  "checks": {
+    "nodeSyntax": "PASS",
+    "unitTests": {
+      "total": 277,
+      "passed": 277,
+      "failed": 0,
+      "skipped": 0
+    },
+    "offlineIntegration": {
+      "status": "PARTIAL",
+      "counts": {
+        "PASS": 4,
+        "WARN": 1,
+        "BLOCKED": 0,
+        "SKIPPED": 8,
+        "ERROR": 0
+      },
+      "executed": 5,
+      "total": 13
+    },
+    "remoteGitHubActions": "NOT_TESTED",
+    "fullProductCheckout": "NOT_TESTED",
+    "windowsProductBuild": "NOT_TESTED",
+    "codexDiff": "NOT_TESTED"
+  },
+  "filesReadOnly": true,
+  "productSourcesModified": 0,
+  "conclusion": "Local integration program and tests succeeded; full product integration remains NOT ASSESSED",
+  "criticalFiles": {
+    "tools/chatgpt-qa/integrated-runner.mjs": "3a381628a6f85ba4d9c0df59c11801ca69b57886e4dbcc9cb8b8d883cc79acb1",
+    "tests/chatgpt-qa/integrated-runner.test.mjs": "bf440019743fc05f22b26df4fff8e872abd9171da05faef1e504b727358cbe26"
+  }
+}

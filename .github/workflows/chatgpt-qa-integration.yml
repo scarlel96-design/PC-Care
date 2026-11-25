@@ -1,0 +1,51 @@
+name: ChatGPT independent QA integration (manual)
+
+# Manual only. Historical WO PR events are not added by this workflow.
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: 'Scope: offline summaries or full checkout inspection'
+        required: true
+        type: choice
+        options:
+          - offline
+          - checkout
+        default: offline
+
+permissions:
+  contents: read
+
+concurrency:
+  group: chatgpt-qa-integration-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  independent-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Check runner syntax
+        run: node --check tools/chatgpt-qa/integrated-runner.mjs
+      - name: Run independent QA integration
+        env:
+          QA_PROFILE: ${{ inputs.profile }}
+          QA_SOURCE_SHA: ${{ github.sha }}
+        run: |
+          node tools/chatgpt-qa/integrated-runner.mjs \
+            --root . \
+            --profile "$QA_PROFILE" \
+            --source-sha "$QA_SOURCE_SHA" \
+            --output docs/qa/qa-integrated-report.json
+      - name: Retain machine-readable report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pc-care-chatgpt-independent-qa-report
+          path: docs/qa/qa-integrated-report.json
+          if-no-files-found: warn
+          retention-days: 14
