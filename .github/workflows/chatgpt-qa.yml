@@ -25,8 +25,12 @@ jobs:
         run: |
           node --check tools/chatgpt-qa/core.mjs
           node --check tools/chatgpt-qa/cli.mjs
+          node --check tools/chatgpt-qa/workflow-trigger-audit.mjs
+          node --check tests/chatgpt-qa/workflow-trigger-audit.test.mjs
       - name: Independent QA unit tests
-        run: node --test tests/chatgpt-qa/core.test.mjs
+        run: node --test tests/chatgpt-qa/core.test.mjs tests/chatgpt-qa/workflow-trigger-audit.test.mjs
+      - name: Audit scoped workflow triggers
+        run: node tools/chatgpt-qa/workflow-trigger-audit.mjs .
       - name: Audit WO-29 baseline evidence
         run: node tools/chatgpt-qa/cli.mjs wo29 --root .
       - name: Inventory XAML review candidates
