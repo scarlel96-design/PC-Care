@@ -4,6 +4,11 @@ on:
   push:
     branches: [codex/pccare-rework-phase1-closure]
   pull_request:
+    paths-ignore:
+      - 'tools/chatgpt-qa/**'
+      - 'tests/chatgpt-qa/**'
+      - 'docs/qa/**'
+      - '.github/workflows/chatgpt-qa.yml'
   workflow_dispatch:
 
 jobs:

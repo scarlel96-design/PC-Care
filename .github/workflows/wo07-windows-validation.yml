@@ -8,6 +8,11 @@ on:
       - 'docs/**'
       - '.gitattributes'
   pull_request:
+    paths-ignore:
+      - 'tools/chatgpt-qa/**'
+      - 'tests/chatgpt-qa/**'
+      - 'docs/qa/**'
+      - '.github/workflows/chatgpt-qa.yml'
 
 jobs:
   windows-validation:
