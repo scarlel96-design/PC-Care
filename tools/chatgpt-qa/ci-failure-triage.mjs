@@ -51,7 +51,7 @@ export function summarizeFailureEvidence(input) {
   if (!input || !Array.isArray(input.runs) || !input.runs.length) {
     throw new TypeError('Expected nonempty runs array');
   }
-  const seen = new Set();
+  const seen = new Set(), jobIds = new Set();
   const grouped = new Map();
   const sdkByOutcome = { failed: new Set(), successful: new Set() };
   const problems = [];
@@ -74,16 +74,19 @@ export function summarizeFailureEvidence(input) {
       problems.push(`Run ${id} lacks verified job/log evidence`);
       continue;
     }
-    complete++;
+    if(jobIds.has(run.jobId)) { problems.push(`Duplicate job ${run.jobId}`); continue; }
+    jobIds.add(run.jobId);
     const s = run.logSummary;
     if (!Number.isSafeInteger(s.emittedErrorLines) || s.emittedErrorLines < 0 || !Number.isSafeInteger(s.uniqueLocations) || s.uniqueLocations < 0 || !s.codes || typeof s.codes !== 'object') {
       problems.push(`Run ${id} has invalid log summary`);
       continue;
     }
+    if (!s.emittedErrorLines || !Object.keys(s.codes).length) { problems.push(`Run ${id} has no observed compiler errors`); continue; }
+    complete++;
     totalEmissions += s.emittedErrorLines;
     let sumOfCodeLines = 0;
     for (const [code, count] of Object.entries(s.codes)) {
-      if (!/^[A-Za-z][A-Za-z0-9]*\d+$/.test(code) || !Number.isSafeInteger(count) || count < 0) {
+      if (!/^[A-Za-z][A-Za-z0-9]*\d+$/.test(code) || !Number.isSafeInteger(count) || count <= 0) {
         problems.push(`Run ${id} invalid diagnostic code/count`); continue;
       }
       sumOfCodeLines += count;
@@ -99,12 +102,13 @@ export function summarizeFailureEvidence(input) {
       for (const d of s.diagnostics) if (d?.file && Number.isSafeInteger(d.line) && d.code) locations.add(`${d.code}|${d.file}:${d.line}:${d.column}`);
     }
   }
+  if (!Number.isSafeInteger(input.expectedFailures)||input.expectedFailures<=0) problems.push('Missing positive expected failure count');
   if (Number.isSafeInteger(input.expectedFailures) && failed !== input.expectedFailures) {
     problems.push(`Expected ${input.expectedFailures} failures; observed ${failed}`);
   }
   if (complete !== failed) problems.push(`Only ${complete}/${failed} failed runs have log summaries`);
   const groups = [...grouped.values()].sort((a, b) => b.affectedRuns - a.affectedRuns || a.code.localeCompare(b.code));
-  const sameFailureCode = groups.filter(g => g.affectedRuns === failed).map(g => g.code);
+  const sameFailureCode = groups.filter(g => problems.length===0 && g.affectedRuns === failed).map(g => g.code);
   const failedSdks = [...sdkByOutcome.failed].sort();
   const passedSdks = [...sdkByOutcome.successful].sort();
   return {

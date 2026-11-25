@@ -75,5 +75,9 @@
     "Independent unit tests",
     "Observed GitHub Actions run",
     "Human PR review"
+  ],
+  "owned_ci_files": [
+    ".github/workflows/chatgpt-qa.yml",
+    ".github/workflows/chatgpt-qa-integration.yml"
   ]
 }

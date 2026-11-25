@@ -1,0 +1,59 @@
+{
+  "schema": "pc-care-wo30-qa-hardening-v1",
+  "baseCommit": "9533e3888db13291f48e7cdd96ce84ac14c30991",
+  "resolvedReproducedFindings": [
+    "R01",
+    "R02",
+    "R03",
+    "R04",
+    "R05",
+    "R06",
+    "R07",
+    "R08",
+    "R09",
+    "R10",
+    "R11",
+    "R12",
+    "R13",
+    "R14"
+  ],
+  "tests": {
+    "command": "node --test tests/chatgpt-qa/*.test.mjs",
+    "node": "v22.16.0",
+    "files": 11,
+    "originalCases": 277,
+    "priorNegativeCases": 21,
+    "newBoundaryCases": 46,
+    "total": 344,
+    "pass": 344,
+    "fail": 0,
+    "skip": 0,
+    "sha256RawLog": "75dab21c3900cd630bffc5fe4cbd36c2e27d05691f1ff9cbe39fc8adab9699cf"
+  },
+  "syntax": "PASS",
+  "offline": {
+    "status": "PARTIAL",
+    "PASS": 4,
+    "WARN": 1,
+    "SKIPPED": 8,
+    "exitCode": 0,
+    "reportSha256": "6c3d6cf1c1884d4836912b00d18bbbe3efb6aa10ef6762a4bfc5845bd409959b"
+  },
+  "strict": {
+    "status": "PARTIAL",
+    "exitCode": 1,
+    "reportSha256": "6c3d6cf1c1884d4836912b00d18bbbe3efb6aa10ef6762a4bfc5845bd409959b"
+  },
+  "focusedUnitTests": {
+    "status": "PASS",
+    "exitCode": 0
+  },
+  "productSourceChanges": 0,
+  "legacyWorkflowChanges": 0,
+  "oldPr3": "HOLD; superseded analyzer in new QA branch, old draft unchanged",
+  "hostedCi": "NOT RUN",
+  "fullProductCheckout": "NOT TESTED",
+  "actualWindowsBuild": "NOT TESTED",
+  "releaseDecision": "NO-GO",
+  "mergeApproval": "HOLD"
+}

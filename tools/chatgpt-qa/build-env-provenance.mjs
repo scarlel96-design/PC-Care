@@ -1,8 +1,9 @@
+import { inspectXml, packageDeclarations } from './msbuild-xml.mjs';
 /** Read-only build environment evidence. Do not infer tool versions absent from logs. */
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
-const KNOWN_SEVERITIES = new Set(['REVIEW', 'INCOMPLETE', 'MATCH']);
+const KNOWN_SEVERITIES = new Set(['REVIEW', 'INCOMPLETE', 'MATCH', 'INVENTORIED']);
 const semver = /^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/;
 const choose = values => [...new Set(values.filter(Boolean))];
 const last = values => values.length ? values.at(-1) : null;
@@ -27,6 +28,7 @@ function blockForDotnetAction(source) {
 
 export function parseWorkflow(name, source) {
   if (typeof name !== 'string' || typeof source !== 'string') throw new TypeError('Expected name and YAML text');
+  source=source.split(/\r?\n/).filter(line=>!/^\s*#/.test(line)).join('\n');
   const blocks = blockForDotnetAction(source);
   const selectors = [];
   const actions = [];
@@ -53,17 +55,15 @@ export function parseWorkflow(name, source) {
 
 export function parseCentralPackages(source) {
   if (typeof source !== 'string') throw new TypeError('Expected XML text');
-  const declared = Object.create(null);
-  for (const match of source.matchAll(/<PackageVersion\b([^>]+)\/?\s*>/g)) {
-    const attrs = match[1];
-    const name = attrs.match(/\bInclude\s*=\s*"([^"]+)"/)?.[1];
-    const version = attrs.match(/\bVersion\s*=\s*"([^"]+)"/)?.[1];
-    if (name && version) {
-      if (Object.hasOwn(declared, name)) throw new Error(`Repeated package declaration: ${name}`);
-      declared[name] = version;
-    }
+  const nodes=inspectXml(source),declared=Object.create(null);
+  for(const {name,version,uncertain} of packageDeclarations(source)) {
+    if(uncertain||!name||!version||!semver.test(version))throw Error('Unsupported or nonliteral package declaration');
+    if(Object.keys(declared).some(k=>k.toLowerCase()===name.toLowerCase()))throw Error(`Repeated package declaration: ${name}`);
+    declared[name]=version;
   }
-  return { centralManagementEnabled: /<ManagePackageVersionsCentrally>\s*true\s*<\/ManagePackageVersionsCentrally>/.test(source), declared: { ...declared },
+  const central=nodes.filter(n=>n.name==='ManagePackageVersionsCentrally');
+  const centralManagementEnabled=central.length===1&&!central[0].uncertain&&central[0].text.trim()==='true';
+  return { centralManagementEnabled, declared: { ...declared },
     windowsAppSdkDeclared: declared['Microsoft.WindowsAppSDK'] ?? null,
     csWinRtDeclared: declared['Microsoft.Windows.CsWinRT'] ?? null,
     csWin32Declared: declared['Microsoft.Windows.CsWin32'] ?? null,
@@ -72,12 +72,10 @@ export function parseCentralPackages(source) {
 
 export function parseAppProject(source) {
   if (typeof source !== 'string') throw new TypeError('Expected project XML text');
-  const tags = name => last(capture(source, new RegExp(`<${name}>\\s*([^<]+)\\s*</${name}>`, 'g')));
-  const refs = capture(source, /<PackageReference\b[^>]*\bInclude\s*=\s*"([^"]+)"/g);
-  return { targetFramework: tags('TargetFramework')?.trim() ?? null,
-    useWinUI: /<UseWinUI>\s*true\s*<\/UseWinUI>/.test(source),
-    packageReferences: refs,
-    windowsAppSdkReferenced: refs.includes('Microsoft.WindowsAppSDK') };
+  const nodes=inspectXml(source);
+  const tag=name=>{const found=nodes.filter(n=>n.name===name);return found.length===1&&!found[0].uncertain?found[0].text.trim():null;};
+  const refs=nodes.filter(n=>n.name==='PackageReference'&&!n.uncertain&&n.attrs.Include).map(n=>n.attrs.Include);
+  return {targetFramework:tag('TargetFramework'),useWinUI:tag('UseWinUI')==='true',packageReferences:refs,windowsAppSdkReferenced:refs.includes('Microsoft.WindowsAppSDK')};
 }
 
 export function parseJobLog(log) {
@@ -174,7 +172,7 @@ export function auditCheckout(root, baseline = null) {
     if(baseline.windowsAppSdkDeclared && packages?.windowsAppSdkDeclared !== baseline.windowsAppSdkDeclared)
       regressions.push({file:'Directory.Packages.props',reason:'Windows App SDK declaration drift',before:baseline.windowsAppSdkDeclared,after:packages?.windowsAppSdkDeclared??null});
   }
-  return {status:regressions.length?'REVIEW':!packages||!project?'INCOMPLETE':'MATCH',workflows,counts,packages,project,regressions,
+  return {status:regressions.length?'REVIEW':!packages?.windowsAppSdkDeclared||!packages.centralManagementEnabled||!project?.targetFramework||!project.windowsAppSdkReferenced||!workflows.length||!workflows.some(w=>w.performsDotnetBuild)?'INCOMPLETE':baseline?'MATCH':'INVENTORIED',workflows,counts,packages,project,regressions,
     limits:['Does not parse all YAML variants or MSBuild conditionals.','Transitive CsWinRT resolution requires obj/project.assets.json or a binlog.','Static inspection cannot establish the SDK chosen by the runner.']};
 }
 

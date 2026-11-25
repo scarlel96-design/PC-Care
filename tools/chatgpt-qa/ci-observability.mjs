@@ -27,7 +27,7 @@ function asNonnegativeInteger(value) {
 }
 
 function normalizeJobs(raw) {
-  if (Array.isArray(raw)) return { jobs: raw, total_count: raw.length };
+  if (Array.isArray(raw)) return { jobs: raw, total_count: null };
   if (!raw || !Array.isArray(raw.jobs)) return null;
   return { jobs: raw.jobs, total_count: asNonnegativeInteger(raw.total_count) };
 }
@@ -49,8 +49,9 @@ export function analyzeSnapshot(snapshot) {
   const runIds = new Set();
   const seen = [];
   const problems = [];
+  if (apiTotal === null) problems.push('Missing authoritative run total');
   for (const run of allRuns) {
-    if (!Number.isSafeInteger(run?.id)) throw new TypeError('Run id must be an integer');
+    if (!Number.isSafeInteger(run?.id)||run.id<=0) throw new TypeError('Run id must be an integer');
     if (runIds.has(run.id)) {
       problems.push(`Duplicate run id ${run.id} in input; ignored after first occurrence`);
       continue;
@@ -58,14 +59,14 @@ export function analyzeSnapshot(snapshot) {
     runIds.add(run.id);
     seen.push(run);
   }
-  if (apiTotal !== null && apiTotal > seen.length) {
+  if (apiTotal !== null && apiTotal !== seen.length) {
     problems.push(`Run list incomplete: ${seen.length} of ${apiTotal} available`);
   }
   if (snapshot.truncated === true) problems.push('Acquisition reported truncated results');
 
   const counts = { runs: seen.length, completed: 0, active: 0, successes: 0, failures: 0, cancelled: 0, skipped: 0 };
-  const byEvent = {};
-  const byConclusion = {};
+  const byEvent = Object.create(null);
+  const byConclusion = Object.create(null);
   const fanout = new Map();
   const repeated = new Map();
   let rerunAttempts = 0;
@@ -78,7 +79,8 @@ export function analyzeSnapshot(snapshot) {
   const jobTimes = [];
   const queueWaits = [];
   const perWorkflow = new Map();
-  const failedSteps = {};
+  const failedSteps = Object.create(null);
+  const jobIds = new Set();
 
   for (const run of seen) {
     const workflow = String(run.workflow_id ?? run.name ?? 'unknown');
@@ -110,17 +112,21 @@ export function analyzeSnapshot(snapshot) {
     repeated.get(repeatKey).ids.push(run.id);
     if (Number.isSafeInteger(run.run_attempt) && run.run_attempt > 1) {
       rerunAttempts += run.run_attempt - 1;
+      problems.push(`Run ${run.id} has earlier attempts not included in latest-attempt job coverage`);
     }
 
     const details = normalizeJobs(jobsByRun[String(run.id)]);
     if (!details) continue;
     jobCoverage++;
-    if (details.total_count === null || details.jobs.length < details.total_count) {
+    if (details.total_count === null || details.jobs.length !== details.total_count) {
       problems.push(`Jobs incomplete for run ${run.id}`);
     }
     const workflowStats = perWorkflow.get(workflow) ?? { workflowId: workflow, name: workflowName, jobs: 0, timedJobs: 0, jobWallSeconds: 0 };
     perWorkflow.set(workflow, workflowStats);
     for (const job of details.jobs) {
+      if (!Number.isSafeInteger(job?.id) || job.id <= 0 || jobIds.has(job.id)) { problems.push(`Invalid or duplicate job id ${job?.id}`); continue; }
+      if (job.run_id != null && job.run_id !== run.id) { problems.push(`Job ${job.id} belongs to another run`); continue; }
+      jobIds.add(job.id);
       fetchedJobCount++;
       if (Array.isArray(job.steps)) {
         for (const step of job.steps) {
@@ -166,8 +172,8 @@ export function analyzeSnapshot(snapshot) {
     limitations: problems,
     coverage,
     counts,
-    eventCounts: byEvent,
-    conclusionCounts: byConclusion,
+    eventCounts: {...byEvent},
+    conclusionCounts: {...byConclusion},
     fanoutByCommit,
     repeatCandidates: { extraRuns: duplicateExtraRuns, groups: duplicates, rerunAttempts },
     jobTiming: {
@@ -178,7 +184,7 @@ export function analyzeSnapshot(snapshot) {
       activeOrUntimedJobsExcluded: true,
       billedMinutes: null,
     },
-    failedStepCounts: failedSteps,
+    failedStepCounts: {...failedSteps},
     workflowTiming: [...perWorkflow.values()].sort((a, b) => b.jobWallSeconds - a.jobWallSeconds),
   };
 }
@@ -242,6 +248,8 @@ export async function fetchGithubSnapshot(options = {}) {
     const data = await request(`/repos/${repo}/actions/runs?head_sha=${sha}&per_page=100&page=${page}`);
     if (!Array.isArray(data.workflow_runs)) throw new Error('Invalid GitHub workflow_runs response');
     if (page === 1) total = asNonnegativeInteger(data.total_count);
+    else if (asNonnegativeInteger(data.total_count)!==total) throw Error('Workflow run count changed during acquisition');
+    for (const run of data.workflow_runs) if (!Number.isSafeInteger(run?.id)||run.id<=0||run.head_sha!==sha) throw Error('Invalid or mismatched run identity in API response');
     runs.push(...data.workflow_runs.slice(0, maxRuns - runs.length));
     if (data.workflow_runs.length < 100 || runs.length >= maxRuns) break;
   }

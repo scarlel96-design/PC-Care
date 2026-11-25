@@ -162,7 +162,7 @@ export function scanCSharp(source, path = 'unknown.cs') {
         for (const m of contents.matchAll(ret)) {
           let depth = 0;
           for (const ch of contents.slice(0,m.index)) { if(ch === '{') depth++; else if(ch === '}') depth--; }
-          if (depth === 0) record(at+1+m.index+m[0].lastIndexOf('['), 'INTERFACE_METHOD_RETURN');
+          record(at+1+m.index+m[0].lastIndexOf('['), 'INTERFACE_METHOD_RETURN', depth===0?'HIGH':'REVIEW');
         }
       }
     }
@@ -196,7 +196,7 @@ export function scanCSharp(source, path = 'unknown.cs') {
 export function scanFiles(files) {
   if (!files || typeof files !== 'object' || Array.isArray(files)) throw new TypeError('Expected {path: source}');
   const results=Object.entries(files).sort((a,b)=>a[0].localeCompare(b[0])).map(([path,source])=>scanCSharp(source,path));
-  return { status:results.some(x=>x.highConfidence)?'REVIEW_REQUIRED':results.some(x=>x.advisory)?'ADVISORY':'CLEAR',
+  return { status:!results.length?'INCOMPLETE':results.some(x=>x.highConfidence)?'REVIEW_REQUIRED':results.some(x=>x.advisory)?'ADVISORY':'CLEAR',
     scannedFiles:results.length, highConfidence:results.reduce((a,x)=>a+x.highConfidence,0),
     advisory:results.reduce((a,x)=>a+x.advisory,0), results };
 }

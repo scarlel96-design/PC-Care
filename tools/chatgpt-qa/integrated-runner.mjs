@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /** Run the independent QA checks. Do not change product files or release gates. */
-import { existsSync, lstatSync, readdirSync, realpathSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { readFileSync, existsSync, lstatSync, readdirSync, realpathSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -16,6 +17,18 @@ const STATUS = new Set(['PASS','WARN','BLOCKED','SKIPPED','ERROR']);
 const VALID_PROFILES = new Set(['offline','checkout']);
 const TOOL_DIR = 'tools/chatgpt-qa';
 const TEST_DIR = 'tests/chatgpt-qa';
+const REQUIRED_TESTS = Object.freeze(['build-env-provenance','ci-failure-triage','ci-observability','core','cswinrt-patterns','cswinrt-static-cli','cswinrt-static','integrated-runner','sdk-drift-audit','adversarial-regression','hardening-boundaries'].map(n=>n+'.test.mjs'));
+const TEST_BASELINE_MINIMUM=344;
+function verifyTestInventory(root,item,details) {
+  const missing=REQUIRED_TESTS.filter(n=>!item.args.some(p=>p.replaceAll('\\','/').endsWith('/'+n)));
+  if(missing.length||details.total<TEST_BASELINE_MINIMUM)return {missing,reason:'Required test inventory or minimum test count missing'};
+  try {
+    const manifest=JSON.parse(readFileSync(relativeFile(root,'docs/qa/QA_TEST_INVENTORY_WO30.json'),'utf8'));
+    if(manifest.schema!==1||!Number.isSafeInteger(manifest.minimumTests)||manifest.minimumTests<TEST_BASELINE_MINIMUM||details.total<manifest.minimumTests||!manifest.files||Object.keys(manifest.files).length!==REQUIRED_TESTS.length)throw Error('Invalid test inventory');
+    for(const name of REQUIRED_TESTS){const path=join(TEST_DIR,name);const hash=createHash('sha256').update(readFileSync(relativeFile(root,path),'utf8').replace(/\r\n/g,'\n')).digest('hex');if(manifest.files[name]!==hash)throw Error('Required test hash mismatch: '+name);}
+    return null;
+  } catch(error) {return {missing,reason:error.message};}
+}
 
 export function relativeFile(root, rel, { mustExist=true, allowOutput=false }={}) {
   if (typeof rel !== 'string' || !rel.trim() || /\0/.test(rel) || isAbsolute(rel) || /^[A-Za-z]:[\\/]/.test(rel) || rel.startsWith('\\\\')) {
@@ -35,7 +48,7 @@ export function relativeFile(root, rel, { mustExist=true, allowOutput=false }={}
     const parent=realpathSync(dirname(absolute));
     const fromRoot=relative(root,parent);
     if (fromRoot==='..' || fromRoot.startsWith('..'+sep) || isAbsolute(fromRoot)) throw new Error('Output parent leaves repository');
-    if (existsSync(absolute) && (!lstatSync(absolute).isFile() || realpathSync(absolute)!==absolute)) throw new Error('Refuse nonregular or symlink output');
+    if (existsSync(absolute)) throw new Error('Refuse nonregular or symlink output, or overwrite of existing evidence');
   }
   return absolute;
 }
@@ -76,7 +89,7 @@ export function makePlan(root, opts) {
   };
   const testPath=join(root,TEST_DIR);
   const tests=existsSync(testPath)?readdirSync(testPath).filter(n=>n.endsWith('.test.mjs')).sort():[];
-  add('unit-tests','Independent QA unit tests',null,tests.map(n=>join(TEST_DIR,n)), 'LOCAL_EXECUTION', tests.length>0,'No test suite files', 'tests');
+  add('unit-tests','Independent QA unit tests',null,tests.map(n=>join(TEST_DIR,n)), 'LOCAL_EXECUTION', true,null, 'tests');
   add('ci-failure-evidence','Historical 26-job failure summary',p('ci-failure-triage-cli.mjs'),['evidence','docs/qa/CI_FAILURE_EVIDENCE_WO30.json'],'HISTORICAL_GITHUB_SUMMARY');
   add('sdk-run-compare','Observed installed SDK comparison',p('sdk-drift-cli.mjs'),['compare','--evidence','docs/qa/SDK_DRIFT_RUN_EVIDENCE_WO30.json'],'HISTORICAL_GITHUB_SUMMARY');
   add('build-env-run-compare','Observed build environment comparison',p('build-env-cli.mjs'),['compare','--file','docs/qa/BUILD_ENV_COMPARE_WO23_WO30.json'],'HISTORICAL_GITHUB_SUMMARY');
@@ -102,12 +115,15 @@ export function classifyOutcome(id, exitCode, payload) {
   if(id==='cswinrt-source-guard') {
     if(exitCode!==0) return {status:'BLOCKED',reason:'CsWinRT guard nonzero exit'};
     if(!Number.isSafeInteger(payload.highConfidence)) return {status:'ERROR',reason:'CsWinRT report lacks count'};
-    return payload.highConfidence?{status:'WARN',reason:`${payload.highConfidence} high-confidence static candidates require compiler validation`}:{status:'PASS'};
+    if (!Number.isSafeInteger(payload.scannedFiles)||payload.scannedFiles<=0||!Number.isSafeInteger(payload.advisory)||payload.advisory<0||payload.highConfidence<0) return {status:'WARN',reason:'Missing or invalid scan coverage'};
+    if (payload.highConfidence||payload.advisory||payload.status!=='CLEAR') return {status:'WARN',reason:'Static candidates or incomplete scan require compiler validation'};
+    return {status:'PASS'};
   }
   if(id==='build-env-run-compare' && payload.status==='REVIEW' && exitCode===1)
     return {status:'WARN',reason:'Known SDK difference needs controlled reproduction'};
   const tool=payload.status;
-  const states={PASS:'PASS',COMPLETE:'PASS',MATCH:'PASS',ADVISORY:'WARN',PARTIAL:'WARN',INCOMPLETE:'WARN',REVIEW:id==='build-env-checkout'?'BLOCKED':'WARN',BLOCKED:'BLOCKED',FAIL:'BLOCKED',ERROR:'ERROR'};
+  if(id==='premerge-readiness'&&tool==='PASS')return {status:'BLOCKED',reason:'Self-reported premerge status cannot authorize merge'};
+  const states={INVENTORIED:'WARN',NOT_TESTED:'WARN',PASS:'PASS',COMPLETE:'PASS',MATCH:'PASS',ADVISORY:'WARN',PARTIAL:'WARN',INCOMPLETE:'WARN',REVIEW:id==='build-env-checkout'?'BLOCKED':'WARN',BLOCKED:'BLOCKED',FAIL:'BLOCKED',ERROR:'ERROR'};
   if(!Object.hasOwn(states,tool)) return {status:'ERROR',reason:`Unknown or absent tool status: ${String(tool)}`};
   const mapped=states[tool];
   if((exitCode===1 && !['BLOCKED','WARN'].includes(mapped)) || (exitCode===0 && mapped==='BLOCKED' && id!=='premerge-readiness'))
@@ -117,14 +133,14 @@ export function classifyOutcome(id, exitCode, payload) {
 
 export function executeNode(root, entry, timeoutMs=120000) {
   const args=entry.kind==='tests'?['--test',...entry.args]:[entry.tool,...entry.args];
-  const env={...process.env,NODE_OPTIONS:'',GITHUB_TOKEN:''};
+  const env={...process.env,NODE_OPTIONS:'',GITHUB_TOKEN:'',GH_TOKEN:''}; delete env.NODE_TEST_CONTEXT;
   const out=spawnSync(process.execPath,args,{cwd:root,encoding:'utf8',timeout:timeoutMs,maxBuffer:8*1024*1024,shell:false,env});
   if(out.error) return {exitCode:2,stdout:out.stdout||'',stderr:String(out.error.message)};
   return {exitCode:out.status===null?2:out.status,stdout:out.stdout||'',stderr:out.stderr||''};
 }
 
 function parseTestSummary(stdout,exitCode) {
-  const value=(label)=>{const m=stdout.match(new RegExp('^# '+label+' (\\d+)$','m'));return m?Number(m[1]):null;};
+  const value=(label)=>{const m=[...stdout.matchAll(new RegExp('^# '+label+' (\\d+)$','gm'))];return m.length===1&&Number.isSafeInteger(Number(m[0][1]))?Number(m[0][1]):null;};
   const total=value('tests'),passed=value('pass'),failed=value('fail'),skipped=value('skipped');
   if([total,passed,failed,skipped].some(x=>x===null)||total!==passed+failed+skipped) return {status:'ERROR',reason:'TAP summary missing or inconsistent',details:{total,passed,failed,skipped}};
   if(exitCode===0 && failed===0 && skipped===0) return {status:'PASS',details:{total,passed,failed,skipped}};
@@ -135,7 +151,7 @@ function parseTestSummary(stdout,exitCode) {
 export function summarize(results) {
   const counts=Object.fromEntries([...STATUS].map(x=>[x,0]));
   for(const r of results) {if(!STATUS.has(r.status)) throw Error(`Unexpected suite status: ${r.status}`);counts[r.status]++;}
-  const status=counts.BLOCKED||counts.ERROR?'BLOCKED':counts.SKIPPED?'PARTIAL':counts.WARN?'REVIEW':'PASS';
+  const status=!results.length?'BLOCKED':counts.BLOCKED||counts.ERROR?'BLOCKED':counts.SKIPPED?'PARTIAL':counts.WARN?'REVIEW':'PASS';
   return {status,counts,executed:results.length-counts.SKIPPED,total:results.length};
 }
 
@@ -148,6 +164,14 @@ export function runSuite(root,opts,{executor=executeNode}={}) {
   for(const item of plan) {
     if(!item.eligible) {results.push({id:item.id,title:item.title,status:'SKIPPED',reason:item.reason,evidence:item.evidence});continue;}
     try {
+      if(item.kind==='tests') {
+        if(!item.args.length) {results.push({id:item.id,title:item.title,status:'BLOCKED',evidence:item.evidence,reason:'No required test files',details:{total:0,passed:0,failed:0,skipped:0}});continue;}
+        for(const path of item.args) relativeFile(absolute,path);
+        if(REQUIRED_TESTS.every(n=>item.args.some(p=>p.replaceAll('\\','/').endsWith('/'+n)))) {
+          const finding=verifyTestInventory(absolute,item,{total:Number.MAX_SAFE_INTEGER});
+          if(finding){results.push({id:item.id,title:item.title,status:'BLOCKED',evidence:item.evidence,reason:finding.reason,details:{missing:finding.missing,execution:'NOT_RUN'}});continue;}
+        }
+      }
       if(item.kind==='json') {
         relativeFile(absolute,item.tool);
         for(const arg of item.args) if(typeof arg==='string' && /^(docs|tests)\//.test(arg)) relativeFile(absolute,arg);
@@ -156,6 +180,7 @@ export function runSuite(root,opts,{executor=executeNode}={}) {
       let state,details;
       if(item.kind==='tests') {
         const info=parseTestSummary(raw.stdout,raw.exitCode);state=info;details=info.details;
+        if(info.status==='PASS') { const finding=verifyTestInventory(absolute,item,details); if(finding) { state={status:'BLOCKED',reason:finding.reason};details={...details,missing:finding.missing}; } }
       } else {
         let value;
         try {value=JSON.parse(raw.stdout);}catch{value=null;}
@@ -185,7 +210,7 @@ export function main(argv,{executor=executeNode}={}) {
   const result=runSuite(root,opts,{executor});
   if(opts.output) {
     const path=relativeFile(root,opts.output,{mustExist:false,allowOutput:true});
-    writeFileSync(path,JSON.stringify(result,null,2)+'\n','utf8');
+    writeFileSync(path,JSON.stringify(result,null,2)+'\n',{encoding:'utf8',flag:'wx'});
   }
   return result;
 }

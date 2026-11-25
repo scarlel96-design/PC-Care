@@ -32,7 +32,7 @@ test('keeps unknown compiler separate from declared App SDK',()=>{const x=compar
 test('full comparator returns MATCH only with complete identical observations',()=>{const x={sourceSha:'a'};for(const key of ['installedSdk','selectedSdk','runnerImage','compilerVersion','msbuildVersion','windowsAppSdkDeclared','windowsAppSdkResolved','csWinRtGeneratorVersion','csWin32Declared','buildCommand'])x[key]='same';assert.equal(compareBuildEnvironments(x,{...x}).status,'MATCH')});
 test('rejects invalid compare input',()=>assert.throws(()=>compareBuildEnvironments(null,{}),TypeError));
 test('source tree evidence is independent of source commit',()=>{const x=compareBuildEnvironments({treeSha:'t1',sourceSha:'a'},{treeSha:'t1',sourceSha:'b'});assert.equal(x.sameSourceCommit,false);assert.equal(x.sameSourceTree,true)});
-test('audits repository files read-only',()=>withRepo(root=>{const a=auditCheckout(root);assert.equal(a.status,'MATCH');assert.equal(a.workflows.length,1);assert.equal(a.packages.windowsAppSdkDeclared,'2.2.0')}));
+test('audits repository files read-only',()=>withRepo(root=>{const a=auditCheckout(root);assert.equal(a.status,'INVENTORIED');assert.equal(a.workflows.length,1);assert.equal(a.packages.windowsAppSdkDeclared,'2.2.0')}));
 test('captures baseline without altering files',()=>withRepo(root=>{const a=createBaseline(auditCheckout(root));assert.deepEqual(a.workflows['legacy.yml'].sdkSelectors,['10.0.x']);assert.equal(a.windowsAppSdkDeclared,'2.2.0')}));
 test('unchanged baseline does not block old floating selectors',()=>withRepo(root=>{const a=auditCheckout(root);assert.equal(auditCheckout(root,createBaseline(a)).status,'MATCH')}));
 test('detects SDK selector changes',()=>withRepo(root=>{const before=createBaseline(auditCheckout(root));writeFileSync(join(root,'.github','workflows','legacy.yml'),workflow('10.0.404'));const x=auditCheckout(root,before);assert.equal(x.status,'REVIEW');assert.equal(x.regressions[0].reason,'SDK selector drift')}));
@@ -41,7 +41,7 @@ test('detects deletion of a baseline workflow',()=>withRepo(root=>{const baselin
 test('new workflows containing .NET builds require review',()=>withRepo(root=>{const b=createBaseline(auditCheckout(root));writeFileSync(join(root,'.github','workflows','new.yml'),workflow('10.0.x'));assert.equal(auditCheckout(root,b).status,'REVIEW')}));
 test('missing package/project files are incomplete',()=>{const root=mkdtempSync(join(tmpdir(),'pccare-env-'));try{mkdirSync(join(root,'.github','workflows'),{recursive:true});assert.equal(auditCheckout(root).status,'INCOMPLETE')}finally{rmSync(root,{recursive:true,force:true})}});
 test('missing workflow directory fails',()=>{const root=mkdtempSync(join(tmpdir(),'pccare-env-'));try{assert.throws(()=>auditCheckout(root),/Missing/)}finally{rmSync(root,{recursive:true,force:true})}});
-test('CLI audit returns same read-only result',()=>withRepo(root=>assert.equal(main(['audit','--root',root]).status,'MATCH')));
+test('CLI audit returns same read-only result',()=>withRepo(root=>assert.equal(main(['audit','--root',root]).status,'INVENTORIED')));
 test('CLI baseline creates snapshot data',()=>withRepo(root=>assert.equal(main(['baseline','--root',root]).workflows['legacy.yml'].sdkSelectorClass,'FLOATING')));
 test('CLI compare requires a file',()=>assert.throws(()=>main(['compare']),/Missing/));
 test('CLI rejects unknown command',()=>assert.throws(()=>main(['delete']),/Usage/));

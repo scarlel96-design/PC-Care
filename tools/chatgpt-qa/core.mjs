@@ -1,3 +1,5 @@
+import { packageDeclarations } from './msbuild-xml.mjs';
+import { maskCSharpText } from './cswinrt-static.mjs';
 import { createHash } from 'node:crypto';
 import { readFileSync, realpathSync } from 'node:fs';
 import { resolve, relative, isAbsolute, sep } from 'node:path';
@@ -13,7 +15,7 @@ export const SECURITY_FLAGS = Object.freeze([
   'WriterEnableReady', 'ExternalReviewCompleted', 'ProductionEnableAuthorized',
 ]);
 export const ROOT = 'tools/chatgpt-qa/';
-const QA_ONLY = ['tools/chatgpt-qa/', 'tests/chatgpt-qa/', 'docs/qa/', '.github/workflows/chatgpt-qa.yml'];
+const QA_ONLY = ['tools/chatgpt-qa/', 'tests/chatgpt-qa/', 'docs/qa/', '.github/workflows/chatgpt-qa.yml', '.github/workflows/chatgpt-qa-integration.yml'];
 const HEX40 = /^[0-9a-f]{40}$/i;
 
 function finding(id, code, message, severity = 'ERROR') { return { id, code, severity, message }; }
@@ -31,7 +33,7 @@ export function safeRelativePath(input) {
   const name = input.replaceAll('\\', '/').replace(/^\.\//, '');
   if (name.startsWith('/') || /^[a-zA-Z]:/.test(name) || name.startsWith('~')) throw new Error('absolute path');
   const parts = name.split('/');
-  if (parts.some(p => !p || p === '..' || p === '.' || p.includes(':'))) throw new Error('path traversal/invalid segment');
+  if (parts.some(p => !p || p === '..' || p === '.' || p.includes(':') || /[<>"|?*\x00-\x1f]/.test(p) || /[. ]$/.test(p) || /^(?:CON|PRN|AUX|NUL|COM[1-9¹²³]|LPT[1-9¹²³])(?:\.|$)/i.test(p))) throw new Error('path traversal/invalid segment');
   return parts.join('/');
 }
 export function safeFile(root, input) {
@@ -48,9 +50,10 @@ export function safeFile(root, input) {
 export function checkImpact(codexFiles, qaFiles) {
   const findings = [];
   const normalize = (paths, label) => {
-    const items = [];
+    const items = [], seen = new Set();
+    if (!Array.isArray(paths)) { findings.push(finding('QA01_CHANGE_IMPACT','INVALID_LIST',label)); return items; }
     for (const p of paths) {
-      try { items.push(safeRelativePath(p)); }
+      try { const path=safeRelativePath(p), key=path.toLowerCase(); if(seen.has(key)) { findings.push(finding('QA01_CHANGE_IMPACT','DUPLICATE_PATH',`${label}: ${path}`)); continue; } seen.add(key); items.push(path); }
       catch { findings.push(finding('QA01_CHANGE_IMPACT', 'UNSAFE_PATH', `${label}: ${p}`)); }
     }
     return items;
@@ -70,14 +73,22 @@ export function checkImpact(codexFiles, qaFiles) {
 // Source-text inspection only. This check does not prove runtime behavior.
 export function checkSecuritySource(source) {
   const findings = [];
+  source = maskCSharpText(source);
+  if (/^\s*#\s*(?:if|elif|else|endif|define|undef)\b/m.test(source)) findings.push(finding('QA02_SECURITY_POLICY','CONDITIONAL_SOURCE','Conditional compilation requires compiler-backed review'));
+  const classes=[...source.matchAll(/\bpublic\s+static\s+class\s+Av3PhaseGate\s*\{/g)];
+  let body='';
+  if(classes.length===1){const start=classes[0].index+classes[0][0].length;let depth=1,end=start;for(;end<source.length&&depth;end++){if(source[end]==='{')depth++;else if(source[end]==='}')depth--;}if(depth===0)body=source.slice(start,end-1);}
+  if(!body) findings.push(finding('QA02_SECURITY_POLICY','AV3_CLASS_SCOPE','Expected one active Av3PhaseGate class with a complete body'));
   for (const name of SECURITY_FLAGS) {
     const re = new RegExp(`^[ \\t]*public[ \\t]+(?:static[ \\t]+readonly|const)[ \\t]+bool[ \\t]+${name}[ \\t]*=[ \\t]*([^;\\r\\n]+)[ \\t]*;`, 'gm');
-    const matches = [...source.matchAll(re)];
+    const matches = [...body.matchAll(re)];
+    const writes=[...source.matchAll(new RegExp(`\\b${name}\\s*(?:=(?!=|>)|[+*/%&|^?-]=|\\+\\+|--)`,'g'))];
+    if(writes.length!==1||new RegExp(`\\b(?:ref|out)\\s+${name}\\b`).test(body)) findings.push(finding('QA02_SECURITY_POLICY','AV3_FLAG_REASSIGNMENT',name));
     if (matches.length !== 1 || matches[0][1].trim() !== 'false') {
       findings.push(finding('QA02_SECURITY_POLICY', 'UNSAFE_AV3_FLAG', `${name}: expected one literal false; found ${matches.length === 1 ? matches[0][1].trim() : matches.length + ' declarations'}`));
     }
   }
-  const matches = [...source.matchAll(/^[ \t]*public[ \t]+const[ \t]+Av3ProductionStatus[ \t]+CurrentStatus[ \t]*=[ \t]*Av3ProductionStatus\.([^;\r\n]+)[ \t]*;/gm)];
+  const matches = [...body.matchAll(/^[ \t]*public[ \t]+const[ \t]+Av3ProductionStatus[ \t]+CurrentStatus[ \t]*=[ \t]*Av3ProductionStatus\.([^;\r\n]+)[ \t]*;/gm)];
   if (matches.length !== 1 || matches[0][1].trim() !== 'ReadOnlyValidated') {
     findings.push(finding('QA02_SECURITY_POLICY', 'AV3_STATUS', 'Expected one ReadOnlyValidated status'));
   }
@@ -173,26 +184,31 @@ export const DIAGNOSTIC_STATES = Object.freeze(['ISSUE','NORMAL','INSUFFICIENT_E
 export function validateDiagnosticFixtures(cases) {
   const findings=[];
   if (!Array.isArray(cases)) return result('QA07_DIAGNOSTIC_FIXTURES',{},[finding('QA07_DIAGNOSTIC_FIXTURES','INVALID_FIXTURE','Expected array')]);
-  const keys=new Set(), counts={};
+  const keys=new Set(), counts=Object.create(null);
   for (const row of cases) {
     if (!row || typeof row.id!=='string' || keys.has(row.id)) findings.push(finding('QA07_DIAGNOSTIC_FIXTURES','DUPLICATE_ID',String(row?.id)));
     keys.add(row?.id);
     if (!DIAGNOSTIC_CATEGORIES.includes(row?.category)||!DIAGNOSTIC_STATES.includes(row?.expected)||typeof row?.observation!=='string'||row.observation.trim().length<8||typeof row?.rationale!=='string'||row.rationale.trim().length<8||row?.mayMutate!==false) {
       findings.push(finding('QA07_DIAGNOSTIC_FIXTURES','INVALID_CASE',String(row?.id)));
+      continue;
     }
-    counts[row?.category]??={};counts[row?.category][row?.expected]=(counts[row?.category][row?.expected]||0)+1;
+    counts[row.category]??=Object.create(null);counts[row?.category][row?.expected]=(counts[row?.category][row?.expected]||0)+1;
   }
   for(const category of DIAGNOSTIC_CATEGORIES)for(const status of DIAGNOSTIC_STATES)if(counts[category]?.[status]!==1) findings.push(finding('QA07_DIAGNOSTIC_FIXTURES','CATEGORY_COVERAGE',`${category}/${status}: require one`));
   return result('QA07_DIAGNOSTIC_FIXTURES',{count:cases.length,categories:DIAGNOSTIC_CATEGORIES.length,syntheticOnly:true,notEngineTests:true},findings);
 }
 export function auditDependencies(xml) {
   const findings=[], names = new Set(), packages=[];
-  for(const match of xml.matchAll(/<PackageVersion\s+[^>]*?Include="([^"]+)"[^>]*?Version="([^"]+)"[^>]*?\/?\s*>/g)) {
-    const name=match[1],version=match[2],key=name.toLowerCase();
+  let declarations;
+  try { declarations=packageDeclarations(xml,{allowFragments:true}); }
+  catch(error) {return result('QA09_DEPENDENCY_AUDIT',{packages:0,staticOnly:true},[finding('QA09_DEPENDENCY_AUDIT','INVALID_XML',error.message)]);}
+  for(const {name,version,uncertain} of declarations) {
+    if (!name || !version || uncertain) { findings.push(finding('QA09_DEPENDENCY_AUDIT','UNRESOLVED_PACKAGE','Missing or conditional package attributes')); continue; }
+    const key=name.toLowerCase();
     packages.push({name,version});
     if(names.has(key))findings.push(finding('QA09_DEPENDENCY_AUDIT','DUPLICATE_PACKAGE',name));
     names.add(key);
-    if(/[\*]|\$\(|[\[\],()]/.test(version))findings.push(finding('QA09_DEPENDENCY_AUDIT','NON_PINNED_VERSION',`${name}: ${version}`));
+    if(!/^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/.test(version))findings.push(finding('QA09_DEPENDENCY_AUDIT','NON_PINNED_VERSION',`${name}: ${version}`));
   }
   if (!packages.length) findings.push(finding('QA09_DEPENDENCY_AUDIT','NO_PACKAGES','No PackageVersion entries found; may require manual review','REVIEW'));
   return result('QA09_DEPENDENCY_AUDIT',{packages:packages.length,staticOnly:true,licenseAuditPerformed:false,networkAdvisoriesChecked:false},findings,findings.some(f=>f.severity==='ERROR')?'FAIL':'PARTIAL');
@@ -201,11 +217,24 @@ export function auditDependencies(xml) {
 export function checkCiScope(yaml) {
   const findings=[];
   if(typeof yaml !== 'string')return result('QA08_CI_SCOPE',{},[finding('QA08_CI_SCOPE','INVALID_WORKFLOW','Expected workflow text')]);
-  for(const required of ['pull_request:', 'workflow_dispatch:', 'contents: read','node --test tests/chatgpt-qa/', 'node tools/chatgpt-qa/cli.mjs']) {
+  yaml=yaml.split(/\r?\n/).filter(line=>!/^\s*#/.test(line)).join('\n');
+  if (!/^on:\s*$/m.test(yaml) || !/^  pull_request:\s*$/m.test(yaml) || !/^  workflow_dispatch:\s*$/m.test(yaml) || !/^permissions:\s*\n  contents: read\s*$/m.test(yaml) || !/^jobs:\s*$/m.test(yaml)) findings.push(finding('QA08_CI_SCOPE','INVALID_WORKFLOW_STRUCTURE','Expected supported event, permission and job structure'));
+  const eventBlocks=[...yaml.matchAll(/^on:\s*\n([\s\S]*?)(?=^\S|$(?![\s\S]))/gm)];
+  const expectedPaths=[...QA_ONLY.map(p=>p.endsWith('/')?p+'**':p)];
+  const event=eventBlocks[0]?.[1]??'';
+  const paths=[...event.matchAll(/^      -\s+['"]?([^'"#\r\n]+?)['"]?\s*$/gm)].map(m=>m[1]);
+  const triggers=[...event.matchAll(/^  ([a-z_]+):/gm)].map(m=>m[1]);
+  if(eventBlocks.length!==1||triggers.length!==2||!triggers.includes('pull_request')||!triggers.includes('workflow_dispatch')||paths.length!==expectedPaths.length||new Set(paths).size!==paths.length||paths.some(p=>!expectedPaths.includes(p))) findings.push(finding('QA08_CI_SCOPE','UNSCOPED_CI','Require exact event and QA path inventory'));
+  if (/^\s{4}(?:permissions|uses):/m.test(yaml)||/^\s*(?:pull_request_target|paths-ignore|branches|types):/m.test(event)||/^\s*contents:\s*write\b/m.test(yaml)) findings.push(finding('QA08_CI_SCOPE','UNSUPPORTED_POLICY','Unsupported event or permission override'));
+  for(const required of ['pull_request:', 'workflow_dispatch:', 'contents: read','node tools/chatgpt-qa/integrated-runner.mjs --root . --profile offline --only unit-tests', 'node tools/chatgpt-qa/cli.mjs']) {
     if(!yaml.includes(required))findings.push(finding('QA08_CI_SCOPE','MISSING_CI_POLICY',required));
   }
+  const rootKeys=[...yaml.matchAll(/^([a-zA-Z_-]+):/gm)].map(m=>m[1]);
+  const rootRequired=['name','on','permissions','concurrency','jobs'];
+  if(rootKeys.length!==rootRequired.length||new Set(rootKeys).size!==rootKeys.length||rootKeys.some(k=>!rootRequired.includes(k))) findings.push(finding('QA08_CI_SCOPE','INVALID_ROOT_KEYS','Unexpected or duplicate workflow keys'));
+  if (!/^ {8}run: node tools\/chatgpt-qa\/integrated-runner\.mjs --root \. --profile offline --only unit-tests\s*$/m.test(yaml) || !/^ {8}run: node tools\/chatgpt-qa\/cli\.mjs wo29 --root \.\s*$/m.test(yaml) || /^\s+(?:if|continue-on-error):/m.test(yaml)) findings.push(finding('QA08_CI_SCOPE','UNVERIFIED_EXECUTION','Required unconditional QA run steps missing'));
   if(!yaml.includes('tools/chatgpt-qa/**')||!yaml.includes('tests/chatgpt-qa/**'))findings.push(finding('QA08_CI_SCOPE','UNSCOPED_CI','Missing independent path filters'));
-  if(/^  push:\s*$/m.test(yaml))findings.push(finding('QA08_CI_SCOPE','REDUNDANT_PUSH_TRIGGER','QA runs on PR only; remove duplicate branch push trigger'));
+  if(/^  push:/m.test(yaml))findings.push(finding('QA08_CI_SCOPE','REDUNDANT_PUSH_TRIGGER','QA runs on PR only; remove duplicate branch push trigger'));
   if(!/^concurrency:\s*$/m.test(yaml) || !/^  cancel-in-progress:\s*true\s*$/m.test(yaml)) {
     findings.push(finding('QA08_CI_SCOPE','CONCURRENCY_MISSING','Require cancellation of obsolete QA runs'));
   }
@@ -217,8 +246,9 @@ export function checkCiScope(yaml) {
 export function premergeChecks(checks, options = {}) {
   const failures=[];
   const blockers=[];
+  const requiredChecks=QA_TASKS.filter(id=>id!=='QA10_PREMERGE');
   if(!Array.isArray(checks)) {
-    return result('QA10_PREMERGE',{ready:false,failures:['INVALID_CHECK_SET'],blockers:[],missingChecks:[...QA_TASKS],reviewOnly:true},[], 'FAIL');
+    return result('QA10_PREMERGE',{ready:false,failures:['INVALID_CHECK_SET'],blockers:[],missingChecks:[...requiredChecks],reviewOnly:true},[], 'FAIL');
   }
   const seen=new Set();
   const validStatuses=new Set(['PASS','FAIL','PARTIAL','BLOCKED','NOT_TESTED']);
@@ -237,15 +267,17 @@ export function premergeChecks(checks, options = {}) {
       blockers.push(`${check.id}: ${check.status}`);
     }
   }
-  const missingChecks=QA_TASKS.filter(id=>!seen.has(id));
+  const missingChecks=requiredChecks.filter(id=>!seen.has(id));
   for(const id of missingChecks)blockers.push(`MISSING_CHECK: ${id}`);
   if(options.codexRefKnown!==true)blockers.push('Codex base head not compared');
   if(options.testExecutionObserved!==true)blockers.push('Local test execution not observed');
   if(options.githubActionsObserved!==true)blockers.push('GitHub Actions result not observed');
-  const ready=failures.length===0&&blockers.length===0;
+  const structurallyComplete=failures.length===0&&blockers.length===0;
+  if (structurallyComplete) blockers.push('Independent evidence authentication and human approval required');
+  const ready=false;
   return result('QA10_PREMERGE',{
-    failures,blockers,missingChecks,checked:seen.size,required:QA_TASKS.length,
-    ready,reviewOnly:true,externalClaimsNotVerified:true,
+    failures,blockers,missingChecks,checked:requiredChecks.filter(id=>seen.has(id)).length,required:requiredChecks.length,legacySelfAssessmentSupplied:seen.has('QA10_PREMERGE'),
+    ready,structurallyComplete,reviewOnly:true,externalClaimsNotVerified:true,
   },[],failures.length?'FAIL':blockers.length?'BLOCKED':'PASS');
 }
 

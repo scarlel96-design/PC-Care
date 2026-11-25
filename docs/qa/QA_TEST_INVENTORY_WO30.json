@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "minimumTests": 344,
+  "algorithm": "SHA-256 UTF-8 text normalized CRLF to LF",
+  "files": {
+    "adversarial-regression.test.mjs": "c43111d1ec9150243bcb90166a13e4545dfcd7b6c895b362387b1845f1293457",
+    "build-env-provenance.test.mjs": "fcc088a3733cab6670f58d0cdd994190f3ee986759f80061c4481a0d06d2c6c4",
+    "ci-failure-triage.test.mjs": "2647caf7da9008e15f5ed0fa3e6b58536eb469bbc9b84396fd4a62c1f3af47c1",
+    "ci-observability.test.mjs": "c25095c0fe1ffdc2da8402f77909c028fd3a4d99028672297421535105ea20b5",
+    "core.test.mjs": "0ab356ae0ed52e797457691cda75614c0db84dae3193874a4790e2f4d3ea63e2",
+    "cswinrt-patterns.test.mjs": "3c7155a40e8f5ea02998266239adad05065e0ed2925eb697746431119955424c",
+    "cswinrt-static-cli.test.mjs": "1d120cb4e513001c8707506e2d66a0e775816ac4a77c265721434496ffce4d40",
+    "cswinrt-static.test.mjs": "28c666dde6197f78a50901478ea16d2eab95249fcde59777d2ac06d6477f424b",
+    "hardening-boundaries.test.mjs": "c3e9bba197bace018c0f2669d81621bf41c1d7c2107049f90c070c4f65defe5b",
+    "integrated-runner.test.mjs": "b3cec57922c8b13ac02415374508e9b5485fcfda1b82d5074e72a96af8c18f76",
+    "sdk-drift-audit.test.mjs": "50669d6c2ecc1d37e8f4eeee9d965da2af25dc4c0c95a36d2252f1b8b91af07e"
+  }
+}

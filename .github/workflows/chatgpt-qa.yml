@@ -6,6 +6,7 @@ on:
       - 'tests/chatgpt-qa/**'
       - 'docs/qa/**'
       - '.github/workflows/chatgpt-qa.yml'
+      - '.github/workflows/chatgpt-qa-integration.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -26,7 +27,7 @@ jobs:
           node --check tools/chatgpt-qa/core.mjs
           node --check tools/chatgpt-qa/cli.mjs
       - name: Independent QA unit tests
-        run: node --test tests/chatgpt-qa/core.test.mjs
+        run: node tools/chatgpt-qa/integrated-runner.mjs --root . --profile offline --only unit-tests
       - name: Audit WO-29 baseline evidence
         run: node tools/chatgpt-qa/cli.mjs wo29 --root .
       - name: Inventory XAML review candidates

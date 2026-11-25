@@ -20,3 +20,7 @@ The checks do not write source files. They do not execute untrusted programs, re
 The XAML scanner cannot determine actual usability. The dependency scan cannot find vulnerabilities online. The diagnostic cases are synthetic data only. The evidence checker compares reported values and common source references; it does not authenticate a remote CI run or reproduce Windows execution.
 
 See `docs/qa/WO30_GPT_INDEPENDENT_WORKPACK.md` for task ownership and acceptance contracts.
+
+## WO-30 hardened integrated runner
+
+Run `node tools/chatgpt-qa/integrated-runner.mjs --root . --profile offline` for the local evidence and test suite. Use `--profile checkout --strict` for the complete available checkout inspection. A missing prerequisite or warning fails strict mode. See `docs/qa/WO30_QA_HARDENING.md` for test inventory, contracts and unresolved release gates. Never treat the local premerge output as approval.

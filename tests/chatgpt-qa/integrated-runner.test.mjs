@@ -78,7 +78,7 @@ test('build environment regression is BLOCKED',()=>assert.equal(classifyOutcome(
 test('premerge BLOCKED remains BLOCKED',()=>assert.equal(classifyOutcome('premerge-readiness',1,{status:'BLOCKED'}).status,'BLOCKED'));
 test('source risk count is required',()=>assert.equal(classifyOutcome('cswinrt-source-guard',0,{status:'PASS'}).status,'ERROR'));
 test('known source risk does not assert compiler failure',()=>assert.equal(classifyOutcome('cswinrt-source-guard',0,{highConfidence:10}).status,'WARN'));
-test('clean source risk scan is PASS',()=>assert.equal(classifyOutcome('cswinrt-source-guard',0,{highConfidence:0}).status,'PASS'));
+test('clean source risk scan is PASS',()=>assert.equal(classifyOutcome('cswinrt-source-guard',0,{highConfidence:0,advisory:0,scannedFiles:1,status:'CLEAR'}).status,'PASS'));
 test('suite summary separates warnings and skips',()=>assert.deepEqual(summarize([{status:'PASS'},{status:'WARN'},{status:'SKIPPED'}]).counts,{PASS:1,WARN:1,BLOCKED:0,SKIPPED:1,ERROR:0}));
 test('suite is PARTIAL when inputs missing',()=>assert.equal(summarize([{status:'PASS'},{status:'SKIPPED'}]).status,'PARTIAL'));
 test('suite is BLOCKED on failed gate',()=>assert.equal(summarize([{status:'BLOCKED'},{status:'PASS'}]).status,'BLOCKED'));
@@ -90,10 +90,11 @@ test('offline plan skips product source operations',()=>withRoot(root=>{
   assert.equal(p.find(x=>x.id==='cswinrt-source-guard').eligible,false);
   assert.equal(p.find(x=>x.id==='wo29-source-evidence').eligible,false);
 }));
-test('offline run produces a partial report, not product GO',()=>withRoot(root=>{
+test('offline run with incomplete required test inventory blocks, not product GO',()=>withRoot(root=>{
   const r=runSuite(root,opts(),{executor:runner});
   assert.equal(r.schema,SCHEMA);
-  assert.equal(r.status,'PARTIAL');
+  assert.equal(r.status,'BLOCKED');
+  assert.equal(r.checks.find(x=>x.id==='unit-tests').status,'BLOCKED');
   assert.equal(r.releaseDecision,'NOT_ASSESSED');
   assert.equal(r.productPhase1Go,false);
   assert.equal(r.summary.counts.ERROR,0);

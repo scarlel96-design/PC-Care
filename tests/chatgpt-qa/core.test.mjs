@@ -77,7 +77,7 @@ const approvals={codexRefKnown:true,testExecutionObserved:true,githubActionsObse
 test('QA10 blocks missing audits even with all three asserted prerequisites',()=>{
   const q=premergeChecks([{id:'QA02_SECURITY_POLICY',status:'PASS'}],approvals);
   assert.equal(q.status,'BLOCKED');
-  assert.equal(q.details.missingChecks.length,9);
+  assert.equal(q.details.missingChecks.length,8);
   assert.equal(q.details.ready,false);
 });
 test('QA10 remains blocked without observed remote CI',()=>{
@@ -88,9 +88,9 @@ test('QA10 fails when any contributing audit failed',()=>{
   const checks=completeChecks();checks[1].status='FAIL';
   assert.equal(premergeChecks(checks,approvals).status,'FAIL');
 });
-test('QA10 passes only with all ten checks and all asserted prerequisites',()=>{
+test('QA10 structural completeness does not authorize merge',()=>{
   const q=premergeChecks(completeChecks(),approvals);
-  assert.equal(q.status,'PASS');assert.equal(q.details.required,10);
+  assert.equal(q.status,'BLOCKED');assert.equal(q.details.required,9);assert.equal(q.details.structurallyComplete,true);assert.equal(q.details.ready,false);
   assert.equal(q.details.reviewOnly,true);
 });
 test('QA10 blocks if a required audit is partial',()=>{

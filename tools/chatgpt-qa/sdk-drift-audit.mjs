@@ -43,6 +43,7 @@ function getSetupSelectors(source) {
 
 export function inspectWorkflow(name, source) {
   if (typeof name !== 'string' || typeof source !== 'string') throw new TypeError('Expected workflow filename and text');
+  source=source.split(/\r?\n/).filter(line=>!/^\s*#/.test(line)).join('\n');
   const selectors = getSetupSelectors(source);
   const performsBuild = /\bdotnet\s+(?:build|test|restore|publish|pack)\b/i.test(source);
   const pinLines = source.split(/\r?\n/).filter(line => /Set-Content\s+(?:-Path\s+)?['"]?global\.json/i.test(line));
@@ -59,7 +60,18 @@ export function inspectWorkflow(name, source) {
   else if (selectors.every(x => x.kind === 'FLOATING')) classification = 'FLOATING';
   else {
     const versions = [...new Set(selectors.map(x => x.value))];
-    const consistent = versions.length === 1 && pins.length === 1 && pins[0].disabled && pins[0].version === versions[0] && assertions.includes(versions[0]);
+    // Only recognize the supported single-job, unconditional setup/pin/assert/build sequence.
+    const steps=stepBlocks(source);
+    const setup=steps.findIndex(s=>/actions\/setup-dotnet@/.test(s));
+    const pin=steps.findIndex(s=>/Set-Content\s+(?:-Path\s+)?['"]?global\.json/i.test(s));
+    const build=steps.findIndex(s=>/\bdotnet\s+(?:build|restore|test|publish|pack)\b/i.test(s));
+    const guard=steps[pin]??'';
+    const guardLines=guard.split('\n').filter(line=>/^ {10}\S/.test(line)).map(line=>line.trim());
+    const literalWrite=guardLines.findIndex(line=>/^'\{"sdk":\{"version":"\d+\.\d+\.\d+","rollForward":"disable"\}\}'\s*\|\s*Set-Content\s+global\.json\s*$/i.test(line));
+    const literalAssert=guardLines.findIndex(line=>/^if\s*\(\s*\(dotnet\s+--version\)\s*-ne\s*['"]\d+\.\d+\.\d+['"]\s*\)\s*\{\s*throw\s+['"][^'"]+['"]\s*\}\s*$/i.test(line));
+    const supportedGuard=literalWrite>=0&&literalAssert===literalWrite+1&&guardLines.length===literalAssert+1&&guardLines.slice(0,literalWrite).every(line=>/^if\s*\(Test-Path global\.json\)\s*\{throw\s+['"][^'"]+['"]\}$/i.test(line));
+    const guardedOrder=supportedGuard && /^ {8}run:\s*\|\s*$/m.test(guard) && !/^\s*(?:working-directory|defaults):/m.test(source) && !steps.slice(pin+1).some(s=>/global\.json|setup-dotnet@/i.test(s)) && !/^\s{8}shell:\s*(?!pwsh\s*$)\S/m.test(guard) && setup>=0 && pin>setup && build>pin && /\bif\s*\(\s*\(dotnet\s+--version\)\s*-ne\s*['"]\d+\.\d+\.\d+['"]\s*\)\s*\{\s*throw\b/i.test(guard) && !/^\s+(?:if|continue-on-error):/m.test(steps[setup]+'\n'+guard) && (source.match(/^  [\w-]+:\s*$/gm)||[]).filter(x=>!/^  (?:pull_request|workflow_dispatch|push):/.test(x)).length===1;
+    const consistent = guardedOrder && versions.length === 1 && pins.length === 1 && pins[0].disabled && pins[0].version === versions[0] && guardLines[literalAssert]?.match(/-ne\s*['"](\d+\.\d+\.\d+)['"]/)?.[1]===versions[0];
     classification = consistent ? 'GUARDED_EXACT' : 'EXACT_NO_GUARD';
   }
   const pinnedVersions = pins.map(x => x.version).filter(Boolean);
@@ -92,6 +104,7 @@ export function summarizeSdkComparisons(observations) {
     }
     (r.conclusion === 'success' ? success : failure).add(r.installedSdk);
   }
+  if (!success.size||!failure.size) problems.push('Both a successful and a failed SDK observation are required');
   return { status: problems.length ? 'PARTIAL' : 'COMPLETE', analyzedRuns: ids.size,
     successfulInstalledSdks: [...success].sort(), failedInstalledSdks: [...failure].sort(),
     sdkVersionsDiffer: Boolean(success.size && failure.size && [...failure].some(x => !success.has(x))),
@@ -121,7 +134,7 @@ export function auditDirectory(root, baseline = null) {
     for (const item of entries) if (!(item.file in baseline.workflows) && item.risk > 0)
       regressions.push({ file: item.file, reason: 'New workflow requires SDK review', after: item.classification });
   }
-  return { status: regressions.length ? 'BLOCKED' : (counts.FLOATING || counts.UNKNOWN || counts.MIXED || counts.EXACT_NO_GUARD ? 'ADVISORY' : 'PASS'),
+  return { status: regressions.length ? 'BLOCKED' : (counts.FLOATING || counts.UNKNOWN || counts.MIXED || counts.EXACT_NO_GUARD || counts.CONFLICT || !files.length ? 'ADVISORY' : 'PASS'),
     workflowCount: files.length, counts, regressions, entries, baselineCompared: Boolean(baseline),
     warning: 'ADVISORY does not mean build failure or product completion.' };
 }

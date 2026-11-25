@@ -89,3 +89,7 @@ PRs #1, #2, and #3 remain separate. Do not merge this branch or revise product q
 ## Known limitations
 
 The offline runner does not validate the product source. A complete source checkout is required for source-level checks. UI, file overlap, and premerge status require external inputs. Known historical errors and static warnings remain warnings, not fabricated passes. The suite itself does not download GitHub logs or depend on credentials.
+
+## Hardening supersession
+
+The original 277-test result above is historical. See `WO30_QA_HARDENING.md` and `WO30_QA_HARDENING_VERIFICATION.json` for the updated 344-test inventory, stricter approval rules, replacement trigger auditor and current acceptance evidence.
